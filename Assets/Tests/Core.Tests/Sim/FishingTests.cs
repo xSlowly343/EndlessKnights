@@ -170,6 +170,7 @@ namespace Game.Core.Tests.Sim
             Land(loop, input);
             Assert.That(loop.State.Drops.Shards - shards, Is.EqualTo(Rules.BottleShards));
             Assert.That(loop.State.Fishing.Bottles, Is.EqualTo(1));
+            Assert.That(loop.State.Drops.Dust, Is.EqualTo(Rules.BottleDust));
         }
 
         [Test]

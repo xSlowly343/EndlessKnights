@@ -63,12 +63,22 @@ namespace Game.Core.Content.Items
             AddScaled(modifiers, Base.Implicit);
             if (RolledImplicit != null)
                 AddScaled(modifiers, RolledImplicit.Lines);
+            var start = modifiers.Count;
             foreach (var affix in Affixes)
                 affix.AddModifiers(modifiers);
+            Scale(modifiers, start, Forge.AffixScale);
             if (Set != null)
                 modifiers.AddRange(Set.PieceLines(Slot));
             if (Unique != null)
                 modifiers.AddRange(Unique.Lines);
+        }
+
+        public static void Scale(List<Modifier> modifiers, int start, double scale)
+        {
+            if (scale == 1)
+                return;
+            for (var i = start; i < modifiers.Count; i++)
+                modifiers[i] = modifiers[i].WithValue(modifiers[i].Value * scale);
         }
 
         private void AddScaled(List<Modifier> modifiers, IReadOnlyList<Modifier> lines)

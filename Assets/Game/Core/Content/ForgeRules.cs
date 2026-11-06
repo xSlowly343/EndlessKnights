@@ -16,6 +16,10 @@ namespace Game.Core.Content
         public int TemperOre { get; private set; }
         public int Hammers { get; private set; }
         public double MaxTemper { get; private set; }
+        public int HoneOre { get; private set; }
+        public double MaxHone { get; private set; }
+        public double HoneStepInZone { get; private set; }
+        public double HoneStepOutside { get; private set; }
         public double StepInZone { get; private set; }
         public double StepOutside { get; private set; }
         public double HeatPerMeter { get; private set; }
@@ -39,7 +43,9 @@ namespace Game.Core.Content
             var smelt = root.Field("smelt");
             var temper = root.Field("temper");
             var zoneFrom = temper.Field("zoneFrom").AsNumber(0, 1);
-            var max = temper.Field("max").AsNumber(0, 0.05);
+            var max = temper.Field("max").AsNumber(0, 0.1);
+            var hone = root.Field("hone");
+            var maxHone = hone.Field("max").AsNumber(0, 0.05);
             var rules = new ForgeRules
             {
                 Building = building,
@@ -48,6 +54,10 @@ namespace Game.Core.Content
                 TemperOre = temper.Field("ore").AsInt(0, 1000),
                 Hammers = temper.Field("hammers").AsInt(1, 100000),
                 MaxTemper = max,
+                HoneOre = hone.Field("ore").AsInt(0, 1000),
+                MaxHone = maxHone,
+                HoneStepInZone = hone.Field("stepInZone").AsNumber(0, maxHone),
+                HoneStepOutside = hone.Field("stepOutside").AsNumber(0, maxHone),
                 StepInZone = temper.Field("stepInZone").AsNumber(0, max),
                 StepOutside = temper.Field("stepOutside").AsNumber(0, max),
                 HeatPerMeter = temper.Field("heatPerMeter").AsNumber(0, 100),

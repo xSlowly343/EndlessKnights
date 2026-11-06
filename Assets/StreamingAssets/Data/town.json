@@ -1,7 +1,7 @@
 {
   "version": 1,
   "orders": { "perDay": 3, "keep": 6 },
-  "reward": { "reputation": 10, "shards": 3, "recipeChance": 0.2 },
+  "reward": { "reputation": 10, "shards": 3, "dust": 20, "recipeChance": 0.2 },
   "residents": [
     { "id": "tess", "name": { "ru": "Травница Тесс", "en": "Tess the Herbalist" }, "guild": "gardeners" },
     { "id": "orm", "name": { "ru": "Алхимик Орм", "en": "Orm the Alchemist" }, "guild": "alchemists" },
@@ -20,13 +20,13 @@
     { "id": "orm_vigor", "resident": "orm", "recipe": "vigor", "min": 1, "max": 1, "text": { "ru": "Свари Зелье бодрости: {0} шт.", "en": "Brew a Potion of Vigor: {0}" } },
     { "id": "bryn_ruin", "resident": "bryn", "item": "ruin_shard", "biome": "sand_ruins", "min": 2, "max": 4, "text": { "ru": "Осколки руин с песков: {0} шт.", "en": "Ruin shards from the sands: {0}" } },
     { "id": "bryn_ice", "resident": "bryn", "item": "ice_crystal", "biome": "ice_peak", "min": 2, "max": 4, "text": { "ru": "Ледяные кристаллы с пика: {0} шт.", "en": "Ice crystals from the peak: {0}" } },
-    { "id": "bryn_ember", "resident": "bryn", "item": "ore_ember", "biome": "volcanic_forge", "min": 2, "max": 4, "text": { "ru": "Тлеющая руда из кузни: {0} шт.", "en": "Ember ore from the forge: {0}" } },
+    { "id": "bryn_ember", "resident": "bryn", "item": "ember_coal", "biome": "volcanic_forge", "min": 2, "max": 4, "text": { "ru": "Тлеющий уголь из кузни: {0} шт.", "en": "Ember coal from the forge: {0}" } },
     { "id": "bryn_feather", "resident": "bryn", "item": "sky_feather", "biome": "sky_islands", "min": 2, "max": 4, "text": { "ru": "Небесные перья: {0} шт.", "en": "Sky feathers: {0}" } }
   ],
   "gifts": {
     "perDay": 5,
     "maxAmount": 10,
     "inbox": 30,
-    "items": ["herb_knockbloom", "herb_windwort", "herb_clickweed", "herb_hushbell", "herb_stormfern", "herb_moonmoss", "ruin_shard", "ice_crystal", "ore_ember", "sky_feather"]
+    "items": ["herb_knockbloom", "herb_windwort", "herb_clickweed", "herb_hushbell", "herb_stormfern", "herb_moonmoss", "ruin_shard", "ice_crystal", "ember_coal", "sky_feather"]
   }
 }

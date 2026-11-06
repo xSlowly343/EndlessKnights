@@ -88,6 +88,7 @@ namespace Game.Core.Sim
             var guild = request.Resident.Guild;
             State.Reputation[guild] = ReputationOf(guild) + _rules.Reputation;
             _state.Drops.Shards += _rules.Shards;
+            _state.Drops.Dust += _rules.Dust;
             if (_state.Rng.NextDouble() < _rules.RecipeChance)
                 _alchemy.Teach();
             _events.Add(GameEvent.ForStage(GameEventKind.OrderDone, _state.Tick, index));

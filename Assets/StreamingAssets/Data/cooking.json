@@ -12,7 +12,7 @@
     { "id": "eel_skewers", "name": { "ru": "Угорь на углях", "en": "Grilled Eel" }, "ingredients": ["fish_ruins_sandeel", "fish_ruins_sandeel", "herb_knockbloom"], "chops": 60, "plates": 3, "hours": 3, "modifiers": [{ "stat": "gemExperience", "kind": "increased", "value": 0.05 }] },
     { "id": "frost_crucian", "name": { "ru": "Карась в инее", "en": "Frosted Crucian" }, "ingredients": ["fish_ice_crucian", "fish_ice_crucian", "ice_crystal"], "chops": 70, "plates": 4, "hours": 4, "modifiers": [{ "stat": "focusGain", "kind": "increased", "value": 0.05 }] },
     { "id": "char_feast", "name": { "ru": "Голец по-зимнему", "en": "Winter Char" }, "ingredients": ["fish_ice_char", "herb_hushbell", "herb_hushbell"], "chops": 70, "plates": 4, "hours": 3, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.05, "tags": ["Gold"] }] },
-    { "id": "ember_stew", "name": { "ru": "Тлеющее рагу", "en": "Ember Stew" }, "ingredients": ["fish_forge_ember_minnow", "fish_forge_ember_minnow", "ore_ember"], "chops": 90, "plates": 5, "hours": 4, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.05 }] },
+    { "id": "ember_stew", "name": { "ru": "Тлеющее рагу", "en": "Ember Stew" }, "ingredients": ["fish_forge_ember_minnow", "fish_forge_ember_minnow", "ember_coal"], "chops": 90, "plates": 5, "hours": 4, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.05 }] },
     { "id": "cloud_salad", "name": { "ru": "Облачный салат", "en": "Cloud Salad" }, "ingredients": ["fish_sky_cloud_dace", "sky_feather", "herb_windwort"], "chops": 90, "plates": 5, "hours": 4, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.05, "tags": ["Gold"] }, { "stat": "gemExperience", "kind": "increased", "value": 0.03 }] }
   ],
   "favorites": {

@@ -70,6 +70,7 @@ namespace Game.Core.Content
         public double BottleChance { get; private set; }
         public double BottleReelMeters { get; private set; }
         public long BottleShards { get; private set; }
+        public double BottleDust { get; private set; }
         public double LegendChance { get; private set; }
         public double RiftChance { get; private set; }
         public IReadOnlyList<FishingSpot> Spots { get; private set; } = Array.Empty<FishingSpot>();
@@ -148,6 +149,7 @@ namespace Game.Core.Content
                 BottleChance = bottle.Field("chance").AsNumber(0, 1),
                 BottleReelMeters = bottle.Field("reelMeters").AsNumber(0.1, 1000),
                 BottleShards = bottle.Field("shards").AsLong(0, 1_000_000),
+                BottleDust = bottle.Field("dust").AsNumber(0, 1_000_000),
                 LegendChance = root.Field("legendChance").AsNumber(0, 1),
                 RiftChance = root.Field("riftChance").AsNumber(0, 1),
                 Spots = spots,

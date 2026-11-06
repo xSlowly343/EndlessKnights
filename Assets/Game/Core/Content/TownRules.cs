@@ -57,6 +57,7 @@ namespace Game.Core.Content
         public int OrdersKept { get; private set; }
         public long Reputation { get; private set; }
         public long Shards { get; private set; }
+        public double Dust { get; private set; }
         public double RecipeChance { get; private set; }
         public IReadOnlyList<TownResident> Residents { get; private set; } = Array.Empty<TownResident>();
         public IReadOnlyList<TownRequest> Requests { get; private set; } = Array.Empty<TownRequest>();
@@ -139,6 +140,7 @@ namespace Game.Core.Content
                 OrdersKept = orders.Field("keep").AsInt(1, 50),
                 Reputation = reward.Field("reputation").AsLong(0, 1_000_000),
                 Shards = reward.Field("shards").AsLong(0, 1_000_000),
+                Dust = reward.Field("dust").AsNumber(0, 1_000_000),
                 RecipeChance = reward.Field("recipeChance").AsNumber(0, 1),
                 Residents = residentList,
                 Requests = requests,

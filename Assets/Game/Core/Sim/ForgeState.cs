@@ -7,8 +7,15 @@ namespace Game.Core.Sim
         Gear
     }
 
+    public enum ForgeWork
+    {
+        Temper,
+        Hone
+    }
+
     public sealed class ForgeState
     {
+        public ForgeWork Work { get; set; }
         public ForgeTarget Target { get; set; }
         public GearSlot Slot { get; set; }
         public double Hammers { get; set; }

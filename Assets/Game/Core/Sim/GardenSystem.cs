@@ -178,7 +178,7 @@ namespace Game.Core.Sim
                     continue;
                 foreach (var mutation in _rules.Mutations)
                 {
-                    if (!mutation.Matches(plant, State.Beds[neighbor].Plant) || _state.Rng.NextDouble() >= mutation.Chance)
+                    if (!mutation.Matches(plant, State.Beds[neighbor].Plant) || _state.Rng.NextDouble() >= mutation.Chance + _state.Museum.Perk(MuseumPerk.MutationChance))
                         continue;
                     var child = _rules.Plant(mutation.Child)!;
                     _camp.Add(child.Seed, 1);

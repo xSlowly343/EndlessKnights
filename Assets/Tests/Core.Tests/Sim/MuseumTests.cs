@@ -37,7 +37,7 @@ namespace Game.Core.Tests.Sim
                 loop.Tick();
             Assert.That(loop.Museum.Complete("fish_forge"), Is.True, "the museum notices within a second");
             Assert.That(loop.Events.CountOf(GameEventKind.CollectionCompleted), Is.EqualTo(1));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / before, Is.EqualTo(1.005).Within(0.002));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / before, Is.EqualTo(1.01).Within(0.003));
             loop.Museum.Check();
             Assert.That(loop.Events.CountOf(GameEventKind.CollectionCompleted), Is.EqualTo(1));
         }
@@ -64,10 +64,9 @@ namespace Game.Core.Tests.Sim
             var total = Rules.Collections.SelectMany(c => c.Bonus).Sum(m => m.Value);
             Assert.That(total, Is.LessThanOrEqualTo(Rules.MaxTotal + 1e-12));
             Assert.That(Rules.Collections.SelectMany(c => c.Bonus).All(m => m.Value <= Rules.MaxEach), Is.True);
-            var greedy = Content.TestData.ReadGameDataFile(MuseumRules.FileName).Replace("\"value\": 0.005 }] },\n    { \"id\": \"fish_ice\"", "\"value\": 0.02 }] },\n    { \"id\": \"fish_ice\"");
-            Assert.That(greedy, Is.Not.EqualTo(Content.TestData.ReadGameDataFile(MuseumRules.FileName)));
+            var greedy = Content.TestData.ReadGameDataFile(MuseumRules.FileName).Replace("\"maxTotal\": 0.15", "\"maxTotal\": 0.1");
             var error = Assert.Throws<ContentException>(() => Load(greedy))!;
-            Assert.That(error.Message, Does.Contain("all collections give at most 0.05"));
+            Assert.That(error.Message, Does.Contain("all collections give at most 0.1"));
         }
 
         [Test]
@@ -87,6 +86,29 @@ namespace Game.Core.Tests.Sim
             loop.Museum.Remove("fish_ice");
             Assert.That(loop.Museum.Place("legends"), Is.EqualTo(MuseumResult.Done));
             Assert.That(MuseumView.Collections(loop.Museum).Count(c => c.OnShelf), Is.EqualTo(Rules.Shelf));
+        }
+
+        [Test]
+        public void CollectionsAlsoGivePeacefulChances()
+        {
+            var loop = TestWorld.Loop();
+            Assert.That(loop.State.Museum.Perk(MuseumPerk.BiteFaster), Is.Zero);
+            Catch(loop, Rules.Collection("fish_hills")!.Items.ToArray());
+            foreach (var plant in Rules.Collection("herbarium")!.Items)
+                loop.State.Garden.Album.Add(plant);
+            loop.Museum.Check();
+            Assert.That(loop.State.Museum.Perk(MuseumPerk.BiteFaster), Is.EqualTo(0.1));
+            Assert.That(loop.State.Museum.Perk(MuseumPerk.MutationChance), Is.EqualTo(0.05));
+            loop.State.RecordStage = 51;
+            loop.Camp.SetGuilds(new[] { "fishers" });
+            loop.Peaceful.SetMode(PeacefulMode.Camp);
+            loop.Peaceful.SetActivity(FishingSystem.Activity);
+            loop.Tick();
+            loop.Tick();
+            Assert.That(loop.State.Fishing.Timer, Is.LessThanOrEqualTo(TestWorld.Data.Fishing.BiteMaxSeconds * 0.9 + 1e-9), "the float bites sooner");
+            var copy = GameStateJson.Read(new ContentNode(GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            TestWorld.Loop(new FakeInputSource(), copy);
+            Assert.That(copy.Museum.Perk(MuseumPerk.BiteFaster), Is.EqualTo(0.1), "perks come back after loading");
         }
 
         [Test]
@@ -126,7 +148,8 @@ namespace Game.Core.Tests.Sim
 
         [TestCase(@"""kind"": ""finds""", @"""kind"": ""stamps""", "unknown collection kind 'stamps'")]
         [TestCase(@"""fish_hills_roach"", ""fish_hills_carp""", @"""fish_hills_goldfish"", ""fish_hills_carp""", "'fish_hills_goldfish' is not a known fish entry")]
-        [TestCase(@"""maxTotal"": 0.05", @"""maxTotal"": 0.1", "0.1")]
+        [TestCase(@"""maxTotal"": 0.15", @"""maxTotal"": 0.2", "0.2")]
+        [TestCase(@"""perk"": ""biteFaster""", @"""perk"": ""luck""", "unknown museum perk 'luck'")]
         public void BrokenMuseumIsReported(string from, string to, string message)
         {
             var json = Content.TestData.ReadGameDataFile(MuseumRules.FileName).Replace(from, to);

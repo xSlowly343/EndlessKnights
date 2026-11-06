@@ -102,7 +102,7 @@ namespace Game.Core.Save
                 ("fishing", WriteFishing(state.Fishing)),
                 ("cooking", WriteCooking(state.Cooking)),
                 ("museum", WriteMuseum(state.Museum)),
-                ("forge", Object(("target", JsonValue.Of(state.Forge.Target.ToString())), ("slot", JsonValue.Of(state.Forge.Slot.ToString())), ("hammers", JsonValue.Of(state.Forge.Hammers)),
+                ("forge", Object(("work", JsonValue.Of(state.Forge.Work.ToString())), ("target", JsonValue.Of(state.Forge.Target.ToString())), ("slot", JsonValue.Of(state.Forge.Slot.ToString())), ("hammers", JsonValue.Of(state.Forge.Hammers)),
                     ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)), ("salvageOre", JsonValue.Of(state.Forge.SalvageOre)))),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
@@ -306,6 +306,7 @@ namespace Game.Core.Save
             if (node.HasField("forge"))
             {
                 var forge = node.Field("forge");
+                state.Forge.Work = forge.HasField("work") && System.Enum.TryParse<ForgeWork>(forge.Field("work").AsString(), out var work) ? work : ForgeWork.Temper;
                 state.Forge.Target = System.Enum.TryParse<ForgeTarget>(forge.Field("target").AsString(), out var target) ? target : ForgeTarget.None;
                 state.Forge.Slot = System.Enum.TryParse<GearSlot>(forge.Field("slot").AsString(), out var slot) ? slot : GearSlot.Helmet;
                 state.Forge.Hammers = forge.Field("hammers").AsNumber(0, double.MaxValue);
@@ -1296,14 +1297,14 @@ namespace Game.Core.Save
         }
 
         private static JsonValue WriteForge(ForgeMark forge) =>
-            forge.Empty ? JsonValue.Null() : Object(("temper", JsonValue.Of(forge.Temper)), ("brand", OptionalText(forge.Brand)), ("slain", WriteIdList(forge.Slain)));
+            forge.Empty ? JsonValue.Null() : Object(("temper", JsonValue.Of(forge.Temper)), ("hone", JsonValue.Of(forge.Hone)), ("brand", OptionalText(forge.Brand)), ("slain", WriteIdList(forge.Slain)));
 
         private static ForgeMark? ReadForge(ContentNode node)
         {
             if (!node.HasField("forge") || node.Field("forge").IsNull)
                 return null;
             var field = node.Field("forge");
-            var forge = new ForgeMark { Temper = field.Field("temper").AsNumber(0, 1), Brand = ReadOptionalText(field, "brand") };
+            var forge = new ForgeMark { Temper = field.Field("temper").AsNumber(0, 1), Hone = field.HasField("hone") ? field.Field("hone").AsNumber(0, 1) : 0, Brand = ReadOptionalText(field, "brand") };
             foreach (var item in field.Field("slain").Items())
                 forge.Slain.Add(item.AsString());
             return forge;

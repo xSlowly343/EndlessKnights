@@ -180,13 +180,13 @@ namespace Game.Core.Sim
                 expedition.Items = new long[place.Items.Count];
             for (var i = 0; i < place.Items.Count; i++)
             {
-                var count = (long)System.Math.Floor(place.Items[i].PerHour * hours * trait.ItemMultiplier);
+                var count = (long)System.Math.Floor(place.Items[i].PerHour * hours * trait.ItemMultiplier * (1 + _state.Museum.Perk(MuseumPerk.ExpeditionLoot)));
                 expedition.Items[i] = count;
                 _camp.Add(place.Items[i].Item, count);
             }
             expedition.Shards = (long)System.Math.Floor(place.ShardsPerHour * hours * trait.ShardsMultiplier);
             _state.Drops.Shards += expedition.Shards;
-            var chance = place.RareChancePerHour * hours * trait.RareMultiplier * (expedition.Waited ? _rules.WaitRareMultiplier : 1);
+            var chance = place.RareChancePerHour * hours * trait.RareMultiplier * (1 + _state.Museum.Perk(MuseumPerk.RareFind)) * (expedition.Waited ? _rules.WaitRareMultiplier : 1);
             if (_state.Rng.NextDouble() < chance)
             {
                 expedition.Rare = place.Rare;

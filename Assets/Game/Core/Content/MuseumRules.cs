@@ -13,10 +13,37 @@ namespace Game.Core.Content
         Finds
     }
 
+    public enum MuseumPerk
+    {
+        BiteFaster,
+        BottleChance,
+        ReelEasier,
+        TemperStep,
+        RareFind,
+        LegendChance,
+        MutationChance,
+        DoubleMeal,
+        FinePotion,
+        ExpeditionLoot
+    }
+
+    public readonly struct PerkValue
+    {
+        public PerkValue(MuseumPerk perk, double value)
+        {
+            Perk = perk;
+            Value = value;
+        }
+
+        public MuseumPerk Perk { get; }
+        public double Value { get; }
+    }
+
     public sealed class CollectionDef
     {
-        public CollectionDef(string id, string nameRu, string nameEn, CollectionKind kind, IReadOnlyList<string> items, string trophy, string titleRu, string titleEn, IReadOnlyList<Modifier> bonus)
+        public CollectionDef(string id, string nameRu, string nameEn, CollectionKind kind, IReadOnlyList<string> items, string trophy, string titleRu, string titleEn, IReadOnlyList<Modifier> bonus, IReadOnlyList<PerkValue> perks)
         {
+            Perks = perks;
             Id = id;
             NameRu = nameRu;
             NameEn = nameEn;
@@ -38,6 +65,7 @@ namespace Game.Core.Content
         public string TitleEn { get; }
         public bool HasTitle => TitleRu.Length > 0;
         public IReadOnlyList<Modifier> Bonus { get; }
+        public IReadOnlyList<PerkValue> Perks { get; }
     }
 
     public sealed class MuseumRules
@@ -53,6 +81,23 @@ namespace Game.Core.Content
             ["recipes"] = CollectionKind.Recipes,
             ["finds"] = CollectionKind.Finds
         };
+
+        private static readonly IReadOnlyDictionary<string, MuseumPerk> PerkNames = new Dictionary<string, MuseumPerk>(StringComparer.Ordinal)
+        {
+            ["biteFaster"] = MuseumPerk.BiteFaster,
+            ["bottleChance"] = MuseumPerk.BottleChance,
+            ["reelEasier"] = MuseumPerk.ReelEasier,
+            ["temperStep"] = MuseumPerk.TemperStep,
+            ["rareFind"] = MuseumPerk.RareFind,
+            ["legendChance"] = MuseumPerk.LegendChance,
+            ["mutationChance"] = MuseumPerk.MutationChance,
+            ["doubleMeal"] = MuseumPerk.DoubleMeal,
+            ["finePotion"] = MuseumPerk.FinePotion,
+            ["expeditionLoot"] = MuseumPerk.ExpeditionLoot
+        };
+
+        public const double MaxPerk = 0.5;
+        public static int PerkCount => PerkNames.Count;
 
         public double MaxEach { get; private set; }
         public double MaxTotal { get; private set; }
@@ -77,8 +122,8 @@ namespace Game.Core.Content
                 throw root.Field("version").Error($"version {version} is not supported, expected {SupportedVersion}");
             var rules = new MuseumRules
             {
-                MaxEach = root.Field("maxEach").AsNumber(0, 0.02),
-                MaxTotal = root.Field("maxTotal").AsNumber(0, 0.05),
+                MaxEach = root.Field("maxEach").AsNumber(0, 0.03),
+                MaxTotal = root.Field("maxTotal").AsNumber(0, 0.15),
                 Shelf = root.Field("shelf").AsInt(1, 100)
             };
             var collections = new List<CollectionDef>();
@@ -111,10 +156,21 @@ namespace Game.Core.Content
                 }
                 if (total > rules.MaxTotal + 1e-12)
                     throw node.Field("bonus").Error($"all collections give at most {rules.MaxTotal} together, '{id}' brings it to {total}");
+                var perks = new List<PerkValue>();
+                if (node.HasField("perks"))
+                {
+                    foreach (var perkNode in node.Field("perks").Items())
+                    {
+                        var perkName = perkNode.Field("perk").AsString();
+                        if (!PerkNames.TryGetValue(perkName, out var perk))
+                            throw perkNode.Field("perk").Error($"unknown museum perk '{perkName}'");
+                        perks.Add(new PerkValue(perk, perkNode.Field("value").AsNumber(0, MaxPerk)));
+                    }
+                }
                 var name = node.Field("name");
                 var hasTitle = node.HasField("title");
                 collections.Add(new CollectionDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), kind, items, node.Field("trophy").AsString(),
-                    hasTitle ? node.Field("title").Field("ru").AsString() : string.Empty, hasTitle ? node.Field("title").Field("en").AsString() : string.Empty, bonus));
+                    hasTitle ? node.Field("title").Field("ru").AsString() : string.Empty, hasTitle ? node.Field("title").Field("en").AsString() : string.Empty, bonus, perks));
             }
             rules.Collections = collections;
             return rules;

@@ -73,6 +73,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Town.Orders.Count, Is.EqualTo(Rules.OrdersPerDay - 1));
             Assert.That(loop.Town.ReputationOf(request.Resident.Guild), Is.EqualTo(Rules.Reputation));
             Assert.That(loop.State.Drops.Shards - shards, Is.EqualTo(Rules.Shards));
+            Assert.That(loop.State.Drops.Dust, Is.EqualTo(Rules.Dust), "orders are a second source of dust");
             Assert.That(loop.Events.CountOf(GameEventKind.OrderDone), Is.EqualTo(1));
         }
 

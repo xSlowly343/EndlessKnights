@@ -4,7 +4,7 @@
   "biteSeconds": { "min": 20, "max": 90 },
   "biteWindowSeconds": 5,
   "fightSeconds": 20,
-  "bottle": { "chance": 0.05, "reelMeters": 1, "shards": 5 },
+  "bottle": { "chance": 0.05, "reelMeters": 1, "shards": 5, "dust": 10 },
   "legendChance": 0.05,
   "riftChance": 0.25,
   "spots": [
