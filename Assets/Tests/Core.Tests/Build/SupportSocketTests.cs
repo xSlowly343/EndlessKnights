@@ -135,7 +135,7 @@ namespace Game.Core.Tests.Build
 
             loop.State.HeroLevel = 100;
             loop.Book.OpenSupports(TestWorld.Data.Gems.All, open);
-            Assert.That(open.Count, Is.EqualTo(30));
+            Assert.That(open.Count, Is.EqualTo(31));
             Assert.That(open.Where(gem => gem.ForSkill != null), Is.Empty);
         }
 

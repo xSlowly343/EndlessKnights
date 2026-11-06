@@ -634,6 +634,18 @@
       "effect": {"type": "lines", "party": [{"to": "allies", "stat": "auraEffect", "kind": "increased", "value": 0.15, "after": {"signal": "skillCast", "seconds": 5}}]}
     },
     {
+      "id": "piercing",
+      "kind": "support",
+      "fits": ["strike"],
+      "damageMult": 0.9,
+      "manaMult": 1.1,
+      "level": 32,
+      "color": "green",
+      "name": {"ru": "Сквозная", "en": "Piercing"},
+      "text": {"ru": "10% урона скилла задевает двух следующих врагов очереди (растёт с уровнем гема)", "en": "10% of the skill's damage hits the next two enemies in the queue (grows with gem level)"},
+      "effect": {"type": "piercing", "share": 0.1, "targets": 2}
+    },
+    {
       "id": "carrier_boss",
       "kind": "support",
       "fits": ["strike", "aura"],

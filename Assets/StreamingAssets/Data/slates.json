@@ -941,7 +941,8 @@
           }
         ]
       }
-    }
+    },
+    {"id": "pierce", "lines": [{"id": "pierce_share", "modifiers": [{"stat": "pierceShare", "kind": "flat", "value": 0.02}]}, {"id": "pierce_splash", "modifiers": [{"stat": "splashShare", "kind": "flat", "value": 0.03}]}, {"id": "pierce_boss", "modifiers": [{"stat": "bossPierce", "kind": "flat", "value": 0.02}]}, {"id": "pierce_carry", "modifiers": [{"stat": "stageCarry", "kind": "flat", "value": 0.03}]}], "pattern": {"id": "pierce_pattern", "modifiers": [{"stat": "splashTargets", "kind": "flat", "value": 1}]}, "rule": {"id": "pierce_rule", "modifiers": [{"stat": "enemySkip", "kind": "flat", "value": 1}]}}
   ],
   "classLines": {
     "runedancer": [

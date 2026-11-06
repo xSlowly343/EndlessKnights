@@ -320,3 +320,7 @@
 - [гайд новичка] Вики r/TapTitans2, гайд для новичков (зеркало): https://pol1.lr.ggtyler.dev/r/TapTitans2/wiki/newplayerguide — Book of Shadows до 30-го артефакта, Boots of Hermes и Portar, Zakynthos Coin для неактивных билдов
 - [как играть] Вики r/TapTitans2, How to play (зеркало): https://reddit.birdcat.cafe/r/TapTitans2/wiki/how-to-play — артефакты по источникам золота (Heroic Shield, Neko Sculpture, Chest of Contentment, Coins of Ebizu, Invader's Gjalahorn)
 - [тир-лист] GamesKeys, тир-лист артефактов TT2: https://gameskeys.net/tap-titans-2-artifacts-tier-list/ — английские названия 38 артефактов (без эффектов)
+
+## Артефакты пробития (06.11.2026, `pierce-sets.md` §11.1)
+По одному в каждую группу, тип «темп», с потолком уровня: «Сквозная стрела» (группа 1, +0,5% доли перебора за уровень, до 30), «Девятый вал» (2, +1% всплеска, до 25), «Плащ Привратника» (3, +0,1% шанса пропуска этапов после босса, до 30), «Рог осады» (4, +1% пробития босса, до 20). В группе теперь 35 артефактов: 4 урона, 3 экономики, 3 темпа, 2 меты, 5 поздних и классовые.
+
