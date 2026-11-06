@@ -144,6 +144,82 @@ namespace Game.Core.Stats
             return totals;
         }
 
+        public double ConditionalFactor(StatId stat, double baseValue, StatTags tags, IReadOnlyList<double> conditionShares)
+        {
+            var flat = 0.0;
+            var flatExpected = 0.0;
+            var increased = 0.0;
+            var increasedExpected = 0.0;
+            var treeIncreased = 0.0;
+            var treeExpected = 0.0;
+            var more = 1.0;
+            foreach (var modifier in _modifiers)
+            {
+                if (!modifier.AppliesTo(stat, tags))
+                    continue;
+                var always = modifier.When == ModifierCondition.Always;
+                var weight = always ? 1 : ShareOf(conditionShares, modifier.When);
+                var own = always ? modifier.Value : 0;
+                switch (modifier.Kind)
+                {
+                    case ModifierKind.Flat:
+                        flat += own;
+                        flatExpected += modifier.Value * weight;
+                        break;
+                    case ModifierKind.Increased when modifier.Pool == ModifierPool.Tree:
+                        treeIncreased += own;
+                        treeExpected += modifier.Value * weight;
+                        break;
+                    case ModifierKind.Increased:
+                        increased += own;
+                        increasedExpected += modifier.Value * weight;
+                        break;
+                    case ModifierKind.More when !always:
+                        more *= 1.0 + modifier.Value * weight;
+                        break;
+                }
+            }
+            return Ratio(baseValue + flatExpected, baseValue + flat) * Ratio(1 + increasedExpected, 1 + increased) * Ratio(1 + treeExpected, 1 + treeIncreased) * more;
+        }
+
+        public double ExpectedValue(StatId stat, double baseValue, StatTags tags, IReadOnlyList<double> conditionShares)
+        {
+            var flat = 0.0;
+            var increased = 0.0;
+            var treeIncreased = 0.0;
+            var more = 1.0;
+            foreach (var modifier in _modifiers)
+            {
+                if (!modifier.AppliesTo(stat, tags))
+                    continue;
+                var weight = modifier.When == ModifierCondition.Always ? 1 : ShareOf(conditionShares, modifier.When);
+                switch (modifier.Kind)
+                {
+                    case ModifierKind.Flat:
+                        flat += modifier.Value * weight;
+                        break;
+                    case ModifierKind.Increased when modifier.Pool == ModifierPool.Tree:
+                        treeIncreased += modifier.Value * weight;
+                        break;
+                    case ModifierKind.Increased:
+                        increased += modifier.Value * weight;
+                        break;
+                    case ModifierKind.More:
+                        more *= 1.0 + modifier.Value * weight;
+                        break;
+                }
+            }
+            return (baseValue + flat) * (1.0 + increased) * (1.0 + treeIncreased) * more;
+        }
+
+        private static double Ratio(double expected, double plain) => plain > 0 ? System.Math.Max(0, expected) / plain : 1;
+
+        private static double ShareOf(IReadOnlyList<double> shares, ModifierCondition condition)
+        {
+            var index = (int)condition;
+            return index < shares.Count ? System.Math.Min(1, System.Math.Max(0, shares[index])) : 0;
+        }
+
         private void Invalidate() => _cache.Clear();
 
         public readonly struct Totals

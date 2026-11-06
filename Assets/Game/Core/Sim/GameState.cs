@@ -89,6 +89,7 @@ namespace Game.Core.Sim
         public BestiaryState Bestiary { get; } = new BestiaryState();
         public CosmeticState Cosmetics { get; } = new CosmeticState();
         public SeasonPassState SeasonPass { get; } = new SeasonPassState();
+        public double[] ConditionShares { get; } = new double[64];
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();

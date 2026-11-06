@@ -31,6 +31,7 @@ namespace Game.Core.Content
         public double AfterFastKillSeconds { get; private set; } = 3;
         public double AfterGestureSeconds { get; private set; } = 3;
         public double MouseMovingSeconds { get; private set; } = 0.5;
+        public double ShareWindowSeconds { get; private set; } = 3600;
 
         public static ConditionRules Read(ContentNode node)
         {
@@ -54,7 +55,8 @@ namespace Game.Core.Content
                 BossLowHpShare = node.HasField("bossLowHp") ? node.Field("bossLowHp").AsNumber(0, 1) : 0.3,
                 AfterFastKillSeconds = node.HasField("afterFastKillSeconds") ? node.Field("afterFastKillSeconds").AsNumber(0, 600) : 3,
                 AfterGestureSeconds = node.HasField("afterGestureSeconds") ? node.Field("afterGestureSeconds").AsNumber(0, 600) : 3,
-                MouseMovingSeconds = node.HasField("mouseMovingSeconds") ? node.Field("mouseMovingSeconds").AsNumber(0.1, 60) : 0.5
+                MouseMovingSeconds = node.HasField("mouseMovingSeconds") ? node.Field("mouseMovingSeconds").AsNumber(0.1, 60) : 0.5,
+                ShareWindowSeconds = node.HasField("shareWindowMinutes") ? node.Field("shareWindowMinutes").AsNumber(1, 1440) * 60 : 3600
             };
         }
     }

@@ -20,7 +20,10 @@ namespace Game.Core.Sim
                 _normalAverages[biome] = Averages(data.Enemies.Normals(biome));
         }
 
-        public BigNumber OfflineDps(GameState state) => state.RecentDps * System.Math.Min(1, _data.Combat.Offline.DpsShare + System.Math.Max(0, _hero.Value(CombatStats.OfflineDpsShare, 0)));
+        public BigNumber OfflineDps(GameState state) => state.RecentDps * System.Math.Min(1, _data.Combat.Offline.DpsShare + System.Math.Max(0, Expected(state, CombatStats.OfflineDpsShare, 0)));
+
+        private double Expected(GameState state, StatId stat, double baseValue, StatTags tags = StatTags.None) =>
+            _hero.ExpectedValue(stat, baseValue, tags, state.ConditionShares);
 
         public OfflineResult Simulate(GameState state, double seconds) => Simulate(state, seconds, OfflineDps(state), fightGuardians: false);
 
@@ -28,7 +31,7 @@ namespace Game.Core.Sim
         {
             var stages = _data.Stages;
             _state = state;
-            var capSeconds = _data.Combat.Offline.CapSeconds + _hero.Value(CombatStats.OfflineCapHours, 0) * 3600;
+            var capSeconds = _data.Combat.Offline.CapSeconds + Expected(state, CombatStats.OfflineCapHours, 0) * 3600;
             var time = System.Math.Max(0, System.Math.Min(seconds, capSeconds));
             var used = time;
             var stage = state.Stage;
@@ -38,7 +41,11 @@ namespace Game.Core.Sim
             var stuckAtBoss = false;
             var totalKills = 0L;
             var gold = BigNumber.Zero;
-            var goldMultiplier = _hero.Compute(CombatStats.Gold, BigNumber.One, StatTags.Gold) * _hero.Value(CombatStats.OfflineGold, 1, StatTags.Gold);
+            var conditions = _hero.Conditions;
+            _hero.SetConditions(0);
+            var goldMultiplier = _hero.Compute(CombatStats.Gold, BigNumber.One, StatTags.Gold) * _hero.ConditionalFactor(CombatStats.Gold, 1, StatTags.Gold, state.ConditionShares)
+                * Expected(state, CombatStats.OfflineGold, 1, StatTags.Gold);
+            _hero.SetConditions(conditions);
 
             if (dps.Sign <= 0 || time <= 0 || state.Rift.Inside || state.Dungeons.Inside)
                 return new OfflineResult(0, 0, BigNumber.Zero, stage, stage, kills, farming, false, false, seconds);
@@ -118,7 +125,7 @@ namespace Game.Core.Sim
                 state.SpawnEnemy(null, EnemyType.Normal, BigNumber.Zero);
         }
 
-        private double BossTimer => _data.Stages.BossTimer(_hero.Value(CombatStats.BossTimerSeconds, 0));
+        private double BossTimer => _data.Stages.BossTimer(_state == null ? _hero.Value(CombatStats.BossTimerSeconds, 0) : Expected(_state, CombatStats.BossTimerSeconds, 0));
 
         private long FarmKills(double time, double killSeconds, bool retriesBoss)
         {

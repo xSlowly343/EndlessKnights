@@ -8,6 +8,7 @@ using Game.Core.Content.Slates;
 using Game.Core.Content.Tree;
 using Game.Core.Content.Weapons;
 using Game.Core.Math;
+using Game.Core.Stats;
 using Game.Core.Sim;
 using Game.Core.Sim.Rift;
 
@@ -43,7 +44,13 @@ namespace Game.Core.Save
                     ("macroRhythmTicks", JsonValue.Of(state.MacroRhythmTicks)),
                     ("combo", JsonValue.Of(state.Combo)),
                     ("strikeHits", JsonValue.Of(state.StrikeHits)),
-                    ("comboIdleTicks", JsonValue.Of(state.ComboIdleTicks)))),
+                    ("comboIdleTicks", JsonValue.Of(state.ComboIdleTicks)),
+                    ("moment", Object(
+                        ("mouseIdleTicks", state.MouseIdleTicks < MomentTicksLimit ? JsonValue.Of(state.MouseIdleTicks) : JsonValue.Null()),
+                        ("inputStreakTicks", JsonValue.Of(state.InputStreakTicks)),
+                        ("afterFastKillTicks", JsonValue.Of(state.AfterFastKillTicks)),
+                        ("afterCircleTicks", JsonValue.Of(state.AfterCircleTicks)),
+                        ("afterFlickTicks", JsonValue.Of(state.AfterFlickTicks)))))),
                 ("stage", Object(
                     ("current", JsonValue.Of(state.Stage)),
                     ("highest", JsonValue.Of(state.HighestStage)),
@@ -64,7 +71,8 @@ namespace Game.Core.Save
                     ("maxHp", SaveValues.Of(state.EnemyMaxHp)),
                     ("wanderer", JsonValue.Of(state.WandererBoss)),
                     ("goldenTicks", JsonValue.Of(state.GoldenTicks)),
-                    ("goldenNormalHp", SaveValues.Of(state.GoldenNormalHp)))),
+                    ("goldenNormalHp", SaveValues.Of(state.GoldenNormalHp)),
+                    ("poison", JsonValue.Of(state.PoisonStacks)))),
                 ("gold", Object(
                     ("wallet", SaveValues.Of(state.Gold)),
                     ("runEarned", SaveValues.Of(state.RunGoldEarned)))),
@@ -83,6 +91,7 @@ namespace Game.Core.Save
                 ("cosmetics", WriteCosmetics(state.Cosmetics)),
                 ("seasonPass", WriteSeasonPass(state.SeasonPass)),
                 ("awakening", WriteAwakening(state.Awakening)),
+                ("conditionShares", WriteConditionShares(state.ConditionShares)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -167,6 +176,11 @@ namespace Game.Core.Save
                 Combo = hero.Field("combo").AsInt(0),
                 StrikeHits = hero.Field("strikeHits").AsLong(0),
                 ComboIdleTicks = hero.Field("comboIdleTicks").AsLong(0),
+                MouseIdleTicks = hero.HasField("moment") && !hero.Field("moment").Field("mouseIdleTicks").IsNull ? hero.Field("moment").Field("mouseIdleTicks").AsLong(0) : long.MaxValue / 2,
+                InputStreakTicks = hero.HasField("moment") ? hero.Field("moment").Field("inputStreakTicks").AsLong(0) : 0,
+                AfterFastKillTicks = hero.HasField("moment") ? hero.Field("moment").Field("afterFastKillTicks").AsInt(0) : 0,
+                AfterCircleTicks = hero.HasField("moment") ? hero.Field("moment").Field("afterCircleTicks").AsInt(0) : 0,
+                AfterFlickTicks = hero.HasField("moment") ? hero.Field("moment").Field("afterFlickTicks").AsInt(0) : 0,
                 Stage = stage.Field("current").AsLong(1),
                 HighestStage = stage.Field("highest").AsLong(1),
                 RecordStage = stage.Field("record").AsLong(1),
@@ -195,6 +209,7 @@ namespace Game.Core.Save
             state.SpawnEnemy(ReadEnemyDef(enemy.Field("id"), enemies), SaveValues.ReadEnum(enemy.Field("type"), EnemyTypes),
                 SaveValues.ReadBigNumber(enemy.Field("maxHp")));
             state.EnemyHp = SaveValues.ReadBigNumber(enemy.Field("hp"));
+            state.PoisonStacks = enemy.HasField("poison") ? enemy.Field("poison").AsNumber(0, 1e9) : 0;
             if (enemy.HasField("goldenTicks"))
             {
                 state.WandererBoss = enemy.Field("wanderer").AsBool();
@@ -257,6 +272,8 @@ namespace Game.Core.Save
                 ReadBestiary(node.Field("bestiary"), state.Bestiary);
             if (node.HasField("cosmetics"))
                 ReadCosmetics(node.Field("cosmetics"), state.Cosmetics);
+            if (node.HasField("conditionShares"))
+                ReadConditionShares(node.Field("conditionShares"), state.ConditionShares);
             if (node.HasField("awakening"))
                 ReadAwakening(node.Field("awakening"), state.Awakening);
             if (node.HasField("seasonPass"))
@@ -491,6 +508,27 @@ namespace Game.Core.Save
                 cosmetics.Owned.Add(item.AsString());
             foreach (var item in node.Field("equipped").Items())
                 cosmetics.Equipped[item.Field("key").AsString()] = item.Field("id").AsString();
+        }
+
+        private static JsonValue WriteConditionShares(double[] shares)
+        {
+            var items = new List<JsonValue>();
+            for (var i = 0; i < shares.Length; i++)
+            {
+                var condition = (ModifierCondition)i;
+                if (shares[i] > 0 && condition != ModifierCondition.Always && System.Enum.IsDefined(typeof(ModifierCondition), condition))
+                    items.Add(Object(("when", JsonValue.Of(ModifierConditions.Key(condition).Substring("when.".Length))), ("share", JsonValue.Of(shares[i]))));
+            }
+            return JsonValue.Array(items.ToArray());
+        }
+
+        private static void ReadConditionShares(ContentNode node, double[] shares)
+        {
+            foreach (var item in node.Items())
+            {
+                if (ModifierConditions.TryParse(item.Field("when").AsString(), out var condition) && (int)condition < shares.Length)
+                    shares[(int)condition] = item.Field("share").AsNumber(0, 1);
+            }
         }
 
         private static JsonValue WriteAwakening(AwakeningState awakening)
@@ -924,6 +962,8 @@ namespace Game.Core.Save
                 ("artifacts", JsonValue.Array(WriteArtifacts(rift.Artifacts))),
                 ("otherWorld", rift.OtherWorld == null ? JsonValue.Null() : WriteProgress(rift.OtherWorld)));
 
+        private const long MomentTicksLimit = 1_000_000_000_000;
+
         private static JsonValue OptionalText(string text) => text.Length == 0 ? JsonValue.Null() : JsonValue.Of(text);
 
         private static string ReadOptionalText(ContentNode node, string name) =>
@@ -1162,6 +1202,7 @@ namespace Game.Core.Save
                     ("cooldownTicks", JsonValue.Of(slot.CooldownTicks)),
                     ("activeTicks", JsonValue.Of(slot.ActiveTicks)),
                     ("hitsLeft", JsonValue.Of(slot.HitsLeft)),
+                    ("lastCastTick", JsonValue.Of(slot.LastCastTick)),
                     ("slot", JsonValue.Of(RoleName(slot.Role))),
                     ("supports", JsonValue.Array(WriteSupports(slot.Supports))));
             }
@@ -1249,6 +1290,7 @@ namespace Game.Core.Save
                     CooldownTicks = item.Field("cooldownTicks").AsInt(0),
                     ActiveTicks = item.Field("activeTicks").AsInt(0),
                     HitsLeft = item.Field("hitsLeft").AsInt(0),
+                    LastCastTick = item.HasField("lastCastTick") ? item.Field("lastCastTick").AsLong(-1) : -1,
                     Role = ReadRole(item, state.Skills.Count) ?? SkillLoadout.FreeRole(state.Skills, skill) ?? SkillSlotRole.Auto
                 };
                 ReadSupports(item, gems, slot.Supports);
