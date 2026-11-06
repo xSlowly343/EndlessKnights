@@ -60,6 +60,8 @@ namespace Game.Core.Sim
         {
             if (!_items.TryGetSet(setId, out var set))
                 return CraftResult.UnknownSet;
+            if (set.Event != null)
+                return CraftResult.NotCraftable;
             if (Unlocks?.IsOpen(Feature.SetCraft) == false)
                 return CraftResult.Locked;
             if (set.Rarity > _rules.CeilingAt(System.Math.Max(1, _state.RecordStage)))
@@ -96,23 +98,107 @@ namespace Game.Core.Sim
                 var weapon = CraftSetWeapon(set, weaponType);
                 if (weapon == null)
                     return CraftResult.WrongSlot;
-                _state.Drops.Ingots -= cost;
+                PayCraft(cost, false);
                 _weapons.Give(weapon);
                 _gear.NoteFound(set, ItemSlot.Weapon);
                 _state.Drops.ItemsFound++;
                 _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Craft, _state.Stage, weapon, null, false, 0)));
                 return CraftResult.Crafted;
             }
-            if (jewelry)
-                _state.Drops.Essence -= cost;
-            else
-                _state.Drops.Ingots -= cost;
+            PayCraft(cost, jewelry);
             var item = _items.RollSetPiece(set, slot, null, set.Rarity, BiomeNumber(System.Math.Max(1, _state.RecordStage)), _state.Drops.Rng, piece.SecondRing);
             _gear.NoteFound(item);
             _state.Drops.Gear.Add(item);
             _state.Drops.ItemsFound++;
             _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Craft, _state.Stage, null, item, false, 0)));
             return CraftResult.Crafted;
+        }
+
+        private void PayCraft(long cost, bool essence)
+        {
+            if (essence)
+                _state.Drops.Essence -= cost;
+            else
+                _state.Drops.Ingots -= cost;
+            _state.Drops.CraftSpent += cost;
+            _gear.Rebuild();
+        }
+
+        public bool UniqueCraftOpen => _gear.MasteryLevel >= _items.UniqueCraftMastery;
+
+        public long UniqueCraftCost(ItemSlot slot) =>
+            (long)System.Math.Ceiling(_items.UniqueCraftCost * (ItemCatalog.IsJewelry(slot) ? _items.JewelryCraftMultiplier : 1));
+
+        public CraftResult CraftUnique(string id)
+        {
+            if (Unlocks?.IsOpen(Feature.SetCraft) == false || !UniqueCraftOpen)
+                return CraftResult.MasteryTooLow;
+            if (!_state.UniquesFound.Contains(id))
+                return CraftResult.NotFound;
+            if (BagFull)
+                return CraftResult.BagFull;
+            var level = BiomeNumber(System.Math.Max(1, _state.RecordStage));
+            if (_items.TryGetUnique(id, out var gearUnique))
+            {
+                var jewelry = ItemCatalog.IsJewelry(gearUnique.Slot);
+                var cost = UniqueCraftCost(gearUnique.Slot);
+                if (jewelry ? _state.Drops.Essence < cost : _state.Drops.Ingots < cost)
+                    return jewelry ? CraftResult.NotEnoughEssence : CraftResult.NotEnoughIngots;
+                PayCraft(cost, jewelry);
+                var item = new GearItem(gearUnique, level);
+                _state.Drops.Gear.Add(item);
+                _state.Drops.ItemsFound++;
+                _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Craft, _state.Stage, null, item, false, 0)));
+                return CraftResult.Crafted;
+            }
+            if (_weapons.Catalog.TryGetUnique(id, out var weaponUnique))
+            {
+                if (weaponUnique.Base.Type != OwnType)
+                    return CraftResult.WrongSlot;
+                var cost = UniqueCraftCost(ItemSlot.Weapon);
+                if (_state.Drops.Ingots < cost)
+                    return CraftResult.NotEnoughIngots;
+                PayCraft(cost, false);
+                var weapon = _weapons.Give(_weapons.Catalog.RollUnique(weaponUnique, level));
+                _state.Drops.ItemsFound++;
+                _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Craft, _state.Stage, weapon, null, false, 0)));
+                return CraftResult.Crafted;
+            }
+            return CraftResult.NotFound;
+        }
+
+        public bool GiveEventPiece(string eventId)
+        {
+            if (BagFull)
+                return false;
+            var missing = new List<(SetDef Set, SetPiece Piece)>();
+            foreach (var set in _items.Sets)
+            {
+                if (set.Event != eventId)
+                    continue;
+                foreach (var part in set.Pieces)
+                {
+                    if (!_state.SetCollection.Contains(SetDef.PieceKey(set.Id, part)))
+                        missing.Add((set, part));
+                }
+            }
+            if (missing.Count == 0)
+                return false;
+            var (target, piece) = missing[_state.Drops.Rng.NextInt(0, missing.Count)];
+            var item = _items.RollSetPiece(target, piece.Slot, null, target.Rarity, BiomeNumber(System.Math.Max(1, _state.RecordStage)), _state.Drops.Rng, piece.SecondRing);
+            _gear.NoteFound(item);
+            _state.Drops.Gear.Add(item);
+            _state.Drops.ItemsFound++;
+            _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Event, _state.Stage, null, item, false, 0)));
+            return true;
+        }
+
+        private void NoteUnique(WeaponItem? weapon, GearItem? gear)
+        {
+            if (weapon?.Unique != null)
+                _state.UniquesFound.Add(weapon.Unique.Id);
+            if (gear?.Unique != null)
+                _state.UniquesFound.Add(gear.Unique.Id);
         }
 
         private WeaponItem? CraftSetWeapon(SetDef set, string? chosenType)
@@ -219,6 +305,7 @@ namespace Game.Core.Sim
             {
                 weapon = _weapons.Give(_weapons.Catalog.RollUnique(weapons[pick - gear.Count], BiomeNumber(stage)));
             }
+            NoteUnique(weapon, item);
             _state.Drops.ItemsFound++;
             _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(source, stage, weapon, item, false, 0)));
         }
@@ -513,6 +600,7 @@ namespace Game.Core.Sim
             var gear = weapon == null ? RollGear(drop, rarity, drops.Rng) : null;
             if (gear != null)
                 _gear.NoteFound(gear);
+            NoteUnique(weapon, gear);
             if (weapon?.Set != null)
                 _gear.NoteFound(weapon.Set, ItemSlot.Weapon);
             var salvaged = BagFull || ShouldSalvage(weapon, gear, rarity);

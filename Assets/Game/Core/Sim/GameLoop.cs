@@ -149,6 +149,7 @@ namespace Game.Core.Sim
             _cooking = new CookingSystem(data.Cooking, state, hero, _camp, _peaceful, Events);
             _forge = new ForgeSystem(data.Forge, state, data.Stages, _camp, _peaceful, _weapons, _gear, Events);
             _drops.Salvaged = _forge.SalvageOre;
+            _seasonal.BossWon = eventId => _drops.GiveEventPiece(eventId);
             _museum = new MuseumSystem(data.Museum, state, hero, _alchemy, Events);
             _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
             _fishing = new FishingSystem(data.Fishing, state, _camp, _peaceful, _expeditions, Events);
@@ -633,6 +634,7 @@ namespace Game.Core.Sim
         public bool RebirthGem(GemDef gem) => _book.Rebirth(gem, _data.Gems.Levels.Max);
 
         public CraftResult CraftSetPiece(string setId, Content.Items.ItemSlot? slot = null, string? weaponType = null, bool secondRing = false) => _drops.CraftSetPiece(setId, slot, weaponType, secondRing);
+        public CraftResult CraftUnique(string id) => _drops.CraftUnique(id);
 
         public TrialResult StartTrial(string trialId) => _chronicle.Start(trialId);
 

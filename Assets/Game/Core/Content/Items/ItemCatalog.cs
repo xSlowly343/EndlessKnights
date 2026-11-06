@@ -80,6 +80,21 @@ namespace Game.Core.Content.Items
         public IReadOnlyList<double> CraftSteps { get; private set; } = new[] { 1.0 };
         public double JewelryCraftMultiplier { get; private set; } = 1;
         public double JewelryPairBonus { get; private set; }
+        public double MasterySpentPerLevel { get; private set; } = 500;
+        public double MasteryRate { get; private set; }
+        public int MasterySlowAfter { get; private set; }
+        public double MasterySlowRate { get; private set; }
+        public int UniqueCraftMastery { get; private set; } = int.MaxValue;
+        public double UniqueCraftCost { get; private set; }
+
+        public int MasteryLevel(double spent) => 1 + (int)System.Math.Floor(System.Math.Max(0, spent) / MasterySpentPerLevel);
+
+        public double MasteryScale(int level)
+        {
+            var steps = System.Math.Max(0, level - 1);
+            var fast = System.Math.Min(steps, MasterySlowAfter);
+            return System.Math.Pow(1 + MasteryRate, fast) * System.Math.Pow(1 + MasterySlowRate, steps - fast);
+        }
 
         public static bool IsJewelry(ItemSlot slot) => slot == ItemSlot.Ring || slot == ItemSlot.Amulet;
 
@@ -95,12 +110,12 @@ namespace Game.Core.Content.Items
             var best = ItemRarity.Simple;
             foreach (var set in Sets)
             {
-                if (set.Has(slot) && set.Rarity <= rarity && set.Rarity > best)
+                if (set.Event == null && set.Has(slot) && set.Rarity <= rarity && set.Rarity > best)
                     best = set.Rarity;
             }
             foreach (var set in Sets)
             {
-                if (set.Has(slot) && set.Rarity == best)
+                if (set.Event == null && set.Has(slot) && set.Rarity == best)
                     candidates.Add(set);
             }
             return candidates.Count == 0 ? null : candidates[rng.NextInt(0, candidates.Count)];
@@ -362,6 +377,19 @@ namespace Game.Core.Content.Items
             catalog.CraftSteps = steps;
             catalog.JewelryCraftMultiplier = node.HasField("jewelryMultiplier") ? node.Field("jewelryMultiplier").AsNumber(1, 100) : 1;
             catalog.JewelryPairBonus = node.HasField("jewelryPairBonus") ? node.Field("jewelryPairBonus").AsNumber(0, 10) : 0;
+            if (node.HasField("mastery"))
+            {
+                var mastery = node.Field("mastery");
+                catalog.MasterySpentPerLevel = mastery.Field("spentPerLevel").AsNumber(1, 1e9);
+                catalog.MasteryRate = mastery.Field("rate").AsNumber(0, 1);
+                catalog.MasterySlowAfter = mastery.Field("slowAfter").AsInt(0, 10000);
+                catalog.MasterySlowRate = mastery.Field("slowRate").AsNumber(0, 1);
+            }
+            if (node.HasField("unique"))
+            {
+                catalog.UniqueCraftMastery = node.Field("unique").Field("mastery").AsInt(1, 10000);
+                catalog.UniqueCraftCost = node.Field("unique").Field("cost").AsNumber(1, 1e9);
+            }
         }
 
         private static RarityRule[] ReadRarities(ContentNode node, int tiers)
@@ -434,7 +462,12 @@ namespace Game.Core.Content.Items
             return new SetDef(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), rarity,
                 node.HasField("color") ? node.Field("color").AsString() : null, pieces, ModifierReader.ReadList(node.Field("bonus")),
                 node.HasField("theme") ? node.Field("theme").AsString() : null, weaponTypes, secondRing,
-                node.HasField("craftMultiplier") ? node.Field("craftMultiplier").AsNumber(1, 100) : 1, ReadPerks(node));
+                node.HasField("craftMultiplier") ? node.Field("craftMultiplier").AsNumber(1, 100) : 1, ReadPerks(node))
+            {
+                Primary = node.HasField("primary") ? ModifierReader.ReadList(node.Field("primary")) : System.Array.Empty<Modifier>(),
+                PerRaritySet = node.HasField("perRaritySet") ? ModifierReader.ReadList(node.Field("perRaritySet")) : System.Array.Empty<Modifier>(),
+                Event = node.HasField("event") ? node.Field("event").AsString() : null
+            };
         }
 
         private static IReadOnlyList<PerkValue>? ReadPerks(ContentNode node)

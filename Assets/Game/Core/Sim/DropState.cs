@@ -20,6 +20,7 @@ namespace Game.Core.Sim
         public long Shards { get; set; }
         public long Ingots { get; set; }
         public long Essence { get; set; }
+        public long CraftSpent { get; set; }
         public double ShardCarry { get; set; }
         public long ShardsFound { get; set; }
         public int DailyShards { get; set; }

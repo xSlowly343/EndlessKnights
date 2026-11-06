@@ -10,6 +10,9 @@ namespace Game.Core.Sim
         BagFull,
         AboveCeiling,
         Locked,
-        NotEnoughEssence
+        NotEnoughEssence,
+        NotCraftable,
+        MasteryTooLow,
+        NotFound
     }
 }

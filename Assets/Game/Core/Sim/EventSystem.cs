@@ -41,6 +41,7 @@ namespace Game.Core.Sim
         public EventWindow? Window => _window;
         public EventWindow? ShopWindow => _day == long.MinValue ? null : _rules.ShopWindowAt(_day);
         public bool Active => _window != null;
+        public System.Action<string>? BossWon { get; set; }
         public bool FightInside => State.FightInside;
         public int FightsLeftToday => System.Math.Max(0, _rules.BossPerDay - (State.BossDay == _day ? State.BossFightsToday : 0));
 
@@ -212,6 +213,8 @@ namespace Game.Core.Sim
                 events.UnsentScore = System.Math.Max(events.UnsentScore, score);
                 events.BestScore = System.Math.Max(events.BestScore, score);
                 _events.Add(GameEvent.ForStage(GameEventKind.EventBossDefeated, _state.Tick, score));
+                if (_window != null)
+                    BossWon?.Invoke(_window.Value.Event.Id);
                 LeaveFight();
             }
             else if (_state.BossFailsInARow > 0)

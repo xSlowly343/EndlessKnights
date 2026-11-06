@@ -118,17 +118,34 @@ namespace Game.Core.Sim
                 item?.AddModifiers(modifiers);
             AddRingPair(modifiers);
             System.Array.Clear(_state.SetPerks, 0, _state.SetPerks.Length);
+            System.Array.Clear(_collectedByRarity, 0, _collectedByRarity.Length);
+            foreach (var set in _catalog.Sets)
+            {
+                if (Collected(set))
+                    _collectedByRarity[(int)set.Rarity]++;
+            }
+            var scale = MasteryScale;
             foreach (var set in _catalog.Sets)
             {
                 if (!Collected(set))
                     continue;
-                modifiers.AddRange(set.Bonus);
+                AddScaled(modifiers, set.Bonus, scale);
+                modifiers.AddRange(set.Primary);
+                AddScaled(modifiers, set.PerRaritySet, scale * _collectedByRarity[(int)set.Rarity]);
                 foreach (var perk in set.Perks)
                     _state.SetPerks[(int)perk.Perk] += perk.Value;
             }
             _layer.Set(modifiers);
             Rebuilt?.Invoke();
         }
+
+        private readonly int[] _collectedByRarity = new int[System.Enum.GetValues(typeof(ItemRarity)).Length];
+
+        public int MasteryLevel => _catalog.MasteryLevel(_state.Drops.CraftSpent);
+
+        public double MasteryScale => _catalog.MasteryScale(MasteryLevel);
+
+        public int CollectedSetsOf(ItemRarity rarity) => _collectedByRarity[(int)rarity];
 
         public bool RingPair
         {
