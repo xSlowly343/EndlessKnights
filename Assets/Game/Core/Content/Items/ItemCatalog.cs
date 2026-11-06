@@ -78,6 +78,9 @@ namespace Game.Core.Content.Items
 
         public double[] CraftBaseCost { get; private set; } = new double[Enum.GetValues(typeof(ItemRarity)).Length];
         public IReadOnlyList<double> CraftSteps { get; private set; } = new[] { 1.0 };
+        public double JewelryCraftMultiplier { get; private set; } = 1;
+
+        public static bool IsJewelry(ItemSlot slot) => slot == ItemSlot.Ring || slot == ItemSlot.Amulet;
 
         public double CraftCost(SetDef set, int collected, bool complete)
         {
@@ -355,6 +358,7 @@ namespace Game.Core.Content.Items
                 throw node.Field("steps").Error("needs at least one step");
             catalog.CraftBaseCost = costs;
             catalog.CraftSteps = steps;
+            catalog.JewelryCraftMultiplier = node.HasField("jewelryMultiplier") ? node.Field("jewelryMultiplier").AsNumber(1, 100) : 1;
         }
 
         private static RarityRule[] ReadRarities(ContentNode node, int tiers)

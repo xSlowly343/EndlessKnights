@@ -86,9 +86,10 @@ namespace Game.Core.Sim
                 }
                 slot = missing[_state.Drops.Rng.NextInt(0, missing.Count)];
             }
-            var cost = (long)System.Math.Ceiling(CraftCost(set));
-            if (_state.Drops.Ingots < cost)
-                return CraftResult.NotEnoughIngots;
+            var jewelry = ItemCatalog.IsJewelry(slot);
+            var cost = (long)System.Math.Ceiling(CraftCost(set) * (jewelry ? _items.JewelryCraftMultiplier : 1));
+            if (jewelry ? _state.Drops.Essence < cost : _state.Drops.Ingots < cost)
+                return jewelry ? CraftResult.NotEnoughEssence : CraftResult.NotEnoughIngots;
             if (slot == ItemSlot.Weapon)
             {
                 var weapon = CraftSetWeapon(set, weaponType);
@@ -101,7 +102,10 @@ namespace Game.Core.Sim
                 _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Craft, _state.Stage, weapon, null, false, 0)));
                 return CraftResult.Crafted;
             }
-            _state.Drops.Ingots -= cost;
+            if (jewelry)
+                _state.Drops.Essence -= cost;
+            else
+                _state.Drops.Ingots -= cost;
             var item = _items.RollSetPiece(set, slot, null, set.Rarity, BiomeNumber(System.Math.Max(1, _state.RecordStage)), _state.Drops.Rng);
             _gear.NoteFound(item);
             _state.Drops.Gear.Add(item);

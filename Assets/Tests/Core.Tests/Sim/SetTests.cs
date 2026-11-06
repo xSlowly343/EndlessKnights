@@ -121,6 +121,17 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void OnlySetItemsAreCraftedAndJewelrySetPiecesWouldCostEssence()
+        {
+            Assert.That(ItemCatalog.IsJewelry(ItemSlot.Ring) && ItemCatalog.IsJewelry(ItemSlot.Amulet), Is.True);
+            Assert.That(Items.JewelryCraftMultiplier, Is.EqualTo(2));
+            Assert.That(Items.Sets.Any(set => set.Slots.Any(ItemCatalog.IsJewelry)), Is.False, "today no set has jewelry");
+            var loop = Runedancer();
+            loop.State.Drops.Essence = 1000;
+            Assert.That(loop.CraftSetPiece("jarl_forge"), Is.EqualTo(CraftResult.NotEnoughIngots), "armor and weapons need ingots, essence does not help");
+        }
+
+        [Test]
         public void WornSetPieceAddsItsSetLine()
         {
             var loop = Runedancer();
