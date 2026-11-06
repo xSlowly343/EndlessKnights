@@ -49,6 +49,12 @@ namespace Game.Core.Sim
 
             if (dps.Sign <= 0 || time <= 0 || state.Rift.Inside || state.Dungeons.Inside || state.Events.FightInside)
                 return new OfflineResult(0, 0, BigNumber.Zero, stage, stage, kills, farming, false, false, seconds);
+            if (state.Peaceful.Mode == PeacefulMode.Camp)
+            {
+                var camp = NormalEnemy(stage, dps, goldMultiplier);
+                var campGold = camp.Gold * (time / camp.Seconds * _data.Peaceful.OfflineGoldShare);
+                return new OfflineResult(time, 0, campGold, stage, stage, kills, farming, false, false, seconds);
+            }
 
             while (!farming)
             {

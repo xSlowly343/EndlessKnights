@@ -187,6 +187,19 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AHeroInTheCampStaysInThePartyAsPeaceful()
+        {
+            var rig = new Rig(2);
+            rig.Run(3);
+            rig.Members[1].Loop.Peaceful.SetMode(Game.Core.Content.PeacefulMode.Camp);
+            rig.Run(7);
+
+            var slot = rig.Host.Encounter.SlotOf(11UL);
+            Assert.That(rig.Host.Encounter.Member(slot).Peaceful, Is.True);
+            Assert.That(rig.Host.Encounter.Fighters, Is.EqualTo(1), "a hero in the camp does not make the enemy bigger");
+        }
+
+        [Test]
         public void OwnPartyStatsHelpTheHeroInSolo()
         {
             var loop = TestWorld.Loop();

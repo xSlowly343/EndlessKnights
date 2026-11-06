@@ -105,6 +105,14 @@ namespace Game.Core.Sim
         public int AwakeningLevel(string id) =>
             _catalog.TryGet(id, out var artifact) ? Awakening.LevelAt(artifact.Awaken, AwakeningProgress(id)) : 0;
 
+        public void SkipAwakening()
+        {
+            var awakening = _state.Awakening;
+            for (var i = 0; i < ArtifactAwakening.InputCount; i++)
+                awakening.Last[i] = Counter((AwakeningInput)i);
+            awakening.Primed = true;
+        }
+
         public void TickAwakening()
         {
             var awakening = _state.Awakening;

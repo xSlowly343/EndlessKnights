@@ -28,6 +28,9 @@ namespace Game.Core.Sim
         BestiaryEntryOpened,
         BiomeChanged,
         EventBossDefeated,
-        EventBossFailed
+        EventBossFailed,
+        PeacefulModeChanged,
+        PeacefulActivityChanged,
+        TeaPauseSuggested
     }
 }

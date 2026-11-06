@@ -65,6 +65,7 @@ namespace Game.Core.Sim
         private readonly Unlocks _unlocks;
         private readonly DungeonSystem _dungeons;
         private readonly EventSystem _seasonal;
+        private readonly PeacefulSystem _peaceful;
         private readonly SlateSystem _slates;
         private readonly ConditionSystem _conditions;
         private GameData _data;
@@ -130,6 +131,7 @@ namespace Game.Core.Sim
             _drops.Dungeons = data.Dungeons;
             _dungeons = new DungeonSystem(data, state, hero, _stage, _drops, Events) { Unlocks = _unlocks };
             _seasonal = new EventSystem(data, state, _stage, Events);
+            _peaceful = new PeacefulSystem(data.Peaceful, state, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
             _stage.Encounters = data.Combat.Encounters;
@@ -197,6 +199,7 @@ namespace Game.Core.Sim
         public Unlocks Unlocks => _unlocks;
         public DungeonSystem Dungeons => _dungeons;
         public EventSystem SeasonalEvents => _seasonal;
+        public PeacefulSystem Peaceful => _peaceful;
         public SlateSystem Slates => _slates;
         public DropSystem Drops => _drops;
         public QuestSystem Quests => _quests;
@@ -797,6 +800,7 @@ namespace Game.Core.Sim
             _slates.Rules = data.Slates;
             _dungeons.UseData(data);
             _seasonal.UseData(data);
+            _peaceful.UseRules(data.Peaceful);
             _skills.UseWeapons(data.Weapons);
             _book.UseRules(data.SkillBook);
             _book.UseWeapons(data.Weapons);
@@ -856,6 +860,12 @@ namespace Game.Core.Sim
             State.TotalInput.Add(LastInput, MetersPerPixel);
             SessionInput.PlaySeconds += TickSeconds;
             State.TotalInput.PlaySeconds += TickSeconds;
+            _peaceful.Tick(LastInput, MetersPerPixel);
+            if (_peaceful.InCamp)
+            {
+                CampTick(firstEvent);
+                return;
+            }
             var raw = _inputRules.Apply(LastInput);
             var input = raw.WithMouse(raw.MousePx * System.Math.Max(0, Hero.Value(CombatStats.MouseDistance, 1, StatTags.Mouse)));
             var idleTicksBefore = State.IdleTicks;
@@ -899,6 +909,18 @@ namespace Game.Core.Sim
             State.Tick++;
             if (Permissions.Consent)
                 _tutorial.Tick(LastInput, Events, firstEvent);
+            Hook?.AfterTick();
+        }
+
+        private void CampTick(int firstEvent)
+        {
+            _castRequests = 0;
+            _quests.Tick(firstEvent);
+            _seasonal.Tick(firstEvent);
+            _seasonPass.Tick();
+            _artifacts.SkipAwakening();
+            _achievements.Tick();
+            State.Tick++;
             Hook?.AfterTick();
         }
 
