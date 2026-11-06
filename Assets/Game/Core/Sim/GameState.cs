@@ -98,6 +98,7 @@ namespace Game.Core.Sim
         public ExpeditionState Expeditions { get; } = new ExpeditionState();
         public TownState Town { get; } = new TownState();
         public FishingState Fishing { get; } = new FishingState();
+        public CookingState Cooking { get; } = new CookingState();
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();

@@ -100,6 +100,7 @@ namespace Game.Core.Save
                 ("expeditions", WriteExpeditions(state.Expeditions)),
                 ("town", WriteTown(state.Town)),
                 ("fishing", WriteFishing(state.Fishing)),
+                ("cooking", WriteCooking(state.Cooking)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -288,6 +289,8 @@ namespace Game.Core.Save
                 ReadTown(node.Field("town"), state.Town);
             if (node.HasField("fishing"))
                 ReadFishing(node.Field("fishing"), state.Fishing);
+            if (node.HasField("cooking"))
+                ReadCooking(node.Field("cooking"), state.Cooking);
             if (node.HasField("garden"))
                 ReadGarden(node.Field("garden"), state.Garden);
             if (node.HasField("camp"))
@@ -641,6 +644,29 @@ namespace Game.Core.Save
             foreach (var item in node.Field("reputation").Items())
                 town.Reputation[item.Field("guild").AsString()] = item.Field("value").AsLong(0);
             town.Done = node.Field("done").AsLong(0);
+        }
+
+        private static JsonValue WriteCooking(CookingState cooking)
+        {
+            var book = new List<string>(cooking.Book);
+            book.Sort(System.StringComparer.Ordinal);
+            return Object(("cooking", OptionalText(cooking.Cooking)), ("chops", JsonValue.Of(cooking.Chops)), ("plates", JsonValue.Of(cooking.Plates)),
+                ("meals", WriteIdList(cooking.Meals)), ("active", OptionalText(cooking.Active)), ("activeTicksLeft", JsonValue.Of(cooking.ActiveTicksLeft)),
+                ("book", WriteIdList(book)), ("cooked", JsonValue.Of(cooking.Cooked)));
+        }
+
+        private static void ReadCooking(ContentNode node, CookingState cooking)
+        {
+            cooking.Cooking = ReadOptionalText(node, "cooking");
+            cooking.Chops = node.Field("chops").AsNumber(0, double.MaxValue);
+            cooking.Plates = node.Field("plates").AsNumber(0, double.MaxValue);
+            foreach (var item in node.Field("meals").Items())
+                cooking.Meals.Add(item.AsString());
+            cooking.Active = ReadOptionalText(node, "active");
+            cooking.ActiveTicksLeft = node.Field("activeTicksLeft").AsLong(0);
+            foreach (var item in node.Field("book").Items())
+                cooking.Book.Add(item.AsString());
+            cooking.Cooked = node.Field("cooked").AsLong(0);
         }
 
         private static JsonValue WriteFishing(FishingState fishing)
