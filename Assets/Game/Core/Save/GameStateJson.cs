@@ -93,6 +93,7 @@ namespace Game.Core.Save
                 ("awakening", WriteAwakening(state.Awakening)),
                 ("conditionShares", WriteConditionShares(state.ConditionShares)),
                 ("events", WriteEvents(state.Events)),
+                ("peaceful", WritePeaceful(state.Peaceful)),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -273,6 +274,8 @@ namespace Game.Core.Save
                 ReadBestiary(node.Field("bestiary"), state.Bestiary);
             if (node.HasField("cosmetics"))
                 ReadCosmetics(node.Field("cosmetics"), state.Cosmetics);
+            if (node.HasField("peaceful"))
+                ReadPeaceful(node.Field("peaceful"), state.Peaceful);
             if (node.HasField("events"))
                 ReadEvents(node.Field("events"), state.Events);
             if (node.HasField("conditionShares"))
@@ -511,6 +514,54 @@ namespace Game.Core.Save
                 cosmetics.Owned.Add(item.AsString());
             foreach (var item in node.Field("equipped").Items())
                 cosmetics.Equipped[item.Field("key").AsString()] = item.Field("id").AsString();
+        }
+
+        private static JsonValue WritePeaceful(PeacefulState peaceful)
+        {
+            var presets = new List<string>(peaceful.Presets);
+            presets.Sort(System.StringComparer.Ordinal);
+            var activities = new List<string>(peaceful.Work.Keys);
+            activities.Sort(System.StringComparer.Ordinal);
+            var work = new JsonValue[activities.Count];
+            for (var i = 0; i < work.Length; i++)
+            {
+                var item = peaceful.Work[activities[i]];
+                work[i] = Object(("activity", JsonValue.Of(activities[i])), ("keys", JsonValue.Of(item.Keys)), ("clicks", JsonValue.Of(item.Clicks)),
+                    ("mouseMeters", JsonValue.Of(item.MouseMeters)), ("idleSeconds", JsonValue.Of(item.IdleSeconds)));
+            }
+            return Object(
+                ("mode", JsonValue.Of(peaceful.Mode == PeacefulMode.Camp ? "camp" : "battle")),
+                ("activity", OptionalText(peaceful.Activity)),
+                ("presets", WriteIdList(presets)),
+                ("scheduledBy", OptionalText(peaceful.ScheduledBy)),
+                ("work", JsonValue.Array(work)),
+                ("teaPause", JsonValue.Of(peaceful.TeaPause)),
+                ("battleSeconds", JsonValue.Of(peaceful.BattleSeconds)),
+                ("quietSeconds", JsonValue.Of(peaceful.QuietSeconds)),
+                ("teaOffered", JsonValue.Of(peaceful.TeaOffered)));
+        }
+
+        private static void ReadPeaceful(ContentNode node, PeacefulState peaceful)
+        {
+            peaceful.Mode = node.Field("mode").AsString() == "camp" ? PeacefulMode.Camp : PeacefulMode.Battle;
+            peaceful.Activity = ReadOptionalText(node, "activity");
+            foreach (var item in node.Field("presets").Items())
+                peaceful.Presets.Add(item.AsString());
+            peaceful.ScheduledBy = ReadOptionalText(node, "scheduledBy");
+            foreach (var item in node.Field("work").Items())
+            {
+                peaceful.Work[item.Field("activity").AsString()] = new PeacefulWork
+                {
+                    Keys = item.Field("keys").AsNumber(0, double.MaxValue),
+                    Clicks = item.Field("clicks").AsNumber(0, double.MaxValue),
+                    MouseMeters = item.Field("mouseMeters").AsNumber(0, double.MaxValue),
+                    IdleSeconds = item.Field("idleSeconds").AsNumber(0, double.MaxValue)
+                };
+            }
+            peaceful.TeaPause = node.Field("teaPause").AsBool();
+            peaceful.BattleSeconds = node.Field("battleSeconds").AsNumber(0, double.MaxValue);
+            peaceful.QuietSeconds = node.Field("quietSeconds").AsNumber(0, double.MaxValue);
+            peaceful.TeaOffered = node.Field("teaOffered").AsBool();
         }
 
         private static JsonValue WriteEvents(EventState events)

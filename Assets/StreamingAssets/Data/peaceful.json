@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "activities": [
+    { "id": "garden", "name": { "ru": "Сад", "en": "Garden" } },
+    { "id": "alchemy", "name": { "ru": "Алхимия", "en": "Alchemy" } },
+    { "id": "meditation", "name": { "ru": "Созерцание", "en": "Meditation" } }
+  ],
+  "offlineGoldShare": 0.3,
+  "teaPause": { "battleMinutes": 30, "idleMinutes": 5 },
+  "presets": [
+    { "id": "weekday_calls", "name": { "ru": "Будни 10–12 — Лагерь", "en": "Weekdays 10–12 — Camp" }, "days": [1, 2, 3, 4, 5], "fromMinute": 600, "toMinute": 720, "mode": "camp" },
+    { "id": "evening_battle", "name": { "ru": "Вечер — Бой", "en": "Evening — Battle" }, "days": [0, 1, 2, 3, 4, 5, 6], "fromMinute": 1080, "toMinute": 1440, "mode": "battle" }
+  ]
+}

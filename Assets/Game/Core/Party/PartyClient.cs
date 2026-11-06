@@ -855,7 +855,7 @@ namespace Game.Core.Party
             if ((InParty || Status == PartyLink.Joining) && Every(_rules.PresenceSeconds))
                 SendToHost(PartyCodec.Encode(_out, new PresenceMessage
                 {
-                    Presence = Peaceful ? PartyPresence.Peaceful : PartyPresence.Fighting,
+                    Presence = Peaceful || _loop.Peaceful.InCamp ? PartyPresence.Peaceful : PartyPresence.Fighting,
                     Stage = _loop.State.Stage,
                     Resource = (float)_loop.State.Resource,
                     Contribution = (float)System.Math.Max(0, _loop.Hero.Value(CombatStats.PartyContribution, 0))
