@@ -1,33 +1,24 @@
 using Game.Core.Content;
-using Game.Core.Content.Synergy;
-using Game.Core.Party;
 using Game.Core.Stats;
 
 namespace Game.Core.Sim
 {
     public sealed class ConditionSystem
     {
-        private static readonly ulong AllyMask = AllyMarkConditions();
-
         private readonly GameState _state;
         private readonly StatSheet _hero;
         private readonly CombatSystem _combat;
-        private readonly SynergySystem _synergy;
         private readonly SkillSystem _skills;
         private readonly FocusSystem _focus;
-        private readonly int[] _markMasks = new int[ModifierConditions.Marks];
-        private SynergyRules? _markRules;
-        private ulong _allyConditions;
         private readonly GuardianWatch _guardian;
 
-        public ConditionSystem(GameState state, StatSheet hero, CombatSystem combat, SynergySystem synergy, SkillSystem skills, FocusSystem focus)
+        public ConditionSystem(GameState state, StatSheet hero, CombatSystem combat, SkillSystem skills, FocusSystem focus)
         {
             _focus = focus;
             _skills = skills;
             _state = state;
             _hero = hero;
             _combat = combat;
-            _synergy = synergy;
             _guardian = new GuardianWatch(state);
         }
 
@@ -47,7 +38,6 @@ namespace Game.Core.Sim
             _hero.SetConditions(conditions);
             if (_hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura) != auraStrength)
                 _skills.RefreshAuraStrength();
-            GrantOnRisingAllyMarks(conditions);
         }
 
         private void NoteShares(ulong conditions)
@@ -61,24 +51,7 @@ namespace Game.Core.Sim
             }
         }
 
-        private void GrantOnRisingAllyMarks(ulong conditions)
-        {
-            var allies = conditions & AllyMask;
-            var rising = allies & ~_allyConditions;
-            _allyConditions = allies;
-            if (rising != 0)
-                _state.PendingResource += System.Math.Max(0, _hero.FlatWhen(CombatStats.ResourceOnAllyMark, rising));
-        }
-
-        private static ulong AllyMarkConditions()
-        {
-            var mask = 0UL;
-            for (var i = 0; i < ModifierConditions.Marks; i++)
-                mask |= ModifierConditions.Bit(ModifierConditions.AllyMark(i));
-            return mask;
-        }
-
-        public ulong Current() => BossConditions() | ResourceConditions() | MarkConditionsOn(_synergy.OwnMarks, _synergy.AllyMarks) | MomentConditions() | _guardian.Conditions();
+        public ulong Current() => BossConditions() | ResourceConditions() | MomentConditions() | _guardian.Conditions();
 
         private ulong MomentConditions()
         {
@@ -136,40 +109,6 @@ namespace Game.Core.Sim
             if (fill >= 1)
                 conditions |= ModifierConditions.Bit(ModifierCondition.ResourceFull);
             return conditions;
-        }
-
-        private ulong MarkConditionsOn(int own, int allies)
-        {
-            if ((own | allies) == 0)
-                return 0;
-            MapMarks();
-            var conditions = 0UL;
-            if (allies != 0)
-                conditions |= ModifierConditions.Bit(ModifierCondition.AnyAllyMark);
-            var marked = 0;
-            for (var i = 0; i < ModifierConditions.Marks; i++)
-            {
-                if (((own | allies) & _markMasks[i]) != 0)
-                {
-                    conditions |= ModifierConditions.Bit(ModifierConditions.Mark(i));
-                    marked++;
-                }
-                if ((allies & _markMasks[i]) != 0)
-                    conditions |= ModifierConditions.Bit(ModifierConditions.AllyMark(i));
-            }
-            if (marked >= 2)
-                conditions |= ModifierConditions.Bit(ModifierCondition.TwoMarks);
-            return conditions;
-        }
-
-        private void MapMarks()
-        {
-            var rules = _synergy.Rules;
-            if (ReferenceEquals(rules, _markRules))
-                return;
-            _markRules = rules;
-            for (var i = 0; i < ModifierConditions.Marks; i++)
-                _markMasks[i] = rules.MarkMask(ModifierConditions.MarkName(ModifierConditions.Mark(i)));
         }
     }
 }

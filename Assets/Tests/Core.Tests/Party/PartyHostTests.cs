@@ -14,10 +14,11 @@ namespace Game.Core.Tests.Party
         {
             var network = new LoopbackNetwork(2024, 50, 500, loss, 4096);
             var encounter = new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 99);
-            var host = new PartyHost(encounter, network.Connect(HostId), TestWorld.Data.Party);
+            var host = new PartyHost(encounter, network.Connect(HostId), TestWorld.Data.Party, synergy: TestWorld.Data.Synergy);
+            var classes = new[] { HeroClass.Runedancer, HeroClass.Minstrel, HeroClass.Whisperer, HeroClass.Duelist };
             var bots = new PartyBot[sharesPerTick.Length];
             for (var i = 0; i < bots.Length; i++)
-                bots[i] = new PartyBot(network.Connect(10UL + (ulong)i), HostId, sharesPerTick[i]);
+                bots[i] = new PartyBot(network.Connect(10UL + (ulong)i), HostId, sharesPerTick[i], (byte)classes[i % classes.Length]);
             return (host, bots, network);
         }
 
@@ -33,19 +34,17 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void ConstellationsFromDifferentMembersCountOnOneEnemy()
+        public void DifferentRolesOnOneEnemyAreCounted()
         {
-            var (host, bots, network) = Party(0, 0.02, 0.02);
+            var (host, bots, network) = Party(0, 0.02, 0.02, 0.02, 0.02);
             Run(host, bots, network, 30, true);
             var killsBefore = host.Kills;
 
-            bots[0].SendSynergy(0b001);
-            bots[1].SendSynergy(0b110);
             for (var tick = 0; tick < 200 && host.Kills == killsBefore; tick++)
                 Run(host, bots, network, 1, true);
 
             Assert.That(host.Kills, Is.GreaterThan(killsBefore));
-            Assert.That(host.MostConstellationsOnOneEnemy, Is.EqualTo(3));
+            Assert.That(host.MostRolesOnOneEnemy, Is.EqualTo(3), "striker, herald and hexer; the second striker adds no role");
         }
 
         [Test]

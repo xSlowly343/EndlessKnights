@@ -54,7 +54,6 @@ namespace Game.Core.Sim.Headless
             var kills = new long[_classes.Count];
             var fails = new int[_classes.Count];
             var damage = new BigNumber[_classes.Count];
-            var uptime = new SynergyUptime[_classes.Count];
             var inputs = new IdleAfterInput?[_classes.Count];
             var samples = new List<PartySample>();
             for (var i = 0; i < loops.Length; i++)
@@ -94,7 +93,6 @@ namespace Game.Core.Sim.Headless
                         loops[i].ChooseSubclass(forced.Id);
                     bot.ChoosePathAndForks();
                 }
-                uptime[i] = new SynergyUptime(synergy);
             }
 
             var bosses = new BossWatch();
@@ -110,7 +108,6 @@ namespace Game.Core.Sim.Headless
                         CastEverything(loops[i]);
                     loops[i].Tick();
                     damage[i] += loops[i].Combat.LastTickDamage * BigNumber.FromDouble(clients[i].DamageTaken);
-                    uptime[i].Count(loops[i].Synergy);
                     kills[i] += loops[i].Events.CountOf(GameEventKind.EnemyKilled);
                     fails[i] += loops[i].Events.CountOf(GameEventKind.BossFailed);
                     loops[i].Events.Clear();
@@ -130,8 +127,7 @@ namespace Game.Core.Sim.Headless
                 {
                     Damage = damage[i],
                     Path = state.Ascendancy.Subclass,
-                    SharesDealt = clients[i].SharesDealt,
-                    Synergy = uptime[i]
+                    SharesDealt = clients[i].SharesDealt
                 });
             }
             return new PartySimulationResult(seconds, host.Kills, members)

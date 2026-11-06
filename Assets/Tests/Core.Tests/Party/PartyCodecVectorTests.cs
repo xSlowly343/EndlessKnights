@@ -54,8 +54,7 @@ namespace Game.Core.Tests.Party
             busy.SetRecent(1, 0.25f);
             busy.SetHits(0, 7);
             busy.SetHits(2, 300);
-            busy.SetMarks(1, 0x21);
-            builder.Append("    \"busyState\": { \"sequence\": 6, \"recent\": [0, 0.25, 0, 0], \"hits\": [7, 0, 300, 0], \"marks\": [0, 33, 0, 0], \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, busy))).Append("\" },\n");
+            builder.Append("    \"busyState\": { \"sequence\": 6, \"recent\": [0, 0.25, 0, 0], \"hits\": [7, 0, 300, 0], \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, busy))).Append("\" },\n");
             builder.Append("    \"roster\": { \"version\": 3, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, RosterMessage.Of(encounter, 3)))).Append("\" },\n");
             var killed = new PartyEvent(PartyEventKind.EnemyKilled, 12, 4, PartyEnemyKind.Boss, 0.625, 0.375, 0, 0, 5, 0.25, 6.5);
             builder.Append("    \"enemyKilled\": { \"tick\": 12, \"enemyId\": 4, \"enemyKind\": 1, \"shares\": [0.625, 0.375, 0, 0], \"rewarded\": 5, \"loop\": 0.25, \"saved\": 6.5, \"hex\": \"")
@@ -76,10 +75,6 @@ namespace Game.Core.Tests.Party
             builder.Append("    \"endCast\": { \"effectId\": 33, \"onEnemy\": true, \"strength\": 0, \"seconds\": 0, \"timerSlow\": 0, \"repeatSeconds\": 0, \"weakenEnemies\": 0, \"weakenShare\": 0, \"weakenGold\": 0, \"end\": true, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new CastEffectMessage { EffectId = 33, OnEnemy = true, End = true }))).Append("\" },\n");
             builder.Append("    \"bossRequest\": { \"hex\": \"").Append(Hex(PartyCodec.EncodeBossRequest(_buffer))).Append("\" },\n");
-            builder.Append("    \"marks\": { \"marks\": 384, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new MarksMessage { Marks = 384 }))).Append("\" },\n");
-            var synergy = TestWorld.Data.Synergy;
-            var newMarks = (uint)(synergy.MarkMask("bond") | synergy.MarkMask("blood"));
-            builder.Append("    \"newMarks\": { \"marks\": ").Append(newMarks.ToString(CultureInfo.InvariantCulture)).Append(", \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new MarksMessage { Marks = newMarks }))).Append("\" },\n");
             builder.Append("    \"worldRequest\": { \"world\": 1, \"cancel\": false, \"riftId\": 1761652800, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new WorldRequestMessage { World = PartyWorld.Rift, RiftId = 1761652800 }))).Append("\" },\n");
             builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"contribution\": 0.125, \"hex\": \"")
@@ -96,7 +91,6 @@ namespace Game.Core.Tests.Party
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, relayed))).Append("\" },\n");
             builder.Append("    \"reactionRelay\": { \"slot\": 1, \"reaction\": 4, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 0, Reaction = 4 })))
                 .Append("\", \"relayedHex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new PartyReactionMessage { Slot = 1, Reaction = 4 }))).Append("\" },\n");
-            builder.Append("    \"synergy\": { \"constellations\": 5, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, new SynergyMessage { Constellations = 5 }))).Append("\" },\n");
             var loadout = new PartyLoadoutMessage();
             loadout.Set(0, new LoadoutSkill { GemNetId = 4242, Level = 7, Combo = 13 });
             loadout.Set(PartyLoadoutMessage.PositionOf(Game.Core.Sim.SkillSlotRole.Auto, 1), new LoadoutSkill { GemNetId = 99, Level = 25, Combo = 26 });

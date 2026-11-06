@@ -2508,12 +2508,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.08, "when": "anyAllyMark"}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.08, "when": "inParty"}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона, пока на враге метка союзника; её Метка ветра на 4 с дольше", "en": "party: +8% damage while an ally's mark is on the enemy; her Wind Mark lasts 4 s longer"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.096, "when": "anyAllyMark"}]}}, {"id": "windshot_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "windshot_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.088, "when": "anyAllyMark"}]}}, {"id": "windshot_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "windshot_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.104, "when": "anyAllyMark"}]}}, {"id": "windshot_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "windshot_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.096, "when": "inParty"}]}}, {"id": "windshot_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "windshot_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.088, "when": "inParty"}]}}, {"id": "windshot_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "windshot_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.104, "when": "inParty"}]}}, {"id": "windshot_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {

@@ -84,7 +84,7 @@
     {"id": "overdrive_cup", "name": {"ru": "Кубок разгона", "en": "Overdrive Cup"}, "group": 3, "type": "tempo", "perLevel": [{"stat": "focusMax", "kind": "flat", "value": 0.05}]},
     {"id": "arcana_cloak", "name": {"ru": "Плащ аркан", "en": "Arcana Cloak"}, "group": 3, "type": "tempo", "perLevel": [{"stat": "skillCost", "kind": "increased", "value": -0.01}]},
     {"id": "antiquary_lens", "name": {"ru": "Лупа антиквара", "en": "Antiquary's Lens"}, "group": 3, "type": "meta", "perLevel": [], "boost": {"types": ["damage"], "value": 0.02}},
-    {"id": "link_knot", "name": {"ru": "Узел связки", "en": "Link Knot"}, "group": 3, "type": "meta", "perLevel": [{"stat": "constellationEffect", "kind": "increased", "value": 0.02}]},
+    {"id": "link_knot", "name": {"ru": "Узел связки", "en": "Link Knot"}, "group": 3, "type": "meta", "perLevel": [{"stat": "roleBuffEffect", "kind": "increased", "value": 0.02}]},
     {"id": "gem_anvil", "name": {"ru": "Наковальня гранильщика", "en": "Gem Anvil"}, "group": 3, "type": "late", "perLevel": [{"stat": "gemExperience", "kind": "increased", "value": 0.03}]},
     {"id": "chieftain_seal", "name": {"ru": "Печать вождя", "en": "Chieftain's Seal"}, "group": 3, "type": "late", "perLevel": [{"stat": "encounterGold", "kind": "increased", "value": 0.05}]},
     {"id": "oath_of_fealty", "name": {"ru": "Клятва верности", "en": "Oath of Fealty"}, "group": 3, "type": "late", "perLevel": [{"to": "party", "stat": "resourceGain", "kind": "increased", "value": 0.01}]},

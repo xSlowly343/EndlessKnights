@@ -5,10 +5,10 @@ namespace Game.Core.Content.Rift
 {
     public sealed class RiftModifier
     {
-        public RiftModifier(string id, IReadOnlyList<string> unlessMarks, IReadOnlyList<Modifier> modifiers)
+        public RiftModifier(string id, IReadOnlyList<string> unlessRoles, IReadOnlyList<Modifier> modifiers)
         {
             Id = id;
-            UnlessMarks = unlessMarks;
+            UnlessRoles = unlessRoles;
             Modifiers = modifiers;
             EnemyRegen = Sum(modifiers, "enemyRegen", ModifierKind.Flat);
             BossShield = Sum(modifiers, "bossShield", ModifierKind.Flat);
@@ -16,7 +16,7 @@ namespace Game.Core.Content.Rift
         }
 
         public string Id { get; }
-        public IReadOnlyList<string> UnlessMarks { get; }
+        public IReadOnlyList<string> UnlessRoles { get; }
         public IReadOnlyList<Modifier> Modifiers { get; }
         public double EnemyRegen { get; }
         public double BossShield { get; }

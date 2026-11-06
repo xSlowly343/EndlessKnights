@@ -28,8 +28,6 @@ namespace Game.Core.Party
         private readonly long[] _lastRepeatTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastRelayTick = new long[PartyRules.MaxSlots];
         private readonly long[] _lastResourceTick = new long[PartyRules.MaxSlots];
-        private readonly uint[] _constellations = new uint[PartyRules.MaxSlots];
-        private uint _enemyConstellations;
         private readonly ulong[] _invitedGuests = new ulong[PartyRules.MaxSlots];
         private readonly double[] _invitedSeconds = new double[PartyRules.MaxSlots];
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
@@ -37,7 +35,6 @@ namespace Game.Core.Party
         private readonly int[] _recentHits = new int[PartyRules.MaxSlots];
         private readonly RiftRules? _rift;
         private readonly SynergyRules? _synergy;
-        private readonly uint[] _marks = new uint[PartyRules.MaxSlots];
         private long _riftEnemyFor = -1;
         private IReadOnlyList<RiftModifier> _riftModifiers = System.Array.Empty<RiftModifier>();
         private int[] _riftUnless = System.Array.Empty<int>();
@@ -67,7 +64,7 @@ namespace Game.Core.Party
         public double CutShares { get; private set; }
         public double RepeatedShares { get; private set; }
         public long Relays { get; private set; }
-        public int MostConstellationsOnOneEnemy { get; private set; }
+        public int MostRolesOnOneEnemy { get; private set; }
 
         public int Flags(int slot) => _flags[slot];
 
@@ -166,10 +163,6 @@ namespace Game.Core.Party
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
                     React(slot, reaction);
                     break;
-                case PartyMessageKind.Synergy when PartyCodec.TryDecode(_in, length, out SynergyMessage synergy):
-                    _constellations[slot] = synergy.Constellations;
-                    _enemyConstellations |= synergy.Constellations;
-                    break;
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     ShareResource(slot, resource.Amount);
                     break;
@@ -179,9 +172,6 @@ namespace Game.Core.Party
                 case PartyMessageKind.WorldRequest when PartyCodec.TryDecode(_in, length, out WorldRequestMessage request):
                     if (LeaderId == 0 || _encounter.Member(slot).PlayerId == LeaderId)
                         RequestWorld(request);
-                    break;
-                case PartyMessageKind.Marks when PartyCodec.TryDecode(_in, length, out MarksMessage marks):
-                    _marks[slot] = marks.Marks;
                     break;
                 case PartyMessageKind.BossRequest:
                     if (LeaderId == 0 || _encounter.Member(slot).PlayerId == LeaderId)
@@ -208,8 +198,6 @@ namespace Game.Core.Party
             _lastRepeatTick[slot] = PartyEncounter.Never;
             _lastRelayTick[slot] = PartyEncounter.Never;
             _lastResourceTick[slot] = PartyEncounter.Never;
-            _constellations[slot] = 0;
-            _marks[slot] = 0;
             _rosterChanged = true;
             _ticksToState = 0;
             return slot;
@@ -274,16 +262,11 @@ namespace Game.Core.Party
             }
             if (_riftEnemyFor != _encounter.RiftId)
                 LoadRiftModifiers();
-            var marks = 0;
-            for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
-            {
-                if (_encounter.Member(slot).Joined)
-                    marks |= (int)_marks[slot];
-            }
+            var roles = JoinedRoles();
             double regen = 0, shield = 0, extra = 0;
             for (var i = 0; i < _riftModifiers.Count; i++)
             {
-                if ((_riftUnless[i] & marks) != 0)
+                if ((_riftUnless[i] & roles) != 0)
                     continue;
                 regen += _riftModifiers[i].EnemyRegen;
                 shield += _riftModifiers[i].BossShield;
@@ -299,7 +282,7 @@ namespace Game.Core.Party
             _riftModifiers = _rift.ModifiersFor(window);
             _riftUnless = new int[_riftModifiers.Count];
             for (var i = 0; i < _riftModifiers.Count; i++)
-                _riftUnless[i] = _synergy?.MaskOf(_riftModifiers[i].UnlessMarks) ?? 0;
+                _riftUnless[i] = _synergy?.RoleMaskOf(_riftModifiers[i].UnlessRoles) ?? 0;
         }
 
         private void RequestWorld(in WorldRequestMessage request)
@@ -434,14 +417,13 @@ namespace Game.Core.Party
                 {
                     case PartyEventKind.EnemyKilled:
                         Kills++;
-                        MostConstellationsOnOneEnemy = System.Math.Max(MostConstellationsOnOneEnemy, BitCount(_enemyConstellations));
+                        MostRolesOnOneEnemy = System.Math.Max(MostRolesOnOneEnemy, BitCount((uint)JoinedRoles()));
                         Broadcast(PartyCodec.Encode(_out, EnemyKilledMessage.Of(partyEvent)));
                         break;
                     case PartyEventKind.GuestLeft:
                         _rosterChanged = true;
                         break;
                     case PartyEventKind.EnemySpawned:
-                        _enemyConstellations = ActiveConstellations();
                         _ticksToState = 0;
                         break;
                     case PartyEventKind.WorldPending:
@@ -476,7 +458,6 @@ namespace Game.Core.Party
                 {
                     state.SetRecent(slot, (float)_recentShares[slot]);
                     state.SetHits(slot, _recentHits[slot]);
-                    state.SetMarks(slot, _encounter.Member(slot).Joined ? _marks[slot] : 0);
                     _recentShares[slot] = 0;
                     _recentHits[slot] = 0;
                 }
@@ -496,15 +477,18 @@ namespace Game.Core.Party
             }
         }
 
-        private uint ActiveConstellations()
+        private int JoinedRoles()
         {
-            var active = 0u;
+            if (_synergy == null)
+                return 0;
+            var roles = 0;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
-                if (_encounter.Member(slot).Joined)
-                    active |= _constellations[slot];
+                var member = _encounter.Member(slot);
+                if (member.Joined)
+                    roles |= _synergy.RoleMaskOf((HeroClass)member.HeroClass);
             }
-            return active;
+            return roles;
         }
 
         private static int BitCount(uint mask)

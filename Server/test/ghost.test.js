@@ -16,22 +16,20 @@ function world(...names) {
   return { nk, call, fails };
 }
 
-const upload = (call, user, rate) => call(user, "ghostUploadRpc", { share: true, heroClass: 8, shareRate: rate, marks: ["curse", "curse", "stun"], activeSeconds: 30 });
+const upload = (call, user, rate) => call(user, "ghostUploadRpc", { share: true, heroClass: 8, shareRate: rate, activeSeconds: 30 });
 
 test("a snapshot is checked before it is kept", () => {
   const { call, fails } = world("ann");
-  fails("ann", "ghostUploadRpc", { share: true, heroClass: 18, shareRate: 1, marks: [], activeSeconds: 0 });
-  fails("ann", "ghostUploadRpc", { share: true, heroClass: 1.5, shareRate: 1, marks: [], activeSeconds: 0 });
-  fails("ann", "ghostUploadRpc", { share: true, heroClass: 1, shareRate: -1, marks: [], activeSeconds: 0 });
-  fails("ann", "ghostUploadRpc", { share: true, heroClass: 1, shareRate: 1, marks: ["<script>"], activeSeconds: 0 });
-  fails("ann", "ghostUploadRpc", { share: true, heroClass: 1, shareRate: 1, marks: new Array(11).fill("a"), activeSeconds: 0 });
+  fails("ann", "ghostUploadRpc", { share: true, heroClass: 18, shareRate: 1, activeSeconds: 0 });
+  fails("ann", "ghostUploadRpc", { share: true, heroClass: 1.5, shareRate: 1, activeSeconds: 0 });
+  fails("ann", "ghostUploadRpc", { share: true, heroClass: 1, shareRate: -1, activeSeconds: 0 });
   const reply = upload(call, "ann", 0.4);
   assert.strictEqual(reply.shared, true);
   assert.strictEqual(reply.activity, rules.minActivity, "a few seconds of play give the lowest activity");
 });
 
 test("activity is the play of the last day by the hour, capped by real time", () => {
-  const record = { heroClass: 0, shareRate: 1, marks: [], updatedAt: 0, hourSeconds: new Array(24).fill(0), hourIndex: 101 };
+  const record = { heroClass: 0, shareRate: 1, updatedAt: 0, hourSeconds: new Array(24).fill(0), hourIndex: 101 };
   record.hourSeconds[100 % 24] = 3600;
   record.hourSeconds[101 % 24] = 3600;
   assert.strictEqual(party.ghostActivity(record, 101 * hour), 2 / rules.fullHours);
@@ -56,7 +54,7 @@ test("the ghost comes from the party first, then from the pool, never yourself o
   assert.strictEqual(ghost.name, "ann");
   assert.strictEqual(ghost.heroClass, 8);
   assert.strictEqual(ghost.shareRate, 0.4);
-  assert.deepStrictEqual(plain(ghost.marks), ["curse", "stun"]);
+  assert.strictEqual(ghost.marks, undefined, "a ghost carries no marks, only its class and role");
 
   assert.strictEqual(call("bob", "ghostPickRpc", { userId: "cid" }).ghost.userId, "cid", "a ghost can be asked for by name");
   assert.strictEqual(call("bob", "ghostPickRpc", { userId: "bob" }).ghost, null, "not yourself");

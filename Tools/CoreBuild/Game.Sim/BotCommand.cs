@@ -332,13 +332,12 @@ namespace Game.Sim
 
             public Task<double> ShareGhostAsync()
             {
-                var synergy = _loop.Data.Synergy;
-                return _online.Ghosts.ShareAsync(_loop.State.Class, _loop.Ghost.OwnShareRate, synergy.IdsOf(_loop.Synergy.OwnMarks), _loop.Ghost.TakeActiveSeconds());
+                return _online.Ghosts.ShareAsync(_loop.State.Class, _loop.Ghost.OwnShareRate, _loop.Ghost.TakeActiveSeconds());
             }
 
             public async Task<GhostSnapshot?> TakeGhostAsync(GameData data)
             {
-                var ghost = await _online.Ghosts.PickAsync(data.Synergy).ConfigureAwait(false);
+                var ghost = await _online.Ghosts.PickAsync().ConfigureAwait(false);
                 if (ghost != null)
                     _loop.Ghost.Use(ghost.Value);
                 return ghost;

@@ -4,7 +4,7 @@ namespace Game.Core.Content.Gems
 {
     public sealed class SkillDef
     {
-        public SkillDef(double resourceCost, double cooldownSeconds, double durationSeconds, SkillEffect effect, IReadOnlyList<string>? marks = null, string? weapon = null, NativeTrait? native = null, string? family = null, ArmOn armOn = ArmOn.None, SkillTier tier = SkillTier.Common, SkillRole role = SkillRole.Other)
+        public SkillDef(double resourceCost, double cooldownSeconds, double durationSeconds, SkillEffect effect, string? weapon = null, NativeTrait? native = null, string? family = null, ArmOn armOn = ArmOn.None, SkillTier tier = SkillTier.Common, SkillRole role = SkillRole.Other)
         {
             Tier = tier;
             Role = role;
@@ -12,7 +12,6 @@ namespace Game.Core.Content.Gems
             Family = family;
             Native = native ?? NativeTrait.None;
             Weapon = weapon;
-            Marks = marks ?? System.Array.Empty<string>();
             ResourceCost = resourceCost;
             CooldownSeconds = cooldownSeconds;
             DurationSeconds = durationSeconds;
@@ -20,13 +19,12 @@ namespace Game.Core.Content.Gems
         }
 
         public SkillDef With(double resourceCost, double cooldownSeconds, double durationSeconds, SkillEffect effect) =>
-            new SkillDef(resourceCost, cooldownSeconds, durationSeconds, effect, Marks, Weapon, Native, Family, ArmOn, Tier, Role);
+            new SkillDef(resourceCost, cooldownSeconds, durationSeconds, effect, Weapon, Native, Family, ArmOn, Tier, Role);
 
         public double ResourceCost { get; }
         public double CooldownSeconds { get; }
         public double DurationSeconds { get; }
         public SkillEffect Effect { get; }
-        public IReadOnlyList<string> Marks { get; }
         public string? Weapon { get; }
         public NativeTrait Native { get; }
         public bool IsPassive =>

@@ -76,7 +76,7 @@
         { "stat": "minionSeconds", "kind": "increased", "cap": 1 },
         { "stat": "companionMultiplier", "kind": "increased", "cap": 1 },
         { "stat": "markSeconds", "kind": "flat", "cap": 10 },
-        { "stat": "constellationEffect", "kind": "increased", "cap": 1 },
+        { "stat": "roleBuffEffect", "kind": "increased", "cap": 1 },
         { "stat": "blindSeconds", "kind": "flat", "cap": 5 },
         { "stat": "bossTimerSeconds", "kind": "flat", "cap": 30 },
         { "stat": "bossTimerSlow", "kind": "flat", "cap": 1 },

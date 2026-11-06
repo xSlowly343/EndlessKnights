@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, Synergy = 15, BossRequest = 16, Marks = 17, PartyLoadout = 18
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, BossRequest = 16, PartyLoadout = 18
 }
 
 class PartyWriter {
@@ -188,21 +188,6 @@ function partyRelayResource(data: ArrayBuffer, slot: number, max: number): Array
     return w.bytes();
 }
 
-function partyDecodeSynergy(data: ArrayBuffer, constellations: number): number | null {
-    const r = partyOpen(data, PartyMessageKind.Synergy);
-    const mask = r.uint();
-    if (!r.complete)
-        return null;
-    const known = Math.pow(2, Math.min(32, constellations)) - 1;
-    return mask % (known + 1);
-}
-
-function partyDecodeMarks(data: ArrayBuffer): number | null {
-    const r = partyOpen(data, PartyMessageKind.Marks);
-    const marks = r.uint();
-    return r.complete ? marks : null;
-}
-
 function partyBitCount(mask: number): number {
     let count = 0;
     for (let rest = mask >>> 0; rest !== 0; rest = (rest & (rest - 1)) >>> 0)
@@ -261,7 +246,7 @@ function partyStart(kind: PartyMessageKind): PartyWriter {
     return writer;
 }
 
-function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, recent?: number[], hits?: number[], marks?: number[]): ArrayBuffer {
+function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, recent?: number[], hits?: number[]): ArrayBuffer {
     const w = partyStart(PartyMessageKind.EncounterState);
     w.uint(sequence);
     w.long(encounter.tick);
@@ -305,8 +290,6 @@ function partyEncodeEncounterState(encounter: PartyEncounter, sequence: number, 
     for (const word of encounter.history.rewards)
         w.uint(word);
     w.uint(Math.min(4294967295, encounter.waveStage()));
-    for (let slot = 0; slot < PartyMaxSlots; slot++)
-        w.uint(marks && encounter.members[slot].joined ? marks[slot] >>> 0 : 0);
     w.uint(Math.max(0, encounter.enemiesOnStage()));
     w.double(encounter.shieldFloor);
     return w.bytes();

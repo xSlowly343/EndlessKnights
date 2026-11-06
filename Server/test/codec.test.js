@@ -38,7 +38,7 @@ test("encounter state and roster encode like the core", () => {
   assert.strictEqual(hex(party.partyEncodeEncounterState(encounter, vectors.encode.encounterState.sequence)), vectors.encode.encounterState.hex);
   assert.strictEqual(hex(party.partyEncodeRoster(encounter, vectors.encode.roster.version, numbers)), vectors.encode.roster.hex);
   const busy = vectors.encode.busyState;
-  assert.strictEqual(hex(party.partyEncodeEncounterState(encounter, busy.sequence, busy.recent, busy.hits, busy.marks)), busy.hex, "recent shares, hits and marks, hits above 255 are cut");
+  assert.strictEqual(hex(party.partyEncodeEncounterState(encounter, busy.sequence, busy.recent, busy.hits)), busy.hex, "recent shares and hits, hits above 255 are cut");
 });
 
 test("kill and moment encode like the core", () => {
@@ -59,8 +59,6 @@ test("client messages decode like the core", () => {
   assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(weakenCast.hex))), strip(weakenCast));
   assert.deepStrictEqual(plain(party.partyDecodeCastEffect(bytes(endCast.hex))), strip(endCast));
   assert.strictEqual(party.partyKindOf(bytes(vectors.decode.bossRequest.hex)), 16, "a boss request is the kind byte alone");
-  assert.strictEqual(party.partyDecodeMarks(bytes(vectors.decode.marks.hex)), vectors.decode.marks.marks);
-  assert.strictEqual(party.partyDecodeMarks(bytes(vectors.decode.newMarks.hex)), vectors.decode.newMarks.marks, "bond and blood marks of the v3 roster");
   assert.deepStrictEqual(plain(party.partyDecodePresence(bytes(presence.hex))), strip(presence));
   assert.deepStrictEqual(plain(party.partyDecodeWorldRequest(bytes(worldRequest.hex))), strip(worldRequest));
 });
@@ -93,13 +91,6 @@ test("resource for allies is relayed with the sender slot and capped", () => {
   const capped = party.partyRelayResource(bytes(resource.hex), resource.slot, 5);
   assert.strictEqual(new DataView(capped).getFloat32(2, true), 5);
   assert.strictEqual(party.partyRelayResource(bytes(resource.hex.slice(0, -2)), resource.slot, 1000), null);
-});
-
-test("synergies on the enemy decode like the core", () => {
-  const synergy = vectors.decode.synergy;
-  assert.strictEqual(party.partyDecodeSynergy(bytes(synergy.hex), 12), synergy.constellations);
-  assert.strictEqual(party.partyDecodeSynergy(bytes(synergy.hex), 1), 1, "constellations the server does not know are cut");
-  assert.strictEqual(party.partyDecodeSynergy(bytes(synergy.hex.slice(0, -2)), 12), null);
 });
 
 test("offers are relayed with the sender slot", () => {

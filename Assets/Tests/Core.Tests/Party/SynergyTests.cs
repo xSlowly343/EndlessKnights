@@ -1,5 +1,5 @@
+using System.Linq;
 using Game.Core.Content;
-using Game.Core.Content.Gems;
 using Game.Core.Content.Synergy;
 using Game.Core.Party;
 using Game.Core.Sim;
@@ -14,8 +14,6 @@ namespace Game.Core.Tests.Party
     {
         private static SynergyRules Rules => TestWorld.Data.Synergy;
 
-        private static int Mark(string mark) => Rules.MaskOf(new[] { mark });
-
         private static GameLoop Hero(HeroClass heroClass)
         {
             var loop = TestWorld.Loop();
@@ -23,147 +21,79 @@ namespace Game.Core.Tests.Party
             return loop;
         }
 
+        private static double Damage(GameLoop loop) => loop.Hero.Value(CombatStats.Damage, 1);
+
         [Test]
-        public void FullOrchestraNeedsFourRoles()
+        public void EveryRoleHasABuffAndTheRolesAreThePartyRoles()
+        {
+            Assert.That(Rules.Roles.Count, Is.EqualTo(8));
+            for (var i = 0; i < Rules.Roles.Count; i++)
+                Assert.That(Rules.RoleBuffs[i], Is.Not.Empty, Rules.Roles[i]);
+            foreach (var heroClass in HeroClassNames.ByName.Values)
+                Assert.That(Rules.RoleOf(heroClass), Is.EqualTo(TestWorld.Data.Party.Search.RoleOf(heroClass)));
+        }
+
+        [Test]
+        public void AnAllysRoleGivesItsBuffOnceAndNotToThemselves()
+        {
+            var loop = Hero(HeroClass.Windshot);
+            loop.Tick();
+            var alone = Damage(loop);
+
+            loop.Synergy.SetAlly(0, true, HeroClass.Runedancer);
+            loop.Tick();
+            var withStriker = Damage(loop);
+            Assert.That(withStriker, Is.GreaterThan(alone));
+
+            loop.Synergy.SetAlly(1, true, HeroClass.Duelist);
+            loop.Tick();
+            Assert.That(Damage(loop), Is.EqualTo(withStriker).Within(1e-12), "the same role twice does not stack");
+
+            loop.Synergy.SetAlly(0, false, default);
+            loop.Synergy.SetAlly(1, false, default);
+            loop.Tick();
+            Assert.That(Damage(loop), Is.EqualTo(alone).Within(1e-12));
+        }
+
+        [Test]
+        public void FourDifferentRolesGiveThreeBuffs()
         {
             var loop = Hero(HeroClass.Runedancer);
-            var before = loop.Hero.Value(CombatStats.Gold, 1);
-            loop.Synergy.SetAlly(0, true, HeroClass.Minstrel, 0);
-            loop.Synergy.SetAlly(1, true, HeroClass.Whisperer, 0);
+            loop.Synergy.SetAlly(0, true, HeroClass.Minstrel);
+            loop.Synergy.SetAlly(1, true, HeroClass.Whisperer);
+            loop.Synergy.SetAlly(2, true, HeroClass.Soulbinder);
             loop.Tick();
-            Assert.That(loop.Hero.Value(CombatStats.Gold, 1), Is.EqualTo(before).Within(1e-9));
-
-            loop.Synergy.SetAlly(3, true, HeroClass.Soulbinder, 0);
-            loop.Tick();
-
-            Assert.That(loop.Synergy.ConstellationActive(IndexOfConstellation("full_orchestra")), Is.True);
-            Assert.That(loop.Hero.Value(CombatStats.Gold, 1), Is.EqualTo(before * 1.15).Within(1e-9));
+            var active = Enumerable.Range(0, Rules.Roles.Count).Count(i => loop.Synergy.RoleActive(i));
+            Assert.That(active, Is.EqualTo(3));
+            Assert.That(loop.Synergy.RoleActive(Rules.Roles.ToList().IndexOf("striker")), Is.False, "the hero's own role is not a buff for them");
         }
 
         [Test]
-        public void SynergyRolesAreThePartyRoles()
+        public void BuffsHoldOnlyWhileTheHeroAndTheAllyFight()
         {
-            foreach (HeroClass heroClass in System.Enum.GetValues(typeof(HeroClass)))
-                Assert.That(Rules.RoleOf(heroClass), Is.EqualTo(TestWorld.Data.Party.Search.RoleOf(heroClass)), HeroClassNames.Of(heroClass));
-        }
-
-        [Test]
-        public void StrikerAndHeraldShareBladeAndBanner()
-        {
-            var loop = Hero(HeroClass.Duelist);
-            var before = loop.Hero.Value(CombatStats.Damage, 1);
-            loop.Synergy.SetAlly(0, true, HeroClass.Lanternbearer, 0);
-
+            var loop = Hero(HeroClass.Windshot);
+            loop.Synergy.SetAlly(0, true, HeroClass.Runedancer, fighting: false);
             loop.Tick();
-
-            Assert.That(loop.Synergy.ConstellationActive(IndexOfConstellation("blade_and_banner")), Is.True);
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(before * 1.06).Within(1e-9));
-        }
-
-        [Test]
-        public void EveryRolePairsWithAnotherRole()
-        {
-            foreach (var role in Rules.Roles)
-            {
-                var paired = false;
-                foreach (var constellation in Rules.Constellations)
-                {
-                    if (constellation.RoleGroups.Count != 2)
-                        continue;
-                    var mask = 1 << IndexOf(Rules.Roles, role);
-                    var first = (constellation.RoleGroups[0] & mask) != 0;
-                    var second = (constellation.RoleGroups[1] & mask) != 0;
-                    paired |= (first && constellation.RoleGroups[1] != mask) || (second && constellation.RoleGroups[0] != mask);
-                }
-                Assert.That(paired, Is.True, role);
-            }
-        }
-
-        private static int IndexOf(System.Collections.Generic.IReadOnlyList<string> list, string item)
-        {
-            for (var i = 0; i < list.Count; i++)
-                if (list[i] == item)
-                    return i;
-            return -1;
-        }
-
-        [Test]
-        public void AConstellationHoldsOnlyWhileEveryMemberFights()
-        {
-            var loop = Hero(HeroClass.Runedancer);
-            var orchestra = IndexOfConstellation("full_orchestra");
-            loop.Synergy.SetAlly(0, true, HeroClass.Minstrel, 0);
-            loop.Synergy.SetAlly(1, true, HeroClass.Whisperer, 0);
-            loop.Synergy.SetAlly(3, true, HeroClass.Soulbinder, 0, fighting: false);
-            loop.Tick();
-            Assert.That(loop.Synergy.ConstellationActive(orchestra), Is.False, "the summoner rests");
-
-            loop.Synergy.SetAlly(3, true, HeroClass.Soulbinder, 0);
-            loop.Tick();
-            Assert.That(loop.Synergy.ConstellationActive(orchestra), Is.True);
-
+            Assert.That(loop.Synergy.AllyRoles, Is.Zero);
+            loop.Synergy.SetAlly(0, true, HeroClass.Runedancer);
             loop.Synergy.OwnFighting = false;
             loop.Tick();
-            Assert.That(loop.Synergy.ConstellationActive(orchestra), Is.False, "the player rests");
-
-            loop.Synergy.ClearAllies();
-            Assert.That(loop.Synergy.OwnFighting, Is.True, "in solo the player always counts as fighting");
+            Assert.That(loop.Synergy.AllyRoles, Is.Zero);
+            loop.Synergy.OwnFighting = true;
+            loop.Tick();
+            Assert.That(loop.Synergy.AllyRoles, Is.Not.Zero);
         }
 
         [Test]
-        public void PoisonFireAndMinionsAreMarksWhileTheyAreThere()
+        public void TheRoleBuffEffectScalesEveryBuff()
         {
-            var loop = Hero(HeroClass.Ghostcaptain);
-            loop.State.PoisonStacks = 3;
-            loop.State.BurnStacks = 2;
-            loop.State.Minions[1] = new MinionState { Kind = MinionKind.Skeleton, TicksLeft = 1000 };
-
-            loop.Synergy.Tick();
-
-            Assert.That(loop.Synergy.OwnMarks, Is.EqualTo(Mark("poison") | Mark("fire") | Mark("summon")));
-            loop.State.PoisonStacks = 0;
-            loop.State.BurnStacks = 0;
-            loop.State.Minions[1] = default;
-            loop.Synergy.Tick();
-            Assert.That(loop.Synergy.OwnMarks, Is.Zero);
-        }
-
-        [Test]
-        public void ChillBrewAndPollenGiveColdBloodAndBond()
-        {
-            var loop = Hero(HeroClass.Soulbinder);
-            loop.State.Soulbinder.ColdTicks = 10;
-            loop.State.Herbwitch.Brew = 5;
-            loop.State.Boons.Pollen = 1;
-            loop.State.Boons.PollenTicks = 10;
-
-            loop.Synergy.Tick();
-
-            Assert.That(loop.Synergy.OwnMarks, Is.EqualTo(Mark("cold") | Mark("blood") | Mark("bond")));
-            loop.State.Soulbinder.ColdTicks = 0;
-            loop.State.Herbwitch.Brew = 0;
-            loop.State.Boons.PollenTicks = 0;
-            loop.Synergy.Tick();
-            Assert.That(loop.Synergy.OwnMarks, Is.Zero);
-        }
-
-        [TestCase(@"""pollenOnHero"": ""bond""", @"""pollenOnHero"": ""frost""", "unknown mark 'frost'")]
-        [TestCase(@"""minionsOut"": ""summon""", @"""cannonsOut"": ""summon""", "unknown state 'cannonsOut'")]
-        public void BrokenMarkSourcesAreReported(string from, string to, string message)
-        {
-            var json = TestData.ReadGameDataFile(SynergyRules.FileName).Replace(from, to);
-
-            var error = Assert.Throws<ContentException>(() => SynergyRules.Load(json))!;
-
-            Assert.That(error.Message, Does.Contain(message));
-        }
-
-        private static int IndexOfMark(string mark)
-        {
-            for (var i = 0; i < Rules.Marks.Count; i++)
-                if (Rules.Marks[i] == mark)
-                    return i;
-            throw new System.ArgumentException(mark);
+            var loop = Hero(HeroClass.Windshot);
+            loop.Synergy.SetAlly(0, true, HeroClass.Runedancer);
+            loop.Tick();
+            var buff = Damage(loop);
+            loop.Hero.Add(new Modifier(CombatStats.RoleBuffEffect, ModifierKind.Increased, 1));
+            loop.Tick();
+            Assert.That(Damage(loop) - 1, Is.EqualTo((buff - 1) * 2).Within(1e-9));
         }
 
         [Test]
@@ -174,8 +104,8 @@ namespace Game.Core.Tests.Party
             if (System.GC.GetAllocatedBytesForCurrentThread() - probeBefore < probe.Length)
                 Assert.Ignore("This runtime does not report allocated bytes per thread.");
             var loop = Hero(HeroClass.Sandwalker);
-            loop.Synergy.SetAlly(0, true, HeroClass.Alchemist, Mark("poison"));
-            loop.Synergy.SetAlly(1, true, HeroClass.Dowser, Mark("fire"));
+            loop.Synergy.SetAlly(0, true, HeroClass.Alchemist);
+            loop.Synergy.SetAlly(1, true, HeroClass.Dowser);
             for (var tick = 0; tick < 200; tick++)
                 loop.Tick();
 
@@ -186,9 +116,8 @@ namespace Game.Core.Tests.Party
             Assert.That(System.GC.GetAllocatedBytesForCurrentThread() - before, Is.EqualTo(0));
         }
 
-        [TestCase(@"""brewOnEnemy"": ""blood""", @"""brewOnEnemy"": ""moonlight""", "unknown mark 'moonlight'")]
         [TestCase(@"""runedancer"": ""striker"", ", "", "class 'runedancer' has no role")]
-        [TestCase(@"""roles"": [[""summoner""], [""summoner""]]", @"""roles"": [[""summoner""]]", "at least two members")]
+        [TestCase(@"""seeker"": [", @"""finder"": [", "unknown role 'finder'")]
         public void BrokenSynergyIsReported(string from, string to, string message)
         {
             var json = TestData.ReadGameDataFile(SynergyRules.FileName).Replace(from, to);
@@ -196,24 +125,6 @@ namespace Game.Core.Tests.Party
             var error = Assert.Throws<ContentException>(() => SynergyRules.Load(json))!;
 
             Assert.That(error.Message, Does.Contain(message));
-        }
-
-        [Test]
-        public void GemWithUnknownMarkIsReported()
-        {
-            var gems = Game.Core.Content.Gems.GemCatalog.Load(TestData.ReadGameDataFile("skills.json").Replace(@"""id"": ""runedancer_hit_1"",", @"""id"": ""runedancer_hit_1"", ""marks"": [""frost""],"));
-
-            var error = Assert.Throws<ContentException>(() => Rules.RequireGemMarks(gems))!;
-
-            Assert.That(error.Message, Does.Contain("unknown mark 'frost'"));
-        }
-
-        private static int IndexOfConstellation(string id)
-        {
-            for (var i = 0; i < Rules.Constellations.Count; i++)
-                if (Rules.Constellations[i].Id == id)
-                    return i;
-            throw new System.ArgumentException(id);
         }
     }
 }

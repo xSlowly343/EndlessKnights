@@ -89,7 +89,6 @@ namespace Game.Core.Sim
         public static readonly StatId QueueStrikeMultiplier = new StatId("queueStrikeMultiplier");
         public static readonly StatId CloneEvery = new StatId("cloneEvery");
         public static readonly StatId CloneMultiplier = new StatId("cloneMultiplier");
-        public static readonly StatId ResourceOnAllyMark = new StatId("resourceOnAllyMark");
         public static readonly StatId DamagePerCombo = new StatId("damagePerCombo");
         public static readonly StatId DamagePerComboMax = new StatId("damagePerComboMax");
         public static readonly StatId SkillSuperEvery = new StatId("skillSuperEvery");
@@ -214,6 +213,6 @@ namespace Game.Core.Sim
         public static readonly StatId FocusFromMouse = new StatId("focusFromMouse");
         public static readonly StatId FocusIdleFloor = new StatId("focusIdleFloor");
         public static readonly StatId DustGain = new StatId("dustGain");
-        public static readonly StatId ConstellationEffect = new StatId("constellationEffect");
+        public static readonly StatId RoleBuffEffect = new StatId("roleBuffEffect");
     }
 }

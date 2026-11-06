@@ -288,7 +288,7 @@ namespace Game.Core.Tests.Party
         {
             var network = new LoopbackNetwork(5, 20, 60, 0, 4096);
             var host = new PartyHost(new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 3), network.Connect(HostId), TestWorld.Data.Party);
-            var members = new[] { Member(network, 10, HeroClass.Lanternbearer), Member(network, 11, HeroClass.Duelist) };
+            var members = new[] { Member(network, 10, HeroClass.Lanternbearer), Member(network, 11, HeroClass.Minstrel) };
             var giver = members[0].Loop;
             var friend = members[1].Loop;
             giver.Hero.Add(Line(@"{ ""to"": ""allies"", ""stat"": ""gold"", ""kind"": ""increased"", ""value"": 0.2 }"));

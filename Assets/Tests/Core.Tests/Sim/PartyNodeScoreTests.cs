@@ -11,18 +11,9 @@ namespace Game.Core.Tests.Sim
             new NodeScore(StatTags.Strike, Game.Core.Content.Tree.ClassAttributeDef.None, inParty).Of(new[] { modifier });
 
         [Test]
-        public void AllyMarkLinesCountOnlyInAParty()
+        public void PartyLinesCountOnlyInAParty()
         {
-            var line = new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.05, StatTags.None, ModifierPool.General, ModifierCondition.AllyPoison);
-
-            Assert.That(Score(false, line), Is.EqualTo(0));
-            Assert.That(Score(true, line), Is.GreaterThan(0));
-        }
-
-        [Test]
-        public void PartyAndAnyAllyMarkLinesCountOnlyInAParty()
-        {
-            foreach (var condition in new[] { ModifierCondition.InParty, ModifierCondition.AnyAllyMark })
+            foreach (var condition in new[] { ModifierCondition.InParty })
             {
                 var line = new Modifier(CombatStats.Damage, ModifierKind.Increased, 0.05, StatTags.None, ModifierPool.General, condition);
 
@@ -32,9 +23,9 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ConstellationStrengthCountsOnlyInAParty()
+        public void RoleBuffStrengthCountsOnlyInAParty()
         {
-            var line = new Modifier(CombatStats.ConstellationEffect, ModifierKind.Increased, 0.1);
+            var line = new Modifier(CombatStats.RoleBuffEffect, ModifierKind.Increased, 0.1);
 
             Assert.That(Score(false, line), Is.EqualTo(0));
             Assert.That(Score(true, line), Is.GreaterThan(0));

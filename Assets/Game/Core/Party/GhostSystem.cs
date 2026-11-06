@@ -14,7 +14,7 @@ namespace Game.Core.Party
         private PartyGhostRules _rules;
         private GhostSnapshot _ghost;
         private bool _present;
-        private bool _marked;
+        private bool _shown;
         private long _activeTicks;
         private long _seenBossKills;
         private long _thankedBosses;
@@ -81,7 +81,7 @@ namespace Game.Core.Party
 
         public void Tick()
         {
-            ShowMarks();
+            ShowAlly();
             var bossKills = _state.BossKills;
             if (Fighting && bossKills > _seenBossKills)
                 BossesHelped += bossKills - _seenBossKills;
@@ -96,13 +96,13 @@ namespace Game.Core.Party
             Damage += damage;
         }
 
-        private void ShowMarks()
+        private void ShowAlly()
         {
             var wanted = Fighting;
-            if (wanted == _marked && !wanted)
+            if (wanted == _shown && !wanted)
                 return;
-            _marked = wanted;
-            _synergy.SetAlly(Slot, wanted, _ghost.HeroClass, wanted ? _ghost.Marks : 0);
+            _shown = wanted;
+            _synergy.SetAlly(Slot, wanted, _ghost.HeroClass);
         }
     }
 }

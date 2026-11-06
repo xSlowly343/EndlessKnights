@@ -318,12 +318,6 @@ namespace Game.Core.Content.Gems
                 throw node.Error("an aura needs durationSeconds or reserve");
             if ((effect is KeyRepeatEffect || effect is StreakStrikeEffect || effect is InputHitsEffect || effect is TrailEffect || (effect is StacksEffect stacks && !stacks.Passive)) && duration <= 0)
                 throw node.Error($"a {node.Field("effect").Field("type").AsString()} skill needs durationSeconds");
-            var marks = new List<string>();
-            if (node.HasField("marks"))
-            {
-                foreach (var mark in node.Field("marks").Items())
-                    marks.Add(mark.AsString());
-            }
             var weapon = node.HasField("weapon") ? node.Field("weapon").AsString() : null;
             if (effect is AuraEffect classAura && weapon != null && !classAura.Reserves)
                 throw node.Field("effect").Error("a class aura reserves resource: add reserve");
@@ -336,7 +330,7 @@ namespace Game.Core.Content.Gems
                 throw node.Error("tier and role belong to class skills: add a weapon");
             var tier = node.HasField("tier") ? Pick(node.Field("tier"), Tiers, "common, rare, epic, legendary or mythic") : SkillTier.Common;
             var role = node.HasField("role") ? Pick(node.Field("role"), Roles, "fast or heavy") : SkillRole.Other;
-            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, marks, weapon, native, family, armOn, tier, role);
+            return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, weapon, native, family, armOn, tier, role);
         }
 
         private static SkillEffect ReadEffect(ContentNode node, double durationSeconds)
