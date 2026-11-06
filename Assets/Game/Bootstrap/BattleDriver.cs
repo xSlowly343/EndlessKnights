@@ -65,7 +65,9 @@ namespace Game.Bootstrap
 
         private void Update()
         {
-            _loop.SetLocalDay(_day != null ? _day.Today(Game.Platform.Windows.Power.SystemClock.Read()) : LocalDay.Of(DateTimeOffset.Now));
+            var clock = Game.Platform.Windows.Power.SystemClock.Read();
+            _loop.SetLocalDay(_day != null ? _day.Today(clock) : LocalDay.Of(DateTimeOffset.Now));
+            _loop.SetServerTime(_day != null ? _day.UtcMs(clock) : clock.WallUnixMs);
             _loop.Advance(Time.unscaledDeltaTime);
             ShowEvents();
             ShowState();

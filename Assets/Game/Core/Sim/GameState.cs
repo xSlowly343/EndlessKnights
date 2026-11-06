@@ -51,6 +51,11 @@ namespace Game.Core.Sim
         public string Biome { get; set; } = string.Empty;
         public string PreviousBiome { get; set; } = string.Empty;
         public long BiomeSinceTick { get; set; }
+        public long[] BiomeLeftTicks { get; } = new long[8];
+        public bool BiomeFresh { get; set; }
+        public int ServerHour { get; set; } = -1;
+        public double[] InputActivity { get; } = new double[4];
+        public int Fate { get; set; } = -1;
         public long HighestStage { get; set; } = 1;
         public long RecordStage { get; set; } = 1;
         public int HeroLevel { get; set; } = 1;

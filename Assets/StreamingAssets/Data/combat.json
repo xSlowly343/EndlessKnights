@@ -183,7 +183,7 @@
     "cullMax": 0.5,
     "afterIdle": { "pauseSeconds": 30, "seconds": 10 },
     "fastKillSeconds": 3,
-    "inputKindSeconds": 10,
+    "inputKindSeconds": 10, "leastInputSeconds": 60, "dayNight": { "dayStartHour": 6, "nightStartHour": 18, "serverUtcOffsetHours": 3 },
     "bossOpeningSeconds": 3, "bossLowHp": 0.3, "afterFastKillSeconds": 3, "afterGestureSeconds": 3, "mouseMovingSeconds": 0.5,
     "longStreak": { "seconds": 120, "pauseSeconds": 3 }
   },

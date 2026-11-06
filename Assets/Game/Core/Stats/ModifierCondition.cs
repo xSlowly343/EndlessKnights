@@ -27,6 +27,21 @@ namespace Game.Core.Stats
         SilenceKeys,
         SilenceMouse,
         SilenceClicks,
-        InRift
+        InRift,
+        Day,
+        Night,
+        InBiome1,
+        InBiome2,
+        InBiome3,
+        InBiome4,
+        InBiome5,
+        FreshBiome,
+        LeastKeys,
+        LeastMouse,
+        LeastClicks,
+        LeastPause,
+        FateDamage,
+        FateGold,
+        FateGems
     }
 }

@@ -23,9 +23,12 @@ namespace Game.Core.Sim
         }
 
         public GuardianWatch Guardian => _guardian;
+        public StageTable? Stages { get; set; }
+        private int _ticksSinceKeys = int.MaxValue / 2;
 
         public void NoteInput(in EffectiveInput input)
         {
+            NoteActivity(input);
             if (_state.AfterFastKillTicks > 0)
                 _state.AfterFastKillTicks--;
         }
@@ -34,6 +37,8 @@ namespace Game.Core.Sim
         {
             var conditions = Current();
             NoteShares(conditions & ~ModifierConditions.Bit(ModifierCondition.InRift));
+            _state.ConditionShares[(int)ModifierCondition.Day] = 0.5;
+            _state.ConditionShares[(int)ModifierCondition.Night] = 0.5;
             var auraStrength = _hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura);
             _hero.SetConditions(conditions);
             if (_hero.Value(CombatStats.AuraEffect, 1, StatTags.Aura) != auraStrength)
@@ -51,7 +56,57 @@ namespace Game.Core.Sim
             }
         }
 
-        public ulong Current() => BossConditions() | ResourceConditions() | MomentConditions() | _guardian.Conditions();
+        public ulong Current() => BossConditions() | ResourceConditions() | MomentConditions() | WorldConditions() | _guardian.Conditions();
+
+        private void NoteActivity(in EffectiveInput input)
+        {
+            var activity = _state.InputActivity;
+            var step = 1.0 / System.Math.Max(1, _combat.Conditions.LeastInputSeconds * GameLoop.TicksPerSecond);
+            _ticksSinceKeys = input.Hits > input.ButtonPresses ? 0 : _ticksSinceKeys + 1;
+            var keys = _ticksSinceKeys < GameLoop.TicksPerSecond;
+            var mouse = input.MousePx > 0 || _state.MouseIdleTicks < GameLoop.TicksPerSecond;
+            var clicks = input.ButtonPresses > 0 || _state.ClicklessTicks < GameLoop.TicksPerSecond;
+            Blend(activity, 0, keys, step);
+            Blend(activity, 1, mouse, step);
+            Blend(activity, 2, clicks, step);
+            Blend(activity, 3, !keys && !mouse && !clicks, step);
+        }
+
+        private static void Blend(double[] activity, int kind, bool on, double step) =>
+            activity[kind] += ((on ? 1.0 : 0.0) - activity[kind]) * step;
+
+        private ulong WorldConditions()
+        {
+            var conditions = 0UL;
+            var rules = _combat.Conditions;
+            if (_state.ServerHour >= 0)
+                conditions |= ModifierConditions.Bit(rules.IsDay(_state.ServerHour) ? ModifierCondition.Day : ModifierCondition.Night);
+            if (_state.Fate >= 0)
+                conditions |= ModifierConditions.Bit((ModifierCondition)((int)ModifierCondition.FateDamage + _state.Fate));
+            conditions |= LeastInput();
+            if (Stages == null)
+                return conditions;
+            var biome = BiomeRotation.Index(Stages, _state, _state.Stage);
+            if (biome >= 0 && biome < 5)
+                conditions |= ModifierConditions.Bit((ModifierCondition)((int)ModifierCondition.InBiome1 + biome));
+            if (biome >= 0 && _state.BiomeFresh)
+                conditions |= ModifierConditions.Bit(ModifierCondition.FreshBiome);
+            return conditions;
+        }
+
+        private ulong LeastInput()
+        {
+            var activity = _state.InputActivity;
+            var least = -1;
+            var total = 0.0;
+            for (var i = 0; i < activity.Length; i++)
+            {
+                total += activity[i];
+                if (least < 0 || activity[i] < activity[least])
+                    least = i;
+            }
+            return total > 0 ? ModifierConditions.Bit((ModifierCondition)((int)ModifierCondition.LeastKeys + least)) : 0;
+        }
 
         private ulong MomentConditions()
         {

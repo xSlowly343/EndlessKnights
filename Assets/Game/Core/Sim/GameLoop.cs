@@ -173,7 +173,7 @@ namespace Game.Core.Sim
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
-            _conditions = new ConditionSystem(state, hero, _combat, _skills, _focus);
+            _conditions = new ConditionSystem(state, hero, _combat, _skills, _focus) { Stages = data.Stages };
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
             _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates };
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events, hero);
@@ -602,8 +602,22 @@ namespace Game.Core.Sim
                 _castRequests |= 1UL << slotIndex;
         }
 
+        public void SetServerTime(long utcUnixMs) => State.ServerHour = _data.Combat.Conditions.ServerHour(utcUnixMs);
+
+        public static int FateOf(long startedUnixMs, long day)
+        {
+            var mixed = (ulong)startedUnixMs * 0x9E3779B97F4A7C15UL ^ (ulong)day * 0xBF58476D1CE4E5B9UL;
+            mixed ^= mixed >> 31;
+            mixed *= 0x94D049BB133111EBUL;
+            mixed ^= mixed >> 29;
+            return (int)(mixed % 3);
+        }
+
+        public int FateOn(long day) => FateOf(State.StartedUnixMs, day);
+
         public void SetLocalDay(long day)
         {
+            State.Fate = FateOn(day);
             _drops.SetDay(day);
             _quests.SetDay(day);
             _chronicle.SetDay(day);
@@ -815,6 +829,7 @@ namespace Game.Core.Sim
             _resource.UseRules(data.Combat.Resources);
             _combat.UseRules(data.Combat);
             _stage.UseData(data.Stages, data.Enemies);
+            _conditions.Stages = data.Stages;
             _combat.Dreamcatcher.UseEnemies(data.Enemies);
             _loot.UseData(data.Stages);
             _levels.UseData(data.Combat.Hero, data.Stages, data.TreePoints);
