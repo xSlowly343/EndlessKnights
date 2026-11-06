@@ -9,6 +9,13 @@ interface PartyEvent {
     saved: number;
 }
 
+const PartySplashDepth = 3;
+const PartySplashFloor = 1e-9;
+
+function partyClampPierce(value: number, max: number): number {
+    return value > 0 ? Math.min(max, value) : 0;
+}
+
 class PartyMember {
     playerId = "";
     joined = false;
@@ -22,6 +29,12 @@ class PartyMember {
     restBankTicks = 0;
     heroClass = 0;
     echoLines = 0;
+    pierceShare = 0;
+    enemySkip = 0;
+    splashShare = 0;
+    splashTargets = 0;
+    bossPierce = 0;
+    stageCarry = 0;
     guestTicksLeft = 0;
     stage = 0;
     creditRate = 0;
@@ -43,6 +56,12 @@ class PartyMember {
         this.restBankTicks = 0;
         this.heroClass = 0;
         this.echoLines = 0;
+        this.pierceShare = 0;
+        this.enemySkip = 0;
+        this.splashShare = 0;
+        this.splashTargets = 0;
+        this.bossPierce = 0;
+        this.stageCarry = 0;
         this.guestTicksLeft = 0;
         this.stage = 0;
         this.creditRate = 0;
@@ -123,6 +142,7 @@ class PartyEncounter {
     private previousKind = PartyEnemyKind.Normal;
     private previousKilledTick = -Number.MAX_SAFE_INTEGER;
     private chainKills = 0;
+    private readonly splash: number[] = new Array(PartyMaxSlots * PartySplashDepth).fill(0);
 
     constructor(private rules: PartyEncounterRules, private readonly seed: string) {
         for (let i = 0; i < PartyMaxSlots; i++)
@@ -198,6 +218,7 @@ class PartyEncounter {
         const member = this.members[slot];
         const hadWeight = member.weight > 0;
         member.reset();
+        this.clearSplash(slot);
         if (hadWeight)
             this.dropFighterMidFight();
     }
@@ -280,6 +301,23 @@ class PartyEncounter {
     setHeroClass(slot: number, heroClass: number): void {
         if (this.isMember(slot))
             this.members[slot].heroClass = heroClass;
+    }
+
+    setPierce(slot: number, stats: PartyPierceStats): void {
+        if (!this.isMember(slot))
+            return;
+        const caps = this.rules.pierceCaps;
+        const member = this.members[slot];
+        member.pierceShare = partyClampPierce(stats.pierceShare, caps.maxShare);
+        member.enemySkip = Math.max(0, Math.min(caps.maxEnemySkip, stats.enemySkip));
+        member.splashShare = partyClampPierce(stats.splashShare, caps.maxSplashShare);
+        member.splashTargets = Math.max(0, Math.min(Math.min(caps.maxSplashTargets, PartySplashDepth), stats.splashTargets));
+        member.bossPierce = partyClampPierce(stats.bossPierce, caps.maxBossPierce);
+        member.stageCarry = partyClampPierce(stats.stageCarry, caps.maxStageCarry);
+    }
+
+    splashQueued(slot: number, position: number): number {
+        return this.splash[slot * PartySplashDepth + position];
     }
 
     setEchoLines(slot: number, echoLines: number): void {
@@ -393,10 +431,20 @@ class PartyEncounter {
             return 0;
         const first = Math.min(this.barLeft, budget);
         const struck = this.enemyId;
+        const struckKind = this.enemyKind;
+        const typing = this.typing(slot);
+        if (typing && struckKind === PartyEnemyKind.Normal)
+            this.queueSplash(slot, first);
         let total = this.hit(slot, first);
-        if (this.enemyId === struck || !this.typing(slot) || !(this.rules.pierceShare > 0))
+        if (this.enemyId === struck || !typing)
             return total;
-        let overflow = (budget - first) * this.rules.pierceShare;
+        const member = this.members[slot];
+        const carry = struckKind === PartyEnemyKind.Normal
+            ? Math.min(this.rules.pierceCaps.maxShare, this.rules.pierceShare + member.pierceShare)
+            : member.stageCarry;
+        if (struckKind === PartyEnemyKind.Normal)
+            total += this.skipEnemies(slot, member.enemySkip);
+        let overflow = (budget - first) * carry;
         while (overflow > 0 && this.started && !this.switching && this.enemyKind === PartyEnemyKind.Normal && this.chainKills < this.rules.pierceKillsPerTick) {
             const target = this.enemyId;
             const step = Math.min(this.barLeft, overflow);
@@ -406,7 +454,46 @@ class PartyEncounter {
                 break;
             this.chainKills++;
         }
+        if (overflow > 0 && this.started && !this.switching && this.enemyKind === PartyEnemyKind.Boss && member.bossPierce > 0)
+            total += this.hit(slot, Math.min(overflow * member.bossPierce, this.barLeft * this.rules.pierceCaps.bossPierceHpShare));
         return total;
+    }
+
+    private skipEnemies(slot: number, skip: number): number {
+        let total = 0;
+        for (let i = 0; i < skip && this.started && !this.switching && this.enemyKind === PartyEnemyKind.Normal && this.chainKills < this.rules.pierceKillsPerTick; i++) {
+            total += this.hit(slot, this.barLeft);
+            this.chainKills++;
+        }
+        return total;
+    }
+
+    private queueSplash(slot: number, applied: number): void {
+        const member = this.members[slot];
+        if (!(member.splashShare > 0) || !(applied > 0))
+            return;
+        for (let i = 0; i < member.splashTargets; i++)
+            this.splash[slot * PartySplashDepth + i] += applied * member.splashShare;
+    }
+
+    private applySplash(): void {
+        for (let slot = 0; slot < this.members.length; slot++) {
+            const at = slot * PartySplashDepth;
+            const queued = this.splash[at];
+            for (let i = 0; i < PartySplashDepth - 1; i++)
+                this.splash[at + i] = this.splash[at + i + 1];
+            this.splash[at + PartySplashDepth - 1] = 0;
+            if (!(queued > 0) || this.enemyKind !== PartyEnemyKind.Normal || !this.members[slot].joined)
+                continue;
+            const applied = Math.min(queued, this.barLeft);
+            this.members[slot].enemyShare += applied;
+            this.barLeft = Math.max(PartySplashFloor, this.barLeft - applied);
+        }
+    }
+
+    private clearSplash(slot: number): void {
+        for (let i = 0; i < PartySplashDepth; i++)
+            this.splash[slot * PartySplashDepth + i] = 0;
     }
 
     private hit(slot: number, applied: number): number {
@@ -716,6 +803,7 @@ class PartyEncounter {
             this.barFull *= 1 + this.bossShield;
         }
         this.barLeft = this.barFull * (1 - this.takeWeaken());
+        this.applySplash();
         this.addEvent(PartyEventKind.EnemySpawned);
         if (this.enemyWeakened && this.weakenVulnerability > 0)
             this.applyEnemyEffect(this.weakenVulnerabilityId, this.weakenVulnerability, this.weakenVulnerabilitySeconds, this.weakenVulnerabilityOwner);

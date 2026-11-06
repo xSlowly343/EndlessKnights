@@ -107,7 +107,7 @@ class PartyReader {
 interface HelloMessage { heroClass: number; stage: number; sharePerSecondCap: number; echoLines: number; }
 interface DamageBatchMessage { sequence: number; enemyId: number; keys: number; mouse: number; skills: number; dot: number; summons: number; hits: number; crits: number; }
 interface CastEffectMessage { effectId: number; onEnemy: boolean; strength: number; seconds: number; timerSlow: number; repeatSeconds: number; weakenEnemies: number; weakenShare: number; weakenGold: number; end: boolean; }
-interface PresenceMessage { presence: PartyPresence; stage: number; resource: number; contribution: number; }
+interface PresenceMessage { presence: PartyPresence; stage: number; resource: number; contribution: number; pierceShare: number; enemySkip: number; splashShare: number; splashTargets: number; bossPierce: number; stageCarry: number; }
 interface WorldRequestMessage { world: PartyWorld; cancel: boolean; riftId: number; }
 interface FocusRelayMessage { from: number; to: number; focus: number; }
 
@@ -152,7 +152,10 @@ function partyDecodeCastEffect(data: ArrayBuffer): CastEffectMessage | null {
 
 function partyDecodePresence(data: ArrayBuffer): PresenceMessage | null {
     const r = partyOpen(data, PartyMessageKind.Presence);
-    const message = { presence: r.byte(), stage: r.long(), resource: r.float(), contribution: r.float() };
+    const message = {
+        presence: r.byte(), stage: r.long(), resource: r.float(), contribution: r.float(),
+        pierceShare: r.float(), enemySkip: r.byte(), splashShare: r.float(), splashTargets: r.byte(), bossPierce: r.float(), stageCarry: r.float()
+    };
     return r.complete ? message : null;
 }
 

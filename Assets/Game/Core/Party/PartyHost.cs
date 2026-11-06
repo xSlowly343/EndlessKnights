@@ -151,6 +151,7 @@ namespace Game.Core.Party
                     _encounter.SetPeaceful(slot, presence.Presence == PartyPresence.Peaceful);
                     _encounter.SetStage(slot, presence.Stage);
                     _encounter.SetCredit(slot, presence.Contribution);
+                    _encounter.SetPierce(slot, presence.Pierce);
                     break;
                 case PartyMessageKind.CastEffect when PartyCodec.TryDecode(_in, length, out CastEffectMessage effect):
                     if (effect.OnEnemy)

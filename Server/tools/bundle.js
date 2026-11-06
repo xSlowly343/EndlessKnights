@@ -59,6 +59,15 @@ const rules = {
   stageBarsShare: party.caps.stageBarsShare || 0,
   pierceShare: party.pierce ? party.pierce.share : 0,
   pierceKillsPerTick: party.pierce ? party.pierce.maxKillsPerTick : 0,
+  pierceCaps: {
+    maxShare: party.pierce && party.pierce.maxShare !== undefined ? party.pierce.maxShare : 1,
+    maxEnemySkip: party.pierce && party.pierce.maxEnemySkip !== undefined ? party.pierce.maxEnemySkip : 4,
+    maxSplashShare: party.pierce && party.pierce.maxSplashShare !== undefined ? party.pierce.maxSplashShare : 1,
+    maxSplashTargets: party.pierce && party.pierce.maxSplashTargets !== undefined ? party.pierce.maxSplashTargets : 3,
+    maxBossPierce: party.pierce && party.pierce.maxBossPierce !== undefined ? party.pierce.maxBossPierce : 0.5,
+    bossPierceHpShare: party.pierce && party.pierce.bossPierceHpShare !== undefined ? party.pierce.bossPierceHpShare : 0.5,
+    maxStageCarry: party.pierce && party.pierce.maxStageCarry !== undefined ? party.pierce.maxStageCarry : 1
+  },
   hitBurstSeconds: party.caps.hitBurstSeconds,
   flagsBeforeReport: party.caps.flagsBeforeReport,
   reactionCount: party.reactions.ids.length,

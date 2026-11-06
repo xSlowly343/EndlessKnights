@@ -512,7 +512,7 @@ namespace Game.Core.Sim
                 _loot.OnKill(_state.Stage, EnemyType.Normal, _state.Enemy, 1 + _state.EnemyGoldBonus);
                 _levels.OnKill(EnemyType.Normal, 1);
             }
-            _events.Add(GameEvent.WithAmount(GameEventKind.EnemiesSkipped, _state.Tick, BigNumber.FromDouble(skip), _state.Stage));
+            _events.Add(GameEvent.Skipped(_state.Tick, _state.Stage, _state.Enemy, skip));
         }
 
         private void TrySkipStages()

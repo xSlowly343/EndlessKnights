@@ -152,6 +152,7 @@ class PartyHost {
                     this.stages[slot] = presence.stage;
                     this.encounter.setStage(slot, presence.stage);
                     this.encounter.setCredit(slot, presence.contribution);
+                    this.encounter.setPierce(slot, presence);
                 }
                 break;
             }

@@ -26,6 +26,7 @@ function run(encounter, step) {
     case "relayTarget": return encounter.relayTarget(step.slot);
     case "stage": return encounter.setStage(step.slot, step.stage);
     case "credit": return encounter.setCredit(step.slot, step.rate);
+    case "pierce": return encounter.setPierce(step.slot, step);
     case "riftEnemy": return encounter.setRiftEnemy(step.regen, step.shield, step.extra);
     case "auras": return encounter.noteAuras(step.slot, step.ticks);
     case "weaken": return encounter.weakenNext(step.enemies, step.share, step.gold, step.vulnerability, step.vulnerabilitySeconds, step.effectId, step.owner);
@@ -92,7 +93,7 @@ function compare(encounter, expect, where) {
 
 test("the rules built into the server match the core", () => {
   for (const key of Object.keys(vectors.rules))
-    assert.strictEqual(party.PartyServerRules[key], vectors.rules[key], key);
+    assert.deepStrictEqual(JSON.parse(JSON.stringify(party.PartyServerRules[key])), vectors.rules[key], key);
 });
 
 for (const scenario of vectors.scenarios) {

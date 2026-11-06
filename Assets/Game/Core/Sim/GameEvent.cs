@@ -46,6 +46,9 @@ namespace Game.Core.Sim
         public static GameEvent ForDrop(long tick, ItemDrop drop) =>
             new GameEvent(GameEventKind.ItemDropped, tick, BigNumber.Zero, DamageSource.None, HitFlags.None, drop.Stage, null, null, drop);
 
+        public static GameEvent Skipped(long tick, long stage, EnemyDef? enemy, int count) =>
+            new GameEvent(GameEventKind.EnemiesSkipped, tick, BigNumber.FromDouble(count), DamageSource.None, HitFlags.None, stage, enemy);
+
         public static GameEvent Gold(long tick, BigNumber amount, long stage) => WithAmount(GameEventKind.GoldGained, tick, amount, stage);
 
         public static GameEvent WithAmount(GameEventKind kind, long tick, BigNumber amount, long stage) =>
