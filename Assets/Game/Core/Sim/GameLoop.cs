@@ -296,7 +296,9 @@ namespace Game.Core.Sim
         }
 
         public GameState State { get; }
-        public EventQueue Events { get; } = new EventQueue();
+        public EventQueue Events { get; } = new EventQueue(EventCapacity);
+
+        public const int EventCapacity = 4096;
         public InputSnapshot LastInput { get; private set; }
         public InputStats SessionInput { get; } = new InputStats();
         public double MetersPerPixel { get; set; } = InputStats.DefaultMetersPerPixel;

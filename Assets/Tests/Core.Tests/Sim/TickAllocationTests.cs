@@ -31,13 +31,13 @@ namespace Game.Core.Tests.Sim
                 Assert.Ignore("This runtime does not report allocated bytes per thread.");
         }
 
-        private static (GameLoop Loop, FakeInputSource Input) StrongHeroBeforeGuardian(HeroClass heroClass)
+        private static (GameLoop Loop, FakeInputSource Input) StrongHeroBeforeGuardian(HeroClass heroClass, Game.Core.Content.GameData? data = null)
         {
             var input = new FakeInputSource();
             var hero = new StatSheet();
             hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 100000));
             var start = TestWorld.Data.Stages.BiomeLength - 5;
-            var loop = TestWorld.Loop(input, new GameState { Class = heroClass, Stage = start, HighestStage = start }, hero);
+            var loop = new GameLoop(data ?? TestWorld.Data, input, new GameState { Class = heroClass, Stage = start, HighestStage = start }, hero);
             loop.Skills.Equip(TestWorld.Data.Gems["through_stride"]);
             loop.Skills.Equip(TestWorld.Data.Gems["march"]);
             loop.Skills.Equip(TestWorld.Data.Gems["lull"]);
@@ -203,6 +203,19 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(loop.Skills.SupportPartyLines, Is.Not.Empty);
             Assert.That(allocated, Is.EqualTo(0));
+        }
+
+        [TestCase(HeroClass.Duelist)]
+        public void CombatTicksWithBasePierceDoNotAllocate(HeroClass heroClass)
+        {
+            RequireAllocationCounter();
+            var (warmUp, warmUpInput) = StrongHeroBeforeGuardian(heroClass, TestWorld.WithPierce);
+            Fight(warmUp, warmUpInput, 3000);
+            var (loop, input) = StrongHeroBeforeGuardian(heroClass, TestWorld.WithPierce);
+            Fight(loop, input, 20);
+            var before = GC.GetAllocatedBytesForCurrentThread();
+            Fight(loop, input, 3000);
+            Assert.That(GC.GetAllocatedBytesForCurrentThread() - before, Is.EqualTo(0));
         }
 
         [TestCase(HeroClass.Duelist)]

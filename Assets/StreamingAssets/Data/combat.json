@@ -156,6 +156,7 @@
     }
   },
   "offline": { "capHours": 8, "dpsShare": 0.3, "dpsWindowSeconds": 300 },
+  "pierce": { "baseShare": 1 },
   "hero": {
     "maxLevel": 100,
     "experience": { "curve": "exp", "base": 20, "rate": 1.08 },

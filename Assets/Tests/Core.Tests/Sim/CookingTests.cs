@@ -146,7 +146,7 @@ namespace Game.Core.Tests.Sim
             var (loop, input) = Cook();
             loop.State.Cooking.Meals.Add("ember_stew");
             loop.Cooking.Eat(0);
-            for (var i = 0; i < 50; i++)
+            for (var i = 0; i < 300; i++)
             {
                 input.PressKeys(1);
                 loop.Tick();

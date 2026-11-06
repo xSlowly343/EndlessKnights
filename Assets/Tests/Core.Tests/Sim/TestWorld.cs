@@ -24,6 +24,10 @@ namespace Game.Core.Tests.Sim
         public static GameData Data => DataWithoutClassPassives.Value;
         public static GameData BiomesByStage => DataWithoutRotation.Value;
         public static GameData Real => RealData.Value;
+        public static GameData WithPierce => DataWithPierce.Value;
+
+        private static readonly Lazy<GameData> DataWithPierce = new Lazy<GameData>(() => GameData.Load(name =>
+            name == CombatRules.FileName ? TestData.ReadGameDataFile(name) : NeutralFile(name)));
 
         private static string NeutralFile(string name)
         {
@@ -32,6 +36,8 @@ namespace Game.Core.Tests.Sim
                 return "{ \"version\": 1, \"features\": {}, \"artifactGroups\": [] }";
             if (name == WeaponCatalog.FileName)
                 return Regex.Replace(json, "\"innate\": \\[.*\\]", "\"innate\": []");
+            if (name == CombatRules.FileName)
+                return json.Replace("\"pierce\": { \"baseShare\": 1 }", "\"pierce\": { \"baseShare\": 0 }");
             return json;
         }
 

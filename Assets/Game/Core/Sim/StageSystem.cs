@@ -421,6 +421,23 @@ namespace Game.Core.Sim
             ApplyEnemyModifiers(enemy);
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemySpawned, _state.Tick, _state.Stage, enemy));
             ApplyChainDamage();
+            ApplyPierce(type);
+        }
+
+        private void ApplyPierce(EnemyType type)
+        {
+            var damage = _state.PierceDamage;
+            _state.PierceDamage = BigNumber.Zero;
+            if (damage.Sign <= 0 || type != EnemyType.Normal || Linked || !_state.EnemyAlive)
+                return;
+            var hpBefore = _state.EnemyHp;
+            _state.EnemyHp -= damage;
+            _events.Add(GameEvent.Damage(_state.Tick, damage, DamageSource.Strike, HitFlags.None));
+            if (_state.EnemyAlive)
+                return;
+            _state.PierceDamage = damage - hpBefore;
+            _state.EnemyHp = BigNumber.Zero;
+            OnEnemyKilled();
         }
 
         public int EnemiesOnThisStage => Linked && _state.PartyEnemiesOnStage > 0 ? _state.PartyEnemiesOnStage : EnemiesOnStage(_state.Stage);
