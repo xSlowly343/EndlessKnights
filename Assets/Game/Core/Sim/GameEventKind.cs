@@ -44,6 +44,8 @@ namespace Game.Core.Sim
         FishBite,
         FishMissed,
         FishEscaped,
-        FishCaught
+        FishCaught,
+        DishCooked,
+        MealEnded
     }
 }
