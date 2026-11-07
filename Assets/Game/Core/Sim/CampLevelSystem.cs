@@ -33,6 +33,7 @@ namespace Game.Core.Sim
         }
 
         public CampLevelRules Rules => _rules;
+        public CampModuleSystem? Modules { get; set; }
 
         public void UseRules(CampLevelRules rules)
         {
@@ -199,6 +200,7 @@ namespace Game.Core.Sim
                 if (Neighbors(pair.A, pair.B))
                     perks[(int)pair.Perk] += pair.Value;
             }
+            Modules?.AddPerks(perks);
         }
     }
 }
