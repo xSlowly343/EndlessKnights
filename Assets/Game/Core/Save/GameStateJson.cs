@@ -820,13 +820,33 @@ namespace Game.Core.Save
             var bag = new JsonValue[items.Count];
             for (var i = 0; i < bag.Length; i++)
                 bag[i] = Object(("item", JsonValue.Of(items[i])), ("count", JsonValue.Of(camp.Bag[items[i]])));
-            return Object(("tier", JsonValue.Of(camp.Tier)), ("guilds", WriteIdList(guilds)), ("bag", JsonValue.Array(bag)), ("levels", WriteLevels(camp.Levels)));
+            return Object(("tier", JsonValue.Of(camp.Tier)), ("guilds", WriteIdList(guilds)), ("bag", JsonValue.Array(bag)), ("levels", WriteLevels(camp.Levels)), ("branches", WriteBranches(camp.Branches)), ("street", WriteIdList(camp.Street)));
+        }
+
+        private static JsonValue WriteBranches(Dictionary<string, string> branches)
+        {
+            var ids = new List<string>(branches.Keys);
+            ids.Sort(System.StringComparer.Ordinal);
+            var items = new JsonValue[ids.Count];
+            for (var i = 0; i < items.Length; i++)
+                items[i] = Object(("building", JsonValue.Of(ids[i])), ("branch", JsonValue.Of(branches[ids[i]])));
+            return JsonValue.Array(items);
         }
 
         private static void ReadCamp(ContentNode node, CampState camp)
         {
             if (node.HasField("levels"))
                 ReadLevels(node.Field("levels"), camp.Levels);
+            if (node.HasField("branches"))
+            {
+                foreach (var item in node.Field("branches").Items())
+                    camp.Branches[item.Field("building").AsString()] = item.Field("branch").AsString();
+            }
+            if (node.HasField("street"))
+            {
+                foreach (var item in node.Field("street").Items())
+                    camp.Street.Add(item.AsString());
+            }
             camp.Tier = node.Field("tier").AsInt(0, 100);
             foreach (var item in node.Field("guilds").Items())
                 camp.Guilds.Add(item.AsString());

@@ -1,14 +1,297 @@
 {
   "version": 1,
   "maxLevel": 5,
-  "guildLevels": [0, 0, 0, 5, 8],
-  "amounts": [[10, 5], [20, 10], [40, 20], [80, 40]],
+  "guildLevels": [
+    0,
+    0,
+    0,
+    5,
+    8
+  ],
+  "amounts": [
+    [
+      10,
+      5
+    ],
+    [
+      20,
+      10
+    ],
+    [
+      40,
+      20
+    ],
+    [
+      80,
+      40
+    ]
+  ],
   "buildings": [
-    { "building": "bonfire", "materials": ["herb_windwort", "ore_hills"], "perk": "shorterTrips", "perLevel": 0.02 },
-    { "building": "garden_bed", "guild": "gardeners", "materials": ["herb_knockbloom", "ore_hills"], "perk": "growFaster", "perLevel": 0.03 },
-    { "building": "cauldron", "guild": "alchemists", "materials": ["herb_clickweed", "ruin_shard"], "perk": "stirFaster", "perLevel": 0.05 },
-    { "building": "pier", "guild": "fishers", "materials": ["herb_hushbell", "ore_ice"], "perk": "biteFaster", "perLevel": 0.04 },
-    { "building": "forge", "guild": "smiths", "materials": ["ore_ruins", "ember_coal"], "perk": "fewerHammers", "perLevel": 0.03 },
-    { "building": "chef_table", "guild": "cooks", "materials": ["herb_windwort", "ice_crystal"], "perk": "fewerChops", "perLevel": 0.04 }
+    {
+      "building": "bonfire",
+      "materials": [
+        "herb_windwort",
+        "ore_hills"
+      ],
+      "perk": "shorterTrips",
+      "perLevel": 0.02,
+      "branches": [
+        {
+          "id": "watch",
+          "name": {
+            "ru": "Сторожевой костёр",
+            "en": "Watch Fire"
+          },
+          "perks": [
+            {
+              "perk": "expeditionLoot",
+              "value": 0.1
+            }
+          ]
+        },
+        {
+          "id": "road",
+          "name": {
+            "ru": "Дорожный костёр",
+            "en": "Road Fire"
+          },
+          "perks": [
+            {
+              "perk": "shorterTrips",
+              "value": 0.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "building": "garden_bed",
+      "guild": "gardeners",
+      "materials": [
+        "herb_knockbloom",
+        "ore_hills"
+      ],
+      "perk": "growFaster",
+      "perLevel": 0.03,
+      "branches": [
+        {
+          "id": "greenhouse",
+          "name": {
+            "ru": "Теплица",
+            "en": "Greenhouse"
+          },
+          "perks": [
+            {
+              "perk": "growFaster",
+              "value": 0.1
+            }
+          ]
+        },
+        {
+          "id": "wild",
+          "name": {
+            "ru": "Дикий сад",
+            "en": "Wild Garden"
+          },
+          "perks": [
+            {
+              "perk": "mutationChance",
+              "value": 0.05
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "building": "cauldron",
+      "guild": "alchemists",
+      "materials": [
+        "herb_clickweed",
+        "ruin_shard"
+      ],
+      "perk": "stirFaster",
+      "perLevel": 0.05,
+      "branches": [
+        {
+          "id": "strong",
+          "name": {
+            "ru": "Крепкие зелья",
+            "en": "Strong Brews"
+          },
+          "perks": [
+            {
+              "perk": "finePotion",
+              "value": 0.1
+            }
+          ]
+        },
+        {
+          "id": "generous",
+          "name": {
+            "ru": "Щедрый котёл",
+            "en": "Generous Cauldron"
+          },
+          "perks": [
+            {
+              "perk": "doublePotion",
+              "value": 0.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "building": "pier",
+      "guild": "fishers",
+      "materials": [
+        "herb_hushbell",
+        "ore_ice"
+      ],
+      "perk": "biteFaster",
+      "perLevel": 0.04,
+      "branches": [
+        {
+          "id": "smokehouse",
+          "name": {
+            "ru": "Коптильня",
+            "en": "Smokehouse"
+          },
+          "perks": [
+            {
+              "perk": "bottleChance",
+              "value": 0.02
+            }
+          ]
+        },
+        {
+          "id": "deep",
+          "name": {
+            "ru": "Глубокие снасти",
+            "en": "Deep Tackle"
+          },
+          "perks": [
+            {
+              "perk": "legendChance",
+              "value": 0.02
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "building": "forge",
+      "guild": "smiths",
+      "materials": [
+        "ore_ruins",
+        "ember_coal"
+      ],
+      "perk": "fewerHammers",
+      "perLevel": 0.03,
+      "branches": [
+        {
+          "id": "armory",
+          "name": {
+            "ru": "Оружейная",
+            "en": "Armory"
+          },
+          "perks": [
+            {
+              "perk": "temperStep",
+              "value": 0.1
+            }
+          ]
+        },
+        {
+          "id": "smelter",
+          "name": {
+            "ru": "Плавильня",
+            "en": "Smelter"
+          },
+          "perks": [
+            {
+              "perk": "moreOre",
+              "value": 0.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "building": "chef_table",
+      "guild": "cooks",
+      "materials": [
+        "herb_windwort",
+        "ice_crystal"
+      ],
+      "perk": "fewerChops",
+      "perLevel": 0.04,
+      "branches": [
+        {
+          "id": "bakery",
+          "name": {
+            "ru": "Пекарня",
+            "en": "Bakery"
+          },
+          "perks": [
+            {
+              "perk": "doubleMeal",
+              "value": 0.08
+            }
+          ]
+        },
+        {
+          "id": "field_kitchen",
+          "name": {
+            "ru": "Полевая кухня",
+            "en": "Field Kitchen"
+          },
+          "perks": [
+            {
+              "perk": "mealLonger",
+              "value": 0.1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "branchLevel": 3,
+  "changeAmounts": [
+    20,
+    10
+  ],
+  "street": [
+    "garden_bed",
+    "cauldron",
+    "bonfire",
+    "pier",
+    "chef_table",
+    "forge"
+  ],
+  "neighbors": [
+    {
+      "a": "cauldron",
+      "b": "garden_bed",
+      "perk": "mutationChance",
+      "value": 0.02
+    },
+    {
+      "a": "pier",
+      "b": "bonfire",
+      "perk": "doubleMeal",
+      "value": 0.05
+    },
+    {
+      "a": "forge",
+      "b": "bonfire",
+      "perk": "fewerHammers",
+      "value": 0.03
+    },
+    {
+      "a": "chef_table",
+      "b": "pier",
+      "perk": "fewerChops",
+      "value": 0.05
+    }
   ]
 }
