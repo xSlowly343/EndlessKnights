@@ -73,6 +73,8 @@ namespace Game.Core.Content
         public double BottleDust { get; private set; }
         public double LegendChance { get; private set; }
         public double RiftChance { get; private set; }
+        public double TogetherLegendChance { get; private set; }
+        public double TogetherBottleChance { get; private set; }
         public IReadOnlyList<FishingSpot> Spots { get; private set; } = Array.Empty<FishingSpot>();
         public IReadOnlyList<FishDef> RiftFish { get; private set; } = Array.Empty<FishDef>();
 
@@ -152,6 +154,8 @@ namespace Game.Core.Content
                 BottleDust = bottle.Field("dust").AsNumber(0, 1_000_000),
                 LegendChance = root.Field("legendChance").AsNumber(0, 1),
                 RiftChance = root.Field("riftChance").AsNumber(0, 1),
+                TogetherLegendChance = root.Field("together").Field("legendChance").AsNumber(0, 0.5),
+                TogetherBottleChance = root.Field("together").Field("bottleChance").AsNumber(0, 0.5),
                 Spots = spots,
                 RiftFish = ReadFish(root.Field("riftFish"), ids)
             };

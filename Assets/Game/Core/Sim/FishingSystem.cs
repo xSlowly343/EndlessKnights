@@ -36,6 +36,16 @@ namespace Game.Core.Sim
         public FishingState State => _state.Fishing;
         public bool Open => _camp.Open(_rules.Building);
         public bool RiftWindow { get; set; }
+        public bool Together { get; set; }
+        public bool Fishing => _peaceful.InCamp && _peaceful.Activity == Activity && Open && SpotOpen(CurrentSpot);
+        public int CaughtSinceMark { get; private set; }
+
+        public int TakeCaught()
+        {
+            var caught = CaughtSinceMark;
+            CaughtSinceMark = 0;
+            return caught;
+        }
 
         public void UseRules(FishingRules rules) => _rules = rules;
 
@@ -63,7 +73,7 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            if (!_peaceful.InCamp || _peaceful.Activity != Activity || !Open || !SpotOpen(CurrentSpot))
+            if (!Fishing)
             {
                 if (State.Phase != FishingPhase.Idle)
                     Reset();
@@ -108,9 +118,10 @@ namespace Game.Core.Sim
         private void Bite()
         {
             var spot = _rules.Spot(CurrentSpot)!;
-            if (_state.Rng.NextDouble() < _rules.BottleChance + _state.Perk(MuseumPerk.BottleChance))
+            var together = Together ? 1 : 0;
+            if (_state.Rng.NextDouble() < _rules.BottleChance + _state.Perk(MuseumPerk.BottleChance) + together * _rules.TogetherBottleChance)
                 Hook(FishCatchKind.Bottle, string.Empty);
-            else if (!State.Album.ContainsKey(spot.Legend.Id) && _state.Rng.NextDouble() < _rules.LegendChance + _state.Perk(MuseumPerk.LegendChance))
+            else if (!State.Album.ContainsKey(spot.Legend.Id) && _state.Rng.NextDouble() < _rules.LegendChance + _state.Perk(MuseumPerk.LegendChance) + together * _rules.TogetherLegendChance)
                 Hook(FishCatchKind.Legend, spot.Legend.Id);
             else if (RiftWindow && _rules.RiftFish.Count > 0 && _state.Rng.NextDouble() < _rules.RiftChance)
                 Hook(FishCatchKind.Fish, Pick(_rules.RiftFish).Id);
@@ -199,6 +210,7 @@ namespace Game.Core.Sim
                     Keep(fish.Id, fish.MinCm + _state.Rng.NextDouble() * (fish.MaxCm - fish.MinCm));
                     break;
             }
+            CaughtSinceMark++;
             _events.Add(GameEvent.ForStage(GameEventKind.FishCaught, _state.Tick, (long)State.HookedKind));
             Reset();
         }

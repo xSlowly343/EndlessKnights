@@ -3,6 +3,7 @@
   "presenceSeconds": 60,
   "hereSeconds": 90,
   "maxSitStepSeconds": 120,
+  "maxCaughtPerMark": 5,
   "tiers": [
     {
       "id": "rest",

@@ -7,6 +7,7 @@
   "bottle": { "chance": 0.05, "reelMeters": 1, "shards": 5, "dust": 10 },
   "legendChance": 0.05,
   "riftChance": 0.25,
+  "together": { "legendChance": 0.03, "bottleChance": 0.03 },
   "spots": [
     {
       "biome": "green_hills",
