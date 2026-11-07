@@ -25,5 +25,6 @@ namespace Game.Core.Sim
         public bool TeaOffered { get; set; }
         public long UnsentActions { get; set; }
         public double ActionCarry { get; set; }
+        public PeacefulWork HideoutWork { get; } = new PeacefulWork();
     }
 }

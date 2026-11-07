@@ -354,6 +354,21 @@ namespace Game.Net.Tests
             Assert.That(corners.Corners[0].Path, Is.EqualTo("berserker"));
             Assert.That(corners.Corners[0].Decor, Is.EqualTo(new[] { "decor_bench" }));
             Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"here\":[]}")).MyCorner, Is.False);
+
+            Assert.That(HideoutReply.PlantPayload(2, "knockbloom"), Is.EqualTo("{\"bed\":2,\"plant\":\"knockbloom\"}"));
+            Assert.That(HideoutReply.TendPayload(true, false, 0, 12.7, 3, 1.5, 60), Is.EqualTo("{\"here\":true,\"fishing\":false,\"caught\":0,\"tend\":{\"keys\":12,\"clicks\":3,\"mouseMeters\":1,\"idleSeconds\":60}}"));
+            var commons = HideoutReply.From(NakamaJson.Parse("{\"tier\":3,\"here\":[],\"commons\":{\"together\":true,\"garden\":[{\"plant\":\"knockbloom\",\"share\":0.25,\"ready\":false,\"tended\":true},{\"plant\":\"\",\"share\":0,\"ready\":false,\"tended\":false}],"
+                + "\"owed\":{\"herb_knockbloom\":3},\"storage\":{\"ember_coal\":2},\"journal\":[{\"at\":1,\"name\":\"Ann\",\"item\":\"ember_coal\",\"amount\":-2}],\"takenToday\":2,\"takePerDay\":20}}"));
+            Assert.That(commons.Together, Is.True);
+            Assert.That(commons.Beds[0].Share, Is.EqualTo(0.25));
+            Assert.That(commons.Beds[1].Empty, Is.True);
+            Assert.That(commons.Owed["herb_knockbloom"], Is.EqualTo(3));
+            Assert.That(commons.StorageBuilt, Is.True);
+            Assert.That(commons.Storage["ember_coal"], Is.EqualTo(2));
+            Assert.That(commons.Journal[0].Amount, Is.EqualTo(-2));
+            Assert.That(commons.TakePerDay, Is.EqualTo(20));
+            Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":3,\"here\":[],\"commons\":{\"storage\":null}}")).StorageBuilt, Is.False);
+            Assert.That(HideoutReply.ClaimedItems(NakamaJson.Parse("{\"items\":{\"herb_knockbloom\":3},\"hideout\":{}}"))["herb_knockbloom"], Is.EqualTo(3));
         }
 
         [Test]

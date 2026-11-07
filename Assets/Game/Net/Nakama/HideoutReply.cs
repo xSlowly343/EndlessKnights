@@ -38,6 +38,25 @@ namespace Game.Net.Nakama
             Corners = corners;
             CornerDecor = (int)NakamaJson.Number(json, "cornerDecor");
             MyCorner = NakamaJson.Flag(json, "myCorner");
+            var commons = NakamaJson.Field(json, "commons");
+            var beds = new List<SharedBed>();
+            var journal = new List<StorageEntry>();
+            if (commons != null && commons.Kind == JsonKind.Object)
+            {
+                Together = NakamaJson.Flag(commons, "together");
+                foreach (var entry in NakamaJson.Items(commons, "garden"))
+                    beds.Add(new SharedBed(NakamaJson.Text(entry, "plant"), NakamaJson.Number(entry, "share"), NakamaJson.Flag(entry, "ready"), NakamaJson.Flag(entry, "tended")));
+                Owed = Amounts(NakamaJson.Field(commons, "owed"));
+                var storage = NakamaJson.Field(commons, "storage");
+                StorageBuilt = storage != null && storage.Kind == JsonKind.Object;
+                Storage = Amounts(storage);
+                foreach (var entry in NakamaJson.Items(commons, "journal"))
+                    journal.Add(new StorageEntry(NakamaJson.Text(entry, "name"), NakamaJson.Text(entry, "item"), (long)NakamaJson.Number(entry, "amount")));
+                TakenToday = (int)NakamaJson.Number(commons, "takenToday");
+                TakePerDay = (int)NakamaJson.Number(commons, "takePerDay");
+            }
+            Beds = beds;
+            Journal = journal;
             var project = NakamaJson.Field(json, "project");
             if (project != null && project.Kind == JsonKind.Object)
             {
@@ -50,6 +69,14 @@ namespace Game.Net.Nakama
             }
         }
 
+        public bool Together { get; }
+        public IReadOnlyList<SharedBed> Beds { get; }
+        public IReadOnlyDictionary<string, long> Owed { get; } = new Dictionary<string, long>();
+        public bool StorageBuilt { get; }
+        public IReadOnlyDictionary<string, long> Storage { get; } = new Dictionary<string, long>();
+        public IReadOnlyList<StorageEntry> Journal { get; }
+        public int TakenToday { get; }
+        public int TakePerDay { get; }
         public IReadOnlyList<HideoutCorner> Corners { get; }
         public int CornerDecor { get; }
         public bool MyCorner { get; }
@@ -91,6 +118,55 @@ namespace Game.Net.Nakama
 
         public static async Task<HideoutReply> WantAsync(NakamaClient client, NakamaSession session, string building, bool on, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_want", WantPayload(building, on), cancel).ConfigureAwait(false)));
+
+        public static IReadOnlyDictionary<string, long> Amounts(JsonValue? json)
+        {
+            var amounts = new Dictionary<string, long>();
+            if (json != null && json.Kind == JsonKind.Object)
+            {
+                foreach (var pair in json.Fields)
+                {
+                    if (pair.Value.Kind == JsonKind.Number && pair.Value.Number > 0)
+                        amounts[pair.Key] = (long)pair.Value.Number;
+                }
+            }
+            return amounts;
+        }
+
+        public static string BedPayload(int bed) => NakamaJson.Object(("bed", bed.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
+        public static string PlantPayload(int bed, string plant) =>
+            NakamaJson.Object(("bed", bed.ToString(System.Globalization.CultureInfo.InvariantCulture)), ("plant", NakamaJson.Quote(plant)));
+
+        public static string TendPayload(bool here, bool fishing, int caught, double keys, double clicks, double mouseMeters, double idleSeconds) =>
+            NakamaJson.Object(("here", here ? "true" : "false"), ("fishing", fishing ? "true" : "false"), ("caught", caught.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                ("tend", NakamaJson.Object(("keys", Whole(keys)), ("clicks", Whole(clicks)), ("mouseMeters", Whole(mouseMeters)), ("idleSeconds", Whole(idleSeconds)))));
+
+        private static string Whole(double value) => System.Math.Max(0, System.Math.Floor(value)).ToString("0", System.Globalization.CultureInfo.InvariantCulture);
+
+        public static async Task<HideoutReply> TendAsync(NakamaClient client, NakamaSession session, bool here, bool fishing, int caught, double keys, double clicks, double mouseMeters, double idleSeconds, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_presence", TendPayload(here, fishing, caught, keys, clicks, mouseMeters, idleSeconds), cancel).ConfigureAwait(false)));
+
+        public static async Task<HideoutReply> PlantAsync(NakamaClient client, NakamaSession session, int bed, string plant, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_plant", PlantPayload(bed, plant), cancel).ConfigureAwait(false)));
+
+        public static async Task<HideoutReply> HarvestAsync(NakamaClient client, NakamaSession session, int bed, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_harvest", BedPayload(bed), cancel).ConfigureAwait(false)));
+
+        public static async Task<HideoutReply> StorePutAsync(NakamaClient client, NakamaSession session, string item, int amount, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_store_put", GivePayload(item, amount), cancel).ConfigureAwait(false)));
+
+        public static async Task<HideoutReply> StoreTakeAsync(NakamaClient client, NakamaSession session, string item, int amount, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_store_take", GivePayload(item, amount), cancel).ConfigureAwait(false)));
+
+        public static IReadOnlyDictionary<string, long> ClaimedItems(JsonValue json) => Amounts(NakamaJson.Field(json, "items"));
+
+        public static async Task<(IReadOnlyDictionary<string, long> Items, HideoutReply Hideout)> ClaimAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default)
+        {
+            var json = NakamaJson.Parse(await client.RpcAsync(session, "hideout_claim", "{}", cancel).ConfigureAwait(false));
+            var hideout = NakamaJson.Field(json, "hideout");
+            return (ClaimedItems(json), From(hideout ?? json));
+        }
 
         private static IReadOnlyDictionary<string, int> Counts(JsonValue? json)
         {
