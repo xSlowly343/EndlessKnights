@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Collections.Generic;
 using Game.Core.Content;
 using Game.Core.Input;
 using Game.Core.Save;
@@ -202,6 +204,61 @@ namespace Game.Core.Tests.Sim
             hideout.Leave();
             Assert.That(hideout.Corner, Is.Empty);
             Assert.That(hideout.CornerOpen, Is.False);
+        }
+    
+        [Test]
+        public void InputInsideTheHideoutIsKeptForTheSharedGarden()
+        {
+            var input = new FakeInputSource();
+            var loop = TestWorld.Loop(input);
+            loop.Peaceful.SetMode(PeacefulMode.Camp);
+            loop.Peaceful.SetPlace(PeacefulPlace.Hideout);
+            input.PressKeys(5);
+            input.ClickLeft(2);
+            loop.Tick();
+            loop.Tick();
+            var work = loop.Hideout.TakeTending();
+            Assert.That(work.Keys, Is.EqualTo(5));
+            Assert.That(work.Clicks, Is.EqualTo(2));
+            Assert.That(work.IdleSeconds, Is.GreaterThan(0));
+            Assert.That(loop.Hideout.TakeTending().Keys, Is.Zero, "tending is taken once");
+        }
+
+        [Test]
+        public void SeedsGoToTheSharedBedAndTheHarvestAndStorageComeBackToTheBag()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            var hideout = loop.Hideout;
+            var garden = TestWorld.Data.Garden;
+            var starter = garden.Plants.First(p => p.Starter);
+            var rare = garden.Plants.First(p => !p.Starter);
+            Assert.That(hideout.PackSeed(starter.Id), Is.EqualTo(GardenResult.Done), "starter plants need no seed");
+            Assert.That(hideout.PackSeed(rare.Id), Is.EqualTo(GardenResult.NoSeed));
+            Assert.That(hideout.PackSeed("nothing"), Is.EqualTo(GardenResult.UnknownPlant));
+            loop.Camp.Add(rare.Seed, 1);
+            Assert.That(hideout.PackSeed(rare.Id), Is.EqualTo(GardenResult.Done));
+            Assert.That(loop.Camp.Count(rare.Seed), Is.Zero);
+            hideout.ReturnSeed(rare.Id);
+            Assert.That(loop.Camp.Count(rare.Seed), Is.EqualTo(1), "a refused planting gives the seed back");
+
+            hideout.Receive(new Dictionary<string, long> { [starter.Herb] = 3 });
+            Assert.That(loop.Camp.Count(starter.Herb), Is.EqualTo(3));
+            Assert.That(hideout.PackGoods(starter.Herb, 4), Is.False);
+            Assert.That(hideout.PackGoods(starter.Herb, 2), Is.True);
+            Assert.That(loop.Camp.Count(starter.Herb), Is.EqualTo(1));
+
+            hideout.UseCommons(true, new[] { new SharedBed(starter.Id, 0.5, false, true), new SharedBed(string.Empty, 0, false, false) },
+                new Dictionary<string, long> { [starter.Herb] = 3 }, true, new Dictionary<string, long> { ["ember_coal"] = 2 },
+                new[] { new StorageEntry("Ann", "ember_coal", 2) }, 5, 20);
+            var lines = HideoutView.SharedGarden(hideout, garden);
+            Assert.That(lines[0], Is.EqualTo(Texts.Get("hideout.garden.together")));
+            Assert.That(lines[1], Does.Contain("50%"));
+            Assert.That(lines, Has.Member(Texts.Get("hideout.garden.owed")));
+            Assert.That(HideoutView.StorageLines(hideout.State)[0], Does.Contain("5").And.Contain("20"));
+            Assert.That(HideoutView.JournalLines(hideout.State)[0], Does.Contain("Ann"));
+            hideout.Leave();
+            Assert.That(hideout.State.Beds, Is.Empty);
+            Assert.That(HideoutView.StorageLines(hideout.State), Is.EqualTo(new[] { Texts.Get("hideout.storage.none") }));
         }
     }
 }

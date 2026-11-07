@@ -157,7 +157,7 @@ namespace Game.Core.Sim
             _talents = new TalentSystem(data.Talents, state);
             _camp = new CampSystem(data.Camp, state, Events);
             _clanCamp = new ClanCampSystem(data.ClanCamp, state, hero, _camp);
-            _hideout = new HideoutSystem(data.Hideout, data.ClanCamp, state, _camp);
+            _hideout = new HideoutSystem(data.Hideout, data.ClanCamp, data.Garden, state, _camp);
             _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden);
             _campLevels = new CampLevelSystem(data.CampLevels, state, _camp, _guilds);
             _apprentices = new ApprenticeSystem(data.Apprentices, state, _camp, _guilds);
@@ -900,7 +900,7 @@ namespace Game.Core.Sim
             _clanCamp.UseRules(data.ClanCamp);
             _guilds.UseRules(data.Guilds);
             _talents.UseRules(data.Talents);
-            _hideout.UseRules(data.Hideout, data.ClanCamp);
+            _hideout.UseRules(data.Hideout, data.ClanCamp, data.Garden);
             _campLevels.UseRules(data.CampLevels);
             _apprentices.UseRules(data.Apprentices);
             _modules.UseRules(data.CampModules);

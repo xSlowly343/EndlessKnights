@@ -107,6 +107,55 @@ namespace Game.Core.Ui
             return lines;
         }
 
+        public static List<string> SharedGarden(HideoutSystem hideout, GardenRules garden)
+        {
+            var lines = new List<string>();
+            var state = hideout.State;
+            if (state.Beds.Count == 0)
+            {
+                lines.Add(Texts.Get("hideout.garden.none"));
+                return lines;
+            }
+            if (state.Together)
+                lines.Add(Texts.Get("hideout.garden.together"));
+            for (var i = 0; i < state.Beds.Count; i++)
+            {
+                var bed = state.Beds[i];
+                var plant = bed.Empty ? null : garden.Plant(bed.Plant);
+                var name = plant == null ? bed.Plant : Texts.Pick(plant.NameRu, plant.NameEn);
+                lines.Add(bed.Empty ? Texts.Format("hideout.bed.empty", i + 1)
+                    : bed.Ready ? Texts.Format("hideout.bed.ready", i + 1, name)
+                    : Texts.Format("hideout.bed.growing", i + 1, name, (int)System.Math.Floor(bed.Share * 100)));
+            }
+            if (state.Owed.Count > 0)
+                lines.Add(Texts.Get("hideout.garden.owed"));
+            return lines;
+        }
+
+        public static List<string> StorageLines(HideoutState state)
+        {
+            var lines = new List<string>();
+            if (!state.StorageBuilt)
+            {
+                lines.Add(Texts.Get("hideout.storage.none"));
+                return lines;
+            }
+            lines.Add(Texts.Format("hideout.storage.limit", state.TakenToday, state.TakePerDay));
+            var items = new List<string>(state.Storage.Keys);
+            items.Sort(System.StringComparer.Ordinal);
+            foreach (var item in items)
+                lines.Add(Texts.Format("hideout.storage.item", item, state.Storage[item]));
+            return lines;
+        }
+
+        public static List<string> JournalLines(HideoutState state)
+        {
+            var lines = new List<string>();
+            foreach (var entry in state.Journal)
+                lines.Add(Texts.Format(entry.Amount > 0 ? "hideout.journal.put" : "hideout.journal.took", entry.Name, entry.Item, System.Math.Abs(entry.Amount)));
+            return lines;
+        }
+
         public static string AtTheFire(HideoutState state) =>
             state.Here.Count == 0 ? Texts.Get("hideout.fire.empty") : Texts.Format("hideout.fire", string.Join(", ", state.Here));
     }

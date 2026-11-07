@@ -57,6 +57,13 @@ interface HideoutValue {
     counters: { [counter: string]: number };
     corners: { [userId: string]: HideoutCorner };
     former: string[];
+    garden: HideoutBed[];
+    gardenAt: number;
+    storage: { [item: string]: number };
+    journal: HideoutJournalEntry[];
+    taken: { [userId: string]: { day: number; count: number } };
+    owed: { [userId: string]: { [item: string]: number } };
+    fireBy: { [userId: string]: number };
 }
 
 interface HideoutChronicle {
@@ -75,7 +82,7 @@ const HideoutMaxCornerText = 40;
 const HideoutCornerBuilding = "corner";
 
 function hideoutEmpty(): HideoutValue {
-    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [] };
+    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {} };
 }
 
 function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutValue; version: string } {
@@ -96,6 +103,13 @@ function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutVal
     value.counters = stored.counters || {};
     value.corners = stored.corners || {};
     value.former = stored.former || [];
+    value.garden = stored.garden || [];
+    value.gardenAt = stored.gardenAt || 0;
+    value.storage = stored.storage || {};
+    value.journal = stored.journal || [];
+    value.taken = stored.taken || {};
+    value.owed = stored.owed || {};
+    value.fireBy = stored.fireBy || {};
     return { value: value, version: objects[0].version };
 }
 
@@ -171,10 +185,14 @@ function hideoutRise(nk: nkruntime.Nakama, value: HideoutValue, members: number,
         value.tier++;
 }
 
-function hideoutSit(value: HideoutValue, members: string[], nowUnixMs: number): void {
-    const together = hideoutHere(value, members, nowUnixMs).length >= 2;
-    if (together && value.sitAt > 0)
-        value.sitSeconds += Math.floor(Math.min(nowUnixMs - value.sitAt, HideoutServerRules.maxSitStepMs) / 1000);
+function hideoutSit(value: HideoutValue, members: string[], nowUnixMs: number, signs: { [userId: string]: number }): void {
+    const here = hideoutHere(value, members, nowUnixMs);
+    const together = here.length >= 2;
+    if (together && value.sitAt > 0) {
+        const step = Math.floor(Math.min(nowUnixMs - value.sitAt, HideoutServerRules.maxSitStepMs) / 1000);
+        value.sitSeconds += step;
+        hideoutFireSigns(value, here, step, signs);
+    }
     value.sitAt = together ? nowUnixMs : 0;
 }
 
@@ -276,7 +294,8 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
         wants: wants, mine: value.wants[userId] || [],
         corners: cornered.map((id) => ({ userId: id, name: nameOf(id), slot: value.corners[id].slot, hero: value.corners[id].hero, path: value.corners[id].path, decor: value.corners[id].decor }))
             .sort((a, b) => a.slot - b.slot),
-        cornerDecor: hideoutCornerDecor(value.tier), myCorner: !!value.corners[userId] && meta.members.indexOf(userId) >= 0
+        cornerDecor: hideoutCornerDecor(value.tier), myCorner: !!value.corners[userId] && meta.members.indexOf(userId) >= 0,
+        commons: hideoutCommonsView(nk, value, meta.members, userId, nowUnixMs)
     };
 }
 
@@ -286,7 +305,10 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
         throw new Error("not in a party");
     const meta = partyMetaOf(group);
     const chronicle = hideoutChronicle(nk, group.id);
+    let signs: { [userId: string]: number } = {};
     const value = hideoutChange(nk, group.id, (hideout) => {
+        signs = {};
+        hideoutGrowGarden(hideout, hideoutHere(hideout, meta.members, nowUnixMs).length >= 2, nowUnixMs);
         change(hideout, meta, chronicle);
         for (const id of Object.keys(hideout.here))
             if (meta.members.indexOf(id) < 0 || nowUnixMs - hideout.here[id] > HideoutServerRules.hereMs)
@@ -294,20 +316,29 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
         for (const id of Object.keys(hideout.fishing))
             if (meta.members.indexOf(id) < 0 || nowUnixMs - hideout.fishing[id] > HideoutServerRules.hereMs)
                 delete hideout.fishing[id];
-        hideoutSit(hideout, meta.members, nowUnixMs);
+        hideoutSit(hideout, meta.members, nowUnixMs, signs);
         hideoutFinish(hideout, chronicle);
         hideoutRise(nk, hideout, meta.members.length, chronicle);
         hideoutNoteFormer(hideout, meta.members);
         hideoutSeatCorners(hideout, meta.members);
         return hideout;
     });
+    for (const id of Object.keys(signs)) {
+        try {
+            walletGrant(nk, id, "hideout_fire", signs[id], nowUnixMs);
+        } catch (error) {
+            continue;
+        }
+    }
     return hideoutView(nk, group, value, chronicle, userId, nowUnixMs);
 }
 
-function hideoutPresence(nk: nkruntime.Nakama, userId: string, here: boolean | null, nowUnixMs: number, fishing: boolean | null = null, caught: number = 0): { [key: string]: any } {
+function hideoutPresence(nk: nkruntime.Nakama, userId: string, here: boolean | null, nowUnixMs: number, fishing: boolean | null = null, caught: number = 0, tend: HideoutTend | null = null): { [key: string]: any } {
     return hideoutUpdate(nk, userId, (hideout, meta) => {
         if (here === true)
             hideout.here[userId] = nowUnixMs;
+        if (here === true && tend)
+            hideoutTendGarden(hideout, userId, tend, hideoutHere(hideout, meta.members, nowUnixMs).length >= 2);
         else if (here === false)
             delete hideout.here[userId];
         if (fishing === true)
@@ -372,7 +403,7 @@ function hideoutPresenceRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk
         throw new Error("bad request");
     if (typeof caught !== "number" || caught !== Math.floor(caught) || caught < 0)
         throw new Error("bad request");
-    return JSON.stringify(hideoutPresence(nk, partyCaller(ctx), here, Date.now(), fishing, caught));
+    return JSON.stringify(hideoutPresence(nk, partyCaller(ctx), here, Date.now(), fishing, caught, hideoutReadTend(request.tend)));
 }
 
 function hideoutQueueRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {

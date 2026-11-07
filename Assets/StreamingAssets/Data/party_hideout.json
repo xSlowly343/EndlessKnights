@@ -6,6 +6,19 @@
   "maxCaughtPerMark": 5,
   "cornerDecor": 3,
   "frozenDays": 30,
+  "fire": { "signEveryMinutes": 60, "togetherBoost": 0.2 },
+  "sharedGarden": {
+    "bedsPerRow": 4,
+    "rows": ["garden", "garden_row"],
+    "tendPerMark": { "keys": 3000, "clicks": 1500, "mouseMeters": 300, "idleSeconds": 120 }
+  },
+  "storage": {
+    "prefixes": ["herb_", "seed_", "fish_", "ore_", "find_", "bone_"],
+    "items": ["ember_coal", "ice_crystal", "ruin_shard"],
+    "never": ["seed_colossus", "herb_colossus_bloom"],
+    "takePerDay": 20,
+    "journal": 30
+  },
   "tiers": [
     {
       "id": "rest",

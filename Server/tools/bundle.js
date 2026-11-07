@@ -472,6 +472,18 @@ const hideoutRules = {
   cornerDecor: hideout.cornerDecor,
   frozenMs: hideout.frozenDays * 86400000,
   decorIds: JSON.parse(fs.readFileSync(path.join(data, "decor.json"), "utf8")).items.map((item) => item.id),
+  fireSignMs: hideout.fire.signEveryMinutes * 60000,
+  togetherBoost: hideout.fire.togetherBoost,
+  bedsPerRow: hideout.sharedGarden.bedsPerRow,
+  gardenRows: hideout.sharedGarden.rows,
+  tendPerMark: hideout.sharedGarden.tendPerMark,
+  plants: JSON.parse(fs.readFileSync(path.join(data, "garden.json"), "utf8")).plants.map((plant) => ({ id: plant.id, input: plant.input, starter: !!plant.starter,
+    growSeconds: plant.growMinutes * 60, secondsPerUnit: plant.secondsPerUnit, herb: plant.herb, yield: plant.yield })),
+  storagePrefixes: hideout.storage.prefixes,
+  storageItems: hideout.storage.items,
+  storageNever: hideout.storage.never,
+  takePerDay: hideout.storage.takePerDay,
+  journalSize: hideout.storage.journal,
   tiers: hideout.tiers.map((tier) => ({ members: tier.members, bosses: tier.bosses, orders: tier.orders, sitSeconds: Math.round(tier.sitHours * 3600), fireLevel: tier.fireLevel, cornerDecor: tier.cornerDecor || 0,
     needs: (tier.needs || []).map((need) => ({ counter: need.counter, target: need.target })), opens: tier.opens })),
   buildings: hideout.buildings.filter((building) => !building.personal).map((building) => ({ id: building.id, guild: building.guild || "", levels: building.levels.map((level) => ({ points: level.points, hours: level.hours })) })),
@@ -480,6 +492,9 @@ const hideoutRules = {
   maxGive: clanCamp.maxGive,
   startBuilt: guilds.build.startBuilt
 };
+for (const row of hideoutRules.gardenRows)
+  if (!hideoutRules.buildings.some((building) => building.id === row))
+    throw new Error("party_hideout.json: unknown garden row " + row);
 for (const building of hideoutRules.buildings)
   if (building.guild && !guilds.guilds.some((guild) => guild.id === building.guild))
     throw new Error("party_hideout.json: unknown guild " + building.guild);

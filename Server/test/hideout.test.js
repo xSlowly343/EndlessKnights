@@ -302,3 +302,110 @@ test("a party that never had a hideout closes at once as before", () => {
   assert.throws(() => call("ann", "partyJoinRpc", { code: created.code }), /unknown code/);
 });
 
+
+function built(nk, user, buildings) {
+  const group = server.partyGroupOfUser(nk, user);
+  server.hideoutChange(nk, group.id, (value) => { value.tier = Math.max(value.tier, 3); Object.assign(value.buildings, buildings); });
+}
+
+const friendship = (nk, user) => server.walletRead(nk, user).value.balances.friendship;
+
+test("an hour by the fire together gives a sign of friendship, with a daily cap", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  let time = now;
+  at(nk, "ann", true, time);
+  at(nk, "bob", true, time);
+  const before = friendship(nk, "ann");
+  for (let i = 0; i < 61; i++) {
+    time += minute;
+    at(nk, i % 2 === 0 ? "ann" : "bob", true, time);
+  }
+  assert.strictEqual(friendship(nk, "ann") - before, 1);
+  assert.strictEqual(friendship(nk, "bob") - before, 1);
+  for (let i = 0; i < 6 * 60; i++) {
+    time += minute;
+    at(nk, i % 2 === 0 ? "ann" : "bob", true, time);
+  }
+  assert.strictEqual(friendship(nk, "ann") - before, 4, "four signs a day at most");
+});
+
+test("the shared garden waits for the gardeners and grows from everyone's input", () => {
+  const { nk, call } = world("ann", "bob", "cid");
+  party(call, ["ann", "bob", "cid"]);
+  const plant = rules.plants.find((entry) => entry.input === "keys" && entry.starter);
+  assert.deepStrictEqual(plain(at(nk, "ann", true, now).commons.garden), [], "no garden building, no beds");
+  assert.throws(() => server.hideoutPlant(nk, "ann", 0, plant.id, now), /no such bed/);
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.hideoutChange(nk, group.id, (value) => { value.tier = 3; });
+  assert.strictEqual(building("garden").guild, "gardeners", "the garden waits for the gardeners' hall like every guild building");
+  assert.ok(rules.startBuilt.includes("gardeners"), "the herbalist's tent stands from the start");
+  built(nk, "ann", { garden: 1 });
+  const planted = plain(server.hideoutPlant(nk, "ann", 0, plant.id, now));
+  assert.strictEqual(planted.commons.garden.length, rules.bedsPerRow);
+  assert.strictEqual(planted.commons.garden[0].plant, plant.id);
+  assert.throws(() => server.hideoutPlant(nk, "bob", 0, plant.id, now), /the bed is taken/);
+  assert.throws(() => server.hideoutHarvest(nk, "bob", 0, now), /not ready/);
+  const keys = Math.ceil(plant.growSeconds / plant.secondsPerUnit / 2);
+  let time = now;
+  let view = null;
+  for (let left = keys; left > 0; left -= rules.tendPerMark.keys) {
+    time += 1000;
+    view = plain(server.hideoutPresence(nk, "bob", true, time, null, 0, { keys: Math.min(left, rules.tendPerMark.keys), clicks: 0, mouse: 0, idle: 0 }));
+  }
+  assert.strictEqual(view.commons.garden[0].ready, false, "bob alone grows it halfway");
+  assert.strictEqual(view.commons.garden[0].tended, true);
+  for (let left = keys; left > 0; left -= rules.tendPerMark.keys) {
+    time += 1000;
+    view = plain(server.hideoutPresence(nk, "bob", true, time, null, 0, { keys: Math.min(left, rules.tendPerMark.keys), clicks: 0, mouse: 0, idle: 0 }));
+  }
+  assert.strictEqual(view.commons.garden[0].ready, true);
+  const harvested = plain(server.hideoutHarvest(nk, "ann", 0, time));
+  assert.strictEqual(harvested.commons.owed[plant.herb], plant.yield);
+  assert.strictEqual(harvested.commons.garden[0].plant, "");
+  const claim = plain(call("bob", "hideoutClaimRpc"));
+  assert.strictEqual(claim.items[plant.herb], plant.yield, "the one who tended shares the harvest");
+  assert.deepStrictEqual(plain(call("bob", "hideoutClaimRpc").items), {}, "a claim is taken once");
+  assert.deepStrictEqual(plain(call("cid", "hideoutClaimRpc").items), {}, "who did not tend gets nothing");
+  assert.strictEqual(server.hideoutRead(nk, group.id).value.counters.gardenHarvests, 1);
+});
+
+test("the garden grows faster when two sit by the fire, and a second row adds beds", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  built(nk, "ann", { garden: 1, garden_row: 1 });
+  const plant = rules.plants.find((entry) => entry.input === "idle" && entry.starter);
+  server.hideoutPlant(nk, "ann", 5, plant.id, now);
+  at(nk, "ann", true, now);
+  at(nk, "bob", true, now);
+  const view = plain(server.hideoutPresence(nk, "ann", true, now + 1000, null, 0, { keys: 0, clicks: 0, mouse: 0, idle: 100 }));
+  assert.strictEqual(view.commons.together, true);
+  assert.strictEqual(view.commons.garden.length, 2 * rules.bedsPerRow);
+  const grown = view.commons.garden[5].share * plant.growSeconds;
+  assert.ok(Math.abs(grown - (1 + 100 * plant.secondsPerUnit) * (1 + rules.togetherBoost)) < 1e-6, "time and tending both get the boost");
+  assert.throws(() => server.hideoutPresence(nk, "ann", true, now, null, 0, server.hideoutReadTend({ keys: -1 })), /bad request/);
+  assert.strictEqual(server.hideoutReadTend({ keys: 1e9 }).keys, rules.tendPerMark.keys, "a mark carries no more than the cap");
+});
+
+test("the storage takes peaceful goods only, limits what is taken out and keeps a journal", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  assert.throws(() => call("ann", "hideoutStorePutRpc", { item: "herb_knockbloom", amount: 5 }), /storage is not built/);
+  built(nk, "ann", { storage: 1 });
+  for (const item of ["sword_of_kings", "gem_anvil", "seed_colossus", 5])
+    assert.throws(() => call("ann", "hideoutStorePutRpc", { item: item, amount: 1 }), /does not go into the storage/);
+  assert.throws(() => call("ann", "hideoutStorePutRpc", { item: "herb_knockbloom", amount: 0 }), /bad amount/);
+  call("ann", "hideoutStorePutRpc", { item: "herb_knockbloom", amount: 30 });
+  call("ann", "hideoutStorePutRpc", { item: "ember_coal", amount: 2 });
+  const took = call("bob", "hideoutStoreTakeRpc", { item: "herb_knockbloom", amount: rules.takePerDay });
+  assert.strictEqual(took.commons.storage.herb_knockbloom, 30 - rules.takePerDay);
+  assert.strictEqual(took.commons.takenToday, rules.takePerDay);
+  assert.throws(() => call("bob", "hideoutStoreTakeRpc", { item: "ember_coal", amount: 1 }), /daily take limit/);
+  assert.throws(() => call("ann", "hideoutStoreTakeRpc", { item: "ember_coal", amount: 3 }), /not enough/);
+  const view = call("ann", "hideoutStoreTakeRpc", { item: "ember_coal", amount: 2 });
+  assert.strictEqual(view.commons.storage.ember_coal, undefined);
+  assert.deepStrictEqual(view.commons.journal.map((entry) => entry.name + ":" + entry.item + ":" + entry.amount),
+    ["ann:ember_coal:-2", "bob:herb_knockbloom:-" + rules.takePerDay, "ann:ember_coal:2", "ann:herb_knockbloom:30"]);
+  const tomorrow = plain(server.hideoutStore(nk, "bob", "herb_knockbloom", 1, false, now + 2 * 86400000));
+  assert.strictEqual(tomorrow.commons.takenToday, 1, "the limit resets the next day");
+});

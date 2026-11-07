@@ -117,12 +117,17 @@ namespace Game.Core.Sim
             if (State.Place == PeacefulPlace.Hideout)
             {
                 CountActions(input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks);
+                Add(State.HideoutWork, input, metersPerPixel);
                 return;
             }
-            var work = Work(Activity);
+            CountActions(input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks);
+            Add(Work(Activity), input, metersPerPixel);
+        }
+
+        private static void Add(PeacefulWork work, in InputSnapshot input, double metersPerPixel)
+        {
             work.Keys += input.KeyDowns;
             work.Clicks += input.LeftClicks + input.RightClicks + input.MiddleClicks;
-            CountActions(input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks);
             work.MouseMeters += input.MouseDistancePx * metersPerPixel;
             if (!input.HasAnyInput)
                 work.IdleSeconds += GameLoop.TickSeconds;

@@ -19,11 +19,13 @@ namespace Game.Core.Sim
         private readonly CampSystem _camp;
         private HideoutRules _rules;
         private ClanCampRules _materials;
+        private GardenRules _garden;
 
-        public HideoutSystem(HideoutRules rules, ClanCampRules materials, GameState state, CampSystem camp)
+        public HideoutSystem(HideoutRules rules, ClanCampRules materials, GardenRules garden, GameState state, CampSystem camp)
         {
             _rules = rules;
             _materials = materials;
+            _garden = garden;
             _state = state;
             _camp = camp;
         }
@@ -37,10 +39,11 @@ namespace Game.Core.Sim
         public IReadOnlyList<string> Corner => _state.Decor.Corner;
         public HideoutTier? NextTier => State.Tier < _rules.Tiers.Count ? _rules.Tiers[State.Tier] : null;
 
-        public void UseRules(HideoutRules rules, ClanCampRules materials)
+        public void UseRules(HideoutRules rules, ClanCampRules materials, GardenRules garden)
         {
             _rules = rules;
             _materials = materials;
+            _garden = garden;
         }
 
         public int PointsOf(string item) => _materials.PointsOf(item);
@@ -142,8 +145,66 @@ namespace Game.Core.Sim
                 ReturnCorner();
         }
 
+        public PeacefulWork TakeTending()
+        {
+            var work = _state.Peaceful.HideoutWork;
+            var taken = new PeacefulWork { Keys = work.Keys, Clicks = work.Clicks, MouseMeters = work.MouseMeters, IdleSeconds = work.IdleSeconds };
+            work.Keys = 0;
+            work.Clicks = 0;
+            work.MouseMeters = 0;
+            work.IdleSeconds = 0;
+            return taken;
+        }
+
+        public GardenResult PackSeed(string plantId)
+        {
+            var plant = _garden.Plant(plantId);
+            if (plant == null)
+                return GardenResult.UnknownPlant;
+            return plant.Starter || _camp.Take(plant.Seed, 1) ? GardenResult.Done : GardenResult.NoSeed;
+        }
+
+        public void ReturnSeed(string plantId)
+        {
+            var plant = _garden.Plant(plantId);
+            if (plant != null && !plant.Starter)
+                _camp.Add(plant.Seed, 1);
+        }
+
+        public bool PackGoods(string item, int amount) => amount > 0 && _camp.Take(item, amount);
+
+        public void Receive(IReadOnlyDictionary<string, long> items)
+        {
+            foreach (var pair in items)
+            {
+                if (pair.Value > 0)
+                    _camp.Add(pair.Key, pair.Value);
+            }
+        }
+
+        public void UseCommons(bool together, IReadOnlyList<SharedBed> beds, IReadOnlyDictionary<string, long> owed, bool storageBuilt,
+            IReadOnlyDictionary<string, long> storage, IReadOnlyList<StorageEntry> journal, int takenToday, int takePerDay)
+        {
+            var hideout = State;
+            hideout.Together = together;
+            hideout.Beds.Clear();
+            hideout.Beds.AddRange(beds);
+            hideout.Owed.Clear();
+            foreach (var pair in owed)
+                hideout.Owed[pair.Key] = pair.Value;
+            hideout.StorageBuilt = storageBuilt;
+            hideout.Storage.Clear();
+            foreach (var pair in storage)
+                hideout.Storage[pair.Key] = pair.Value;
+            hideout.Journal.Clear();
+            hideout.Journal.AddRange(journal);
+            hideout.TakenToday = takenToday;
+            hideout.TakePerDay = takePerDay;
+        }
+
         public void Leave()
         {
+            UseCommons(false, System.Array.Empty<SharedBed>(), new Dictionary<string, long>(), false, new Dictionary<string, long>(), System.Array.Empty<StorageEntry>(), 0, 0);
             UseCorners(false, System.Array.Empty<HideoutCorner>());
             Use(0, 0, 0, 0, 0, 0, System.Array.Empty<string>());
             UseBuild(new Dictionary<string, int>(), System.Array.Empty<string>(), string.Empty, 0, 0, 0, 0, 0, false, new Dictionary<string, int>(), System.Array.Empty<string>());
