@@ -915,27 +915,28 @@ namespace Game.Core.Party
             var buffs = _loop.PartyBuffs;
             var offer = new PartyOfferMessage();
             for (var i = 0; i < buffs.Rules.Stats.Count; i++)
-                offer.SetStat(i, buffs.OwnValue(i));
+                offer.SetStat(i, buffs.OfferedValue(i));
             for (var i = 0; i < buffs.Rules.Coop.Stats.Count; i++)
             {
                 if (buffs.CoopOffered(i) > 0 && !offer.AddCoop(i, buffs.CoopOffered(i)))
                     break;
             }
             var count = 0;
+            var giving = PartyRole.Giving(_loop.Hero);
             var skills = _loop.State.Skills;
             for (var i = 0; i < skills.Count && count < PartyBuffRules.MaxAuras; i++)
             {
                 var slot = skills[i];
                 if (!slot.AuraApplied || !(slot.Def.Effect is AuraEffect aura) || !aura.Party)
                     continue;
-                offer.SetAura(count++, Offered(slot, slot.AuraStrength, slot.ActiveTicks));
+                offer.SetAura(count++, Offered(slot, slot.AuraStrength * giving, slot.ActiveTicks));
             }
             for (var i = 0; i < skills.Count && count < PartyBuffRules.MaxAuras; i++)
             {
                 if (!_loop.Skills.SharesStacks(i, out var stacks))
                     continue;
                 var slot = skills[i];
-                offer.SetAura(count++, Offered(slot, System.Math.Min(stacks.MaxTotal, stacks.PerStack.Value * slot.Stacks), slot.StackTicks > 0 ? slot.StackTicks : slot.ActiveTicks));
+                offer.SetAura(count++, Offered(slot, System.Math.Min(stacks.MaxTotal, stacks.PerStack.Value * slot.Stacks) * giving, slot.StackTicks > 0 ? slot.StackTicks : slot.ActiveTicks));
             }
             SendToHost(PartyCodec.Encode(_out, offer));
         }

@@ -137,6 +137,9 @@ namespace Game.Core.Sim
         public Dictionary<string, int> Spirits { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
         public long Crits { get; set; }
         public long Overcrits { get; set; }
+        public int FractureStacks { get; set; }
+        public int FractureQuietTicks { get; set; }
+        public long FracturesLaid { get; set; }
         public PeacefulBonus PeacefulBonus { get; } = new PeacefulBonus();
         public MountState Mount { get; } = new MountState();
         public double MouseBurstCarryPx { get; set; }
@@ -378,6 +381,8 @@ namespace Game.Core.Sim
             DoomTicks = 0;
             VulnerabilityShare = 0;
             VulnerabilityTicks = 0;
+            FractureStacks = 0;
+            FractureQuietTicks = 0;
             EnemyShieldFloor = BigNumber.Zero;
             Runedancer.OnSpawn();
             Duelist.OnSpawn();

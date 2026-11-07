@@ -61,6 +61,8 @@ namespace Game.Core.Party
 
         public double OwnValue(int index) => _rules.Stats[index].ValueOf(_hero) + TraitBonus(index);
 
+        public double OfferedValue(int index) => OwnValue(index) * PartyRole.Giving(_hero);
+
         private double TraitBonus(int index)
         {
             var from = _rules.Stats[index].From;
@@ -148,7 +150,7 @@ namespace Game.Core.Party
         {
             var coop = _rules.Coop;
             var mode = _state.PartyMode;
-            _giver.Tick(_hero, _state, coop, coop.ModeSelf(mode), coop.ModePower(mode));
+            _giver.Tick(_hero, _state, coop, coop.ModeSelf(mode), coop.ModePower(mode) * PartyRole.Giving(_hero));
             var inParty = _state.SharedEnemy && members > 1;
             ShareEnemy(inParty, coop);
             var soloTaken = inParty ? 0 : _giver.EnemyDamageTaken;
@@ -185,13 +187,14 @@ namespace Game.Core.Party
 
         private double Combined(int index, double cap)
         {
+            var receiving = PartyRole.Receiving(_hero);
             var givers = 0;
             givers = AddGiver(givers, (int)_state.Class, _giver.Self[index]);
             for (var slot = 0; slot < _allies.Length; slot++)
             {
                 var ally = _allies[slot];
                 if (ally.Present)
-                    givers = AddGiver(givers, ally.HeroClass, ally.Coop[index]);
+                    givers = AddGiver(givers, ally.HeroClass, ally.Coop[index] * receiving);
             }
             var total = 0.0;
             for (var i = 0; i < givers; i++)
@@ -255,13 +258,14 @@ namespace Game.Core.Party
             var stats = _rules.Stats;
             for (var i = 0; i < _applied.Length; i++)
                 _applied[i] = 0;
+            var receiving = PartyRole.Receiving(_hero);
             for (var i = 0; i < stats.Count; i++)
             {
                 var best = OwnValue(i) * _rules.SelfShare;
                 for (var slot = 0; slot < _allies.Length; slot++)
                 {
                     if (_allies[slot].Present)
-                        best = System.Math.Max(best, _allies[slot].Stats[i]);
+                        best = System.Math.Max(best, _allies[slot].Stats[i] * receiving);
                 }
                 _applied[i] = best;
                 if (best > 0)
@@ -271,6 +275,7 @@ namespace Game.Core.Party
 
         private void AddAllyAuras()
         {
+            var receiving = PartyRole.Receiving(_hero);
             for (var slot = 0; slot < _allies.Length; slot++)
             {
                 var ally = _allies[slot];
@@ -283,7 +288,7 @@ namespace Game.Core.Party
                         continue;
                     aura.OwnStrength = OwnStrength(aura.Gem!);
                     var stacks = SkillSystem.StacksOf(aura.Gem!);
-                    var strength = stacks != null ? System.Math.Min(stacks.MaxTotal, aura.Strength) : aura.Strength;
+                    var strength = (stacks != null ? System.Math.Min(stacks.MaxTotal, aura.Strength) : aura.Strength) * receiving;
                     aura.Suppressed = aura.OwnStrength > 0 && aura.OwnStrength >= strength;
                     if (aura.Suppressed || !Strongest(slot, aura))
                         continue;

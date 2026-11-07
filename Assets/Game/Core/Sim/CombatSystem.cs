@@ -290,6 +290,7 @@ namespace Game.Core.Sim
             if (_state.VulnerabilityTicks > 0 && --_state.VulnerabilityTicks == 0)
                 _state.VulnerabilityShare = 0;
             CountStreakTime();
+            FractureFade();
             ClearTraitParty();
             _runedancer.Tick();
             _duelist.Tick();
@@ -348,6 +349,7 @@ namespace Game.Core.Sim
             for (var i = 0; i < mouseHits; i++)
                 Hit(DamageSource.Mouse, BaseMouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier * _whisperer.StrikeMultiplier());
             MouseBursts(input.MousePx);
+            ShareFracture();
             _class.EndTick(keyHits, input.MousePx);
             _runedancer.EndTick();
             _duelist.EndTick();
@@ -396,7 +398,7 @@ namespace Game.Core.Sim
             if (source == DamageSource.Strike)
                 multiplier *= _state.SupportKeyBonus;
             LastHitCrit = false;
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken());
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken() * FractureTaken() * PillarMultiplier());
             if (damage.Sign <= 0)
                 return;
             _state.HitsOnEnemy++;
@@ -430,6 +432,7 @@ namespace Game.Core.Sim
             damage = WithholdDoom(damage);
             var hpBefore = _state.EnemyHp;
             _state.EnemyHp -= damage;
+            LayFracture(tags);
             NoteDamage(damage);
             LastTickDamage += damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
@@ -687,6 +690,68 @@ namespace Game.Core.Sim
             _state.TraitShareCritChance = 0;
             _state.TraitShareCritMultiplier = 0;
             _state.TraitShareGold = 0;
+        }
+
+        public static readonly int FractureEffectId = Content.Gems.GemDef.NetIdOf("fracture");
+
+        public int FractureMax => _rules.Fracture.MaxStacks(_hero.Value(CombatStats.FractureMax, 0));
+
+        public double FractureChance(StatTags tags) => System.Math.Min(1, System.Math.Max(0, _hero.Value(CombatStats.FractureChance, 0, tags)));
+
+        public double FracturePerStack => _rules.Fracture.PerStack * (1 + System.Math.Max(0, _hero.Value(CombatStats.FractureEffect, 0)));
+
+        public double FractureBonus => _state.FractureStacks * FracturePerStack;
+
+        public double Giving => PartyRole.Giving(_hero);
+
+        public double Receiving => PartyRole.Receiving(_hero);
+
+        public double PillarBonus => _state.PartyMembers > 1
+            ? System.Math.Max(0, _hero.Value(CombatStats.Pillar, 0)) * System.Math.Min(_rules.Fracture.PillarMembers, _state.PartyMembers)
+            : 0;
+
+        private double PillarMultiplier() => 1 + PillarBonus;
+
+        private double FractureTaken() => _state.SharedEnemy || _state.FractureStacks == 0 ? 1 : 1 + FractureBonus;
+
+        private void LayFracture(StatTags tags)
+        {
+            _state.FractureQuietTicks = 0;
+            var chance = FractureChance(tags);
+            if (!(chance > 0) || _state.FractureStacks >= FractureMax)
+                return;
+            if (chance < 1 && _state.Rng.NextDouble() >= chance)
+                return;
+            _state.FractureStacks++;
+            _state.FracturesLaid++;
+            _fractureShareTicks = 0;
+        }
+
+        private void FractureFade()
+        {
+            if (_state.FractureStacks > FractureMax)
+                _state.FractureStacks = FractureMax;
+            if (_state.FractureStacks == 0)
+                return;
+            if (++_state.FractureQuietTicks < (int)System.Math.Round(_rules.Fracture.DecaySeconds * GameLoop.TicksPerSecond))
+                return;
+            _state.FractureQuietTicks = 0;
+            _state.FractureStacks--;
+        }
+
+        private int _fractureShareTicks;
+
+        private void ShareFracture()
+        {
+            if (!_state.SharedEnemy || _state.FractureStacks == 0)
+            {
+                _fractureShareTicks = 0;
+                return;
+            }
+            if (_fractureShareTicks-- > 0)
+                return;
+            _fractureShareTicks = GameLoop.TicksPerSecond - 1;
+            _state.TraitEnemyEffects.Add(FractureEffectId, FractureBonus * Giving, _rules.Fracture.ShareSeconds);
         }
 
         private bool RollDoubleHit(StatTags tags)

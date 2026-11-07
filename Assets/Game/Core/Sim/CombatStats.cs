@@ -17,6 +17,12 @@ namespace Game.Core.Sim
         public static readonly StatId ItemAttribute = new StatId("itemAttribute");
         public static readonly StatId FlatAttack = new StatId("flatAttack");
         public static readonly StatId AdditionalDamage = new StatId("additionalDamage");
+        public static readonly StatId FractureChance = new StatId("fractureChance");
+        public static readonly StatId FractureMax = new StatId("fractureMax");
+        public static readonly StatId FractureEffect = new StatId("fractureEffect");
+        public static readonly StatId Cohesion = new StatId("cohesion");
+        public static readonly StatId Receptivity = new StatId("receptivity");
+        public static readonly StatId Pillar = new StatId("pillar");
         public static readonly StatId Gold = new StatId("gold");
         public static readonly StatId FocusGain = new StatId("focusGain");
         public static readonly StatId FocusMultiplier = new StatId("focusMultiplier");

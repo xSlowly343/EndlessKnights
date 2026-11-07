@@ -34,6 +34,7 @@ namespace Game.Core.Ui
         {
             var lines = new List<HeroStatLine>();
             AddDamage(lines, loop, format);
+            AddPartyRole(lines, loop);
             AddFocusAndResource(lines, loop);
             AddAttributes(lines, loop);
             AddPeaceful(lines, loop);
@@ -87,10 +88,34 @@ namespace Game.Core.Ui
                 lines.Add(Line(0, "hero.stats.overcritChance", Invariant("{0:0.#}%", overcrit * 100)));
                 lines.Add(Line(0, "hero.stats.overcritMultiplier", Invariant("×{0:0.##}", critMultiplier * overcritMultiplier)));
             }
+            AddFracture(lines, loop);
             lines.Add(Line(0, "hero.stats.increased", Percent(damage.IncreasedMultiplier - 1)));
             lines.Add(Line(0, "hero.stats.more", Invariant("×{0:0.##}", damage.MoreMultiplier)));
             lines.Add(Line(0, "hero.stats.heavyStrike", every >= 1 ? Texts.Format("hero.stats.heavyEvery", every, heavy.ToString("0.#", CultureInfo.InvariantCulture)) : Texts.Get("hero.stats.none")));
             lines.Add(Line(0, "hero.stats.vsBoss", Percent(boss.IncreasedMultiplier * boss.MoreMultiplier - 1)));
+        }
+
+        private static void AddFracture(List<HeroStatLine> lines, GameLoop loop)
+        {
+            var combat = loop.Combat;
+            var chance = combat.FractureChance(StatTags.Strike);
+            if (chance > 0 || loop.State.FractureStacks > 0)
+                lines.Add(Line(0, "hero.stats.fracture", Texts.Format("hero.stats.fractureShow", Chance(chance), loop.State.FractureStacks, combat.FractureMax, Invariant("{0:0.##}", 1 + combat.FractureBonus))));
+        }
+
+        private static void AddPartyRole(List<HeroStatLine> lines, GameLoop loop)
+        {
+            var combat = loop.Combat;
+            var pillar = System.Math.Max(0, loop.Hero.Value(CombatStats.Pillar, 0));
+            if (combat.Giving <= 1 && combat.Receiving <= 1 && pillar <= 0)
+                return;
+            lines.Add(Header(0, "hero.stats.partyRole"));
+            if (combat.Giving > 1)
+                lines.Add(Line(0, "hero.stats.cohesion", Percent(combat.Giving - 1)));
+            if (combat.Receiving > 1)
+                lines.Add(Line(0, "hero.stats.receptivity", Percent(combat.Receiving - 1)));
+            if (pillar > 0)
+                lines.Add(Line(0, "hero.stats.pillar", Texts.Format("hero.stats.pillarShow", Percent(pillar), Invariant("{0:0.##}", 1 + combat.PillarBonus))));
         }
 
         private static void AddFocusAndResource(List<HeroStatLine> lines, GameLoop loop)

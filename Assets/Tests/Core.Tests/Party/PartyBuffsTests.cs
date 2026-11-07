@@ -345,6 +345,51 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void CohesionStrengthensWhatTheGiverSends()
+        {
+            var rig = new Rig(2);
+            rig.Members[0].Loop.State.Class = HeroClass.Minstrel;
+            rig.Run(5);
+            var friend = rig.Members[1];
+            var before = friend.Damage;
+            rig.Members[0].Loop.Hero.Add(new Modifier(new StatId("partyDamage"), ModifierKind.Increased, 0.3));
+            rig.Members[0].Loop.Hero.Add(new Modifier(CombatStats.Cohesion, ModifierKind.Flat, 0.5));
+            rig.Members[0].Loop.RebuildTree();
+
+            rig.Run(2);
+            Assert.That(friend.Damage, Is.EqualTo(before * 1.45).Within(1e-6));
+        }
+
+        [Test]
+        public void ReceptivityStrengthensWhatTheAllyGets()
+        {
+            var rig = new Rig(2);
+            rig.Members[0].Loop.State.Class = HeroClass.Minstrel;
+            rig.Run(5);
+            var friend = rig.Members[1];
+            var before = friend.Damage;
+            friend.Loop.Hero.Add(new Modifier(CombatStats.Receptivity, ModifierKind.Flat, 0.5));
+            rig.Members[0].Loop.Hero.Add(new Modifier(new StatId("partyDamage"), ModifierKind.Increased, 0.3));
+            rig.Members[0].Loop.RebuildTree();
+
+            rig.Run(2);
+            Assert.That(friend.Damage, Is.EqualTo(before * 1.45).Within(1e-6));
+        }
+
+        [Test]
+        public void FractureOnTheSharedEnemyRaisesTheDamageOfTheWholeParty()
+        {
+            var rig = new Rig(2);
+            rig.Run(3);
+            Assert.That(rig.Host.Encounter.DamageTakenMultiplier, Is.EqualTo(1));
+            rig.Members[0].Loop.Hero.Add(new Modifier(CombatStats.FractureChance, ModifierKind.Flat, 1));
+
+            rig.Run(3);
+            Assert.That(rig.Members[0].Loop.State.FractureStacks, Is.GreaterThan(0));
+            Assert.That(rig.Host.Encounter.DamageTakenMultiplier, Is.GreaterThan(1), "the breaker's stacks count for every hit on the shared enemy");
+        }
+
+        [Test]
         public void AReservedAuraBuffsTheAllyUntilItIsTakenOff()
         {
             var rig = new Rig(2);
