@@ -235,6 +235,13 @@ function chronicleRiftDepth(nk: nkruntime.Nakama, logger: nkruntime.Logger, part
     }
 }
 
+function chronicleMove(nk: nkruntime.Nakama, from: string, to: string): void {
+    const objects = nk.storageRead([{ collection: ChronicleCollection, key: from, userId: PartySystemUser }]);
+    if (objects.length > 0)
+        nk.storageWrite([{ collection: ChronicleCollection, key: to, userId: PartySystemUser, value: objects[0].value, permissionRead: 0, permissionWrite: 0 }]);
+    chronicleForget(nk, from);
+}
+
 function chronicleForget(nk: nkruntime.Nakama, partyId: string): void {
     nk.storageDelete([{ collection: ChronicleCollection, key: partyId, userId: PartySystemUser }]);
 }

@@ -144,5 +144,64 @@ namespace Game.Core.Tests.Sim
             var copy = GameStateJson.Read(new ContentNode(GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
             Assert.That(copy.Hideout.Buildings["bonfire"], Is.EqualTo(2));
         }
+    
+        [Test]
+        public void DecorMovesToTheCornerAndComesHomeWhenThePlayerLeaves()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            loop.Tick();
+            var hideout = loop.Hideout;
+            Assert.That(loop.Decor.Place(0, "decor_lantern"), Is.EqualTo(DecorResult.Done));
+            Assert.That(hideout.PutInCorner("decor_lantern"), Is.EqualTo(CornerResult.NoCorner), "no party, no corner");
+            hideout.Use(1, 2, 0, 0, 0, 0, System.Array.Empty<string>());
+            hideout.UseCorners(true, new[] { new HideoutCorner("Ann", "Huscarl", "", new[] { "decor_lantern" }) });
+            Assert.That(hideout.CornerDecor, Is.EqualTo(hideout.Rules.CornerDecor));
+            Assert.That(hideout.PutInCorner("decor_lantern"), Is.EqualTo(CornerResult.Done));
+            Assert.That(loop.State.Decor.Placed, Has.No.Member("decor_lantern"), "the lantern left the refuge street");
+            Assert.That(hideout.PutInCorner("decor_brazier"), Is.EqualTo(CornerResult.NotOwned));
+            Assert.That(hideout.PutInCorner("decor_nothing"), Is.EqualTo(CornerResult.Unknown));
+            Assert.That(hideout.PutInCorner("decor_bench"), Is.EqualTo(CornerResult.Done));
+            Assert.That(HideoutView.MyCorner(hideout), Does.Contain("2"));
+            Assert.That(HideoutView.Corners(hideout.State), Has.Count.EqualTo(1));
+
+            var copy = GameStateJson.Read(new ContentNode(GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Decor.Corner, Is.EqualTo(new[] { "decor_lantern", "decor_bench" }));
+
+            Assert.That(hideout.TakeFromCorner("decor_bench"), Is.EqualTo(CornerResult.Done));
+            Assert.That(loop.State.Decor.Placed, Has.Member("decor_bench"));
+            Assert.That(hideout.TakeFromCorner("decor_bench"), Is.EqualTo(CornerResult.NotThere));
+
+            hideout.UseCorners(false, System.Array.Empty<HideoutCorner>());
+            Assert.That(hideout.Corner, Is.Empty);
+            Assert.That(loop.State.Decor.Placed, Has.Member("decor_lantern"), "a player who left gets the decor back");
+        }
+
+        [Test]
+        public void TheCornerIsFullAtThreeAndTheStrongholdGivesFive()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            var hideout = loop.Hideout;
+            var rules = hideout.Rules;
+            var stronghold = 0;
+            while (stronghold < rules.Tiers.Count && rules.Tiers[stronghold].CornerDecor == 0)
+                stronghold++;
+            Assert.That(rules.CornerDecorAt(stronghold), Is.EqualTo(3));
+            Assert.That(rules.CornerDecorAt(stronghold + 1), Is.EqualTo(5));
+            Assert.That(rules.FrozenDays, Is.EqualTo(30));
+            hideout.Use(1, 2, 0, 0, 0, 0, System.Array.Empty<string>());
+            hideout.UseCorners(true, System.Array.Empty<HideoutCorner>());
+            foreach (var id in new[] { "decor_lantern", "decor_bench", "decor_brazier" })
+                loop.State.Decor.Owned.Add(id);
+            loop.State.Decor.Owned.Add("decor_ice_statue");
+            Assert.That(hideout.PutInCorner("decor_lantern"), Is.EqualTo(CornerResult.Done));
+            Assert.That(hideout.PutInCorner("decor_bench"), Is.EqualTo(CornerResult.Done));
+            Assert.That(hideout.PutInCorner("decor_brazier"), Is.EqualTo(CornerResult.Done));
+            Assert.That(hideout.PutInCorner("decor_ice_statue"), Is.EqualTo(CornerResult.Full));
+            Assert.That(loop.Decor.Place(0, "decor_brazier"), Is.EqualTo(DecorResult.Done));
+            Assert.That(hideout.Corner, Has.No.Member("decor_brazier"), "placing it at home takes it out of the corner");
+            hideout.Leave();
+            Assert.That(hideout.Corner, Is.Empty);
+            Assert.That(hideout.CornerOpen, Is.False);
+        }
     }
 }

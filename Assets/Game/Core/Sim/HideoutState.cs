@@ -2,6 +2,22 @@ using System.Collections.Generic;
 
 namespace Game.Core.Sim
 {
+    public sealed class HideoutCorner
+    {
+        public HideoutCorner(string name, string hero, string path, IReadOnlyList<string> decor)
+        {
+            Name = name;
+            Hero = hero;
+            Path = path;
+            Decor = decor;
+        }
+
+        public string Name { get; }
+        public string Hero { get; }
+        public string Path { get; }
+        public IReadOnlyList<string> Decor { get; }
+    }
+
     public sealed class HideoutState
     {
         public int Tier { get; set; }
@@ -22,5 +38,7 @@ namespace Game.Core.Sim
         public double ProjectHours { get; set; }
         public long HoursTogether { get; set; }
         public bool Leader { get; set; }
+        public bool HasCorner { get; set; }
+        public List<HideoutCorner> Corners { get; } = new List<HideoutCorner>();
     }
 }

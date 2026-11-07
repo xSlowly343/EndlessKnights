@@ -3,6 +3,16 @@ using Game.Core.Content;
 
 namespace Game.Core.Sim
 {
+    public enum CornerResult
+    {
+        Done,
+        NoCorner,
+        Unknown,
+        NotOwned,
+        Full,
+        NotThere
+    }
+
     public sealed class HideoutSystem
     {
         private readonly GameState _state;
@@ -21,6 +31,10 @@ namespace Game.Core.Sim
         public HideoutRules Rules => _rules;
         public HideoutState State => _state.Hideout;
         public bool Inside => _state.Peaceful.Mode == PeacefulMode.Camp && _state.Peaceful.Place == PeacefulPlace.Hideout;
+        public DecorSystem? Decor { get; set; }
+        public int CornerDecor => _rules.CornerDecorAt(State.Tier);
+        public bool CornerOpen => State.Tier > 0 && State.HasCorner;
+        public IReadOnlyList<string> Corner => _state.Decor.Corner;
         public HideoutTier? NextTier => State.Tier < _rules.Tiers.Count ? _rules.Tiers[State.Tier] : null;
 
         public void UseRules(HideoutRules rules, ClanCampRules materials)
@@ -84,8 +98,53 @@ namespace Game.Core.Sim
             hideout.Here.AddRange(here);
         }
 
+        public CornerResult PutInCorner(string id)
+        {
+            if (!CornerOpen)
+                return CornerResult.NoCorner;
+            if (Decor == null || Decor.Rules.Item(id) == null)
+                return CornerResult.Unknown;
+            var corner = _state.Decor.Corner;
+            if (corner.Contains(id))
+                return CornerResult.Done;
+            if (corner.Count >= CornerDecor)
+                return CornerResult.Full;
+            if (!Decor.PutAway(id))
+                return CornerResult.NotOwned;
+            corner.Add(id);
+            return CornerResult.Done;
+        }
+
+        public CornerResult TakeFromCorner(string id)
+        {
+            if (!_state.Decor.Corner.Remove(id))
+                return CornerResult.NotThere;
+            Decor?.PlaceInFreeSpot(id);
+            return CornerResult.Done;
+        }
+
+        public int ReturnCorner()
+        {
+            var corner = _state.Decor.Corner;
+            var count = corner.Count;
+            foreach (var id in corner)
+                Decor?.PlaceInFreeSpot(id);
+            corner.Clear();
+            return count;
+        }
+
+        public void UseCorners(bool mine, IReadOnlyList<HideoutCorner> corners)
+        {
+            State.HasCorner = mine;
+            State.Corners.Clear();
+            State.Corners.AddRange(corners);
+            if (!mine)
+                ReturnCorner();
+        }
+
         public void Leave()
         {
+            UseCorners(false, System.Array.Empty<HideoutCorner>());
             Use(0, 0, 0, 0, 0, 0, System.Array.Empty<string>());
             UseBuild(new Dictionary<string, int>(), System.Array.Empty<string>(), string.Empty, 0, 0, 0, 0, 0, false, new Dictionary<string, int>(), System.Array.Empty<string>());
             if (_state.Peaceful.Place == PeacefulPlace.Hideout)

@@ -5,7 +5,7 @@ namespace Game.Core.Content
 {
     public sealed class HideoutTier
     {
-        public HideoutTier(string id, string nameRu, string nameEn, int members, long bosses, int orders, double sitHours, int fireLevel, IReadOnlyList<HideoutNeed> needs, IReadOnlyList<string> opens)
+        public HideoutTier(string id, string nameRu, string nameEn, int members, long bosses, int orders, double sitHours, int fireLevel, int cornerDecor, IReadOnlyList<HideoutNeed> needs, IReadOnlyList<string> opens)
         {
             Id = id;
             NameRu = nameRu;
@@ -15,6 +15,7 @@ namespace Game.Core.Content
             Orders = orders;
             SitHours = sitHours;
             FireLevel = fireLevel;
+            CornerDecor = cornerDecor;
             Needs = needs;
             Opens = opens;
         }
@@ -27,6 +28,7 @@ namespace Game.Core.Content
         public int Orders { get; }
         public double SitHours { get; }
         public int FireLevel { get; }
+        public int CornerDecor { get; }
         public IReadOnlyList<HideoutNeed> Needs { get; }
         public IReadOnlyList<string> Opens { get; }
     }
@@ -82,18 +84,32 @@ namespace Game.Core.Content
 
         private static readonly string[] Counters = { "gardenHarvests", "guardiansTogether", "riftDepth", "fishTogether", "partyTrips", "hoursTogether", "allBuildingsLevel" };
 
-        private HideoutRules(int presenceSeconds, IReadOnlyList<HideoutTier> tiers, IReadOnlyList<HideoutBuilding> buildings, IReadOnlyList<int> levelTiers)
+        public const string CornerBuilding = "corner";
+
+        private HideoutRules(int presenceSeconds, int cornerDecor, int frozenDays, IReadOnlyList<HideoutTier> tiers, IReadOnlyList<HideoutBuilding> buildings, IReadOnlyList<int> levelTiers)
         {
             PresenceSeconds = presenceSeconds;
+            CornerDecor = cornerDecor;
+            FrozenDays = frozenDays;
             Tiers = tiers;
             Buildings = buildings;
             LevelTiers = levelTiers;
         }
 
         public int PresenceSeconds { get; }
+        public int CornerDecor { get; }
+        public int FrozenDays { get; }
         public IReadOnlyList<int> LevelTiers { get; }
         public IReadOnlyList<HideoutTier> Tiers { get; }
         public IReadOnlyList<HideoutBuilding> Buildings { get; }
+
+        public int CornerDecorAt(int tier)
+        {
+            var spots = CornerDecor;
+            for (var i = 0; i < tier && i < Tiers.Count; i++)
+                spots = System.Math.Max(spots, Tiers[i].CornerDecor);
+            return spots;
+        }
 
         public HideoutBuilding? Building(string id)
         {
@@ -114,6 +130,8 @@ namespace Game.Core.Content
             var presence = root.Field("presenceSeconds").AsInt(10, 600);
             var here = root.Field("hereSeconds").AsInt(presence + 1, 3600);
             root.Field("maxSitStepSeconds").AsInt(presence, here * 10);
+            var cornerDecor = root.Field("cornerDecor").AsInt(1, 10);
+            var frozenDays = root.Field("frozenDays").AsInt(1, 365);
             var buildings = new List<HideoutBuilding>();
             var ids = new HashSet<string>(StringComparer.Ordinal);
             foreach (var node in root.Field("buildings").Items())
@@ -161,7 +179,8 @@ namespace Game.Core.Content
                 }
                 var name = node.Field("name");
                 tiers.Add(new HideoutTier(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), node.Field("members").AsInt(1, 4),
-                    bosses, node.Field("orders").AsInt(0, 1000), node.Field("sitHours").AsNumber(0, 10_000), node.Field("fireLevel").AsInt(0, 3), needs, opens));
+                    bosses, node.Field("orders").AsInt(0, 1000), node.Field("sitHours").AsNumber(0, 10_000), node.Field("fireLevel").AsInt(0, 3),
+                    node.HasField("cornerDecor") ? node.Field("cornerDecor").AsInt(cornerDecor, 10) : 0, needs, opens));
             }
             if (tiers.Count == 0)
                 throw root.Field("tiers").Error("the hideout needs tiers");
@@ -175,7 +194,9 @@ namespace Game.Core.Content
                 if (tier.FireLevel > 1 && levelTiers[tier.FireLevel - 1] >= tiers.IndexOf(tier) + 1)
                     throw root.Field("levelTiers").Error($"tier '{tier.Id}' needs a fire level that only a later tier allows");
             }
-            return new HideoutRules(presence, tiers, buildings, levelTiers);
+            if (!ids.Contains(CornerBuilding))
+                throw root.Field("buildings").Error($"the hideout needs the '{CornerBuilding}' building");
+            return new HideoutRules(presence, cornerDecor, frozenDays, tiers, buildings, levelTiers);
         }
     }
 }

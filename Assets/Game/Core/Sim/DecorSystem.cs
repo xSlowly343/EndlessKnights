@@ -84,6 +84,7 @@ namespace Game.Core.Sim
             var moved = State.Placed.IndexOf(id);
             if (moved >= 0)
                 State.Placed[moved] = string.Empty;
+            State.Corner.Remove(id);
             State.Placed[spot] = id;
             return DecorResult.Done;
         }
@@ -141,6 +142,30 @@ namespace Game.Core.Sim
                     State.Gifts++;
                     return true;
             }
+        }
+
+        public bool PutAway(string id)
+        {
+            if (!Owns(id))
+                return false;
+            var placed = State.Placed.IndexOf(id);
+            if (placed >= 0)
+                State.Placed[placed] = string.Empty;
+            return true;
+        }
+
+        public bool PlaceInFreeSpot(string id)
+        {
+            EnsureSpots();
+            var spots = System.Math.Min(Spots, State.Placed.Count);
+            for (var i = 0; i < spots; i++)
+            {
+                if (State.Placed[i].Length > 0)
+                    continue;
+                State.Placed[i] = id;
+                return true;
+            }
+            return false;
         }
 
         private void EnsureSpots()

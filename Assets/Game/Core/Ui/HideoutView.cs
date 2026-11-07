@@ -93,6 +93,20 @@ namespace Game.Core.Ui
             return Texts.Format("hideout.project", name, state.ProjectLevel) + " " + Texts.Format("hideout.project.progress", state.ProjectPoints, state.ProjectTarget, System.Math.Min(state.HoursTogether, state.ProjectHours), state.ProjectHours);
         }
 
+        public static string MyCorner(HideoutSystem hideout) =>
+            hideout.CornerOpen ? Texts.Format("hideout.corner", hideout.Corner.Count, hideout.CornerDecor) : Texts.Get(hideout.State.Tier > 0 ? "hideout.corner.full" : "hideout.corner.none");
+
+        public static List<string> Corners(HideoutState state)
+        {
+            var lines = new List<string>();
+            foreach (var corner in state.Corners)
+            {
+                var hero = corner.Path.Length > 0 ? corner.Hero + " · " + corner.Path : corner.Hero;
+                lines.Add(Texts.Format("hideout.corner.of", corner.Name, hero, corner.Decor.Count));
+            }
+            return lines;
+        }
+
         public static string AtTheFire(HideoutState state) =>
             state.Here.Count == 0 ? Texts.Get("hideout.fire.empty") : Texts.Format("hideout.fire", string.Join(", ", state.Here));
     }
