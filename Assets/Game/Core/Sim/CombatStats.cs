@@ -23,6 +23,8 @@ namespace Game.Core.Sim
         public static readonly StatId Cohesion = new StatId("cohesion");
         public static readonly StatId Receptivity = new StatId("receptivity");
         public static readonly StatId Pillar = new StatId("pillar");
+        public static readonly StatId ArmorPen = new StatId("armorPen");
+        public static readonly StatId DefenseShred = new StatId("defenseShred");
         public static readonly StatId Gold = new StatId("gold");
         public static readonly StatId FocusGain = new StatId("focusGain");
         public static readonly StatId FocusMultiplier = new StatId("focusMultiplier");

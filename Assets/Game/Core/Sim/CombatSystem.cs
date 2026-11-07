@@ -350,6 +350,7 @@ namespace Game.Core.Sim
                 Hit(DamageSource.Mouse, BaseMouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier * _whisperer.StrikeMultiplier());
             MouseBursts(input.MousePx);
             ShareFracture();
+            ShareShred();
             _class.EndTick(keyHits, input.MousePx);
             _runedancer.EndTick();
             _duelist.EndTick();
@@ -398,7 +399,7 @@ namespace Game.Core.Sim
             if (source == DamageSource.Strike)
                 multiplier *= _state.SupportKeyBonus;
             LastHitCrit = false;
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken() * FractureTaken() * PillarMultiplier());
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken() * FractureTaken() * PillarMultiplier() * DefenseGain(tags));
             if (damage.Sign <= 0)
                 return;
             _state.HitsOnEnemy++;
@@ -752,6 +753,54 @@ namespace Game.Core.Sim
                 return;
             _fractureShareTicks = GameLoop.TicksPerSecond - 1;
             _state.TraitEnemyEffects.Add(FractureEffectId, FractureBonus * Giving, _rules.Fracture.ShareSeconds);
+        }
+
+        public DefenseRules Defense => _rules.Defense;
+
+        public double ArmorPen(StatTags tags) => System.Math.Min(_rules.Defense.ArmorPenCap, System.Math.Max(0, _hero.Value(CombatStats.ArmorPen, 0, tags)));
+
+        public double DefenseShred => System.Math.Min(_rules.Defense.ShredCap, System.Math.Max(0, _hero.Value(CombatStats.DefenseShred, 0)));
+
+        public double DefenseGain(StatTags tags)
+        {
+            var defense = _state.EnemyDefense;
+            if (!(defense > 0))
+                return 1;
+            var pen = ArmorPen(tags);
+            var shred = _state.SharedEnemy ? 0 : DefenseShred;
+            return pen > 0 || shred > 0 ? _rules.Defense.Gain(defense, shred, pen) : 1;
+        }
+
+        public double SharedShredGain => _rules.Defense.Gain(_state.EnemyDefense, System.Math.Min(_rules.Defense.ShredCap, DefenseShred * Giving), 0) - 1;
+
+        private int _shredShareTicks;
+
+        private void ShareShred()
+        {
+            if (!_state.SharedEnemy || !(_state.EnemyDefense > 0) || !(DefenseShred > 0))
+            {
+                _shredShareTicks = 0;
+                return;
+            }
+            if (_shredShareTicks-- > 0)
+                return;
+            _shredShareTicks = GameLoop.TicksPerSecond - 1;
+            var gain = SharedShredGain;
+            if (gain > 0)
+                _state.TraitEnemyEffects.Add(ShredEffectId(_state.Class), gain, _rules.Fracture.ShareSeconds);
+        }
+
+        private static readonly int[] ShredEffectIds = ShredIds();
+
+        private static int ShredEffectId(HeroClass heroClass) => ShredEffectIds[(int)heroClass];
+
+        private static int[] ShredIds()
+        {
+            var classes = System.Enum.GetValues(typeof(HeroClass));
+            var ids = new int[classes.Length];
+            foreach (HeroClass heroClass in classes)
+                ids[(int)heroClass] = Content.Gems.GemDef.NetIdOf("shred_" + heroClass);
+            return ids;
         }
 
         private bool RollDoubleHit(StatTags tags)

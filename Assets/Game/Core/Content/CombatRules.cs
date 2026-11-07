@@ -51,6 +51,7 @@ namespace Game.Core.Content
         public MountRules Mount { get; private set; } = new MountRules();
         public FacetRules Facets { get; private set; } = new FacetRules();
         public FractureRules Fracture { get; private set; } = new FractureRules();
+        public DefenseRules Defense { get; private set; } = new DefenseRules();
 
         public static CombatRules Load(string json)
         {
@@ -86,6 +87,7 @@ namespace Game.Core.Content
                 Mount = MountRules.Read(root.Field("mount")),
                 Facets = FacetRules.Read(root.Field("facets")),
                 Fracture = FractureRules.Read(root.Field("fracture")),
+                Defense = DefenseRules.Read(root.Field("defense")),
                 BasePierce = root.HasField("pierce") ? root.Field("pierce").Field("baseShare").AsNumber(0, 1) : 0,
                 Pierce = root.HasField("pierce") ? PierceRules.Read(root.Field("pierce")) : new PierceRules()
             };

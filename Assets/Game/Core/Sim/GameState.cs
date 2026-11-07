@@ -138,6 +138,7 @@ namespace Game.Core.Sim
         public long Crits { get; set; }
         public long Overcrits { get; set; }
         public int FractureStacks { get; set; }
+        public double EnemyDefense { get; set; }
         public int FractureQuietTicks { get; set; }
         public long FracturesLaid { get; set; }
         public PeacefulBonus PeacefulBonus { get; } = new PeacefulBonus();
@@ -383,6 +384,7 @@ namespace Game.Core.Sim
             VulnerabilityTicks = 0;
             FractureStacks = 0;
             FractureQuietTicks = 0;
+            EnemyDefense = 0;
             EnemyShieldFloor = BigNumber.Zero;
             Runedancer.OnSpawn();
             Duelist.OnSpawn();
