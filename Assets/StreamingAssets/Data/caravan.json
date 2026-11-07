@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "stops": [
+    { "id": "hills_well", "biome": "green_hills", "meters": 1000, "name": { "ru": "Колодец у Холмов", "en": "The Hill Well" }, "goods": [{ "item": "herb_knockbloom", "count": 5 }, { "item": "herb_windwort", "count": 5 }] },
+    { "id": "boar_ford", "biome": "green_hills", "meters": 2500, "name": { "ru": "Кабаний брод", "en": "Boar Ford" }, "goods": [{ "item": "ore_hills", "count": 10 }, { "item": "seed_stormfern", "count": 1 }] },
+    { "id": "ruin_market", "biome": "sand_ruins", "meters": 4500, "name": { "ru": "Базар у руин", "en": "The Ruin Bazaar" }, "goods": [{ "item": "ruin_shard", "count": 5 }, { "item": "herb_clickweed", "count": 5 }] },
+    { "id": "mirage_oasis", "biome": "sand_ruins", "meters": 6500, "name": { "ru": "Оазис миражей", "en": "Mirage Oasis" }, "goods": [{ "item": "ore_ruins", "count": 10 }, { "item": "seed_moonmoss", "count": 1 }] },
+    { "id": "frost_pass", "biome": "ice_peak", "meters": 9000, "name": { "ru": "Морозный перевал", "en": "Frost Pass" }, "goods": [{ "item": "ice_crystal", "count": 5 }, { "item": "herb_hushbell", "count": 5 }] },
+    { "id": "ember_road", "biome": "volcanic_forge", "meters": 12000, "name": { "ru": "Тлеющая дорога", "en": "The Ember Road" }, "goods": [{ "item": "ember_coal", "count": 5 }, { "item": "ore_ember", "count": 10 }] },
+    { "id": "sky_landing", "biome": "sky_islands", "meters": 15000, "name": { "ru": "Причал облаков", "en": "Cloud Landing" }, "goods": [{ "item": "ore_sky", "count": 10 }, { "item": "seed_stormfern", "count": 1 }, { "item": "seed_moonmoss", "count": 1 }] }
+  ]
+}
