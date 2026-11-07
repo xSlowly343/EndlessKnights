@@ -94,6 +94,7 @@ namespace Game.Core.Save
                 ("cosmetics", WriteCosmetics(state.Cosmetics)),
                 ("seasonPass", WriteSeasonPass(state.SeasonPass)),
                 ("tournament", WriteTournament(state.Tournament)),
+                ("apprentices", WriteApprentices(state.Apprentices)),
                 ("hideout", Object(
                     ("tier", JsonValue.Of(state.Hideout.Tier)),
                     ("members", JsonValue.Of(state.Hideout.Members)),
@@ -354,6 +355,20 @@ namespace Game.Core.Save
                 ReadSeasonPass(node.Field("seasonPass"), state.SeasonPass);
             if (node.HasField("tournament"))
                 ReadTournament(node.Field("tournament"), state.Tournament);
+            if (node.HasField("apprentices"))
+            {
+                foreach (var item in node.Field("apprentices").Items())
+                {
+                    state.Apprentices.Add(new ApprenticeState
+                    {
+                        Building = item.Field("building").AsString(),
+                        Worked = item.Field("worked").AsNumber(0, double.MaxValue),
+                        Progress = item.Field("progress").AsNumber(0, double.MaxValue),
+                        Trait = ReadOptionalText(item, "trait"),
+                        Brought = item.Field("brought").AsLong(0)
+                    });
+                }
+            }
             if (node.HasField("hideout"))
                 ReadHideout(node.Field("hideout"), state.Hideout);
             if (node.HasField("clanCamp"))
@@ -821,6 +836,18 @@ namespace Game.Core.Save
             for (var i = 0; i < bag.Length; i++)
                 bag[i] = Object(("item", JsonValue.Of(items[i])), ("count", JsonValue.Of(camp.Bag[items[i]])));
             return Object(("tier", JsonValue.Of(camp.Tier)), ("guilds", WriteIdList(guilds)), ("bag", JsonValue.Array(bag)), ("levels", WriteLevels(camp.Levels)), ("branches", WriteBranches(camp.Branches)), ("street", WriteIdList(camp.Street)));
+        }
+
+        private static JsonValue WriteApprentices(List<ApprenticeState> apprentices)
+        {
+            var items = new JsonValue[apprentices.Count];
+            for (var i = 0; i < items.Length; i++)
+            {
+                var apprentice = apprentices[i];
+                items[i] = Object(("building", JsonValue.Of(apprentice.Building)), ("worked", JsonValue.Of(apprentice.Worked)), ("progress", JsonValue.Of(apprentice.Progress)),
+                    ("trait", OptionalText(apprentice.Trait)), ("brought", JsonValue.Of(apprentice.Brought)));
+            }
+            return JsonValue.Array(items);
         }
 
         private static JsonValue WriteBranches(Dictionary<string, string> branches)

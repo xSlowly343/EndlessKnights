@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "minGuildLevel": 2,
+  "secondsPerItem": 3600,
+  "maxOfflineHours": 12,
+  "maxPending": 24,
+  "levelHours": [0, 10, 30, 70, 150],
+  "speedPerLevel": 0.15,
+  "traitLevel": 3,
+  "apprentices": [
+    { "building": "garden_bed", "guild": "gardeners", "name": { "ru": "Подмастерье садовода", "en": "Gardener's apprentice" }, "items": ["herb_knockbloom", "herb_windwort", "herb_clickweed", "herb_hushbell"] },
+    { "building": "cauldron", "guild": "alchemists", "name": { "ru": "Подмастерье алхимика", "en": "Alchemist's apprentice" }, "potion": "might" },
+    { "building": "forge", "guild": "smiths", "name": { "ru": "Подмастерье кузнеца", "en": "Smith's apprentice" }, "items": ["ore_hills", "ore_ruins"] },
+    { "building": "pier", "guild": "fishers", "name": { "ru": "Подмастерье рыбака", "en": "Fisher's apprentice" }, "items": ["fish_hills_roach", "fish_hills_carp"] }
+  ],
+  "traits": [
+    { "id": "quick", "name": { "ru": "Шустрый", "en": "Quick" }, "speed": 0.25, "double": 0 },
+    { "id": "thrifty", "name": { "ru": "Запасливый", "en": "Thrifty" }, "speed": 0, "double": 0.15 },
+    { "id": "steady", "name": { "ru": "Основательный", "en": "Steady" }, "speed": 0.1, "double": 0.05 }
+  ]
+}
