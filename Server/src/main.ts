@@ -88,6 +88,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("clan_camp", clanCampRpc);
     initializer.registerRpc("clan_camp_give", clanCampGiveRpc);
     initializer.registerRpc("clan_feast_bring", clanFeastBringRpc);
+    initializer.registerRpc("town_build", townBuildRpc);
+    initializer.registerRpc("town_build_add", townBuildAddRpc);
     initializer.registerRpc("event_mine", eventMineRpc);
     initializer.registerRpc("event_progress", eventProgressRpc);
     initializer.registerRpc("event_buy", eventBuyRpc);

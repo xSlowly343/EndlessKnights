@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "levels": [0, 30, 80, 150, 250, 400, 600, 850, 1150, 1500],
+  "guilds": [
+    { "id": "gardeners", "name": { "ru": "Гильдия садоводов", "en": "Gardeners' Guild" }, "master": "herbwitch", "district": "gates" },
+    { "id": "alchemists", "name": { "ru": "Гильдия алхимиков", "en": "Alchemists' Guild" }, "master": "alchemist", "district": "gates" },
+    { "id": "diggers", "name": { "ru": "Гильдия раскопщиков", "en": "Diggers' Guild" }, "master": "dowser", "district": "sand_bazaar" },
+    { "id": "fishers", "name": { "ru": "Гильдия рыбаков", "en": "Fishers' Guild" }, "master": "ghostcaptain", "district": "ice_harbor" },
+    { "id": "smiths", "name": { "ru": "Гильдия кузнецов", "en": "Smiths' Guild" }, "master": "golemancer", "district": "smith_row" },
+    { "id": "cooks", "name": { "ru": "Гильдия поваров", "en": "Cooks' Guild" }, "master": "minstrel", "district": "sky_square" },
+    { "id": "distillers", "name": { "ru": "Гильдия перегонщиков", "en": "Distillers' Guild" }, "master": "lanternbearer", "district": "sky_square" }
+  ],
+  "districts": [
+    { "id": "gates", "name": { "ru": "Ворота", "en": "The Gates" } },
+    { "id": "green_market", "name": { "ru": "Зелёный рынок", "en": "Green Market" }, "biome": "green_hills" },
+    { "id": "sand_bazaar", "name": { "ru": "Песчаный базар", "en": "Sand Bazaar" }, "biome": "sand_ruins" },
+    { "id": "ice_harbor", "name": { "ru": "Ледяная гавань", "en": "Ice Harbor" }, "biome": "ice_peak" },
+    { "id": "smith_row", "name": { "ru": "Кузнечный ряд", "en": "Smiths' Row" }, "biome": "volcanic_forge" },
+    { "id": "sky_square", "name": { "ru": "Небесная площадь", "en": "Sky Square" }, "biome": "sky_islands", "observatory": true },
+    { "id": "rift_crack", "name": { "ru": "Трещина", "en": "The Crack" }, "biome": "rift_heart" }
+  ],
+  "build": {
+    "startBuilt": ["gardeners", "alchemists"],
+    "order": ["fishers", "smiths", "cooks", "diggers", "distillers"],
+    "actionsPerPlayerDay": 1500,
+    "buildDays": 7,
+    "minTarget": 50000,
+    "dailyCap": 5000
+  }
+}

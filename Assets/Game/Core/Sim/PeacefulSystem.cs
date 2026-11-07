@@ -114,6 +114,7 @@ namespace Game.Core.Sim
             var work = Work(Activity);
             work.Keys += input.KeyDowns;
             work.Clicks += input.LeftClicks + input.RightClicks + input.MiddleClicks;
+            _state.Peaceful.UnsentActions += input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks;
             work.MouseMeters += input.MouseDistancePx * metersPerPixel;
             if (!input.HasAnyInput)
                 work.IdleSeconds += GameLoop.TickSeconds;

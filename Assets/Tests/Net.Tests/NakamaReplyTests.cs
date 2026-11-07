@@ -293,6 +293,20 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheTownBuildIsReadFromTheServer()
+        {
+            Assert.That(TownBuildReply.AddPayload(1200), Is.EqualTo("{\"actions\":1200}"));
+            var build = TownBuildReply.From(NakamaJson.Parse("{\"startBuilt\":[\"gardeners\",\"alchemists\"],\"built\":[\"fishers\"],\"project\":\"smiths\",\"progress\":3200,\"target\":50000,"
+                + "\"accepted\":1200,\"sentToday\":4800,\"dailyCap\":5000}"));
+            Assert.That(build.Built, Is.EqualTo(new[] { "gardeners", "alchemists", "fishers" }));
+            Assert.That(build.Project, Is.EqualTo("smiths"));
+            Assert.That(build.Progress, Is.EqualTo(3200));
+            Assert.That(build.Target, Is.EqualTo(50000));
+            Assert.That(build.Accepted, Is.EqualTo(1200));
+            Assert.That(build.LeftToday, Is.EqualTo(200));
+        }
+
+        [Test]
         public void TheClanCampAndItsFeastAreReadFromTheServer()
         {
             Assert.That(ClanCampReply.GivePayload("herb_windwort", 12), Is.EqualTo("{\"item\":\"herb_windwort\",\"amount\":12}"));
