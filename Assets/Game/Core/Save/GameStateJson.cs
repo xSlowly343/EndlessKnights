@@ -819,7 +819,7 @@ namespace Game.Core.Save
                     ("bond", JsonValue.Of(progress.Bond)), ("petsToday", JsonValue.Of(progress.PetsToday)), ("favouriteBondsToday", JsonValue.Of(progress.FavouriteBondsToday)),
                     ("friendPetsToday", JsonValue.Of(progress.FriendPetsToday)), ("name", OptionalText(progress.Name)), ("accessory", OptionalText(progress.Accessory)), ("coat", OptionalText(progress.Coat)), ("stars", JsonValue.Of(progress.Stars)), ("form", OptionalText(progress.Form)), ("forms", WriteIdList(progress.Forms)), ("ownSparks", JsonValue.Of(progress.OwnSparks)), ("trips", JsonValue.Of(progress.Trips)), ("instantDay", JsonValue.Of(progress.InstantDay)), ("treat", OptionalText(progress.Treat)), ("delicacyDay", JsonValue.Of(progress.DelicacyDay)), ("firstTripDay", JsonValue.Of(progress.FirstTripDay)), ("story", JsonValue.Of(progress.Story)),
                     ("talents", WriteIdList(talents)), ("freeResetDay", JsonValue.Of(progress.FreeResetDay)), ("forageSeconds", JsonValue.Of(progress.ForageSeconds)), ("forages", JsonValue.Of(progress.Forages)),
-                    ("temper", OptionalText(progress.Temper)), ("student", OptionalText(progress.Student)), ("circle", JsonValue.Of(progress.Circle)), ("circleCount", JsonValue.Of(progress.CircleCount)), ("circleDay", JsonValue.Of(progress.CircleDay)), ("temperFreeDay", JsonValue.Of(progress.TemperFreeDay)));
+                    ("temper", OptionalText(progress.Temper)), ("student", OptionalText(progress.Student)), ("circle", JsonValue.Of(progress.Circle)), ("path", OptionalText(progress.Path)), ("forks", WriteIdList(progress.Forks)), ("circleCount", JsonValue.Of(progress.CircleCount)), ("circleDay", JsonValue.Of(progress.CircleDay)), ("temperFreeDay", JsonValue.Of(progress.TemperFreeDay)));
             }
             var owned = new List<string>(companions.Owned);
             owned.Sort(System.StringComparer.Ordinal);
@@ -918,6 +918,7 @@ namespace Game.Core.Save
                     Temper = ReadOptionalText(item, "temper"),
                     Student = ReadOptionalText(item, "student"),
                     Circle = item.HasField("circle") ? item.Field("circle").AsInt(0, 100) : 0,
+                    Path = ReadOptionalText(item, "path"),
                     CircleCount = item.HasField("circleCount") ? item.Field("circleCount").AsNumber(0, double.MaxValue) : 0,
                     CircleDay = item.HasField("circleDay") ? item.Field("circleDay").AsLong(-1) : -1,
                     TemperFreeDay = item.HasField("temperFreeDay") ? item.Field("temperFreeDay").AsLong(-1) : -1,
@@ -933,6 +934,9 @@ namespace Game.Core.Save
                 if (item.HasField("forms"))
                     foreach (var form in item.Field("forms").Items())
                         progress.Forms.Add(form.AsString());
+                if (item.HasField("forks"))
+                    foreach (var fork in item.Field("forks").Items())
+                        progress.Forks.Add(fork.AsString());
                 if (item.HasField("traitTrips"))
                     foreach (var trip in item.Field("traitTrips").Items())
                         progress.TraitTrips[trip.Field("id").AsString()] = trip.Field("value").AsNumber(0, double.MaxValue);

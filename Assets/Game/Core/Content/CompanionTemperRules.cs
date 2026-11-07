@@ -3,42 +3,9 @@ using System.Collections.Generic;
 
 namespace Game.Core.Content
 {
-    public enum TemperStat
-    {
-        TripTime,
-        TripLoot,
-        TripItems,
-        TripRare,
-        FoodExperience,
-        FoodCap,
-        HomeTraits,
-        Bond,
-        TraitRanks,
-        TraitChangePrice,
-        JointLoot,
-        SoloLoot,
-        LongTripLoot,
-        ShortTripTime,
-        Count
-    }
-
-    public sealed class TemperLine
-    {
-        public TemperLine(TemperStat stat, double value, int untilHearts)
-        {
-            Stat = stat;
-            Value = value;
-            UntilHearts = untilHearts;
-        }
-
-        public TemperStat Stat { get; }
-        public double Value { get; }
-        public int UntilHearts { get; }
-    }
-
     public sealed class CompanionTemper
     {
-        public CompanionTemper(string id, string nameRu, string nameEn, IReadOnlyList<TemperLine> plus, IReadOnlyList<TemperLine> minus)
+        public CompanionTemper(string id, string nameRu, string nameEn, IReadOnlyList<CompanionLine> plus, IReadOnlyList<CompanionLine> minus)
         {
             Id = id;
             NameRu = nameRu;
@@ -50,8 +17,8 @@ namespace Game.Core.Content
         public string Id { get; }
         public string NameRu { get; }
         public string NameEn { get; }
-        public IReadOnlyList<TemperLine> Plus { get; }
-        public IReadOnlyList<TemperLine> Minus { get; }
+        public IReadOnlyList<CompanionLine> Plus { get; }
+        public IReadOnlyList<CompanionLine> Minus { get; }
     }
 
     public sealed class CompanionTemperRules
@@ -81,38 +48,6 @@ namespace Game.Core.Content
             return Tempers[(int)(hash % (uint)Tempers.Count)];
         }
 
-        private static readonly Dictionary<string, TemperStat> Stats = new Dictionary<string, TemperStat>(StringComparer.Ordinal)
-        {
-            ["tripTime"] = TemperStat.TripTime,
-            ["tripLoot"] = TemperStat.TripLoot,
-            ["tripItems"] = TemperStat.TripItems,
-            ["tripRare"] = TemperStat.TripRare,
-            ["foodExperience"] = TemperStat.FoodExperience,
-            ["foodCap"] = TemperStat.FoodCap,
-            ["homeTraits"] = TemperStat.HomeTraits,
-            ["bond"] = TemperStat.Bond,
-            ["traitRanks"] = TemperStat.TraitRanks,
-            ["traitChangePrice"] = TemperStat.TraitChangePrice,
-            ["jointLoot"] = TemperStat.JointLoot,
-            ["soloLoot"] = TemperStat.SoloLoot,
-            ["longTripLoot"] = TemperStat.LongTripLoot,
-            ["shortTripTime"] = TemperStat.ShortTripTime
-        };
-
-        private static List<TemperLine> Lines(ContentNode node)
-        {
-            var lines = new List<TemperLine>();
-            foreach (var item in node.Items())
-            {
-                var name = item.Field("stat").AsString();
-                if (!Stats.TryGetValue(name, out var stat))
-                    throw item.Field("stat").Error($"unknown temper stat '{name}'");
-                var until = item.HasField("untilHearts") ? item.Field("untilHearts").AsInt(1, 100) : 0;
-                lines.Add(new TemperLine(stat, item.Field("value").AsNumber(-1, 1), until));
-            }
-            return lines;
-        }
-
         internal static CompanionTemperRules Load(ContentNode node)
         {
             var tempers = new List<CompanionTemper>();
@@ -123,7 +58,7 @@ namespace Game.Core.Content
                 if (!seen.Add(id))
                     throw item.Field("id").Error($"temper '{id}' is listed twice");
                 var name = item.Field("name");
-                tempers.Add(new CompanionTemper(id, name.Field("ru").AsString(), name.Field("en").AsString(), Lines(item.Field("plus")), Lines(item.Field("minus"))));
+                tempers.Add(new CompanionTemper(id, name.Field("ru").AsString(), name.Field("en").AsString(), CompanionLines.Read(item.Field("plus")), CompanionLines.Read(item.Field("minus"))));
             }
             var change = node.Field("change");
             return new CompanionTemperRules

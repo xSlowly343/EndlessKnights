@@ -29,7 +29,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Camp();
             Assert.That(loop.Companions.TemperOf("camp_dog"), Is.Null);
-            Assert.That(loop.Companions.Temper("camp_dog", TemperStat.TripTime), Is.EqualTo(0));
+            Assert.That(loop.Companions.Temper("camp_dog", CompanionStat.TripTime), Is.EqualTo(0));
         }
 
         [Test]
@@ -89,9 +89,9 @@ namespace Game.Core.Tests.Sim
             var loop = Camp();
             var companions = loop.Companions;
             companions.ChangeTemper("camp_dog", "affectionate");
-            Assert.That(companions.Temper("camp_dog", TemperStat.Bond), Is.EqualTo(0.2).Within(1e-9));
+            Assert.That(companions.Temper("camp_dog", CompanionStat.Bond), Is.EqualTo(0.2).Within(1e-9));
             companions.Progress("camp_dog").Bond = TestWorld.Data.Companions.Bond.PointsTo(5);
-            Assert.That(companions.Temper("camp_dog", TemperStat.Bond), Is.EqualTo(0));
+            Assert.That(companions.Temper("camp_dog", CompanionStat.Bond), Is.EqualTo(0));
         }
 
         [Test]
@@ -112,12 +112,12 @@ namespace Game.Core.Tests.Sim
             var loop = Camp();
             var companions = loop.Companions;
             companions.ChangeTemper("camp_dog", "quick");
-            var plus = companions.Temper("camp_dog", TemperStat.TripTime);
-            var minus = companions.Temper("camp_dog", TemperStat.TripLoot);
+            var plus = companions.Temper("camp_dog", CompanionStat.TripTime);
+            var minus = companions.Temper("camp_dog", CompanionStat.TripLoot);
             loop.State.Companions.TreeRanks[26] = 3;
             loop.Menagerie.Changed();
-            Assert.That(companions.Temper("camp_dog", TemperStat.TripTime), Is.EqualTo(plus * 1.1).Within(1e-9));
-            Assert.That(companions.Temper("camp_dog", TemperStat.TripLoot), Is.EqualTo(minus * 0.9).Within(1e-9));
+            Assert.That(companions.Temper("camp_dog", CompanionStat.TripTime), Is.EqualTo(plus * 1.1).Within(1e-9));
+            Assert.That(companions.Temper("camp_dog", CompanionStat.TripLoot), Is.EqualTo(minus * 0.9).Within(1e-9));
         }
 
         [Test]
