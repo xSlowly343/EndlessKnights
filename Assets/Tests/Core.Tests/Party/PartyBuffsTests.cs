@@ -303,7 +303,7 @@ namespace Game.Core.Tests.Party
             rig.Run(2);
             var heard = friend.Damage;
             minstrel.Loop.Hero.Add(new Modifier(MinstrelStats.SongPower, ModifierKind.Flat, 0.15));
-            minstrel.Loop.Hero.Add(CoopStatNames.Line("{ 'to': 'allies', 'stat': 'damage', 'kind': 'increased', 'value': 0.001, 'per': { 'signal': 'songShare', 'step': 0.001, 'cap': 5000 } }"));
+            minstrel.Loop.Hero.Add(CoopStatNames.Line("{ 'to': 'allies', 'stat': 'attackPower', 'kind': 'increased', 'value': 0.001, 'per': { 'signal': 'songShare', 'step': 0.001, 'cap': 5000 } }"));
             minstrel.Loop.RebuildTree();
 
             rig.Run(2);

@@ -52,7 +52,7 @@
       "enemyResendSeconds": 1,
       "modes": { "together": { "self": 1, "power": 1 }, "support": { "self": 0, "power": 1.5 }, "solo": { "self": 1, "power": 0.5 } },
       "stats": [
-        { "stat": "damage", "kind": "increased", "cap": 1 },
+        { "stat": "attackPower", "kind": "increased", "cap": 1 },
         { "stat": "damageVsBoss", "kind": "increased", "cap": 1 },
         { "stat": "damageVsGuardian", "kind": "increased", "cap": 1 },
         { "stat": "markDamage", "kind": "flat", "cap": 1 },
@@ -92,7 +92,7 @@
     "offerSeconds": 1.0,
     "allyResource": { "max": 50, "cooldownSeconds": 5 },
     "stats": [
-      { "from": "partyDamage", "to": "damage", "kind": "increased" },
+      { "from": "partyDamage", "to": "attackPower", "kind": "increased" },
       { "from": "partyGold", "to": "gold", "kind": "increased" },
       { "from": "partyCritChance", "to": "critChance", "kind": "increased" },
       { "from": "partyCritMultiplier", "to": "critMultiplier", "kind": "flat" },

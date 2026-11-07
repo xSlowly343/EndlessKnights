@@ -112,8 +112,9 @@ namespace Game.Core.Sim
 
         public void OnKeyHit(IKeyHitListener keyHits) => _keyHits = keyHits;
 
-        public double BaseKeyDamage => _rules.StrikeDamage * AttackScale;
-        public double BaseMouseDamage => _rules.MouseDamage * AttackScale;
+        public double BaseKeyDamage => _rules.StrikeDamage * AttackScale * Additional;
+        public double BaseMouseDamage => _rules.MouseDamage * AttackScale * Additional;
+        public double Additional { get; private set; } = 1;
         public double Attack { get; private set; }
         public double AttackScale { get; private set; } = 1;
 
@@ -138,6 +139,7 @@ namespace Game.Core.Sim
             var attribute = rules.BaseAttribute + System.Math.Max(0, classPoints) + ItemAttribute() + System.Math.Max(0, _hero.Value(CombatStats.ItemAttribute, 0));
             Attack = rules.Attack(attribute, weapon, _hero.Value(CombatStats.FlatAttack, 0));
             AttackScale = rules.BaseAttack > 0 ? Attack / rules.BaseAttack : 1;
+            Additional = 1 + System.Math.Max(0, _hero.Value(CombatStats.AdditionalDamage, 0)) + (held == null ? 0 : rules.QualityBonus(held.Quality));
         }
         public CurseRules Curses => _rules.Curses;
         public ConditionRules Conditions => _rules.Conditions;

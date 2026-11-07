@@ -1860,6 +1860,7 @@ namespace Game.Core.Save
                 ("base", JsonValue.Of(weapon.Id)),
                 ("rarity", JsonValue.Of(ItemRarityNames.Of(weapon.Rarity))),
                 ("itemLevel", JsonValue.Of(weapon.ItemLevel)),
+                ("quality", JsonValue.Of(weapon.Quality)),
                 ("affixes", JsonValue.Array(WriteAffixes(weapon.Affixes))),
                 ("unique", weapon.Unique == null ? JsonValue.Null() : JsonValue.Of(weapon.Unique.Id)),
                 ("set", weapon.Set == null ? JsonValue.Null() : JsonValue.Of(weapon.Set.Id)),
@@ -1910,7 +1911,7 @@ namespace Game.Core.Save
             var set = items != null && node.HasField("set") && !node.Field("set").IsNull && items.TryGetSet(node.Field("set").AsString(), out var setDef) && setDef.Has(ItemSlot.Weapon) ? setDef : null;
             var itemLevel = node.HasField("itemLevel") ? node.Field("itemLevel").AsInt(1) : 1;
             var affixes = items != null ? ReadAffixes(node, items) : null;
-            return new WeaponItem(weaponBase, rarity, itemLevel, affixes, unique, set, ReadForge(node));
+            return new WeaponItem(weaponBase, rarity, itemLevel, affixes, unique, set, ReadForge(node)) { Quality = node.HasField("quality") ? node.Field("quality").AsInt(0, 100) : 0 };
         }
 
         private static JsonValue WriteRift(RiftState rift) =>

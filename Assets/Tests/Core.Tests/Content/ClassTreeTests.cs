@@ -27,9 +27,9 @@ namespace Game.Core.Tests.Content
   ""attribute"": {""name"": ""strength"", ""perPoint"": [{""stat"": ""runeWord"", ""kind"": ""increased"", ""value"": 0.01}]},
   ""barPassives"": [[{""stat"": ""classAttribute"", ""kind"": ""flat"", ""value"": 3}], [{""stat"": ""resourceGain"", ""kind"": ""increased"", ""value"": 0.02}]],
   ""nodes"": [
-    {""id"": ""runedancer_axe"", ""row"": 1, ""column"": 0, ""name"": {""ru"": ""Топор"", ""en"": ""Axe""}, ""a"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.04}]}, ""b"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.02}]}, ""c"": {""modifiers"": [{""stat"": ""keyStrikeEvery"", ""kind"": ""flat"", ""value"": 30}]}},
+    {""id"": ""runedancer_axe"", ""row"": 1, ""column"": 0, ""name"": {""ru"": ""Топор"", ""en"": ""Axe""}, ""a"": {""modifiers"": [{""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.04}]}, ""b"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.02}]}, ""c"": {""modifiers"": [{""stat"": ""keyStrikeEvery"", ""kind"": ""flat"", ""value"": 30}]}},
     {""id"": ""runedancer_crit"", ""row"": 1, ""column"": 1, ""passive"": true, ""name"": {""ru"": ""Глаз"", ""en"": ""Eye""}, ""a"": {""modifiers"": [{""stat"": ""critChance"", ""kind"": ""increased"", ""value"": 0.03}]}, ""b"": {""modifiers"": [{""stat"": ""critMultiplier"", ""kind"": ""flat"", ""value"": 0.05}]}, ""c"": {""text"": {""ru"": ""т"", ""en"": ""t""}, ""waits"": ""critFocusPause""}},
-    {""id"": ""runedancer_swing"", ""row"": 2, ""column"": 0, ""parent"": ""runedancer_axe"", ""name"": {""ru"": ""Замах"", ""en"": ""Swing""}, ""a"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.06}]}, ""b"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.01}]}, ""c"": {""modifiers"": [{""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.02}]}}
+    {""id"": ""runedancer_swing"", ""row"": 2, ""column"": 0, ""parent"": ""runedancer_axe"", ""name"": {""ru"": ""Замах"", ""en"": ""Swing""}, ""a"": {""modifiers"": [{""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.06}]}, ""b"": {""modifiers"": [{""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.01}]}, ""c"": {""modifiers"": [{""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.02}]}}
   ],
   ""majors"": [
     {""at"": 4, ""options"": [
@@ -53,11 +53,11 @@ namespace Game.Core.Tests.Content
         {
             var axe = Load()["runedancer_axe"];
 
-            Assert.That(Sum(axe.ModifiersAt(1), "damage"), Is.EqualTo(0.04).Within(1e-9));
-            Assert.That(Sum(axe.ModifiersAt(2), "damage"), Is.EqualTo(0.08).Within(1e-9));
+            Assert.That(Sum(axe.ModifiersAt(1), "attackPower"), Is.EqualTo(0.04).Within(1e-9));
+            Assert.That(Sum(axe.ModifiersAt(2), "attackPower"), Is.EqualTo(0.08).Within(1e-9));
             Assert.That(Sum(axe.ModifiersAt(2), "critChance"), Is.Zero);
             Assert.That(Sum(axe.ModifiersAt(3), "critChance"), Is.EqualTo(0.02).Within(1e-9));
-            Assert.That(Sum(axe.ModifiersAt(4), "damage"), Is.EqualTo(0.12).Within(1e-9));
+            Assert.That(Sum(axe.ModifiersAt(4), "attackPower"), Is.EqualTo(0.12).Within(1e-9));
             Assert.That(Sum(axe.ModifiersAt(4), "keyStrikeEvery"), Is.Zero);
             Assert.That(Sum(axe.ModifiersAt(5), "keyStrikeEvery"), Is.EqualTo(30));
         }

@@ -85,7 +85,7 @@
         "type": "flow",
         "afterSeconds": 60,
         "maxGapSeconds": 2,
-        "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "tags": ["Strike"]}]
+        "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "tags": ["Strike"]}]
       }
     },
     {
@@ -113,7 +113,7 @@
         "type": "distanceStacks",
         "pxPerStack": 10000,
         "windowSeconds": 300,
-        "perStack": {"stat": "damage", "kind": "increased", "value": 0.05},
+        "perStack": {"stat": "attackPower", "kind": "increased", "value": 0.05},
         "max": 0.25
       }
     },
@@ -185,7 +185,7 @@
       "cost": {"resource": 25},
       "cooldownSeconds": 30,
       "durationSeconds": 15,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": 0.2, "tags": ["Skill"]}]}
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "more", "value": 0.2, "tags": ["Skill"]}]}
     },
     {
       "id": "boss_hunt",
@@ -253,7 +253,7 @@
       "cost": {"resource": 30},
       "cooldownSeconds": 5,
       "durationSeconds": 30,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25}]}
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.25}]}
     },
     {
       "id": "lull",
@@ -276,7 +276,7 @@
       "cost": {"resource": 40},
       "cooldownSeconds": 60,
       "durationSeconds": 10,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "more", "value": -0.3333}, {"stat": "gold", "kind": "more", "value": 1.0}]}
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "more", "value": -0.3333}, {"stat": "gold", "kind": "more", "value": 1.0}]}
     },
     {
       "id": "second_wind",
@@ -310,7 +310,7 @@
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "breakBonus", "breakSeconds": 300, "seconds": 60, "modifiers": [{"stat": "damage", "kind": "more", "value": 1.0}]}
+      "effect": {"type": "breakBonus", "breakSeconds": 300, "seconds": 60, "modifiers": [{"stat": "attackPower", "kind": "more", "value": 1.0}]}
     },
     {
       "id": "blade_on_watch",
@@ -333,7 +333,7 @@
       "tags": ["Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "passive", "perPartyMember": true, "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.05}]}
+      "effect": {"type": "passive", "perPartyMember": true, "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.05}]}
     },
     {
       "id": "prokhors_ledger",
@@ -620,7 +620,7 @@
       "level": 47,
       "color": "white",
       "name": {"ru": "Наследие", "en": "Legacy"},
-      "effect": {"type": "lines", "lines": [{"effect": "power", "value": 0.1, "when": {"signal": "partyMembers", "atLeast": 2}}], "party": [{"to": "party", "stat": "damage", "kind": "increased", "value": 0.03}]}
+      "effect": {"type": "lines", "lines": [{"effect": "power", "value": 0.1, "when": {"signal": "partyMembers", "atLeast": 2}}], "party": [{"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.03}]}
     },
     {
       "id": "resonance",
@@ -1176,7 +1176,7 @@
       "color": "blue",
       "name": {"ru": "Великая: Узы", "en": "Great Bonds"},
       "text": {"ru": "+20% урона; в отряде +15% урона, союзникам +4% урона", "en": "+20% damage; +15% damage in a party, allies get +4% damage"},
-      "effect": {"type": "lines", "lines": [{"effect": "power", "value": 0.15, "when": {"signal": "partyMembers", "atLeast": 2}}], "party": [{"to": "allies", "stat": "damage", "kind": "increased", "value": 0.04}], "damage": 0.2}
+      "effect": {"type": "lines", "lines": [{"effect": "power", "value": 0.15, "when": {"signal": "partyMembers", "atLeast": 2}}], "party": [{"to": "allies", "stat": "attackPower", "kind": "increased", "value": 0.04}], "damage": 0.2}
     },
     {
       "id": "great_ghostcaptain_path_1",
@@ -1371,7 +1371,7 @@
       "color": "blue",
       "name": {"ru": "Великая: Общая доля", "en": "Great Fair Share"},
       "text": {"ru": "+20% урона; в отряде +15% урона, союзникам +4% урона", "en": "+20% damage; +15% damage in a party, allies get +4% damage"},
-      "effect": {"type": "lines", "lines": [{"effect": "power", "value": 0.15, "when": {"signal": "partyMembers", "atLeast": 2}}], "party": [{"to": "allies", "stat": "damage", "kind": "increased", "value": 0.04}], "damage": 0.2}
+      "effect": {"type": "lines", "lines": [{"effect": "power", "value": 0.15, "when": {"signal": "partyMembers", "atLeast": 2}}], "party": [{"to": "allies", "stat": "attackPower", "kind": "increased", "value": 0.04}], "damage": 0.2}
     },
     {
       "id": "great_dreamcatcher_path_1",
@@ -1686,12 +1686,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.2}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.2}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: удары +12% урона; у неё каждый удар считается за 1,2 для рун, кинжалов и вихря", "en": "party: hits +12% damage; her hits count as 1.2 for runes, daggers and the whirl"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.24}]}}, {"id": "runedancer_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "runedancer_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.22}]}}, {"id": "runedancer_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "runedancer_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.26}]}}, {"id": "runedancer_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "runedancer_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.24}]}}, {"id": "runedancer_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "runedancer_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.22}]}}, {"id": "runedancer_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "runedancer_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.26}]}}, {"id": "runedancer_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -2076,12 +2076,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.25, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.01}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.25, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.01}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +25% урона в первые секунды боя с боссом; её порог Туше +1%", "en": "party: +25% damage in the first seconds of a boss fight; her Touché threshold +1%"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.3, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.012}]}}, {"id": "duelist_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "duelist_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.275, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.011}]}}, {"id": "duelist_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "duelist_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.325, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.013}]}}, {"id": "duelist_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "duelist_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.3, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.012}]}}, {"id": "duelist_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "duelist_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.275, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.011}]}}, {"id": "duelist_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "duelist_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.325, "when": "bossOpening"}, {"stat": "toucheExecute", "kind": "flat", "value": 0.013}]}}, {"id": "duelist_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -2094,12 +2094,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Strike"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.5}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Strike"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.5}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: удары +12% урона; её фантом вступает на полудара в секунду раньше", "en": "party: hits +12% damage; her phantom joins half a hit per second sooner"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "tags": ["Strike"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.6}]}}, {"id": "duelist_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "duelist_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "tags": ["Strike"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.55}]}}, {"id": "duelist_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "duelist_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "tags": ["Strike"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.65}]}}, {"id": "duelist_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "duelist_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "tags": ["Strike"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.6}]}}, {"id": "duelist_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "duelist_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "tags": ["Strike"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.55}]}}, {"id": "duelist_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "duelist_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "tags": ["Strike"]}, {"stat": "phantomThreshold", "kind": "flat", "value": -0.65}]}}, {"id": "duelist_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -2130,12 +2130,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.01}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.15, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.01}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +15% урона по боссу на последнем издыхании; враги ниже 1% HP падают сразу", "en": "party: +15% damage against a boss on its last legs; enemies below 1% HP fall at once"},
       "branches": [
-        {"level": 5, "options": [{"id": "duelist_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.18, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.012}]}}, {"id": "duelist_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "duelist_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.165, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.011}]}}, {"id": "duelist_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "duelist_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.195, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.013}]}}, {"id": "duelist_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "duelist_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.18, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.012}]}}, {"id": "duelist_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "duelist_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.165, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.011}]}}, {"id": "duelist_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "duelist_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.195, "when": "bossLowHp"}, {"stat": "cullThreshold", "kind": "flat", "value": 0.013}]}}, {"id": "duelist_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -2484,12 +2484,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +20% урона в первые секунды боя с боссом; её порыв на 200 px раньше", "en": "party: +20% damage in the first seconds of a boss fight; her gust comes 200 px sooner"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}]}}, {"id": "windshot_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "windshot_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}]}}, {"id": "windshot_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "windshot_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}]}}, {"id": "windshot_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "windshot_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}]}}, {"id": "windshot_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "windshot_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}]}}, {"id": "windshot_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "windshot_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}]}}, {"id": "windshot_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -2520,12 +2520,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.08, "when": "inParty"}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "attackPower", "kind": "increased", "value": 0.08, "when": "inParty"}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона, пока на враге метка союзника; её Метка ветра на 4 с дольше", "en": "party: +8% damage while an ally's mark is on the enemy; her Wind Mark lasts 4 s longer"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.096, "when": "inParty"}]}}, {"id": "windshot_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "windshot_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.088, "when": "inParty"}]}}, {"id": "windshot_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "windshot_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "damage", "kind": "increased", "value": 0.104, "when": "inParty"}]}}, {"id": "windshot_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "windshot_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "attackPower", "kind": "increased", "value": 0.096, "when": "inParty"}]}}, {"id": "windshot_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "windshot_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "attackPower", "kind": "increased", "value": 0.088, "when": "inParty"}]}}, {"id": "windshot_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "windshot_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "markSeconds", "kind": "flat", "value": 4}, {"stat": "attackPower", "kind": "increased", "value": 0.104, "when": "inParty"}]}}, {"id": "windshot_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -2802,12 +2802,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.003, "per": {"signal": "crystals", "step": 1, "cap": 14}}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.003, "per": {"signal": "crystals", "step": 1, "cap": 14}}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +8% урона; его кристалл даёт отряду ещё 0,3%", "en": "party: +8% damage; his crystal gives the party another 0.3%"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0036, "per": {"signal": "crystals", "step": 1, "cap": 14}}]}}, {"id": "shardcaller_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "shardcaller_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0033, "per": {"signal": "crystals", "step": 1, "cap": 14}}]}}, {"id": "shardcaller_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "shardcaller_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0039, "per": {"signal": "crystals", "step": 1, "cap": 14}}]}}, {"id": "shardcaller_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "shardcaller_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0036, "per": {"signal": "crystals", "step": 1, "cap": 14}}]}}, {"id": "shardcaller_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "shardcaller_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0033, "per": {"signal": "crystals", "step": 1, "cap": 14}}]}}, {"id": "shardcaller_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "shardcaller_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0039, "per": {"signal": "crystals", "step": 1, "cap": 14}}]}}, {"id": "shardcaller_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -2820,12 +2820,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.1}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.1}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +12% урона скиллов; его взрыв сильнее на 0,1 за кристалл", "en": "party: +12% skill damage; his burst is 0.1 stronger per crystal"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.12}]}}, {"id": "shardcaller_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "shardcaller_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.11}]}}, {"id": "shardcaller_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "shardcaller_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.13}]}}, {"id": "shardcaller_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "shardcaller_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.12}]}}, {"id": "shardcaller_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "shardcaller_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.11}]}}, {"id": "shardcaller_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "shardcaller_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.13}]}}, {"id": "shardcaller_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -2892,12 +2892,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.06}, {"stat": "damageVsStunned", "kind": "increased", "value": 0.15}, {"stat": "gardenGrow", "kind": "flat", "value": -0.2}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.06}, {"stat": "damageVsStunned", "kind": "increased", "value": 0.15}, {"stat": "gardenGrow", "kind": "flat", "value": -0.2}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +6% урона и +15% по оглушённым; его сад растёт на 0,2 с быстрее", "en": "party: +6% damage and +15% against stunned enemies; his garden grows 0.2 s faster"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.072}, {"stat": "damageVsStunned", "kind": "increased", "value": 0.18}, {"stat": "gardenGrow", "kind": "flat", "value": -0.24}]}}, {"id": "shardcaller_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "shardcaller_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.066}, {"stat": "damageVsStunned", "kind": "increased", "value": 0.165}, {"stat": "gardenGrow", "kind": "flat", "value": -0.22}]}}, {"id": "shardcaller_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "shardcaller_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.078}, {"stat": "damageVsStunned", "kind": "increased", "value": 0.195}, {"stat": "gardenGrow", "kind": "flat", "value": -0.26}]}}, {"id": "shardcaller_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "shardcaller_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.072}, {"stat": "damageVsStunned", "kind": "increased", "value": 0.18}, {"stat": "gardenGrow", "kind": "flat", "value": -0.24}]}}, {"id": "shardcaller_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "shardcaller_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.066}, {"stat": "damageVsStunned", "kind": "increased", "value": 0.165}, {"stat": "gardenGrow", "kind": "flat", "value": -0.22}]}}, {"id": "shardcaller_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "shardcaller_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.078}, {"stat": "damageVsStunned", "kind": "increased", "value": 0.195}, {"stat": "gardenGrow", "kind": "flat", "value": -0.26}]}}, {"id": "shardcaller_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -3174,12 +3174,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "solventPower", "kind": "flat", "value": 0.002}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12}, {"stat": "solventPower", "kind": "flat", "value": 0.002}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +12% урона; её растворитель чуть сильнее", "en": "party: +12% damage; her solvent is a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "alchemist_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144}, {"stat": "solventPower", "kind": "flat", "value": 0.0024}]}}, {"id": "alchemist_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "alchemist_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132}, {"stat": "solventPower", "kind": "flat", "value": 0.0022}]}}, {"id": "alchemist_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "alchemist_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156}, {"stat": "solventPower", "kind": "flat", "value": 0.0026}]}}, {"id": "alchemist_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "alchemist_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144}, {"stat": "solventPower", "kind": "flat", "value": 0.0024}]}}, {"id": "alchemist_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "alchemist_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132}, {"stat": "solventPower", "kind": "flat", "value": 0.0022}]}}, {"id": "alchemist_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "alchemist_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156}, {"stat": "solventPower", "kind": "flat", "value": 0.0026}]}}, {"id": "alchemist_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -3210,12 +3210,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +10% урона скиллов; её слой растворяется на 1 удар раньше", "en": "party: +10% skill damage; her layer dissolves 1 hit sooner"},
       "branches": [
-        {"level": 5, "options": [{"id": "alchemist_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1.2}]}}, {"id": "alchemist_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "alchemist_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1.1}]}}, {"id": "alchemist_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "alchemist_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1.3}]}}, {"id": "alchemist_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "alchemist_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1.2}]}}, {"id": "alchemist_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "alchemist_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1.1}]}}, {"id": "alchemist_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "alchemist_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13, "tags": ["Skill"]}, {"stat": "layerHits", "kind": "flat", "value": -1.3}]}}, {"id": "alchemist_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -3264,12 +3264,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "elixirPower", "kind": "flat", "value": 0.2}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"stat": "elixirPower", "kind": "flat", "value": 0.2}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона; её эликсир на 0,2 сильнее", "en": "party: +8% damage; her elixir is 0.2 stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "alchemist_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "elixirPower", "kind": "flat", "value": 0.24}]}}, {"id": "alchemist_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "alchemist_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "elixirPower", "kind": "flat", "value": 0.22}]}}, {"id": "alchemist_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "alchemist_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "elixirPower", "kind": "flat", "value": 0.26}]}}, {"id": "alchemist_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "alchemist_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"stat": "elixirPower", "kind": "flat", "value": 0.24}]}}, {"id": "alchemist_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "alchemist_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"stat": "elixirPower", "kind": "flat", "value": 0.22}]}}, {"id": "alchemist_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "alchemist_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"stat": "elixirPower", "kind": "flat", "value": 0.26}]}}, {"id": "alchemist_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -3564,12 +3564,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.5}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.5}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +10% урона в серии ударов; её строка чуть короче", "en": "party: +10% damage during a series of hits; her line is a bit shorter"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.6}]}}, {"id": "minstrel_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "minstrel_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.55}]}}, {"id": "minstrel_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "minstrel_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.65}]}}, {"id": "minstrel_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "minstrel_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.6}]}}, {"id": "minstrel_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "minstrel_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.55}]}}, {"id": "minstrel_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "minstrel_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.65}]}}, {"id": "minstrel_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -3918,12 +3918,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.15}, {"stat": "lightPower", "kind": "flat", "value": 0.01}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.15}, {"stat": "lightPower", "kind": "flat", "value": 0.01}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +15% урона; её свет на 1% сильнее", "en": "party: +15% damage; her light is 1% stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.18}, {"stat": "lightPower", "kind": "flat", "value": 0.012}]}}, {"id": "lanternbearer_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "lanternbearer_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.165}, {"stat": "lightPower", "kind": "flat", "value": 0.011}]}}, {"id": "lanternbearer_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.195}, {"stat": "lightPower", "kind": "flat", "value": 0.013}]}}, {"id": "lanternbearer_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "lanternbearer_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.18}, {"stat": "lightPower", "kind": "flat", "value": 0.012}]}}, {"id": "lanternbearer_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "lanternbearer_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.165}, {"stat": "lightPower", "kind": "flat", "value": 0.011}]}}, {"id": "lanternbearer_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "lanternbearer_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.195}, {"stat": "lightPower", "kind": "flat", "value": 0.013}]}}, {"id": "lanternbearer_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -3936,12 +3936,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Skill"]}, {"stat": "sparkPower", "kind": "flat", "value": 0.05}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1, "tags": ["Skill"]}, {"stat": "sparkPower", "kind": "flat", "value": 0.05}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +10% урона скиллов; её искра на 0,05 сильнее", "en": "party: +10% skill damage; her spark is 0.05 stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "sparkPower", "kind": "flat", "value": 0.06}]}}, {"id": "lanternbearer_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "lanternbearer_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11, "tags": ["Skill"]}, {"stat": "sparkPower", "kind": "flat", "value": 0.055}]}}, {"id": "lanternbearer_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13, "tags": ["Skill"]}, {"stat": "sparkPower", "kind": "flat", "value": 0.065}]}}, {"id": "lanternbearer_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "lanternbearer_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "sparkPower", "kind": "flat", "value": 0.06}]}}, {"id": "lanternbearer_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "lanternbearer_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11, "tags": ["Skill"]}, {"stat": "sparkPower", "kind": "flat", "value": 0.055}]}}, {"id": "lanternbearer_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "lanternbearer_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13, "tags": ["Skill"]}, {"stat": "sparkPower", "kind": "flat", "value": 0.065}]}}, {"id": "lanternbearer_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -3972,12 +3972,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "lightPerHit", "kind": "flat", "value": 0.0005}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "lightPerHit", "kind": "flat", "value": 0.0005}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +12% урона по слабеющему боссу; её удар освещает чуть больше", "en": "party: +12% damage against a weakening boss; her hit lights a little more"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "lightPerHit", "kind": "flat", "value": 0.0006}]}}, {"id": "lanternbearer_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "lanternbearer_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "lightPerHit", "kind": "flat", "value": 0.00055}]}}, {"id": "lanternbearer_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "lightPerHit", "kind": "flat", "value": 0.00065}]}}, {"id": "lanternbearer_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "lanternbearer_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "lightPerHit", "kind": "flat", "value": 0.0006}]}}, {"id": "lanternbearer_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "lanternbearer_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "lightPerHit", "kind": "flat", "value": 0.00055}]}}, {"id": "lanternbearer_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "lanternbearer_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "lightPerHit", "kind": "flat", "value": 0.00065}]}}, {"id": "lanternbearer_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -4008,12 +4008,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.05}, {"stat": "damage", "kind": "increased", "value": 0.05}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.05}, {"stat": "attackPower", "kind": "increased", "value": 0.05}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: ауры на 5% сильнее и +5% урона", "en": "party: auras are 5% stronger and +5% damage"},
       "branches": [
-        {"level": 5, "options": [{"id": "lanternbearer_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.06}, {"stat": "damage", "kind": "increased", "value": 0.06}]}}, {"id": "lanternbearer_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "lanternbearer_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.055}, {"stat": "damage", "kind": "increased", "value": 0.055}]}}, {"id": "lanternbearer_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "lanternbearer_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.065}, {"stat": "damage", "kind": "increased", "value": 0.065}]}}, {"id": "lanternbearer_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "lanternbearer_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.06}, {"stat": "attackPower", "kind": "increased", "value": 0.06}]}}, {"id": "lanternbearer_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "lanternbearer_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.055}, {"stat": "attackPower", "kind": "increased", "value": 0.055}]}}, {"id": "lanternbearer_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "lanternbearer_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "auraEffect", "kind": "increased", "value": 0.065}, {"stat": "attackPower", "kind": "increased", "value": 0.065}]}}, {"id": "lanternbearer_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -4344,12 +4344,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "curseEffect", "kind": "increased", "value": 0.05}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "curseEffect", "kind": "increased", "value": 0.05}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +12% урона по слабеющему боссу; её проклятия на 5% сильнее", "en": "party: +12% damage against a weakening boss; her curses are 5% stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "curseEffect", "kind": "increased", "value": 0.06}]}}, {"id": "whisperer_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "whisperer_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "curseEffect", "kind": "increased", "value": 0.055}]}}, {"id": "whisperer_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "whisperer_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "curseEffect", "kind": "increased", "value": 0.065}]}}, {"id": "whisperer_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "whisperer_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "curseEffect", "kind": "increased", "value": 0.06}]}}, {"id": "whisperer_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "whisperer_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "curseEffect", "kind": "increased", "value": 0.055}]}}, {"id": "whisperer_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "whisperer_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "curseEffect", "kind": "increased", "value": 0.065}]}}, {"id": "whisperer_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -4362,12 +4362,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "hushParty", "kind": "flat", "value": 0.05}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1}, {"stat": "hushParty", "kind": "flat", "value": 0.05}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +10% урона; её немой шёпот на 5% сильнее", "en": "party: +10% damage; her silent whisper is 5% stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "whisperer_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "hushParty", "kind": "flat", "value": 0.06}]}}, {"id": "whisperer_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "whisperer_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "hushParty", "kind": "flat", "value": 0.055}]}}, {"id": "whisperer_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "whisperer_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "hushParty", "kind": "flat", "value": 0.065}]}}, {"id": "whisperer_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "whisperer_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12}, {"stat": "hushParty", "kind": "flat", "value": 0.06}]}}, {"id": "whisperer_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "whisperer_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11}, {"stat": "hushParty", "kind": "flat", "value": 0.055}]}}, {"id": "whisperer_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "whisperer_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13}, {"stat": "hushParty", "kind": "flat", "value": 0.065}]}}, {"id": "whisperer_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -4698,12 +4698,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "reversedPower", "kind": "flat", "value": 0.0005}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1}, {"stat": "reversedPower", "kind": "flat", "value": 0.0005}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +10% урона; её карты чуть сильнее", "en": "party: +10% damage; her cards are a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "reversedPower", "kind": "flat", "value": 0.0006}]}}, {"id": "cartomancer_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "cartomancer_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "reversedPower", "kind": "flat", "value": 0.00055}]}}, {"id": "cartomancer_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "cartomancer_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "reversedPower", "kind": "flat", "value": 0.00065}]}}, {"id": "cartomancer_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "cartomancer_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12}, {"stat": "reversedPower", "kind": "flat", "value": 0.0006}]}}, {"id": "cartomancer_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "cartomancer_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11}, {"stat": "reversedPower", "kind": "flat", "value": 0.00055}]}}, {"id": "cartomancer_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "cartomancer_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13}, {"stat": "reversedPower", "kind": "flat", "value": 0.00065}]}}, {"id": "cartomancer_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -4734,12 +4734,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "forecastPower", "kind": "flat", "value": 0.02}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "forecastPower", "kind": "flat", "value": 0.02}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +12% урона по слабеющему боссу; её награда за срок чуть больше", "en": "party: +12% damage against a weakening boss; her term reward is a little larger"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "forecastPower", "kind": "flat", "value": 0.024}]}}, {"id": "cartomancer_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "cartomancer_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "forecastPower", "kind": "flat", "value": 0.022}]}}, {"id": "cartomancer_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "cartomancer_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "forecastPower", "kind": "flat", "value": 0.026}]}}, {"id": "cartomancer_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "cartomancer_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "forecastPower", "kind": "flat", "value": 0.024}]}}, {"id": "cartomancer_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "cartomancer_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "forecastPower", "kind": "flat", "value": 0.022}]}}, {"id": "cartomancer_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "cartomancer_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "forecastPower", "kind": "flat", "value": 0.026}]}}, {"id": "cartomancer_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -4752,12 +4752,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "reversedPower", "kind": "flat", "value": 0.0005}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"stat": "reversedPower", "kind": "flat", "value": 0.0005}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона; её карты чуть сильнее", "en": "party: +8% damage; her cards are a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "cartomancer_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "reversedPower", "kind": "flat", "value": 0.0006}]}}, {"id": "cartomancer_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "cartomancer_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "reversedPower", "kind": "flat", "value": 0.00055}]}}, {"id": "cartomancer_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "cartomancer_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "reversedPower", "kind": "flat", "value": 0.00065}]}}, {"id": "cartomancer_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "cartomancer_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"stat": "reversedPower", "kind": "flat", "value": 0.0006}]}}, {"id": "cartomancer_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "cartomancer_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"stat": "reversedPower", "kind": "flat", "value": 0.00055}]}}, {"id": "cartomancer_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "cartomancer_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"stat": "reversedPower", "kind": "flat", "value": 0.00065}]}}, {"id": "cartomancer_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -5070,12 +5070,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "myceliumPower", "kind": "flat", "value": 0.0005}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1}, {"stat": "myceliumPower", "kind": "flat", "value": 0.0005}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +10% урона; её яд чуть сильнее", "en": "party: +10% damage; her poison is a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "myceliumPower", "kind": "flat", "value": 0.0006}]}}, {"id": "herbwitch_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "herbwitch_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "myceliumPower", "kind": "flat", "value": 0.00055}]}}, {"id": "herbwitch_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "herbwitch_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "myceliumPower", "kind": "flat", "value": 0.00065}]}}, {"id": "herbwitch_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "herbwitch_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12}, {"stat": "myceliumPower", "kind": "flat", "value": 0.0006}]}}, {"id": "herbwitch_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "herbwitch_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11}, {"stat": "myceliumPower", "kind": "flat", "value": 0.00055}]}}, {"id": "herbwitch_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "herbwitch_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13}, {"stat": "myceliumPower", "kind": "flat", "value": 0.00065}]}}, {"id": "herbwitch_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -5106,12 +5106,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "myceliumPower", "kind": "flat", "value": 0.0005}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "myceliumPower", "kind": "flat", "value": 0.0005}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +12% урона по слабеющему боссу; её яд чуть сильнее", "en": "party: +12% damage against a weakening boss; her poison is a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "myceliumPower", "kind": "flat", "value": 0.0006}]}}, {"id": "herbwitch_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "herbwitch_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "myceliumPower", "kind": "flat", "value": 0.00055}]}}, {"id": "herbwitch_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "herbwitch_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "myceliumPower", "kind": "flat", "value": 0.00065}]}}, {"id": "herbwitch_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "herbwitch_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "myceliumPower", "kind": "flat", "value": 0.0006}]}}, {"id": "herbwitch_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "herbwitch_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "myceliumPower", "kind": "flat", "value": 0.00055}]}}, {"id": "herbwitch_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "herbwitch_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "myceliumPower", "kind": "flat", "value": 0.00065}]}}, {"id": "herbwitch_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -5124,12 +5124,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "sapPower", "kind": "flat", "value": 0.002}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"stat": "sapPower", "kind": "flat", "value": 0.002}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона; её глоток чуть сильнее", "en": "party: +8% damage; her drink is a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "herbwitch_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "sapPower", "kind": "flat", "value": 0.0024}]}}, {"id": "herbwitch_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "herbwitch_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "sapPower", "kind": "flat", "value": 0.0022}]}}, {"id": "herbwitch_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "herbwitch_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "sapPower", "kind": "flat", "value": 0.0026}]}}, {"id": "herbwitch_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "herbwitch_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"stat": "sapPower", "kind": "flat", "value": 0.0024}]}}, {"id": "herbwitch_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "herbwitch_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"stat": "sapPower", "kind": "flat", "value": 0.0022}]}}, {"id": "herbwitch_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "herbwitch_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"stat": "sapPower", "kind": "flat", "value": 0.0026}]}}, {"id": "herbwitch_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -5442,12 +5442,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "mothPower", "kind": "flat", "value": 0.1}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1}, {"stat": "mothPower", "kind": "flat", "value": 0.1}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +10% урона; её бабочка чуть сильнее", "en": "party: +10% damage; her moth is a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "mothcaller_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "mothPower", "kind": "flat", "value": 0.12}]}}, {"id": "mothcaller_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "mothcaller_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "mothPower", "kind": "flat", "value": 0.11}]}}, {"id": "mothcaller_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "mothcaller_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "mothPower", "kind": "flat", "value": 0.13}]}}, {"id": "mothcaller_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "mothcaller_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12}, {"stat": "mothPower", "kind": "flat", "value": 0.12}]}}, {"id": "mothcaller_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "mothcaller_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11}, {"stat": "mothPower", "kind": "flat", "value": 0.11}]}}, {"id": "mothcaller_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "mothcaller_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13}, {"stat": "mothPower", "kind": "flat", "value": 0.13}]}}, {"id": "mothcaller_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -5460,12 +5460,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "swarmPower", "kind": "flat", "value": 0.0005}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "swarmPower", "kind": "flat", "value": 0.0005}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +12% урона скиллов; её рой чуть сильнее", "en": "party: +12% skill damage; her swarm is a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "mothcaller_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "tags": ["Skill"]}, {"stat": "swarmPower", "kind": "flat", "value": 0.0006}]}}, {"id": "mothcaller_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "mothcaller_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "tags": ["Skill"]}, {"stat": "swarmPower", "kind": "flat", "value": 0.00055}]}}, {"id": "mothcaller_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "mothcaller_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "tags": ["Skill"]}, {"stat": "swarmPower", "kind": "flat", "value": 0.00065}]}}, {"id": "mothcaller_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "mothcaller_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "tags": ["Skill"]}, {"stat": "swarmPower", "kind": "flat", "value": 0.0006}]}}, {"id": "mothcaller_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "mothcaller_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "tags": ["Skill"]}, {"stat": "swarmPower", "kind": "flat", "value": 0.00055}]}}, {"id": "mothcaller_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "mothcaller_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "tags": ["Skill"]}, {"stat": "swarmPower", "kind": "flat", "value": 0.00065}]}}, {"id": "mothcaller_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -5478,12 +5478,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "pollenPower", "kind": "flat", "value": 0.0005}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "pollenPower", "kind": "flat", "value": 0.0005}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +12% урона по слабеющему боссу; её пыльца чуть гуще", "en": "party: +12% damage against a weakening boss; her pollen is a little thicker"},
       "branches": [
-        {"level": 5, "options": [{"id": "mothcaller_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "pollenPower", "kind": "flat", "value": 0.0006}]}}, {"id": "mothcaller_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "mothcaller_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "pollenPower", "kind": "flat", "value": 0.00055}]}}, {"id": "mothcaller_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "mothcaller_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "pollenPower", "kind": "flat", "value": 0.00065}]}}, {"id": "mothcaller_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "mothcaller_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "pollenPower", "kind": "flat", "value": 0.0006}]}}, {"id": "mothcaller_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "mothcaller_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "pollenPower", "kind": "flat", "value": 0.00055}]}}, {"id": "mothcaller_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "mothcaller_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "pollenPower", "kind": "flat", "value": 0.00065}]}}, {"id": "mothcaller_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -5496,12 +5496,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "mothSeconds", "kind": "flat", "value": 0.3}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"stat": "mothSeconds", "kind": "flat", "value": 0.3}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона; её бабочка летает на 0,3 с дольше", "en": "party: +8% damage; her moth flies 0.3 s longer"},
       "branches": [
-        {"level": 5, "options": [{"id": "mothcaller_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "mothSeconds", "kind": "flat", "value": 0.36}]}}, {"id": "mothcaller_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "mothcaller_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "mothSeconds", "kind": "flat", "value": 0.33}]}}, {"id": "mothcaller_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "mothcaller_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "mothSeconds", "kind": "flat", "value": 0.39}]}}, {"id": "mothcaller_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "mothcaller_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"stat": "mothSeconds", "kind": "flat", "value": 0.36}]}}, {"id": "mothcaller_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "mothcaller_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"stat": "mothSeconds", "kind": "flat", "value": 0.33}]}}, {"id": "mothcaller_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "mothcaller_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"stat": "mothSeconds", "kind": "flat", "value": 0.39}]}}, {"id": "mothcaller_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -5778,12 +5778,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.01}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.01}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +12% урона призванных; её духи чуть сильнее", "en": "party: +12% minion damage; her spirits are a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.012}]}}, {"id": "soulbinder_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "soulbinder_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.011}]}}, {"id": "soulbinder_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "soulbinder_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.013}]}}, {"id": "soulbinder_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "soulbinder_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.012}]}}, {"id": "soulbinder_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "soulbinder_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.011}]}}, {"id": "soulbinder_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "soulbinder_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "tags": ["Minion"]}, {"stat": "soulPower", "kind": "flat", "value": 0.013}]}}, {"id": "soulbinder_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -5814,12 +5814,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "lendPower", "kind": "flat", "value": 0.01}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1}, {"stat": "lendPower", "kind": "flat", "value": 0.01}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +10% урона; её дух в союзнике чуть сильнее", "en": "party: +10% damage; her spirit in an ally is a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "lendPower", "kind": "flat", "value": 0.012}]}}, {"id": "soulbinder_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "soulbinder_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "lendPower", "kind": "flat", "value": 0.011}]}}, {"id": "soulbinder_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "soulbinder_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "lendPower", "kind": "flat", "value": 0.013}]}}, {"id": "soulbinder_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "soulbinder_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12}, {"stat": "lendPower", "kind": "flat", "value": 0.012}]}}, {"id": "soulbinder_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "soulbinder_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11}, {"stat": "lendPower", "kind": "flat", "value": 0.011}]}}, {"id": "soulbinder_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "soulbinder_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13}, {"stat": "lendPower", "kind": "flat", "value": 0.013}]}}, {"id": "soulbinder_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -5850,12 +5850,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.5}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.5}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +12% урона по слабеющему боссу; её холод на 0,5 с дольше", "en": "party: +12% damage against a weakening boss; her chill lasts 0.5 s longer"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.6}]}}, {"id": "soulbinder_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "soulbinder_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.55}]}}, {"id": "soulbinder_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "soulbinder_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.65}]}}, {"id": "soulbinder_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "soulbinder_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.6}]}}, {"id": "soulbinder_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "soulbinder_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.55}]}}, {"id": "soulbinder_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "soulbinder_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "breathColdSeconds", "kind": "flat", "value": 0.65}]}}, {"id": "soulbinder_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -5868,12 +5868,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "lendSeconds", "kind": "flat", "value": 0.5}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"stat": "lendSeconds", "kind": "flat", "value": 0.5}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона; её дух в союзнике на 0,5 с дольше", "en": "party: +8% damage; her spirit in an ally lasts 0.5 s longer"},
       "branches": [
-        {"level": 5, "options": [{"id": "soulbinder_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "lendSeconds", "kind": "flat", "value": 0.6}]}}, {"id": "soulbinder_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "soulbinder_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "lendSeconds", "kind": "flat", "value": 0.55}]}}, {"id": "soulbinder_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "soulbinder_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "lendSeconds", "kind": "flat", "value": 0.65}]}}, {"id": "soulbinder_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "soulbinder_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"stat": "lendSeconds", "kind": "flat", "value": 0.6}]}}, {"id": "soulbinder_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "soulbinder_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"stat": "lendSeconds", "kind": "flat", "value": 0.55}]}}, {"id": "soulbinder_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "soulbinder_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"stat": "lendSeconds", "kind": "flat", "value": 0.65}]}}, {"id": "soulbinder_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -6168,12 +6168,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "crewPower", "kind": "flat", "value": 0.0005}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1}, {"stat": "crewPower", "kind": "flat", "value": 0.0005}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +10% урона; её матросы чуть сильнее", "en": "party: +10% damage; her sailors are a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "crewPower", "kind": "flat", "value": 0.0006}]}}, {"id": "ghostcaptain_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "ghostcaptain_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "crewPower", "kind": "flat", "value": 0.00055}]}}, {"id": "ghostcaptain_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "crewPower", "kind": "flat", "value": 0.00065}]}}, {"id": "ghostcaptain_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "ghostcaptain_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12}, {"stat": "crewPower", "kind": "flat", "value": 0.0006}]}}, {"id": "ghostcaptain_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11}, {"stat": "crewPower", "kind": "flat", "value": 0.00055}]}}, {"id": "ghostcaptain_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13}, {"stat": "crewPower", "kind": "flat", "value": 0.00065}]}}, {"id": "ghostcaptain_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -6222,12 +6222,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +12% урона по слабеющему боссу; её рассвет на 2 с позже", "en": "party: +12% damage against a weakening boss; her dawn comes 2 s later"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2.4}]}}, {"id": "ghostcaptain_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "ghostcaptain_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2.2}]}}, {"id": "ghostcaptain_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2.6}]}}, {"id": "ghostcaptain_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "ghostcaptain_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2.4}]}}, {"id": "ghostcaptain_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2.2}]}}, {"id": "ghostcaptain_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "crewDawn", "kind": "flat", "value": 2.6}]}}, {"id": "ghostcaptain_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -6240,12 +6240,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "parrotPower", "kind": "flat", "value": 0.01}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"stat": "parrotPower", "kind": "flat", "value": 0.01}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона; её попугай чуть громче", "en": "party: +8% damage; her parrot is a little louder"},
       "branches": [
-        {"level": 5, "options": [{"id": "ghostcaptain_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "parrotPower", "kind": "flat", "value": 0.012}]}}, {"id": "ghostcaptain_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "ghostcaptain_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "parrotPower", "kind": "flat", "value": 0.011}]}}, {"id": "ghostcaptain_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "ghostcaptain_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "parrotPower", "kind": "flat", "value": 0.013}]}}, {"id": "ghostcaptain_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "ghostcaptain_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"stat": "parrotPower", "kind": "flat", "value": 0.012}]}}, {"id": "ghostcaptain_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "ghostcaptain_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"stat": "parrotPower", "kind": "flat", "value": 0.011}]}}, {"id": "ghostcaptain_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "ghostcaptain_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"stat": "parrotPower", "kind": "flat", "value": 0.013}]}}, {"id": "ghostcaptain_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -6522,12 +6522,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "sealPower", "kind": "flat", "value": 0.05}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1}, {"stat": "sealPower", "kind": "flat", "value": 0.05}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +10% урона; её голем чуть сильнее", "en": "party: +10% damage; her golem is a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "sealPower", "kind": "flat", "value": 0.06}]}}, {"id": "golemancer_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "golemancer_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "sealPower", "kind": "flat", "value": 0.055}]}}, {"id": "golemancer_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "golemancer_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "sealPower", "kind": "flat", "value": 0.065}]}}, {"id": "golemancer_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "golemancer_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12}, {"stat": "sealPower", "kind": "flat", "value": 0.06}]}}, {"id": "golemancer_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "golemancer_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11}, {"stat": "sealPower", "kind": "flat", "value": 0.055}]}}, {"id": "golemancer_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "golemancer_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13}, {"stat": "sealPower", "kind": "flat", "value": 0.065}]}}, {"id": "golemancer_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -6558,12 +6558,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "minorPower", "kind": "flat", "value": 0.005}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "minorPower", "kind": "flat", "value": 0.005}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +12% урона скиллов; её големчики чуть сильнее", "en": "party: +12% skill damage; her golemlings are a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "tags": ["Skill"]}, {"stat": "minorPower", "kind": "flat", "value": 0.006}]}}, {"id": "golemancer_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "golemancer_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "tags": ["Skill"]}, {"stat": "minorPower", "kind": "flat", "value": 0.0055}]}}, {"id": "golemancer_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "golemancer_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "tags": ["Skill"]}, {"stat": "minorPower", "kind": "flat", "value": 0.0065}]}}, {"id": "golemancer_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "golemancer_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "tags": ["Skill"]}, {"stat": "minorPower", "kind": "flat", "value": 0.006}]}}, {"id": "golemancer_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "golemancer_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "tags": ["Skill"]}, {"stat": "minorPower", "kind": "flat", "value": 0.0055}]}}, {"id": "golemancer_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "golemancer_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "tags": ["Skill"]}, {"stat": "minorPower", "kind": "flat", "value": 0.0065}]}}, {"id": "golemancer_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -6576,12 +6576,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Minion"]}, {"stat": "sealPower", "kind": "flat", "value": 0.05}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Minion"]}, {"stat": "sealPower", "kind": "flat", "value": 0.05}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +12% урона призванных; её голем чуть сильнее", "en": "party: +12% minion damage; her golem is a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "tags": ["Minion"]}, {"stat": "sealPower", "kind": "flat", "value": 0.06}]}}, {"id": "golemancer_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "golemancer_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "tags": ["Minion"]}, {"stat": "sealPower", "kind": "flat", "value": 0.055}]}}, {"id": "golemancer_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "golemancer_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "tags": ["Minion"]}, {"stat": "sealPower", "kind": "flat", "value": 0.065}]}}, {"id": "golemancer_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "golemancer_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "tags": ["Minion"]}, {"stat": "sealPower", "kind": "flat", "value": 0.06}]}}, {"id": "golemancer_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "golemancer_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "tags": ["Minion"]}, {"stat": "sealPower", "kind": "flat", "value": 0.055}]}}, {"id": "golemancer_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "golemancer_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "tags": ["Minion"]}, {"stat": "sealPower", "kind": "flat", "value": 0.065}]}}, {"id": "golemancer_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -6594,12 +6594,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "eternalPower", "kind": "flat", "value": 0.01}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossLowHp"}, {"stat": "eternalPower", "kind": "flat", "value": 0.01}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +12% урона по слабеющему боссу; её вечный голем чуть сильнее", "en": "party: +12% damage against a weakening boss; her eternal golem is a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "eternalPower", "kind": "flat", "value": 0.012}]}}, {"id": "golemancer_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "golemancer_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "eternalPower", "kind": "flat", "value": 0.011}]}}, {"id": "golemancer_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "golemancer_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "eternalPower", "kind": "flat", "value": 0.013}]}}, {"id": "golemancer_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "golemancer_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossLowHp"}, {"stat": "eternalPower", "kind": "flat", "value": 0.012}]}}, {"id": "golemancer_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "golemancer_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossLowHp"}, {"stat": "eternalPower", "kind": "flat", "value": 0.011}]}}, {"id": "golemancer_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "golemancer_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossLowHp"}, {"stat": "eternalPower", "kind": "flat", "value": 0.013}]}}, {"id": "golemancer_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -6612,12 +6612,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "minorPower", "kind": "flat", "value": 0.005}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"stat": "minorPower", "kind": "flat", "value": 0.005}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона; её големчики чуть сильнее", "en": "party: +8% damage; her golemlings are a little stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "golemancer_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "minorPower", "kind": "flat", "value": 0.006}]}}, {"id": "golemancer_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "golemancer_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "minorPower", "kind": "flat", "value": 0.0055}]}}, {"id": "golemancer_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "golemancer_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "minorPower", "kind": "flat", "value": 0.0065}]}}, {"id": "golemancer_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "golemancer_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"stat": "minorPower", "kind": "flat", "value": 0.006}]}}, {"id": "golemancer_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "golemancer_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"stat": "minorPower", "kind": "flat", "value": 0.0055}]}}, {"id": "golemancer_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "golemancer_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"stat": "minorPower", "kind": "flat", "value": 0.0065}]}}, {"id": "golemancer_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -6912,12 +6912,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.05}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.05}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +10% урона скиллов; её тик снимает на 0,05 с больше", "en": "party: +10% skill damage; her tick cuts 0.05 s more"},
       "branches": [
-        {"level": 5, "options": [{"id": "clockwright_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.06}]}}, {"id": "clockwright_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "clockwright_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.055}]}}, {"id": "clockwright_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "clockwright_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.065}]}}, {"id": "clockwright_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "clockwright_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.06}]}}, {"id": "clockwright_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "clockwright_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.055}]}}, {"id": "clockwright_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "clockwright_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13, "tags": ["Skill"]}, {"stat": "gearPower", "kind": "flat", "value": 0.065}]}}, {"id": "clockwright_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -6966,12 +6966,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +12% урона в конце таймера босса и +1 с к таймеру", "en": "party: +12% damage at the end of the boss timer and +1 s to the timer"},
       "branches": [
-        {"level": 5, "options": [{"id": "clockwright_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1.2}]}}, {"id": "clockwright_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "clockwright_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1.1}]}}, {"id": "clockwright_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "clockwright_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1.3}]}}, {"id": "clockwright_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "clockwright_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1.2}]}}, {"id": "clockwright_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "clockwright_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1.1}]}}, {"id": "clockwright_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "clockwright_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossTimerEnd"}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 1.3}]}}, {"id": "clockwright_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -6984,12 +6984,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "gearHits", "kind": "flat", "value": -1}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"stat": "gearHits", "kind": "flat", "value": -1}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона; её тик на 1 удар раньше", "en": "party: +8% damage; her tick comes 1 hit sooner"},
       "branches": [
-        {"level": 5, "options": [{"id": "clockwright_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "gearHits", "kind": "flat", "value": -1.2}]}}, {"id": "clockwright_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "clockwright_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "gearHits", "kind": "flat", "value": -1.1}]}}, {"id": "clockwright_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "clockwright_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "gearHits", "kind": "flat", "value": -1.3}]}}, {"id": "clockwright_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "clockwright_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"stat": "gearHits", "kind": "flat", "value": -1.2}]}}, {"id": "clockwright_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "clockwright_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"stat": "gearHits", "kind": "flat", "value": -1.1}]}}, {"id": "clockwright_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "clockwright_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"stat": "gearHits", "kind": "flat", "value": -1.3}]}}, {"id": "clockwright_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -7302,12 +7302,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.05}], "reserve": 20, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.05}], "reserve": 20, "party": true},
       "text": {"ru": "отряд: +12% урона в начале боя с боссом; его мираж бьёт на 0,05 сильнее", "en": "party: +12% damage early in a boss fight; his mirage strikes 0.05 harder"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.144, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.06}]}}, {"id": "sandwalker_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "sandwalker_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.132, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.055}]}}, {"id": "sandwalker_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "sandwalker_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.156, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.065}]}}, {"id": "sandwalker_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "sandwalker_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.06}]}}, {"id": "sandwalker_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "sandwalker_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.055}]}}, {"id": "sandwalker_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "sandwalker_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.065}]}}, {"id": "sandwalker_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -7656,12 +7656,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.1}, {"stat": "artelPower", "kind": "flat", "value": 0.02}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1}, {"stat": "artelPower", "kind": "flat", "value": 0.02}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +10% урона; её сундук артели чуть богаче", "en": "party: +10% damage; her artel chest is a little richer"},
       "branches": [
-        {"level": 5, "options": [{"id": "dowser_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.12}, {"stat": "artelPower", "kind": "flat", "value": 0.024}]}}, {"id": "dowser_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "dowser_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.11}, {"stat": "artelPower", "kind": "flat", "value": 0.022}]}}, {"id": "dowser_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "dowser_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.13}, {"stat": "artelPower", "kind": "flat", "value": 0.026}]}}, {"id": "dowser_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "dowser_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12}, {"stat": "artelPower", "kind": "flat", "value": 0.024}]}}, {"id": "dowser_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "dowser_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11}, {"stat": "artelPower", "kind": "flat", "value": 0.022}]}}, {"id": "dowser_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "dowser_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13}, {"stat": "artelPower", "kind": "flat", "value": 0.026}]}}, {"id": "dowser_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -7728,12 +7728,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damage", "kind": "increased", "value": 0.08}, {"stat": "artelNuggets", "kind": "flat", "value": -0.5}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"stat": "artelNuggets", "kind": "flat", "value": -0.5}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +8% урона; ей сундук артели чуть раньше", "en": "party: +8% damage; her artel chest comes a little sooner"},
       "branches": [
-        {"level": 5, "options": [{"id": "dowser_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.096}, {"stat": "artelNuggets", "kind": "flat", "value": -0.6}]}}, {"id": "dowser_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "dowser_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.088}, {"stat": "artelNuggets", "kind": "flat", "value": -0.55}]}}, {"id": "dowser_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "dowser_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damage", "kind": "increased", "value": 0.104}, {"stat": "artelNuggets", "kind": "flat", "value": -0.65}]}}, {"id": "dowser_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "dowser_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"stat": "artelNuggets", "kind": "flat", "value": -0.6}]}}, {"id": "dowser_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "dowser_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"stat": "artelNuggets", "kind": "flat", "value": -0.55}]}}, {"id": "dowser_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "dowser_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"stat": "artelNuggets", "kind": "flat", "value": -0.65}]}}, {"id": "dowser_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -8010,12 +8010,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.1}, {"stat": "damage", "kind": "increased", "value": 0.05}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.1}, {"stat": "attackPower", "kind": "increased", "value": 0.05}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +10% выпадения предметов и +5% урона", "en": "party: +10% item drops and +5% damage"},
       "branches": [
-        {"level": 5, "options": [{"id": "dreamcatcher_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.12}, {"stat": "damage", "kind": "increased", "value": 0.06}]}}, {"id": "dreamcatcher_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "dreamcatcher_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.11}, {"stat": "damage", "kind": "increased", "value": 0.055}]}}, {"id": "dreamcatcher_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "dreamcatcher_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.13}, {"stat": "damage", "kind": "increased", "value": 0.065}]}}, {"id": "dreamcatcher_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "dreamcatcher_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.12}, {"stat": "attackPower", "kind": "increased", "value": 0.06}]}}, {"id": "dreamcatcher_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.11}, {"stat": "attackPower", "kind": "increased", "value": 0.055}]}}, {"id": "dreamcatcher_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "itemQuantity", "kind": "increased", "value": 0.13}, {"stat": "attackPower", "kind": "increased", "value": 0.065}]}}, {"id": "dreamcatcher_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -8028,12 +8028,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.1}, {"stat": "damage", "kind": "increased", "value": 0.05}], "reserve": 15, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.1}, {"stat": "attackPower", "kind": "increased", "value": 0.05}], "reserve": 15, "party": true},
       "text": {"ru": "отряд: +10% редкости предметов и +5% урона", "en": "party: +10% item rarity and +5% damage"},
       "branches": [
-        {"level": 5, "options": [{"id": "dreamcatcher_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.12}, {"stat": "damage", "kind": "increased", "value": 0.06}]}}, {"id": "dreamcatcher_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "dreamcatcher_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.11}, {"stat": "damage", "kind": "increased", "value": 0.055}]}}, {"id": "dreamcatcher_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "dreamcatcher_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.13}, {"stat": "damage", "kind": "increased", "value": 0.065}]}}, {"id": "dreamcatcher_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "dreamcatcher_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.12}, {"stat": "attackPower", "kind": "increased", "value": 0.06}]}}, {"id": "dreamcatcher_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.11}, {"stat": "attackPower", "kind": "increased", "value": 0.055}]}}, {"id": "dreamcatcher_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "itemRarity", "kind": "increased", "value": 0.13}, {"stat": "attackPower", "kind": "increased", "value": 0.065}]}}, {"id": "dreamcatcher_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -8100,12 +8100,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.05}, {"stat": "damage", "kind": "increased", "value": 0.08}], "reserve": 25, "party": true},
+      "effect": {"type": "aura", "modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.05}, {"stat": "attackPower", "kind": "increased", "value": 0.08}], "reserve": 25, "party": true},
       "text": {"ru": "отряд: +5% шанса трофея с пойманных врагов и +8% урона", "en": "party: +5% trophy chance from netted enemies and +8% damage"},
       "branches": [
-        {"level": 5, "options": [{"id": "dreamcatcher_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.06}, {"stat": "damage", "kind": "increased", "value": 0.096}]}}, {"id": "dreamcatcher_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "dreamcatcher_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.055}, {"stat": "damage", "kind": "increased", "value": 0.088}]}}, {"id": "dreamcatcher_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "dreamcatcher_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.065}, {"stat": "damage", "kind": "increased", "value": 0.104}]}}, {"id": "dreamcatcher_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
+        {"level": 5, "options": [{"id": "dreamcatcher_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.06}, {"stat": "attackPower", "kind": "increased", "value": 0.096}]}}, {"id": "dreamcatcher_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
+        {"level": 15, "options": [{"id": "dreamcatcher_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.055}, {"stat": "attackPower", "kind": "increased", "value": 0.088}]}}, {"id": "dreamcatcher_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
+        {"level": 25, "options": [{"id": "dreamcatcher_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "netTrophy", "kind": "flat", "value": 0.065}, {"stat": "attackPower", "kind": "increased", "value": 0.104}]}}, {"id": "dreamcatcher_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     }
   ]

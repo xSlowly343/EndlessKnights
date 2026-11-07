@@ -493,6 +493,15 @@ namespace Game.Core.Sim
             }
         }
 
+        public static int QualityRoll(long found, long stage)
+        {
+            var mixed = (ulong)found * 0x9E3779B97F4A7C15UL ^ (ulong)stage * 0xBF58476D1CE4E5B9UL;
+            mixed ^= mixed >> 31;
+            mixed *= 0x94D049BB133111EBUL;
+            mixed ^= mixed >> 29;
+            return (int)(mixed % 101);
+        }
+
         private WeaponItem WeaponFor(PendingDrop drop, ItemRarity rarity, Rng rng)
         {
             var chance = _rules.UniqueChanceFor(drop.Source);
@@ -601,6 +610,8 @@ namespace Game.Core.Sim
             drops.ItemsFound++;
             var rarity = drop.Rarity;
             var weapon = drop.Type != null ? WeaponFor(drop, rarity, drops.Rng) : null;
+            if (weapon != null)
+                weapon.Quality = QualityRoll(drops.ItemsFound, drop.Stage);
             var gear = weapon == null ? RollGear(drop, rarity, drops.Rng) : null;
             if (gear != null)
                 _gear.NoteFound(gear);

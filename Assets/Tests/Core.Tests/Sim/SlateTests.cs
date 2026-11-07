@@ -117,7 +117,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Slates.Place(slate, 1, 1, 0), Is.EqualTo(SlateResult.Done));
             Assert.That(loop.Slates.Bag, Is.Empty);
             Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.GreaterThan(before));
-            Assert.That(Sum(loop, "damage"), Is.EqualTo(0.06).Within(1e-9));
+            Assert.That(Sum(loop, "attackPower"), Is.EqualTo(0.06).Within(1e-9));
 
             Assert.That(loop.Slates.Remove(slate), Is.EqualTo(SlateResult.Done));
             Assert.That(loop.Slates.Modifiers, Is.Empty);
@@ -146,7 +146,7 @@ namespace Game.Core.Tests.Sim
             var square = Give(loop, "square", "keys", SlateRarity.Rare);
             loop.Slates.Place(square, 0, 0, 0);
 
-            Assert.That(Sum(loop, "damage"), Is.EqualTo(0.06 * 2 * 1.25).Within(1e-9));
+            Assert.That(Sum(loop, "attackPower"), Is.EqualTo(0.06 * 2 * 1.25).Within(1e-9));
         }
 
         [Test]
@@ -157,7 +157,7 @@ namespace Game.Core.Tests.Sim
             loop.Slates.Place(middle, 1, 1, 0);
             var mouse = Give(loop, "pebble", "mouse");
             loop.Slates.Place(mouse, 1, 0, 0);
-            Assert.That(Sum(loop, "damage"), Is.EqualTo(0.12).Within(1e-9), "different themes do not help each other");
+            Assert.That(Sum(loop, "attackPower"), Is.EqualTo(0.12).Within(1e-9), "different themes do not help each other");
 
             foreach (var (x, y) in new[] { (0, 1), (2, 1), (1, 2) })
                 loop.Slates.Place(Give(loop, "pebble", "keys"), x, y, 0);
@@ -275,7 +275,7 @@ namespace Game.Core.Tests.Sim
             var loop = Hero(hero: hero);
             loop.Slates.Place(Give(loop, "pebble", "keys"), 0, 0, 0);
 
-            Assert.That(Sum(loop, "damage"), Is.EqualTo(0.09).Within(1e-9));
+            Assert.That(Sum(loop, "attackPower"), Is.EqualTo(0.09).Within(1e-9));
             Assert.That(TestWorld.Data.Artifacts.All.Single(artifact => artifact.Id == "jewel_facet").PerLevel[0].Stat, Is.EqualTo(CombatStats.SlateEffect));
         }
 

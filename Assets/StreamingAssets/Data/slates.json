@@ -197,7 +197,7 @@
           "id": "keys_damage",
           "modifiers": [
             {
-              "stat": "damage",
+              "stat": "attackPower",
               "kind": "increased",
               "value": 0.06,
               "tags": [
@@ -247,7 +247,7 @@
         "id": "keys_pattern",
         "modifiers": [
           {
-            "stat": "damage",
+            "stat": "attackPower",
             "kind": "more",
             "value": 0.05,
             "tags": [
@@ -260,7 +260,7 @@
         "id": "keys_rule",
         "modifiers": [
           {
-            "stat": "damage",
+            "stat": "attackPower",
             "kind": "more",
             "value": 0.08,
             "tags": [
@@ -277,7 +277,7 @@
           "id": "mouse_damage",
           "modifiers": [
             {
-              "stat": "damage",
+              "stat": "attackPower",
               "kind": "increased",
               "value": 0.06,
               "tags": [
@@ -290,7 +290,7 @@
           "id": "mouse_clicks",
           "modifiers": [
             {
-              "stat": "damage",
+              "stat": "attackPower",
               "kind": "increased",
               "value": 0.06,
               "tags": [
@@ -327,7 +327,7 @@
         "id": "mouse_pattern",
         "modifiers": [
           {
-            "stat": "damage",
+            "stat": "attackPower",
             "kind": "more",
             "value": 0.05,
             "tags": [
@@ -340,7 +340,7 @@
         "id": "mouse_rule",
         "modifiers": [
           {
-            "stat": "damage",
+            "stat": "attackPower",
             "kind": "more",
             "value": 0.08,
             "tags": [
@@ -357,7 +357,7 @@
           "id": "skills_damage",
           "modifiers": [
             {
-              "stat": "damage",
+              "stat": "attackPower",
               "kind": "increased",
               "value": 0.08,
               "tags": [
@@ -391,7 +391,7 @@
         "id": "skills_pattern",
         "modifiers": [
           {
-            "stat": "damage",
+            "stat": "attackPower",
             "kind": "more",
             "value": 0.05,
             "tags": [
@@ -462,7 +462,7 @@
         "id": "crit_rule",
         "modifiers": [
           {
-            "stat": "damage",
+            "stat": "attackPower",
             "kind": "more",
             "value": 0.06,
             "tags": [
@@ -662,7 +662,7 @@
           "id": "party_damage",
           "modifiers": [
             {
-              "to": "party", "stat": "damage",
+              "to": "party", "stat": "attackPower",
               "kind": "increased",
               "value": 0.04
             }
@@ -693,7 +693,7 @@
         "id": "party_pattern",
         "modifiers": [
           {
-            "to": "party", "stat": "damage",
+            "to": "party", "stat": "attackPower",
             "kind": "increased",
             "value": 0.08
           }
@@ -837,7 +837,7 @@
           "id": "dots_hits",
           "modifiers": [
             {
-              "stat": "damage",
+              "stat": "attackPower",
               "kind": "increased",
               "value": 0.06,
               "tags": [
@@ -871,7 +871,7 @@
         "id": "dots_rule",
         "modifiers": [
           {
-            "stat": "damage",
+            "stat": "attackPower",
             "kind": "more",
             "value": 0.1,
             "tags": [
@@ -888,7 +888,7 @@
           "id": "summons_damage",
           "modifiers": [
             {
-              "stat": "damage",
+              "stat": "attackPower",
               "kind": "increased",
               "value": 0.06,
               "tags": [
@@ -922,7 +922,7 @@
         "id": "summons_pattern",
         "modifiers": [
           {
-            "stat": "damage",
+            "stat": "attackPower",
             "kind": "more",
             "value": 0.05,
             "tags": [
@@ -1073,7 +1073,7 @@
         "id": "minstrel_song",
         "modifiers": [
           {
-            "to": "party", "stat": "damage",
+            "to": "party", "stat": "attackPower",
             "kind": "increased",
             "value": 0.03
           }

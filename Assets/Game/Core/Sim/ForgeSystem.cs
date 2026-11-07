@@ -12,7 +12,8 @@ namespace Game.Core.Sim
         Busy,
         NoOre,
         Maxed,
-        NotSlain
+        NotSlain,
+        NoShards
     }
 
     public sealed class ForgeSystem
@@ -88,6 +89,22 @@ namespace Game.Core.Sim
             var weapon = bag[index];
             bag.RemoveAt(index);
             Smelt(weapon.ItemLevel, weapon.Rarity);
+            return ForgeResult.Done;
+        }
+
+        public AttackRules? Attack { get; set; }
+
+        public ForgeResult RerollQuality()
+        {
+            var weapon = _state.Weapons.Held;
+            if (weapon == null || Attack == null)
+                return ForgeResult.NoItem;
+            if (weapon.Quality >= 100)
+                return ForgeResult.Maxed;
+            if (_state.Drops.Shards < Attack.QualityRerollShards)
+                return ForgeResult.NoShards;
+            _state.Drops.Shards -= Attack.QualityRerollShards;
+            weapon.Quality = System.Math.Max(weapon.Quality, _state.Rng.NextInt(0, 101));
             return ForgeResult.Done;
         }
 

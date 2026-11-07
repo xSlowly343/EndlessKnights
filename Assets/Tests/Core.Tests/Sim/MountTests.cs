@@ -86,11 +86,11 @@ namespace Game.Core.Tests.Sim
             Assert.That(Rules.FullDamage(10), Is.EqualTo(0.05));
             Assert.That(Rules.FullDamage(25), Is.EqualTo(0.15));
             var loop = Rich(1);
-            var damage = loop.Hero.Value(Game.Core.Sim.CombatStats.Damage, 1);
             for (var i = 0; i < MountRules.Slots; i++)
                 loop.State.Mount.Levels[i] = 10;
             loop.Mount.Refresh();
-            Assert.That(loop.Hero.Value(Game.Core.Sim.CombatStats.Damage, 1), Is.EqualTo(damage * 1.05).Within(1e-9));
+            loop.RefreshClassAttribute();
+            Assert.That(loop.Combat.Additional, Is.EqualTo(1.05).Within(1e-9), "the full mount sits in the additional damage group");
         }
 
         [Test]

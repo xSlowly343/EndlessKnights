@@ -37,11 +37,11 @@
   },
   "modifiersPerWindow": 2,
   "modifiers": [
-    { "id": "stone_skin", "unlessRoles": ["herald"], "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5 }] },
+    { "id": "stone_skin", "unlessRoles": ["herald"], "modifiers": [{ "stat": "attackPower", "kind": "more", "value": -0.5 }] },
     { "id": "regeneration", "unlessRoles": ["blighter"], "modifiers": [{ "stat": "enemyRegen", "kind": "flat", "value": 0.01 }] },
     { "id": "colossus_shield", "unlessRoles": ["summoner", "breaker"], "modifiers": [{ "stat": "bossShield", "kind": "flat", "value": 0.5 }] },
     { "id": "horde", "modifiers": [{ "stat": "stageEnemies", "kind": "increased", "value": 0.5 }] },
     { "id": "silence", "modifiers": [{ "stat": "auraEffect", "kind": "more", "value": -0.5, "tags": ["Aura"] }] },
-    { "id": "eclipse", "modifiers": [{ "stat": "damage", "kind": "more", "value": -0.5, "tags": ["Strike"] }, { "stat": "mouseDistance", "kind": "more", "value": 1 }] }
+    { "id": "eclipse", "modifiers": [{ "stat": "attackPower", "kind": "more", "value": -0.5, "tags": ["Strike"] }, { "stat": "mouseDistance", "kind": "more", "value": 1 }] }
   ]
 }
