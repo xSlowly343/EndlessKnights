@@ -88,6 +88,7 @@ namespace Game.Core.Save
                 ("rift", WriteRift(state.Rift)),
                 ("weapons", WriteWeapons(state.Weapons)),
                 ("drops", WriteDrops(state.Drops)),
+                ("mount", WriteMount(state.Mount)),
                 ("quests", WriteQuests(state.Quests)),
                 ("achievements", WriteAchievements(state.Achievements)),
                 ("bestiary", WriteBestiary(state.Bestiary)),
@@ -307,6 +308,8 @@ namespace Game.Core.Save
                 ReadWeapons(node.Field("weapons"), weapons, items, state.Weapons);
             if (node.HasField("drops"))
                 ReadDrops(node.Field("drops"), state.Drops, items);
+            if (node.HasField("mount"))
+                ReadMount(node.Field("mount"), state.Mount);
             if (node.HasField("quests"))
                 ReadQuests(node.Field("quests"), state.Quests);
             if (node.HasField("achievements"))
@@ -714,6 +717,27 @@ namespace Game.Core.Save
                 ("seconds", JsonValue.Of(expedition.Seconds)), ("planned", JsonValue.Of(expedition.Planned)), ("elapsed", JsonValue.Of(expedition.Elapsed)), ("letter", JsonValue.Of(expedition.Letter)),
                 ("choice", JsonValue.Of(expedition.Choice)), ("waited", JsonValue.Of(expedition.Waited)), ("items", JsonValue.Array(items)),
                 ("shards", JsonValue.Of(expedition.Shards)), ("rare", OptionalText(expedition.Rare)), ("done", JsonValue.Of(expedition.Done)), ("colossus", JsonValue.Of(expedition.Colossus)));
+        }
+
+        private static JsonValue WriteMount(MountState mount)
+        {
+            var levels = new JsonValue[mount.Levels.Length];
+            for (var i = 0; i < levels.Length; i++)
+                levels[i] = JsonValue.Of(mount.Levels[i]);
+            return Object(("levels", JsonValue.Array(levels)), ("scan", JsonValue.Of(mount.Scan)), ("cutters", JsonValue.Of(mount.Cutters)));
+        }
+
+        private static void ReadMount(ContentNode node, MountState mount)
+        {
+            var i = 0;
+            foreach (var level in node.Field("levels").Items())
+            {
+                if (i < mount.Levels.Length)
+                    mount.Levels[i] = level.AsInt(0, 100);
+                i++;
+            }
+            mount.Scan = node.HasField("scan") ? node.Field("scan").AsNumber(0, double.MaxValue) : 0;
+            mount.Cutters = node.HasField("cutters") ? node.Field("cutters").AsLong(0) : 0;
         }
 
         private static Expedition ReadExpedition(ContentNode node)

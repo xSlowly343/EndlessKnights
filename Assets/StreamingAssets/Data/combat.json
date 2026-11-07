@@ -39,6 +39,7 @@
     }
   },
   "crit": { "chance": 0.05, "multiplier": 2 },
+  "mount": { "maxLevel": 25, "step": 1.04, "stagesPerLevel": 2000, "cost": { "scan": 20, "scanGrowth": 1.18, "goldKills": 200, "goldGrowth": 1 }, "scanByRarity": [1, 1, 2, 3, 5, 8, 12, 18, 25, 35, 50], "full": [{ "level": 10, "damage": 0.05 }, { "level": 20, "damage": 0.1 }, { "level": 25, "damage": 0.15 }], "cuttersPerLevel": 1 },
   "attack": { "baseAttribute": 100, "weaponDamage": 600, "divisor": 6, "perItemLevel": 1.004, "weaponRarity": [1, 1.1, 1.2, 1.35, 1.5, 1.7, 1.95, 2.25, 2.6, 3, 3.5], "gearAttribute": 3, "gearRarity": [1, 1.1, 1.2, 1.35, 1.5, 1.7, 1.95, 2.25, 2.6, 3, 3.5] },
   "classes": {
     "keyStreak": { "gapSeconds": 1.5 },

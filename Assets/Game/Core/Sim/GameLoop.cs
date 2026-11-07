@@ -88,6 +88,7 @@ namespace Game.Core.Sim
         private readonly CompanionGearSystem _companionGear;
         private readonly CompanionWorkSystem _companionWork;
         private readonly CompanionAbilitySystem _companionAbilities;
+        private readonly MountSystem _mount;
         private readonly MenagerieTreeSystem _menagerie;
         private readonly TownSystem _town;
         private readonly FishingSystem _fishing;
@@ -181,7 +182,13 @@ namespace Game.Core.Sim
             _menagerie = new MenagerieTreeSystem(_companions);
             _strip = new CompanionStrip(state, _companions, _expeditions, _peaceful, Events);
             _forge = new ForgeSystem(data.Forge, state, data.Stages, _camp, _peaceful, _weapons, _gear, Events);
-            _drops.Salvaged = _forge.SalvageOre;
+            _mount = new MountSystem(data.Combat.Mount, state, data.Stages, hero);
+            _mount.Changed = RefreshClassAttribute;
+            _drops.Salvaged = drop =>
+            {
+                _forge.SalvageOre(drop);
+                _mount.NoteSalvage(drop);
+            };
             _seasonal.BossWon = eventId => _drops.GiveEventPiece(eventId);
             _museum = new MuseumSystem(data.Museum, state, hero, _alchemy, Events);
             _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
@@ -278,6 +285,7 @@ namespace Game.Core.Sim
         public CompanionGearSystem CompanionGear => _companionGear;
         public CompanionWorkSystem CompanionWork => _companionWork;
         public CompanionAbilitySystem CompanionAbilities => _companionAbilities;
+        public MountSystem Mount => _mount;
         public MenagerieTreeSystem Menagerie => _menagerie;
         public TownSystem Town => _town;
         public FishingSystem Fishing => _fishing;
