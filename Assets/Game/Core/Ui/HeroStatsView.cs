@@ -89,6 +89,7 @@ namespace Game.Core.Ui
                 lines.Add(Line(0, "hero.stats.overcritMultiplier", Invariant("×{0:0.##}", critMultiplier * overcritMultiplier)));
             }
             AddFracture(lines, loop);
+            AddDefense(lines, loop);
             lines.Add(Line(0, "hero.stats.increased", Percent(damage.IncreasedMultiplier - 1)));
             lines.Add(Line(0, "hero.stats.more", Invariant("×{0:0.##}", damage.MoreMultiplier)));
             lines.Add(Line(0, "hero.stats.heavyStrike", every >= 1 ? Texts.Format("hero.stats.heavyEvery", every, heavy.ToString("0.#", CultureInfo.InvariantCulture)) : Texts.Get("hero.stats.none")));
@@ -101,6 +102,18 @@ namespace Game.Core.Ui
             var chance = combat.FractureChance(StatTags.Strike);
             if (chance > 0 || loop.State.FractureStacks > 0)
                 lines.Add(Line(0, "hero.stats.fracture", Texts.Format("hero.stats.fractureShow", Chance(chance), loop.State.FractureStacks, combat.FractureMax, Invariant("{0:0.##}", 1 + combat.FractureBonus))));
+        }
+
+        private static void AddDefense(List<HeroStatLine> lines, GameLoop loop)
+        {
+            var combat = loop.Combat;
+            var defense = loop.State.EnemyDefense;
+            if (!(defense > 0))
+                return;
+            var rules = combat.Defense;
+            var gain = rules.Gain(defense, combat.DefenseShred, combat.ArmorPen(StatTags.Strike));
+            var cutAfter = 1 - (1 - rules.Cut(defense)) * gain;
+            lines.Add(Line(0, "hero.stats.defense", Texts.Format("hero.stats.defenseShow", Chance(rules.Cut(defense)), Chance(cutAfter), Invariant("{0:0.##}", gain))));
         }
 
         private static void AddPartyRole(List<HeroStatLine> lines, GameLoop loop)
