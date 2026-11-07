@@ -44,6 +44,7 @@
   "fracture": { "perStack": 0.02, "baseMax": 25, "maxCap": 40, "decaySeconds": 2, "shareSeconds": 2, "pillarMembers": 4 },
   "defense": { "k": 6500, "curve": [{ "stage": 500, "share": 0 }, { "stage": 5000, "share": 0.25 }, { "stage": 20000, "share": 0.67 }], "maxShare": 1.5, "bossExtra": 0.3, "armorPenCap": 0.7, "shredCap": 0.5 },
   "elements": { "resist": 0.5, "weak": 0.2, "minResist": 0.5, "effects": { "fire": { "share": 0.2, "seconds": 3 }, "air": { "share": 0.15 }, "earth": { "perHit": 0.005, "max": 0.3 }, "lightning": { "chance": 0.1, "power": 0.5 }, "water": { "perHit": 0.1, "max": 5 }, "corrosion": { "chance": 0.25 } }, "biomes": [{ "biome": "green_hills", "resist": "water", "weak": "corrosion" }, { "biome": "sky_islands", "resist": "air", "weak": "lightning" }, { "biome": "sand_ruins", "resist": "earth", "weak": "air" }, { "biome": "volcanic_forge", "resist": "fire", "weak": "water" }, { "biome": "ice_peak", "resist": "lightning", "weak": "fire" }, { "biome": "rift_heart", "resist": "corrosion", "weak": "earth" }] },
+  "tempo": { "windowSeconds": 60, "from": 40, "step": 10, "cap": 200, "maxBonus": 0.15, "rest": { "afterSeconds": 30, "maxMinutes": 10, "hits": 20 } },
   "attack": { "baseAttribute": 100, "weaponDamage": 600, "divisor": 6, "perItemLevel": 1.004, "weaponRarity": [1, 1.1, 1.2, 1.35, 1.5, 1.7, 1.95, 2.25, 2.6, 3, 3.5], "qualityDamage": 0.3, "qualityRerollShards": 200, "gearAttribute": 3, "gearRarity": [1, 1.1, 1.2, 1.35, 1.5, 1.7, 1.95, 2.25, 2.6, 3, 3.5] },
   "classes": {
     "keyStreak": { "gapSeconds": 1.5 },

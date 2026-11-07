@@ -147,6 +147,9 @@ namespace Game.Core.Sim
         public double WaterSeconds { get; set; }
         public double WaterCarry { get; set; }
         public long Discharges { get; set; }
+        public double TempoPerMinute { get; set; }
+        public double RestCharge { get; set; }
+        public int RestHitsLeft { get; set; }
         public int FractureQuietTicks { get; set; }
         public long FracturesLaid { get; set; }
         public PeacefulBonus PeacefulBonus { get; } = new PeacefulBonus();

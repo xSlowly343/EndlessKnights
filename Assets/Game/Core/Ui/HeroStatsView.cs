@@ -91,6 +91,7 @@ namespace Game.Core.Ui
             AddFracture(lines, loop);
             AddDefense(lines, loop);
             AddElements(lines, loop);
+            AddTempo(lines, loop);
             lines.Add(Line(0, "hero.stats.increased", Percent(damage.IncreasedMultiplier - 1)));
             lines.Add(Line(0, "hero.stats.more", Invariant("×{0:0.##}", damage.MoreMultiplier)));
             lines.Add(Line(0, "hero.stats.heavyStrike", every >= 1 ? Texts.Format("hero.stats.heavyEvery", every, heavy.ToString("0.#", CultureInfo.InvariantCulture)) : Texts.Get("hero.stats.none")));
@@ -138,6 +139,16 @@ namespace Game.Core.Ui
 
         private static string ElementName(int element) =>
             element == ElementRules.None ? Texts.Get("hero.stats.none") : Texts.Get("element." + ElementRules.IdOf((Element)element));
+
+        private static void AddTempo(List<HeroStatLine> lines, GameLoop loop)
+        {
+            var combat = loop.Combat;
+            var state = loop.State;
+            if (loop.Hero.Value(CombatStats.TempoDamage, 0) > 0)
+                lines.Add(Line(0, "hero.stats.tempo", Texts.Format("hero.stats.tempoShow", Invariant("{0:0}", state.TempoPerMinute), Percent(combat.TempoBonus))));
+            if (combat.RestChargeMax > 0)
+                lines.Add(Line(0, "hero.stats.rest", Texts.Format("hero.stats.restShow", Percent(state.RestCharge), Percent(combat.RestChargeMax), state.RestHitsLeft)));
+        }
 
         private static void AddPartyRole(List<HeroStatLine> lines, GameLoop loop)
         {
