@@ -112,7 +112,33 @@ namespace Game.Core.Sim
 
         public void OnKeyHit(IKeyHitListener keyHits) => _keyHits = keyHits;
 
-        public double BaseKeyDamage => _rules.StrikeDamage;
+        public double BaseKeyDamage => _rules.StrikeDamage * AttackScale;
+        public double BaseMouseDamage => _rules.MouseDamage * AttackScale;
+        public double Attack { get; private set; }
+        public double AttackScale { get; private set; } = 1;
+
+        public double ItemAttribute()
+        {
+            var total = 0.0;
+            var worn = _state.Gear.Worn;
+            for (var i = 0; i < worn.Length; i++)
+            {
+                var item = worn[i];
+                if (item != null && item.Wearable)
+                    total += _rules.Attack.Attribute(item.Rarity, item.ItemLevel);
+            }
+            return total;
+        }
+
+        public void RefreshAttack(double classPoints)
+        {
+            var rules = _rules.Attack;
+            var held = _state.Weapons.Held;
+            var weapon = (held == null ? rules.BaseWeaponDamage : rules.WeaponDamage(held.Rarity, held.ItemLevel)) + System.Math.Max(0, _hero.Value(CombatStats.WeaponDamage, 0));
+            var attribute = rules.BaseAttribute + System.Math.Max(0, classPoints) + ItemAttribute() + System.Math.Max(0, _hero.Value(CombatStats.ItemAttribute, 0));
+            Attack = rules.Attack(attribute, weapon, _hero.Value(CombatStats.FlatAttack, 0));
+            AttackScale = rules.BaseAttack > 0 ? Attack / rules.BaseAttack : 1;
+        }
         public CurseRules Curses => _rules.Curses;
         public ConditionRules Conditions => _rules.Conditions;
         public DotRules Dots => _rules.Dots;
@@ -290,7 +316,7 @@ namespace Game.Core.Sim
             {
                 var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier() * _windshot.StrikeMultiplier() * _minstrel.StrikeMultiplier() * _whisperer.StrikeMultiplier() * _clockwright.StrikeMultiplier() * _alchemist.StrikeMultiplier() * _dowser.StrikeMultiplier() * _mothcaller.StrikeMultiplier();
                 var alive = _state.EnemyAlive;
-                Hit(DamageSource.Strike, _rules.StrikeDamage, StatTags.Strike, flags, _state.FocusMultiplier * multiplier);
+                Hit(DamageSource.Strike, BaseKeyDamage, StatTags.Strike, flags, _state.FocusMultiplier * multiplier);
                 if (alive)
                 {
                     var crit = LastHitCrit;
@@ -318,7 +344,7 @@ namespace Game.Core.Sim
                 QueueStrike();
             }
             for (var i = 0; i < mouseHits; i++)
-                Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier * _whisperer.StrikeMultiplier());
+                Hit(DamageSource.Mouse, BaseMouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier * _whisperer.StrikeMultiplier());
             MouseBursts(input.MousePx);
             _class.EndTick(keyHits, input.MousePx);
             _runedancer.EndTick();
@@ -345,7 +371,7 @@ namespace Game.Core.Sim
                 return;
             var multiplier = _hero.Value(CombatStats.CloneMultiplier, 0, StatTags.Strike);
             if (multiplier > 0)
-                Hit(DamageSource.Skill, _rules.StrikeDamage, StatTags.Strike, HitFlags.None, _state.FocusMultiplier * multiplier);
+                Hit(DamageSource.Skill, BaseKeyDamage, StatTags.Strike, HitFlags.None, _state.FocusMultiplier * multiplier);
         }
 
         private void QueueStrike()
@@ -354,7 +380,7 @@ namespace Game.Core.Sim
                 return;
             var multiplier = _hero.Value(CombatStats.QueueStrikeMultiplier, 0, StatTags.Strike);
             if (multiplier > 0)
-                _state.AddToQueue(SkillDamage(_rules.StrikeDamage, _state.FocusMultiplier * multiplier, StatTags.Strike));
+                _state.AddToQueue(SkillDamage(BaseKeyDamage, _state.FocusMultiplier * multiplier, StatTags.Strike));
         }
 
         private void Hit(DamageSource source, double baseDamage, StatTags tags, HitFlags flags, double multiplier)
@@ -545,7 +571,7 @@ namespace Game.Core.Sim
         {
             var share = _hero.Value(CombatStats.KeyHitLightning, 0, StatTags.Skill);
             if (share > 0)
-                Hit(DamageSource.Skill, _rules.StrikeDamage, StatTags.Skill, HitFlags.None, share);
+                Hit(DamageSource.Skill, BaseKeyDamage, StatTags.Skill, HitFlags.None, share);
         }
 
         private double KeyBurst()
@@ -569,7 +595,7 @@ namespace Game.Core.Sim
             while (_state.MouseBurstCarryPx >= every)
             {
                 _state.MouseBurstCarryPx -= every;
-                Hit(DamageSource.Mouse, _rules.MouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier * multiplier);
+                Hit(DamageSource.Mouse, BaseMouseDamage, StatTags.Mouse, HitFlags.None, _state.FocusMultiplier * multiplier);
             }
         }
 

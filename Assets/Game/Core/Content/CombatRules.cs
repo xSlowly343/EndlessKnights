@@ -47,6 +47,7 @@ namespace Game.Core.Content
         public EncounterRules Encounters { get; }
         public double BasePierce { get; private set; }
         public PierceRules Pierce { get; private set; } = new PierceRules();
+        public AttackRules Attack { get; private set; } = new AttackRules();
 
         public static CombatRules Load(string json)
         {
@@ -78,6 +79,7 @@ namespace Game.Core.Content
                 PathRules.Read(root.Field("paths")),
                 EncounterRules.Read(root.Field("encounters")))
             {
+                Attack = AttackRules.Read(root.Field("attack")),
                 BasePierce = root.HasField("pierce") ? root.Field("pierce").Field("baseShare").AsNumber(0, 1) : 0,
                 Pierce = root.HasField("pierce") ? PierceRules.Read(root.Field("pierce")) : new PierceRules()
             };

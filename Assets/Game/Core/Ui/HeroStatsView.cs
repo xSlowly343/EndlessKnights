@@ -76,6 +76,7 @@ namespace Game.Core.Ui
             var heavy = System.Math.Max(1, loop.Hero.Value(CombatStats.KeyStrikeMultiplier, 0, StatTags.Strike));
             var boss = loop.Hero.TotalsOf(CombatStats.DamageVsBoss);
             lines.Add(Header(0, "hero.stats.damage"));
+            lines.Add(Line(0, "hero.stats.attack", Invariant("{0:0.#}", combat.Attack)));
             lines.Add(Line(0, "hero.stats.keyHit", NumberFormatter.Format(hit, format)));
             lines.Add(Line(0, "hero.stats.averageHit", NumberFormatter.Format(BigNumber.FromDouble(AverageHit(hit.ToDouble(), crit, critMultiplier, overcrit, overcritMultiplier)), format)));
             lines.Add(Line(0, "hero.stats.dps", NumberFormatter.Format(loop.State.RecentDps, format)));

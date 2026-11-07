@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Content;
 using Game.Core.Content.Items;
 using Game.Core.Stats;
 
