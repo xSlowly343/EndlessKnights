@@ -137,6 +137,7 @@ namespace Game.Core.Sim
         public Dictionary<string, int> Spirits { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
         public long Crits { get; set; }
         public long Overcrits { get; set; }
+        public PeacefulBonus PeacefulBonus { get; } = new PeacefulBonus();
         public double MouseBurstCarryPx { get; set; }
         public GearState Gear { get; } = new GearState();
         public HashSet<string> SetCollection { get; } = new HashSet<string>(System.StringComparer.Ordinal);

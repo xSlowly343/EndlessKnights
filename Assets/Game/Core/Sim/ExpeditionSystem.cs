@@ -211,7 +211,7 @@ namespace Game.Core.Sim
         public double DurationFactor(string companion, string biome = "", int hours = 0)
         {
             var perk = _state.Perk(MuseumPerk.ShorterTrips);
-            return _companions?.DurationFactor(companion, perk, biome, hours) ?? System.Math.Max(0.1, 1 - perk);
+            return (_companions?.DurationFactor(companion, perk, biome, hours) ?? System.Math.Max(0.1, 1 - perk)) * _state.PeacefulBonus.TimeFactor;
         }
 
         public ExpeditionResult Answer(int index, bool wait)
@@ -312,13 +312,13 @@ namespace Game.Core.Sim
                 expedition.Items = new long[place.Items.Count];
             for (var i = 0; i < place.Items.Count; i++)
             {
-                var count = (long)System.Math.Floor(place.Items[i].PerHour * hours * (_companions?.StatOf(expedition, TravelStat.Items) ?? trait.ItemMultiplier) * (_companions?.HerbOf(expedition, place.Items[i].Item) ?? 1) * level * (1 + _state.Perk(MuseumPerk.ExpeditionLoot)));
+                var count = (long)System.Math.Floor(place.Items[i].PerHour * hours * (_companions?.StatOf(expedition, TravelStat.Items) ?? trait.ItemMultiplier) * (_companions?.HerbOf(expedition, place.Items[i].Item) ?? 1) * level * (1 + _state.Perk(MuseumPerk.ExpeditionLoot)) * _state.PeacefulBonus.YieldFactor);
                 expedition.Items[i] = count;
                 _camp.Add(place.Items[i].Item, count);
             }
-            expedition.Shards = (long)System.Math.Floor(place.ShardsPerHour * hours * (_companions?.StatOf(expedition, TravelStat.Shards) ?? trait.ShardsMultiplier) * level * (1 + _state.Perk(MuseumPerk.ExpeditionShards)));
+            expedition.Shards = (long)System.Math.Floor(place.ShardsPerHour * hours * (_companions?.StatOf(expedition, TravelStat.Shards) ?? trait.ShardsMultiplier) * level * (1 + _state.Perk(MuseumPerk.ExpeditionShards)) * _state.PeacefulBonus.YieldFactor);
             _state.Drops.Shards += expedition.Shards;
-            var chance = place.RareChancePerHour * hours * (_companions?.StatOf(expedition, TravelStat.Rare) ?? trait.RareMultiplier) * (1 + _state.Perk(MuseumPerk.RareFind)) * (_companions?.RareOf(expedition) ?? 1) * (expedition.Waited ? _rules.WaitRareMultiplier : 1);
+            var chance = place.RareChancePerHour * hours * (_companions?.StatOf(expedition, TravelStat.Rare) ?? trait.RareMultiplier) * (1 + _state.Perk(MuseumPerk.RareFind)) * (_companions?.RareOf(expedition) ?? 1) * (expedition.Waited ? _rules.WaitRareMultiplier : 1) * _state.PeacefulBonus.LuckFactor;
             if (_state.Rng.NextDouble() < chance)
             {
                 expedition.Rare = place.Rare;

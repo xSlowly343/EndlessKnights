@@ -33,7 +33,7 @@ namespace Game.Core.Sim
         public DigState State => _state.Digs;
         public bool Open => _camp.Open(_rules.Building);
         public string CurrentSite => State.Sites.Count > 0 ? State.Sites[0] : string.Empty;
-        public double BrushNeeded => _rules.BrushMeters * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.LighterBrush));
+        public double BrushNeeded => _rules.BrushMeters * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.LighterBrush)) * _state.PeacefulBonus.TimeFactor;
 
         public void UseRules(DigRules rules) => _rules = rules;
 
@@ -144,12 +144,14 @@ namespace Game.Core.Sim
             State.Phase = DigPhase.Idle;
             if (site == null)
                 return;
+            if (State.Quality < 1 && _state.PeacefulBonus.RollMastery(_state.Rng))
+                State.Quality = System.Math.Min(1, State.Quality + _rules.CrackLoss);
             var rolled = _rules.BonesMin + _state.Rng.NextDouble() * (_rules.BonesMax - _rules.BonesMin);
-            var bones = System.Math.Max(1, (int)System.Math.Round(rolled * State.Quality * (1 + _state.Perk(MuseumPerk.MoreBones))));
+            var bones = System.Math.Max(1, (int)System.Math.Round(rolled * State.Quality * (1 + _state.Perk(MuseumPerk.MoreBones)) * _state.PeacefulBonus.YieldFactor));
             _camp.Add(site.Bone, bones);
-            if (_state.Rng.NextDouble() < _rules.ShardChance * State.Quality)
+            if (_state.Rng.NextDouble() < _rules.ShardChance * State.Quality * _state.PeacefulBonus.LuckFactor)
                 _state.Drops.Shards += _rules.ShardCount;
-            if (_state.Rng.NextDouble() < _rules.DustChance * State.Quality)
+            if (_state.Rng.NextDouble() < _rules.DustChance * State.Quality * _state.PeacefulBonus.LuckFactor)
                 _state.Drops.Dust += _rules.DustCount;
             State.Dug++;
             State.LastSite = site.Biome;

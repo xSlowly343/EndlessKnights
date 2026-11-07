@@ -63,7 +63,7 @@ namespace Game.Core.Sim
 
         public double SecondsOf(DishDef dish) => dish.Seconds * (Favorite(dish.Id) ? _rules.FavoriteMultiplier : 1) * (1 + _state.Perk(MuseumPerk.MealLonger));
 
-        public double ChopsOf(DishDef dish) => System.Math.Ceiling(dish.Chops * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.FewerChops)));
+        public double ChopsOf(DishDef dish) => System.Math.Ceiling(dish.Chops * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.FewerChops)) * _state.PeacefulBonus.TimeFactor);
 
         public CookingResult Cook(string dishId)
         {

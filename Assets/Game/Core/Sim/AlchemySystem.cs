@@ -96,7 +96,7 @@ namespace Game.Core.Sim
             if (State.Brewing == null || !_peaceful.InCamp || _peaceful.Activity != Activity || (_peaceful.InHideout && !_state.Hideout.Cauldron.Built))
                 return;
             var work = _peaceful.Work(Activity);
-            State.Stirs += work.Keys * (1 + _state.Perk(MuseumPerk.StirFaster));
+            State.Stirs += work.Keys * (1 + _state.Perk(MuseumPerk.StirFaster)) / _state.PeacefulBonus.TimeFactor;
             work.Keys = 0;
             work.Clicks = 0;
             work.MouseMeters = 0;
@@ -134,7 +134,7 @@ namespace Game.Core.Sim
                 return AlchemyResult.NoHerbs;
             foreach (var herb in herbs)
                 _camp.Take(herb, 1);
-            var fineChance = _state.Perk(MuseumPerk.FinePotion) + (Together ? Shared!.FineChance : 0);
+            var fineChance = _state.Perk(MuseumPerk.FinePotion) + (Together ? Shared!.FineChance : 0) + _state.PeacefulBonus.MasteryChance;
             State.Brewing = new Potion { Recipe = recipe.Id, Fine = _rules.Fine(herbs) || _state.Rng.NextDouble() < fineChance, Unknown = unknown };
             State.Stirs = 0;
             return AlchemyResult.Done;

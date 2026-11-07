@@ -55,9 +55,9 @@ namespace Game.Core.Sim
             return rotation.Count == 0 ? string.Empty : _rules.OreOf(rotation[(System.Math.Max(1, itemLevel) - 1) % rotation.Count]);
         }
 
-        public int SmeltYield(ItemRarity rarity) => (int)System.Math.Round((_rules.SmeltBase + _rules.SmeltPerRarity * (int)rarity) * (1 + _state.Perk(MuseumPerk.MoreOre)));
+        public int SmeltYield(ItemRarity rarity) => (int)System.Math.Round((_rules.SmeltBase + _rules.SmeltPerRarity * (int)rarity) * (1 + _state.Perk(MuseumPerk.MoreOre)) * _state.PeacefulBonus.YieldFactor);
 
-        public double HammersNeeded => System.Math.Ceiling(_rules.Hammers * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.FewerHammers)) * (Together ? 1 - Shared!.HammersShare : 1));
+        public double HammersNeeded => System.Math.Ceiling(_rules.Hammers * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.FewerHammers)) * _state.PeacefulBonus.TimeFactor * (Together ? 1 - Shared!.HammersShare : 1));
 
         public double ZoneFrom => System.Math.Max(0, _rules.ZoneFrom - _state.Perk(MuseumPerk.WiderZone) / 2);
 
@@ -211,7 +211,7 @@ namespace Game.Core.Sim
             var sure = State.Work == ForgeWork.Temper && _state.Companions.SureForge;
             if (sure)
                 _state.Companions.SureForge = false;
-            var inZone = sure || InZone(State.Heat);
+            var inZone = sure || InZone(State.Heat) || _state.PeacefulBonus.RollMastery(_state.Rng);
             var boost = 1 + _state.Perk(MuseumPerk.TemperStep);
             var masterpiece = false;
             if (Together)

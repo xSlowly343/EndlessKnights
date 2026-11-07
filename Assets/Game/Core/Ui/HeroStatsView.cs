@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Game.Core.Build;
+using Game.Core.Content;
 using Game.Core.Math;
 using Game.Core.Sim;
 using Game.Core.Stats;
@@ -35,6 +36,7 @@ namespace Game.Core.Ui
             AddDamage(lines, loop, format);
             AddFocusAndResource(lines, loop);
             AddAttributes(lines, loop);
+            AddPeaceful(lines, loop);
             AddSources(lines, loop);
             return lines;
         }
@@ -110,6 +112,32 @@ namespace Game.Core.Ui
             foreach (var modifier in loop.ClassAttributeModifiers)
                 lines.Add(new HeroStatLine(1, Texts.Get("hero.stats.classFeature"), ModifierText.Describe(modifier)));
         }
+
+        private static void AddPeaceful(List<HeroStatLine> lines, GameLoop loop)
+        {
+            var bonus = loop.State.PeacefulBonus;
+            var fishing = loop.Fishing.Rules;
+            var wait = (fishing.BiteMinSeconds + fishing.BiteMaxSeconds) / 2 * (1 - loop.State.Perk(MuseumPerk.BiteFaster));
+            var plants = loop.Garden.Rules.Plants;
+            var harvest = plants.Count > 0 ? plants[0].Yield + (int)loop.State.Perk(MuseumPerk.ExtraHerb) : 0;
+            var legend = fishing.LegendChance + loop.State.Perk(MuseumPerk.LegendChance);
+            var fine = loop.State.Perk(MuseumPerk.FinePotion);
+            lines.Add(Header(1, "hero.stats.peaceful"));
+            lines.Add(Line(1, "hero.stats.peacefulSpeed", Texts.Format("hero.stats.peacefulSpeedShow", Percent(bonus.Speed), Clock(wait), Clock(wait * bonus.TimeFactor))));
+            lines.Add(Line(1, "hero.stats.peacefulYield", Texts.Format("hero.stats.peacefulYieldShow", Percent(bonus.Yield), harvest, bonus.More(harvest))));
+            lines.Add(Line(1, "hero.stats.peacefulLuck", Texts.Format("hero.stats.peacefulLuckShow", Percent(bonus.Luck), Chance(legend), Chance(legend * bonus.LuckFactor))));
+            lines.Add(Line(1, "hero.stats.peacefulMastery", Texts.Format("hero.stats.peacefulMasteryShow", Percent(bonus.Mastery), Chance(fine), Chance(System.Math.Min(1, fine + bonus.MasteryChance)))));
+            if (bonus.Party > 0)
+                lines.Add(Line(1, "hero.stats.peacefulParty", Invariant("×{0:0.##}", 1 + bonus.Party)));
+        }
+
+        public static string Clock(double seconds)
+        {
+            var whole = (long)System.Math.Round(System.Math.Max(0, seconds));
+            return Invariant("{0}:{1:00}", whole / 60, whole % 60);
+        }
+
+        private static string Chance(double chance) => Invariant("{0:0.#}%", chance * 100);
 
         private static void AddSources(List<HeroStatLine> lines, GameLoop loop)
         {
