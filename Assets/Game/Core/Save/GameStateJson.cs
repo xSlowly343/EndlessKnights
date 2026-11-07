@@ -119,6 +119,8 @@ namespace Game.Core.Save
                 ("town", WriteTown(state.Town)),
                 ("fishing", WriteFishing(state.Fishing)),
                 ("digs", WriteDigs(state.Digs)),
+                ("caravan", Object(("seenMouseMeters", JsonValue.Of(state.Caravan.SeenMouseMeters)), ("traveled", JsonValue.Of(state.Caravan.Traveled)), ("next", JsonValue.Of(state.Caravan.Next)),
+                    ("laps", JsonValue.Of(state.Caravan.Laps)), ("waiting", JsonValue.Of(state.Caravan.Waiting)), ("arrivals", JsonValue.Of(state.Caravan.Arrivals)), ("lastStop", OptionalText(state.Caravan.LastStop)))),
                 ("fair", Object(("sentHarvests", JsonValue.Of(state.Fair.SentHarvests)), ("sentMutations", JsonValue.Of(state.Fair.SentMutations)))),
                 ("cooking", WriteCooking(state.Cooking)),
                 ("museum", WriteMuseum(state.Museum)),
@@ -317,6 +319,17 @@ namespace Game.Core.Save
                 ReadFishing(node.Field("fishing"), state.Fishing);
             if (node.HasField("digs"))
                 ReadDigs(node.Field("digs"), state.Digs);
+            if (node.HasField("caravan"))
+            {
+                var caravan = node.Field("caravan");
+                state.Caravan.SeenMouseMeters = caravan.Field("seenMouseMeters").AsNumber(-1, double.MaxValue);
+                state.Caravan.Traveled = caravan.Field("traveled").AsNumber(0, double.MaxValue);
+                state.Caravan.Next = caravan.Field("next").AsInt(0, 1000);
+                state.Caravan.Laps = caravan.Field("laps").AsInt(0, int.MaxValue);
+                state.Caravan.Waiting = caravan.Field("waiting").AsInt(0, CaravanSystem.MaxWaiting);
+                state.Caravan.Arrivals = caravan.Field("arrivals").AsLong(0);
+                state.Caravan.LastStop = ReadOptionalText(caravan, "lastStop");
+            }
             if (node.HasField("fair"))
             {
                 state.Fair.SentHarvests = node.Field("fair").Field("sentHarvests").AsLong(0);

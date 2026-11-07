@@ -37,7 +37,7 @@ namespace Game.Core.Tests.Sim
             Assert.Throws<ContentException>(() => TalentRules.Load(json.Replace("\"class\": \"golemancer\"", "\"class\": \"herbwitch\"")));
             Assert.Throws<ContentException>(() => TalentRules.Load(json.Replace("{ \"perk\": \"shorterTrips\", \"value\": 0.2 }", "{ \"perk\": \"shorterTrips\", \"value\": 0.9 }")));
             Assert.Throws<ContentException>(() => TalentRules.Load(json.Replace("{ \"perk\": \"shorterTrips\", \"value\": 0.2 }", "{ \"perk\": \"fasterHorses\", \"value\": 0.2 }")));
-            Assert.Throws<ContentException>(() => TalentRules.Load(json.Replace("\"waits\": \"17.18\"", "\"waits\": \"17.18\", \"perks\": [{ \"perk\": \"growFaster\", \"value\": 0.1 }]")));
+            Assert.Throws<ContentException>(() => TalentRules.Load(json.Replace("\"perks\": [{ \"perk\": \"longerRoad\", \"value\": 0.5 }]", "\"waits\": \"17.18\", \"perks\": [{ \"perk\": \"longerRoad\", \"value\": 0.5 }]")));
         }
 
         [Test]
@@ -66,17 +66,13 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TalentsThatWaitForAMechanicSayWhatTheyWaitFor()
+        public void EveryTalentWorksAndTheSandwalkerTakesTheLongRoad()
         {
             var loop = LoopAs(HeroClass.Sandwalker);
-            Assert.That(loop.Talents.Current!.Works, Is.False);
-            Assert.That(TalentView.Status(loop.Talents.Current!), Is.EqualTo("Заработает вместе с караваном"));
+            Assert.That(loop.Talents.Current!.Works, Is.True);
+            Assert.That(loop.State.Perk(MuseumPerk.LongerRoad), Is.EqualTo(0.5).Within(1e-9));
             foreach (var pair in HeroClassNames.ByName)
-            {
-                var talent = TestWorld.Real.Talents.Of(pair.Value)!;
-                if (!talent.Works)
-                    Assert.That(Texts.Get("talent.waits." + talent.Waits), Does.Not.StartWith("talent."), pair.Key);
-            }
+                Assert.That(TestWorld.Real.Talents.Of(pair.Value)!.Works, Is.True, pair.Key);
         }
 
         [Test]

@@ -64,6 +64,7 @@ namespace Game.Core.Sim
         private readonly ApprenticeSystem _apprentices;
         private readonly CampModuleSystem _modules;
         private readonly DigSystem _digs;
+        private readonly CaravanSystem _caravan;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -170,6 +171,7 @@ namespace Game.Core.Sim
             _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
             _fishing = new FishingSystem(data.Fishing, state, _camp, _peaceful, _expeditions, Events);
             _digs = new DigSystem(data.Digs, state, _camp, _peaceful, Events);
+            _caravan = new CaravanSystem(data.Caravan, state, _camp, _expeditions);
             _town = new TownSystem(data.Town, state, _camp, _alchemy, _expeditions, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
@@ -267,6 +269,7 @@ namespace Game.Core.Sim
         public ApprenticeSystem Apprentices => _apprentices;
         public CampModuleSystem Modules => _modules;
         public DigSystem Digs => _digs;
+        public CaravanSystem Caravan => _caravan;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -684,6 +687,7 @@ namespace Game.Core.Sim
             _garden.Advance(result.AwaySeconds);
             _expeditions.Advance(result.AwaySeconds);
             _apprentices.AdvanceOffline(result.AwaySeconds);
+            _caravan.Collect();
             _stage.EnsureEnemy();
         }
 
@@ -912,6 +916,7 @@ namespace Game.Core.Sim
             _town.UseRules(data.Town);
             _fishing.UseRules(data.Fishing);
             _digs.UseRules(data.Digs);
+            _caravan.UseRules(data.Caravan);
             _cooking.UseRules(data.Cooking);
             _forge.UseRules(data.Forge);
             _museum.UseRules(data.Museum);
@@ -984,6 +989,7 @@ namespace Game.Core.Sim
             _expeditions.Tick();
             _fishing.Tick();
             _digs.Tick();
+            _caravan.Tick();
             _cooking.Tick();
             _forge.Tick();
             _museum.Tick();
@@ -1050,6 +1056,7 @@ namespace Game.Core.Sim
         {
             _castRequests = 0;
             _apprentices.Collect();
+            _caravan.Collect();
             _quests.Tick(firstEvent);
             _seasonal.Tick(firstEvent);
             _seasonPass.Tick();

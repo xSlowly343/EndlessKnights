@@ -115,6 +115,7 @@ namespace Game.Core.Sim
         public FishingState Fishing { get; } = new FishingState();
         public DigState Digs { get; } = new DigState();
         public FairState Fair { get; } = new FairState();
+        public CaravanState Caravan { get; } = new CaravanState();
         public CookingState Cooking { get; } = new CookingState();
         public ForgeState Forge { get; } = new ForgeState();
         public MuseumState Museum { get; } = new MuseumState();
