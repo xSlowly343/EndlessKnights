@@ -102,6 +102,8 @@ namespace Game.Core.Sim
             if (recipe == null || State.Stirs < recipe.Stirs)
                 return;
             State.Potions.Add(State.Brewing);
+            if (_state.Rng.NextDouble() < _state.Perk(MuseumPerk.DoublePotion))
+                State.Potions.Add(new Potion { Recipe = State.Brewing.Recipe, Fine = State.Brewing.Fine, Unknown = State.Brewing.Unknown });
             State.Brewing = null;
             State.Stirs = 0;
             _events.Add(GameEvent.ForStage(GameEventKind.PotionBrewed, _state.Tick, IndexOf(recipe.Id)));

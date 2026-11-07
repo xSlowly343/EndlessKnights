@@ -14,5 +14,6 @@ namespace Game.Core.Sim
         public List<TownOrder> Orders { get; } = new List<TownOrder>();
         public Dictionary<string, long> Reputation { get; } = new Dictionary<string, long>(System.StringComparer.Ordinal);
         public long Done { get; set; }
+        public long RedrawDay { get; set; } = -1;
     }
 }

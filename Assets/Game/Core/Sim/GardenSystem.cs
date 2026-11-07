@@ -69,7 +69,7 @@ namespace Game.Core.Sim
             var plant = _rules.Plant(target.Plant);
             if (plant != null)
             {
-                _camp.Add(plant.Herb, plant.Yield);
+                _camp.Add(plant.Herb, plant.Yield + (int)_state.Perk(MuseumPerk.ExtraHerb));
                 State.Album.Add(plant.Id);
                 if (!plant.Starter && _state.Rng.NextDouble() < _rules.SeedBackChance + _state.Perk(MuseumPerk.SeedBack))
                     _camp.Add(plant.Seed, 1);

@@ -683,7 +683,7 @@ namespace Game.Core.Save
             var reputation = new JsonValue[guilds.Count];
             for (var i = 0; i < reputation.Length; i++)
                 reputation[i] = Object(("guild", JsonValue.Of(guilds[i])), ("value", JsonValue.Of(town.Reputation[guilds[i]])));
-            return Object(("day", JsonValue.Of(town.Day)), ("orders", JsonValue.Array(orders)), ("reputation", JsonValue.Array(reputation)), ("done", JsonValue.Of(town.Done)));
+            return Object(("day", JsonValue.Of(town.Day)), ("orders", JsonValue.Array(orders)), ("reputation", JsonValue.Array(reputation)), ("done", JsonValue.Of(town.Done)), ("redrawDay", JsonValue.Of(town.RedrawDay)));
         }
 
         private static void ReadTown(ContentNode node, TownState town)
@@ -694,6 +694,7 @@ namespace Game.Core.Save
             foreach (var item in node.Field("reputation").Items())
                 town.Reputation[item.Field("guild").AsString()] = item.Field("value").AsLong(0);
             town.Done = node.Field("done").AsLong(0);
+            town.RedrawDay = node.HasField("redrawDay") ? node.Field("redrawDay").AsLong(-1) : -1;
         }
 
         private static JsonValue WriteDecor(DecorState decor)

@@ -9,7 +9,8 @@ namespace Game.Core.Sim
         NoOrder,
         NotEnough,
         NotGiftable,
-        BadAmount
+        BadAmount,
+        NoRedraw
     }
 
     public sealed class TownSystem
@@ -47,6 +48,23 @@ namespace Game.Core.Sim
             var fresh = (int)System.Math.Min(_rules.OrdersKept, days * _rules.OrdersPerDay);
             for (var i = 0; i < fresh && State.Orders.Count < _rules.OrdersKept; i++)
                 Issue();
+        }
+
+        public bool CanRedraw => _state.Perk(MuseumPerk.FreeRedraw) > 0 && State.RedrawDay != State.Day;
+
+        public TownResult Redraw(int index)
+        {
+            if (index < 0 || index >= State.Orders.Count)
+                return TownResult.NoOrder;
+            if (!CanRedraw)
+                return TownResult.NoRedraw;
+            var before = State.Orders.Count;
+            Issue();
+            if (State.Orders.Count == before)
+                return TownResult.NoOrder;
+            State.Orders.RemoveAt(index);
+            State.RedrawDay = State.Day;
+            return TownResult.Done;
         }
 
         public bool Available(TownRequest request)

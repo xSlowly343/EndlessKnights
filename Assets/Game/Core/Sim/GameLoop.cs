@@ -58,6 +58,7 @@ namespace Game.Core.Sim
         private readonly TournamentSystem _tournament;
         private readonly ClanCampSystem _clanCamp;
         private readonly GuildSystem _guilds;
+        private readonly TalentSystem _talents;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -145,6 +146,7 @@ namespace Game.Core.Sim
             _dungeons = new DungeonSystem(data, state, hero, _stage, _drops, Events) { Unlocks = _unlocks };
             _seasonal = new EventSystem(data, state, _stage, Events);
             _peaceful = new PeacefulSystem(data.Peaceful, state, Events);
+            _talents = new TalentSystem(data.Talents, state);
             _camp = new CampSystem(data.Camp, state, Events);
             _clanCamp = new ClanCampSystem(data.ClanCamp, state, hero, _camp);
             _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden);
@@ -249,6 +251,7 @@ namespace Game.Core.Sim
         public TournamentSystem Tournament => _tournament;
         public ClanCampSystem ClanCamp => _clanCamp;
         public GuildSystem Guilds => _guilds;
+        public TalentSystem Talents => _talents;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -867,6 +870,7 @@ namespace Game.Core.Sim
             _tournament.UseRules(data.Tournaments);
             _clanCamp.UseRules(data.ClanCamp);
             _guilds.UseRules(data.Guilds);
+            _talents.UseRules(data.Talents);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);
@@ -951,6 +955,7 @@ namespace Game.Core.Sim
             State.TotalInput.Add(LastInput, MetersPerPixel);
             SessionInput.PlaySeconds += TickSeconds;
             State.TotalInput.PlaySeconds += TickSeconds;
+            _talents.Tick();
             _peaceful.Tick(LastInput, MetersPerPixel);
             _camp.Tick();
             _garden.Tick();
