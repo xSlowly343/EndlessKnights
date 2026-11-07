@@ -4195,7 +4195,38 @@
           "Fire Warden",
           "Dog of Thirty Fields"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Нюх на траву",
+            "en": "Herb Nose"
+          },
+          "kind": "herbs",
+          "value": 1.1
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Сторож",
+            "en": "Watchman"
+          },
+          "kind": "homePerk",
+          "value": 0.05,
+          "perk": "seedBack"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Пёс Тридцати Полей",
+            "en": "Dog of Thirty Fields"
+          },
+          "kind": "biomeShorter",
+          "value": 0.1,
+          "biome": "green_hills"
+        }
+      ]
     },
     {
       "id": "camp_crow",
@@ -4220,7 +4251,37 @@
           "Treasure Crow",
           "Sphinx Crow"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Блестяшка",
+            "en": "Shiny"
+          },
+          "kind": "shards",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Тайник",
+            "en": "Stash"
+          },
+          "kind": "dailyItem",
+          "value": 10.0,
+          "item": "shards"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Ворона Сфинкса",
+            "en": "Sphinx Crow"
+          },
+          "kind": "choice",
+          "value": 0.1
+        }
+      ]
     },
     {
       "id": "pet_owl",
@@ -4246,7 +4307,36 @@
           "Watch Owl",
           "Cloudspire Owl"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Тихий полёт",
+            "en": "Silent Flight"
+          },
+          "kind": "rareNight",
+          "value": 1.1
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Совиный глаз",
+            "en": "Owl Eye"
+          },
+          "kind": "rare",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Сова Полуночи",
+            "en": "Midnight Owl"
+          },
+          "kind": "letterEarlier",
+          "value": 0.05
+        }
+      ]
     },
     {
       "id": "pet_fox",
@@ -4272,7 +4362,38 @@
           "Arctic Fox",
           "Fox of White Silence"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Хитрый след",
+            "en": "Sly Trail"
+          },
+          "kind": "choice",
+          "value": 0.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Лисья нора",
+            "en": "Fox Den"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "bottleChance"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Лис Белой Тропы",
+            "en": "Fox of the White Trail"
+          },
+          "kind": "biomeShorter",
+          "value": 0.1,
+          "biome": "ice_peak"
+        }
+      ]
     },
     {
       "id": "pet_firefly",
@@ -4298,7 +4419,36 @@
           "Glowbug",
           "Star Swarm"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Огонёк в траве",
+            "en": "Glow in the Grass"
+          },
+          "kind": "herbs",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Ночник",
+            "en": "Nightlight"
+          },
+          "kind": "rareNight",
+          "value": 1.1
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Светлячок Рощи",
+            "en": "Grove Firefly"
+          },
+          "kind": "letterEarlier",
+          "value": 0.05
+        }
+      ]
     },
     {
       "id": "pet_golem",
@@ -4324,7 +4474,38 @@
           "Golem",
           "Forge Golem"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Крепкая спина",
+            "en": "Strong Back"
+          },
+          "kind": "extraItems",
+          "value": 1.0
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Каменный бок",
+            "en": "Stone Side"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "fewerHammers"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Голем Горна",
+            "en": "Forge Golem"
+          },
+          "kind": "biomeShorter",
+          "value": 0.1,
+          "biome": "volcanic_forge"
+        }
+      ]
     },
     {
       "id": "pass1_companion",
@@ -4350,7 +4531,37 @@
           "Fire Lizard",
           "Smith's Child"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Жар",
+            "en": "Heat"
+          },
+          "kind": "shards",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Закалка",
+            "en": "Tempering"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "temperStep"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Саламандра Лавы",
+            "en": "Lava Salamander"
+          },
+          "kind": "rare",
+          "value": 1.1
+        }
+      ]
     },
     {
       "id": "pumpkin_companion",
@@ -4376,7 +4587,37 @@
           "Pumpkinhead",
           "Little Scarecrow"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Семечки",
+            "en": "Seeds"
+          },
+          "kind": "herbs",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Тыквенная грядка",
+            "en": "Pumpkin Patch"
+          },
+          "kind": "homePerk",
+          "value": 0.05,
+          "perk": "growFaster"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Тыква Урожая",
+            "en": "Harvest Pumpkin"
+          },
+          "kind": "extraItems",
+          "value": 1.0
+        }
+      ]
     },
     {
       "id": "longnight_companion",
@@ -4402,7 +4643,38 @@
           "Snowman",
           "Snow Grandfather"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Снежок",
+            "en": "Snowball"
+          },
+          "kind": "fish",
+          "value": 1.0
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Тёплый шарф",
+            "en": "Warm Scarf"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "slowerCooling"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Снеговик Долгой Ночи",
+            "en": "Long Night Snowman"
+          },
+          "kind": "biomeShorter",
+          "value": 0.1,
+          "biome": "ice_peak"
+        }
+      ]
     },
     {
       "id": "flood_companion",
@@ -4428,7 +4700,37 @@
           "Froglet",
           "Oasis Toad"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Лужица",
+            "en": "Puddle"
+          },
+          "kind": "fish",
+          "value": 1.0
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Кваканье",
+            "en": "Croaking"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "biteFaster"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Лягушка Разлива",
+            "en": "Flood Frog"
+          },
+          "kind": "fish",
+          "value": 1.0
+        }
+      ]
     },
     {
       "id": "solstice_companion",
@@ -4454,7 +4756,37 @@
           "Flicker",
           "Sun Spirit"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Лучик",
+            "en": "Sunbeam"
+          },
+          "kind": "experience",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Тёплый свет",
+            "en": "Warm Light"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "growFaster"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Огонёк Солнцестояния",
+            "en": "Solstice Spark"
+          },
+          "kind": "allExperience",
+          "value": 0.02
+        }
+      ]
     },
     {
       "id": "egg_boarlet",
@@ -4480,7 +4812,37 @@
           "Young Boar",
           "Underside Boar"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Пятачок",
+            "en": "Snout"
+          },
+          "kind": "herbs",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Корешки",
+            "en": "Roots"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "extraHerb"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Кабан Холмов",
+            "en": "Hill Boar"
+          },
+          "kind": "extraItems",
+          "value": 1.0
+        }
+      ]
     },
     {
       "id": "egg_scarab",
@@ -4506,7 +4868,37 @@
           "Scarab",
           "Sun Beetle"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Панцирь",
+            "en": "Shell"
+          },
+          "kind": "shards",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Подкоп",
+            "en": "Tunnel"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "lighterBrush"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Скарабей Солнца",
+            "en": "Sun Scarab"
+          },
+          "kind": "bone",
+          "value": 0.02
+        }
+      ]
     },
     {
       "id": "egg_mammoth",
@@ -4532,7 +4924,38 @@
           "Woolly",
           "Peak Mammoth"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Бивни",
+            "en": "Tusks"
+          },
+          "kind": "herbs",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Мохнатый бок",
+            "en": "Shaggy Side"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "slowerCooling"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Мамонт Пика",
+            "en": "Peak Mammoth"
+          },
+          "kind": "biomeShorter",
+          "value": 0.1,
+          "biome": "ice_peak"
+        }
+      ]
     },
     {
       "id": "egg_wormlet",
@@ -4558,7 +4981,37 @@
           "Lava Worm",
           "Furnace Worm"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Уголёк",
+            "en": "Ember"
+          },
+          "kind": "shards",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Жаркий ход",
+            "en": "Hot Burrow"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "moreOre"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Червь Горна",
+            "en": "Forge Worm"
+          },
+          "kind": "bone",
+          "value": 0.02
+        }
+      ]
     },
     {
       "id": "egg_griffin",
@@ -4584,7 +5037,37 @@
           "Griffin",
           "Island Griffin"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Перо",
+            "en": "Feather"
+          },
+          "kind": "biomeShorter",
+          "value": 0.05,
+          "biome": "sky_islands"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Гнездо",
+            "en": "Nest"
+          },
+          "kind": "hatch",
+          "value": 0.03
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Грифон Облаков",
+            "en": "Cloud Griffin"
+          },
+          "kind": "items",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "museum_mole",
@@ -4610,7 +5093,37 @@
           "Digger Mole",
           "Deep Mole"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Лапки-лопатки",
+            "en": "Spade Paws"
+          },
+          "kind": "bone",
+          "value": 0.02
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Музейная пыль",
+            "en": "Museum Dust"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "lighterBrush"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Крот Глубин",
+            "en": "Deep Mole"
+          },
+          "kind": "shards",
+          "value": 1.1
+        }
+      ]
     },
     {
       "id": "heart_fold",
@@ -4636,7 +5149,36 @@
           "Wrinkle",
           "Devourer's Shadow"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Складка",
+            "en": "Fold"
+          },
+          "kind": "loot",
+          "value": 1.03
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Шов Изнанки",
+            "en": "Underside Seam"
+          },
+          "kind": "souls",
+          "value": 0.03
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Складка Сердца",
+            "en": "Fold of the Heart"
+          },
+          "kind": "loot",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "hills_piglet",
@@ -4667,7 +5209,37 @@
           "Rooting Boar",
           "Hill Boar"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Рыльце",
+            "en": "Little Snout"
+          },
+          "kind": "extraItems",
+          "value": 1.0
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Лужа",
+            "en": "Wallow"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "growFaster"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Свинка Матери",
+            "en": "Mother's Piglet"
+          },
+          "kind": "herbs",
+          "value": 1.1
+        }
+      ]
     },
     {
       "id": "jackal_pup",
@@ -4698,7 +5270,37 @@
           "Jackal Clerk",
           "Jackal Treasurer"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Нюх на монеты",
+            "en": "Coin Nose"
+          },
+          "kind": "shards",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Казначей",
+            "en": "Treasurer"
+          },
+          "kind": "dailyItem",
+          "value": 15.0,
+          "item": "shards"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Шакал Казны",
+            "en": "Treasury Jackal"
+          },
+          "kind": "rare",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "walrus_pup",
@@ -4729,7 +5331,37 @@
           "Diving Walrus",
           "Ice Walrus"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Ласты",
+            "en": "Flippers"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "biteFaster"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Мамина песня",
+            "en": "Mother's Song"
+          },
+          "kind": "bond",
+          "value": 0.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Морж Гавани",
+            "en": "Harbour Walrus"
+          },
+          "kind": "fish",
+          "value": 1.0
+        }
+      ]
     },
     {
       "id": "little_cauldron",
@@ -4760,7 +5392,39 @@
           "Bubbling Pot",
           "Little Crucible"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Помешивание",
+            "en": "Stirring"
+          },
+          "kind": "homePerk",
+          "value": 0.05,
+          "perk": "stirFaster"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Пенка",
+            "en": "Froth"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "doublePotion"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Тигель",
+            "en": "Crucible"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "finePotion"
+        }
+      ]
     },
     {
       "id": "cloud_ray",
@@ -4791,7 +5455,37 @@
           "Sail Ray",
           "Cloudmother's Ray"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Плавник ветра",
+            "en": "Wind Fin"
+          },
+          "kind": "biomeShorter",
+          "value": 0.05,
+          "biome": "sky_islands"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Парение",
+            "en": "Soaring"
+          },
+          "kind": "longer",
+          "value": -0.03
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Скат Облачной Матери",
+            "en": "Cloud Mother's Ray"
+          },
+          "kind": "items",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "post_griffin",
@@ -4822,7 +5516,36 @@
           "Mail Griffin",
           "Storm Griffin"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Конверт",
+            "en": "Envelope"
+          },
+          "kind": "letterEarlier",
+          "value": 0.1
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Посылка",
+            "en": "Parcel"
+          },
+          "kind": "choice",
+          "value": 0.1
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Почтамт",
+            "en": "Post Office"
+          },
+          "kind": "bond",
+          "value": 0.05
+        }
+      ]
     },
     {
       "id": "little_crown",
@@ -4853,7 +5576,37 @@
           "Giving Crown",
           "Boar King's Crown"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Корона набекрень",
+            "en": "Crooked Crown"
+          },
+          "kind": "shards",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Дар короля",
+            "en": "King's Gift"
+          },
+          "kind": "dailyItem",
+          "value": 1.0,
+          "item": "ingots"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Корона Холмов",
+            "en": "Crown of the Hills"
+          },
+          "kind": "loot",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "market_hedgehog",
@@ -4884,7 +5637,37 @@
           "Basket Hedgehog",
           "Green Market Hedgehog"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Иголки",
+            "en": "Needles"
+          },
+          "kind": "herbs",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Торг",
+            "en": "Haggling"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "growFaster"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Ёж Рынка",
+            "en": "Market Hedgehog"
+          },
+          "kind": "extraItems",
+          "value": 1.0
+        }
+      ]
     },
     {
       "id": "harbour_cat",
@@ -4915,7 +5698,38 @@
           "Pier Cat",
           "Ice Harbour Cat"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Усы",
+            "en": "Whiskers"
+          },
+          "kind": "fish",
+          "value": 1.0
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Мурлыка",
+            "en": "Purring"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "bottleChance"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Кот Гавани",
+            "en": "Harbour Cat"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "biteFaster"
+        }
+      ]
     },
     {
       "id": "forge_cricket",
@@ -4946,7 +5760,38 @@
           "Anvil Cricket",
           "Smiths' Row Cricket"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Стрекот",
+            "en": "Chirr"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "temperStep"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Ритм молота",
+            "en": "Hammer Beat"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "fewerHammers"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Сверчок Кузни",
+            "en": "Smithy Cricket"
+          },
+          "kind": "shards",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "banner_pup",
@@ -4976,7 +5821,36 @@
           "Clan Banner",
           "Clan Standard"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Флажок",
+            "en": "Little Flag"
+          },
+          "kind": "shards",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Знамя",
+            "en": "Banner"
+          },
+          "kind": "experience",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Пёс Знамени",
+            "en": "Banner Hound"
+          },
+          "kind": "allExperience",
+          "value": 0.02
+        }
+      ]
     },
     {
       "id": "party_pup",
@@ -5006,7 +5880,36 @@
           "Hideout Dog",
           "Hideout Keeper"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Свой",
+            "en": "One of Us"
+          },
+          "kind": "bond",
+          "value": 0.03
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Сторож отряда",
+            "en": "Party Guard"
+          },
+          "kind": "extraItems",
+          "value": 1.0
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Пёс Отряда",
+            "en": "Party Hound"
+          },
+          "kind": "experience",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "echo_critter",
@@ -5036,7 +5939,36 @@
           "Ringing Beast",
           "Beast of Echo"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Отзвук",
+            "en": "Echo"
+          },
+          "kind": "experience",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Повтор",
+            "en": "Repeat"
+          },
+          "kind": "letterEarlier",
+          "value": 0.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Зверь Эха",
+            "en": "Echo Beast"
+          },
+          "kind": "allExperience",
+          "value": 0.02
+        }
+      ]
     },
     {
       "id": "chronicler",
@@ -5066,7 +5998,36 @@
           "Annalist",
           "Keeper of Annals"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Перо летописи",
+            "en": "Chronicle Quill"
+          },
+          "kind": "experience",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Свиток",
+            "en": "Scroll"
+          },
+          "kind": "choice",
+          "value": 0.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Летописец Веков",
+            "en": "Chronicler of Ages"
+          },
+          "kind": "allExperience",
+          "value": 0.03
+        }
+      ]
     },
     {
       "id": "double",
@@ -5095,7 +6056,36 @@
           "Mirror Beast",
           "Underside Double"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Отражение",
+            "en": "Reflection"
+          },
+          "kind": "loot",
+          "value": 1.03
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Зеркало",
+            "en": "Mirror"
+          },
+          "kind": "rare",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Двойник Разлома",
+            "en": "Rift Double"
+          },
+          "kind": "loot",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "eater_cub",
@@ -5124,7 +6114,36 @@
           "Hungry Beast",
           "Lesser Eater"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Аппетит",
+            "en": "Appetite"
+          },
+          "kind": "loot",
+          "value": 1.03
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Сытость",
+            "en": "Satiety"
+          },
+          "kind": "longer",
+          "value": -0.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Пожиратель",
+            "en": "Devourer"
+          },
+          "kind": "shards",
+          "value": 1.1
+        }
+      ]
     },
     {
       "id": "rune_stoat",
@@ -5156,7 +6175,38 @@
           "Stoat of a Thousand Runes"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Резец",
+            "en": "Chisel"
+          },
+          "kind": "homePerk",
+          "value": 0.02,
+          "perk": "temperStep"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Руна пути",
+            "en": "Path Rune"
+          },
+          "kind": "biomeShorter",
+          "value": 0.05,
+          "biome": "volcanic_forge"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Горностай Рун",
+            "en": "Stoat of Runes"
+          },
+          "kind": "shards",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "fencing_crane",
@@ -5188,7 +6238,37 @@
           "Crane of the First Lunge"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Стойка",
+            "en": "Stance"
+          },
+          "kind": "firstTrip",
+          "value": 0.03
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Финт",
+            "en": "Feint"
+          },
+          "kind": "rare",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Журавль Выпада",
+            "en": "Crane of the Lunge"
+          },
+          "kind": "biomeShorter",
+          "value": 0.05,
+          "biome": "sky_islands"
+        }
+      ]
     },
     {
       "id": "wind_swift",
@@ -5220,7 +6300,37 @@
           "Swift of the High Winds"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Крыло",
+            "en": "Wing"
+          },
+          "kind": "biomeShorter",
+          "value": 0.03,
+          "biome": "sky_islands"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Вихрь",
+            "en": "Whirl"
+          },
+          "kind": "items",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Стриж Ветров",
+            "en": "Swift of Winds"
+          },
+          "kind": "longer",
+          "value": -0.03
+        }
+      ]
     },
     {
       "id": "crystal_hedgehog",
@@ -5252,7 +6362,37 @@
           "Hedgehog of Singing Facets"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Иголки-кристаллы",
+            "en": "Crystal Quills"
+          },
+          "kind": "shards",
+          "value": 1.03
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Друза",
+            "en": "Druse"
+          },
+          "kind": "dailyItem",
+          "value": 10.0,
+          "item": "shards"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Ёж Граней",
+            "en": "Hedgehog of Facets"
+          },
+          "kind": "rare",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "sand_jerboa",
@@ -5284,7 +6424,37 @@
           "Jerboa of the Hourglass"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Прыжок",
+            "en": "Hop"
+          },
+          "kind": "biomeShorter",
+          "value": 0.05,
+          "biome": "sand_ruins"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Тёплый песок",
+            "en": "Warm Sand"
+          },
+          "kind": "hatch",
+          "value": 0.03
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Тушканчик Часов",
+            "en": "Jerboa of the Hours"
+          },
+          "kind": "shards",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "singing_cricket",
@@ -5316,7 +6486,36 @@
           "Cricket of Evening Songs"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Трель",
+            "en": "Trill"
+          },
+          "kind": "bond",
+          "value": 0.03
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Вечерняя песня",
+            "en": "Evening Song"
+          },
+          "kind": "experience",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Сверчок Песен",
+            "en": "Cricket of Songs"
+          },
+          "kind": "allExperience",
+          "value": 0.02
+        }
+      ]
     },
     {
       "id": "dream_dormouse",
@@ -5348,7 +6547,36 @@
           "Dormouse of Long Dreams"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Дрёма",
+            "en": "Doze"
+          },
+          "kind": "loot",
+          "value": 1.02
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Сладкий сон",
+            "en": "Sweet Sleep"
+          },
+          "kind": "experience",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Соня Снов",
+            "en": "Dormouse of Dreams"
+          },
+          "kind": "rare",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "lantern_moth",
@@ -5380,7 +6608,36 @@
           "Moth of Unfading Light"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Фитилёк",
+            "en": "Wick"
+          },
+          "kind": "rareNight",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Свеча",
+            "en": "Candle"
+          },
+          "kind": "letterEarlier",
+          "value": 0.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Мотылёк Света",
+            "en": "Moth of Light"
+          },
+          "kind": "rare",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "rag_puppy",
@@ -5412,7 +6669,36 @@
           "Dog of Quiet Threads"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Заплатка",
+            "en": "Patch"
+          },
+          "kind": "traitPrice",
+          "value": 0.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Лоскут",
+            "en": "Scrap"
+          },
+          "kind": "bond",
+          "value": 0.03
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Пёс Ниток",
+            "en": "Thread Hound"
+          },
+          "kind": "extraItems",
+          "value": 1.0
+        }
+      ]
     },
     {
       "id": "clockwork_mouse",
@@ -5444,7 +6730,36 @@
           "Mouse of the Endless Spring"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Шестерёнка",
+            "en": "Cog"
+          },
+          "kind": "longer",
+          "value": -0.03
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Пружина",
+            "en": "Spring"
+          },
+          "kind": "rewind",
+          "value": 0.5
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Мышь Завода",
+            "en": "Clockwork Master"
+          },
+          "kind": "items",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "flask_slime",
@@ -5476,7 +6791,39 @@
           "Slime of the Great Flask"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Капля",
+            "en": "Drop"
+          },
+          "kind": "homePerk",
+          "value": 0.02,
+          "perk": "slowerPressure"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Осадок",
+            "en": "Residue"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "ingredientBack"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Слизень Колбы",
+            "en": "Flask Slime"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "finePotion"
+        }
+      ]
     },
     {
       "id": "dowsing_rat",
@@ -5508,7 +6855,37 @@
           "Rat of the Deep Veins"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Ус-лоза",
+            "en": "Rod Whisker"
+          },
+          "kind": "bone",
+          "value": 0.02
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Жила",
+            "en": "Vein"
+          },
+          "kind": "homePerk",
+          "value": 0.02,
+          "perk": "lighterBrush"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Крыса Жил",
+            "en": "Rat of Veins"
+          },
+          "kind": "shards",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "spirit_firefly",
@@ -5540,7 +6917,36 @@
           "Firefly of a Thousand Lights"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Искорка",
+            "en": "Spark"
+          },
+          "kind": "souls",
+          "value": 0.03
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Тропа душ",
+            "en": "Soul Path"
+          },
+          "kind": "letterEarlier",
+          "value": 0.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Светлячок Душ",
+            "en": "Firefly of Souls"
+          },
+          "kind": "rare",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "ship_parrot",
@@ -5572,7 +6978,36 @@
           "Parrot of the Ghost Fleet"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Подзорная труба",
+            "en": "Spyglass"
+          },
+          "kind": "choice",
+          "value": 0.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Карта",
+            "en": "Map"
+          },
+          "kind": "items",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Попугай Флота",
+            "en": "Fleet Parrot"
+          },
+          "kind": "fish",
+          "value": 1.0
+        }
+      ]
     },
     {
       "id": "moon_moth",
@@ -5604,7 +7039,38 @@
           "Moth of the Full Moon"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Пыльца",
+            "en": "Pollen"
+          },
+          "kind": "homePerk",
+          "value": 0.02,
+          "perk": "mutationChance"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Лунная грядка",
+            "en": "Moon Bed"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "growFaster"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Моль Луны",
+            "en": "Moth of the Moon"
+          },
+          "kind": "rareNight",
+          "value": 1.1
+        }
+      ]
     },
     {
       "id": "card_fox",
@@ -5636,7 +7102,36 @@
           "Fox of the Last Card"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Колода",
+            "en": "Deck"
+          },
+          "kind": "choice",
+          "value": 0.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Козырь",
+            "en": "Trump"
+          },
+          "kind": "rare",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Лиса Карт",
+            "en": "Fox of Cards"
+          },
+          "kind": "loot",
+          "value": 1.03
+        }
+      ]
     },
     {
       "id": "moss_turtle",
@@ -5668,7 +7163,37 @@
           "Turtle of the Ancient Moss"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Мшистый панцирь",
+            "en": "Mossy Shell"
+          },
+          "kind": "herbs",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Тихий сад",
+            "en": "Quiet Garden"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "extraHerb"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Черепаха Мха",
+            "en": "Turtle of Moss"
+          },
+          "kind": "herbs",
+          "value": 1.1
+        }
+      ]
     },
     {
       "id": "clay_pigeon",
@@ -5700,7 +7225,37 @@
           "Pigeon of Living Clay"
         ]
       },
-      "shopPrice": 300
+      "shopPrice": 300,
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Глина",
+            "en": "Clay"
+          },
+          "kind": "gearPrice",
+          "value": 0.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Обжиг",
+            "en": "Firing"
+          },
+          "kind": "homePerk",
+          "value": 0.02,
+          "perk": "fewerHammers"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Голубь Глины",
+            "en": "Pigeon of Clay"
+          },
+          "kind": "shards",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "crooked_boarlet",
@@ -5731,7 +7286,36 @@
           "Underside Boar",
           "Boar of the Crooked Fields"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Кривой пятак",
+            "en": "Crooked Snout"
+          },
+          "kind": "herbs",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Перекос",
+            "en": "Skew"
+          },
+          "kind": "souls",
+          "value": 0.03
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Кабан Изнанки",
+            "en": "Underside Boar"
+          },
+          "kind": "extraItems",
+          "value": 1.0
+        }
+      ]
     },
     {
       "id": "upturned_sphinxling",
@@ -5762,7 +7346,36 @@
           "Underside Sphinx",
           "Sphinx of Reverse Riddles"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Обратная загадка",
+            "en": "Reverse Riddle"
+          },
+          "kind": "choice",
+          "value": 0.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Перевёрнутый песок",
+            "en": "Upturned Sand"
+          },
+          "kind": "shards",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Сфинкс Изнанки",
+            "en": "Underside Sphinx"
+          },
+          "kind": "souls",
+          "value": 0.03
+        }
+      ]
     },
     {
       "id": "shadow_mammoth_calf",
@@ -5793,7 +7406,36 @@
           "Underside Mammoth",
           "Mammoth of the Black Ice"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Тень бивня",
+            "en": "Tusk Shadow"
+          },
+          "kind": "fish",
+          "value": 1.0
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Чёрный лёд",
+            "en": "Black Ice"
+          },
+          "kind": "souls",
+          "value": 0.03
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Мамонт Тени",
+            "en": "Shadow Mammoth"
+          },
+          "kind": "loot",
+          "value": 1.03
+        }
+      ]
     },
     {
       "id": "cold_grasshopper",
@@ -5824,7 +7466,37 @@
           "Underside Grasshopper",
           "Grasshopper of the Cold Forge"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Иней",
+            "en": "Frost"
+          },
+          "kind": "homePerk",
+          "value": 0.02,
+          "perk": "temperStep"
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Холодный прыжок",
+            "en": "Cold Leap"
+          },
+          "kind": "souls",
+          "value": 0.03
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Кузнечик Изнанки",
+            "en": "Underside Grasshopper"
+          },
+          "kind": "shards",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "quiet_dragonet",
@@ -5855,7 +7527,36 @@
           "Underside Dragon",
           "Dragon of the Silent Storm"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Тишина",
+            "en": "Silence"
+          },
+          "kind": "rare",
+          "value": 1.03
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Безмолвие",
+            "en": "Stillness"
+          },
+          "kind": "souls",
+          "value": 0.03
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Дракон Тишины",
+            "en": "Dragon of Silence"
+          },
+          "kind": "loot",
+          "value": 1.05
+        }
+      ]
     },
     {
       "id": "heart_crease",
@@ -5886,7 +7587,36 @@
           "Underside Crease",
           "Heart of Creases"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Морщинка",
+            "en": "Wrinkle"
+          },
+          "kind": "souls",
+          "value": 0.02
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Сгиб",
+            "en": "Bend"
+          },
+          "kind": "loot",
+          "value": 1.03
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Сердце Складок",
+            "en": "Heart of Creases"
+          },
+          "kind": "souls",
+          "value": 0.05
+        }
+      ]
     },
     {
       "id": "bloom_hare",
@@ -5915,7 +7645,37 @@
           "Primrose Hare",
           "Hare of the Endless Spring"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Ушки-лепестки",
+            "en": "Petal Ears"
+          },
+          "kind": "herbs",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Весенний луг",
+            "en": "Spring Meadow"
+          },
+          "kind": "homePerk",
+          "value": 0.03,
+          "perk": "growFaster"
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Заяц Весны",
+            "en": "Hare of Spring"
+          },
+          "kind": "extraItems",
+          "value": 1.0
+        }
+      ]
     },
     {
       "id": "star_kitten",
@@ -5944,7 +7704,36 @@
           "Cat of Falling Stars",
           "Cat of the Starry Night"
         ]
-      }
+      },
+      "branch": [
+        {
+          "stage": 1,
+          "name": {
+            "ru": "Звёздочка",
+            "en": "Little Star"
+          },
+          "kind": "rareNight",
+          "value": 1.05
+        },
+        {
+          "stage": 2,
+          "name": {
+            "ru": "Млечный путь",
+            "en": "Milky Way"
+          },
+          "kind": "experience",
+          "value": 1.05
+        },
+        {
+          "stage": 3,
+          "name": {
+            "ru": "Кот Звёзд",
+            "en": "Cat of Stars"
+          },
+          "kind": "rare",
+          "value": 1.05
+        }
+      ]
     }
   ]
 }
