@@ -61,6 +61,7 @@ namespace Game.Core.Sim
         private readonly TalentSystem _talents;
         private readonly HideoutSystem _hideout;
         private readonly CampLevelSystem _campLevels;
+        private readonly ApprenticeSystem _apprentices;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -154,6 +155,7 @@ namespace Game.Core.Sim
             _hideout = new HideoutSystem(data.Hideout, data.ClanCamp, state, _camp);
             _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden);
             _campLevels = new CampLevelSystem(data.CampLevels, state, _camp, _guilds);
+            _apprentices = new ApprenticeSystem(data.Apprentices, state, _camp, _guilds);
             _garden = new GardenSystem(data.Garden, state, _camp, _peaceful, Events);
             _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
             _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
@@ -258,6 +260,7 @@ namespace Game.Core.Sim
         public TalentSystem Talents => _talents;
         public HideoutSystem Hideout => _hideout;
         public CampLevelSystem CampLevels => _campLevels;
+        public ApprenticeSystem Apprentices => _apprentices;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -674,6 +677,7 @@ namespace Game.Core.Sim
             AddIdleSeconds(result.AwaySeconds);
             _garden.Advance(result.AwaySeconds);
             _expeditions.Advance(result.AwaySeconds);
+            _apprentices.AdvanceOffline(result.AwaySeconds);
             _stage.EnsureEnemy();
         }
 
@@ -879,6 +883,7 @@ namespace Game.Core.Sim
             _talents.UseRules(data.Talents);
             _hideout.UseRules(data.Hideout, data.ClanCamp);
             _campLevels.UseRules(data.CampLevels);
+            _apprentices.UseRules(data.Apprentices);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);
@@ -1017,6 +1022,7 @@ namespace Game.Core.Sim
             _tournament.Tick();
             _alchemy.BattleTick();
             _cooking.BattleTick();
+            _apprentices.BattleTick();
             _forge.NoteKills(firstEvent);
             _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);
@@ -1032,6 +1038,7 @@ namespace Game.Core.Sim
         private void CampTick(int firstEvent)
         {
             _castRequests = 0;
+            _apprentices.Collect();
             _quests.Tick(firstEvent);
             _seasonal.Tick(firstEvent);
             _seasonPass.Tick();

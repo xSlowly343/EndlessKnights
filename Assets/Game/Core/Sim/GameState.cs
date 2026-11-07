@@ -103,6 +103,7 @@ namespace Game.Core.Sim
         public TournamentState Tournament { get; } = new TournamentState();
         public ClanCampState ClanCamp { get; } = new ClanCampState();
         public HideoutState Hideout { get; } = new HideoutState();
+        public List<ApprenticeState> Apprentices { get; } = new List<ApprenticeState>();
         public double[] ConditionShares { get; } = new double[64];
         public EventState Events { get; } = new EventState();
         public PeacefulState Peaceful { get; } = new PeacefulState();
