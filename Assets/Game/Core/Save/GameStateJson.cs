@@ -131,7 +131,7 @@ namespace Game.Core.Save
                 ("museum", WriteMuseum(state.Museum)),
                 ("decor", WriteDecor(state.Decor)),
                 ("forge", Object(("work", JsonValue.Of(state.Forge.Work.ToString())), ("target", JsonValue.Of(state.Forge.Target.ToString())), ("slot", JsonValue.Of(state.Forge.Slot.ToString())), ("hammers", JsonValue.Of(state.Forge.Hammers)),
-                    ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)), ("salvageOre", JsonValue.Of(state.Forge.SalvageOre)), ("guestHammers", JsonValue.Of(state.Forge.GuestHammers)))),
+                    ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)), ("masterpieces", JsonValue.Of(state.Forge.Masterpieces)), ("salvageOre", JsonValue.Of(state.Forge.SalvageOre)), ("guestHammers", JsonValue.Of(state.Forge.GuestHammers)))),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
                 ("atlas", WriteIds(state.Atlas)),
@@ -388,6 +388,8 @@ namespace Game.Core.Save
                 state.Forge.Heat = forge.Field("heat").AsNumber(0, 1);
                 state.Forge.Smelted = node.Field("forge").Field("smelted").AsLong(0);
                 state.Forge.Tempered = node.Field("forge").Field("tempered").AsLong(0);
+                if (node.Field("forge").HasField("masterpieces"))
+                    state.Forge.Masterpieces = node.Field("forge").Field("masterpieces").AsLong(0);
                 state.Forge.SalvageOre = forge.HasField("salvageOre") ? forge.Field("salvageOre").AsLong(0) : 0;
                 state.Forge.GuestHammers = forge.HasField("guestHammers") ? forge.Field("guestHammers").AsInt(0) : 0;
             }
@@ -1568,7 +1570,7 @@ namespace Game.Core.Save
         }
 
         private static JsonValue WriteForge(ForgeMark forge) =>
-            forge.Empty ? JsonValue.Null() : Object(("temper", JsonValue.Of(forge.Temper)), ("hone", JsonValue.Of(forge.Hone)), ("brand", OptionalText(forge.Brand)), ("slain", WriteIdList(forge.Slain)));
+            forge.Empty ? JsonValue.Null() : Object(("temper", JsonValue.Of(forge.Temper)), ("hone", JsonValue.Of(forge.Hone)), ("brand", OptionalText(forge.Brand)), ("slain", WriteIdList(forge.Slain)), ("masters", WriteIdList(forge.Masters)));
 
         private static ForgeMark? ReadForge(ContentNode node)
         {
@@ -1578,6 +1580,11 @@ namespace Game.Core.Save
             var forge = new ForgeMark { Temper = field.Field("temper").AsNumber(0, 1), Hone = field.HasField("hone") ? field.Field("hone").AsNumber(0, 1) : 0, Brand = ReadOptionalText(field, "brand") };
             foreach (var item in field.Field("slain").Items())
                 forge.Slain.Add(item.AsString());
+            if (field.HasField("masters"))
+            {
+                foreach (var item in field.Field("masters").Items())
+                    forge.Masters.Add(item.AsString());
+            }
             return forge;
         }
 

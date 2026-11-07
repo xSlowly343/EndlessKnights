@@ -409,3 +409,31 @@ test("the storage takes peaceful goods only, limits what is taken out and keeps 
   const tomorrow = plain(server.hideoutStore(nk, "bob", "herb_knockbloom", 1, false, now + 2 * 86400000));
   assert.strictEqual(tomorrow.commons.takenToday, 1, "the limit resets the next day");
 });
+
+const craft = (nk, user, station, time) => plain(server.hideoutPresence(nk, user, true, time, null, 0, null, station));
+
+test("two at the same station of a built workshop see each other and brew for each other", () => {
+  const { nk, call } = world("ann", "bob", "cid");
+  party(call, ["ann", "bob", "cid"]);
+  const recipe = server.HideoutServerRules.recipes[0];
+  craft(nk, "ann", "cauldron", now);
+  assert.deepStrictEqual(craft(nk, "bob", "cauldron", now + 1).crafts.cauldron, [], "nothing to share before the cauldron is built");
+  built(nk, "ann", { shared_cauldron: 1, shared_forge: 1 });
+  const view = craft(nk, "bob", "cauldron", now + 2);
+  assert.deepStrictEqual(view.crafts.cauldron, ["ann"]);
+  assert.deepStrictEqual(craft(nk, "cid", "forge", now + 3).crafts.forge, [], "alone at the forge");
+  assert.deepStrictEqual(view.crafts.forge, []);
+  assert.throws(() => server.hideoutBrewed(nk, "cid", recipe, false, now + 4), /nobody brews with you/);
+  assert.throws(() => server.hideoutBrewed(nk, "ann", "poison", false, now + 4), /bad request/);
+  server.hideoutBrewed(nk, "ann", recipe, true, now + 4);
+  const claim = plain(call("bob", "hideoutClaimRpc"));
+  assert.strictEqual(claim.items["potion:" + recipe + ":fine"], 1, "the partner gets a potion of the same brew");
+  assert.deepStrictEqual(plain(call("ann", "hideoutClaimRpc").items), {}, "the brewer keeps their own potion");
+  assert.deepStrictEqual(plain(call("cid", "hideoutClaimRpc").items), {});
+  for (let i = 1; i < server.HideoutServerRules.brewsPerDay; i++)
+    server.hideoutBrewed(nk, "ann", recipe, false, now + 4 + i);
+  assert.throws(() => server.hideoutBrewed(nk, "ann", recipe, false, now + 100), /daily brew limit/);
+  const left = plain(server.hideoutPresence(nk, "bob", true, now + 200));
+  assert.deepStrictEqual(left.crafts.cauldron, [], "a mark without a station leaves it");
+  assert.throws(() => call("bob", "hideoutPresenceRpc", { here: true, craft: "anvil" }), /bad request/);
+});

@@ -118,6 +118,8 @@ namespace Game.Core.Sim
             {
                 CountActions(input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks);
                 Add(State.HideoutWork, input, metersPerPixel);
+                if (State.Activity == ForgeSystem.Activity || State.Activity == AlchemySystem.Activity)
+                    Add(Work(State.Activity), input, metersPerPixel);
                 return;
             }
             CountActions(input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks);

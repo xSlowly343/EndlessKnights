@@ -49,6 +49,13 @@ namespace Game.Core.Sim
         public long Amount { get; }
     }
 
+    public sealed class CraftStation
+    {
+        public bool Built { get; set; }
+        public List<string> Partners { get; } = new List<string>();
+        public bool Together => Built && Partners.Count > 0;
+    }
+
     public sealed class HideoutState
     {
         public int Tier { get; set; }
@@ -72,6 +79,8 @@ namespace Game.Core.Sim
         public bool HasCorner { get; set; }
         public List<HideoutCorner> Corners { get; } = new List<HideoutCorner>();
         public bool Together { get; set; }
+        public CraftStation Forge { get; } = new CraftStation();
+        public CraftStation Cauldron { get; } = new CraftStation();
         public List<SharedBed> Beds { get; } = new List<SharedBed>();
         public Dictionary<string, long> Owed { get; } = new Dictionary<string, long>(System.StringComparer.Ordinal);
         public bool StorageBuilt { get; set; }

@@ -42,7 +42,9 @@ namespace Game.Core.Sim
 
         public ForgeRules Rules => _rules;
         public ForgeState State => _state.Forge;
-        public bool Open => _camp.Open(_rules.Building);
+        public HideoutCrafts? Shared { get; set; }
+        public bool Open => _peaceful.InHideout ? _state.Hideout.Forge.Built : _camp.Open(_rules.Building);
+        public bool Together => _peaceful.InHideout && _state.Hideout.Forge.Together && Shared != null;
         public bool Busy => State.Target != ForgeTarget.None;
 
         public void UseRules(ForgeRules rules) => _rules = rules;
@@ -55,7 +57,7 @@ namespace Game.Core.Sim
 
         public int SmeltYield(ItemRarity rarity) => (int)System.Math.Round((_rules.SmeltBase + _rules.SmeltPerRarity * (int)rarity) * (1 + _state.Perk(MuseumPerk.MoreOre)));
 
-        public double HammersNeeded => System.Math.Ceiling(_rules.Hammers * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.FewerHammers)));
+        public double HammersNeeded => System.Math.Ceiling(_rules.Hammers * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.FewerHammers)) * (Together ? 1 - Shared!.HammersShare : 1));
 
         public double ZoneFrom => System.Math.Max(0, _rules.ZoneFrom - _state.Perk(MuseumPerk.WiderZone) / 2);
 
@@ -119,7 +121,7 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            if (!Busy || !_peaceful.InCamp || _peaceful.Activity != Activity)
+            if (!Busy || !_peaceful.InCamp || _peaceful.Activity != Activity || (_peaceful.InHideout && !_state.Hideout.Forge.Built))
                 return;
             var mark = TargetMark;
             if (mark == null)
@@ -208,6 +210,19 @@ namespace Game.Core.Sim
         {
             var inZone = InZone(State.Heat);
             var boost = 1 + _state.Perk(MuseumPerk.TemperStep);
+            var masterpiece = false;
+            if (Together)
+            {
+                boost *= 1 + Shared!.StepBoost;
+                masterpiece = _state.Rng.NextDouble() < Shared.MasterpieceChance;
+                if (masterpiece)
+                {
+                    boost *= Shared.MasterpieceBoost;
+                    mark.Masters.Clear();
+                    mark.Masters.AddRange(_state.Hideout.Forge.Partners);
+                    State.Masterpieces++;
+                }
+            }
             if (State.Work == ForgeWork.Hone)
                 mark.Hone = System.Math.Min(_rules.MaxHone, mark.Hone + (inZone ? _rules.HoneStepInZone : _rules.HoneStepOutside) * boost);
             else
@@ -218,6 +233,8 @@ namespace Game.Core.Sim
                 _gear.Rebuild();
             State.Tempered++;
             _events.Add(GameEvent.ForStage(GameEventKind.ItemTempered, _state.Tick, inZone ? 1 : 0));
+            if (masterpiece)
+                _events.Add(GameEvent.ForStage(GameEventKind.PartyMasterpiece, _state.Tick, 0));
             Clear();
         }
 

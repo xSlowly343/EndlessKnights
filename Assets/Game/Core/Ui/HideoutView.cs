@@ -156,6 +156,20 @@ namespace Game.Core.Ui
             return lines;
         }
 
+        public static string Crafting(HideoutSystem hideout)
+        {
+            var station = hideout.Station;
+            if (station.Length == 0)
+                return string.Empty;
+            var state = station == HideoutSystem.ForgeStation ? hideout.State.Forge : hideout.State.Cauldron;
+            if (!state.Built)
+                return Texts.Get("hideout.craft." + station + ".none");
+            return state.Together ? Texts.Format("hideout.craft." + station + ".together", string.Join(", ", state.Partners)) : Texts.Get("hideout.craft.alone");
+        }
+
+        public static string Masterpiece(Game.Core.Content.Items.ForgeMark mark) =>
+            mark.Masters.Count == 0 ? string.Empty : Texts.Format("hideout.masterpiece", string.Join(", ", mark.Masters));
+
         public static string AtTheFire(HideoutState state) =>
             state.Here.Count == 0 ? Texts.Get("hideout.fire.empty") : Texts.Format("hideout.fire", string.Join(", ", state.Here));
     }

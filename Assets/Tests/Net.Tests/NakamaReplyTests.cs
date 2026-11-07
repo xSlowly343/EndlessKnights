@@ -356,7 +356,13 @@ namespace Game.Net.Tests
             Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"here\":[]}")).MyCorner, Is.False);
 
             Assert.That(HideoutReply.PlantPayload(2, "knockbloom"), Is.EqualTo("{\"bed\":2,\"plant\":\"knockbloom\"}"));
-            Assert.That(HideoutReply.TendPayload(true, false, 0, 12.7, 3, 1.5, 60), Is.EqualTo("{\"here\":true,\"fishing\":false,\"caught\":0,\"tend\":{\"keys\":12,\"clicks\":3,\"mouseMeters\":1,\"idleSeconds\":60}}"));
+            Assert.That(HideoutReply.TendPayload(true, false, 0, 12.7, 3, 1.5, 60), Is.EqualTo("{\"here\":true,\"fishing\":false,\"caught\":0,\"tend\":{\"keys\":12,\"clicks\":3,\"mouseMeters\":1,\"idleSeconds\":60},\"craft\":null}"));
+            Assert.That(HideoutReply.TendPayload(true, false, 0, 0, 0, 0, 0, "forge"), Does.EndWith(",\"craft\":\"forge\"}"));
+            Assert.That(HideoutReply.BrewedPayload("might", true), Is.EqualTo("{\"recipe\":\"might\",\"fine\":true}"));
+            var crafts = HideoutReply.From(NakamaJson.Parse("{\"tier\":5,\"here\":[],\"crafts\":{\"forge\":[\"Bob\"],\"cauldron\":[]}}"));
+            Assert.That(crafts.ForgePartners, Is.EqualTo(new[] { "Bob" }));
+            Assert.That(crafts.CauldronPartners, Is.Empty);
+            Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"here\":[]}")).ForgePartners, Is.Empty);
             var commons = HideoutReply.From(NakamaJson.Parse("{\"tier\":3,\"here\":[],\"commons\":{\"together\":true,\"garden\":[{\"plant\":\"knockbloom\",\"share\":0.25,\"ready\":false,\"tended\":true},{\"plant\":\"\",\"share\":0,\"ready\":false,\"tended\":false}],"
                 + "\"owed\":{\"herb_knockbloom\":3},\"storage\":{\"ember_coal\":2},\"journal\":[{\"at\":1,\"name\":\"Ann\",\"item\":\"ember_coal\",\"amount\":-2}],\"takenToday\":2,\"takePerDay\":20}}"));
             Assert.That(commons.Together, Is.True);

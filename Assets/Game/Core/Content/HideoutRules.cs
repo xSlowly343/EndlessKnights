@@ -77,6 +77,31 @@ namespace Game.Core.Content
         public IReadOnlyList<HideoutCost> Levels { get; }
     }
 
+    public sealed class HideoutCrafts
+    {
+        public HideoutCrafts(string forgeBuilding, double hammersShare, double stepBoost, double masterpieceChance, double masterpieceBoost,
+            string cauldronBuilding, double stirsShare, double fineChance)
+        {
+            ForgeBuilding = forgeBuilding;
+            HammersShare = hammersShare;
+            StepBoost = stepBoost;
+            MasterpieceChance = masterpieceChance;
+            MasterpieceBoost = masterpieceBoost;
+            CauldronBuilding = cauldronBuilding;
+            StirsShare = stirsShare;
+            FineChance = fineChance;
+        }
+
+        public string ForgeBuilding { get; }
+        public double HammersShare { get; }
+        public double StepBoost { get; }
+        public double MasterpieceChance { get; }
+        public double MasterpieceBoost { get; }
+        public string CauldronBuilding { get; }
+        public double StirsShare { get; }
+        public double FineChance { get; }
+    }
+
     public sealed class HideoutRules
     {
         public const string FileName = "party_hideout.json";
@@ -86,11 +111,12 @@ namespace Game.Core.Content
 
         public const string CornerBuilding = "corner";
 
-        private HideoutRules(int presenceSeconds, int cornerDecor, int frozenDays, IReadOnlyList<HideoutTier> tiers, IReadOnlyList<HideoutBuilding> buildings, IReadOnlyList<int> levelTiers)
+        private HideoutRules(int presenceSeconds, int cornerDecor, int frozenDays, HideoutCrafts crafts, IReadOnlyList<HideoutTier> tiers, IReadOnlyList<HideoutBuilding> buildings, IReadOnlyList<int> levelTiers)
         {
             PresenceSeconds = presenceSeconds;
             CornerDecor = cornerDecor;
             FrozenDays = frozenDays;
+            Crafts = crafts;
             Tiers = tiers;
             Buildings = buildings;
             LevelTiers = levelTiers;
@@ -99,6 +125,7 @@ namespace Game.Core.Content
         public int PresenceSeconds { get; }
         public int CornerDecor { get; }
         public int FrozenDays { get; }
+        public HideoutCrafts Crafts { get; }
         public IReadOnlyList<int> LevelTiers { get; }
         public IReadOnlyList<HideoutTier> Tiers { get; }
         public IReadOnlyList<HideoutBuilding> Buildings { get; }
@@ -119,6 +146,14 @@ namespace Game.Core.Content
                     return building;
             }
             return null;
+        }
+
+        private static string Known(ContentNode node, HashSet<string> ids)
+        {
+            var id = node.AsString();
+            if (!ids.Contains(id))
+                throw node.Error($"unknown building '{id}'");
+            return id;
         }
 
         public static HideoutRules Load(string json)
@@ -194,9 +229,16 @@ namespace Game.Core.Content
                 if (tier.FireLevel > 1 && levelTiers[tier.FireLevel - 1] >= tiers.IndexOf(tier) + 1)
                     throw root.Field("levelTiers").Error($"tier '{tier.Id}' needs a fire level that only a later tier allows");
             }
+            var craftsNode = root.Field("crafts");
+            var forge = craftsNode.Field("forge");
+            var cauldron = craftsNode.Field("cauldron");
+            craftsNode.Field("brewsPerDay").AsInt(1, 100);
+            var crafts = new HideoutCrafts(Known(forge.Field("building"), ids), forge.Field("hammersShare").AsNumber(0, 0.9), forge.Field("stepBoost").AsNumber(0, 2),
+                forge.Field("masterpieceChance").AsNumber(0, 1), forge.Field("masterpieceBoost").AsNumber(1, 5),
+                Known(cauldron.Field("building"), ids), cauldron.Field("stirsShare").AsNumber(0, 0.9), cauldron.Field("fineChance").AsNumber(0, 1));
             if (!ids.Contains(CornerBuilding))
                 throw root.Field("buildings").Error($"the hideout needs the '{CornerBuilding}' building");
-            return new HideoutRules(presence, cornerDecor, frozenDays, tiers, buildings, levelTiers);
+            return new HideoutRules(presence, cornerDecor, frozenDays, crafts, tiers, buildings, levelTiers);
         }
     }
 }

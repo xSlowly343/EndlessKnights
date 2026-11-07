@@ -64,6 +64,8 @@ interface HideoutValue {
     taken: { [userId: string]: { day: number; count: number } };
     owed: { [userId: string]: { [item: string]: number } };
     fireBy: { [userId: string]: number };
+    crafting: { [userId: string]: string };
+    brews: { [userId: string]: { day: number; count: number } };
 }
 
 interface HideoutChronicle {
@@ -82,7 +84,7 @@ const HideoutMaxCornerText = 40;
 const HideoutCornerBuilding = "corner";
 
 function hideoutEmpty(): HideoutValue {
-    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {} };
+    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {}, crafting: {}, brews: {} };
 }
 
 function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutValue; version: string } {
@@ -110,6 +112,8 @@ function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutVal
     value.taken = stored.taken || {};
     value.owed = stored.owed || {};
     value.fireBy = stored.fireBy || {};
+    value.crafting = stored.crafting || {};
+    value.brews = stored.brews || {};
     return { value: value, version: objects[0].version };
 }
 
@@ -295,7 +299,8 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
         corners: cornered.map((id) => ({ userId: id, name: nameOf(id), slot: value.corners[id].slot, hero: value.corners[id].hero, path: value.corners[id].path, decor: value.corners[id].decor }))
             .sort((a, b) => a.slot - b.slot),
         cornerDecor: hideoutCornerDecor(value.tier), myCorner: !!value.corners[userId] && meta.members.indexOf(userId) >= 0,
-        commons: hideoutCommonsView(nk, value, meta.members, userId, nowUnixMs)
+        commons: hideoutCommonsView(nk, value, meta.members, userId, nowUnixMs),
+        crafts: hideoutCraftView(value, meta.members, userId, nowUnixMs, nameOf)
     };
 }
 
@@ -333,10 +338,14 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
     return hideoutView(nk, group, value, chronicle, userId, nowUnixMs);
 }
 
-function hideoutPresence(nk: nkruntime.Nakama, userId: string, here: boolean | null, nowUnixMs: number, fishing: boolean | null = null, caught: number = 0, tend: HideoutTend | null = null): { [key: string]: any } {
+function hideoutPresence(nk: nkruntime.Nakama, userId: string, here: boolean | null, nowUnixMs: number, fishing: boolean | null = null, caught: number = 0, tend: HideoutTend | null = null, craft: string | null = null): { [key: string]: any } {
     return hideoutUpdate(nk, userId, (hideout, meta) => {
         if (here === true)
             hideout.here[userId] = nowUnixMs;
+        if (here === true && craft)
+            hideout.crafting[userId] = craft;
+        else if (here !== null)
+            delete hideout.crafting[userId];
         if (here === true && tend)
             hideoutTendGarden(hideout, userId, tend, hideoutHere(hideout, meta.members, nowUnixMs).length >= 2);
         else if (here === false)
@@ -403,7 +412,7 @@ function hideoutPresenceRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk
         throw new Error("bad request");
     if (typeof caught !== "number" || caught !== Math.floor(caught) || caught < 0)
         throw new Error("bad request");
-    return JSON.stringify(hideoutPresence(nk, partyCaller(ctx), here, Date.now(), fishing, caught, hideoutReadTend(request.tend)));
+    return JSON.stringify(hideoutPresence(nk, partyCaller(ctx), here, Date.now(), fishing, caught, hideoutReadTend(request.tend), hideoutReadStation(request.craft)));
 }
 
 function hideoutQueueRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {

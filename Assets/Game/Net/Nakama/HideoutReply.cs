@@ -57,6 +57,9 @@ namespace Game.Net.Nakama
             }
             Beds = beds;
             Journal = journal;
+            var crafts = NakamaJson.Field(json, "crafts");
+            ForgePartners = crafts != null && crafts.Kind == JsonKind.Object ? CosmeticsMineView.Ids(crafts, "forge") : System.Array.Empty<string>();
+            CauldronPartners = crafts != null && crafts.Kind == JsonKind.Object ? CosmeticsMineView.Ids(crafts, "cauldron") : System.Array.Empty<string>();
             var project = NakamaJson.Field(json, "project");
             if (project != null && project.Kind == JsonKind.Object)
             {
@@ -70,6 +73,8 @@ namespace Game.Net.Nakama
         }
 
         public bool Together { get; }
+        public IReadOnlyList<string> ForgePartners { get; }
+        public IReadOnlyList<string> CauldronPartners { get; }
         public IReadOnlyList<SharedBed> Beds { get; }
         public IReadOnlyDictionary<string, long> Owed { get; } = new Dictionary<string, long>();
         public bool StorageBuilt { get; }
@@ -138,14 +143,20 @@ namespace Game.Net.Nakama
         public static string PlantPayload(int bed, string plant) =>
             NakamaJson.Object(("bed", bed.ToString(System.Globalization.CultureInfo.InvariantCulture)), ("plant", NakamaJson.Quote(plant)));
 
-        public static string TendPayload(bool here, bool fishing, int caught, double keys, double clicks, double mouseMeters, double idleSeconds) =>
+        public static string TendPayload(bool here, bool fishing, int caught, double keys, double clicks, double mouseMeters, double idleSeconds, string station = "") =>
             NakamaJson.Object(("here", here ? "true" : "false"), ("fishing", fishing ? "true" : "false"), ("caught", caught.ToString(System.Globalization.CultureInfo.InvariantCulture)),
-                ("tend", NakamaJson.Object(("keys", Whole(keys)), ("clicks", Whole(clicks)), ("mouseMeters", Whole(mouseMeters)), ("idleSeconds", Whole(idleSeconds)))));
+                ("tend", NakamaJson.Object(("keys", Whole(keys)), ("clicks", Whole(clicks)), ("mouseMeters", Whole(mouseMeters)), ("idleSeconds", Whole(idleSeconds)))),
+                ("craft", station.Length > 0 ? NakamaJson.Quote(station) : "null"));
+
+        public static string BrewedPayload(string recipe, bool fine) => NakamaJson.Object(("recipe", NakamaJson.Quote(recipe)), ("fine", fine ? "true" : "false"));
+
+        public static async Task<HideoutReply> BrewedAsync(NakamaClient client, NakamaSession session, string recipe, bool fine, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_brewed", BrewedPayload(recipe, fine), cancel).ConfigureAwait(false)));
 
         private static string Whole(double value) => System.Math.Max(0, System.Math.Floor(value)).ToString("0", System.Globalization.CultureInfo.InvariantCulture);
 
-        public static async Task<HideoutReply> TendAsync(NakamaClient client, NakamaSession session, bool here, bool fishing, int caught, double keys, double clicks, double mouseMeters, double idleSeconds, CancellationToken cancel = default) =>
-            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_presence", TendPayload(here, fishing, caught, keys, clicks, mouseMeters, idleSeconds), cancel).ConfigureAwait(false)));
+        public static async Task<HideoutReply> TendAsync(NakamaClient client, NakamaSession session, bool here, bool fishing, int caught, double keys, double clicks, double mouseMeters, double idleSeconds, string station = "", CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_presence", TendPayload(here, fishing, caught, keys, clicks, mouseMeters, idleSeconds, station), cancel).ConfigureAwait(false)));
 
         public static async Task<HideoutReply> PlantAsync(NakamaClient client, NakamaSession session, int bed, string plant, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_plant", PlantPayload(bed, plant), cancel).ConfigureAwait(false)));

@@ -7,6 +7,11 @@
   "cornerDecor": 3,
   "frozenDays": 30,
   "fire": { "signEveryMinutes": 60, "togetherBoost": 0.2 },
+  "crafts": {
+    "brewsPerDay": 6,
+    "forge": { "building": "shared_forge", "hammersShare": 0.5, "stepBoost": 0.5, "masterpieceChance": 0.1, "masterpieceBoost": 2 },
+    "cauldron": { "building": "shared_cauldron", "stirsShare": 0.5, "fineChance": 0.25 }
+  },
   "sharedGarden": {
     "bedsPerRow": 4,
     "rows": ["garden", "garden_row"],
