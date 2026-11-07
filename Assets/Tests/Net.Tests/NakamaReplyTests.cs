@@ -304,6 +304,14 @@ namespace Game.Net.Tests
             Assert.That(hideout.Bosses, Is.EqualTo(14));
             Assert.That(hideout.SitSeconds, Is.EqualTo(7300));
             Assert.That(hideout.Here, Is.EqualTo(new[] { "Ann", "Bob" }));
+            Assert.That(hideout.Fishers, Is.Empty);
+            Assert.That(hideout.FishingTogether, Is.False);
+
+            Assert.That(HideoutReply.PresencePayload(false, true, 3), Is.EqualTo("{\"here\":false,\"fishing\":true,\"caught\":3}"));
+            var fishing = HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"fishers\":[{\"userId\":\"a\",\"name\":\"Ann\"},{\"userId\":\"b\",\"name\":\"Bob\"}],\"fishingTogether\":true,\"fishTogether\":7}"));
+            Assert.That(fishing.Fishers, Is.EqualTo(new[] { "Ann", "Bob" }));
+            Assert.That(fishing.FishingTogether, Is.True);
+            Assert.That(fishing.FishTogether, Is.EqualTo(7));
 
             Assert.That(HideoutReply.QueuePayload("bonfire"), Is.EqualTo("{\"building\":\"bonfire\"}"));
             Assert.That(HideoutReply.WantPayload("garden", true), Is.EqualTo("{\"building\":\"garden\",\"on\":true}"));

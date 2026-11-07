@@ -224,5 +224,39 @@ namespace Game.Core.Tests.Sim
             var error = Assert.Throws<ContentException>(() => FishingRules.Load(json, TestWorld.Data.Camp, TestWorld.Data.Stages.Biomes))!;
             Assert.That(error.Message, Does.Contain(message));
         }
+
+        [Test]
+        public void FishingTogetherRaisesTheRareCatchAndCountsCatchesForTheServer()
+        {
+            var rules = Rules;
+            Assert.That(rules.TogetherLegendChance, Is.GreaterThan(0));
+            Assert.That(rules.TogetherBottleChance, Is.GreaterThan(0));
+
+            int Bottles(bool together)
+            {
+                var (loop, input) = Angler(7);
+                loop.Fishing.Together = together;
+                var bottles = 0;
+                for (var i = 0; i < 300; i++)
+                {
+                    WaitForBite(loop);
+                    if (loop.State.Fishing.HookedKind == FishCatchKind.Bottle)
+                        bottles++;
+                    loop.State.Fishing.Timer = 0;
+                    loop.Tick();
+                    loop.Tick();
+                }
+                return bottles;
+            }
+
+            Assert.That(Bottles(true), Is.GreaterThan(Bottles(false)));
+
+            var (angler, hands) = Angler();
+            Assert.That(angler.Fishing.Fishing, Is.True);
+            WaitForBite(angler);
+            Land(angler, hands);
+            Assert.That(angler.Fishing.TakeCaught(), Is.EqualTo(1));
+            Assert.That(angler.Fishing.TakeCaught(), Is.Zero);
+        }
     }
 }

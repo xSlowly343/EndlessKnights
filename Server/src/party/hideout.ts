@@ -17,6 +17,7 @@ interface HideoutBuildingRule {
 interface HideoutRules {
     hereMs: number;
     maxSitStepMs: number;
+    maxCaughtPerMark: number;
     tiers: HideoutTierRule[];
     buildings: HideoutBuildingRule[];
     levelTiers: number[];
@@ -37,6 +38,7 @@ interface HideoutValue {
     sitSeconds: number;
     orders: number;
     here: { [userId: string]: number };
+    fishing: { [userId: string]: number };
     sitAt: number;
     buildings: { [id: string]: number };
     project: HideoutProject | null;
@@ -57,7 +59,7 @@ const HideoutCollection = "party_hideout";
 const HideoutWriteAttempts = 4;
 
 function hideoutEmpty(): HideoutValue {
-    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {} };
+    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {} };
 }
 
 function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutValue; version: string } {
@@ -70,6 +72,7 @@ function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutVal
     value.sitSeconds = stored.sitSeconds || 0;
     value.orders = stored.orders || 0;
     value.here = stored.here || {};
+    value.fishing = stored.fishing || {};
     value.sitAt = stored.sitAt || 0;
     value.buildings = stored.buildings || {};
     value.project = stored.project || null;
@@ -135,6 +138,10 @@ function hideoutHere(value: HideoutValue, members: string[], nowUnixMs: number):
     return members.filter((userId) => value.here[userId] !== undefined && nowUnixMs - value.here[userId] <= HideoutServerRules.hereMs);
 }
 
+function hideoutFishers(value: HideoutValue, members: string[], nowUnixMs: number): string[] {
+    return members.filter((userId) => value.fishing[userId] !== undefined && nowUnixMs - value.fishing[userId] <= HideoutServerRules.hereMs);
+}
+
 function hideoutReached(nk: nkruntime.Nakama, value: HideoutValue, tier: HideoutTierRule, members: number, chronicle: HideoutChronicle): boolean {
     return members >= tier.members && chronicle.bosses >= tier.bosses && value.orders >= tier.orders && value.sitSeconds >= tier.sitSeconds
         && (value.buildings["bonfire"] || 0) >= tier.fireLevel && tier.needs.every((need) => hideoutCounter(nk, value, chronicle, need.counter) >= need.target);
@@ -183,7 +190,13 @@ function hideoutCanQueue(nk: nkruntime.Nakama, value: HideoutValue, id: string):
 function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: HideoutValue, chronicle: HideoutChronicle, userId: string, nowUnixMs: number): { [key: string]: any } {
     const meta = partyMetaOf(group);
     const here = hideoutHere(value, meta.members, nowUnixMs);
-    const users = here.length > 0 ? nk.usersGetId(here) : [];
+    const fishers = hideoutFishers(value, meta.members, nowUnixMs);
+    const named = here.concat(fishers.filter((id) => here.indexOf(id) < 0));
+    const users = named.length > 0 ? nk.usersGetId(named) : [];
+    const nameOf = (id: string) => {
+        const user = users.filter((entry) => entry.userId === id)[0];
+        return user ? user.displayName || user.username : "";
+    };
     const project = value.project;
     const rule = project ? hideoutBuildingRule(project.building) : null;
     const cost = project && rule ? rule.levels[project.level - 1] : null;
@@ -195,10 +208,9 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
     return {
         tier: value.tier, members: meta.members.length, bosses: chronicle.bosses, orders: value.orders, sitSeconds: value.sitSeconds,
         fireLevel: value.buildings["bonfire"] || 0, hoursTogether: Math.floor(chronicle.hours), leader: meta.leader === userId,
-        here: here.map((id) => {
-            const user = users.filter((entry) => entry.userId === id)[0];
-            return { userId: id, name: user ? user.displayName || user.username : "" };
-        }),
+        here: here.map((id) => ({ userId: id, name: nameOf(id) })),
+        fishers: fishers.map((id) => ({ userId: id, name: nameOf(id) })),
+        fishingTogether: fishers.length >= 2 && fishers.indexOf(userId) >= 0, fishTogether: value.counters["fishTogether"] || 0,
         buildings: value.buildings,
         canQueue: hideoutOpenBuildings(value.tier).filter((id) => hideoutCanQueue(nk, value, id) === ""),
         project: project && cost ? { building: project.building, level: project.level, points: project.points, target: cost.points, hours: cost.hours, yours: project.by[userId] || 0 } : null,
@@ -217,6 +229,9 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
         for (const id of Object.keys(hideout.here))
             if (meta.members.indexOf(id) < 0 || nowUnixMs - hideout.here[id] > HideoutServerRules.hereMs)
                 delete hideout.here[id];
+        for (const id of Object.keys(hideout.fishing))
+            if (meta.members.indexOf(id) < 0 || nowUnixMs - hideout.fishing[id] > HideoutServerRules.hereMs)
+                delete hideout.fishing[id];
         hideoutSit(hideout, meta.members, nowUnixMs);
         hideoutFinish(hideout, chronicle);
         hideoutRise(nk, hideout, meta.members.length, chronicle);
@@ -225,12 +240,18 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
     return hideoutView(nk, group, value, chronicle, userId, nowUnixMs);
 }
 
-function hideoutPresence(nk: nkruntime.Nakama, userId: string, here: boolean | null, nowUnixMs: number): { [key: string]: any } {
-    return hideoutUpdate(nk, userId, (hideout) => {
+function hideoutPresence(nk: nkruntime.Nakama, userId: string, here: boolean | null, nowUnixMs: number, fishing: boolean | null = null, caught: number = 0): { [key: string]: any } {
+    return hideoutUpdate(nk, userId, (hideout, meta) => {
         if (here === true)
             hideout.here[userId] = nowUnixMs;
         else if (here === false)
             delete hideout.here[userId];
+        if (fishing === true)
+            hideout.fishing[userId] = nowUnixMs;
+        else if (fishing === false)
+            delete hideout.fishing[userId];
+        if (fishing === true && caught > 0 && hideoutFishers(hideout, meta.members, nowUnixMs).length >= 2)
+            hideout.counters["fishTogether"] = (hideout.counters["fishTogether"] || 0) + Math.min(caught, HideoutServerRules.maxCaughtPerMark);
     }, nowUnixMs);
 }
 
@@ -279,10 +300,15 @@ function hideoutViewRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
 }
 
 function hideoutPresenceRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
-    const here = partyRequest(payload).here;
-    if (typeof here !== "boolean")
+    const request = partyRequest(payload);
+    const here = request.here;
+    const fishing = request.fishing === undefined ? null : request.fishing;
+    const caught = request.caught === undefined ? 0 : request.caught;
+    if (typeof here !== "boolean" || (fishing !== null && typeof fishing !== "boolean"))
         throw new Error("bad request");
-    return JSON.stringify(hideoutPresence(nk, partyCaller(ctx), here, Date.now()));
+    if (typeof caught !== "number" || caught !== Math.floor(caught) || caught < 0)
+        throw new Error("bad request");
+    return JSON.stringify(hideoutPresence(nk, partyCaller(ctx), here, Date.now(), fishing, caught));
 }
 
 function hideoutQueueRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {

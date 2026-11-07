@@ -19,6 +19,12 @@ namespace Game.Net.Nakama
             foreach (var entry in NakamaJson.Items(json, "here"))
                 here.Add(NakamaJson.Text(entry, "name"));
             Here = here;
+            var fishers = new List<string>();
+            foreach (var entry in NakamaJson.Items(json, "fishers"))
+                fishers.Add(NakamaJson.Text(entry, "name"));
+            Fishers = fishers;
+            FishingTogether = NakamaJson.Flag(json, "fishingTogether");
+            FishTogether = (long)NakamaJson.Number(json, "fishTogether");
             HoursTogether = (long)NakamaJson.Number(json, "hoursTogether");
             Leader = NakamaJson.Flag(json, "leader");
             Buildings = Counts(NakamaJson.Field(json, "buildings"));
@@ -83,6 +89,9 @@ namespace Game.Net.Nakama
         public long SitSeconds { get; }
         public int FireLevel { get; }
         public IReadOnlyList<string> Here { get; }
+        public IReadOnlyList<string> Fishers { get; }
+        public bool FishingTogether { get; }
+        public long FishTogether { get; }
 
         public static HideoutReply From(JsonValue json) => new HideoutReply(json);
 
@@ -91,7 +100,13 @@ namespace Game.Net.Nakama
         public static async Task<HideoutReply> FetchAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_view", "{}", cancel).ConfigureAwait(false)));
 
+        public static string PresencePayload(bool here, bool fishing, int caught) =>
+            NakamaJson.Object(("here", here ? "true" : "false"), ("fishing", fishing ? "true" : "false"), ("caught", caught.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
         public static async Task<HideoutReply> PresenceAsync(NakamaClient client, NakamaSession session, bool here, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_presence", PresencePayload(here), cancel).ConfigureAwait(false)));
+
+        public static async Task<HideoutReply> PresenceAsync(NakamaClient client, NakamaSession session, bool here, bool fishing, int caught, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_presence", PresencePayload(here, fishing, caught), cancel).ConfigureAwait(false)));
     }
 }

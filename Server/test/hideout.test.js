@@ -191,3 +191,36 @@ test("activity needs hold a tier until they are met", () => {
   server.hideoutChange(nk, group.id, (value) => { value.counters.gardenHarvests = 20; });
   assert.strictEqual(plain(server.hideoutPresence(nk, "ann", null, now)).tier, 4);
 });
+
+const fish = (nk, user, on, caught, time) => plain(server.hideoutPresence(nk, user, false, time, on, caught));
+
+test("two who fish at the same time fish together and count their catch", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  const alone = fish(nk, "ann", true, 3, now);
+  assert.strictEqual(alone.fishingTogether, false);
+  assert.strictEqual(alone.fishTogether, 0, "a catch alone is not counted");
+  const both = fish(nk, "bob", true, 2, now + minute);
+  assert.strictEqual(both.fishingTogether, true);
+  assert.deepStrictEqual(both.fishers.map((entry) => entry.name).sort(), ["ann", "bob"]);
+  assert.strictEqual(both.fishTogether, 2);
+  const capped = fish(nk, "ann", true, 100, now + 1.5 * minute);
+  assert.strictEqual(capped.fishTogether, 2 + rules.maxCaughtPerMark);
+  assert.deepStrictEqual(capped.here, [], "fishing at home is not sitting by the hideout fire");
+  const late = fish(nk, "ann", true, 1, now + minute + rules.hereMs + 1);
+  assert.strictEqual(late.fishingTogether, false, "bob stopped pinging");
+  const stop = fish(nk, "bob", false, 0, now + minute + rules.hereMs + 2);
+  assert.deepStrictEqual(stop.fishers.map((entry) => entry.name), ["ann"]);
+});
+
+test("the presence rpc takes the fishing mark and checks it", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  call("ann", "hideoutPresenceRpc", { here: false, fishing: true, caught: 1 });
+  const view = call("bob", "hideoutPresenceRpc", { here: true, fishing: true, caught: 1 });
+  assert.strictEqual(view.fishingTogether, true);
+  assert.strictEqual(view.fishTogether, 1);
+  assert.throws(() => call("ann", "hideoutPresenceRpc", { here: true, fishing: "yes" }), /bad request/);
+  assert.throws(() => call("ann", "hideoutPresenceRpc", { here: true, fishing: true, caught: -1 }), /bad request/);
+  assert.strictEqual(call("ann", "hideoutPresenceRpc", { here: true }).fishingTogether, true, "a mark without fishing keeps the old one");
+});

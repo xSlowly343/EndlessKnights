@@ -468,6 +468,7 @@ if (hideout.version !== 1)
 const hideoutRules = {
   hereMs: hideout.hereSeconds * 1000,
   maxSitStepMs: hideout.maxSitStepSeconds * 1000,
+  maxCaughtPerMark: hideout.maxCaughtPerMark,
   tiers: hideout.tiers.map((tier) => ({ members: tier.members, bosses: tier.bosses, orders: tier.orders, sitSeconds: Math.round(tier.sitHours * 3600), fireLevel: tier.fireLevel,
     needs: (tier.needs || []).map((need) => ({ counter: need.counter, target: need.target })), opens: tier.opens })),
   buildings: hideout.buildings.filter((building) => !building.personal).map((building) => ({ id: building.id, guild: building.guild || "", levels: building.levels.map((level) => ({ points: level.points, hours: level.hours })) })),
