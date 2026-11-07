@@ -293,6 +293,20 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheHideoutIsReadFromTheServerWithWhoIsByTheFire()
+        {
+            Assert.That(HideoutReply.PresencePayload(true), Is.EqualTo("{\"here\":true}"));
+            Assert.That(HideoutReply.PresencePayload(false), Is.EqualTo("{\"here\":false}"));
+            var hideout = HideoutReply.From(NakamaJson.Parse("{\"tier\":2,\"members\":3,\"bosses\":14,\"orders\":0,\"sitSeconds\":7300,\"fireLevel\":0,"
+                + "\"here\":[{\"userId\":\"a\",\"name\":\"Ann\"},{\"userId\":\"b\",\"name\":\"Bob\"}]}"));
+            Assert.That(hideout.Tier, Is.EqualTo(2));
+            Assert.That(hideout.Members, Is.EqualTo(3));
+            Assert.That(hideout.Bosses, Is.EqualTo(14));
+            Assert.That(hideout.SitSeconds, Is.EqualTo(7300));
+            Assert.That(hideout.Here, Is.EqualTo(new[] { "Ann", "Bob" }));
+        }
+
+        [Test]
         public void TheTownBuildIsReadFromTheServer()
         {
             Assert.That(TownBuildReply.AddPayload(1200), Is.EqualTo("{\"actions\":1200}"));

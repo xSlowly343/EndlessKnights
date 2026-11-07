@@ -94,6 +94,13 @@ namespace Game.Core.Save
                 ("cosmetics", WriteCosmetics(state.Cosmetics)),
                 ("seasonPass", WriteSeasonPass(state.SeasonPass)),
                 ("tournament", WriteTournament(state.Tournament)),
+                ("hideout", Object(
+                    ("tier", JsonValue.Of(state.Hideout.Tier)),
+                    ("members", JsonValue.Of(state.Hideout.Members)),
+                    ("bosses", JsonValue.Of(state.Hideout.Bosses)),
+                    ("orders", JsonValue.Of(state.Hideout.Orders)),
+                    ("sitSeconds", JsonValue.Of(state.Hideout.SitSeconds)),
+                    ("fireLevel", JsonValue.Of(state.Hideout.FireLevel)))),
                 ("clanCamp", Object(
                     ("level", JsonValue.Of(state.ClanCamp.Level)),
                     ("feastUntilUnixMs", JsonValue.Of(state.ClanCamp.FeastUntilUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))),
@@ -346,6 +353,8 @@ namespace Game.Core.Save
                 ReadSeasonPass(node.Field("seasonPass"), state.SeasonPass);
             if (node.HasField("tournament"))
                 ReadTournament(node.Field("tournament"), state.Tournament);
+            if (node.HasField("hideout"))
+                ReadHideout(node.Field("hideout"), state.Hideout);
             if (node.HasField("clanCamp"))
                 ReadClanCamp(node.Field("clanCamp"), state.ClanCamp);
             if (node.HasField("slates") && slates != null)
@@ -838,6 +847,7 @@ namespace Game.Core.Save
             return Object(
                 ("mode", JsonValue.Of(peaceful.Mode == PeacefulMode.Camp ? "camp" : "battle")),
                 ("activity", OptionalText(peaceful.Activity)),
+                ("place", JsonValue.Of(peaceful.Place == PeacefulPlace.Hideout ? "hideout" : "refuge")),
                 ("presets", WriteIdList(presets)),
                 ("scheduledBy", OptionalText(peaceful.ScheduledBy)),
                 ("work", JsonValue.Array(work)),
@@ -852,6 +862,7 @@ namespace Game.Core.Save
         {
             peaceful.Mode = node.Field("mode").AsString() == "camp" ? PeacefulMode.Camp : PeacefulMode.Battle;
             peaceful.Activity = ReadOptionalText(node, "activity");
+            peaceful.Place = node.HasField("place") && node.Field("place").AsString() == "hideout" ? PeacefulPlace.Hideout : PeacefulPlace.Refuge;
             foreach (var item in node.Field("presets").Items())
                 peaceful.Presets.Add(item.AsString());
             peaceful.ScheduledBy = ReadOptionalText(node, "scheduledBy");
@@ -994,6 +1005,16 @@ namespace Game.Core.Save
             ("baseKills", JsonValue.Of(tournament.BaseKills)),
             ("best", JsonValue.Of(tournament.Best)),
             ("unsent", JsonValue.Of(tournament.Unsent)));
+
+        private static void ReadHideout(ContentNode node, HideoutState hideout)
+        {
+            hideout.Tier = node.Field("tier").AsInt(0, 100);
+            hideout.Members = node.Field("members").AsInt(0, 100);
+            hideout.Bosses = node.Field("bosses").AsLong(0);
+            hideout.Orders = node.Field("orders").AsInt(0);
+            hideout.SitSeconds = node.Field("sitSeconds").AsLong(0);
+            hideout.FireLevel = node.Field("fireLevel").AsInt(0, 10);
+        }
 
         private static void ReadClanCamp(ContentNode node, ClanCampState camp)
         {

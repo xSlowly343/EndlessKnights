@@ -26,6 +26,9 @@ namespace Game.Core.Sim
         public PeacefulRules Rules => _rules;
         public PeacefulState State => _state.Peaceful;
         public bool InCamp => State.Mode == PeacefulMode.Camp;
+        public bool InHideout => InCamp && State.Place == PeacefulPlace.Hideout;
+
+        public void SetPlace(PeacefulPlace place) => State.Place = place;
 
         public string Activity
         {
@@ -111,6 +114,11 @@ namespace Game.Core.Sim
         {
             if (input.WheelTicks != 0)
                 Turn(input.WheelTicks);
+            if (State.Place == PeacefulPlace.Hideout)
+            {
+                CountActions(input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks);
+                return;
+            }
             var work = Work(Activity);
             work.Keys += input.KeyDowns;
             work.Clicks += input.LeftClicks + input.RightClicks + input.MiddleClicks;

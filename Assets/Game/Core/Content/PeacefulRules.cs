@@ -9,6 +9,12 @@ namespace Game.Core.Content
         Camp
     }
 
+    public enum PeacefulPlace
+    {
+        Refuge,
+        Hideout
+    }
+
     public sealed class PeacefulActivity
     {
         public PeacefulActivity(string id, string nameRu, string nameEn)
