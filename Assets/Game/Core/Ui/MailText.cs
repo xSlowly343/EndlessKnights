@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Content;
 using Game.Core.Mail;
 using Game.Core.Text;
 
@@ -32,14 +33,16 @@ namespace Game.Core.Ui
             MailLetter.RiftKind => "mail.rift.title",
             MailLetter.MentorKind => "mail.mentor.title",
             MailLetter.RiftDepthKind => "mail.riftDepth.title",
+            MailLetter.ChestKind => "mail.chest.title",
             _ => "mail.title"
         });
 
-        public static string Body(MailLetter letter) => letter.Kind switch
+        public static string Body(MailLetter letter, ChestCatalog? chests = null) => letter.Kind switch
         {
             MailLetter.RiftKind => Texts.Format("mail.rift.body", letter.Place, letter.Of, letter.Depth, PartyCardText.Title(letter.Title)),
             MailLetter.MentorKind => Texts.Format("mail.mentor.body", letter.Depth),
             MailLetter.RiftDepthKind => Texts.Format("mail.riftDepth.body", letter.Depth, PartyCardText.Title(letter.Title)),
+            MailLetter.ChestKind => Texts.Format("mail.chest.body", ChestName(letter.Title, chests)),
             _ => string.Empty
         };
 
@@ -50,20 +53,24 @@ namespace Game.Core.Ui
                 parts.Add(Texts.Format("rift.reward.shards", letter.Reward.Shards));
             if (letter.Reward.Ingots > 0)
                 parts.Add(Texts.Format("rift.reward.ingots", letter.Reward.Ingots));
+            if (letter.Reward.Essence > 0)
+                parts.Add(Texts.Format("rift.reward.essence", letter.Reward.Essence));
             if (letter.Reward.Friendship > 0)
                 parts.Add(Texts.Format("rift.reward.friendship", letter.Reward.Friendship));
             return string.Join(" · ", parts);
         }
 
+        private static string ChestName(string id, ChestCatalog? chests) => chests != null && chests.TryGet(id, out var chest) ? Texts.Pick(chest.NameRu, chest.NameEn) : id;
+
         public static string Arrived(MailLetter letter) => Texts.Format("mail.arrived", Title(letter));
 
         public static string Taken(MailLetter letter) => Texts.Format("mail.taken", Reward(letter));
 
-        public static IReadOnlyList<MailRow> Rows(IReadOnlyList<MailLetter> letters)
+        public static IReadOnlyList<MailRow> Rows(IReadOnlyList<MailLetter> letters, ChestCatalog? chests = null)
         {
             var rows = new List<MailRow>(letters.Count);
             foreach (var letter in letters)
-                rows.Add(new MailRow(letter.Id, Title(letter), Body(letter), Reward(letter), letter.Claimed));
+                rows.Add(new MailRow(letter.Id, Title(letter), Body(letter, chests), Reward(letter), letter.Claimed));
             return rows;
         }
     }

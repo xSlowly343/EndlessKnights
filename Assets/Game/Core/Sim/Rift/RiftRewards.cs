@@ -9,6 +9,7 @@ namespace Game.Core.Sim.Rift
             var drops = state.Drops;
             drops.Shards += System.Math.Max(0, reward.Shards);
             drops.Ingots += System.Math.Max(0, reward.Ingots);
+            drops.Essence += System.Math.Max(0, reward.Essence);
         }
     }
 }

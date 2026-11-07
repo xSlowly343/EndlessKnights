@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "currency": "crystals",
+  "chests": [
+    { "id": "smith_small", "name": { "ru": "Малый сундук кузнеца", "en": "Small smith's chest" }, "price": 200, "ingots": 40, "perWeek": 3 },
+    { "id": "smith", "name": { "ru": "Сундук кузнеца", "en": "Smith's chest" }, "price": 500, "ingots": 110, "perWeek": 2 },
+    { "id": "smith_big", "name": { "ru": "Большой сундук кузнеца", "en": "Great smith's chest" }, "price": 1000, "ingots": 240, "perWeek": 1 },
+    { "id": "jeweler", "name": { "ru": "Ларец ювелира", "en": "Jeweler's casket" }, "price": 500, "essence": 110, "perWeek": 2 },
+    { "id": "jeweler_big", "name": { "ru": "Большой ларец ювелира", "en": "Great jeweler's casket" }, "price": 1000, "essence": 240, "perWeek": 1 },
+    { "id": "master", "name": { "ru": "Сундук мастера", "en": "Master's chest" }, "price": 1500, "ingots": 200, "essence": 200, "perWeek": 1 }
+  ]
+}

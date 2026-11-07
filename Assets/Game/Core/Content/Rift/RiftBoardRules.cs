@@ -4,17 +4,19 @@ namespace Game.Core.Content.Rift
 {
     public readonly struct RiftReward
     {
-        public RiftReward(long shards, long ingots, long friendship = 0)
+        public RiftReward(long shards, long ingots, long friendship = 0, long essence = 0)
         {
             Shards = shards;
             Ingots = ingots;
             Friendship = friendship;
+            Essence = essence;
         }
 
         public long Shards { get; }
         public long Ingots { get; }
         public long Friendship { get; }
-        public bool IsEmpty => Shards == 0 && Ingots == 0 && Friendship == 0;
+        public long Essence { get; }
+        public bool IsEmpty => Shards == 0 && Ingots == 0 && Friendship == 0 && Essence == 0;
     }
 
     public sealed class RiftBoardPlace
