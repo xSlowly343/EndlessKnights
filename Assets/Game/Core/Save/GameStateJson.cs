@@ -93,6 +93,7 @@ namespace Game.Core.Save
                 ("bestiary", WriteBestiary(state.Bestiary)),
                 ("cosmetics", WriteCosmetics(state.Cosmetics)),
                 ("seasonPass", WriteSeasonPass(state.SeasonPass)),
+                ("tournament", WriteTournament(state.Tournament)),
                 ("awakening", WriteAwakening(state.Awakening)),
                 ("conditionShares", WriteConditionShares(state.ConditionShares)),
                 ("events", WriteEvents(state.Events)),
@@ -338,6 +339,8 @@ namespace Game.Core.Save
                 ReadAwakening(node.Field("awakening"), state.Awakening);
             if (node.HasField("seasonPass"))
                 ReadSeasonPass(node.Field("seasonPass"), state.SeasonPass);
+            if (node.HasField("tournament"))
+                ReadTournament(node.Field("tournament"), state.Tournament);
             if (node.HasField("slates") && slates != null)
                 ReadSlates(node.Field("slates"), slates, state.Slates);
             if (node.HasField("chronicle"))
@@ -972,6 +975,24 @@ namespace Game.Core.Save
             pass.Season = node.Field("season").AsInt(-1);
             pass.Points = node.Field("points").AsLong(0);
             pass.Premium = node.Field("premium").AsBool();
+        }
+
+        private static JsonValue WriteTournament(TournamentState tournament) => Object(
+            ("index", JsonValue.Of(tournament.Index)),
+            ("format", tournament.Format.Length > 0 ? JsonValue.Of(tournament.Format) : JsonValue.Null()),
+            ("baseBosses", JsonValue.Of(tournament.BaseBosses)),
+            ("baseKills", JsonValue.Of(tournament.BaseKills)),
+            ("best", JsonValue.Of(tournament.Best)),
+            ("unsent", JsonValue.Of(tournament.Unsent)));
+
+        private static void ReadTournament(ContentNode node, TournamentState tournament)
+        {
+            tournament.Index = node.Field("index").AsLong(-1);
+            tournament.Format = node.HasField("format") && !node.Field("format").IsNull ? node.Field("format").AsString() : string.Empty;
+            tournament.BaseBosses = node.Field("baseBosses").AsLong(0);
+            tournament.BaseKills = node.Field("baseKills").AsLong(0);
+            tournament.Best = node.Field("best").AsLong(0);
+            tournament.Unsent = node.Field("unsent").AsBool();
         }
 
         private static JsonValue WriteBestiary(BestiaryState bestiary)

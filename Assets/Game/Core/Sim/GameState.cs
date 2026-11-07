@@ -100,6 +100,7 @@ namespace Game.Core.Sim
         public BestiaryState Bestiary { get; } = new BestiaryState();
         public CosmeticState Cosmetics { get; } = new CosmeticState();
         public SeasonPassState SeasonPass { get; } = new SeasonPassState();
+        public TournamentState Tournament { get; } = new TournamentState();
         public double[] ConditionShares { get; } = new double[64];
         public EventState Events { get; } = new EventState();
         public PeacefulState Peaceful { get; } = new PeacefulState();

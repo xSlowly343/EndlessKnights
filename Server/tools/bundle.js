@@ -414,5 +414,19 @@ const chestRules = {
   chests: chests.chests.map((chest) => ({ id: chest.id, price: chest.price, ingots: chest.ingots || 0, essence: chest.essence || 0, perWeek: chest.perWeek }))
 };
 
+const tournaments = JSON.parse(fs.readFileSync(path.join(data, "tournaments.json"), "utf8"));
+if (tournaments.version !== 1)
+  throw new Error("tournaments.json: version " + tournaments.version + " is not supported");
+const tournamentRules = {
+  groupSize: tournaments.groupSize,
+  startDays: tournaments.startDays,
+  joinClosesMs: tournaments.joinClosesHours * 3600 * 1000,
+  formats: tournaments.formats.map((format) => ({ id: format.id, maxScore: format.maxScore })),
+  bands: tournaments.bands.map((band) => ({ from: band.from, scale: band.scale })),
+  rewards: tournaments.rewards.map((reward) => ({ upTo: reward.upTo, ingots: reward.ingots || 0, essence: reward.essence || 0 })),
+  maxRecord: 10000000,
+  kept: 8
+};
+
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\nvar SeasonPassServerRules = " + JSON.stringify(seasonPassRules) + ";\nvar CrystalChangeServerRules = " + JSON.stringify(crystalChangeRules) + ";\nvar SeasonalEventServerRules = " + JSON.stringify(seasonalEventRules) + ";\nvar TownServerRules = " + JSON.stringify(townRules) + ";\nvar ChestServerRules = " + JSON.stringify(chestRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\nvar SeasonPassServerRules = " + JSON.stringify(seasonPassRules) + ";\nvar CrystalChangeServerRules = " + JSON.stringify(crystalChangeRules) + ";\nvar SeasonalEventServerRules = " + JSON.stringify(seasonalEventRules) + ";\nvar TownServerRules = " + JSON.stringify(townRules) + ";\nvar ChestServerRules = " + JSON.stringify(chestRules) + ";\nvar TournamentServerRules = " + JSON.stringify(tournamentRules) + ";\n" + code);

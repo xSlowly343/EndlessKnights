@@ -46,6 +46,11 @@ function mailLetters(nk: nkruntime.Nakama, userId: string): MailLetter[] {
 function mailListRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     const userId = partyCaller(ctx);
     riftSettleDue(nk, logger, Date.now());
+    try {
+        tournamentSettle(nk, logger, userId, Date.now());
+    } catch (error) {
+        logger.warn("tournament rewards for %s were not settled: %s", userId, String(error));
+    }
     const letters = mailLetters(nk, userId);
     let unread = 0;
     for (const letter of letters)

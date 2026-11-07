@@ -8,6 +8,7 @@ namespace Game.Core.Mail
         public const string MentorKind = "mentor";
         public const string RiftDepthKind = "rift_depth";
         public const string ChestKind = "chest";
+        public const string TournamentKind = "tournament";
 
         public MailLetter(string id, string kind, long atUnixMs, int place, int of, long depth, string title, RiftReward reward, bool claimed)
         {
