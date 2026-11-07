@@ -94,6 +94,11 @@ namespace Game.Core.Save
                 ("cosmetics", WriteCosmetics(state.Cosmetics)),
                 ("seasonPass", WriteSeasonPass(state.SeasonPass)),
                 ("tournament", WriteTournament(state.Tournament)),
+                ("clanCamp", Object(
+                    ("level", JsonValue.Of(state.ClanCamp.Level)),
+                    ("feastUntilUnixMs", JsonValue.Of(state.ClanCamp.FeastUntilUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))),
+                    ("answeredUnixMs", JsonValue.Of(state.ClanCamp.AnsweredUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))),
+                    ("seenUnixMs", JsonValue.Of(state.ClanCamp.SeenUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))))),
                 ("awakening", WriteAwakening(state.Awakening)),
                 ("conditionShares", WriteConditionShares(state.ConditionShares)),
                 ("events", WriteEvents(state.Events)),
@@ -341,6 +346,8 @@ namespace Game.Core.Save
                 ReadSeasonPass(node.Field("seasonPass"), state.SeasonPass);
             if (node.HasField("tournament"))
                 ReadTournament(node.Field("tournament"), state.Tournament);
+            if (node.HasField("clanCamp"))
+                ReadClanCamp(node.Field("clanCamp"), state.ClanCamp);
             if (node.HasField("slates") && slates != null)
                 ReadSlates(node.Field("slates"), slates, state.Slates);
             if (node.HasField("chronicle"))
@@ -984,6 +991,14 @@ namespace Game.Core.Save
             ("baseKills", JsonValue.Of(tournament.BaseKills)),
             ("best", JsonValue.Of(tournament.Best)),
             ("unsent", JsonValue.Of(tournament.Unsent)));
+
+        private static void ReadClanCamp(ContentNode node, ClanCampState camp)
+        {
+            camp.Level = node.Field("level").AsInt(0, 100);
+            camp.FeastUntilUnixMs = (long)ReadCount(node.Field("feastUntilUnixMs"));
+            camp.AnsweredUnixMs = (long)ReadCount(node.Field("answeredUnixMs"));
+            camp.SeenUnixMs = (long)ReadCount(node.Field("seenUnixMs"));
+        }
 
         private static void ReadTournament(ContentNode node, TournamentState tournament)
         {

@@ -293,6 +293,25 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheClanCampAndItsFeastAreReadFromTheServer()
+        {
+            Assert.That(ClanCampReply.GivePayload("herb_windwort", 12), Is.EqualTo("{\"item\":\"herb_windwort\",\"amount\":12}"));
+            Assert.That(ClanCampReply.BringPayload("fish_soup"), Is.EqualTo("{\"dish\":\"fish_soup\"}"));
+            var camp = ClanCampReply.From(NakamaJson.Parse("{\"points\":1620,\"level\":2,\"next\":4000,\"yours\":300,\"today\":40,\"dailyCap\":300,"
+                + "\"feast\":{\"week\":3000,\"dishes\":5,\"target\":5,\"laid\":true,\"yours\":2,\"open\":true,\"until\":1789},\"log\":[]}"));
+            Assert.That(camp.Level, Is.EqualTo(2));
+            Assert.That(camp.Points, Is.EqualTo(1620));
+            Assert.That(camp.Next, Is.EqualTo(4000));
+            Assert.That(camp.Today, Is.EqualTo(40));
+            Assert.That(camp.DailyCap, Is.EqualTo(300));
+            Assert.That(camp.FeastLaid, Is.True);
+            Assert.That(camp.FeastOpen, Is.True);
+            Assert.That(camp.FeastDishes, Is.EqualTo(5));
+            Assert.That(camp.FeastYours, Is.EqualTo(2));
+            Assert.That(camp.FeastUntilUnixMs, Is.EqualTo(1789));
+        }
+
+        [Test]
         public void ATournamentIsReadFromTheServerWithTheGroupAndMyRow()
         {
             Assert.That(TournamentReply.JoinPayload(12000), Is.EqualTo("{\"record\":12000}"));

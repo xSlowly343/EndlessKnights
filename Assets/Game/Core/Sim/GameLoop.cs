@@ -56,6 +56,7 @@ namespace Game.Core.Sim
         private readonly CosmeticSystem _cosmetics;
         private readonly SeasonPassSystem _seasonPass;
         private readonly TournamentSystem _tournament;
+        private readonly ClanCampSystem _clanCamp;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -144,6 +145,7 @@ namespace Game.Core.Sim
             _seasonal = new EventSystem(data, state, _stage, Events);
             _peaceful = new PeacefulSystem(data.Peaceful, state, Events);
             _camp = new CampSystem(data.Camp, state, Events);
+            _clanCamp = new ClanCampSystem(data.ClanCamp, state, hero, _camp);
             _garden = new GardenSystem(data.Garden, state, _camp, _peaceful, Events);
             _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
             _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
@@ -243,6 +245,7 @@ namespace Game.Core.Sim
         public CosmeticSystem Cosmetics => _cosmetics;
         public SeasonPassSystem SeasonPass => _seasonPass;
         public TournamentSystem Tournament => _tournament;
+        public ClanCampSystem ClanCamp => _clanCamp;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -859,6 +862,7 @@ namespace Game.Core.Sim
             _cosmetics.UseCatalog(data.Cosmetics);
             _seasonPass.UseRules(data.SeasonPass);
             _tournament.UseRules(data.Tournaments);
+            _clanCamp.UseRules(data.ClanCamp);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);

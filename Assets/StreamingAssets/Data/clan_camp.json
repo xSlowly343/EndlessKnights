@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "offlineHours": 24,
+  "maxGive": 50,
+  "dailyPointsPerMember": 300,
+  "materials": [
+    { "item": "herb_knockbloom", "points": 1 },
+    { "item": "herb_windwort", "points": 1 },
+    { "item": "herb_clickweed", "points": 1 },
+    { "item": "herb_hushbell", "points": 1 },
+    { "item": "herb_stormfern", "points": 2 },
+    { "item": "herb_moonmoss", "points": 2 },
+    { "item": "ore_hills", "points": 2 },
+    { "item": "ore_ruins", "points": 2 },
+    { "item": "ore_ice", "points": 3 },
+    { "item": "ore_ember", "points": 3 },
+    { "item": "ore_sky", "points": 4 },
+    { "item": "ruin_shard", "points": 3 },
+    { "item": "ice_crystal", "points": 3 },
+    { "item": "ember_coal", "points": 4 },
+    { "item": "sky_feather", "points": 4 }
+  ],
+  "levels": [
+    { "points": 500, "name": { "ru": "Костёр", "en": "Campfire" }, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.01, "tags": ["Gold"] }] },
+    { "points": 1500, "name": { "ru": "Пиршественный стол", "en": "Feast table" }, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.01 }] },
+    { "points": 4000, "name": { "ru": "Навесы", "en": "Awnings" }, "modifiers": [{ "stat": "focusGain", "kind": "increased", "value": 0.02 }] },
+    { "points": 9000, "name": { "ru": "Частокол", "en": "Palisade" }, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.01, "tags": ["Gold"] }, { "stat": "damage", "kind": "increased", "value": 0.01 }] },
+    { "points": 20000, "name": { "ru": "Большой костёр", "en": "Great bonfire" }, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.02 }] }
+  ],
+  "feast": {
+    "fromLevel": 2,
+    "dishesPerMember": 1,
+    "minDishes": 5,
+    "maxDishes": 20,
+    "perMemberWeekly": 3,
+    "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.03 }, { "stat": "gold", "kind": "increased", "value": 0.03, "tags": ["Gold"] }]
+  }
+}
