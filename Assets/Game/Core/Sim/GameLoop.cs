@@ -59,6 +59,7 @@ namespace Game.Core.Sim
         private readonly ClanCampSystem _clanCamp;
         private readonly GuildSystem _guilds;
         private readonly TalentSystem _talents;
+        private readonly HideoutSystem _hideout;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -147,6 +148,7 @@ namespace Game.Core.Sim
             _seasonal = new EventSystem(data, state, _stage, Events);
             _peaceful = new PeacefulSystem(data.Peaceful, state, Events);
             _talents = new TalentSystem(data.Talents, state);
+            _hideout = new HideoutSystem(data.Hideout, state);
             _camp = new CampSystem(data.Camp, state, Events);
             _clanCamp = new ClanCampSystem(data.ClanCamp, state, hero, _camp);
             _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden);
@@ -252,6 +254,7 @@ namespace Game.Core.Sim
         public ClanCampSystem ClanCamp => _clanCamp;
         public GuildSystem Guilds => _guilds;
         public TalentSystem Talents => _talents;
+        public HideoutSystem Hideout => _hideout;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -871,6 +874,7 @@ namespace Game.Core.Sim
             _clanCamp.UseRules(data.ClanCamp);
             _guilds.UseRules(data.Guilds);
             _talents.UseRules(data.Talents);
+            _hideout.UseRules(data.Hideout);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);

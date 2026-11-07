@@ -14,6 +14,7 @@ namespace Game.Core.Sim
     public sealed class PeacefulState
     {
         public PeacefulMode Mode { get; set; }
+        public PeacefulPlace Place { get; set; }
         public string Activity { get; set; } = string.Empty;
         public HashSet<string> Presets { get; } = new HashSet<string>(System.StringComparer.Ordinal);
         public string ScheduledBy { get; set; } = string.Empty;

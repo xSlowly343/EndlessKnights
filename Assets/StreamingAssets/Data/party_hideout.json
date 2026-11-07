@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "presenceSeconds": 60,
+  "hereSeconds": 90,
+  "maxSitStepSeconds": 120,
+  "tiers": [
+    { "id": "rest", "name": { "ru": "Привал", "en": "Rest Stop" }, "members": 2, "bosses": 0, "orders": 0, "sitHours": 0, "fireLevel": 0, "opens": ["bonfire", "corner", "corner", "chronicle_table"] },
+    { "id": "yard", "name": { "ru": "Двор", "en": "Yard" }, "members": 2, "bosses": 10, "orders": 0, "sitHours": 2, "fireLevel": 0, "opens": ["corner", "corner", "board"] },
+    { "id": "homestead", "name": { "ru": "Подворье", "en": "Homestead" }, "members": 2, "bosses": 50, "orders": 1, "sitHours": 0, "fireLevel": 2, "opens": ["garden", "storage"] }
+  ],
+  "buildings": [
+    { "id": "bonfire", "name": { "ru": "Костёр", "en": "Bonfire" } },
+    { "id": "corner", "name": { "ru": "Уголок участника", "en": "Member's corner" } },
+    { "id": "chronicle_table", "name": { "ru": "Стол Хроники", "en": "Chronicle table" } },
+    { "id": "board", "name": { "ru": "Доска заказов", "en": "Order board" } },
+    { "id": "garden", "name": { "ru": "Общая грядка", "en": "Shared garden bed" } },
+    { "id": "storage", "name": { "ru": "Склад", "en": "Storage" } }
+  ]
+}
