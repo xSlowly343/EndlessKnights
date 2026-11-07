@@ -90,6 +90,7 @@ namespace Game.Core.Ui
             }
             AddFracture(lines, loop);
             AddDefense(lines, loop);
+            AddElements(lines, loop);
             lines.Add(Line(0, "hero.stats.increased", Percent(damage.IncreasedMultiplier - 1)));
             lines.Add(Line(0, "hero.stats.more", Invariant("×{0:0.##}", damage.MoreMultiplier)));
             lines.Add(Line(0, "hero.stats.heavyStrike", every >= 1 ? Texts.Format("hero.stats.heavyEvery", every, heavy.ToString("0.#", CultureInfo.InvariantCulture)) : Texts.Get("hero.stats.none")));
@@ -115,6 +116,28 @@ namespace Game.Core.Ui
             var cutAfter = 1 - (1 - rules.Cut(defense)) * gain;
             lines.Add(Line(0, "hero.stats.defense", Texts.Format("hero.stats.defenseShow", Chance(rules.Cut(defense)), Chance(cutAfter), Invariant("{0:0.##}", gain))));
         }
+
+        private static void AddElements(List<HeroStatLine> lines, GameLoop loop)
+        {
+            var state = loop.State;
+            if (state.EnemyResists != ElementRules.None)
+                lines.Add(Line(0, "hero.stats.enemyElements", Texts.Format("hero.stats.enemyElementsShow", ElementName(state.EnemyResists), ElementName(state.EnemyWeakTo))));
+            var parts = new System.Text.StringBuilder();
+            for (var i = 0; i < ElementRules.Count; i++)
+            {
+                var share = loop.Hero.Value(ElementRules.Conversion[i], 0, StatTags.Strike);
+                if (!(share > 0))
+                    continue;
+                if (parts.Length > 0)
+                    parts.Append(", ");
+                parts.Append(ElementName(i)).Append(' ').Append(Chance(share));
+            }
+            if (parts.Length > 0)
+                lines.Add(Line(0, "hero.stats.conversion", parts.ToString()));
+        }
+
+        private static string ElementName(int element) =>
+            element == ElementRules.None ? Texts.Get("hero.stats.none") : Texts.Get("element." + ElementRules.IdOf((Element)element));
 
         private static void AddPartyRole(List<HeroStatLine> lines, GameLoop loop)
         {

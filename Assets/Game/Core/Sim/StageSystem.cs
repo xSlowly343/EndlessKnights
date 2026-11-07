@@ -211,6 +211,7 @@ namespace Game.Core.Sim
             }
             _state.SpawnEnemy(enemy, type, hp * System.Math.Max(bar, StaggerHpShare));
             _state.EnemyDefense = Defense.Defense(stage, boss);
+            (_state.EnemyResists, _state.EnemyWeakTo) = Elements.Of(biome);
             _state.EnemyWeakened = weakened;
             _state.EnemyGoldBonus = weakened ? weakenedGold : 0;
             _state.PartyWaveStage = waveStage;
@@ -347,6 +348,7 @@ namespace Game.Core.Sim
         public EncounterRules Encounters { get; set; } = null!;
         public PierceRules Pierce { get; set; } = new PierceRules();
         public DefenseRules Defense { get; set; } = new DefenseRules();
+        public ElementRules Elements { get; set; } = new ElementRules();
 
         public EnemyDef? BossFor(string biome, long stage)
         {
@@ -460,6 +462,7 @@ namespace Game.Core.Sim
             var vulnerabilityTicks = _state.WeakenVulnerabilityTicks;
             _state.SpawnEnemy(enemy, type, Weakened(hp));
             _state.EnemyDefense = Defense.Defense(_state.Stage, type != EnemyType.Normal);
+            (_state.EnemyResists, _state.EnemyWeakTo) = Elements.Of(BiomeRotation.Current(_stages, _state, _state.Stage));
             _state.EnemyWeakened = weakened;
             _state.EnemyGoldBonus = goldBonus;
             if (vulnerability > 0)

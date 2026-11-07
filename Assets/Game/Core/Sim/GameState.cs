@@ -139,6 +139,14 @@ namespace Game.Core.Sim
         public long Overcrits { get; set; }
         public int FractureStacks { get; set; }
         public double EnemyDefense { get; set; }
+        public int EnemyResists { get; set; } = -1;
+        public int EnemyWeakTo { get; set; } = -1;
+        public BigNumber EmberPool { get; set; } = BigNumber.Zero;
+        public int EmberTicks { get; set; }
+        public double EarthShred { get; set; }
+        public double WaterSeconds { get; set; }
+        public double WaterCarry { get; set; }
+        public long Discharges { get; set; }
         public int FractureQuietTicks { get; set; }
         public long FracturesLaid { get; set; }
         public PeacefulBonus PeacefulBonus { get; } = new PeacefulBonus();
@@ -385,6 +393,13 @@ namespace Game.Core.Sim
             FractureStacks = 0;
             FractureQuietTicks = 0;
             EnemyDefense = 0;
+            EnemyResists = -1;
+            EnemyWeakTo = -1;
+            EmberPool = BigNumber.Zero;
+            EmberTicks = 0;
+            EarthShred = 0;
+            WaterSeconds = 0;
+            WaterCarry = 0;
             EnemyShieldFloor = BigNumber.Zero;
             Runedancer.OnSpawn();
             Duelist.OnSpawn();
