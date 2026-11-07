@@ -12,6 +12,7 @@
     "forge": { "building": "shared_forge", "hammersShare": 0.5, "stepBoost": 0.5, "masterpieceChance": 0.1, "masterpieceBoost": 2 },
     "cauldron": { "building": "shared_cauldron", "stirsShare": 0.5, "fineChance": 0.25 }
   },
+  "places": { "dummy": "dummy", "pier": "pier", "trophyHall": "trophy_hall", "pierRareBoost": 0.1 },
   "sharedGarden": {
     "bedsPerRow": 4,
     "rows": ["garden", "garden_row"],

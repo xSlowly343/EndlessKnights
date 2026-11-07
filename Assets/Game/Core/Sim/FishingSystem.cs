@@ -119,9 +119,10 @@ namespace Game.Core.Sim
         {
             var spot = _rules.Spot(CurrentSpot)!;
             var together = Together ? 1 : 0;
-            if (_state.Rng.NextDouble() < _rules.BottleChance + _state.Perk(MuseumPerk.BottleChance) + together * _rules.TogetherBottleChance)
+            var pier = 1 + together * _state.Hideout.PierRareBoost;
+            if (_state.Rng.NextDouble() < (_rules.BottleChance + _state.Perk(MuseumPerk.BottleChance) + together * _rules.TogetherBottleChance) * pier)
                 Hook(FishCatchKind.Bottle, string.Empty);
-            else if (!State.Album.ContainsKey(spot.Legend.Id) && _state.Rng.NextDouble() < _rules.LegendChance + _state.Perk(MuseumPerk.LegendChance) + together * _rules.TogetherLegendChance)
+            else if (!State.Album.ContainsKey(spot.Legend.Id) && _state.Rng.NextDouble() < (_rules.LegendChance + _state.Perk(MuseumPerk.LegendChance) + together * _rules.TogetherLegendChance) * pier)
                 Hook(FishCatchKind.Legend, spot.Legend.Id);
             else if (RiftWindow && _rules.RiftFish.Count > 0 && _state.Rng.NextDouble() < _rules.RiftChance)
                 Hook(FishCatchKind.Fish, Pick(_rules.RiftFish).Id);

@@ -170,6 +170,60 @@ namespace Game.Core.Ui
         public static string Masterpiece(Game.Core.Content.Items.ForgeMark mark) =>
             mark.Masters.Count == 0 ? string.Empty : Texts.Format("hideout.masterpiece", string.Join(", ", mark.Masters));
 
+        public static List<string> Dummy(HideoutState state, Game.Core.Content.Synergy.SynergyRules synergy, string ownClass)
+        {
+            var lines = new List<string>();
+            if (!state.DummyBuilt)
+            {
+                lines.Add(Texts.Get("hideout.dummy.none"));
+                return lines;
+            }
+            var mask = RoleMaskOf(synergy, ownClass);
+            foreach (var corner in state.Corners)
+                mask |= RoleMaskOf(synergy, corner.Hero);
+            var missing = new List<string>();
+            for (var index = 0; index < synergy.Roles.Count; index++)
+            {
+                var role = PartyCardText.Role(synergy.Roles[index]);
+                if ((mask & (1 << index)) == 0)
+                {
+                    missing.Add(role);
+                    continue;
+                }
+                var buffs = new List<string>();
+                foreach (var modifier in synergy.RoleBuffs[index])
+                    buffs.Add(Game.Core.Stats.ModifierText.Describe(modifier));
+                lines.Add(Texts.Format("hideout.dummy.role", role, string.Join(", ", buffs)));
+            }
+            if (lines.Count == 0)
+                lines.Add(Texts.Get("hideout.dummy.empty"));
+            if (missing.Count > 0)
+                lines.Add(Texts.Format("hideout.dummy.missing", string.Join(", ", missing)));
+            return lines;
+        }
+
+        private static int RoleMaskOf(Game.Core.Content.Synergy.SynergyRules synergy, string heroName) =>
+            HeroClassNames.ByName.TryGetValue(heroName, out var heroClass) ? synergy.RoleMaskOf(heroClass) : 0;
+
+        public static List<string> TrophyHall(HideoutState state)
+        {
+            var lines = new List<string>();
+            var trophies = state.Trophies;
+            if (!trophies.Built)
+            {
+                lines.Add(Texts.Get("hideout.trophies.none"));
+                return lines;
+            }
+            lines.Add(Texts.Format("hideout.trophies.guardians", trophies.Guardians, trophies.Bosses));
+            lines.Add(Texts.Format("hideout.trophies.rift", trophies.RiftDepth, trophies.Hours));
+            foreach (var feat in trophies.Feats)
+                lines.Add(Texts.Format("hideout.trophies.feat", PartyChronicleText.Feat(feat.Id), feat.Level));
+            return lines;
+        }
+
+        public static string Pier(HideoutState state) =>
+            state.PierRareBoost > 0 ? Texts.Format("hideout.pier", (int)System.Math.Round(state.PierRareBoost * 100)) : Texts.Get("hideout.pier.none");
+
         public static string AtTheFire(HideoutState state) =>
             state.Here.Count == 0 ? Texts.Get("hideout.fire.empty") : Texts.Format("hideout.fire", string.Join(", ", state.Here));
     }

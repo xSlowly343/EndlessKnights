@@ -437,3 +437,23 @@ test("two at the same station of a built workshop see each other and brew for ea
   assert.deepStrictEqual(left.crafts.cauldron, [], "a mark without a station leaves it");
   assert.throws(() => call("bob", "hideoutPresenceRpc", { here: true, craft: "anvil" }), /bad request/);
 });
+
+test("the trophy hall shows the guardians, the rift and the feats of the chronicle once it is built", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.chronicleUpdate(nk, group.id, (value) => {
+    value.stats.guardiansTogether = 4;
+    value.stats.bossesTogether = 1200;
+    value.stats.riftDepth = 31;
+    value.feats.old_guard = { level: 2, at: now };
+    value.feats.first_steps = { level: 0, at: now };
+  });
+  assert.strictEqual(at(nk, "ann", true, now).trophies, null, "no hall, no trophies");
+  built(nk, "ann", { trophy_hall: 1 });
+  const hall = at(nk, "ann", true, now + 1).trophies;
+  assert.strictEqual(hall.guardians, 4);
+  assert.strictEqual(hall.bosses, 1200);
+  assert.strictEqual(hall.riftDepth, 31);
+  assert.deepStrictEqual(plain(hall.feats), [{ id: "old_guard", level: 2 }]);
+});

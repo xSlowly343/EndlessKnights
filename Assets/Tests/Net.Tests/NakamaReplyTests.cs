@@ -362,6 +362,11 @@ namespace Game.Net.Tests
             var crafts = HideoutReply.From(NakamaJson.Parse("{\"tier\":5,\"here\":[],\"crafts\":{\"forge\":[\"Bob\"],\"cauldron\":[]}}"));
             Assert.That(crafts.ForgePartners, Is.EqualTo(new[] { "Bob" }));
             Assert.That(crafts.CauldronPartners, Is.Empty);
+            var hall = HideoutReply.From(NakamaJson.Parse("{\"tier\":7,\"here\":[],\"trophies\":{\"bosses\":1200,\"guardians\":4,\"riftDepth\":31,\"hours\":40,\"feats\":[{\"id\":\"old_guard\",\"level\":2}]}}"));
+            Assert.That(hall.TrophyGuardians, Is.EqualTo(4));
+            Assert.That(hall.TrophyRiftDepth, Is.EqualTo(31));
+            Assert.That(hall.TrophyFeats[0].Id, Is.EqualTo("old_guard"));
+            Assert.That(hall.TrophyFeats[0].Level, Is.EqualTo(2));
             Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"here\":[]}")).ForgePartners, Is.Empty);
             var commons = HideoutReply.From(NakamaJson.Parse("{\"tier\":3,\"here\":[],\"commons\":{\"together\":true,\"garden\":[{\"plant\":\"knockbloom\",\"share\":0.25,\"ready\":false,\"tended\":true},{\"plant\":\"\",\"share\":0,\"ready\":false,\"tended\":false}],"
                 + "\"owed\":{\"herb_knockbloom\":3},\"storage\":{\"ember_coal\":2},\"journal\":[{\"at\":1,\"name\":\"Ann\",\"item\":\"ember_coal\",\"amount\":-2}],\"takenToday\":2,\"takePerDay\":20}}"));
