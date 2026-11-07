@@ -22,5 +22,6 @@ namespace Game.Core.Sim
         public double BattleSeconds { get; set; }
         public double QuietSeconds { get; set; }
         public bool TeaOffered { get; set; }
+        public long UnsentActions { get; set; }
     }
 }

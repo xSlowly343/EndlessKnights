@@ -841,6 +841,7 @@ namespace Game.Core.Save
                 ("scheduledBy", OptionalText(peaceful.ScheduledBy)),
                 ("work", JsonValue.Array(work)),
                 ("teaPause", JsonValue.Of(peaceful.TeaPause)),
+                ("unsentActions", JsonValue.Of(peaceful.UnsentActions)),
                 ("battleSeconds", JsonValue.Of(peaceful.BattleSeconds)),
                 ("quietSeconds", JsonValue.Of(peaceful.QuietSeconds)),
                 ("teaOffered", JsonValue.Of(peaceful.TeaOffered)));
@@ -864,6 +865,7 @@ namespace Game.Core.Save
                 };
             }
             peaceful.TeaPause = node.Field("teaPause").AsBool();
+            peaceful.UnsentActions = node.HasField("unsentActions") ? node.Field("unsentActions").AsLong(0) : 0;
             peaceful.BattleSeconds = node.Field("battleSeconds").AsNumber(0, double.MaxValue);
             peaceful.QuietSeconds = node.Field("quietSeconds").AsNumber(0, double.MaxValue);
             peaceful.TeaOffered = node.Field("teaOffered").AsBool();
