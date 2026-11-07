@@ -37,7 +37,7 @@ namespace Game.Core.Tests.Sim
             Assert.Throws<ContentException>(() => TalentRules.Load(json.Replace("\"class\": \"golemancer\"", "\"class\": \"herbwitch\"")));
             Assert.Throws<ContentException>(() => TalentRules.Load(json.Replace("{ \"perk\": \"shorterTrips\", \"value\": 0.2 }", "{ \"perk\": \"shorterTrips\", \"value\": 0.9 }")));
             Assert.Throws<ContentException>(() => TalentRules.Load(json.Replace("{ \"perk\": \"shorterTrips\", \"value\": 0.2 }", "{ \"perk\": \"fasterHorses\", \"value\": 0.2 }")));
-            Assert.Throws<ContentException>(() => TalentRules.Load(json.Replace("\"waits\": \"bag\"", "\"waits\": \"bag\", \"perks\": [{ \"perk\": \"growFaster\", \"value\": 0.1 }]")));
+            Assert.Throws<ContentException>(() => TalentRules.Load(json.Replace("\"waits\": \"17.18\"", "\"waits\": \"17.18\", \"perks\": [{ \"perk\": \"growFaster\", \"value\": 0.1 }]")));
         }
 
         [Test]
@@ -53,6 +53,11 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Perk(MuseumPerk.ShorterTrips), Is.Zero);
             Assert.That(loop.State.Perk(MuseumPerk.GrowFaster), Is.EqualTo(0.15).Within(1e-9));
             Assert.That(loop.State.Perk(MuseumPerk.ExtraHerb), Is.EqualTo(1));
+
+            loop.State.Class = HeroClass.Golemancer;
+            loop.Tick();
+            Assert.That(loop.State.Perk(MuseumPerk.Reputation), Is.EqualTo(0.25).Within(1e-9));
+            Assert.That(loop.Talents.Current!.Works, Is.True);
 
             loop.State.ClassChosen = false;
             loop.Tick();
