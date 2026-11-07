@@ -32,7 +32,8 @@ namespace Game.Core.Sim
         NotAwakened,
         MaxStars,
         NoSouls,
-        NoIngredients
+        NoIngredients,
+        NoEssence
     }
 
     public sealed class CompanionSystem
@@ -595,6 +596,8 @@ namespace Game.Core.Sim
             progress.FedToday += experience;
             progress.FavouriteKnown = true;
             progress.Fed++;
+            if (IsFavourite(companion, food))
+                NoteFavouriteDay(companion);
             if (IsFavourite(companion, food) && progress.FavouriteBondsToday < _rules.Bond.FavouritePerDay + (int)Talent(companion, TalentEffect.FavouriteBond))
             {
                 progress.FavouriteBondsToday++;
@@ -703,6 +706,7 @@ namespace Game.Core.Sim
             var experience = expedition.Hours * share * _rules.ExperiencePerTripHour * OwnMultiplier(companion, OwnEffectKind.Experience);
             Gain(companion, experience);
             Teach(companion, experience);
+            NoteTripCircle(expedition, companion);
             NoteTripHours(expedition.Hours * share);
             Progress(companion).Trips++;
             AddBond(companion, _rules.Bond.TripPoints);
@@ -911,7 +915,7 @@ namespace Game.Core.Sim
 
         public int StarsOf(string companion) => State.Progress.TryGetValue(companion, out var progress) ? progress.Stars : 0;
 
-        public int MaxLevelOf(string companion) => _rules.MaxLevel + StarsOf(companion) * _rules.Stars.LevelsPerStar;
+        public int MaxLevelOf(string companion) => _rules.MaxLevel + StarsOf(companion) * _rules.Stars.LevelsPerStar + CircleLevels(companion);
 
         public double StarFactor(string companion) => 1 + StarsOf(companion) * _rules.Stars.TraitsPerStar;
 
@@ -1020,7 +1024,7 @@ namespace Game.Core.Sim
         public double TraitFactor(string companion)
         {
             var def = _rules.Companion(companion);
-            var factor = (def == null ? 1 : _rules.RarityFactor(def.Rarity)) * StarFactor(companion) * (1 + TreeStat(MenagerieStat.OwnTraits));
+            var factor = (def == null ? 1 : _rules.RarityFactor(def.Rarity)) * StarFactor(companion) * (1 + TreeStat(MenagerieStat.OwnTraits)) * (1 + CircleTraits(companion));
             if (State.Progress.TryGetValue(companion, out var progress) && progress.Coat.Length > 0)
                 factor *= 1 + (_rules.Coat(progress.Coat)?.TraitBonus ?? 0);
             return factor;
@@ -1394,6 +1398,169 @@ namespace Game.Core.Sim
                 }
             }
             return heir.Length > 0 ? heir : companion;
+        }
+
+        public string Shown
+        {
+            get
+            {
+                var shown = State.Shown;
+                return shown.Length > 0 && Known(shown) ? shown : _rules.Companions.Count > 0 ? _rules.Companions[0].Id : string.Empty;
+            }
+        }
+
+        public int CircleOf(string companion) => State.Progress.TryGetValue(companion, out var progress) ? progress.Circle : 0;
+
+        public CompanionCircle? NextCircle(string companion) => Awakened(companion) ? _rules.Circles.Circle(CircleOf(companion) + 1) : null;
+
+        public double CircleTraits(string companion)
+        {
+            var total = 0.0;
+            var circles = _rules.Circles.Circles;
+            var done = CircleOf(companion);
+            for (var i = 0; i < done && i < circles.Count; i++)
+                total += circles[i].Traits;
+            return total;
+        }
+
+        public int CircleLevels(string companion)
+        {
+            var total = 0;
+            var circles = _rules.Circles.Circles;
+            var done = CircleOf(companion);
+            for (var i = 0; i < done && i < circles.Count; i++)
+                total += circles[i].Levels;
+            return total;
+        }
+
+        public bool Unlocked(string companion, string unlock)
+        {
+            var circles = _rules.Circles.Circles;
+            var done = CircleOf(companion);
+            for (var i = 0; i < done && i < circles.Count; i++)
+            {
+                if (circles[i].Unlock == unlock)
+                    return true;
+            }
+            return false;
+        }
+
+        public double CircleProgress(string companion)
+        {
+            var next = NextCircle(companion);
+            if (next == null)
+                return 0;
+            return next.Trial switch
+            {
+                CircleTrial.Hearts => Hearts(companion),
+                CircleTrial.Stars => StarsOf(companion),
+                CircleTrial.BiomeTrophy => OwnTrophy(companion) ? next.Count : 0,
+                _ => State.Progress.TryGetValue(companion, out var progress) ? progress.CircleCount : 0
+            };
+        }
+
+        private bool OwnTrophy(string companion)
+        {
+            var def = _rules.Companion(companion);
+            var place = def == null ? null : _rules.BiomeOf(def.Biome);
+            return place != null && _state.Museum.Done.Contains(place.Collection);
+        }
+
+        public CompanionResult CanAdvanceCircle(string companion)
+        {
+            if (!Known(companion))
+                return CompanionResult.UnknownCompanion;
+            if (!Awakened(companion))
+                return CompanionResult.NotAwakened;
+            var next = NextCircle(companion);
+            if (next == null)
+                return CompanionResult.LastStage;
+            if (CircleProgress(companion) < next.Count)
+                return CompanionResult.Locked;
+            if (State.Essence < next.Essence)
+                return CompanionResult.NoEssence;
+            if (next.Blooms > 0 && _camp.Count(_rules.Bloom) < next.Blooms)
+                return CompanionResult.NoBlooms;
+            var def = _rules.Companion(companion);
+            var place = def == null ? null : _rules.BiomeOf(def.Biome);
+            if (next.Bones > 0 && (place == null || _camp.Count(place.Bone) < next.Bones))
+                return CompanionResult.NoBones;
+            return CompanionResult.Done;
+        }
+
+        public CompanionResult AdvanceCircle(string companion)
+        {
+            var result = CanAdvanceCircle(companion);
+            if (result != CompanionResult.Done)
+                return result;
+            var next = NextCircle(companion)!;
+            State.Essence -= next.Essence;
+            if (next.Blooms > 0)
+                _camp.Take(_rules.Bloom, next.Blooms);
+            if (next.Bones > 0)
+                _camp.Take(_rules.BiomeOf(_rules.Companion(companion)!.Biome)!.Bone, next.Bones);
+            var progress = Progress(companion);
+            progress.Circle++;
+            progress.CircleCount = 0;
+            progress.CircleDay = -1;
+            ApplyPerks();
+            _events.Add(GameEvent.ForStage(GameEventKind.CompanionEvolved, _state.Tick, progress.Stage));
+            return CompanionResult.Done;
+        }
+
+        public void NoteCircle(string companion, CircleTrial trial, double amount)
+        {
+            if (NextCircle(companion)?.Trial != trial)
+                return;
+            Progress(companion).CircleCount += amount;
+        }
+
+        private void NoteTripCircle(Expedition expedition, string companion)
+        {
+            var next = NextCircle(companion);
+            if (next == null)
+                return;
+            if (next.Trial == CircleTrial.Trips || (next.Trial == CircleTrial.OwnBiomeTrips && _rules.Companion(companion)?.Biome == expedition.Biome)
+                || (next.Trial == CircleTrial.FamilyPack && OneFamily(expedition)))
+                Progress(companion).CircleCount++;
+        }
+
+        private void NoteFavouriteDay(string companion)
+        {
+            if (NextCircle(companion)?.Trial != CircleTrial.FavouriteDays)
+                return;
+            var progress = Progress(companion);
+            if (progress.CircleDay == State.Day)
+                return;
+            progress.CircleCount = progress.CircleDay >= 0 && progress.CircleDay == State.Day - 1 ? progress.CircleCount + 1 : 1;
+            progress.CircleDay = State.Day;
+        }
+
+        public void NoteBurrow(string companion, int floors)
+        {
+            if (NextCircle(companion)?.Trial != CircleTrial.BurrowFloor)
+                return;
+            var progress = Progress(companion);
+            progress.CircleCount = System.Math.Max(progress.CircleCount, floors);
+        }
+
+        public void HostDefeated(string biome)
+        {
+            var companion = Shown;
+            var def = _rules.Companion(companion);
+            if (def == null || def.Biome != biome || !Awakened(companion))
+                return;
+            NoteCircle(companion, CircleTrial.HostKills, 1);
+            if (State.HostEssenceDays.TryGetValue(biome, out var day) && day == State.Day)
+                return;
+            State.HostEssenceDays[biome] = State.Day;
+            State.Essence += _rules.Circles.HostEssence;
+        }
+
+        public void RepeatAfterStars(string companion)
+        {
+            if (StarsOf(companion) >= _rules.Stars.MaxStars)
+                State.Essence += _rules.Circles.RepeatEssence;
         }
 
         public bool AtHome(string companion) => State.Home.Contains(companion);

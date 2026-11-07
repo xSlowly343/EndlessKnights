@@ -819,7 +819,7 @@ namespace Game.Core.Save
                     ("bond", JsonValue.Of(progress.Bond)), ("petsToday", JsonValue.Of(progress.PetsToday)), ("favouriteBondsToday", JsonValue.Of(progress.FavouriteBondsToday)),
                     ("friendPetsToday", JsonValue.Of(progress.FriendPetsToday)), ("name", OptionalText(progress.Name)), ("accessory", OptionalText(progress.Accessory)), ("coat", OptionalText(progress.Coat)), ("stars", JsonValue.Of(progress.Stars)), ("form", OptionalText(progress.Form)), ("forms", WriteIdList(progress.Forms)), ("ownSparks", JsonValue.Of(progress.OwnSparks)), ("trips", JsonValue.Of(progress.Trips)), ("instantDay", JsonValue.Of(progress.InstantDay)), ("treat", OptionalText(progress.Treat)), ("delicacyDay", JsonValue.Of(progress.DelicacyDay)), ("firstTripDay", JsonValue.Of(progress.FirstTripDay)), ("story", JsonValue.Of(progress.Story)),
                     ("talents", WriteIdList(talents)), ("freeResetDay", JsonValue.Of(progress.FreeResetDay)), ("forageSeconds", JsonValue.Of(progress.ForageSeconds)), ("forages", JsonValue.Of(progress.Forages)),
-                    ("temper", OptionalText(progress.Temper)), ("student", OptionalText(progress.Student)), ("temperFreeDay", JsonValue.Of(progress.TemperFreeDay)));
+                    ("temper", OptionalText(progress.Temper)), ("student", OptionalText(progress.Student)), ("circle", JsonValue.Of(progress.Circle)), ("circleCount", JsonValue.Of(progress.CircleCount)), ("circleDay", JsonValue.Of(progress.CircleDay)), ("temperFreeDay", JsonValue.Of(progress.TemperFreeDay)));
             }
             var owned = new List<string>(companions.Owned);
             owned.Sort(System.StringComparer.Ordinal);
@@ -828,7 +828,7 @@ namespace Game.Core.Save
                 eggs[i] = Object(("biome", JsonValue.Of(companions.Eggs[i].Biome)), ("secondsLeft", JsonValue.Of(companions.Eggs[i].SecondsLeft)));
             return Object(("day", JsonValue.Of(companions.Day)), ("home", WriteIdList(companions.Home)), ("owned", WriteIdList(owned)),
                 ("eggs", JsonValue.Array(eggs)), ("eggCooldown", JsonValue.Of(companions.EggCooldown)), ("sparks", JsonValue.Of(companions.Sparks)),
-                ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)),
+                ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)), ("essence", JsonValue.Of(companions.Essence)), ("hostEssenceDays", WriteNumberMap(companions.HostEssenceDays)),
                 ("gear", WriteCompanionGear(companions.Gear)), ("nextGearId", JsonValue.Of(companions.NextGearId)),
                 ("boardDay", JsonValue.Of(companions.BoardDay)), ("board", WriteIdList(companions.Board)), ("boardDone", WriteIdList(companions.BoardDone)), ("rerolls", JsonValue.Of(companions.Rerolls)),
                 ("helper", OptionalText(companions.Helper)), ("helpGuild", OptionalText(companions.HelpGuild)), ("helpSeconds", JsonValue.Of(companions.HelpSeconds)), ("burrowWeek", JsonValue.Of(companions.BurrowWeek)),
@@ -917,6 +917,9 @@ namespace Game.Core.Save
                     ForageSeconds = item.HasField("forageSeconds") ? item.Field("forageSeconds").AsNumber(0, double.MaxValue) : 0,
                     Temper = ReadOptionalText(item, "temper"),
                     Student = ReadOptionalText(item, "student"),
+                    Circle = item.HasField("circle") ? item.Field("circle").AsInt(0, 100) : 0,
+                    CircleCount = item.HasField("circleCount") ? item.Field("circleCount").AsNumber(0, double.MaxValue) : 0,
+                    CircleDay = item.HasField("circleDay") ? item.Field("circleDay").AsLong(-1) : -1,
                     TemperFreeDay = item.HasField("temperFreeDay") ? item.Field("temperFreeDay").AsLong(-1) : -1,
                     Forages = item.HasField("forages") ? item.Field("forages").AsLong(0) : 0
                 };
@@ -946,6 +949,11 @@ namespace Game.Core.Save
             companions.Souls = node.HasField("souls") ? node.Field("souls").AsLong(0) : 0;
             companions.SoulHours = node.HasField("soulHours") ? node.Field("soulHours").AsNumber(0, 1e9) : 0;
             companions.SoulHostDay = node.HasField("soulHostDay") ? node.Field("soulHostDay").AsLong() : -1;
+            companions.Essence = node.HasField("essence") ? node.Field("essence").AsLong(0) : 0;
+            companions.HostEssenceDays.Clear();
+            if (node.HasField("hostEssenceDays"))
+                foreach (var host in node.Field("hostEssenceDays").Items())
+                    companions.HostEssenceDays[host.Field("id").AsString()] = host.Field("value").AsNumber(-1, double.MaxValue);
             if (node.HasField("gear"))
                 ReadCompanionGear(node.Field("gear"), companions);
             companions.NextGearId = node.HasField("nextGearId") ? node.Field("nextGearId").AsInt(1) : 1;

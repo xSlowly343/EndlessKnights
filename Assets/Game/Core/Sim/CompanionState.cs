@@ -37,6 +37,9 @@ namespace Game.Core.Sim
         public long Forages { get; set; }
         public string Temper { get; set; } = string.Empty;
         public string Student { get; set; } = string.Empty;
+        public int Circle { get; set; }
+        public double CircleCount { get; set; }
+        public long CircleDay { get; set; } = -1;
         public long TemperFreeDay { get; set; } = -1;
     }
 
@@ -73,6 +76,8 @@ namespace Game.Core.Sim
         public long RewindDay { get; set; } = -1;
         public double SoulHours { get; set; }
         public long SoulHostDay { get; set; } = -1;
+        public long Essence { get; set; }
+        public Dictionary<string, double> HostEssenceDays { get; } = new Dictionary<string, double>(System.StringComparer.Ordinal);
         public long Day { get; set; } = -1;
         public List<string> Home { get; } = new List<string>();
         public HashSet<string> Owned { get; } = new HashSet<string>(OwnedCapacity, System.StringComparer.Ordinal);

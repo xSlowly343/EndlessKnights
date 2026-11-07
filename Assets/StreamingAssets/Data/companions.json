@@ -7902,5 +7902,209 @@
     "minStars": 1,
     "studentMaxLevel": 20,
     "share": 0.3
+  },
+  "circles": {
+    "essence": {
+      "burrowFloors": [
+        5,
+        8,
+        12,
+        16,
+        20
+      ],
+      "host": 1,
+      "repeat": 25
+    },
+    "list": [
+      {
+        "trial": {
+          "kind": "ownBiomeTrips",
+          "count": 10
+        },
+        "cost": {
+          "essence": 10
+        },
+        "reward": {
+          "traits": 0.05
+        }
+      },
+      {
+        "trial": {
+          "kind": "favouriteDays",
+          "count": 5
+        },
+        "cost": {
+          "essence": 15
+        },
+        "reward": {
+          "traits": 0.05
+        }
+      },
+      {
+        "trial": {
+          "kind": "hearts",
+          "count": 7
+        },
+        "cost": {
+          "essence": 20
+        },
+        "reward": {
+          "traits": 0.05,
+          "unlock": "path"
+        }
+      },
+      {
+        "trial": {
+          "kind": "burrowFloor",
+          "count": 3
+        },
+        "cost": {
+          "essence": 30,
+          "blooms": 1
+        },
+        "reward": {}
+      },
+      {
+        "trial": {
+          "kind": "biomeTrophy",
+          "count": 1
+        },
+        "cost": {
+          "essence": 40,
+          "blooms": 1
+        },
+        "reward": {}
+      },
+      {
+        "trial": {
+          "kind": "familyPack",
+          "count": 1
+        },
+        "cost": {
+          "essence": 50,
+          "blooms": 1
+        },
+        "reward": {
+          "unlock": "fork1"
+        }
+      },
+      {
+        "trial": {
+          "kind": "hostKills",
+          "count": 20
+        },
+        "cost": {
+          "essence": 70,
+          "bones": 3
+        },
+        "reward": {}
+      },
+      {
+        "trial": {
+          "kind": "trips",
+          "count": 30
+        },
+        "cost": {
+          "essence": 90,
+          "bones": 3
+        },
+        "reward": {}
+      },
+      {
+        "trial": {
+          "kind": "stars",
+          "count": 3
+        },
+        "cost": {
+          "essence": 110,
+          "bones": 3
+        },
+        "reward": {
+          "unlock": "fork2"
+        }
+      },
+      {
+        "trial": {
+          "kind": "farTrips",
+          "count": 5
+        },
+        "cost": {
+          "essence": 150,
+          "blooms": 1
+        },
+        "reward": {
+          "levels": 4,
+          "unlock": "ability"
+        }
+      },
+      {
+        "trial": {
+          "kind": "hearts",
+          "count": 10
+        },
+        "cost": {
+          "essence": 180,
+          "blooms": 1
+        },
+        "reward": {
+          "levels": 3
+        }
+      },
+      {
+        "trial": {
+          "kind": "stars",
+          "count": 5
+        },
+        "cost": {
+          "essence": 220,
+          "blooms": 1
+        },
+        "reward": {
+          "levels": 3,
+          "unlock": "fork3"
+        }
+      },
+      {
+        "trial": {
+          "kind": "colossus",
+          "count": 1
+        },
+        "cost": {
+          "essence": 300,
+          "blooms": 5
+        },
+        "reward": {
+          "levels": 3,
+          "unlock": "colossus"
+        }
+      },
+      {
+        "trial": {
+          "kind": "colossus",
+          "count": 2
+        },
+        "cost": {
+          "essence": 400,
+          "blooms": 5
+        },
+        "reward": {
+          "levels": 3
+        }
+      },
+      {
+        "trial": {
+          "kind": "colossus",
+          "count": 3
+        },
+        "cost": {
+          "essence": 500,
+          "blooms": 5
+        },
+        "reward": {
+          "levels": 4,
+          "unlock": "hall"
+        }
+      }
+    ]
   }
 }

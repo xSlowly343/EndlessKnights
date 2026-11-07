@@ -58,6 +58,7 @@ namespace Game.Core.Sim
                 if (gameEvent.Kind != GameEventKind.BossDefeated || gameEvent.Enemy?.Type != EnemyType.Guardian)
                     continue;
                 _companions.NoteHost(_companions.State.Day);
+                _companions.HostDefeated(gameEvent.Enemy.Biome);
                 if (State.EggCooldown > 0)
                     continue;
                 if (EggCompanion(gameEvent.Enemy.Biome).Length == 0 || _state.Rng.NextDouble() >= Rules.Chance)
@@ -141,7 +142,10 @@ namespace Game.Core.Sim
                 return;
             }
             if (companion.Length > 0)
+            {
+                _companions.RepeatAfterStars(companion);
                 _companions.Progress(_companions.SparkHeir(companion)).OwnSparks++;
+            }
             State.Sparks++;
             _events.Add(GameEvent.ForStage(GameEventKind.CompanionSpark, _state.Tick, State.Sparks));
         }
