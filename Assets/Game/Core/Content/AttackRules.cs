@@ -13,6 +13,10 @@ namespace Game.Core.Content
         public IReadOnlyList<double> WeaponRarity { get; private set; } = Array.Empty<double>();
         public double GearAttribute { get; private set; }
         public IReadOnlyList<double> GearRarity { get; private set; } = Array.Empty<double>();
+        public double QualityDamage { get; private set; }
+        public long QualityRerollShards { get; private set; }
+
+        public double QualityBonus(int quality) => System.Math.Max(0, System.Math.Min(100, quality)) / 100.0 * QualityDamage;
 
         public double BaseAttack => System.Math.Sqrt(BaseAttribute * BaseWeaponDamage / Divisor);
 
@@ -36,7 +40,9 @@ namespace Game.Core.Content
             PerItemLevel = node.Field("perItemLevel").AsNumber(1, 2),
             WeaponRarity = Table(node.Field("weaponRarity")),
             GearAttribute = node.Field("gearAttribute").AsNumber(0, 1e9),
-            GearRarity = Table(node.Field("gearRarity"))
+            GearRarity = Table(node.Field("gearRarity")),
+            QualityDamage = node.Field("qualityDamage").AsNumber(0, 10),
+            QualityRerollShards = node.Field("qualityRerollShards").AsLong(0)
         };
 
         private static IReadOnlyList<double> Table(ContentNode node)

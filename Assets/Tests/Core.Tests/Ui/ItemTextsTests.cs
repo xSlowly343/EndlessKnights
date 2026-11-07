@@ -53,8 +53,8 @@ namespace Game.Core.Tests.Ui
         {
             var text = ItemTexts.Affixes(new[] { Affix("armor_damage", 4, 0.6) });
 
-            Assert.That(text, Is.EqualTo("T0 +26% урон (19–31)"));
-            Assert.That(ItemTexts.Affixes(new[] { Affix("armor_damage", 1, 0) }), Is.EqualTo("T3 +3% урон (3–6)"));
+            Assert.That(text, Is.EqualTo("T0 +26% сила атаки (19–31)"));
+            Assert.That(ItemTexts.Affixes(new[] { Affix("armor_damage", 1, 0) }), Is.EqualTo("T3 +3% сила атаки (3–6)"));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace Game.Core.Tests.Ui
             var after = new[] { before[0], Affix("armor_crit_power", 4, 1) };
             var offer = new RerollOffer(null, null, before, after, 0, 360);
 
-            Assert.That(ItemTexts.Affixes(before, 0), Does.StartWith("[закреплено] T0 +19% урон"));
+            Assert.That(ItemTexts.Affixes(before, 0), Does.StartWith("[закреплено] T0 +19% сила атаки"));
             Assert.That(ItemTexts.Offer(offer), Does.EndWith("(было 36)"));
             Assert.That(ItemTexts.Offer(offer), Does.StartWith("[закреплено]"));
         }

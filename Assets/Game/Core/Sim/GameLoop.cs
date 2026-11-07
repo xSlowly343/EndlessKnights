@@ -192,6 +192,7 @@ namespace Game.Core.Sim
             };
             _drops.GuardianKilled = _facets.NoteGuardian;
             _quests.DailyClaimed = _facets.NoteDailyClaim;
+            _forge.Attack = data.Combat.Attack;
             _drops.Salvaged = drop =>
             {
                 _forge.SalvageOre(drop);

@@ -33,7 +33,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void ALineWithATargetBecomesACoopModifierThatTheSameJsonFindsAgain()
         {
-            var json = @"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.04, ""when"": ""boss"",
+            var json = @"{ ""to"": ""party"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.04, ""when"": ""boss"",
                 ""per"": { ""signal"": ""resourceFill"", ""step"": 0.1, ""cap"": 5 } }";
             var first = Line(json);
             var second = Line(json);
@@ -49,14 +49,14 @@ namespace Game.Core.Tests.Party
             Assert.That((line.PerSignal, line.PerStep, line.PerCap), Is.EqualTo((CoopSignal.ResourceFill, 0.1d, 5)));
         }
 
-        [TestCase(@"{ ""to"": ""enemy"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1 }", "enemy line")]
+        [TestCase(@"{ ""to"": ""enemy"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.1 }", "enemy line")]
         [TestCase(@"{ ""to"": ""party"", ""stat"": ""damageTaken"", ""kind"": ""flat"", ""value"": 0.1 }", "goes only to the enemy")]
-        [TestCase(@"{ ""to"": ""crowd"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1 }", "unknown party buff target")]
-        [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""per"": { ""signal"": ""crit"", ""step"": 1, ""cap"": 3 } }", "events go to 'after'")]
-        [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""after"": { ""signal"": ""combo"", ""seconds"": 3 } }", "gauges go to 'per'")]
-        [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""after"": { ""signal"": ""dance"", ""seconds"": 3 } }", "unknown party buff signal")]
-        [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""tags"": [""Strike""] }", "no tags or skill")]
-        [TestCase(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1, ""while"": ""crit"" }", "'while' holds on a gauge")]
+        [TestCase(@"{ ""to"": ""crowd"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.1 }", "unknown party buff target")]
+        [TestCase(@"{ ""to"": ""party"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.1, ""per"": { ""signal"": ""crit"", ""step"": 1, ""cap"": 3 } }", "events go to 'after'")]
+        [TestCase(@"{ ""to"": ""party"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.1, ""after"": { ""signal"": ""combo"", ""seconds"": 3 } }", "gauges go to 'per'")]
+        [TestCase(@"{ ""to"": ""party"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.1, ""after"": { ""signal"": ""dance"", ""seconds"": 3 } }", "unknown party buff signal")]
+        [TestCase(@"{ ""to"": ""party"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.1, ""tags"": [""Strike""] }", "no tags or skill")]
+        [TestCase(@"{ ""to"": ""party"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.1, ""while"": ""crit"" }", "'while' holds on a gauge")]
         public void AWrongLineIsRefusedOnLoad(string json, string problem)
         {
             var error = Assert.Throws<ContentException>(() => Line(json));
@@ -76,8 +76,8 @@ namespace Game.Core.Tests.Party
         public void APartyLineBuffsTheHeroAndIsOfferedToAllies()
         {
             var (buffs, _, hero) = Giver();
-            hero.Add(Line(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1 }"));
-            var damage = IndexOf("damage", ModifierKind.Increased);
+            hero.Add(Line(@"{ ""to"": ""party"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.1 }"));
+            var damage = IndexOf("attackPower", ModifierKind.Increased);
             var before = hero.Value(CombatStats.Damage, 1);
 
             buffs.Tick();
@@ -101,7 +101,7 @@ namespace Game.Core.Tests.Party
             buffs.Tick();
 
             Assert.That(buffs.CoopOffered(IndexOf("gold", ModifierKind.Increased)), Is.EqualTo(0.1).Within(1e-9));
-            Assert.That(buffs.CoopOffered(IndexOf("damage", ModifierKind.Increased)), Is.EqualTo(0.04).Within(1e-9));
+            Assert.That(buffs.CoopOffered(IndexOf("attackPower", ModifierKind.Increased)), Is.EqualTo(0.04).Within(1e-9));
         }
 
         [Test]
@@ -125,8 +125,8 @@ namespace Game.Core.Tests.Party
         public void ThePathModeSplitsThePartyLine(PartyGiveMode mode, double self, double allies)
         {
             var (buffs, _, hero) = Giver(mode: mode);
-            hero.Add(Line(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.1 }"));
-            var damage = IndexOf("damage", ModifierKind.Increased);
+            hero.Add(Line(@"{ ""to"": ""party"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.1 }"));
+            var damage = IndexOf("attackPower", ModifierKind.Increased);
 
             buffs.Tick();
 
@@ -359,10 +359,10 @@ namespace Game.Core.Tests.Party
         public void ALineReadsAsWhoGetsWhatAndWhen()
         {
             Texts.UseLanguage("ru");
-            var party = Line(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.04, ""after"": { ""signal"": ""crit"", ""seconds"": 5, ""stacks"": 3 } }");
+            var party = Line(@"{ ""to"": ""party"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.04, ""after"": { ""signal"": ""crit"", ""seconds"": 5, ""stacks"": 3 } }");
             var enemy = Line(@"{ ""to"": ""enemy"", ""stat"": ""damageTaken"", ""kind"": ""flat"", ""value"": 0.06 }");
 
-            Assert.That(ModifierText.Describe(party), Is.EqualTo("себе и отряду: +4% урон после события «крит» на 5 с, до 3 стаков"));
+            Assert.That(ModifierText.Describe(party), Is.EqualTo("себе и отряду: +4% сила атаки после события «крит» на 5 с, до 3 стаков"));
             Assert.That(ModifierText.Describe(enemy), Is.EqualTo("общий враг: +6% получаемый урон"));
         }
 
@@ -407,7 +407,7 @@ namespace Game.Core.Tests.Party
             if (System.GC.GetAllocatedBytesForCurrentThread() - probeBefore < probe.Length)
                 Assert.Ignore("This runtime does not report allocated bytes per thread.");
             var (buffs, state, hero) = Giver();
-            hero.Add(Line(@"{ ""to"": ""party"", ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.03, ""after"": { ""signal"": ""crit"", ""seconds"": 0.5, ""stacks"": 4 } }"));
+            hero.Add(Line(@"{ ""to"": ""party"", ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.03, ""after"": { ""signal"": ""crit"", ""seconds"": 0.5, ""stacks"": 4 } }"));
             hero.Add(Line(@"{ ""to"": ""allies"", ""stat"": ""gold"", ""kind"": ""increased"", ""value"": 0.03, ""per"": { ""signal"": ""resourceFill"", ""step"": 0.2, ""cap"": 5 } }"));
             for (var i = 0; i < 50; i++)
             {

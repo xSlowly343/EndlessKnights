@@ -56,7 +56,7 @@ namespace Game.Core.Tests.Text
 
             Assert.That(BookTexts.EmptyRow, Is.EqualTo("empty"));
             Assert.That(BookTexts.Locked(10), Is.EqualTo("Unlocks after the stage 10 guardian"));
-            Assert.That(ModifierText.Describe(new Modifier(CombatStats.Damage, ModifierKind.More, 0.2, StatTags.Strike)), Is.EqualTo("+20% more damage from keys"));
+            Assert.That(ModifierText.Describe(new Modifier(CombatStats.Damage, ModifierKind.More, 0.2, StatTags.Strike)), Is.EqualTo("+20% more attack power from keys"));
             Assert.That(OfflineReport.Duration(3900), Is.EqualTo("1 h 5 min"));
             Assert.That(PanelSections.Title(PanelSection.Stats), Is.EqualTo("Statistics"));
         }

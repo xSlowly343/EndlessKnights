@@ -22,10 +22,10 @@
   ],
   "levels": [
     { "points": 500, "name": { "ru": "Костёр", "en": "Campfire" }, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.01, "tags": ["Gold"] }] },
-    { "points": 1500, "name": { "ru": "Пиршественный стол", "en": "Feast table" }, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.01 }] },
+    { "points": 1500, "name": { "ru": "Пиршественный стол", "en": "Feast table" }, "modifiers": [{ "stat": "attackPower", "kind": "increased", "value": 0.01 }] },
     { "points": 4000, "name": { "ru": "Навесы", "en": "Awnings" }, "modifiers": [{ "stat": "focusGain", "kind": "increased", "value": 0.02 }] },
-    { "points": 9000, "name": { "ru": "Частокол", "en": "Palisade" }, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.01, "tags": ["Gold"] }, { "stat": "damage", "kind": "increased", "value": 0.01 }] },
-    { "points": 20000, "name": { "ru": "Большой костёр", "en": "Great bonfire" }, "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.02 }] }
+    { "points": 9000, "name": { "ru": "Частокол", "en": "Palisade" }, "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.01, "tags": ["Gold"] }, { "stat": "attackPower", "kind": "increased", "value": 0.01 }] },
+    { "points": 20000, "name": { "ru": "Большой костёр", "en": "Great bonfire" }, "modifiers": [{ "stat": "attackPower", "kind": "increased", "value": 0.02 }] }
   ],
   "feast": {
     "fromLevel": 2,
@@ -33,6 +33,6 @@
     "minDishes": 5,
     "maxDishes": 20,
     "perMemberWeekly": 3,
-    "modifiers": [{ "stat": "damage", "kind": "increased", "value": 0.03 }, { "stat": "gold", "kind": "increased", "value": 0.03, "tags": ["Gold"] }]
+    "modifiers": [{ "stat": "attackPower", "kind": "increased", "value": 0.03 }, { "stat": "gold", "kind": "increased", "value": 0.03, "tags": ["Gold"] }]
   }
 }

@@ -14,11 +14,11 @@ namespace Game.Core.Tests.Build
     {
         private const string Trait = @"""trait"": {
             ""levels"": [
-                { ""modifiers"": [{ ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.01 }] },
-                { ""modifiers"": [{ ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.02 }] },
-                { ""modifiers"": [{ ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.03 }] },
-                { ""modifiers"": [{ ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.04 }] },
-                { ""modifiers"": [{ ""stat"": ""damage"", ""kind"": ""increased"", ""value"": 0.05 }] }
+                { ""modifiers"": [{ ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.01 }] },
+                { ""modifiers"": [{ ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.02 }] },
+                { ""modifiers"": [{ ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.03 }] },
+                { ""modifiers"": [{ ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.04 }] },
+                { ""modifiers"": [{ ""stat"": ""attackPower"", ""kind"": ""increased"", ""value"": 0.05 }] }
             ],
             ""party"": [{ ""stat"": ""partyDamage"", ""kind"": ""flat"", ""value"": 0.12 }],
             ""forks"": [

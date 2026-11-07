@@ -116,7 +116,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void ThePartyHitsHarderWhileTheBreachIsOpen()
         {
-            var (loop, _) = Hero(Flat(DuelistStats.BreachLunge, 2), CoopStatNames.Line("{ 'to': 'party', 'stat': 'damage', 'kind': 'increased', 'value': 0.12, 'while': 'breachOpen' }"));
+            var (loop, _) = Hero(Flat(DuelistStats.BreachLunge, 2), CoopStatNames.Line("{ 'to': 'party', 'stat': 'attackPower', 'kind': 'increased', 'value': 0.12, 'while': 'breachOpen' }"));
             var damage = TestWorld.Data.Party.Buffs.Coop.IndexOf(CombatStats.Damage, ModifierKind.Increased);
             Cast(loop, "duelist_path_1");
             loop.Tick();
@@ -306,7 +306,7 @@ namespace Game.Core.Tests.Sim
         public void APublicDuelRaisesThePartyInsteadOfStriking()
         {
             var (loop, input) = Hero(Flat(DuelistStats.TouchePower, 10), Flat(DuelistStats.TouchePublic, 1),
-                CoopStatNames.Line("{ 'to': 'party', 'stat': 'damage', 'kind': 'increased', 'value': 0.3, 'after': { 'signal': 'touche', 'seconds': 5 } }"));
+                CoopStatNames.Line("{ 'to': 'party', 'stat': 'attackPower', 'kind': 'increased', 'value': 0.3, 'after': { 'signal': 'touche', 'seconds': 5 } }"));
             ReadyTouche(loop);
 
             var hit = Hit(loop, input);

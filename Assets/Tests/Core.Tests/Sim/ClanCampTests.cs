@@ -42,7 +42,7 @@ namespace Game.Core.Tests.Sim
             var json = TestData.ReadGameDataFile(ClanCampRules.FileName);
             Assert.Throws<ContentException>(() => ClanCampRules.Load(json.Replace("\"points\": 1500,", "\"points\": 400,")));
             Assert.Throws<ContentException>(() => ClanCampRules.Load(json.Replace("{ \"item\": \"herb_windwort\", \"points\": 1 }", "{ \"item\": \"herb_knockbloom\", \"points\": 1 }")));
-            Assert.Throws<ContentException>(() => ClanCampRules.Load(json.Replace("{ \"stat\": \"damage\", \"kind\": \"increased\", \"value\": 0.03 }", "{ \"stat\": \"damage\", \"kind\": \"more\", \"value\": 0.03 }")));
+            Assert.Throws<ContentException>(() => ClanCampRules.Load(json.Replace("{ \"stat\": \"attackPower\", \"kind\": \"increased\", \"value\": 0.03 }", "{ \"stat\": \"attackPower\", \"kind\": \"more\", \"value\": 0.03 }")));
         }
 
         [Test]

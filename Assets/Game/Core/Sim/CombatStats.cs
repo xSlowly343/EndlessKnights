@@ -4,7 +4,7 @@ namespace Game.Core.Sim
 {
     public static class CombatStats
     {
-        public static readonly StatId Damage = new StatId("damage");
+        public static readonly StatId Damage = new StatId("attackPower");
         public static readonly StatId CritChance = new StatId("critChance");
         public static readonly StatId CritMultiplier = new StatId("critMultiplier");
         public static readonly StatId OvercritMultiplier = new StatId("overcritMultiplier");
@@ -16,6 +16,7 @@ namespace Game.Core.Sim
         public static readonly StatId WeaponDamage = new StatId("weaponDamage");
         public static readonly StatId ItemAttribute = new StatId("itemAttribute");
         public static readonly StatId FlatAttack = new StatId("flatAttack");
+        public static readonly StatId AdditionalDamage = new StatId("additionalDamage");
         public static readonly StatId Gold = new StatId("gold");
         public static readonly StatId FocusGain = new StatId("focusGain");
         public static readonly StatId FocusMultiplier = new StatId("focusMultiplier");

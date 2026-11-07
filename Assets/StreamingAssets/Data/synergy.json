@@ -2,13 +2,13 @@
   "version": 1,
   "roles": {"runedancer": "striker", "duelist": "striker", "windshot": "striker", "shardcaller": "breaker", "alchemist": "breaker", "minstrel": "herald", "lanternbearer": "herald", "whisperer": "hexer", "cartomancer": "hexer", "mothcaller": "blighter", "herbwitch": "blighter", "soulbinder": "summoner", "ghostcaptain": "summoner", "golemancer": "summoner", "clockwright": "timekeeper", "sandwalker": "timekeeper", "dowser": "seeker", "dreamcatcher": "seeker"},
   "roleBuffs": {
-    "striker": [{"stat": "damage", "kind": "more", "value": 0.07}],
-    "breaker": [{"stat": "damage", "kind": "more", "value": 0.05}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.12}],
-    "herald": [{"stat": "damage", "kind": "more", "value": 0.05}, {"stat": "auraEffect", "kind": "increased", "value": 0.15}],
-    "hexer": [{"stat": "damage", "kind": "more", "value": 0.05}, {"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.2}],
-    "blighter": [{"stat": "damage", "kind": "more", "value": 0.05}, {"stat": "dotDamage", "kind": "increased", "value": 0.15}],
-    "summoner": [{"stat": "damage", "kind": "more", "value": 0.05}, {"stat": "minionSeconds", "kind": "increased", "value": 0.3}],
-    "timekeeper": [{"stat": "damage", "kind": "more", "value": 0.05}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 3}],
-    "seeker": [{"stat": "damage", "kind": "more", "value": 0.05}, {"stat": "gold", "kind": "increased", "value": 0.15, "tags": ["Gold"]}, {"stat": "gemExperience", "kind": "increased", "value": 0.1}]
+    "striker": [{"stat": "attackPower", "kind": "more", "value": 0.07}],
+    "breaker": [{"stat": "attackPower", "kind": "more", "value": 0.05}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.12}],
+    "herald": [{"stat": "attackPower", "kind": "more", "value": 0.05}, {"stat": "auraEffect", "kind": "increased", "value": 0.15}],
+    "hexer": [{"stat": "attackPower", "kind": "more", "value": 0.05}, {"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.2}],
+    "blighter": [{"stat": "attackPower", "kind": "more", "value": 0.05}, {"stat": "dotDamage", "kind": "increased", "value": 0.15}],
+    "summoner": [{"stat": "attackPower", "kind": "more", "value": 0.05}, {"stat": "minionSeconds", "kind": "increased", "value": 0.3}],
+    "timekeeper": [{"stat": "attackPower", "kind": "more", "value": 0.05}, {"stat": "bossTimerSeconds", "kind": "flat", "value": 3}],
+    "seeker": [{"stat": "attackPower", "kind": "more", "value": 0.05}, {"stat": "gold", "kind": "increased", "value": 0.15, "tags": ["Gold"]}, {"stat": "gemExperience", "kind": "increased", "value": 0.1}]
   }
 }

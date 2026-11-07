@@ -66,7 +66,7 @@
       "trait": {
         "partyText": {"ru": "За каждый кинжал вихря отряд бьёт сильнее и чаще бьёт дважды; пока вихрь на пределе, откаты отряда быстрее", "en": "Each whirling dagger makes the party hit harder and hit twice more often; while the whirl is full, the party's cooldowns are faster"},
         "levels": [
-          {"modifiers": [{"stat": "whirlDamage", "kind": "flat", "value": 0.1}, {"stat": "whirlLinger", "kind": "flat", "value": 3}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.004, "per": {"signal": "whirlBlades", "step": 1, "cap": 10}}, {"to": "party", "stat": "doubleHitChance", "kind": "flat", "value": 0.005, "per": {"signal": "whirlBlades", "step": 1, "cap": 10}}]},
+          {"modifiers": [{"stat": "whirlDamage", "kind": "flat", "value": 0.1}, {"stat": "whirlLinger", "kind": "flat", "value": 3}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.004, "per": {"signal": "whirlBlades", "step": 1, "cap": 10}}, {"to": "party", "stat": "doubleHitChance", "kind": "flat", "value": 0.005, "per": {"signal": "whirlBlades", "step": 1, "cap": 10}}]},
           {"modifiers": [{"stat": "whirlLinger", "kind": "flat", "value": 0.5}]},
           {"modifiers": [{"stat": "whirlLinger", "kind": "flat", "value": 0.5}]},
           {"modifiers": [{"stat": "whirlLinger", "kind": "flat", "value": 1}]},
@@ -88,10 +88,10 @@
       "trait": {
         "partyText": {"ru": "Пока брешь открыта, отряд бьёт сильнее и крепче критует; на 5 уровне каждый Выпад добавляет отряду шанс крита", "en": "While the breach is open, the party hits harder and crits harder; at level 5 every Lunge adds critical chance to the party"},
         "levels": [
-          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 1}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.12, "while": "breachOpen"}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.05, "while": "breachOpen"}]},
-          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "while": "breachOpen"}]},
-          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "while": "breachOpen"}]},
-          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "while": "breachOpen"}]},
+          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 1}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.12, "while": "breachOpen"}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.05, "while": "breachOpen"}]},
+          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "while": "breachOpen"}]},
+          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "while": "breachOpen"}]},
+          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "while": "breachOpen"}]},
           {"modifiers": [{"stat": "breachPress", "kind": "flat", "value": 0.1}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.01, "after": {"signal": "lunge", "seconds": 3, "stacks": 5}}], "text": {"ru": "Натиск: каждый Выпад продлевает брешь на 0,1 с, но не дольше двойной длины", "en": "Press: every Lunge extends the breach by 0.1 s, up to twice its length"}}
         ],
         "forks": [
@@ -118,7 +118,7 @@
         ],
         "forks": [
           {"level": 45, "options": [{"id": "duelist_trait_2_f45a", "name": {"ru": "Быстрый счёт", "en": "Quick Count"}, "text": {"ru": "Касание на каждом 8-м ударе, но Туше ×0,8", "en": "A touch on every 8th hit, but a Touché deals ×0.8"}, "modifiers": [{"stat": "toucheEvery", "kind": "flat", "value": -2}, {"stat": "touchePower", "kind": "more", "value": -0.2}]}, {"id": "duelist_trait_2_f45b", "name": {"ru": "Очко за укол", "en": "Point Scored"}, "text": {"ru": "Касание ставит каждый крит удара, а не каждый 10-й удар; без критов отметин нет", "en": "Every critical hit leaves a touch instead of every 10th hit; no criticals, no marks"}, "modifiers": [{"stat": "toucheOnCrit", "kind": "flat", "value": 1}]}]},
-          {"level": 60, "options": [{"id": "duelist_trait_2_f60a", "name": {"ru": "Глубокое туше", "en": "Deep Touché"}, "text": {"ru": "Порог добивания 15% (босс 7,5%), но Туше нужно 6 отметин", "en": "The kill threshold is 15% (7.5% for a boss), but a Touché needs 6 marks"}, "modifiers": [{"stat": "toucheExecute", "kind": "flat", "value": 0.03}, {"stat": "toucheMarks", "kind": "flat", "value": 1}]}, {"id": "duelist_trait_2_f60b", "name": {"ru": "Публичная дуэль", "en": "Public Duel"}, "text": {"ru": "Туше не бьёт и не добивает, зато отряд +30% урона 5 с", "en": "A Touché neither strikes nor executes, but the party deals 30% more damage for 5 s"}, "modifiers": [{"stat": "touchePublic", "kind": "flat", "value": 1}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.3, "after": {"signal": "touche", "seconds": 5, "stacks": 1}}]}]},
+          {"level": 60, "options": [{"id": "duelist_trait_2_f60a", "name": {"ru": "Глубокое туше", "en": "Deep Touché"}, "text": {"ru": "Порог добивания 15% (босс 7,5%), но Туше нужно 6 отметин", "en": "The kill threshold is 15% (7.5% for a boss), but a Touché needs 6 marks"}, "modifiers": [{"stat": "toucheExecute", "kind": "flat", "value": 0.03}, {"stat": "toucheMarks", "kind": "flat", "value": 1}]}, {"id": "duelist_trait_2_f60b", "name": {"ru": "Публичная дуэль", "en": "Public Duel"}, "text": {"ru": "Туше не бьёт и не добивает, зато отряд +30% урона 5 с", "en": "A Touché neither strikes nor executes, but the party deals 30% more damage for 5 s"}, "modifiers": [{"stat": "touchePublic", "kind": "flat", "value": 1}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.3, "after": {"signal": "touche", "seconds": 5, "stacks": 1}}]}]},
           {"level": 75, "options": [{"id": "duelist_trait_2_f75a", "name": {"ru": "Незаконченная дуэль", "en": "Unfinished Duel"}, "text": {"ru": "Отметины не сгорают при смене врага, но Туше ×0,7; дуэль идёт на глазах у всего отряда: союзники получают полный бафф", "en": "Marks survive a new enemy, but a Touché is ×0.7; the duel is fought before the whole party: allies get the full buff"}, "modifiers": [{"stat": "toucheKeep", "kind": "flat", "value": 1}, {"stat": "touchePower", "kind": "more", "value": -0.3}], "partyMode": "together"}, {"id": "duelist_trait_2_f75b", "name": {"ru": "Последнее слово", "en": "Final Word"}, "text": {"ru": "Порог добивания вдвое выше, но удары −25% урона", "en": "The kill threshold is doubled, but hits deal 25% less damage"}, "modifiers": [{"stat": "toucheExecute", "kind": "more", "value": 1}, {"stat": "toucheOffPenalty", "kind": "flat", "value": 0.25}]}]}
         ]
       }
@@ -132,7 +132,7 @@
       "trait": {
         "partyText": {"ru": "Пока фантом в бою, отряд бьёт сильнее, а спутники и слуги отряда крепче; на 5 уровне скиллы отряда дешевле после её скиллов", "en": "While the phantom fights, the party hits harder and the party's companions and minions are stronger; at level 5 the party's skills cost less after her skills"},
         "levels": [
-          {"modifiers": [{"stat": "phantomPower", "kind": "flat", "value": 0.6}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.06, "while": "phantomFighting"}, {"to": "party", "stat": "companionMultiplier", "kind": "increased", "value": 0.1, "while": "phantomFighting"}]},
+          {"modifiers": [{"stat": "phantomPower", "kind": "flat", "value": 0.6}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.06, "while": "phantomFighting"}, {"to": "party", "stat": "companionMultiplier", "kind": "increased", "value": 0.1, "while": "phantomFighting"}]},
           {"modifiers": [{"stat": "phantomPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "phantomPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "phantomPower", "kind": "flat", "value": 0.1}]},
@@ -158,7 +158,7 @@
           {"modifiers": [{"stat": "shotPower", "kind": "flat", "value": 0.2}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.005, "while": "hunterMark"}]},
           {"modifiers": [{"stat": "shotPower", "kind": "flat", "value": 0.2}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.005, "while": "hunterMark"}]},
           {"modifiers": [{"stat": "shotPower", "kind": "flat", "value": 0.2}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.005, "while": "hunterMark"}]},
-          {"modifiers": [{"stat": "shotPause", "kind": "flat", "value": 1}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.02, "after": {"signal": "shot", "seconds": 3, "stacks": 5}}], "text": {"ru": "Выдох: первый удар после паузы в 2 с — сразу выстрел", "en": "Exhale: the first hit after a 2 s pause is a shot at once"}}
+          {"modifiers": [{"stat": "shotPause", "kind": "flat", "value": 1}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.02, "after": {"signal": "shot", "seconds": 3, "stacks": 5}}], "text": {"ru": "Выдох: первый удар после паузы в 2 с — сразу выстрел", "en": "Exhale: the first hit after a 2 s pause is a shot at once"}}
         ],
         "forks": [
           {"level": 45, "options": [{"id": "windshot_trait_1_f45a", "name": {"ru": "Тугой лук", "en": "Tight Bow"}, "text": {"ru": "Натяжение до 150, но выстрел тратит 40", "en": "Tension goes up to 150, but a shot spends 40"}, "modifiers": [{"stat": "resourceMax", "kind": "flat", "value": 50}, {"stat": "shotSpend", "kind": "flat", "value": 15}]}, {"id": "windshot_trait_1_f45b", "name": {"ru": "Быстрая тетива", "en": "Quick String"}, "text": {"ru": "Выстрел каждый 4-й удар, но его сила ×0,65", "en": "A shot every 4th hit, but its power is ×0.65"}, "modifiers": [{"stat": "shotEvery", "kind": "flat", "value": -2}, {"stat": "shotPower", "kind": "more", "value": -0.35}]}]},
@@ -264,7 +264,7 @@
       "trait": {
         "partyText": {"ru": "Пока панцирь треснул, отряд бьёт сильнее и чаще критует; на 5 уровне каждая трещина ненадолго ускоряет откаты отряда", "en": "While the shell is cracked, the party hits harder and crits more often; at level 5 every crack briefly speeds up the party's cooldowns"},
         "levels": [
-          {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 4}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.3, "while": "shellCracked"}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.05, "while": "shellCracked"}]},
+          {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 4}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.3, "while": "shellCracked"}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.05, "while": "shellCracked"}]},
           {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 0.25}]},
@@ -330,7 +330,7 @@
       "trait": {
         "partyText": {"ru": "Каждый эликсир на 8 с: отряд бьёт сильнее, скиллы дешевле и золота больше", "en": "Each elixir for 8 s: the party hits harder, skills cost less and gold is higher"},
         "levels": [
-          {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 3}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.06, "after": {"signal": "elixir", "seconds": 8, "stacks": 1}}, {"to": "party", "stat": "skillCost", "kind": "increased", "value": 0.1, "after": {"signal": "elixir", "seconds": 8, "stacks": 1}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.06, "after": {"signal": "elixir", "seconds": 8, "stacks": 1}}]},
+          {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 3}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.06, "after": {"signal": "elixir", "seconds": 8, "stacks": 1}}, {"to": "party", "stat": "skillCost", "kind": "increased", "value": 0.1, "after": {"signal": "elixir", "seconds": 8, "stacks": 1}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.06, "after": {"signal": "elixir", "seconds": 8, "stacks": 1}}]},
           {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 0.5}]},
           {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 0.5}]},
           {"modifiers": [{"stat": "elixirPower", "kind": "flat", "value": 0.5}]},
@@ -352,7 +352,7 @@
       "trait": {
         "partyText": {"ru": "Куплеты и припев звучат для всего отряда: союзники получают ту же прибавку к урону; на 5 уровне в припев отряд ещё и чаще критует", "en": "The verses and the chorus ring for the whole party: allies get the same damage bonus; at level 5 the party also crits more often during a chorus"},
         "levels": [
-          {"modifiers": [{"stat": "versePower", "kind": "flat", "value": 0.08}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.001, "per": {"signal": "verseShare", "step": 0.001, "cap": 5000}}]},
+          {"modifiers": [{"stat": "versePower", "kind": "flat", "value": 0.08}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.001, "per": {"signal": "verseShare", "step": 0.001, "cap": 5000}}]},
           {"modifiers": [{"stat": "versePower", "kind": "flat", "value": 0.016}]},
           {"modifiers": [{"stat": "versePower", "kind": "flat", "value": 0.016}]},
           {"modifiers": [{"stat": "versePower", "kind": "flat", "value": 0.016}]},
@@ -374,7 +374,7 @@
       "trait": {
         "partyText": {"ru": "Союзники слышат её песню: урон выше, откаты быстрее и шанс крита выше — всё растёт с силой песни", "en": "The allies hear her song: more damage, faster cooldowns and more critical chance, all growing with the song's power"},
         "levels": [
-          {"modifiers": [{"stat": "songPower", "kind": "flat", "value": 0.15}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.001, "per": {"signal": "songShare", "step": 0.001, "cap": 5000}}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.0005, "per": {"signal": "songShare", "step": 0.001, "cap": 5000}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.0002, "per": {"signal": "songShare", "step": 0.001, "cap": 5000}}]},
+          {"modifiers": [{"stat": "songPower", "kind": "flat", "value": 0.15}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.001, "per": {"signal": "songShare", "step": 0.001, "cap": 5000}}, {"to": "party", "stat": "skillCooldown", "kind": "increased", "value": 0.0005, "per": {"signal": "songShare", "step": 0.001, "cap": 5000}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.0002, "per": {"signal": "songShare", "step": 0.001, "cap": 5000}}]},
           {"modifiers": [{"stat": "songPower", "kind": "flat", "value": 0.03}]},
           {"modifiers": [{"stat": "songPower", "kind": "flat", "value": 0.03}]},
           {"modifiers": [{"stat": "songPower", "kind": "flat", "value": 0.03}]},
@@ -528,7 +528,7 @@
       "trait": {
         "partyText": {"ru": "Каждый немой шёпот на 4 с усиливает урон отряда со временем и удары, а враг получает +3% урона, до 5 стаков", "en": "Each silent whisper empowers the party's damage over time and hits for 4 s, and the enemy takes 3% more damage, up to 5 stacks"},
         "levels": [
-          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 24}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.05, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.02, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.03, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}]},
+          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 24}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.05, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.02, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.03, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}]},
           {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 3}]},
           {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 3}]},
           {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 3}]},
@@ -682,7 +682,7 @@
       "trait": {
         "partyText": {"ru": "За каждые 5 мотыльков роя отряд бьёт сильнее", "en": "Every 5 moths of the swarm make the party hit harder"},
         "levels": [
-          {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.025}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "per": {"signal": "moths", "step": 5, "cap": 10}}]},
+          {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.025}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "per": {"signal": "moths", "step": 5, "cap": 10}}]},
           {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.003}]},
           {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.003}]},
           {"modifiers": [{"stat": "swarmPower", "kind": "flat", "value": 0.003}]},
@@ -726,7 +726,7 @@
       "trait": {
         "partyText": {"ru": "Пока бабочка летает, отряд бьёт сильнее", "en": "While the moth flies, the party hits harder"},
         "levels": [
-          {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 5}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "while": "mothAwake"}]},
+          {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.1, "while": "mothAwake"}]},
           {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
           {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
           {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
@@ -792,7 +792,7 @@
       "trait": {
         "partyText": {"ru": "Каждая одолженная душа 10 с усиливает удары отряда", "en": "Each lent soul empowers the party's hits for 10 s"},
         "levels": [
-          {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.12}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.08, "after": {"signal": "lend", "seconds": 10, "stacks": 1}}]},
+          {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.12}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.08, "after": {"signal": "lend", "seconds": 10, "stacks": 1}}]},
           {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.02}]},
           {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.02}]},
           {"modifiers": [{"stat": "lendPower", "kind": "flat", "value": 0.02}]},
@@ -814,7 +814,7 @@
       "trait": {
         "partyText": {"ru": "Пробоина висит на враге; после залпа 5 с отряд бьёт сильнее", "en": "The breach hangs on the enemy; for 5 s after a volley the party hits harder"},
         "levels": [
-          {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 3}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "after": {"signal": "volley", "seconds": 5, "stacks": 1}}]},
+          {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 3}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.1, "after": {"signal": "volley", "seconds": 5, "stacks": 1}}]},
           {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "broadsidePower", "kind": "flat", "value": 0.4}]},
@@ -836,7 +836,7 @@
       "trait": {
         "partyText": {"ru": "За каждые 5 матросов команды отряд бьёт сильнее", "en": "Every 5 sailors of the crew make the party hit harder"},
         "levels": [
-          {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.03}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "per": {"signal": "sailors", "step": 5, "cap": 20}}]},
+          {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.03}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "per": {"signal": "sailors", "step": 5, "cap": 20}}]},
           {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
           {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
           {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
@@ -880,7 +880,7 @@
       "trait": {
         "partyText": {"ru": "Пока голем стоит, отряд бьёт сильнее, а спутники отряда крепче", "en": "While the golem stands, the party hits harder and its companions are stronger"},
         "levels": [
-          {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 3}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "while": "golem"}, {"to": "party", "stat": "companionMultiplier", "kind": "increased", "value": 0.1, "while": "golem"}]},
+          {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 3}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.1, "while": "golem"}, {"to": "party", "stat": "companionMultiplier", "kind": "increased", "value": 0.1, "while": "golem"}]},
           {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "sealPower", "kind": "flat", "value": 0.4}]},
@@ -902,7 +902,7 @@
       "trait": {
         "partyText": {"ru": "Клеймо висит на враге; за каждые 4 руны голема отряд бьёт сильнее", "en": "The brand hangs on the enemy; every 4 golem runes make the party hit harder"},
         "levels": [
-          {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.6}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "per": {"signal": "runes", "step": 4, "cap": 10}}]},
+          {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.6}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "per": {"signal": "runes", "step": 4, "cap": 10}}]},
           {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.08}]},
           {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.08}]},
           {"modifiers": [{"stat": "eternalPower", "kind": "flat", "value": 0.08}]},
@@ -968,7 +968,7 @@
       "trait": {
         "partyText": {"ru": "После перемотки 5 с отряд бьёт сильнее", "en": "For 5 s after a rewind the party hits harder"},
         "levels": [
-          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 1}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "after": {"signal": "loop", "seconds": 5, "stacks": 1}}]},
+          {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 1}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.1, "after": {"signal": "loop", "seconds": 5, "stacks": 1}}]},
           {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "loopPower", "kind": "flat", "value": 0.1}]},
@@ -976,7 +976,7 @@
         ],
         "forks": [
           {"level": 45, "options": [{"id": "clockwright_trait_2_f45a", "name": {"ru": "Частая петля", "en": "Frequent Loop"}, "text": {"ru": "Петля раз в 30 с, но на 20% слабее", "en": "A loop every 30 s, but 20% weaker"}, "modifiers": [{"stat": "loopSeconds", "kind": "flat", "value": -10}, {"stat": "loopPower", "kind": "more", "value": -0.2}]}, {"id": "clockwright_trait_2_f45b", "name": {"ru": "Широкое окно", "en": "Wide Window"}, "text": {"ru": "Петля берёт 7 с, но приходит раз в 55 с", "en": "A loop takes 7 s, but comes every 55 s"}, "modifiers": [{"stat": "loopWindow", "kind": "flat", "value": 2}, {"stat": "loopSeconds", "kind": "flat", "value": 15}]}]},
-          {"level": 60, "options": [{"id": "clockwright_trait_2_f60a", "name": {"ru": "Петля на Колосса", "en": "Loop on the Colossus"}, "text": {"ru": "На боссе петля вдвое чаще, но вне боссов её нет", "en": "On a boss the loop comes twice as often, but there is none outside bosses"}, "modifiers": [{"stat": "loopBoss", "kind": "flat", "value": 1}]}, {"id": "clockwright_trait_2_f60b", "name": {"ru": "Своя петля", "en": "Own Loop"}, "text": {"ru": "Петля на 15% слабее, зато после перемотки отряд 5 с бьёт ещё на 10% сильнее", "en": "The loop is 15% weaker, but for 5 s after a rewind the party hits another 10% harder"}, "modifiers": [{"stat": "loopPower", "kind": "more", "value": -0.15}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.1, "after": {"signal": "loop", "seconds": 5, "stacks": 1}}]}]},
+          {"level": 60, "options": [{"id": "clockwright_trait_2_f60a", "name": {"ru": "Петля на Колосса", "en": "Loop on the Colossus"}, "text": {"ru": "На боссе петля вдвое чаще, но вне боссов её нет", "en": "On a boss the loop comes twice as often, but there is none outside bosses"}, "modifiers": [{"stat": "loopBoss", "kind": "flat", "value": 1}]}, {"id": "clockwright_trait_2_f60b", "name": {"ru": "Своя петля", "en": "Own Loop"}, "text": {"ru": "Петля на 15% слабее, зато после перемотки отряд 5 с бьёт ещё на 10% сильнее", "en": "The loop is 15% weaker, but for 5 s after a rewind the party hits another 10% harder"}, "modifiers": [{"stat": "loopPower", "kind": "more", "value": -0.15}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.1, "after": {"signal": "loop", "seconds": 5, "stacks": 1}}]}]},
           {"level": 75, "options": [{"id": "clockwright_trait_2_f75a", "name": {"ru": "Петля-ловушка", "en": "Trap Loop"}, "text": {"ru": "Перемотка ещё и останавливает таймер босса на 3 с, но петля на 20% слабее; бафф отряду: только союзникам, зато в 1,5 раза больше", "en": "A rewind also stops the boss timer for 3 s, but the loop is 20% weaker; the party buff goes only to allies, 1.5 times stronger"}, "modifiers": [{"stat": "loopStop", "kind": "flat", "value": 1}, {"stat": "loopPower", "kind": "more", "value": -0.2}], "partyMode": "support"}, {"id": "clockwright_trait_2_f75b", "name": {"ru": "Глубокая перемотка", "en": "Deep Rewind"}, "text": {"ru": "Петля на 50% сильнее, но приходит раз в 60 с", "en": "The loop is 50% stronger, but comes every 60 s"}, "modifiers": [{"stat": "loopPower", "kind": "more", "value": 0.5}, {"stat": "loopSeconds", "kind": "flat", "value": 20}]}]}
         ]
       }
@@ -1056,7 +1056,7 @@
       "trait": {
         "partyText": {"ru": "Босс бьёт по миражам: каждый мираж замедляет таймер босса для отряда и добавляет отряду урон; на 5 уровне миражи усиливают спутников отряда", "en": "The boss strikes the mirages: each mirage slows the boss timer for the party and adds party damage; at level 5 the mirages strengthen the party's companions"},
         "levels": [
-          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 3.2}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.06, "per": {"signal": "mirages", "step": 1, "cap": 7}}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.01, "per": {"signal": "mirages", "step": 1, "cap": 7}}]},
+          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 3.2}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.06, "per": {"signal": "mirages", "step": 1, "cap": 7}}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "per": {"signal": "mirages", "step": 1, "cap": 7}}]},
           {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.4}]},
@@ -1144,7 +1144,7 @@
       "trait": {
         "partyText": {"ru": "Сеть висит на пойманном враге; пока он в сети, отряд чаще критует", "en": "The net hangs on the caught enemy; while it is netted, the party crits more often"},
         "levels": [
-          {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.05, "while": "caught"}]},
+          {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.05, "while": "caught"}]},
           {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
@@ -1166,7 +1166,7 @@
       "trait": {
         "partyText": {"ru": "Альбом снов: отряд бьёт сильнее по видам врагов из альбома", "en": "The dream album: the party hits harder against kinds from the album"},
         "levels": [
-          {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.01}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}]},
+          {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.01}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}]},
           {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.002}]},
           {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.002}]},
           {"modifiers": [{"stat": "albumPower", "kind": "flat", "value": 0.002}]},
@@ -1188,7 +1188,7 @@
       "trait": {
         "partyText": {"ru": "Пойманный дух-сон 15 с даёт союзникам больше золота и опыта гемов", "en": "A caught dream spirit gives allies more gold and gem experience for 15 s"},
         "levels": [
-          {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 1}, {"to": "party", "stat": "damage", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}, {"to": "allies", "stat": "gold", "kind": "increased", "value": 0.3, "after": {"signal": "spirit", "seconds": 15, "stacks": 1}}, {"to": "allies", "stat": "gemExperience", "kind": "increased", "value": 0.2, "after": {"signal": "spirit", "seconds": 15, "stacks": 1}}]},
+          {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 1}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}, {"to": "allies", "stat": "gold", "kind": "increased", "value": 0.3, "after": {"signal": "spirit", "seconds": 15, "stacks": 1}}, {"to": "allies", "stat": "gemExperience", "kind": "increased", "value": 0.2, "after": {"signal": "spirit", "seconds": 15, "stacks": 1}}]},
           {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 0.15}]},
           {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 0.15}]},
           {"modifiers": [{"stat": "spiritLoot", "kind": "flat", "value": 0.15}]},

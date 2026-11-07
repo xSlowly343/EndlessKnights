@@ -24,9 +24,9 @@ namespace Game.Core.Tests.Content
 
         [TestCase("ring_deep_gauge", "resourceMax", "skillCost")]
         [TestCase("ring_double_hit", "doubleHitChance", "damageVsBoss")]
-        [TestCase("chest_long_series", "longStreakPauseSeconds", "damage")]
-        [TestCase("jewel_full_gauge", "damage", "resourceGain")]
-        [TestCase("boots_moving_mouse", "damage", "damage")]
+        [TestCase("chest_long_series", "longStreakPauseSeconds", "attackPower")]
+        [TestCase("jewel_full_gauge", "attackPower", "resourceGain")]
+        [TestCase("boots_moving_mouse", "attackPower", "attackPower")]
         [TestCase("amulet_extra_aura", "extraAuraSlots", "auraEffect")]
         public void ARuleGivesABonusAndAPrice(string id, string bonus, string price)
         {

@@ -22,6 +22,7 @@ namespace Game.Core.Content.Weapons
         public UniqueWeaponDef? Unique { get; }
         public SetDef? Set { get; }
         public ItemRarity Rarity { get; }
+        public int Quality { get; set; }
         public int ItemLevel { get; }
         public IReadOnlyList<GearAffix> Affixes { get; }
         public ForgeMark Forge { get; }
@@ -32,11 +33,11 @@ namespace Game.Core.Content.Weapons
         public IReadOnlyList<Modifier> Innate => Base.Innate;
         public IReadOnlyList<string> OpensSkills => Unique?.OpensSkills ?? Array.Empty<string>();
 
-        public WeaponItem Rebased(WeaponBase weaponBase) => new WeaponItem(weaponBase, Rarity, ItemLevel, Affixes, Unique, Set, Forge);
+        public WeaponItem Rebased(WeaponBase weaponBase) => new WeaponItem(weaponBase, Rarity, ItemLevel, Affixes, Unique, Set, Forge) { Quality = Quality };
 
-        public WeaponItem WithAffixes(IReadOnlyList<GearAffix> affixes) => new WeaponItem(Base, Rarity, ItemLevel, affixes, Unique, Set, Forge);
+        public WeaponItem WithAffixes(IReadOnlyList<GearAffix> affixes) => new WeaponItem(Base, Rarity, ItemLevel, affixes, Unique, Set, Forge) { Quality = Quality };
 
-        public WeaponItem InSet(SetDef set) => new WeaponItem(Base, Rarity, ItemLevel, Affixes, Unique, set, Forge);
+        public WeaponItem InSet(SetDef set) => new WeaponItem(Base, Rarity, ItemLevel, Affixes, Unique, set, Forge) { Quality = Quality };
 
         public bool Opens(string skillId)
         {

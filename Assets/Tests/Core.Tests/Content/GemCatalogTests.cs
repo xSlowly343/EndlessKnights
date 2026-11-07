@@ -54,7 +54,7 @@ namespace Game.Core.Tests.Content
 
             Assert.That(skill.ResourceCost, Is.EqualTo(30));
             Assert.That(skill.DurationSeconds, Is.EqualTo(30));
-            Assert.That(aura.Modifiers, Is.EqualTo(new[] { new Modifier(new StatId("damage"), ModifierKind.Increased, 0.25) }));
+            Assert.That(aura.Modifiers, Is.EqualTo(new[] { new Modifier(new StatId("attackPower"), ModifierKind.Increased, 0.25) }));
         }
 
         [Test]

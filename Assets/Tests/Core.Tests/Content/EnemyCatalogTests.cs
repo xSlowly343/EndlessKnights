@@ -15,7 +15,7 @@ namespace Game.Core.Tests.Content
     { ""id"": ""goblin"", ""biome"": ""green_hills"", ""type"": ""normal"", ""hpMultiplier"": 1, ""goldMultiplier"": 1, ""sprite"": ""s1"" },
     { ""id"": ""boar_king"", ""biome"": ""green_hills"", ""type"": ""boss"", ""hpMultiplier"": 1, ""goldMultiplier"": 1, ""sprite"": ""s2"" },
     { ""id"": ""ent"", ""biome"": ""green_hills"", ""type"": ""guardian"", ""hpMultiplier"": 1.5, ""goldMultiplier"": 2, ""sprite"": ""s3"",
-      ""modifiers"": [ { ""stat"": ""damage"", ""kind"": ""more"", ""value"": -0.5, ""tags"": [""Strike""] } ] }
+      ""modifiers"": [ { ""stat"": ""attackPower"", ""kind"": ""more"", ""value"": -0.5, ""tags"": [""Strike""] } ] }
   ]
 }";
 
@@ -73,7 +73,7 @@ namespace Game.Core.Tests.Content
             var guardian = Load(Valid).Guardian("green_hills")!;
             var modifier = guardian.Modifiers.Single();
 
-            Assert.That(modifier.Stat, Is.EqualTo(new StatId("damage")));
+            Assert.That(modifier.Stat, Is.EqualTo(new StatId("attackPower")));
             Assert.That(modifier.Kind, Is.EqualTo(ModifierKind.More));
             Assert.That(modifier.Value, Is.EqualTo(-0.5));
             Assert.That(modifier.Tags, Is.EqualTo(StatTags.Strike));
@@ -84,7 +84,7 @@ namespace Game.Core.Tests.Content
         {
             var sheet = new StatSheet();
             sheet.AddRange(Load(Valid).Guardian("green_hills")!.Modifiers);
-            var damage = new StatId("damage");
+            var damage = new StatId("attackPower");
 
             Assert.That(sheet.Compute(damage, 10, StatTags.Strike).ToDouble(), Is.EqualTo(5).Within(1e-9));
             Assert.That(sheet.Compute(damage, 10, StatTags.Click).ToDouble(), Is.EqualTo(10).Within(1e-9));

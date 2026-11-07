@@ -119,7 +119,7 @@ namespace Game.Core.Sim
             _appliedFull = full;
             _modifiers.Clear();
             if (full > 0)
-                _modifiers.Add(new Modifier(CombatStats.Damage, ModifierKind.More, full, StatTags.None));
+                _modifiers.Add(new Modifier(CombatStats.AdditionalDamage, ModifierKind.Flat, full, StatTags.None));
             _layer.Set(_modifiers);
         }
     }
