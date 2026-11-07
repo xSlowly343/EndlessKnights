@@ -2,6 +2,7 @@ using System.Linq;
 using System;
 using System.Text;
 using Game.Net.Nakama;
+using Game.Core.Mail;
 using NUnit.Framework;
 
 namespace Game.Net.Tests
@@ -289,6 +290,25 @@ namespace Game.Net.Tests
             Assert.That(reply.Inbox, Is.Empty);
             Assert.That(reply.Claimed.Single().FromName, Is.EqualTo("Ann"));
             Assert.That(reply.Claimed.Single().Amount, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void TheChestShopAndAChestLetterAreReadFromTheServer()
+        {
+            Assert.That(ChestShopReply.BuyPayload("smith"), Is.EqualTo("{\"id\":\"smith\"}"));
+            var shop = ChestShopReply.From(NakamaJson.Parse("{\"week\":3000,\"bought\":{\"smith\":1,\"master\":1},\"crystals\":300,\"letter\":\"chest-3000-smith-1\"}"));
+            Assert.That(shop.Week, Is.EqualTo(3000));
+            Assert.That(shop.Crystals, Is.EqualTo(300));
+            Assert.That(shop.Letter, Is.EqualTo("chest-3000-smith-1"));
+            Assert.That(shop.Bought["smith"], Is.EqualTo(1));
+            Assert.That(shop.Bought.ContainsKey("jeweler"), Is.False);
+            Assert.That(ChestShopReply.From(NakamaJson.Parse("{\"week\":3000,\"bought\":{},\"crystals\":0,\"letter\":\"\"}")).Bought, Is.Empty);
+
+            var letter = MailDirectory.Letter(NakamaJson.Parse("{\"id\":\"chest-3000-master-1\",\"kind\":\"chest\",\"at\":1,\"place\":0,\"of\":0,\"depth\":0,\"title\":\"master\","
+                + "\"reward\":{\"shards\":0,\"ingots\":200,\"essence\":200},\"claimed\":false,\"claimedAt\":0}"));
+            Assert.That(letter.Kind, Is.EqualTo(MailLetter.ChestKind));
+            Assert.That(letter.Reward.Ingots, Is.EqualTo(200));
+            Assert.That(letter.Reward.Essence, Is.EqualTo(200));
         }
 
         [Test]

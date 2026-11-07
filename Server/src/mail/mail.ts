@@ -2,6 +2,7 @@ interface MailReward {
     shards: number;
     ingots: number;
     friendship?: number;
+    essence?: number;
 }
 
 interface MailLetter {

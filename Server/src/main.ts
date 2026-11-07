@@ -80,6 +80,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("season_pass_add", seasonPassAddRpc);
     initializer.registerRpc("season_pass_premium", seasonPassPremiumRpc);
     initializer.registerRpc("crystal_change", crystalChangeRpc);
+    initializer.registerRpc("chest_shop", chestShopRpc);
+    initializer.registerRpc("chest_buy", chestBuyRpc);
     initializer.registerRpc("event_mine", eventMineRpc);
     initializer.registerRpc("event_progress", eventProgressRpc);
     initializer.registerRpc("event_buy", eventBuyRpc);
