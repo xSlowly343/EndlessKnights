@@ -38,7 +38,7 @@
       "golemancer": { "perKey": 1 }
     }
   },
-  "crit": { "chance": 0.05, "multiplier": 2, "overcritRate": 1 },
+  "crit": { "chance": 0.05, "multiplier": 2 },
   "classes": {
     "keyStreak": { "gapSeconds": 1.5 },
     "shardcaller": {

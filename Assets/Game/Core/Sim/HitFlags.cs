@@ -7,6 +7,7 @@ namespace Game.Core.Sim
     {
         None = 0,
         Crit = 1 << 0,
-        HeavyStrike = 1 << 2
+        HeavyStrike = 1 << 2,
+        Overcrit = 1 << 3
     }
 }

@@ -40,6 +40,7 @@ namespace Game.Core.Tests.Ui
         {
             Assert.That(HeroStatsView.AverageHit(100, 0.25, 3), Is.EqualTo(150).Within(1e-9));
             Assert.That(HeroStatsView.AverageHit(100, 0, 3), Is.EqualTo(100).Within(1e-9));
+            Assert.That(HeroStatsView.AverageHit(100, 1, 3, 0.5, 3), Is.EqualTo(100 * (1 + 2 + 0.5 * 3 * 2)).Within(1e-9));
         }
 
         [Test]

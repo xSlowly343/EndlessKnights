@@ -34,7 +34,6 @@ namespace Game.Core.Content
         public ResourceRules Resources { get; }
         public double CritChance { get; }
         public double CritMultiplier { get; }
-        public double OvercritRate { get; private set; }
         public ClassRules Classes { get; }
         public OfflineRules Offline { get; }
         public HeroRules Hero { get; }
@@ -79,7 +78,6 @@ namespace Game.Core.Content
                 PathRules.Read(root.Field("paths")),
                 EncounterRules.Read(root.Field("encounters")))
             {
-                OvercritRate = crit.HasField("overcritRate") ? crit.Field("overcritRate").AsNumber(0, 100) : 0,
                 BasePierce = root.HasField("pierce") ? root.Field("pierce").Field("baseShare").AsNumber(0, 1) : 0,
                 Pierce = root.HasField("pierce") ? PierceRules.Read(root.Field("pierce")) : new PierceRules()
             };
