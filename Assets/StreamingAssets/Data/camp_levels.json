@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "maxLevel": 5,
+  "guildLevels": [0, 0, 0, 5, 8],
+  "amounts": [[10, 5], [20, 10], [40, 20], [80, 40]],
+  "buildings": [
+    { "building": "bonfire", "materials": ["herb_windwort", "ore_hills"], "perk": "shorterTrips", "perLevel": 0.02 },
+    { "building": "garden_bed", "guild": "gardeners", "materials": ["herb_knockbloom", "ore_hills"], "perk": "growFaster", "perLevel": 0.03 },
+    { "building": "cauldron", "guild": "alchemists", "materials": ["herb_clickweed", "ruin_shard"], "perk": "stirFaster", "perLevel": 0.05 },
+    { "building": "pier", "guild": "fishers", "materials": ["herb_hushbell", "ore_ice"], "perk": "biteFaster", "perLevel": 0.04 },
+    { "building": "forge", "guild": "smiths", "materials": ["ore_ruins", "ember_coal"], "perk": "fewerHammers", "perLevel": 0.03 },
+    { "building": "chef_table", "guild": "cooks", "materials": ["herb_windwort", "ice_crystal"], "perk": "fewerChops", "perLevel": 0.04 }
+  ]
+}

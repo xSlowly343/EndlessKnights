@@ -60,6 +60,7 @@ namespace Game.Core.Sim
         private readonly GuildSystem _guilds;
         private readonly TalentSystem _talents;
         private readonly HideoutSystem _hideout;
+        private readonly CampLevelSystem _campLevels;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -152,6 +153,7 @@ namespace Game.Core.Sim
             _clanCamp = new ClanCampSystem(data.ClanCamp, state, hero, _camp);
             _hideout = new HideoutSystem(data.Hideout, data.ClanCamp, state, _camp);
             _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden);
+            _campLevels = new CampLevelSystem(data.CampLevels, state, _camp, _guilds);
             _garden = new GardenSystem(data.Garden, state, _camp, _peaceful, Events);
             _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
             _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
@@ -255,6 +257,7 @@ namespace Game.Core.Sim
         public GuildSystem Guilds => _guilds;
         public TalentSystem Talents => _talents;
         public HideoutSystem Hideout => _hideout;
+        public CampLevelSystem CampLevels => _campLevels;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -875,6 +878,7 @@ namespace Game.Core.Sim
             _guilds.UseRules(data.Guilds);
             _talents.UseRules(data.Talents);
             _hideout.UseRules(data.Hideout, data.ClanCamp);
+            _campLevels.UseRules(data.CampLevels);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);

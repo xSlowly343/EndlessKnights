@@ -7,5 +7,6 @@ namespace Game.Core.Sim
         public int Tier { get; set; }
         public HashSet<string> Guilds { get; } = new HashSet<string>(System.StringComparer.Ordinal);
         public Dictionary<string, long> Bag { get; } = new Dictionary<string, long>(System.StringComparer.Ordinal);
+        public Dictionary<string, int> Levels { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
     }
 }
