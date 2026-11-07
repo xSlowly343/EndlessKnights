@@ -432,6 +432,13 @@ namespace Game.Core.Save
             return JsonValue.Array(items);
         }
 
+        private static List<string> Sorted(HashSet<string> ids)
+        {
+            var list = new List<string>(ids);
+            list.Sort(System.StringComparer.Ordinal);
+            return list;
+        }
+
         private static void ReadLevels(ContentNode node, Dictionary<string, int> levels)
         {
             foreach (var item in node.Items())
@@ -835,7 +842,8 @@ namespace Game.Core.Save
             var bag = new JsonValue[items.Count];
             for (var i = 0; i < bag.Length; i++)
                 bag[i] = Object(("item", JsonValue.Of(items[i])), ("count", JsonValue.Of(camp.Bag[items[i]])));
-            return Object(("tier", JsonValue.Of(camp.Tier)), ("guilds", WriteIdList(guilds)), ("bag", JsonValue.Array(bag)), ("levels", WriteLevels(camp.Levels)), ("branches", WriteBranches(camp.Branches)), ("street", WriteIdList(camp.Street)));
+            return Object(("tier", JsonValue.Of(camp.Tier)), ("guilds", WriteIdList(guilds)), ("bag", JsonValue.Array(bag)), ("levels", WriteLevels(camp.Levels)), ("branches", WriteBranches(camp.Branches)), ("street", WriteIdList(camp.Street)),
+                ("modules", WriteIdList(Sorted(camp.Modules))), ("blueprints", WriteIdList(Sorted(camp.Blueprints))), ("installed", WriteLevels(camp.Installed)));
         }
 
         private static JsonValue WriteApprentices(List<ApprenticeState> apprentices)
@@ -873,6 +881,14 @@ namespace Game.Core.Save
             {
                 foreach (var item in node.Field("street").Items())
                     camp.Street.Add(item.AsString());
+            }
+            if (node.HasField("modules"))
+            {
+                foreach (var item in node.Field("modules").Items())
+                    camp.Modules.Add(item.AsString());
+                foreach (var item in node.Field("blueprints").Items())
+                    camp.Blueprints.Add(item.AsString());
+                ReadLevels(node.Field("installed"), camp.Installed);
             }
             camp.Tier = node.Field("tier").AsInt(0, 100);
             foreach (var item in node.Field("guilds").Items())

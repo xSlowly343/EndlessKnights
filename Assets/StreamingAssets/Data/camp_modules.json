@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "sockets": [1, 1, 2, 2, 3],
+  "blueprintChance": 0.004,
+  "modules": [
+    { "id": "iron_tripod", "building": "bonfire", "name": { "ru": "Железная тренога", "en": "Iron Tripod" }, "perk": "shorterTrips", "value": 0.03, "materials": [{ "item": "ore_hills", "count": 15 }, { "item": "herb_windwort", "count": 10 }] },
+    { "id": "signal_horn", "building": "bonfire", "blueprint": true, "name": { "ru": "Сигнальный рог", "en": "Signal Horn" }, "perk": "expeditionLoot", "value": 0.05, "materials": [{ "item": "ore_ruins", "count": 20 }, { "item": "ember_coal", "count": 10 }] },
+    { "id": "road_lantern", "building": "bonfire", "blueprint": true, "name": { "ru": "Дорожный фонарь", "en": "Road Lantern" }, "perk": "expeditionShards", "value": 0.05, "materials": [{ "item": "ore_ice", "count": 20 }, { "item": "ice_crystal", "count": 10 }] },
+    { "id": "copper_can", "building": "garden_bed", "name": { "ru": "Медная лейка", "en": "Copper Watering Can" }, "perk": "growFaster", "value": 0.05, "materials": [{ "item": "ore_hills", "count": 15 }, { "item": "herb_knockbloom", "count": 10 }] },
+    { "id": "bee_hive", "building": "garden_bed", "blueprint": true, "name": { "ru": "Улей у грядки", "en": "Bed Hive" }, "perk": "mutationChance", "value": 0.03, "materials": [{ "item": "ore_ruins", "count": 20 }, { "item": "herb_hushbell", "count": 15 }] },
+    { "id": "seed_sieve", "building": "garden_bed", "blueprint": true, "name": { "ru": "Сито для семян", "en": "Seed Sieve" }, "perk": "seedBack", "value": 0.05, "materials": [{ "item": "ore_ice", "count": 20 }, { "item": "herb_clickweed", "count": 15 }] },
+    { "id": "copper_kettle", "building": "cauldron", "name": { "ru": "Медный котёл", "en": "Copper Kettle" }, "perk": "doublePotion", "value": 0.1, "materials": [{ "item": "ore_hills", "count": 15 }, { "item": "herb_clickweed", "count": 10 }] },
+    { "id": "horn_stirrer", "building": "cauldron", "blueprint": true, "name": { "ru": "Мешалка из рога", "en": "Horn Stirrer" }, "perk": "stirFaster", "value": 0.1, "materials": [{ "item": "ore_ruins", "count": 20 }, { "item": "ruin_shard", "count": 10 }] },
+    { "id": "valve_lid", "building": "cauldron", "blueprint": true, "name": { "ru": "Крышка с клапаном", "en": "Valve Lid" }, "perk": "finePotion", "value": 0.05, "materials": [{ "item": "ore_ember", "count": 20 }, { "item": "ember_coal", "count": 10 }] },
+    { "id": "silver_line", "building": "pier", "name": { "ru": "Серебряная леска", "en": "Silver Line" }, "perk": "reelEasier", "value": 0.1, "materials": [{ "item": "ore_hills", "count": 15 }, { "item": "herb_hushbell", "count": 10 }] },
+    { "id": "griffin_float", "building": "pier", "blueprint": true, "name": { "ru": "Поплавок из пера грифона", "en": "Griffin Feather Float" }, "perk": "biteFaster", "value": 0.05, "materials": [{ "item": "ore_sky", "count": 20 }, { "item": "ice_crystal", "count": 10 }] },
+    { "id": "bottle_net", "building": "pier", "blueprint": true, "name": { "ru": "Сеть для бутылок", "en": "Bottle Net" }, "perk": "bottleChance", "value": 0.02, "materials": [{ "item": "ore_ice", "count": 20 }, { "item": "ruin_shard", "count": 10 }] },
+    { "id": "horned_anvil", "building": "forge", "name": { "ru": "Рогатая наковальня", "en": "Horned Anvil" }, "perk": "fewerHammers", "value": 0.05, "materials": [{ "item": "ore_ruins", "count": 20 }, { "item": "ember_coal", "count": 5 }] },
+    { "id": "wyvern_bellows", "building": "forge", "blueprint": true, "name": { "ru": "Меха из шкуры виверны", "en": "Wyvern Hide Bellows" }, "perk": "slowerCooling", "value": 0.1, "materials": [{ "item": "ore_ember", "count": 20 }, { "item": "ember_coal", "count": 10 }] },
+    { "id": "deep_crucible", "building": "forge", "blueprint": true, "name": { "ru": "Глубокий тигель", "en": "Deep Crucible" }, "perk": "moreOre", "value": 0.1, "materials": [{ "item": "ore_sky", "count": 20 }, { "item": "ruin_shard", "count": 10 }] },
+    { "id": "whetstone", "building": "chef_table", "name": { "ru": "Точильный камень", "en": "Whetstone" }, "perk": "fewerChops", "value": 0.05, "materials": [{ "item": "ore_hills", "count": 15 }, { "item": "ice_crystal", "count": 5 }] },
+    { "id": "smoke_cabinet", "building": "chef_table", "blueprint": true, "name": { "ru": "Коптильный шкаф", "en": "Smoke Cabinet" }, "perk": "mealLonger", "value": 0.05, "materials": [{ "item": "ore_ember", "count": 20 }, { "item": "herb_windwort", "count": 15 }] },
+    { "id": "ice_larder", "building": "chef_table", "blueprint": true, "name": { "ru": "Ледник для припасов", "en": "Ice Larder" }, "perk": "ingredientBack", "value": 0.05, "materials": [{ "item": "ore_ice", "count": 20 }, { "item": "ice_crystal", "count": 10 }] }
+  ]
+}

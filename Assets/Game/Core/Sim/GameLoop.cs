@@ -62,6 +62,7 @@ namespace Game.Core.Sim
         private readonly HideoutSystem _hideout;
         private readonly CampLevelSystem _campLevels;
         private readonly ApprenticeSystem _apprentices;
+        private readonly CampModuleSystem _modules;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -156,6 +157,7 @@ namespace Game.Core.Sim
             _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden);
             _campLevels = new CampLevelSystem(data.CampLevels, state, _camp, _guilds);
             _apprentices = new ApprenticeSystem(data.Apprentices, state, _camp, _guilds);
+            _modules = new CampModuleSystem(data.CampModules, state, _camp, _campLevels, Events, data.Forge.Building);
             _garden = new GardenSystem(data.Garden, state, _camp, _peaceful, Events);
             _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
             _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
@@ -261,6 +263,7 @@ namespace Game.Core.Sim
         public HideoutSystem Hideout => _hideout;
         public CampLevelSystem CampLevels => _campLevels;
         public ApprenticeSystem Apprentices => _apprentices;
+        public CampModuleSystem Modules => _modules;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -884,6 +887,7 @@ namespace Game.Core.Sim
             _hideout.UseRules(data.Hideout, data.ClanCamp);
             _campLevels.UseRules(data.CampLevels);
             _apprentices.UseRules(data.Apprentices);
+            _modules.UseRules(data.CampModules);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);
@@ -1023,6 +1027,7 @@ namespace Game.Core.Sim
             _alchemy.BattleTick();
             _cooking.BattleTick();
             _apprentices.BattleTick();
+            _modules.NoteBosses(firstEvent);
             _forge.NoteKills(firstEvent);
             _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);
