@@ -176,6 +176,47 @@ namespace Game.Core.Sim
             }
             else if (_state.AfterIdleTicks > 0)
                 _state.AfterIdleTicks--;
+            if (!hasInput)
+                Rest(idleTicksBefore + 1);
+        }
+
+        public double TempoBonus
+        {
+            get
+            {
+                var tempo = _hero.Value(CombatStats.TempoDamage, 0);
+                if (!(tempo > 0))
+                    return 0;
+                var rules = _rules.Tempo;
+                return System.Math.Min(rules.MaxBonus, tempo * rules.Steps(_state.TempoPerMinute));
+            }
+        }
+
+        public double RestChargeMax => System.Math.Max(0, _hero.Value(CombatStats.RestCharge, 0)) * _rules.Tempo.RestMaxMinutes;
+
+        private void Rest(long idleTicks)
+        {
+            var charge = _hero.Value(CombatStats.RestCharge, 0);
+            if (!(charge > 0) || idleTicks * GameLoop.TickSeconds <= _rules.Tempo.RestAfterSeconds)
+                return;
+            _state.RestCharge = System.Math.Min(RestChargeMax, _state.RestCharge + charge * GameLoop.TickSeconds / 60);
+            _state.RestHitsLeft = _rules.Tempo.RestHits;
+        }
+
+        private double RestStrike()
+        {
+            if (_state.RestHitsLeft <= 0 || !(_state.RestCharge > 0))
+                return 1;
+            var multiplier = 1 + _state.RestCharge;
+            if (--_state.RestHitsLeft == 0)
+                _state.RestCharge = 0;
+            return multiplier;
+        }
+
+        private void NoteTempo(double keyHits)
+        {
+            var blend = System.Math.Min(1, GameLoop.TickSeconds / _rules.Tempo.WindowSeconds);
+            _state.TempoPerMinute += (keyHits * GameLoop.TicksPerSecond * 60 - _state.TempoPerMinute) * blend;
         }
 
         public double ConditionMultiplier(StatTags tags)
@@ -318,7 +359,7 @@ namespace Game.Core.Sim
 
             for (var i = 0; i < keyHits; i++)
             {
-                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier() * _windshot.StrikeMultiplier() * _minstrel.StrikeMultiplier() * _whisperer.StrikeMultiplier() * _clockwright.StrikeMultiplier() * _alchemist.StrikeMultiplier() * _dowser.StrikeMultiplier() * _mothcaller.StrikeMultiplier();
+                var multiplier = _class.OnKeyHit(out var flags) * HeavyStrike(ref flags) * KeyBurst() * RestStrike() * _runedancer.StrikeMultiplier() * _duelist.StrikeMultiplier() * _windshot.StrikeMultiplier() * _minstrel.StrikeMultiplier() * _whisperer.StrikeMultiplier() * _clockwright.StrikeMultiplier() * _alchemist.StrikeMultiplier() * _dowser.StrikeMultiplier() * _mothcaller.StrikeMultiplier();
                 var alive = _state.EnemyAlive;
                 Hit(DamageSource.Strike, BaseKeyDamage, StatTags.Strike, flags, _state.FocusMultiplier * multiplier);
                 if (alive)
@@ -356,6 +397,7 @@ namespace Game.Core.Sim
             _runedancer.EndTick();
             _duelist.EndTick();
             NoteRates(keyHits, input.MousePx / _rules.MousePxPerHit);
+            NoteTempo(keyHits);
         }
 
         private void NoteRates(double keyHits, double mouseHits)
@@ -400,7 +442,7 @@ namespace Game.Core.Sim
             if (source == DamageSource.Strike)
                 multiplier *= _state.SupportKeyBonus;
             LastHitCrit = false;
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken() * FractureTaken() * PillarMultiplier() * DefenseGain(tags) * ElementMultiplier(tags));
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken() * FractureTaken() * PillarMultiplier() * DefenseGain(tags) * ElementMultiplier(tags) * (1 + TempoBonus));
             if (damage.Sign <= 0)
                 return;
             _state.HitsOnEnemy++;

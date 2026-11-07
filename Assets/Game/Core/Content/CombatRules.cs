@@ -53,6 +53,7 @@ namespace Game.Core.Content
         public FractureRules Fracture { get; private set; } = new FractureRules();
         public DefenseRules Defense { get; private set; } = new DefenseRules();
         public ElementRules Elements { get; private set; } = new ElementRules();
+        public TempoRules Tempo { get; private set; } = new TempoRules();
 
         public static CombatRules Load(string json)
         {
@@ -90,6 +91,7 @@ namespace Game.Core.Content
                 Fracture = FractureRules.Read(root.Field("fracture")),
                 Defense = DefenseRules.Read(root.Field("defense")),
                 Elements = ElementRules.Read(root.Field("elements")),
+                Tempo = TempoRules.Read(root.Field("tempo")),
                 BasePierce = root.HasField("pierce") ? root.Field("pierce").Field("baseShare").AsNumber(0, 1) : 0,
                 Pierce = root.HasField("pierce") ? PierceRules.Read(root.Field("pierce")) : new PierceRules()
             };
