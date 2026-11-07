@@ -115,7 +115,7 @@ namespace Game.Core.Sim
                 return result;
             var expedition = State.Active[State.Active.Count - 1];
             expedition.Partner = partner;
-            var seconds = hours * SecondsPerHour * System.Math.Max(DurationFactor(companion, biome), DurationFactor(partner, biome)) * TreatDuration(expedition);
+            var seconds = hours * SecondsPerHour * System.Math.Max(DurationFactor(companion, biome, hours), DurationFactor(partner, biome, hours)) * TreatDuration(expedition);
             expedition.Seconds = seconds;
             expedition.Planned = seconds;
             return ExpeditionResult.Done;
@@ -137,7 +137,7 @@ namespace Game.Core.Sim
                 return ExpeditionResult.BiomeClosed;
             if (!Contains(_rules.Hours, hours) && _companions?.AllowsHours(companion, hours) != true)
                 return ExpeditionResult.BadHours;
-            var seconds = hours * SecondsPerHour * DurationFactor(companion, biome);
+            var seconds = hours * SecondsPerHour * DurationFactor(companion, biome, hours);
             State.Active.Add(new Expedition
             {
                 Companion = companion,
@@ -156,10 +156,10 @@ namespace Game.Core.Sim
 
         private double TreatDuration(Expedition expedition) => 1 - (_companions?.TreatBonus(expedition, TreatStat.Duration) ?? 0);
 
-        public double DurationFactor(string companion, string biome = "")
+        public double DurationFactor(string companion, string biome = "", int hours = 0)
         {
             var perk = _state.Perk(MuseumPerk.ShorterTrips);
-            return _companions?.DurationFactor(companion, perk, biome) ?? System.Math.Max(0.1, 1 - perk);
+            return _companions?.DurationFactor(companion, perk, biome, hours) ?? System.Math.Max(0.1, 1 - perk);
         }
 
         public ExpeditionResult Answer(int index, bool wait)

@@ -31,6 +31,8 @@ namespace Game.Core.Content
         TripHerbs,
         TripFish,
         TalentPoints,
+        TemperPower,
+        TemperMinus,
         Count
     }
 
@@ -186,7 +188,9 @@ namespace Game.Core.Content
             ["perk"] = MenagerieStat.Perk,
             ["tripHerbs"] = MenagerieStat.TripHerbs,
             ["tripFish"] = MenagerieStat.TripFish,
-            ["talentPoints"] = MenagerieStat.TalentPoints
+            ["talentPoints"] = MenagerieStat.TalentPoints,
+            ["temperPower"] = MenagerieStat.TemperPower,
+            ["temperMinus"] = MenagerieStat.TemperMinus
         };
 
         private static readonly Dictionary<string, MenagerieTheme> Themes = new Dictionary<string, MenagerieTheme>(StringComparer.Ordinal)

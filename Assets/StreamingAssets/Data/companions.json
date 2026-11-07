@@ -3301,14 +3301,14 @@
         },
         "a": [
           {
-            "stat": "none",
-            "waits": "temperPower"
+            "stat": "temperPower",
+            "value": 0.05
           }
         ],
         "b": [
           {
-            "stat": "none",
-            "waits": "temperMinus"
+            "stat": "temperMinus",
+            "value": 0.1
           }
         ],
         "c": [
@@ -7735,5 +7735,162 @@
         }
       ]
     }
-  ]
+  ],
+  "tempers": {
+    "change": {
+      "souls": 20,
+      "freeEveryDays": 30
+    },
+    "longTripHours": 8,
+    "list": [
+      {
+        "id": "quick",
+        "name": {
+          "ru": "Шустрый",
+          "en": "Quick"
+        },
+        "plus": [
+          {
+            "stat": "tripTime",
+            "value": -0.08
+          }
+        ],
+        "minus": [
+          {
+            "stat": "tripLoot",
+            "value": -0.03
+          }
+        ]
+      },
+      {
+        "id": "glutton",
+        "name": {
+          "ru": "Обжора",
+          "en": "Glutton"
+        },
+        "plus": [
+          {
+            "stat": "foodExperience",
+            "value": 0.15
+          }
+        ],
+        "minus": [
+          {
+            "stat": "foodCap",
+            "value": -0.1
+          }
+        ]
+      },
+      {
+        "id": "curious",
+        "name": {
+          "ru": "Любопытный",
+          "en": "Curious"
+        },
+        "plus": [
+          {
+            "stat": "tripRare",
+            "value": 0.1
+          }
+        ],
+        "minus": [
+          {
+            "stat": "tripItems",
+            "value": -0.05
+          }
+        ]
+      },
+      {
+        "id": "homely",
+        "name": {
+          "ru": "Домовитый",
+          "en": "Homely"
+        },
+        "plus": [
+          {
+            "stat": "homeTraits",
+            "value": 0.08
+          }
+        ],
+        "minus": [
+          {
+            "stat": "tripTime",
+            "value": 0.05
+          }
+        ]
+      },
+      {
+        "id": "affectionate",
+        "name": {
+          "ru": "Ласковый",
+          "en": "Affectionate"
+        },
+        "plus": [
+          {
+            "stat": "bond",
+            "value": 0.2,
+            "untilHearts": 5
+          }
+        ],
+        "minus": []
+      },
+      {
+        "id": "stubborn",
+        "name": {
+          "ru": "Упрямый",
+          "en": "Stubborn"
+        },
+        "plus": [
+          {
+            "stat": "traitRanks",
+            "value": 0.1
+          }
+        ],
+        "minus": [
+          {
+            "stat": "traitChangePrice",
+            "value": 0.5
+          }
+        ]
+      },
+      {
+        "id": "sociable",
+        "name": {
+          "ru": "Компанейский",
+          "en": "Sociable"
+        },
+        "plus": [
+          {
+            "stat": "jointLoot",
+            "value": 0.08
+          }
+        ],
+        "minus": [
+          {
+            "stat": "soloLoot",
+            "value": -0.03
+          }
+        ]
+      },
+      {
+        "id": "sleepy",
+        "name": {
+          "ru": "Соня",
+          "en": "Sleepy"
+        },
+        "plus": [
+          {
+            "stat": "longTripLoot",
+            "value": 0.1
+          }
+        ],
+        "minus": [
+          {
+            "stat": "shortTripTime",
+            "value": 0.05
+          }
+        ]
+      }
+    ]
+  }
 }

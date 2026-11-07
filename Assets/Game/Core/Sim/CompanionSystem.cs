@@ -357,14 +357,15 @@ namespace Game.Core.Sim
 
         public double ShorterCut(string companion) => LevelOf(companion) / _rules.ShorterEveryLevels * _rules.ShorterStep;
 
-        public double DurationFactor(string companion, double perk, string biome = "")
+        public double DurationFactor(string companion, double perk, string biome = "", int hours = 0)
         {
             var cut = System.Math.Min(ShorterCut(companion) + Own(companion, OwnEffectKind.BiomeShorter, biome) + Talent(companion, TalentEffect.Shorter), System.Math.Max(0, _rules.ShorterCap - perk));
-            return System.Math.Max(0.1, 1 - perk - cut) * (1 + Own(companion, OwnEffectKind.Longer)) * (1 - (FormOf(companion)?.Speed ?? 0)) * System.Math.Max(0.5, 1 - GearStat(companion, CompanionGearStat.Duration)) * System.Math.Max(0.5, 1 - TreeStat(MenagerieStat.TripTime));
+            return System.Math.Max(0.1, 1 - perk - cut) * (1 + Own(companion, OwnEffectKind.Longer)) * (1 - (FormOf(companion)?.Speed ?? 0)) * System.Math.Max(0.5, 1 - GearStat(companion, CompanionGearStat.Duration)) * System.Math.Max(0.5, 1 - TreeStat(MenagerieStat.TripTime))
+                * System.Math.Max(0.5, 1 + Temper(companion, TemperStat.TripTime) + (hours > 0 && hours < _rules.Tempers.LongTripHours ? Temper(companion, TemperStat.ShortTripTime) : 0));
         }
 
         public double FoodLeft(string companion) =>
-            System.Math.Max(0, _rules.FoodPerDay + TreeStat(MenagerieStat.FoodCap) - (State.Progress.TryGetValue(companion, out var progress) ? progress.FedToday : 0));
+            System.Math.Max(0, _rules.FoodPerDay * (1 + Temper(companion, TemperStat.FoodCap)) + TreeStat(MenagerieStat.FoodCap) - (State.Progress.TryGetValue(companion, out var progress) ? progress.FedToday : 0));
 
         public int Hearts(string companion)
         {
@@ -382,7 +383,7 @@ namespace Game.Core.Sim
                 return;
             var before = Hearts(companion);
             var progress = Progress(companion);
-            points *= 1 + GearStat(companion, CompanionGearStat.Bond) + HomeOwn(OwnEffectKind.Bond);
+            points *= 1 + GearStat(companion, CompanionGearStat.Bond) + HomeOwn(OwnEffectKind.Bond) + Temper(companion, TemperStat.Bond);
             progress.Bond = System.Math.Min(_rules.Bond.PointsTo(_rules.Bond.MaxHearts), progress.Bond + points);
             var after = Hearts(companion);
             if (after > before)
@@ -588,7 +589,7 @@ namespace Game.Core.Sim
             if (dish ? !_state.Cooking.Meals.Remove(food) : !_camp.Take(food, 1))
                 return CompanionResult.NoFood;
             var experience = (dish ? _rules.DishExperience : kind!.Experience) * (IsFavourite(companion, food) ? _rules.FavouriteMultiplier : 1)
-                * (1 + AlbumBonus(AlbumBonusKind.FoodExperience) + TreeStat(MenagerieStat.FoodExperience));
+                * (1 + AlbumBonus(AlbumBonusKind.FoodExperience) + TreeStat(MenagerieStat.FoodExperience) + Temper(companion, TemperStat.FoodExperience));
             experience = System.Math.Min(experience, left);
             var progress = Progress(companion);
             progress.FedToday += experience;
@@ -709,9 +710,9 @@ namespace Game.Core.Sim
             }
             var baseTrait = BaseTrait(companion);
             if (baseTrait.Length > 0)
-                AddTrip(progress, baseTrait, false);
+                AddTrip(companion, progress, baseTrait, false);
             for (var i = 0; i < progress.Traits.Count; i++)
-                AddTrip(progress, progress.Traits[i], false);
+                AddTrip(companion, progress, progress.Traits[i], false);
         }
 
         public int PairIndex(string a, string b)
@@ -731,7 +732,21 @@ namespace Game.Core.Sim
             (Friends(companion, partner) ? _rules.FriendsLoot : _rules.JointLoot) * (1 + Talent(companion, TalentEffect.JointLoot) + Talent(partner, TalentEffect.JointLoot)
                 + TreeStat(MenagerieStat.JointLoot) + (Friends(companion, partner) ? TreeStat(MenagerieStat.FriendsLoot) : 0));
 
-        public double StatOf(Expedition expedition, TravelStat stat) => PairStat(expedition, stat) * (1 + TreatBonus(expedition, TreatStatOf(stat))) * (1 + TreeLoot(stat));
+        public double StatOf(Expedition expedition, TravelStat stat) =>
+            PairStat(expedition, stat) * (1 + TreatBonus(expedition, TreatStatOf(stat))) * (1 + TreeLoot(stat)) * System.Math.Max(0, 1 + TemperTrip(expedition, stat));
+
+        private double TemperTrip(Expedition expedition, TravelStat stat)
+        {
+            if (stat == TravelStat.Rare)
+                return 0;
+            var main = expedition.Companion;
+            var bonus = expedition.Partner.Length == 0
+                ? Temper(main, TemperStat.SoloLoot)
+                : Temper(main, TemperStat.JointLoot) + Temper(expedition.Partner, TemperStat.JointLoot);
+            if (expedition.Hours >= _rules.Tempers.LongTripHours)
+                bonus += Temper(main, TemperStat.LongTripLoot);
+            return bonus;
+        }
 
         private double TreeLoot(TravelStat stat) =>
             stat == TravelStat.Items ? TreeStat(MenagerieStat.TripItems) + TreeStat(MenagerieStat.TripLoot)
@@ -911,7 +926,7 @@ namespace Game.Core.Sim
         {
             var total = 0.0;
             for (var i = 0; i < State.Home.Count; i++)
-                total += Own(State.Home[i], kind);
+                total += Own(State.Home[i], kind) * (1 + Temper(State.Home[i], TemperStat.HomeTraits));
             return total;
         }
 
@@ -1108,7 +1123,9 @@ namespace Game.Core.Sim
                 for (var i = 0; i < progress.Traits.Count; i++)
                     multiplier *= TravelValue(companion, progress.Traits[i], stat);
             }
-            var extra = stat == TravelStat.Rare ? GearStat(companion, CompanionGearStat.Rare) : FormLoot(companion) + GearStat(companion, CompanionGearStat.Loot);
+            var extra = stat == TravelStat.Rare
+                ? GearStat(companion, CompanionGearStat.Rare) + Temper(companion, TemperStat.TripRare)
+                : FormLoot(companion) + GearStat(companion, CompanionGearStat.Loot) + Temper(companion, TemperStat.TripLoot) + (stat == TravelStat.Items ? Temper(companion, TemperStat.TripItems) : 0);
             return (1 + (multiplier - 1) * StarFactor(companion)) * (1 + extra);
         }
 
@@ -1216,13 +1233,65 @@ namespace Game.Core.Sim
                 return CompanionResult.UnknownTrait;
             if (TraitsOf(companion).Contains(trait))
                 return CompanionResult.Repeat;
-            var price = (long)System.Math.Ceiling(_rules.TraitChangeShards * System.Math.Max(0, 1 - HomeOwn(OwnEffectKind.TraitPrice)) - 1e-9);
+            var price = (long)System.Math.Ceiling(_rules.TraitChangeShards * System.Math.Max(0, 1 - HomeOwn(OwnEffectKind.TraitPrice)) * System.Math.Max(0, 1 + Temper(companion, TemperStat.TraitChangePrice)) - 1e-9);
             if (_state.Drops.Shards < price)
                 return CompanionResult.NoShards;
             _state.Drops.Shards -= price;
             progress.TraitTrips.Remove(progress.Traits[slot]);
             progress.Traits[slot] = trait;
             progress.TraitTrips.Remove(trait);
+            ApplyPerks();
+            return CompanionResult.Done;
+        }
+
+        public CompanionTemper? TemperOf(string companion)
+        {
+            if (State.Progress.TryGetValue(companion, out var progress) && progress.Temper.Length > 0)
+                return _rules.Tempers.Temper(progress.Temper);
+            return State.Owned.Contains(companion) ? _rules.Tempers.Born(companion, _state.StartedUnixMs) : null;
+        }
+
+        public double Temper(string companion, TemperStat stat)
+        {
+            var temper = TemperOf(companion);
+            if (temper == null)
+                return 0;
+            var plus = TemperSum(companion, temper.Plus, stat) * (1 + TreeStat(MenagerieStat.TemperPower));
+            var minus = TemperSum(companion, temper.Minus, stat) * System.Math.Max(0, 1 - TreeStat(MenagerieStat.TemperMinus));
+            return plus + minus;
+        }
+
+        private double TemperSum(string companion, IReadOnlyList<TemperLine> lines, TemperStat stat)
+        {
+            var total = 0.0;
+            for (var i = 0; i < lines.Count; i++)
+            {
+                if (lines[i].Stat == stat && (lines[i].UntilHearts == 0 || Hearts(companion) < lines[i].UntilHearts))
+                    total += lines[i].Value;
+            }
+            return total;
+        }
+
+        public bool TemperFreeReady(string companion) =>
+            !State.Progress.TryGetValue(companion, out var progress) || progress.TemperFreeDay < 0 || State.Day < 0 || State.Day - progress.TemperFreeDay >= _rules.Tempers.FreeEveryDays;
+
+        public CompanionResult ChangeTemper(string companion, string temper)
+        {
+            if (!Known(companion))
+                return CompanionResult.UnknownCompanion;
+            if (_rules.Tempers.Temper(temper) == null)
+                return CompanionResult.UnknownTrait;
+            if (TemperOf(companion)?.Id == temper)
+                return CompanionResult.Repeat;
+            var free = TemperFreeReady(companion);
+            if (!free && State.Souls < _rules.Tempers.ChangeSouls)
+                return CompanionResult.NoSouls;
+            var progress = Progress(companion);
+            if (free)
+                progress.TemperFreeDay = State.Day;
+            else
+                State.Souls -= _rules.Tempers.ChangeSouls;
+            progress.Temper = temper;
             ApplyPerks();
             return CompanionResult.Done;
         }
@@ -1271,7 +1340,7 @@ namespace Game.Core.Sim
                 {
                     progress.HomeSeconds -= step;
                     for (var t = 0; t < progress.Traits.Count; t++)
-                        changed |= AddTrip(progress, progress.Traits[t], true);
+                        changed |= AddTrip(companion, progress, progress.Traits[t], true);
                 }
             }
             if (changed)
@@ -1309,13 +1378,13 @@ namespace Game.Core.Sim
             return place == null || place.Items.Count == 0 ? string.Empty : place.Items[0].Item;
         }
 
-        private bool AddTrip(CompanionProgress progress, string trait, bool home)
+        private bool AddTrip(string companion, CompanionProgress progress, string trait, bool home)
         {
             var ranks = _rules.Ranks(trait);
             var travels = ranks == null ? _rules.Own(trait) != null : !ranks.Home;
             if ((ranks == null && !travels) || travels == home)
                 return false;
-            progress.TraitTrips[trait] = (progress.TraitTrips.TryGetValue(trait, out var trips) ? trips : 0) + 1;
+            progress.TraitTrips[trait] = (progress.TraitTrips.TryGetValue(trait, out var trips) ? trips : 0) + System.Math.Max(0.1, 1 + Temper(companion, TemperStat.TraitRanks));
             return true;
         }
 
@@ -1367,7 +1436,7 @@ namespace Game.Core.Sim
             {
                 var companion = State.Home[i];
                 var multiplier = Stage(companion).HomeMultiplier * (1 + Talent(companion, TalentEffect.HomeTraits)) * StarFactor(companion)
-                    * (1 + (FormOf(companion)?.Home ?? 0) + GearStat(companion, CompanionGearStat.HomeTraits) + TreeStat(MenagerieStat.HomeTraits));
+                    * (1 + (FormOf(companion)?.Home ?? 0) + GearStat(companion, CompanionGearStat.HomeTraits) + TreeStat(MenagerieStat.HomeTraits) + Temper(companion, TemperStat.HomeTraits));
                 HomeOwnPerks(companion, multiplier);
                 BranchPerks(companion, multiplier);
                 if (!State.Progress.TryGetValue(companion, out var progress))
