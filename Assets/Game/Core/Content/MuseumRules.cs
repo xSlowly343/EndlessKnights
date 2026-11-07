@@ -10,7 +10,8 @@ namespace Game.Core.Content
         Plants,
         Dishes,
         Recipes,
-        Finds
+        Finds,
+        Skeletons
     }
 
     public enum MuseumPerk
@@ -47,7 +48,9 @@ namespace Game.Core.Content
         BuildBoost,
         DoublePotion,
         FreeRedraw,
-        ExtraHerb
+        ExtraHerb,
+        MoreBones,
+        LighterBrush
     }
 
     public readonly struct PerkValue
@@ -102,7 +105,8 @@ namespace Game.Core.Content
             ["plants"] = CollectionKind.Plants,
             ["dishes"] = CollectionKind.Dishes,
             ["recipes"] = CollectionKind.Recipes,
-            ["finds"] = CollectionKind.Finds
+            ["finds"] = CollectionKind.Finds,
+            ["skeletons"] = CollectionKind.Skeletons
         };
 
         private static readonly IReadOnlyDictionary<string, MuseumPerk> PerkNames = new Dictionary<string, MuseumPerk>(StringComparer.Ordinal)
@@ -139,7 +143,9 @@ namespace Game.Core.Content
             ["buildBoost"] = MuseumPerk.BuildBoost,
             ["doublePotion"] = MuseumPerk.DoublePotion,
             ["freeRedraw"] = MuseumPerk.FreeRedraw,
-            ["extraHerb"] = MuseumPerk.ExtraHerb
+            ["extraHerb"] = MuseumPerk.ExtraHerb,
+            ["moreBones"] = MuseumPerk.MoreBones,
+            ["lighterBrush"] = MuseumPerk.LighterBrush
         };
 
         public const double MaxPerk = 0.5;
@@ -165,7 +171,7 @@ namespace Game.Core.Content
             return null;
         }
 
-        public static MuseumRules Load(string json, FishingRules fishing, GardenRules garden, CookingRules cooking, AlchemyRules alchemy, ExpeditionRules expeditions)
+        public static MuseumRules Load(string json, FishingRules fishing, GardenRules garden, CookingRules cooking, AlchemyRules alchemy, ExpeditionRules expeditions, DigRules digs)
         {
             var root = ContentNode.Root(json, FileName);
             var version = root.Field("version").AsInt(1);
@@ -192,7 +198,7 @@ namespace Game.Core.Content
                 foreach (var item in node.Field("items").Items())
                 {
                     var itemId = item.AsString();
-                    if (!Known(kind, itemId, fishing, garden, cooking, alchemy, expeditions))
+                    if (!Known(kind, itemId, fishing, garden, cooking, alchemy, expeditions, digs))
                         throw item.Error($"'{itemId}' is not a known {kindName} entry");
                     items.Add(itemId);
                 }
@@ -227,7 +233,7 @@ namespace Game.Core.Content
             return rules;
         }
 
-        private static bool Known(CollectionKind kind, string id, FishingRules fishing, GardenRules garden, CookingRules cooking, AlchemyRules alchemy, ExpeditionRules expeditions)
+        private static bool Known(CollectionKind kind, string id, FishingRules fishing, GardenRules garden, CookingRules cooking, AlchemyRules alchemy, ExpeditionRules expeditions, DigRules digs)
         {
             switch (kind)
             {
@@ -239,6 +245,8 @@ namespace Game.Core.Content
                     return cooking.Dish(id) != null;
                 case CollectionKind.Recipes:
                     return alchemy.Recipe(id) != null;
+                case CollectionKind.Skeletons:
+                    return digs.Site(id) != null;
                 default:
                     foreach (var biome in expeditions.Biomes)
                     {

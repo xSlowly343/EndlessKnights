@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "building": "dig_site",
+  "maxSites": 3,
+  "brushMeters": 20,
+  "crackMetersPerSecond": 2.5,
+  "crackLoss": 0.1,
+  "minQuality": 0.3,
+  "bones": { "min": 1, "max": 3 },
+  "skeletonBones": 12,
+  "shards": { "chance": 0.4, "count": 5 },
+  "dust": { "chance": 0.25, "count": 2 },
+  "sites": [
+    { "biome": "green_hills", "bone": "bone_hills", "name": { "ru": "Останки Короля-кабана", "en": "Remains of the Boar King" } },
+    { "biome": "sand_ruins", "bone": "bone_ruins", "name": { "ru": "Останки Сфинкса-стража", "en": "Remains of the Sphinx Warden" } },
+    { "biome": "ice_peak", "bone": "bone_ice", "name": { "ru": "Останки Мамонта-титана", "en": "Remains of the Titan Mammoth" } },
+    { "biome": "volcanic_forge", "bone": "bone_ember", "name": { "ru": "Останки Кузнеца Пламени", "en": "Remains of the Flame Smith" } },
+    { "biome": "sky_islands", "bone": "bone_sky", "name": { "ru": "Останки Дракона Бури", "en": "Remains of the Storm Dragon" } }
+  ]
+}
