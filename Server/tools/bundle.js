@@ -468,8 +468,17 @@ if (hideout.version !== 1)
 const hideoutRules = {
   hereMs: hideout.hereSeconds * 1000,
   maxSitStepMs: hideout.maxSitStepSeconds * 1000,
-  tiers: hideout.tiers.map((tier) => ({ members: tier.members, bosses: tier.bosses, orders: tier.orders, sitSeconds: Math.round(tier.sitHours * 3600), fireLevel: tier.fireLevel }))
+  tiers: hideout.tiers.map((tier) => ({ members: tier.members, bosses: tier.bosses, orders: tier.orders, sitSeconds: Math.round(tier.sitHours * 3600), fireLevel: tier.fireLevel,
+    needs: (tier.needs || []).map((need) => ({ counter: need.counter, target: need.target })), opens: tier.opens })),
+  buildings: hideout.buildings.filter((building) => !building.personal).map((building) => ({ id: building.id, guild: building.guild || "", levels: building.levels.map((level) => ({ points: level.points, hours: level.hours })) })),
+  levelTiers: hideout.levelTiers,
+  materials: Object.fromEntries(clanCamp.materials.map((material) => [material.item, material.points])),
+  maxGive: clanCamp.maxGive,
+  startBuilt: guilds.build.startBuilt
 };
+for (const building of hideoutRules.buildings)
+  if (building.guild && !guilds.guilds.some((guild) => guild.id === building.guild))
+    throw new Error("party_hideout.json: unknown guild " + building.guild);
 
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
 fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\nvar SeasonPassServerRules = " + JSON.stringify(seasonPassRules) + ";\nvar CrystalChangeServerRules = " + JSON.stringify(crystalChangeRules) + ";\nvar SeasonalEventServerRules = " + JSON.stringify(seasonalEventRules) + ";\nvar TownServerRules = " + JSON.stringify(townRules) + ";\nvar ChestServerRules = " + JSON.stringify(chestRules) + ";\nvar TournamentServerRules = " + JSON.stringify(tournamentRules) + ";\nvar ClanCampServerRules = " + JSON.stringify(clanCampRules) + ";\nvar TownBuildServerRules = " + JSON.stringify(townBuildRules) + ";\nvar HideoutServerRules = " + JSON.stringify(hideoutRules) + ";\n" + code);

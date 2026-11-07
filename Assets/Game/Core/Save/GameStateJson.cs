@@ -100,7 +100,8 @@ namespace Game.Core.Save
                     ("bosses", JsonValue.Of(state.Hideout.Bosses)),
                     ("orders", JsonValue.Of(state.Hideout.Orders)),
                     ("sitSeconds", JsonValue.Of(state.Hideout.SitSeconds)),
-                    ("fireLevel", JsonValue.Of(state.Hideout.FireLevel)))),
+                    ("fireLevel", JsonValue.Of(state.Hideout.FireLevel)),
+                    ("buildings", WriteLevels(state.Hideout.Buildings)))),
                 ("clanCamp", Object(
                     ("level", JsonValue.Of(state.ClanCamp.Level)),
                     ("feastUntilUnixMs", JsonValue.Of(state.ClanCamp.FeastUntilUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))),
@@ -1014,6 +1015,8 @@ namespace Game.Core.Save
             hideout.Orders = node.Field("orders").AsInt(0);
             hideout.SitSeconds = node.Field("sitSeconds").AsLong(0);
             hideout.FireLevel = node.Field("fireLevel").AsInt(0, 10);
+            if (node.HasField("buildings"))
+                ReadLevels(node.Field("buildings"), hideout.Buildings);
         }
 
         private static void ReadClanCamp(ContentNode node, ClanCampState camp)

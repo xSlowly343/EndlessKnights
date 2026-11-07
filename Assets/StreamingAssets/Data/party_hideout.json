@@ -4,16 +4,496 @@
   "hereSeconds": 90,
   "maxSitStepSeconds": 120,
   "tiers": [
-    { "id": "rest", "name": { "ru": "Привал", "en": "Rest Stop" }, "members": 2, "bosses": 0, "orders": 0, "sitHours": 0, "fireLevel": 0, "opens": ["bonfire", "corner", "corner", "chronicle_table"] },
-    { "id": "yard", "name": { "ru": "Двор", "en": "Yard" }, "members": 2, "bosses": 10, "orders": 0, "sitHours": 2, "fireLevel": 0, "opens": ["corner", "corner", "board"] },
-    { "id": "homestead", "name": { "ru": "Подворье", "en": "Homestead" }, "members": 2, "bosses": 50, "orders": 1, "sitHours": 0, "fireLevel": 2, "opens": ["garden", "storage"] }
+    {
+      "id": "rest",
+      "name": {
+        "ru": "Привал",
+        "en": "Rest Stop"
+      },
+      "members": 2,
+      "bosses": 0,
+      "orders": 0,
+      "sitHours": 0,
+      "fireLevel": 0,
+      "opens": [
+        "bonfire",
+        "corner",
+        "corner",
+        "chronicle_table"
+      ],
+      "needs": []
+    },
+    {
+      "id": "yard",
+      "name": {
+        "ru": "Двор",
+        "en": "Yard"
+      },
+      "members": 2,
+      "bosses": 10,
+      "orders": 0,
+      "sitHours": 2,
+      "fireLevel": 0,
+      "opens": [
+        "corner",
+        "corner",
+        "board"
+      ],
+      "needs": []
+    },
+    {
+      "id": "homestead",
+      "name": {
+        "ru": "Подворье",
+        "en": "Homestead"
+      },
+      "members": 2,
+      "bosses": 50,
+      "orders": 1,
+      "sitHours": 0,
+      "fireLevel": 2,
+      "opens": [
+        "garden",
+        "storage"
+      ],
+      "needs": []
+    },
+    {
+      "id": "manor",
+      "name": {
+        "ru": "Усадьба",
+        "en": "Manor"
+      },
+      "members": 2,
+      "bosses": 150,
+      "orders": 3,
+      "sitHours": 0,
+      "fireLevel": 0,
+      "needs": [
+        {
+          "counter": "gardenHarvests",
+          "target": 20
+        }
+      ],
+      "opens": [
+        "party_pot",
+        "shared_cauldron"
+      ]
+    },
+    {
+      "id": "hall",
+      "name": {
+        "ru": "Чертог",
+        "en": "Hall"
+      },
+      "members": 2,
+      "bosses": 300,
+      "orders": 5,
+      "sitHours": 0,
+      "fireLevel": 0,
+      "needs": [
+        {
+          "counter": "guardiansTogether",
+          "target": 1
+        }
+      ],
+      "opens": [
+        "shared_forge",
+        "dummy"
+      ]
+    },
+    {
+      "id": "fort",
+      "name": {
+        "ru": "Острог",
+        "en": "Fort"
+      },
+      "members": 2,
+      "bosses": 600,
+      "orders": 8,
+      "sitHours": 0,
+      "fireLevel": 0,
+      "needs": [
+        {
+          "counter": "riftDepth",
+          "target": 25
+        },
+        {
+          "counter": "fishTogether",
+          "target": 50
+        }
+      ],
+      "opens": [
+        "pier",
+        "garden_row"
+      ]
+    },
+    {
+      "id": "bastion",
+      "name": {
+        "ru": "Бастион",
+        "en": "Bastion"
+      },
+      "members": 2,
+      "bosses": 1000,
+      "orders": 12,
+      "sitHours": 0,
+      "fireLevel": 0,
+      "needs": [
+        {
+          "counter": "guardiansTogether",
+          "target": 3
+        },
+        {
+          "counter": "partyTrips",
+          "target": 5
+        }
+      ],
+      "opens": [
+        "trophy_hall"
+      ]
+    },
+    {
+      "id": "stronghold",
+      "name": {
+        "ru": "Твердыня",
+        "en": "Stronghold"
+      },
+      "members": 2,
+      "bosses": 2000,
+      "orders": 18,
+      "sitHours": 0,
+      "fireLevel": 0,
+      "needs": [
+        {
+          "counter": "riftDepth",
+          "target": 100
+        },
+        {
+          "counter": "allBuildingsLevel",
+          "target": 2
+        }
+      ],
+      "opens": [
+        "banner_tower"
+      ]
+    },
+    {
+      "id": "citadel",
+      "name": {
+        "ru": "Цитадель",
+        "en": "Citadel"
+      },
+      "members": 2,
+      "bosses": 5000,
+      "orders": 30,
+      "sitHours": 0,
+      "fireLevel": 0,
+      "needs": [
+        {
+          "counter": "hoursTogether",
+          "target": 100
+        },
+        {
+          "counter": "allBuildingsLevel",
+          "target": 3
+        }
+      ],
+      "opens": []
+    }
   ],
   "buildings": [
-    { "id": "bonfire", "name": { "ru": "Костёр", "en": "Bonfire" } },
-    { "id": "corner", "name": { "ru": "Уголок участника", "en": "Member's corner" } },
-    { "id": "chronicle_table", "name": { "ru": "Стол Хроники", "en": "Chronicle table" } },
-    { "id": "board", "name": { "ru": "Доска заказов", "en": "Order board" } },
-    { "id": "garden", "name": { "ru": "Общая грядка", "en": "Shared garden bed" } },
-    { "id": "storage", "name": { "ru": "Склад", "en": "Storage" } }
+    {
+      "id": "bonfire",
+      "name": {
+        "ru": "Костёр",
+        "en": "Bonfire"
+      },
+      "levels": [
+        {
+          "points": 50,
+          "hours": 0
+        },
+        {
+          "points": 400,
+          "hours": 10
+        },
+        {
+          "points": 1500,
+          "hours": 40
+        }
+      ]
+    },
+    {
+      "id": "corner",
+      "name": {
+        "ru": "Уголок участника",
+        "en": "Member's corner"
+      },
+      "personal": true
+    },
+    {
+      "id": "chronicle_table",
+      "name": {
+        "ru": "Стол Хроники",
+        "en": "Chronicle table"
+      },
+      "levels": [
+        {
+          "points": 80,
+          "hours": 1
+        },
+        {
+          "points": 500,
+          "hours": 15
+        },
+        {
+          "points": 1800,
+          "hours": 50
+        }
+      ]
+    },
+    {
+      "id": "board",
+      "name": {
+        "ru": "Доска заказов",
+        "en": "Order board"
+      },
+      "levels": [
+        {
+          "points": 120,
+          "hours": 2
+        },
+        {
+          "points": 600,
+          "hours": 20
+        },
+        {
+          "points": 2000,
+          "hours": 60
+        }
+      ]
+    },
+    {
+      "id": "garden",
+      "name": {
+        "ru": "Общая грядка",
+        "en": "Shared garden bed"
+      },
+      "levels": [
+        {
+          "points": 300,
+          "hours": 5
+        },
+        {
+          "points": 1000,
+          "hours": 30
+        },
+        {
+          "points": 3000,
+          "hours": 80
+        }
+      ],
+      "guild": "gardeners"
+    },
+    {
+      "id": "storage",
+      "name": {
+        "ru": "Склад",
+        "en": "Storage"
+      },
+      "levels": [
+        {
+          "points": 300,
+          "hours": 5
+        },
+        {
+          "points": 1000,
+          "hours": 30
+        },
+        {
+          "points": 3000,
+          "hours": 80
+        }
+      ]
+    },
+    {
+      "id": "party_pot",
+      "name": {
+        "ru": "Котелок отряда",
+        "en": "Party pot"
+      },
+      "levels": [
+        {
+          "points": 600,
+          "hours": 15
+        },
+        {
+          "points": 1800,
+          "hours": 40
+        },
+        {
+          "points": 4500,
+          "hours": 100
+        }
+      ],
+      "guild": "cooks"
+    },
+    {
+      "id": "shared_cauldron",
+      "name": {
+        "ru": "Общий котёл алхимии",
+        "en": "Shared cauldron"
+      },
+      "levels": [
+        {
+          "points": 600,
+          "hours": 15
+        },
+        {
+          "points": 1800,
+          "hours": 40
+        },
+        {
+          "points": 4500,
+          "hours": 100
+        }
+      ],
+      "guild": "alchemists"
+    },
+    {
+      "id": "shared_forge",
+      "name": {
+        "ru": "Общая кузница",
+        "en": "Shared forge"
+      },
+      "levels": [
+        {
+          "points": 800,
+          "hours": 20
+        },
+        {
+          "points": 2200,
+          "hours": 50
+        },
+        {
+          "points": 5000,
+          "hours": 120
+        }
+      ],
+      "guild": "smiths"
+    },
+    {
+      "id": "dummy",
+      "name": {
+        "ru": "Манекен связок",
+        "en": "Training dummy"
+      },
+      "levels": [
+        {
+          "points": 800,
+          "hours": 20
+        },
+        {
+          "points": 2200,
+          "hours": 50
+        },
+        {
+          "points": 5000,
+          "hours": 120
+        }
+      ]
+    },
+    {
+      "id": "pier",
+      "name": {
+        "ru": "Причал отряда",
+        "en": "Party pier"
+      },
+      "levels": [
+        {
+          "points": 1000,
+          "hours": 25
+        },
+        {
+          "points": 2500,
+          "hours": 60
+        },
+        {
+          "points": 6000,
+          "hours": 140
+        }
+      ],
+      "guild": "fishers"
+    },
+    {
+      "id": "garden_row",
+      "name": {
+        "ru": "Второй ряд грядок",
+        "en": "Second garden row"
+      },
+      "levels": [
+        {
+          "points": 800,
+          "hours": 20
+        },
+        {
+          "points": 2000,
+          "hours": 50
+        },
+        {
+          "points": 5000,
+          "hours": 120
+        }
+      ],
+      "guild": "gardeners"
+    },
+    {
+      "id": "trophy_hall",
+      "name": {
+        "ru": "Зал трофеев",
+        "en": "Trophy hall"
+      },
+      "levels": [
+        {
+          "points": 1500,
+          "hours": 40
+        },
+        {
+          "points": 3500,
+          "hours": 80
+        },
+        {
+          "points": 8000,
+          "hours": 160
+        }
+      ]
+    },
+    {
+      "id": "banner_tower",
+      "name": {
+        "ru": "Башня со знаменем",
+        "en": "Banner tower"
+      },
+      "levels": [
+        {
+          "points": 2500,
+          "hours": 60
+        },
+        {
+          "points": 5000,
+          "hours": 120
+        },
+        {
+          "points": 10000,
+          "hours": 200
+        }
+      ]
+    }
+  ],
+  "levelTiers": [
+    0,
+    2,
+    5
   ]
 }
