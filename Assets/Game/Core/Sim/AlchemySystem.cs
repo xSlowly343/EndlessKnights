@@ -83,7 +83,7 @@ namespace Game.Core.Sim
             if (potion.Unknown && State.Known.Add(recipe.Id))
                 _events.Add(GameEvent.ForStage(GameEventKind.RecipeLearned, _state.Tick, IndexOf(recipe.Id)));
             State.Active = new Potion { Recipe = recipe.Id, Fine = potion.Fine };
-            State.ActiveTicksLeft = (long)System.Math.Round(recipe.Seconds * GameLoop.TicksPerSecond);
+            State.ActiveTicksLeft = (long)System.Math.Round(recipe.Seconds * System.Math.Max(1, potion.Lasting) * GameLoop.TicksPerSecond);
             ApplyActive();
             return AlchemyResult.Done;
         }

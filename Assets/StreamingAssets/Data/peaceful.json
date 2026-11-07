@@ -7,6 +7,7 @@
     { "id": "cooking", "name": { "ru": "Кухня", "en": "Cooking" } },
     { "id": "forge", "name": { "ru": "Кузница", "en": "Forge" } },
     { "id": "dig", "name": { "ru": "Раскопки", "en": "Digs" } },
+    { "id": "distill", "name": { "ru": "Перегонный куб", "en": "Still" } },
     { "id": "meditation", "name": { "ru": "Созерцание", "en": "Meditation" } }
   ],
   "offlineGoldShare": 0.3,

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "seed": "seed_colossus",
+  "bloom": "herb_colossus_bloom",
+  "cooldownDays": 7,
+  "growDays": 7,
+  "needs": { "keys": 20000, "clicks": 3000, "mouseMeters": 2000, "idleSeconds": 3600 },
+  "bloomEveryHours": 24,
+  "maxBlooms": 7
+}

@@ -119,6 +119,11 @@ namespace Game.Core.Save
                 ("town", WriteTown(state.Town)),
                 ("fishing", WriteFishing(state.Fishing)),
                 ("digs", WriteDigs(state.Digs)),
+                ("distill", Object(("recipe", OptionalText(state.Distill.Recipe)), ("bloom", JsonValue.Of(state.Distill.Bloom)), ("heat", JsonValue.Of(state.Distill.Heat)), ("pressure", JsonValue.Of(state.Distill.Pressure)),
+                    ("done", JsonValue.Of(state.Distill.Done)), ("bursts", JsonValue.Of(state.Distill.Bursts)), ("miracles", JsonValue.Of(state.Distill.Miracles)))),
+                ("colossus", Object(("cooldown", JsonValue.Of(state.Colossus.Cooldown)), ("seedsWaiting", JsonValue.Of(state.Colossus.SeedsWaiting)), ("planted", JsonValue.Of(state.Colossus.Planted)),
+                    ("grown", JsonValue.Of(state.Colossus.Grown)), ("seconds", JsonValue.Of(state.Colossus.Seconds)), ("keys", JsonValue.Of(state.Colossus.Keys)), ("clicks", JsonValue.Of(state.Colossus.Clicks)),
+                    ("mouseMeters", JsonValue.Of(state.Colossus.MouseMeters)), ("idleSeconds", JsonValue.Of(state.Colossus.IdleSeconds)), ("sinceBloom", JsonValue.Of(state.Colossus.SinceBloom)))),
                 ("caravan", Object(("seenMouseMeters", JsonValue.Of(state.Caravan.SeenMouseMeters)), ("traveled", JsonValue.Of(state.Caravan.Traveled)), ("next", JsonValue.Of(state.Caravan.Next)),
                     ("laps", JsonValue.Of(state.Caravan.Laps)), ("waiting", JsonValue.Of(state.Caravan.Waiting)), ("arrivals", JsonValue.Of(state.Caravan.Arrivals)), ("lastStop", OptionalText(state.Caravan.LastStop)))),
                 ("fair", Object(("sentHarvests", JsonValue.Of(state.Fair.SentHarvests)), ("sentMutations", JsonValue.Of(state.Fair.SentMutations)))),
@@ -319,6 +324,31 @@ namespace Game.Core.Save
                 ReadFishing(node.Field("fishing"), state.Fishing);
             if (node.HasField("digs"))
                 ReadDigs(node.Field("digs"), state.Digs);
+            if (node.HasField("distill"))
+            {
+                var distill = node.Field("distill");
+                state.Distill.Recipe = ReadOptionalText(distill, "recipe");
+                state.Distill.Bloom = distill.Field("bloom").AsBool();
+                state.Distill.Heat = distill.Field("heat").AsNumber(0, double.MaxValue);
+                state.Distill.Pressure = distill.Field("pressure").AsNumber(0, 1);
+                state.Distill.Done = distill.Field("done").AsLong(0);
+                state.Distill.Bursts = distill.Field("bursts").AsLong(0);
+                state.Distill.Miracles = distill.Field("miracles").AsLong(0);
+            }
+            if (node.HasField("colossus"))
+            {
+                var colossus = node.Field("colossus");
+                state.Colossus.Cooldown = colossus.Field("cooldown").AsNumber(0, double.MaxValue);
+                state.Colossus.SeedsWaiting = colossus.Field("seedsWaiting").AsInt(0, 1000);
+                state.Colossus.Planted = colossus.Field("planted").AsBool();
+                state.Colossus.Grown = colossus.Field("grown").AsBool();
+                state.Colossus.Seconds = colossus.Field("seconds").AsNumber(0, double.MaxValue);
+                state.Colossus.Keys = colossus.Field("keys").AsNumber(0, double.MaxValue);
+                state.Colossus.Clicks = colossus.Field("clicks").AsNumber(0, double.MaxValue);
+                state.Colossus.MouseMeters = colossus.Field("mouseMeters").AsNumber(0, double.MaxValue);
+                state.Colossus.IdleSeconds = colossus.Field("idleSeconds").AsNumber(0, double.MaxValue);
+                state.Colossus.SinceBloom = colossus.Field("sinceBloom").AsNumber(0, double.MaxValue);
+            }
             if (node.HasField("caravan"))
             {
                 var caravan = node.Field("caravan");
@@ -641,10 +671,11 @@ namespace Game.Core.Save
         }
 
         private static JsonValue WritePotion(Potion? potion) =>
-            potion == null ? JsonValue.Null() : Object(("recipe", JsonValue.Of(potion.Recipe)), ("fine", JsonValue.Of(potion.Fine)), ("unknown", JsonValue.Of(potion.Unknown)));
+            potion == null ? JsonValue.Null() : Object(("recipe", JsonValue.Of(potion.Recipe)), ("fine", JsonValue.Of(potion.Fine)), ("unknown", JsonValue.Of(potion.Unknown)), ("lasting", JsonValue.Of(potion.Lasting)));
 
         private static Potion? ReadPotion(ContentNode node) =>
-            node.IsNull ? null : new Potion { Recipe = node.Field("recipe").AsString(), Fine = node.Field("fine").AsBool(), Unknown = node.Field("unknown").AsBool() };
+            node.IsNull ? null : new Potion { Recipe = node.Field("recipe").AsString(), Fine = node.Field("fine").AsBool(), Unknown = node.Field("unknown").AsBool(),
+                Lasting = node.HasField("lasting") ? node.Field("lasting").AsNumber(1, 10) : 1 };
 
         private static JsonValue WriteAlchemy(AlchemyState alchemy)
         {

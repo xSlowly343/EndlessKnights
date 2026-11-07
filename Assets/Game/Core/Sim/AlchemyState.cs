@@ -7,6 +7,7 @@ namespace Game.Core.Sim
         public string Recipe { get; set; } = string.Empty;
         public bool Fine { get; set; }
         public bool Unknown { get; set; }
+        public double Lasting { get; set; } = 1;
     }
 
     public sealed class AlchemyState

@@ -55,6 +55,10 @@ namespace Game.Core.Sim
         ItemTempered,
         CollectionCompleted,
         FindCracked,
-        FindDug
+        FindDug,
+        TinctureDistilled,
+        TinctureBurst,
+        ColossusSeedFound,
+        ColossusGrown
     }
 }
