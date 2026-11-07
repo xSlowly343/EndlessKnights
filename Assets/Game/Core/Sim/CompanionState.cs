@@ -35,6 +35,8 @@ namespace Game.Core.Sim
         public long FreeResetDay { get; set; } = -1;
         public double ForageSeconds { get; set; }
         public long Forages { get; set; }
+        public string Temper { get; set; } = string.Empty;
+        public long TemperFreeDay { get; set; } = -1;
     }
 
     public sealed class CompanionEgg

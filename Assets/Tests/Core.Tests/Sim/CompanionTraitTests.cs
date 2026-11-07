@@ -51,8 +51,10 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Companions.TravelMultiplier("camp_dog", TravelStat.Items), Is.EqualTo(1.5));
             Assert.That(loop.Companions.TravelMultiplier("camp_crow", TravelStat.Shards), Is.EqualTo(2));
             loop.Companions.Grant("egg_griffin");
-            Assert.That(loop.Companions.TravelMultiplier("egg_griffin", TravelStat.Rare), Is.EqualTo(2));
-            Assert.That(loop.Companions.TravelMultiplier("egg_griffin", TravelStat.Items), Is.EqualTo(1));
+            var companions = loop.Companions;
+            Assert.That(companions.TravelMultiplier("egg_griffin", TravelStat.Rare), Is.EqualTo(2 * (1 + companions.Temper("egg_griffin", TemperStat.TripRare))).Within(1e-9));
+            Assert.That(companions.TravelMultiplier("egg_griffin", TravelStat.Items),
+                Is.EqualTo(1 + companions.Temper("egg_griffin", TemperStat.TripLoot) + companions.Temper("egg_griffin", TemperStat.TripItems)).Within(1e-9), "only its temper moves the numbers");
         }
 
         [Test]

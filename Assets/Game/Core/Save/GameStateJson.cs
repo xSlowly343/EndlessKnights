@@ -817,7 +817,8 @@ namespace Game.Core.Save
                     ("traits", WriteIdList(progress.Traits)), ("traitTrips", WriteNumberMap(progress.TraitTrips)), ("homeSeconds", JsonValue.Of(progress.HomeSeconds)),
                     ("bond", JsonValue.Of(progress.Bond)), ("petsToday", JsonValue.Of(progress.PetsToday)), ("favouriteBondsToday", JsonValue.Of(progress.FavouriteBondsToday)),
                     ("friendPetsToday", JsonValue.Of(progress.FriendPetsToday)), ("name", OptionalText(progress.Name)), ("accessory", OptionalText(progress.Accessory)), ("coat", OptionalText(progress.Coat)), ("stars", JsonValue.Of(progress.Stars)), ("form", OptionalText(progress.Form)), ("forms", WriteIdList(progress.Forms)), ("ownSparks", JsonValue.Of(progress.OwnSparks)), ("trips", JsonValue.Of(progress.Trips)), ("instantDay", JsonValue.Of(progress.InstantDay)), ("treat", OptionalText(progress.Treat)), ("delicacyDay", JsonValue.Of(progress.DelicacyDay)), ("firstTripDay", JsonValue.Of(progress.FirstTripDay)), ("story", JsonValue.Of(progress.Story)),
-                    ("talents", WriteIdList(talents)), ("freeResetDay", JsonValue.Of(progress.FreeResetDay)), ("forageSeconds", JsonValue.Of(progress.ForageSeconds)), ("forages", JsonValue.Of(progress.Forages)));
+                    ("talents", WriteIdList(talents)), ("freeResetDay", JsonValue.Of(progress.FreeResetDay)), ("forageSeconds", JsonValue.Of(progress.ForageSeconds)), ("forages", JsonValue.Of(progress.Forages)),
+                    ("temper", OptionalText(progress.Temper)), ("temperFreeDay", JsonValue.Of(progress.TemperFreeDay)));
             }
             var owned = new List<string>(companions.Owned);
             owned.Sort(System.StringComparer.Ordinal);
@@ -913,6 +914,8 @@ namespace Game.Core.Save
                     Story = item.HasField("story") ? item.Field("story").AsInt(0, 1_000_000) : 0,
                     FreeResetDay = item.HasField("freeResetDay") ? item.Field("freeResetDay").AsLong(-1) : -1,
                     ForageSeconds = item.HasField("forageSeconds") ? item.Field("forageSeconds").AsNumber(0, double.MaxValue) : 0,
+                    Temper = ReadOptionalText(item, "temper"),
+                    TemperFreeDay = item.HasField("temperFreeDay") ? item.Field("temperFreeDay").AsLong(-1) : -1,
                     Forages = item.HasField("forages") ? item.Field("forages").AsLong(0) : 0
                 };
                 var progress = companions.Progress[item.Field("id").AsString()];
