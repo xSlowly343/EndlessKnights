@@ -84,16 +84,39 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void CritChanceAboveOneHundredPercentRaisesCritDamage()
+        public void CritChanceAboveOneHundredPercentBecomesOvercritChance()
         {
             var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.Flat, 1.5 - TestWorld.Data.Combat.CritChance));
-            var loop = TestWorld.Loop(hero: hero);
+            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.Flat, 1.3 - TestWorld.Data.Combat.CritChance));
+            var loop = HitMany(hero, 7, input => input.PressKeys(1));
 
-            Assert.That(TestWorld.Data.Combat.OvercritRate, Is.EqualTo(1));
             Assert.That(loop.Combat.CritChance(StatTags.Strike), Is.EqualTo(1));
-            Assert.That(loop.Combat.Overcrit(StatTags.Strike), Is.EqualTo(0.5).Within(1e-9));
-            Assert.That(loop.Combat.CritMultiplier(StatTags.Strike), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier * 1.5).Within(1e-9));
+            Assert.That(loop.Combat.Overcrit(StatTags.Strike), Is.EqualTo(0.3).Within(1e-9));
+            Assert.That(loop.Combat.CritMultiplier(StatTags.Strike), Is.EqualTo(TestWorld.Data.Combat.CritMultiplier).Within(1e-9), "the excess no longer feeds the crit multiplier");
+            var sigma = System.Math.Sqrt(0.3 * 0.7 / Hits);
+            Assert.That(loop.State.Crits, Is.EqualTo(Hits));
+            Assert.That((double)loop.State.Overcrits / Hits, Is.EqualTo(0.3).Within(4 * sigma));
+        }
+
+        [Test]
+        public void AnOvercritSquaresTheCritMultiplierAndHasItsOwnStat()
+        {
+            var input = new FakeInputSource();
+            var hero = new StatSheet();
+            hero.Add(new Modifier(CombatStats.CritChance, ModifierKind.Flat, 2 - TestWorld.Data.Combat.CritChance));
+            hero.Add(new Modifier(CombatStats.OvercritMultiplier, ModifierKind.Flat, 0.5));
+            var loop = TestWorld.Loop(input, hero: hero);
+            loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.FromDouble(1e12));
+            loop.Events.Clear();
+
+            input.PressKeys(1);
+            loop.Tick();
+
+            var multiplier = TestWorld.Data.Combat.CritMultiplier;
+            Assert.That(loop.Combat.Overcrit(StatTags.Strike), Is.EqualTo(1), "the overcrit chance stops at 100%");
+            var expected = TestWorld.Data.Combat.StrikeDamage * loop.State.FocusMultiplier * multiplier * multiplier * 1.5;
+            Assert.That(loop.Events[0].Amount.ToDouble(), Is.EqualTo(expected).Within(1e-6));
+            Assert.That(loop.State.Overcrits, Is.EqualTo(1));
         }
 
         [Test]

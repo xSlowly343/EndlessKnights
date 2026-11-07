@@ -7,6 +7,7 @@ namespace Game.Core.Sim
         public static readonly StatId Damage = new StatId("damage");
         public static readonly StatId CritChance = new StatId("critChance");
         public static readonly StatId CritMultiplier = new StatId("critMultiplier");
+        public static readonly StatId OvercritMultiplier = new StatId("overcritMultiplier");
         public static readonly StatId Gold = new StatId("gold");
         public static readonly StatId FocusGain = new StatId("focusGain");
         public static readonly StatId FocusMultiplier = new StatId("focusMultiplier");

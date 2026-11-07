@@ -42,6 +42,9 @@ namespace Game.Core.Ui
         public static double AverageHit(double hit, double critChance, double critMultiplier) =>
             hit * (1 + critChance * (critMultiplier - 1));
 
+        public static double AverageHit(double hit, double critChance, double critMultiplier, double overcritChance, double overcritMultiplier) =>
+            hit * (1 + critChance * (critMultiplier - 1) + overcritChance * critMultiplier * (overcritMultiplier - 1));
+
         public static (double Increased, double More) DamageShare(IReadOnlyList<Modifier> modifiers)
         {
             var increased = 0.0;
@@ -64,16 +67,23 @@ namespace Game.Core.Ui
             var hit = combat.SkillDamage(combat.BaseKeyDamage, 1, StatTags.Strike);
             var crit = combat.CritChance(StatTags.Strike);
             var critMultiplier = combat.CritMultiplier(StatTags.Strike);
+            var overcrit = combat.Overcrit(StatTags.Strike);
+            var overcritMultiplier = combat.OvercritMultiplier(StatTags.Strike);
             var damage = loop.Hero.TotalsOf(CombatStats.Damage, StatTags.Strike);
             var every = (long)System.Math.Round(loop.Hero.Value(CombatStats.KeyStrikeEvery, 0, StatTags.Strike));
             var heavy = System.Math.Max(1, loop.Hero.Value(CombatStats.KeyStrikeMultiplier, 0, StatTags.Strike));
             var boss = loop.Hero.TotalsOf(CombatStats.DamageVsBoss);
             lines.Add(Header(0, "hero.stats.damage"));
             lines.Add(Line(0, "hero.stats.keyHit", NumberFormatter.Format(hit, format)));
-            lines.Add(Line(0, "hero.stats.averageHit", NumberFormatter.Format(BigNumber.FromDouble(AverageHit(hit.ToDouble(), crit, critMultiplier)), format)));
+            lines.Add(Line(0, "hero.stats.averageHit", NumberFormatter.Format(BigNumber.FromDouble(AverageHit(hit.ToDouble(), crit, critMultiplier, overcrit, overcritMultiplier)), format)));
             lines.Add(Line(0, "hero.stats.dps", NumberFormatter.Format(loop.State.RecentDps, format)));
             lines.Add(Line(0, "hero.stats.critChance", Invariant("{0:0.#}%", crit * 100)));
             lines.Add(Line(0, "hero.stats.critMultiplier", Invariant("×{0:0.##}", critMultiplier)));
+            if (overcrit > 0)
+            {
+                lines.Add(Line(0, "hero.stats.overcritChance", Invariant("{0:0.#}%", overcrit * 100)));
+                lines.Add(Line(0, "hero.stats.overcritMultiplier", Invariant("×{0:0.##}", critMultiplier * overcritMultiplier)));
+            }
             lines.Add(Line(0, "hero.stats.increased", Percent(damage.IncreasedMultiplier - 1)));
             lines.Add(Line(0, "hero.stats.more", Invariant("×{0:0.##}", damage.MoreMultiplier)));
             lines.Add(Line(0, "hero.stats.heavyStrike", every >= 1 ? Texts.Format("hero.stats.heavyEvery", every, heavy.ToString("0.#", CultureInfo.InvariantCulture)) : Texts.Get("hero.stats.none")));

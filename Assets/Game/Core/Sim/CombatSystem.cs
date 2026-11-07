@@ -373,10 +373,17 @@ namespace Game.Core.Sim
                 return;
             _state.HitsOnEnemy++;
 
+            _critRoll = -1;
             if (ForcedCrit() || _windshot.ForcesCrit(tags) || _dowser.ForcesCrit || RollCrit(tags, supporting))
             {
                 damage *= System.Math.Max(1, CritMultiplier(tags) * _windshot.CritScale(tags)) * (supporting == null ? 1 : SupportEffects.CritMultiplier(supporting, _state)) * CritBurst();
                 flags |= HitFlags.Crit;
+                if (RollOvercrit(tags))
+                {
+                    damage *= System.Math.Max(1, OvercritMultiplier(tags));
+                    flags |= HitFlags.Overcrit;
+                    _state.Overcrits++;
+                }
                 LastHitCrit = true;
                 _state.Crits++;
                 if (source != DamageSource.Skill)
@@ -578,7 +585,10 @@ namespace Game.Core.Sim
 
         public double CritChance(StatTags tags) => System.Math.Min(1, System.Math.Max(0, RawCritChance(tags)));
 
-        public double Overcrit(StatTags tags) => System.Math.Max(0, RawCritChance(tags) - 1);
+        public double Overcrit(StatTags tags) => System.Math.Min(1, System.Math.Max(0, RawCritChance(tags) - 1));
+
+        public double OvercritMultiplier(StatTags tags) =>
+            CritMultiplier(tags) * System.Math.Max(0, 1 + _hero.Value(CombatStats.OvercritMultiplier, 0, tags | StatTags.Crit));
 
         private double RawCritChance(StatTags tags)
         {
@@ -589,8 +599,7 @@ namespace Game.Core.Sim
         }
 
         public double CritMultiplier(StatTags tags) =>
-            System.Math.Max(1, _hero.Compute(CombatStats.CritMultiplier, BigNumber.FromDouble(_rules.CritMultiplier), tags | StatTags.Crit).ToDouble())
-            * (1 + Overcrit(tags) * _rules.OvercritRate);
+            System.Math.Max(1, _hero.Compute(CombatStats.CritMultiplier, BigNumber.FromDouble(_rules.CritMultiplier), tags | StatTags.Crit).ToDouble());
 
         private void NoteDamage(BigNumber damage)
         {
@@ -662,7 +671,21 @@ namespace Game.Core.Sim
         {
             var support = supporting == null ? 0 : SupportEffects.CritChance(supporting, _state);
             var chance = System.Math.Min(1, CritChance(tags) + _extraCritChance + support);
-            return chance > 0 && _state.Rng.NextDouble() < chance;
+            if (chance <= 0)
+                return false;
+            _critRoll = _state.Rng.NextDouble();
+            return _critRoll < chance;
+        }
+
+        private double _critRoll = -1;
+
+        private bool RollOvercrit(StatTags tags)
+        {
+            var chance = Overcrit(tags);
+            if (chance <= 0)
+                return false;
+            var roll = _critRoll >= 0 ? _critRoll : _state.Rng.NextDouble();
+            return roll < chance;
         }
 
         private static int TakeWhole(double amount, out double remainder)
