@@ -95,7 +95,7 @@ namespace Game.Core.Sim
         public bool SlotOpen(string companion, CompanionGearSlot slot)
         {
             var rule = Rules.Slot(slot);
-            return rule != null && _companions.StageOf(companion) >= rule.Stage && _companions.StarsOf(companion) >= rule.Stars;
+            return rule != null && _companions.StageOf(companion) >= rule.Stage && _companions.StarsOf(companion) >= rule.Stars && (rule.Unlock.Length == 0 || _companions.Unlocked(companion, rule.Unlock));
         }
 
         public GearResult Equip(string companion, int id)

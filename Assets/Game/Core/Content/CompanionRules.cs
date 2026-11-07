@@ -460,6 +460,8 @@ namespace Game.Core.Content
         public CompanionPackRules Pack { get; private set; } = new CompanionPackRules();
         public CompanionCircleRules Circles { get; private set; } = new CompanionCircleRules();
         public CompanionPathRules Paths { get; private set; } = new CompanionPathRules();
+        public CompanionAbilityRules Abilities { get; private set; } = new CompanionAbilityRules();
+        public CompanionColossusRules Colossus { get; private set; } = new CompanionColossusRules();
         public int TopLevel => MaxLevel + Stars.LevelsPerStar * Stars.MaxStars;
         public IReadOnlyDictionary<string, double> RarityTraitMultiplier { get; private set; } = new Dictionary<string, double>();
         public IReadOnlyList<CompanionCoat> Coats { get; private set; } = Array.Empty<CompanionCoat>();
@@ -723,9 +725,20 @@ namespace Game.Core.Content
                         throw root.Field("families").Error($"family '{family.Id}' names unknown companion '{member}'");
                 }
             }
+            var abilities = CompanionAbilityRules.Load(root.Field("abilities"));
+            foreach (var ability in abilities.Abilities)
+            {
+                var known = false;
+                foreach (var family in families.Families)
+                    known |= family.Id == ability.Family;
+                if (!known)
+                    throw root.Field("abilities").Error($"ability '{ability.NameEn}' names unknown family '{ability.Family}'");
+            }
             return new CompanionRules
             {
                 Families = families,
+                Abilities = abilities,
+                Colossus = CompanionColossusRules.Load(root.Field("colossus")),
                 Tempers = CompanionTemperRules.Load(root.Field("tempers")),
                 Pack = CompanionPackRules.Load(root.Field("pack"), root.Field("mentor")),
                 Circles = CompanionCircleRules.Load(root.Field("circles")),

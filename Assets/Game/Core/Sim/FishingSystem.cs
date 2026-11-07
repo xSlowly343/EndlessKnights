@@ -79,6 +79,9 @@ namespace Game.Core.Sim
                     Reset();
                 return;
             }
+            var boost = _state.Companions;
+            var speed = BiteSpeed;
+            boost.QuickBiteSeconds = System.Math.Max(0, boost.QuickBiteSeconds - GameLoop.TickSeconds);
             var work = _peaceful.Work(Activity);
             var clicks = work.Clicks;
             var meters = work.MouseMeters;
@@ -92,7 +95,7 @@ namespace Game.Core.Sim
                     Cast();
                     break;
                 case FishingPhase.Waiting:
-                    if ((State.Timer -= GameLoop.TickSeconds) <= 0)
+                    if ((State.Timer -= GameLoop.TickSeconds * speed) <= 0)
                         Bite();
                     break;
                 case FishingPhase.Bite:
@@ -106,6 +109,8 @@ namespace Game.Core.Sim
                     break;
             }
         }
+
+        public double BiteSpeed => _state.Companions.QuickBiteSeconds > 0 ? System.Math.Max(1, _state.Companions.QuickBiteFactor) : 1;
 
         private void Cast()
         {

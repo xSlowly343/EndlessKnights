@@ -182,6 +182,30 @@ namespace Game.Core.Sim
             return ExpeditionResult.Done;
         }
 
+        public ExpeditionResult SendColossus(string companion, string biome, double seconds)
+        {
+            var place = _rules.Biome(biome);
+            if (TraitOf(companion) == null)
+                return ExpeditionResult.UnknownCompanion;
+            if (Busy(companion) || _companions?.Occupied(companion) == true)
+                return ExpeditionResult.CompanionBusy;
+            if (_companions != null && UsedSlots() >= _companions.TripSlots)
+                return ExpeditionResult.NoTripSlot;
+            if (place == null)
+                return ExpeditionResult.UnknownBiome;
+            State.Active.Add(new Expedition
+            {
+                Companion = companion,
+                Biome = biome,
+                Hours = (int)System.Math.Ceiling(seconds / SecondsPerHour),
+                Seconds = seconds,
+                Planned = seconds,
+                Colossus = true,
+                Items = new long[place.Items.Count]
+            });
+            return ExpeditionResult.Done;
+        }
+
         private double TreatDuration(Expedition expedition) => 1 - (_companions?.TreatBonus(expedition, TreatStat.Duration) ?? 0);
 
         public double DurationFactor(string companion, string biome = "", int hours = 0)
@@ -234,6 +258,25 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForStage(GameEventKind.ExpeditionLetter, _state.Tick, index));
         }
 
+        public int Hasten(double seconds)
+        {
+            var active = State.Active;
+            for (var i = 0; i < active.Count; i++)
+                active[i].Elapsed = System.Math.Min(active[i].Seconds, active[i].Elapsed + System.Math.Max(0, seconds));
+            var count = active.Count;
+            Advance(0);
+            return count;
+        }
+
+        public void FinishWithLoot(int index, double loot)
+        {
+            _lootFactor = System.Math.Max(0, loot);
+            Finish(index);
+            _lootFactor = 1;
+        }
+
+        private double _lootFactor = 1;
+
         public void Finish(int index)
         {
             var expedition = State.Active[index];
@@ -263,7 +306,7 @@ namespace Game.Core.Sim
 
         private void Loot(Expedition expedition, ExpeditionBiome place, CompanionTrait trait)
         {
-            var hours = expedition.Elapsed / SecondsPerHour;
+            var hours = expedition.Elapsed / SecondsPerHour * _lootFactor;
             var level = _companions?.LevelOf(expedition) ?? 1;
             if (expedition.Items.Length != place.Items.Count)
                 expedition.Items = new long[place.Items.Count];

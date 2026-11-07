@@ -713,7 +713,7 @@ namespace Game.Core.Save
             return Object(("companion", JsonValue.Of(expedition.Companion)), ("partner", OptionalText(expedition.Partner)), ("third", OptionalText(expedition.Third)), ("treat", OptionalText(expedition.Treat)), ("biome", JsonValue.Of(expedition.Biome)), ("hours", JsonValue.Of(expedition.Hours)),
                 ("seconds", JsonValue.Of(expedition.Seconds)), ("planned", JsonValue.Of(expedition.Planned)), ("elapsed", JsonValue.Of(expedition.Elapsed)), ("letter", JsonValue.Of(expedition.Letter)),
                 ("choice", JsonValue.Of(expedition.Choice)), ("waited", JsonValue.Of(expedition.Waited)), ("items", JsonValue.Array(items)),
-                ("shards", JsonValue.Of(expedition.Shards)), ("rare", OptionalText(expedition.Rare)), ("done", JsonValue.Of(expedition.Done)));
+                ("shards", JsonValue.Of(expedition.Shards)), ("rare", OptionalText(expedition.Rare)), ("done", JsonValue.Of(expedition.Done)), ("colossus", JsonValue.Of(expedition.Colossus)));
         }
 
         private static Expedition ReadExpedition(ContentNode node)
@@ -738,6 +738,7 @@ namespace Game.Core.Save
                 Items = items.ToArray(),
                 Shards = node.Field("shards").AsLong(0),
                 Rare = ReadOptionalText(node, "rare"),
+                Colossus = node.HasField("colossus") && node.Field("colossus").AsBool(),
                 Done = node.Field("done").AsBool()
             };
         }
@@ -819,7 +820,7 @@ namespace Game.Core.Save
                     ("bond", JsonValue.Of(progress.Bond)), ("petsToday", JsonValue.Of(progress.PetsToday)), ("favouriteBondsToday", JsonValue.Of(progress.FavouriteBondsToday)),
                     ("friendPetsToday", JsonValue.Of(progress.FriendPetsToday)), ("name", OptionalText(progress.Name)), ("accessory", OptionalText(progress.Accessory)), ("coat", OptionalText(progress.Coat)), ("stars", JsonValue.Of(progress.Stars)), ("form", OptionalText(progress.Form)), ("forms", WriteIdList(progress.Forms)), ("ownSparks", JsonValue.Of(progress.OwnSparks)), ("trips", JsonValue.Of(progress.Trips)), ("instantDay", JsonValue.Of(progress.InstantDay)), ("treat", OptionalText(progress.Treat)), ("delicacyDay", JsonValue.Of(progress.DelicacyDay)), ("firstTripDay", JsonValue.Of(progress.FirstTripDay)), ("story", JsonValue.Of(progress.Story)),
                     ("talents", WriteIdList(talents)), ("freeResetDay", JsonValue.Of(progress.FreeResetDay)), ("forageSeconds", JsonValue.Of(progress.ForageSeconds)), ("forages", JsonValue.Of(progress.Forages)),
-                    ("temper", OptionalText(progress.Temper)), ("student", OptionalText(progress.Student)), ("circle", JsonValue.Of(progress.Circle)), ("path", OptionalText(progress.Path)), ("forks", WriteIdList(progress.Forks)), ("circleCount", JsonValue.Of(progress.CircleCount)), ("circleDay", JsonValue.Of(progress.CircleDay)), ("temperFreeDay", JsonValue.Of(progress.TemperFreeDay)));
+                    ("temper", OptionalText(progress.Temper)), ("student", OptionalText(progress.Student)), ("circle", JsonValue.Of(progress.Circle)), ("path", OptionalText(progress.Path)), ("forks", WriteIdList(progress.Forks)), ("circleCount", JsonValue.Of(progress.CircleCount)), ("circleDay", JsonValue.Of(progress.CircleDay)), ("abilityDay", JsonValue.Of(progress.AbilityDay)), ("colossusAnswers", WriteIdList(progress.ColossusAnswers)), ("colossusForm", OptionalText(progress.ColossusForm)), ("temperFreeDay", JsonValue.Of(progress.TemperFreeDay)));
             }
             var owned = new List<string>(companions.Owned);
             owned.Sort(System.StringComparer.Ordinal);
@@ -828,7 +829,7 @@ namespace Game.Core.Save
                 eggs[i] = Object(("biome", JsonValue.Of(companions.Eggs[i].Biome)), ("secondsLeft", JsonValue.Of(companions.Eggs[i].SecondsLeft)));
             return Object(("day", JsonValue.Of(companions.Day)), ("home", WriteIdList(companions.Home)), ("owned", WriteIdList(owned)),
                 ("eggs", JsonValue.Array(eggs)), ("eggCooldown", JsonValue.Of(companions.EggCooldown)), ("sparks", JsonValue.Of(companions.Sparks)),
-                ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)), ("essence", JsonValue.Of(companions.Essence)), ("hostEssenceDays", WriteNumberMap(companions.HostEssenceDays)),
+                ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)), ("essence", JsonValue.Of(companions.Essence)), ("quickBiteSeconds", JsonValue.Of(companions.QuickBiteSeconds)), ("quickBiteFactor", JsonValue.Of(companions.QuickBiteFactor)), ("sureForge", JsonValue.Of(companions.SureForge)), ("xpBoostSeconds", JsonValue.Of(companions.XpBoostSeconds)), ("xpBoost", JsonValue.Of(companions.XpBoost)), ("hostEssenceDays", WriteNumberMap(companions.HostEssenceDays)),
                 ("gear", WriteCompanionGear(companions.Gear)), ("nextGearId", JsonValue.Of(companions.NextGearId)),
                 ("boardDay", JsonValue.Of(companions.BoardDay)), ("board", WriteIdList(companions.Board)), ("boardDone", WriteIdList(companions.BoardDone)), ("rerolls", JsonValue.Of(companions.Rerolls)),
                 ("helper", OptionalText(companions.Helper)), ("helpGuild", OptionalText(companions.HelpGuild)), ("helpSeconds", JsonValue.Of(companions.HelpSeconds)), ("burrowWeek", JsonValue.Of(companions.BurrowWeek)),
@@ -921,6 +922,8 @@ namespace Game.Core.Save
                     Path = ReadOptionalText(item, "path"),
                     CircleCount = item.HasField("circleCount") ? item.Field("circleCount").AsNumber(0, double.MaxValue) : 0,
                     CircleDay = item.HasField("circleDay") ? item.Field("circleDay").AsLong(-1) : -1,
+                    AbilityDay = item.HasField("abilityDay") ? item.Field("abilityDay").AsLong(-1) : -1,
+                    ColossusForm = ReadOptionalText(item, "colossusForm"),
                     TemperFreeDay = item.HasField("temperFreeDay") ? item.Field("temperFreeDay").AsLong(-1) : -1,
                     Forages = item.HasField("forages") ? item.Field("forages").AsLong(0) : 0
                 };
@@ -937,6 +940,9 @@ namespace Game.Core.Save
                 if (item.HasField("forks"))
                     foreach (var fork in item.Field("forks").Items())
                         progress.Forks.Add(fork.AsString());
+                if (item.HasField("colossusAnswers"))
+                    foreach (var answer in item.Field("colossusAnswers").Items())
+                        progress.ColossusAnswers.Add(answer.AsString());
                 if (item.HasField("traitTrips"))
                     foreach (var trip in item.Field("traitTrips").Items())
                         progress.TraitTrips[trip.Field("id").AsString()] = trip.Field("value").AsNumber(0, double.MaxValue);
@@ -954,6 +960,11 @@ namespace Game.Core.Save
             companions.SoulHours = node.HasField("soulHours") ? node.Field("soulHours").AsNumber(0, 1e9) : 0;
             companions.SoulHostDay = node.HasField("soulHostDay") ? node.Field("soulHostDay").AsLong() : -1;
             companions.Essence = node.HasField("essence") ? node.Field("essence").AsLong(0) : 0;
+            companions.QuickBiteSeconds = node.HasField("quickBiteSeconds") ? node.Field("quickBiteSeconds").AsNumber(0, 1e9) : 0;
+            companions.QuickBiteFactor = node.HasField("quickBiteFactor") ? node.Field("quickBiteFactor").AsNumber(1, 100) : 1;
+            companions.SureForge = node.HasField("sureForge") && node.Field("sureForge").AsBool();
+            companions.XpBoostSeconds = node.HasField("xpBoostSeconds") ? node.Field("xpBoostSeconds").AsNumber(0, 1e9) : 0;
+            companions.XpBoost = node.HasField("xpBoost") ? node.Field("xpBoost").AsNumber(0, 10) : 0;
             companions.HostEssenceDays.Clear();
             if (node.HasField("hostEssenceDays"))
                 foreach (var host in node.Field("hostEssenceDays").Items())

@@ -105,6 +105,16 @@ namespace Game.Core.Sim
             return DigResult.Done;
         }
 
+        public bool DigNow()
+        {
+            if (!Open || State.Sites.Count == 0)
+                return false;
+            if (State.Phase == DigPhase.Idle)
+                Begin();
+            Extract();
+            return true;
+        }
+
         private void Begin()
         {
             State.Phase = DigPhase.Brushing;
