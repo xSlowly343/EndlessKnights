@@ -111,6 +111,7 @@ namespace Game.Core.Sim
         public GardenState Garden { get; } = new GardenState();
         public AlchemyState Alchemy { get; } = new AlchemyState();
         public ExpeditionState Expeditions { get; } = new ExpeditionState();
+        public CompanionState Companions { get; } = new CompanionState();
         public TownState Town { get; } = new TownState();
         public FishingState Fishing { get; } = new FishingState();
         public DigState Digs { get; } = new DigState();
@@ -124,8 +125,9 @@ namespace Game.Core.Sim
         public double[] SetPerks { get; } = new double[MuseumRules.PerkCount];
         public double[] TalentPerks { get; } = new double[MuseumRules.PerkCount];
         public double[] CampPerks { get; } = new double[MuseumRules.PerkCount];
+        public double[] CompanionPerks { get; } = new double[MuseumRules.PerkCount];
 
-        public double Perk(MuseumPerk perk) => Museum.Perks[(int)perk] + SetPerks[(int)perk] + TalentPerks[(int)perk] + CampPerks[(int)perk];
+        public double Perk(MuseumPerk perk) => Museum.Perks[(int)perk] + SetPerks[(int)perk] + TalentPerks[(int)perk] + CampPerks[(int)perk] + CompanionPerks[(int)perk];
         public DecorState Decor { get; } = new DecorState();
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }

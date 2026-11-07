@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Game.Core.Math;
 using Game.Core.Settings;
+using Game.Core.Sim;
 using Game.Core.Text;
 
 namespace Game.Core.Ui
@@ -16,7 +17,7 @@ namespace Game.Core.Ui
 
         private static readonly SettingId[][] Tabs =
         {
-            new[] { SettingId.Language, SettingId.AlwaysOnTop, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.InputConsent, SettingId.WhatsNew },
+            new[] { SettingId.Language, SettingId.AlwaysOnTop, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.CompanionStrip, SettingId.InputConsent, SettingId.WhatsNew },
             new[] { SettingId.MasterVolume, SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume },
             new[] { SettingId.Telemetry, SettingId.ErrorReports, SettingId.PrivacyPolicy, SettingId.Eula },
         };
@@ -76,6 +77,9 @@ namespace Game.Core.Ui
             {
                 case SettingId.Language:
                     settings.Language = Cycle(Languages, settings.Language, step);
+                    return true;
+                case SettingId.CompanionStrip:
+                    settings.CompanionStrip = Cycle(SettingsCodec.CompanionStripModes, settings.CompanionStrip, step);
                     return true;
                 case SettingId.Paused:
                     settings.Paused = !settings.Paused;
@@ -146,11 +150,19 @@ namespace Game.Core.Ui
 
         public static string WhatsNewTitle(string version) => Texts.Format("settings.whatsNewTitle", version);
 
+        public static StripMode StripModeOf(GameSettings settings) => settings.CompanionStrip switch
+        {
+            "homeOnly" => StripMode.HomeOnly,
+            "off" => StripMode.Off,
+            _ => StripMode.Always
+        };
+
         public static string LanguageName(string language) => Texts.Get("settings.language." + language);
 
         private static string ChoiceValue(SettingId id, GameSettings settings) => id switch
         {
             SettingId.Language => LanguageName(settings.Language),
+            SettingId.CompanionStrip => Texts.Get("settings.companionStrip." + settings.CompanionStrip),
             SettingId.FrameRate => Texts.Format("settings.fps", settings.FrameRate),
             SettingId.NumberFormat => Texts.Get("settings.format." + FormatKey(settings.NumberFormat.Format)),
             SettingId.Decimals => settings.NumberFormat.Decimals.ToString(System.Globalization.CultureInfo.InvariantCulture),

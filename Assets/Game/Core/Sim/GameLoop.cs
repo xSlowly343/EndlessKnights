@@ -82,6 +82,12 @@ namespace Game.Core.Sim
         private readonly GardenSystem _garden;
         private readonly AlchemySystem _alchemy;
         private readonly ExpeditionSystem _expeditions;
+        private readonly CompanionSystem _companions;
+        private readonly NestSystem _nest;
+        private readonly CompanionStrip _strip;
+        private readonly CompanionGearSystem _companionGear;
+        private readonly CompanionWorkSystem _companionWork;
+        private readonly MenagerieTreeSystem _menagerie;
         private readonly TownSystem _town;
         private readonly FishingSystem _fishing;
         private readonly CookingSystem _cooking;
@@ -166,12 +172,22 @@ namespace Game.Core.Sim
             _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
             _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
             _cooking = new CookingSystem(data.Cooking, state, hero, _camp, _peaceful, Events);
+            _companions = new CompanionSystem(data.Companions, data.Cooking, data.Combat.Conditions, state, _camp, _expeditions, Events);
+            _nest = new NestSystem(state, _companions, _camp, data.Stages, Events);
+            _nest.GuildLevel = _guilds.Level;
+            _companionGear = new CompanionGearSystem(state, _camp, _companions, _expeditions);
+            _companionWork = new CompanionWorkSystem(state, _camp, _companions, _expeditions);
+            _menagerie = new MenagerieTreeSystem(_companions);
+            _strip = new CompanionStrip(state, _companions, _expeditions, _peaceful, Events);
             _forge = new ForgeSystem(data.Forge, state, data.Stages, _camp, _peaceful, _weapons, _gear, Events);
             _drops.Salvaged = _forge.SalvageOre;
             _seasonal.BossWon = eventId => _drops.GiveEventPiece(eventId);
             _museum = new MuseumSystem(data.Museum, state, hero, _alchemy, Events);
             _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
             _hideout.Decor = _decor;
+            _hideout.Companions = _companions;
+            _hideout.Nest = _nest;
+            _museum.Companions = _companions;
             _forge.Shared = data.Hideout.Crafts;
             _alchemy.Shared = data.Hideout.Crafts;
             _fishing = new FishingSystem(data.Fishing, state, _camp, _peaceful, _expeditions, Events);
@@ -254,6 +270,12 @@ namespace Game.Core.Sim
         public GardenSystem Garden => _garden;
         public AlchemySystem Alchemy => _alchemy;
         public ExpeditionSystem Expeditions => _expeditions;
+        public CompanionSystem Companions => _companions;
+        public NestSystem Nest => _nest;
+        public CompanionStrip Strip => _strip;
+        public CompanionGearSystem CompanionGear => _companionGear;
+        public CompanionWorkSystem CompanionWork => _companionWork;
+        public MenagerieTreeSystem Menagerie => _menagerie;
         public TownSystem Town => _town;
         public FishingSystem Fishing => _fishing;
         public CookingSystem Cooking => _cooking;
@@ -676,6 +698,8 @@ namespace Game.Core.Sim
             _chronicle.SetDay(day);
             _seasonal.SetDay(day);
             _town.SetDay(day);
+            _companions.SetDay(day);
+            _nest.SetDay();
         }
 
         public QuestResult ClaimQuest(bool weekly, int index)
@@ -695,6 +719,8 @@ namespace Game.Core.Sim
             AddIdleSeconds(result.AwaySeconds);
             _garden.Advance(result.AwaySeconds);
             _expeditions.Advance(result.AwaySeconds);
+            _companions.Advance(result.AwaySeconds);
+            _nest.Advance(result.AwaySeconds);
             _apprentices.AdvanceOffline(result.AwaySeconds);
             _caravan.Collect();
             _colossus.Advance(result.AwaySeconds);
@@ -925,6 +951,8 @@ namespace Game.Core.Sim
             _alchemy.UseRules(data.Alchemy);
             _alchemy.Shared = data.Hideout.Crafts;
             _expeditions.UseRules(data.Expeditions);
+            _companions.UseRules(data.Companions);
+            _menagerie.Changed();
             _town.UseRules(data.Town);
             _fishing.UseRules(data.Fishing);
             _digs.UseRules(data.Digs);
@@ -1003,6 +1031,8 @@ namespace Game.Core.Sim
             _garden.Tick();
             _alchemy.Tick();
             _expeditions.Tick();
+            _companions.Tick();
+            _nest.Tick();
             _fishing.Tick();
             _digs.Tick();
             _caravan.Tick();
@@ -1058,6 +1088,8 @@ namespace Game.Core.Sim
             _modules.NoteBosses(firstEvent);
             _digs.NoteGuardians(firstEvent);
             _colossus.NoteGuardians(firstEvent);
+            _nest.NoteGuardians(firstEvent);
+            _strip.Tick(firstEvent, LastInput.HasAnyInput);
             _forge.NoteKills(firstEvent);
             _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);
@@ -1081,6 +1113,7 @@ namespace Game.Core.Sim
             _seasonPass.Tick();
             _artifacts.SkipAwakening();
             _achievements.Tick();
+            _strip.Tick(firstEvent, LastInput.HasAnyInput);
             State.Tick++;
             Hook?.AfterTick();
         }

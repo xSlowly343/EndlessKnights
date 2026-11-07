@@ -5,6 +5,8 @@ namespace Game.Core.Sim
     public sealed class Expedition
     {
         public string Companion { get; set; } = string.Empty;
+        public string Partner { get; set; } = string.Empty;
+        public string Treat { get; set; } = string.Empty;
         public string Biome { get; set; } = string.Empty;
         public int Hours { get; set; }
         public double Seconds { get; set; }

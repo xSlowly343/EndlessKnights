@@ -67,6 +67,11 @@ interface HideoutValue {
     fireBy: { [userId: string]: number };
     crafting: { [userId: string]: string };
     brews: { [userId: string]: { day: number; count: number } };
+    pets: { [userId: string]: HideoutPet };
+    petted: { [userId: string]: { day: number; count: number } };
+    warmed: { [userId: string]: { day: number; owners: string[] } };
+    farTrip: HideoutFarTrip | null;
+    farTrips: { day: number; count: number };
 }
 
 interface HideoutChronicle {
@@ -85,7 +90,7 @@ const HideoutMaxCornerText = 40;
 const HideoutCornerBuilding = "corner";
 
 function hideoutEmpty(): HideoutValue {
-    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {}, crafting: {}, brews: {} };
+    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {}, crafting: {}, brews: {}, pets: {}, petted: {}, warmed: {}, farTrip: null, farTrips: { day: 0, count: 0 } };
 }
 
 function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutValue; version: string } {
@@ -115,6 +120,11 @@ function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutVal
     value.fireBy = stored.fireBy || {};
     value.crafting = stored.crafting || {};
     value.brews = stored.brews || {};
+    value.pets = stored.pets || {};
+    value.petted = stored.petted || {};
+    value.warmed = stored.warmed || {};
+    value.farTrip = stored.farTrip || null;
+    value.farTrips = stored.farTrips || { day: 0, count: 0 };
     return { value: value, version: objects[0].version };
 }
 
@@ -273,7 +283,8 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
     const here = hideoutHere(value, meta.members, nowUnixMs);
     const fishers = hideoutFishers(value, meta.members, nowUnixMs);
     const cornered = Object.keys(value.corners).filter((id) => meta.members.indexOf(id) >= 0);
-    const named = here.concat(fishers, cornered).filter((id, index, all) => all.indexOf(id) === index);
+    const petOwners = Object.keys(value.pets).filter((id) => meta.members.indexOf(id) >= 0);
+    const named = here.concat(fishers, cornered, petOwners, value.farTrip ? Object.keys(value.farTrip.sent) : []).filter((id, index, all) => all.indexOf(id) === index);
     const users = named.length > 0 ? nk.usersGetId(named) : [];
     const nameOf = (id: string) => {
         const user = users.filter((entry) => entry.userId === id)[0];
@@ -302,7 +313,8 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
         cornerDecor: hideoutCornerDecor(value.tier), myCorner: !!value.corners[userId] && meta.members.indexOf(userId) >= 0,
         commons: hideoutCommonsView(nk, value, meta.members, userId, nowUnixMs),
         crafts: hideoutCraftView(value, meta.members, userId, nowUnixMs, nameOf),
-        trophies: hideoutTrophies(nk, group.id, value, chronicle)
+        trophies: hideoutTrophies(nk, group.id, value, chronicle),
+        companions: companionView(value, meta, userId, nowUnixMs, nameOf)
     };
 }
 
@@ -313,6 +325,7 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
     const meta = partyMetaOf(group);
     const chronicle = hideoutChronicle(nk, group.id);
     let signs: { [userId: string]: number } = {};
+    let pairs: string[] = [];
     const value = hideoutChange(nk, group.id, (hideout) => {
         signs = {};
         hideoutGrowGarden(hideout, hideoutHere(hideout, meta.members, nowUnixMs).length >= 2, nowUnixMs);
@@ -324,6 +337,7 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
             if (meta.members.indexOf(id) < 0 || nowUnixMs - hideout.fishing[id] > HideoutServerRules.hereMs)
                 delete hideout.fishing[id];
         hideoutSit(hideout, meta.members, nowUnixMs, signs);
+        pairs = companionPairsHere(hideout, meta.members, nowUnixMs);
         hideoutFinish(hideout, chronicle);
         hideoutRise(nk, hideout, meta.members.length, chronicle);
         hideoutNoteFormer(hideout, meta.members);
@@ -333,6 +347,13 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
     for (const id of Object.keys(signs)) {
         try {
             walletGrant(nk, id, "hideout_fire", signs[id], nowUnixMs);
+        } catch (error) {
+            continue;
+        }
+    }
+    for (const id of pairs) {
+        try {
+            walletGrant(nk, id, "companion_pair", 1, nowUnixMs);
         } catch (error) {
             continue;
         }
@@ -471,6 +492,7 @@ function hideoutLeaving(nk: nkruntime.Nakama, partyId: string, userId: string): 
         return;
     hideoutChange(nk, partyId, (hideout) => {
         delete hideout.corners[userId];
+        delete hideout.pets[userId];
         delete hideout.here[userId];
         delete hideout.fishing[userId];
         hideoutNoteFormer(hideout, [userId]);

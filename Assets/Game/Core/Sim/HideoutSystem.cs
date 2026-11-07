@@ -34,6 +34,8 @@ namespace Game.Core.Sim
         public HideoutState State => _state.Hideout;
         public bool Inside => _state.Peaceful.Mode == PeacefulMode.Camp && _state.Peaceful.Place == PeacefulPlace.Hideout;
         public DecorSystem? Decor { get; set; }
+        public CompanionSystem? Companions { get; set; }
+        public NestSystem? Nest { get; set; }
         public int CornerDecor => _rules.CornerDecorAt(State.Tier);
         public bool CornerOpen => State.Tier > 0 && State.HasCorner;
         public IReadOnlyList<string> Corner => _state.Decor.Corner;
@@ -193,6 +195,9 @@ namespace Game.Core.Sim
 
         public const string PotionPrefix = "potion:";
         public const string FineSuffix = ":fine";
+        public const string CompanionPetPrefix = "companion_pet:";
+        public const string CompanionWarm = "companion_warm";
+        public const string CompanionSoul = "companion_soul";
 
         public PeacefulWork TakeTending()
         {
@@ -222,11 +227,32 @@ namespace Game.Core.Sim
 
         public bool PackGoods(string item, int amount) => amount > 0 && _camp.Take(item, amount);
 
+        private bool ReceiveCompanion(string item, long amount)
+        {
+            if (item == CompanionSoul)
+            {
+                Companions?.AddSouls(amount);
+                return true;
+            }
+            if (item == CompanionWarm)
+            {
+                for (var i = 0; i < amount; i++)
+                    Nest?.FriendWarm(0);
+                return true;
+            }
+            if (!item.StartsWith(CompanionPetPrefix, System.StringComparison.Ordinal))
+                return false;
+            var companion = item.Substring(CompanionPetPrefix.Length);
+            for (var i = 0; i < amount; i++)
+                Companions?.FriendPet(companion);
+            return true;
+        }
+
         public void Receive(IReadOnlyDictionary<string, long> items)
         {
             foreach (var pair in items)
             {
-                if (pair.Value <= 0)
+                if (pair.Value <= 0 || ReceiveCompanion(pair.Key, pair.Value))
                     continue;
                 if (!pair.Key.StartsWith(PotionPrefix, System.StringComparison.Ordinal))
                 {

@@ -26,6 +26,7 @@ namespace Game.Core.Ui
         Telemetry,
         ErrorReports,
         PrivacyPolicy,
-        Eula
+        Eula,
+        CompanionStrip
     }
 }

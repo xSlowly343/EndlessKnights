@@ -1,0 +1,5950 @@
+{
+  "version": 1,
+  "level": {
+    "max": 30,
+    "experiencePerLevel": 20,
+    "lootPerLevel": 0.02,
+    "shorter": {
+      "everyLevels": 5,
+      "step": 0.02,
+      "cap": 0.4
+    }
+  },
+  "experiencePerTripHour": 10,
+  "foods": [
+    {
+      "id": "herb",
+      "prefix": "herb_",
+      "experience": 2
+    },
+    {
+      "id": "fish",
+      "prefix": "fish_",
+      "experience": 5
+    }
+  ],
+  "dishExperience": 15,
+  "favouriteMultiplier": 2,
+  "foodPerDay": 200,
+  "stages": [
+    {
+      "id": "cub",
+      "level": 1,
+      "traitSlots": 1,
+      "rankCap": 3,
+      "homeMultiplier": 1
+    },
+    {
+      "id": "youngster",
+      "level": 10,
+      "bones": 3,
+      "shards": 20,
+      "traitSlots": 2,
+      "rankCap": 3,
+      "homeMultiplier": 1,
+      "hours": [
+        12
+      ]
+    },
+    {
+      "id": "adult",
+      "level": 20,
+      "blooms": 1,
+      "shards": 50,
+      "favouriteItems": 10,
+      "favouriteDishes": 3,
+      "traitSlots": 2,
+      "rankCap": 4,
+      "homeMultiplier": 1.5
+    },
+    {
+      "id": "awakened",
+      "level": 30,
+      "blooms": 3,
+      "trophy": true,
+      "traitSlots": 3,
+      "rankCap": 5,
+      "homeMultiplier": 1.5
+    }
+  ],
+  "biomes": [
+    {
+      "biome": "green_hills",
+      "bone": "bone_hills",
+      "collection": "fish_hills",
+      "fish": "fish_hills_roach"
+    },
+    {
+      "biome": "sand_ruins",
+      "bone": "bone_ruins",
+      "collection": "fish_ruins",
+      "fish": "fish_ruins_sandeel"
+    },
+    {
+      "biome": "ice_peak",
+      "bone": "bone_ice",
+      "collection": "fish_ice",
+      "fish": "fish_ice_crucian"
+    },
+    {
+      "biome": "volcanic_forge",
+      "bone": "bone_ember",
+      "collection": "fish_forge",
+      "fish": "fish_forge_ember_minnow"
+    },
+    {
+      "biome": "sky_islands",
+      "bone": "bone_sky",
+      "collection": "fish_sky",
+      "fish": "fish_sky_cloud_dace"
+    }
+  ],
+  "ownBiomeLoot": 0.25,
+  "traits": {
+    "rankTrips": [
+      5,
+      15,
+      40,
+      100
+    ],
+    "homeSlots": 1,
+    "homeHoursPerTrip": 8,
+    "changeShards": 50,
+    "travel": [
+      {
+        "trait": "herbalist",
+        "stat": "items",
+        "values": [
+          1.5,
+          1.75,
+          2,
+          2.25,
+          2.5
+        ]
+      },
+      {
+        "trait": "digger",
+        "stat": "shards",
+        "values": [
+          2,
+          2.25,
+          2.5,
+          2.75,
+          3
+        ]
+      },
+      {
+        "trait": "wanderer",
+        "stat": "rare",
+        "values": [
+          2,
+          2.5,
+          3,
+          3.5,
+          4
+        ]
+      }
+    ],
+    "home": [
+      {
+        "id": "fisher",
+        "name": {
+          "ru": "Рыбак",
+          "en": "Fisher"
+        },
+        "perk": "biteFaster",
+        "values": [
+          0.05,
+          0.075,
+          0.1,
+          0.125,
+          0.15
+        ]
+      },
+      {
+        "id": "gardener",
+        "name": {
+          "ru": "Садовник",
+          "en": "Gardener"
+        },
+        "perk": "growFaster",
+        "values": [
+          0.05,
+          0.075,
+          0.1,
+          0.125,
+          0.15
+        ]
+      },
+      {
+        "id": "helper",
+        "name": {
+          "ru": "Подручный",
+          "en": "Helper"
+        },
+        "perk": "temperStep",
+        "values": [
+          0.05,
+          0.075,
+          0.1,
+          0.125,
+          0.15
+        ]
+      },
+      {
+        "id": "sniffer",
+        "name": {
+          "ru": "Нюхач",
+          "en": "Sniffer"
+        },
+        "perk": "lighterBrush",
+        "values": [
+          0.05,
+          0.075,
+          0.1,
+          0.125,
+          0.15
+        ]
+      },
+      {
+        "id": "cook",
+        "name": {
+          "ru": "Повар",
+          "en": "Cook"
+        },
+        "perk": "mealLonger",
+        "values": [
+          0.05,
+          0.075,
+          0.1,
+          0.125,
+          0.15
+        ]
+      }
+    ],
+    "own": [
+      {
+        "id": "night_owl",
+        "name": {
+          "ru": "Ночник",
+          "en": "Night Owl"
+        },
+        "effects": [
+          {
+            "kind": "rareNight",
+            "values": [
+              2.0,
+              2.5,
+              3.0,
+              3.5,
+              4.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": "sly",
+        "name": {
+          "ru": "Хитрец",
+          "en": "Sly"
+        },
+        "effects": [
+          {
+            "kind": "choice",
+            "values": [
+              0.3,
+              0.475,
+              0.65,
+              0.825,
+              1.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": "lantern",
+        "name": {
+          "ru": "Фонарик",
+          "en": "Lantern"
+        },
+        "effects": [
+          {
+            "kind": "letterEarlier",
+            "values": [
+              0.1,
+              0.15,
+              0.2,
+              0.25,
+              0.3
+            ]
+          }
+        ]
+      },
+      {
+        "id": "porter",
+        "name": {
+          "ru": "Носильщик",
+          "en": "Porter"
+        },
+        "effects": [
+          {
+            "kind": "extraItems",
+            "values": [
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": "temper",
+        "name": {
+          "ru": "Закалка",
+          "en": "Temper"
+        },
+        "effects": [
+          {
+            "kind": "shards",
+            "values": [
+              1.5,
+              1.625,
+              1.75,
+              1.875,
+              2.0
+            ]
+          },
+          {
+            "kind": "rare",
+            "values": [
+              1.5,
+              1.625,
+              1.75,
+              1.875,
+              2.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": "harvest",
+        "name": {
+          "ru": "Урожайный",
+          "en": "Harvester"
+        },
+        "effects": [
+          {
+            "kind": "herbs",
+            "values": [
+              1.5,
+              1.75,
+              2.0,
+              2.25,
+              2.5
+            ]
+          }
+        ]
+      },
+      {
+        "id": "frost",
+        "name": {
+          "ru": "Морозец",
+          "en": "Frosty"
+        },
+        "effects": [
+          {
+            "kind": "biomeShorter",
+            "biome": "ice_peak",
+            "values": [
+              0.1,
+              0.15,
+              0.2,
+              0.25,
+              0.3
+            ]
+          }
+        ]
+      },
+      {
+        "id": "croak",
+        "name": {
+          "ru": "Квакша",
+          "en": "Croaker"
+        },
+        "effects": [
+          {
+            "kind": "fish",
+            "values": [
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": "sunny",
+        "name": {
+          "ru": "Солнечный",
+          "en": "Sunny"
+        },
+        "effects": [
+          {
+            "kind": "experience",
+            "values": [
+              1.2,
+              1.3,
+              1.4,
+              1.5,
+              1.6
+            ]
+          }
+        ]
+      },
+      {
+        "id": "burrower",
+        "name": {
+          "ru": "Раскопщик",
+          "en": "Burrower"
+        },
+        "effects": [
+          {
+            "kind": "bone",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "underside",
+        "name": {
+          "ru": "Изнанка",
+          "en": "Underside"
+        },
+        "effects": [
+          {
+            "kind": "loot",
+            "values": [
+              1.25,
+              1.375,
+              1.5,
+              1.625,
+              1.75
+            ]
+          }
+        ]
+      },
+      {
+        "id": "snout",
+        "name": {
+          "ru": "Рылец",
+          "en": "Snout"
+        },
+        "effects": [
+          {
+            "kind": "extraItems",
+            "values": [
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": "treasurer",
+        "name": {
+          "ru": "Казначей",
+          "en": "Treasurer"
+        },
+        "effects": [
+          {
+            "kind": "shards",
+            "values": [
+              1.3,
+              1.45,
+              1.6,
+              1.75,
+              1.9
+            ]
+          }
+        ]
+      },
+      {
+        "id": "diver",
+        "name": {
+          "ru": "Ныряльщик",
+          "en": "Diver"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "biteFaster",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          },
+          {
+            "kind": "fish",
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "id": "brew",
+        "name": {
+          "ru": "Варево",
+          "en": "Brew"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "mealLonger",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "glide",
+        "name": {
+          "ru": "Парение",
+          "en": "Glide"
+        },
+        "effects": [
+          {
+            "kind": "biomeShorter",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "postman",
+        "name": {
+          "ru": "Почтальон",
+          "en": "Postman"
+        },
+        "effects": [
+          {
+            "kind": "choice",
+            "values": [
+              0.5,
+              0.625,
+              0.75,
+              0.875,
+              1.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": "giver",
+        "name": {
+          "ru": "Податель",
+          "en": "Giver"
+        },
+        "effects": [
+          {
+            "kind": "dailyItem",
+            "item": "ingots",
+            "values": [
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": "prickle",
+        "name": {
+          "ru": "Колючка",
+          "en": "Prickle"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "growFaster",
+            "values": [
+              0.1,
+              0.15,
+              0.2,
+              0.25,
+              0.3
+            ]
+          }
+        ]
+      },
+      {
+        "id": "purr",
+        "name": {
+          "ru": "Мурлыка",
+          "en": "Purr"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "bottleChance",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chirp",
+        "name": {
+          "ru": "Стрекот",
+          "en": "Chirp"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "temperStep",
+            "values": [
+              0.03,
+              0.0475,
+              0.065,
+              0.0825,
+              0.1
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bannerman",
+        "name": {
+          "ru": "Знаменосец",
+          "en": "Bannerman"
+        },
+        "effects": [
+          {
+            "kind": "shards",
+            "values": [
+              1.1,
+              1.15,
+              1.2,
+              1.25,
+              1.3
+            ]
+          }
+        ]
+      },
+      {
+        "id": "watchdog",
+        "name": {
+          "ru": "Сторож",
+          "en": "Watchdog"
+        },
+        "effects": [
+          {
+            "kind": "extraItems",
+            "values": [
+              1.0,
+              1.25,
+              1.5,
+              1.75,
+              2.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": "resound",
+        "name": {
+          "ru": "Отзвук",
+          "en": "Resound"
+        },
+        "effects": [
+          {
+            "kind": "experience",
+            "values": [
+              1.2,
+              1.3,
+              1.4,
+              1.5,
+              1.6
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chronicle",
+        "name": {
+          "ru": "Летопись",
+          "en": "Chronicle"
+        },
+        "effects": [
+          {
+            "kind": "allExperience",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mirror",
+        "name": {
+          "ru": "Зеркало",
+          "en": "Mirror"
+        },
+        "effects": [
+          {
+            "kind": "loot",
+            "values": [
+              1.1,
+              1.15,
+              1.2,
+              1.25,
+              1.3
+            ]
+          }
+        ]
+      },
+      {
+        "id": "hunger",
+        "name": {
+          "ru": "Голод",
+          "en": "Hunger"
+        },
+        "effects": [
+          {
+            "kind": "loot",
+            "values": [
+              1.25,
+              1.3375,
+              1.425,
+              1.5125,
+              1.6
+            ]
+          },
+          {
+            "kind": "longer",
+            "values": [
+              0.2,
+              0.2,
+              0.2,
+              0.2,
+              0.2
+            ]
+          }
+        ]
+      },
+      {
+        "id": "carving",
+        "name": {
+          "ru": "Резьба",
+          "en": "Carving"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "temperStep",
+            "values": [
+              0.03,
+              0.0475,
+              0.065,
+              0.0825,
+              0.1
+            ]
+          }
+        ]
+      },
+      {
+        "id": "lunge",
+        "name": {
+          "ru": "Выпад",
+          "en": "Lunge"
+        },
+        "effects": [
+          {
+            "kind": "firstTrip",
+            "values": [
+              0.1,
+              0.15,
+              0.2,
+              0.25,
+              0.3
+            ]
+          }
+        ]
+      },
+      {
+        "id": "tailwind",
+        "name": {
+          "ru": "Попутный ветер",
+          "en": "Tailwind"
+        },
+        "effects": [
+          {
+            "kind": "biomeShorter",
+            "biome": "sky_islands",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "facet",
+        "name": {
+          "ru": "Грань",
+          "en": "Facet"
+        },
+        "effects": [
+          {
+            "kind": "shards",
+            "values": [
+              1.1,
+              1.15,
+              1.2,
+              1.25,
+              1.3
+            ]
+          }
+        ]
+      },
+      {
+        "id": "hourglass",
+        "name": {
+          "ru": "Часики",
+          "en": "Hourglass"
+        },
+        "effects": [
+          {
+            "kind": "hatch",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ditty",
+        "name": {
+          "ru": "Песенка",
+          "en": "Ditty"
+        },
+        "effects": [
+          {
+            "kind": "bond",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "slumber",
+        "name": {
+          "ru": "Сон",
+          "en": "Slumber"
+        },
+        "effects": [
+          {
+            "kind": "loot",
+            "values": [
+              1.05,
+              1.075,
+              1.1,
+              1.125,
+              1.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "night_light",
+        "name": {
+          "ru": "Свет в ночи",
+          "en": "Night Light"
+        },
+        "effects": [
+          {
+            "kind": "rareNight",
+            "values": [
+              1.2,
+              1.3,
+              1.4,
+              1.5,
+              1.6
+            ]
+          }
+        ]
+      },
+      {
+        "id": "thread",
+        "name": {
+          "ru": "Нитка",
+          "en": "Thread"
+        },
+        "effects": [
+          {
+            "kind": "traitPrice",
+            "values": [
+              0.2,
+              0.3,
+              0.4,
+              0.5,
+              0.6
+            ]
+          }
+        ]
+      },
+      {
+        "id": "winding",
+        "name": {
+          "ru": "Завод",
+          "en": "Winding"
+        },
+        "effects": [
+          {
+            "kind": "rewind",
+            "values": [
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0
+            ]
+          }
+        ]
+      },
+      {
+        "id": "distilling",
+        "name": {
+          "ru": "Перегонка",
+          "en": "Distilling"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "slowerPressure",
+            "values": [
+              0.03,
+              0.0475,
+              0.065,
+              0.0825,
+              0.1
+            ]
+          }
+        ]
+      },
+      {
+        "id": "sense",
+        "name": {
+          "ru": "Чутьё",
+          "en": "Sense"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "lighterBrush",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "binding",
+        "name": {
+          "ru": "Связь",
+          "en": "Binding"
+        },
+        "effects": [
+          {
+            "kind": "souls",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "compass",
+        "name": {
+          "ru": "Компас",
+          "en": "Compass"
+        },
+        "effects": [
+          {
+            "kind": "anyBiome",
+            "values": [
+              1,
+              1,
+              1,
+              1,
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "id": "pollen",
+        "name": {
+          "ru": "Пыльца",
+          "en": "Pollen"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "mutationChance",
+            "values": [
+              0.03,
+              0.0475,
+              0.065,
+              0.0825,
+              0.1
+            ]
+          }
+        ]
+      },
+      {
+        "id": "spread",
+        "name": {
+          "ru": "Расклад",
+          "en": "Spread"
+        },
+        "effects": [
+          {
+            "kind": "choice",
+            "values": [
+              0.2,
+              0.3,
+              0.4,
+              0.5,
+              0.6
+            ]
+          }
+        ]
+      },
+      {
+        "id": "moss",
+        "name": {
+          "ru": "Мох",
+          "en": "Moss"
+        },
+        "effects": [
+          {
+            "kind": "herbs",
+            "values": [
+              1.15,
+              1.225,
+              1.3,
+              1.375,
+              1.45
+            ]
+          }
+        ]
+      },
+      {
+        "id": "shaping",
+        "name": {
+          "ru": "Лепка",
+          "en": "Shaping"
+        },
+        "effects": [
+          {
+            "kind": "gearPrice",
+            "values": [
+              0.1,
+              0.15,
+              0.2,
+              0.25,
+              0.3
+            ]
+          }
+        ]
+      },
+      {
+        "id": "crooked",
+        "name": {
+          "ru": "Перекос",
+          "en": "Crookedness"
+        },
+        "effects": [
+          {
+            "kind": "herbs",
+            "values": [
+              1.5,
+              1.75,
+              2.0,
+              2.25,
+              2.5
+            ]
+          },
+          {
+            "kind": "biomeShorter",
+            "biome": "green_hills",
+            "values": [
+              0.1,
+              0.125,
+              0.15,
+              0.175,
+              0.2
+            ]
+          },
+          {
+            "kind": "biomeShorter",
+            "biome": "sand_ruins",
+            "values": [
+              0.1,
+              0.125,
+              0.15,
+              0.175,
+              0.2
+            ]
+          }
+        ]
+      },
+      {
+        "id": "upturned",
+        "name": {
+          "ru": "Вверх ногами",
+          "en": "Upside Down"
+        },
+        "effects": [
+          {
+            "kind": "shards",
+            "values": [
+              1.4,
+              1.525,
+              1.65,
+              1.775,
+              1.9
+            ]
+          },
+          {
+            "kind": "biomeShorter",
+            "biome": "sand_ruins",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          },
+          {
+            "kind": "biomeShorter",
+            "biome": "sky_islands",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "shade",
+        "name": {
+          "ru": "Тень",
+          "en": "Shade"
+        },
+        "effects": [
+          {
+            "kind": "fish",
+            "values": [
+              1.0,
+              1.5,
+              2.0,
+              2.5,
+              3.0
+            ]
+          },
+          {
+            "kind": "biomeShorter",
+            "biome": "ice_peak",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          },
+          {
+            "kind": "biomeShorter",
+            "biome": "volcanic_forge",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "chill",
+        "name": {
+          "ru": "Холод",
+          "en": "Chill"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "temperStep",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          },
+          {
+            "kind": "biomeShorter",
+            "biome": "volcanic_forge",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          },
+          {
+            "kind": "biomeShorter",
+            "biome": "ice_peak",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          }
+        ]
+      },
+      {
+        "id": "hush",
+        "name": {
+          "ru": "Тишина",
+          "en": "Hush"
+        },
+        "effects": [
+          {
+            "kind": "rare",
+            "values": [
+              1.5,
+              1.75,
+              2.0,
+              2.25,
+              2.5
+            ]
+          }
+        ]
+      },
+      {
+        "id": "crease",
+        "name": {
+          "ru": "Складка",
+          "en": "Crease"
+        },
+        "effects": [
+          {
+            "kind": "loot",
+            "values": [
+              1.3,
+              1.425,
+              1.55,
+              1.675,
+              1.8
+            ]
+          },
+          {
+            "kind": "souls",
+            "values": [
+              0.03,
+              0.0475,
+              0.065,
+              0.0825,
+              0.1
+            ]
+          }
+        ]
+      },
+      {
+        "id": "blossom",
+        "name": {
+          "ru": "Цветение",
+          "en": "Blossom"
+        },
+        "effects": [
+          {
+            "kind": "homePerk",
+            "perk": "growFaster",
+            "values": [
+              0.05,
+              0.075,
+              0.1,
+              0.125,
+              0.15
+            ]
+          },
+          {
+            "kind": "herbs",
+            "values": [
+              1.2,
+              1.3,
+              1.4,
+              1.5,
+              1.6
+            ]
+          }
+        ]
+      },
+      {
+        "id": "starlit",
+        "name": {
+          "ru": "Звёздный свет",
+          "en": "Starlight"
+        },
+        "effects": [
+          {
+            "kind": "rareNight",
+            "values": [
+              1.3,
+              1.45,
+              1.6,
+              1.75,
+              1.9
+            ]
+          },
+          {
+            "kind": "experience",
+            "values": [
+              1.1,
+              1.15,
+              1.2,
+              1.25,
+              1.3
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "rarities": [
+    "common",
+    "rare",
+    "epic",
+    "legendary",
+    "mythic"
+  ],
+  "bond": {
+    "maxHearts": 10,
+    "pointsPerHeart": 30,
+    "pet": {
+      "points": 1,
+      "everyMinutes": 10,
+      "perDay": 6
+    },
+    "favourite": {
+      "points": 3,
+      "perDay": 1
+    },
+    "trip": {
+      "points": 1
+    },
+    "friendPet": {
+      "points": 1,
+      "perDay": 3
+    },
+    "unlocks": {
+      "rename": 1,
+      "gesture": 3,
+      "secondGesture": 5,
+      "fireSeat": 5,
+      "accessory": 7,
+      "bestFriend": 10
+    },
+    "chapterHearts": [
+      2,
+      4,
+      6,
+      8
+    ],
+    "accessories": [
+      "collar",
+      "scarf",
+      "bell"
+    ],
+    "nameLength": 16,
+    "chapters": [
+      [
+        {
+          "ru": "Я помню, как вывалился из Разлома. Было тепло и пахло дымом. Это был твой костёр.",
+          "en": "I remember falling out of the Rift. It was warm and smelled of smoke. It was your fire."
+        },
+        {
+          "ru": "Ты тогда не прогнал меня. Я до сих пор не понимаю почему.",
+          "en": "You did not chase me off back then. I still do not know why."
+        },
+        {
+          "ru": "Иногда мне снится, что я большой. Очень большой.",
+          "en": "Sometimes I dream that I am big. Very big."
+        }
+      ],
+      [
+        {
+          "ru": "Сегодня я видел своего Колосса издалека. Он меня не узнал.",
+          "en": "Today I saw my Colossus from afar. It did not know me."
+        },
+        {
+          "ru": "Колоссы не злые. Они просто идут туда, где тихо.",
+          "en": "Colossi are not evil. They just go where it is quiet."
+        },
+        {
+          "ru": "Я решил, что буду шуметь. Чтобы он не пришёл к тебе.",
+          "en": "I decided I will make noise. So it will not come to you."
+        }
+      ],
+      [
+        {
+          "ru": "На Изнанке всё наоборот: там я был бы самым маленьким камешком.",
+          "en": "On the Underside everything is reversed: there I would be the smallest pebble."
+        },
+        {
+          "ru": "Мне нравится быть твоим камешком.",
+          "en": "I like being your pebble."
+        },
+        {
+          "ru": "Я принёс тебе кое-что. Не спрашивай, где взял.",
+          "en": "I brought you something. Do not ask where I got it."
+        }
+      ],
+      [
+        {
+          "ru": "Я больше не боюсь Разлома. Он просто дверь, и я знаю, с какой стороны мой дом.",
+          "en": "I am not afraid of the Rift anymore. It is just a door, and I know which side is home."
+        },
+        {
+          "ru": "Если я когда-нибудь вырасту в Колосса, я буду охранять Кромку.",
+          "en": "If I ever grow into a Colossus, I will guard the Edge."
+        },
+        {
+          "ru": "Спасибо, что ты есть.",
+          "en": "Thank you for being here."
+        }
+      ]
+    ]
+  },
+  "talents": {
+    "everyLevels": 3,
+    "freeResetDays": 7,
+    "resetShards": 30,
+    "branches": [
+      {
+        "id": "traveller",
+        "name": {
+          "ru": "Походник",
+          "en": "Traveller"
+        },
+        "nodes": [
+          {
+            "id": "light_step",
+            "name": {
+              "ru": "Лёгкий шаг",
+              "en": "Light Step"
+            },
+            "effect": "shorter",
+            "value": 0.03
+          },
+          {
+            "id": "full_bags",
+            "name": {
+              "ru": "Полные сумки",
+              "en": "Full Bags"
+            },
+            "effect": "extraItems",
+            "value": 1
+          },
+          {
+            "id": "sharp_eye",
+            "name": {
+              "ru": "Зоркий глаз",
+              "en": "Sharp Eye"
+            },
+            "effect": "rare",
+            "value": 0.2
+          },
+          {
+            "id": "long_road",
+            "name": {
+              "ru": "Дальний путь",
+              "en": "Long Road"
+            },
+            "effect": "longTrip",
+            "value": 16,
+            "stage": 1
+          }
+        ]
+      },
+      {
+        "id": "homebody",
+        "name": {
+          "ru": "Домосед",
+          "en": "Homebody"
+        },
+        "nodes": [
+          {
+            "id": "warm_corner",
+            "name": {
+              "ru": "Тёплый угол",
+              "en": "Warm Corner"
+            },
+            "effect": "homeTraits",
+            "value": 0.1
+          },
+          {
+            "id": "home_lessons",
+            "name": {
+              "ru": "Домашние уроки",
+              "en": "Home Lessons"
+            },
+            "effect": "homeExperience",
+            "value": 5
+          },
+          {
+            "id": "second_helping",
+            "name": {
+              "ru": "Добавка",
+              "en": "Second Helping"
+            },
+            "effect": "favouriteBond",
+            "value": 1
+          },
+          {
+            "id": "house_master",
+            "name": {
+              "ru": "Хозяин дома",
+              "en": "House Master"
+            },
+            "effect": "homeForage",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "id": "party_friend",
+        "name": {
+          "ru": "Друг отряда",
+          "en": "Party Friend"
+        },
+        "nodes": [
+          {
+            "id": "shoulder",
+            "name": {
+              "ru": "Плечом к плечу",
+              "en": "Shoulder to Shoulder"
+            },
+            "effect": "jointLoot",
+            "value": 0.1
+          },
+          {
+            "id": "far_call",
+            "name": {
+              "ru": "Дальний зов",
+              "en": "Far Call"
+            },
+            "effect": "partyTripShorter",
+            "value": 1
+          },
+          {
+            "id": "banner",
+            "name": {
+              "ru": "Знамя",
+              "en": "Banner"
+            },
+            "effect": "partyFriendship",
+            "value": 1
+          },
+          {
+            "id": "pack",
+            "name": {
+              "ru": "Стая",
+              "en": "Pack"
+            },
+            "effect": "packTrait",
+            "value": 0.25
+          }
+        ]
+      }
+    ]
+  },
+  "joint": {
+    "loot": 1.6,
+    "friendsLoot": 1.8,
+    "pairs": [
+      {
+        "a": "camp_dog",
+        "b": "camp_crow",
+        "scene": {
+          "ru": "Ворона всю дорогу ехала на Псе и командовала.",
+          "en": "The Crow rode the Dog all the way and gave orders."
+        }
+      },
+      {
+        "a": "pet_owl",
+        "b": "pet_firefly",
+        "scene": {
+          "ru": "Светлячок светил, Сова смотрела. Так и нашли тропу.",
+          "en": "The Firefly shone, the Owl watched. That is how they found the path."
+        }
+      },
+      {
+        "a": "pet_fox",
+        "b": "longnight_companion",
+        "scene": {
+          "ru": "Лис катал снежки, Снеговичок делал вид, что это не он.",
+          "en": "The Fox rolled snowballs, the Snowman pretended it was not him."
+        }
+      },
+      {
+        "a": "pet_golem",
+        "b": "pass1_companion",
+        "scene": {
+          "ru": "Саламандра проспала полдороги внутри голема.",
+          "en": "The Salamander slept half the way inside the Golem."
+        }
+      },
+      {
+        "a": "pumpkin_companion",
+        "b": "egg_boarlet",
+        "scene": {
+          "ru": "Кабанёнок подкапывал тыкву. Тыква была недовольна.",
+          "en": "The Boarlet dug under the Pumpkin. The Pumpkin was not pleased."
+        }
+      },
+      {
+        "a": "museum_mole",
+        "b": "egg_scarab",
+        "scene": {
+          "ru": "Крот и Скарабей копали наперегонки. Ничья.",
+          "en": "The Mole and the Scarab raced at digging. A draw."
+        }
+      },
+      {
+        "a": "egg_griffin",
+        "b": "solstice_companion",
+        "scene": {
+          "ru": "Огонёк сидел в гнезде Грифонёнка и грел его.",
+          "en": "The Little Flame sat in the Griffin's nest and kept it warm."
+        }
+      }
+    ]
+  },
+  "nest": {
+    "building": "nest",
+    "chance": 0.005,
+    "cooldownDays": 7,
+    "hatchHours": 24,
+    "coal": "ember_coal",
+    "coalHours": 1,
+    "coalHoursPerDay": 6,
+    "friendWarmHours": 2,
+    "sparkExperience": 150,
+    "sparksForChoice": 5,
+    "trophies": [
+      {
+        "collection": "colossus_bones",
+        "companion": "museum_mole"
+      }
+    ],
+    "heart": {
+      "companion": "heart_fold"
+    },
+    "shop": {
+      "offers": 3,
+      "price": 200,
+      "days": 7,
+      "sources": [
+        "egg"
+      ]
+    }
+  },
+  "album": {
+    "baseTrips": 3,
+    "heartsStar": 10,
+    "paidSources": [
+      "shop",
+      "pass"
+    ],
+    "title": "menagerie_master",
+    "bonuses": [
+      {
+        "stars": 10,
+        "kind": "tripSlot",
+        "value": 1
+      },
+      {
+        "stars": 25,
+        "kind": "foodExperience",
+        "value": 0.1
+      },
+      {
+        "stars": 40,
+        "kind": "nestSlot",
+        "value": 1
+      },
+      {
+        "stars": 55,
+        "kind": "tripSlot",
+        "value": 1
+      },
+      {
+        "stars": 65,
+        "kind": "title",
+        "value": 1
+      }
+    ]
+  },
+  "strip": {
+    "sitAfterSeconds": 60,
+    "sleepAfterSeconds": 300,
+    "hopAfterSeconds": 5,
+    "runAfterSeconds": 30,
+    "seriesPauseSeconds": 2,
+    "cheerHearts": 3,
+    "cheerSeconds": 3,
+    "flashSeconds": 2
+  },
+  "rarityTraitMultiplier": {
+    "legendary": 1.15,
+    "mythic": 1.25
+  },
+  "coats": [
+    {
+      "id": "shining",
+      "chance": 0.01,
+      "traitBonus": 0.05,
+      "star": 1
+    },
+    {
+      "id": "underside",
+      "chance": 0.001,
+      "traitBonus": 0.1,
+      "star": 0
+    }
+  ],
+  "stars": {
+    "levelsPerStar": 5,
+    "traitsPerStar": 0.1,
+    "costs": [
+      {
+        "sparks": 5,
+        "souls": 10
+      },
+      {
+        "sparks": 10,
+        "souls": 20
+      },
+      {
+        "sparks": 15,
+        "souls": 35
+      },
+      {
+        "sparks": 20,
+        "souls": 55
+      },
+      {
+        "sparks": 30,
+        "souls": 80
+      },
+      {
+        "sparks": 40,
+        "souls": 120
+      }
+    ],
+    "startStars": {
+      "rare": 1,
+      "epic": 2,
+      "legendary": 3,
+      "mythic": 3
+    },
+    "souls": {
+      "perHostDaily": 1,
+      "tripHoursPerSoul": 20,
+      "perPartyTrip": 5
+    }
+  },
+  "forms": {
+    "changeSouls": 100,
+    "forms": [
+      {
+        "id": "trail",
+        "stage": 2,
+        "loot": 0.15,
+        "speed": 0.15
+      },
+      {
+        "id": "home",
+        "stage": 2,
+        "home": 0.15
+      },
+      {
+        "id": "underside",
+        "stage": 3,
+        "stars": 3,
+        "loot": 0.1,
+        "speed": 0.1,
+        "home": 0.1
+      }
+    ]
+  },
+  "resonance": {
+    "levelsPerStep": 100,
+    "step": 0.02,
+    "cap": 0.2,
+    "perks": [
+      "expeditionLoot",
+      "growFaster",
+      "biteFaster",
+      "stirFaster",
+      "fewerHammers"
+    ],
+    "milestones": [
+      {
+        "levels": 500,
+        "kind": "tripSlot"
+      },
+      {
+        "levels": 1000,
+        "kind": "homeSlot"
+      },
+      {
+        "levels": 1500,
+        "kind": "campLook"
+      }
+    ]
+  },
+  "mastery": [
+    {
+      "trips": 50,
+      "experience": 0.05
+    },
+    {
+      "trips": 200,
+      "experience": 0.1
+    },
+    {
+      "trips": 500,
+      "experience": 0.15
+    }
+  ],
+  "gear": {
+    "building": "forge",
+    "maxRarity": 6,
+    "shardsPerRarity": 40,
+    "bonesPerRarity": 2,
+    "setShards": 100,
+    "rarityStep": 0.25,
+    "slots": [
+      {
+        "slot": "collar",
+        "stage": 1,
+        "stars": 0
+      },
+      {
+        "slot": "bag",
+        "stage": 3,
+        "stars": 3
+      },
+      {
+        "slot": "amulet",
+        "stage": 3,
+        "stars": 6
+      }
+    ],
+    "affixes": [
+      {
+        "stat": "duration",
+        "min": 0.01,
+        "max": 0.03
+      },
+      {
+        "stat": "loot",
+        "min": 0.02,
+        "max": 0.05
+      },
+      {
+        "stat": "rare",
+        "min": 0.02,
+        "max": 0.05
+      },
+      {
+        "stat": "homeTraits",
+        "min": 0.02,
+        "max": 0.05
+      },
+      {
+        "stat": "experience",
+        "min": 0.03,
+        "max": 0.08
+      },
+      {
+        "stat": "bond",
+        "min": 0.05,
+        "max": 0.1
+      }
+    ],
+    "sets": [
+      {
+        "id": "trail",
+        "bonuses": [
+          {
+            "pieces": 2,
+            "stat": "loot",
+            "value": 0.1
+          },
+          {
+            "pieces": 3,
+            "stat": "duration",
+            "value": 0.05,
+            "power": "instantTrip"
+          }
+        ]
+      },
+      {
+        "id": "home",
+        "bonuses": [
+          {
+            "pieces": 2,
+            "stat": "homeTraits",
+            "value": 0.1
+          },
+          {
+            "pieces": 3,
+            "stat": "homeTraits",
+            "value": 0.1,
+            "power": "homeSlot"
+          }
+        ]
+      },
+      {
+        "id": "party",
+        "bonuses": [
+          {
+            "pieces": 2,
+            "stat": "bond",
+            "value": 0.2
+          },
+          {
+            "pieces": 3,
+            "stat": "experience",
+            "value": 0.15
+          }
+        ]
+      },
+      {
+        "id": "underside",
+        "bonuses": [
+          {
+            "pieces": 2,
+            "stat": "rare",
+            "value": 0.15
+          },
+          {
+            "pieces": 3,
+            "stat": "experience",
+            "value": 0.2
+          }
+        ]
+      }
+    ]
+  },
+  "work": {
+    "board": {
+      "tasks": 3,
+      "rerollsPerDay": 1,
+      "pool": [
+        {
+          "id": "bring_ice_bones",
+          "kind": "bring",
+          "item": "bone_ice",
+          "amount": 5,
+          "experience": 60,
+          "souls": 1
+        },
+        {
+          "id": "bring_hill_bones",
+          "kind": "bring",
+          "item": "bone_hills",
+          "amount": 5,
+          "experience": 60,
+          "food": "herb_knockbloom",
+          "foodAmount": 3
+        },
+        {
+          "id": "bring_roach",
+          "kind": "bring",
+          "item": "fish_hills_roach",
+          "amount": 3,
+          "experience": 50,
+          "souls": 1
+        },
+        {
+          "id": "bring_sandeel",
+          "kind": "bring",
+          "item": "fish_ruins_sandeel",
+          "amount": 3,
+          "experience": 50
+        },
+        {
+          "id": "sky_with_fisher",
+          "kind": "trip",
+          "biome": "sky_islands",
+          "trait": "fisher",
+          "experience": 80,
+          "souls": 1
+        },
+        {
+          "id": "ruins_with_digger",
+          "kind": "trip",
+          "biome": "sand_ruins",
+          "trait": "digger",
+          "experience": 80
+        },
+        {
+          "id": "hills_trip",
+          "kind": "trip",
+          "biome": "green_hills",
+          "experience": 40,
+          "food": "herb_knockbloom",
+          "foodAmount": 2
+        },
+        {
+          "id": "ice_trip",
+          "kind": "trip",
+          "biome": "ice_peak",
+          "experience": 60,
+          "souls": 1
+        },
+        {
+          "id": "forge_trip",
+          "kind": "trip",
+          "biome": "volcanic_forge",
+          "trait": "wanderer",
+          "experience": 80,
+          "souls": 1
+        }
+      ]
+    },
+    "help": {
+      "hours": 4,
+      "bond": 5,
+      "reputation": 20,
+      "guilds": [
+        "gardeners",
+        "fishers",
+        "smiths",
+        "cooks",
+        "diggers"
+      ]
+    },
+    "burrow": {
+      "days": 7,
+      "party": 3,
+      "powerPerStage": 10,
+      "powerPerStar": 10,
+      "powerPerRank": 3,
+      "floors": [
+        {
+          "power": 20,
+          "souls": 2,
+          "shards": 50
+        },
+        {
+          "power": 60,
+          "souls": 3,
+          "shards": 120,
+          "bones": 1
+        },
+        {
+          "power": 150,
+          "souls": 5,
+          "shards": 250,
+          "bones": 3
+        }
+      ]
+    }
+  },
+  "treats": {
+    "delicacyMaxLevel": 30,
+    "delicacyDays": 7,
+    "recipes": [
+      {
+        "id": "dried_crucian",
+        "name": {
+          "ru": "Сушёный карась",
+          "en": "Dried Crucian"
+        },
+        "ingredients": [
+          "fish_ice_crucian",
+          "fish_ice_crucian"
+        ],
+        "experience": 20,
+        "trip": {
+          "stat": "shards",
+          "value": 0.1
+        }
+      },
+      {
+        "id": "roach_crisps",
+        "name": {
+          "ru": "Хрустики из плотвы",
+          "en": "Roach Crisps"
+        },
+        "ingredients": [
+          "fish_hills_roach",
+          "fish_hills_roach",
+          "herb_windwort"
+        ],
+        "experience": 15,
+        "trip": {
+          "stat": "items",
+          "value": 0.1
+        }
+      },
+      {
+        "id": "sandeel_jerky",
+        "name": {
+          "ru": "Вяленый песчаный угорь",
+          "en": "Sandeel Jerky"
+        },
+        "ingredients": [
+          "fish_ruins_sandeel",
+          "fish_ruins_sandeel"
+        ],
+        "experience": 20,
+        "trip": {
+          "stat": "rare",
+          "value": 0.1
+        }
+      },
+      {
+        "id": "ember_minnow_bites",
+        "name": {
+          "ru": "Огненные пескарики",
+          "en": "Ember Minnow Bites"
+        },
+        "ingredients": [
+          "fish_forge_ember_minnow",
+          "fish_forge_ember_minnow"
+        ],
+        "experience": 20,
+        "trip": {
+          "stat": "duration",
+          "value": 0.05
+        }
+      },
+      {
+        "id": "cloud_dace_flakes",
+        "name": {
+          "ru": "Хлопья облачной ельца",
+          "en": "Cloud Dace Flakes"
+        },
+        "ingredients": [
+          "fish_sky_cloud_dace",
+          "fish_sky_cloud_dace"
+        ],
+        "experience": 20,
+        "trip": {
+          "stat": "items",
+          "value": 0.1
+        }
+      },
+      {
+        "id": "herb_cookie",
+        "name": {
+          "ru": "Травяное печенье",
+          "en": "Herb Cookie"
+        },
+        "ingredients": [
+          "herb_knockbloom",
+          "herb_knockbloom"
+        ],
+        "experience": 12,
+        "trip": {
+          "stat": "shards",
+          "value": 0.05
+        }
+      },
+      {
+        "id": "windwort_biscuit",
+        "name": {
+          "ru": "Сухарик с ветреницей",
+          "en": "Windwort Biscuit"
+        },
+        "ingredients": [
+          "herb_windwort",
+          "herb_windwort"
+        ],
+        "experience": 12,
+        "trip": {
+          "stat": "duration",
+          "value": 0.03
+        }
+      },
+      {
+        "id": "bone_broth",
+        "name": {
+          "ru": "Костный бульон",
+          "en": "Bone Broth"
+        },
+        "ingredients": [
+          "bone_hills",
+          "herb_knockbloom"
+        ],
+        "experience": 25,
+        "trip": {
+          "stat": "items",
+          "value": 0.08
+        }
+      },
+      {
+        "id": "sand_bone_chew",
+        "name": {
+          "ru": "Косточка из Руин",
+          "en": "Ruins Chew"
+        },
+        "ingredients": [
+          "bone_ruins"
+        ],
+        "experience": 18,
+        "trip": {
+          "stat": "rare",
+          "value": 0.08
+        }
+      },
+      {
+        "id": "ice_bone_chew",
+        "name": {
+          "ru": "Ледяная косточка",
+          "en": "Ice Chew"
+        },
+        "ingredients": [
+          "bone_ice"
+        ],
+        "experience": 18,
+        "trip": {
+          "stat": "shards",
+          "value": 0.08
+        }
+      },
+      {
+        "id": "bloom_delicacy",
+        "name": {
+          "ru": "Пирожок с Цветком Колосса",
+          "en": "Bloom Pie"
+        },
+        "ingredients": [
+          "herb_colossus_bloom",
+          "fish_sky_cloud_dace"
+        ],
+        "delicacy": true
+      },
+      {
+        "id": "roach_delicacy",
+        "name": {
+          "ru": "Царская плотва",
+          "en": "Royal Roach"
+        },
+        "ingredients": [
+          "herb_colossus_bloom",
+          "fish_hills_roach",
+          "fish_hills_roach",
+          "fish_hills_roach"
+        ],
+        "delicacy": true
+      }
+    ]
+  },
+  "coop": {
+    "petsPerDay": 3,
+    "warmsPerFriendPerDay": 1,
+    "farTrip": {
+      "hours": 24,
+      "perDay": 1,
+      "minCompanions": 2,
+      "maxCompanions": 4,
+      "bonesPerCompanion": 1,
+      "rarePerCompanion": 1,
+      "rarePerBiome": 0.25,
+      "souls": 5
+    }
+  },
+  "families": {
+    "adultStage": 2,
+    "treePoints": 1,
+    "list": [
+      {
+        "id": "hills",
+        "name": {
+          "ru": "Холмовые",
+          "en": "Hill Folk"
+        },
+        "members": [
+          "camp_dog",
+          "egg_boarlet",
+          "hills_piglet",
+          "little_crown",
+          "pumpkin_companion",
+          "market_hedgehog",
+          "crooked_boarlet"
+        ],
+        "collected": [
+          {
+            "stat": "tripHerbs",
+            "value": 0.05
+          }
+        ],
+        "adults": [
+          {
+            "stat": "perk",
+            "value": 0.05,
+            "perk": "growFaster"
+          }
+        ]
+      },
+      {
+        "id": "sands",
+        "name": {
+          "ru": "Песчаные",
+          "en": "Sand Folk"
+        },
+        "members": [
+          "camp_crow",
+          "egg_scarab",
+          "jackal_pup",
+          "museum_mole",
+          "flood_companion",
+          "chronicler",
+          "upturned_sphinxling"
+        ],
+        "collected": [
+          {
+            "stat": "tripShards",
+            "value": 0.05
+          }
+        ],
+        "adults": [
+          {
+            "stat": "perk",
+            "value": 0.05,
+            "perk": "lighterBrush"
+          }
+        ]
+      },
+      {
+        "id": "ice",
+        "name": {
+          "ru": "Ледовые",
+          "en": "Ice Folk"
+        },
+        "members": [
+          "pet_fox",
+          "egg_mammoth",
+          "walrus_pup",
+          "longnight_companion",
+          "harbour_cat",
+          "shadow_mammoth_calf"
+        ],
+        "collected": [
+          {
+            "stat": "tripFish",
+            "value": 0.05
+          }
+        ],
+        "adults": [
+          {
+            "stat": "perk",
+            "value": 0.05,
+            "perk": "biteFaster"
+          }
+        ]
+      },
+      {
+        "id": "forge",
+        "name": {
+          "ru": "Кузнечные",
+          "en": "Forge Folk"
+        },
+        "members": [
+          "pet_golem",
+          "pass1_companion",
+          "egg_wormlet",
+          "little_cauldron",
+          "forge_cricket",
+          "cold_grasshopper"
+        ],
+        "collected": [
+          {
+            "stat": "tripShards",
+            "value": 0.05
+          }
+        ],
+        "adults": [
+          {
+            "stat": "perk",
+            "value": 0.05,
+            "perk": "fewerHammers"
+          }
+        ]
+      },
+      {
+        "id": "sky",
+        "name": {
+          "ru": "Небесные",
+          "en": "Sky Folk"
+        },
+        "members": [
+          "pet_owl",
+          "solstice_companion",
+          "egg_griffin",
+          "cloud_ray",
+          "post_griffin",
+          "pet_firefly",
+          "quiet_dragonet"
+        ],
+        "collected": [
+          {
+            "stat": "tripTime",
+            "value": 0.03
+          }
+        ],
+        "adults": [
+          {
+            "stat": "tripRare",
+            "value": 0.05
+          }
+        ]
+      },
+      {
+        "id": "underside",
+        "name": {
+          "ru": "Изнаночные",
+          "en": "Underside Folk"
+        },
+        "members": [
+          "heart_fold",
+          "double",
+          "echo_critter",
+          "eater_cub",
+          "heart_crease"
+        ],
+        "collected": [
+          {
+            "stat": "souls",
+            "value": 0.05
+          }
+        ],
+        "adults": [
+          {
+            "stat": "starCost",
+            "value": 0.05
+          }
+        ]
+      },
+      {
+        "id": "wardens",
+        "name": {
+          "ru": "Свита Стражей",
+          "en": "Wardens' Retinue"
+        },
+        "members": [
+          "rune_stoat",
+          "fencing_crane",
+          "wind_swift",
+          "crystal_hedgehog",
+          "sand_jerboa",
+          "singing_cricket",
+          "dream_dormouse",
+          "lantern_moth",
+          "rag_puppy",
+          "clockwork_mouse",
+          "flask_slime",
+          "dowsing_rat",
+          "spirit_firefly",
+          "ship_parrot",
+          "moon_moth",
+          "card_fox",
+          "moss_turtle",
+          "clay_pigeon"
+        ],
+        "collected": [
+          {
+            "stat": "allExperience",
+            "value": 0.05
+          }
+        ],
+        "adults": [
+          {
+            "stat": "talentPoints",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "id": "party",
+        "name": {
+          "ru": "Отрядные",
+          "en": "Party Folk"
+        },
+        "members": [
+          "banner_pup",
+          "party_pup",
+          "bloom_hare",
+          "star_kitten"
+        ],
+        "collected": [
+          {
+            "stat": "none",
+            "waits": "friendshipSigns"
+          }
+        ],
+        "adults": [
+          {
+            "stat": "none",
+            "waits": "farTripHours"
+          }
+        ]
+      }
+    ]
+  },
+  "menagerie": {
+    "rows": [
+      0,
+      5,
+      15,
+      30,
+      50,
+      75,
+      105
+    ],
+    "points": {
+      "max": 180,
+      "level": {
+        "max": 120,
+        "share": 0.1,
+        "experiencePerLevel": 8
+      },
+      "evolution": 2,
+      "evolutionsCounted": 20,
+      "albumStars": 65,
+      "album": 2
+    },
+    "respec": {
+      "refundSouls": 5,
+      "freeResetDays": 1
+    },
+    "bar": {
+      "every": 10,
+      "passives": [
+        {
+          "stat": "allExperience",
+          "value": 0.02
+        },
+        {
+          "stat": "tripLoot",
+          "value": 0.01
+        },
+        {
+          "stat": "homeTraits",
+          "value": 0.01
+        }
+      ]
+    },
+    "nodes": [
+      {
+        "row": 1,
+        "theme": "trails",
+        "name": {
+          "ru": "Лёгкий шаг",
+          "en": "Light Step"
+        },
+        "a": [
+          {
+            "stat": "tripTime",
+            "value": 0.01
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "biomeItemPerTrip"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "firstTripOfDay"
+          }
+        ]
+      },
+      {
+        "row": 1,
+        "theme": "trails",
+        "name": {
+          "ru": "Полные сумки",
+          "en": "Full Bags"
+        },
+        "a": [
+          {
+            "stat": "tripItems",
+            "value": 0.02
+          }
+        ],
+        "b": [
+          {
+            "stat": "tripShards",
+            "value": 0.02
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "doubleItems"
+          }
+        ]
+      },
+      {
+        "row": 1,
+        "theme": "hearth",
+        "name": {
+          "ru": "Тёплый угол",
+          "en": "Warm Corner"
+        },
+        "a": [
+          {
+            "stat": "homeTraits",
+            "value": 0.02
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "homeExperience"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "homeFood"
+          }
+        ]
+      },
+      {
+        "row": 1,
+        "theme": "hearth",
+        "name": {
+          "ru": "Сытый живот",
+          "en": "Full Belly"
+        },
+        "a": [
+          {
+            "stat": "foodExperience",
+            "value": 0.03
+          }
+        ],
+        "b": [
+          {
+            "stat": "foodCap",
+            "value": 10
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "favouriteExtra"
+          }
+        ]
+      },
+      {
+        "row": 1,
+        "theme": "pack",
+        "name": {
+          "ru": "Плечом к плечу",
+          "en": "Side by Side"
+        },
+        "a": [
+          {
+            "stat": "jointLoot",
+            "value": 0.02
+          }
+        ],
+        "b": [
+          {
+            "stat": "friendsLoot",
+            "value": 0.02
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "jointFasterTime"
+          }
+        ]
+      },
+      {
+        "row": 1,
+        "theme": "nest",
+        "name": {
+          "ru": "Тёплые камни",
+          "en": "Warm Stones"
+        },
+        "a": [
+          {
+            "stat": "hatchTime",
+            "value": 0.02
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "coalSeconds"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "earlyHatch"
+          }
+        ]
+      },
+      {
+        "row": 1,
+        "theme": "bonds",
+        "name": {
+          "ru": "Ласковая рука",
+          "en": "Gentle Hand"
+        },
+        "a": [
+          {
+            "stat": "petBond",
+            "value": 0.1
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "petsPerDay"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "stripPet"
+          }
+        ]
+      },
+      {
+        "row": 1,
+        "theme": "bonds",
+        "name": {
+          "ru": "Письма домой",
+          "en": "Letters Home"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "storyChance"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "choiceLetters"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "giftLetter"
+          }
+        ]
+      },
+      {
+        "row": 1,
+        "theme": "underside",
+        "name": {
+          "ru": "Шёпот Изнанки",
+          "en": "Underside Whisper"
+        },
+        "a": [
+          {
+            "stat": "souls",
+            "value": 0.02
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "sparks"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "weeklySouls"
+          }
+        ]
+      },
+      {
+        "row": 1,
+        "theme": "trails",
+        "name": {
+          "ru": "Острый нюх",
+          "en": "Keen Nose"
+        },
+        "a": [
+          {
+            "stat": "tripRare",
+            "value": 0.03
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "findsInLetter"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "weeklyRare"
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "parent": 1,
+        "theme": "trails",
+        "name": {
+          "ru": "Знание троп",
+          "en": "Trail Lore"
+        },
+        "a": [
+          {
+            "stat": "ownBiomeLoot",
+            "value": 0.03
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "noForeignPenalty"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "colossusBone"
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "parent": 1,
+        "theme": "trails",
+        "name": {
+          "ru": "Ночной переход",
+          "en": "Night March"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "nightTripTime"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "nightLetters"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "nightNoDelay"
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "parent": 3,
+        "theme": "hearth",
+        "name": {
+          "ru": "Мягкая лапа",
+          "en": "Soft Paw"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "homeGarden"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "homeWatering"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "homeHarvest"
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "parent": 3,
+        "theme": "hearth",
+        "name": {
+          "ru": "Удочка у порога",
+          "en": "Rod at the Door"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "homeBite"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "homeBottle"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "homeFish"
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "parent": 5,
+        "theme": "pack",
+        "name": {
+          "ru": "Старые друзья",
+          "en": "Old Friends"
+        },
+        "a": [
+          {
+            "stat": "friendsLoot",
+            "value": 0.03
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "pairSceneBond"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "pairGesture"
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "parent": 5,
+        "theme": "pack",
+        "name": {
+          "ru": "Гость у костра",
+          "en": "Guest by the Fire"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "guestSigns"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "guestExperience"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "guestPair"
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "parent": 6,
+        "theme": "nest",
+        "name": {
+          "ru": "Скорлупа",
+          "en": "Eggshell"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "repeatSpark"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "kinSpark"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "sparksForEgg"
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "parent": 7,
+        "theme": "bonds",
+        "name": {
+          "ru": "Тёплое имя",
+          "en": "Warm Name"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "heartsExperience"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "heartsTraits"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "nameAtFriends"
+          }
+        ]
+      },
+      {
+        "row": 2,
+        "parent": 9,
+        "theme": "underside",
+        "name": {
+          "ru": "Искристость",
+          "en": "Sparkle"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "sparks"
+          }
+        ],
+        "b": [
+          {
+            "stat": "burrowLoot",
+            "value": 0.05
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "tripSpark"
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "parent": 11,
+        "theme": "trails",
+        "name": {
+          "ru": "Своё ремесло",
+          "en": "Own Craft"
+        },
+        "a": [
+          {
+            "stat": "ownTraits",
+            "value": 0.03
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "speciesBranch"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "ownInJoint"
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "parent": 2,
+        "theme": "trails",
+        "name": {
+          "ru": "Второе дыхание",
+          "en": "Second Wind"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "repeatTrip"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "repeatExperience"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "repeatSoul"
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "parent": 14,
+        "theme": "hearth",
+        "name": {
+          "ru": "Помощь у горна",
+          "en": "Help at the Forge"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "homeForge"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "gearPrice"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "helperTwoBuildings"
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "parent": 4,
+        "theme": "hearth",
+        "name": {
+          "ru": "Повар-самоучка",
+          "en": "Self-taught Cook"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "homeDishes"
+          }
+        ],
+        "b": [
+          {
+            "stat": "treatExperience",
+            "value": 0.05
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "selfCook"
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "parent": 15,
+        "theme": "pack",
+        "name": {
+          "ru": "Вожак",
+          "en": "Leader"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "packTraits"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "packFamily"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "leaderBranch"
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "parent": 17,
+        "theme": "nest",
+        "name": {
+          "ru": "Блеск",
+          "en": "Gleam"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "shinyCoat"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "undersideCoat"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "freeRecolour"
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "parent": 18,
+        "theme": "bonds",
+        "name": {
+          "ru": "Нрав",
+          "en": "Temper"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "temperPower"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "temperMinus"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "secondTemper"
+          }
+        ]
+      },
+      {
+        "row": 3,
+        "parent": 19,
+        "theme": "underside",
+        "name": {
+          "ru": "Тонкая шкура",
+          "en": "Thin Hide"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "formCost"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "traitCost"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "formKeepsMastery"
+          }
+        ]
+      },
+      {
+        "row": 4,
+        "parent": 20,
+        "theme": "trails",
+        "name": {
+          "ru": "Тропа и очаг",
+          "en": "Trail and Hearth"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "tripWhileHome"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "homeWhileTrips"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "returnWorksHome"
+          }
+        ]
+      },
+      {
+        "row": 4,
+        "parent": 24,
+        "theme": "pack",
+        "name": {
+          "ru": "Стая и Гнездовье",
+          "en": "Pack and Nest"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "packEgg"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "friendWarm"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "hatchlingPack"
+          }
+        ]
+      },
+      {
+        "row": 4,
+        "parent": 26,
+        "theme": "bonds",
+        "name": {
+          "ru": "Узы и Изнанка",
+          "en": "Bonds and Underside"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "heartSouls"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "heartStarCost"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "tenthHeartSouls"
+          }
+        ]
+      },
+      {
+        "row": 4,
+        "parent": 23,
+        "theme": "hearth",
+        "name": {
+          "ru": "Сад и стол",
+          "en": "Garden and Table"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "gardenHarvest"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "harvestFood"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "gardenerCook"
+          }
+        ]
+      },
+      {
+        "row": 4,
+        "parent": 8,
+        "theme": "bonds",
+        "name": {
+          "ru": "Почта",
+          "en": "Post"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "choiceLetters"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "threeChoices"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "letterBond"
+          }
+        ]
+      },
+      {
+        "row": 4,
+        "parent": 16,
+        "theme": "pack",
+        "name": {
+          "ru": "Кромка",
+          "en": "The Verge"
+        },
+        "a": [
+          {
+            "stat": "helpTime",
+            "value": 0.03
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "guildCoins"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "rareRecipe"
+          }
+        ]
+      },
+      {
+        "row": 4,
+        "parent": 27,
+        "theme": "underside",
+        "name": {
+          "ru": "Нора поглубже",
+          "en": "Deeper Burrow"
+        },
+        "a": [
+          {
+            "stat": "burrowLoot",
+            "value": 0.02
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "burrowTries"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "burrowFloor"
+          }
+        ]
+      },
+      {
+        "row": 5,
+        "parent": 28,
+        "theme": "trails",
+        "name": {
+          "ru": "Карта Изнанки",
+          "en": "Underside Map"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "rotationBiome"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "extraBiome"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "twoBiomes"
+          }
+        ]
+      },
+      {
+        "row": 5,
+        "parent": 28,
+        "theme": "hearth",
+        "name": {
+          "ru": "Два хвоста",
+          "en": "Two Tails"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "secondHomeTraits"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "secondHomeFood"
+          }
+        ],
+        "c": [
+          {
+            "stat": "homeSlot",
+            "value": 1
+          }
+        ]
+      },
+      {
+        "row": 5,
+        "parent": 29,
+        "theme": "pack",
+        "name": {
+          "ru": "Общий котёл",
+          "en": "Common Pot"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "hideoutFood"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "farTripTime"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "farTripTwice"
+          }
+        ]
+      },
+      {
+        "row": 5,
+        "parent": 29,
+        "theme": "nest",
+        "name": {
+          "ru": "Двойня",
+          "en": "Twins"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "twins"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "twinSparks"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "monthlyTwins"
+          }
+        ]
+      },
+      {
+        "row": 5,
+        "parent": 30,
+        "theme": "bonds",
+        "name": {
+          "ru": "Верность",
+          "en": "Loyalty"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "heartsTraits"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "heartsExperience"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "heartsNoDelay"
+          }
+        ]
+      },
+      {
+        "row": 5,
+        "parent": 30,
+        "theme": "underside",
+        "name": {
+          "ru": "Звёздный путь",
+          "en": "Star Road"
+        },
+        "a": [
+          {
+            "stat": "starCost",
+            "value": 0.02
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "hostSouls"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "freeStar"
+          }
+        ]
+      },
+      {
+        "row": 6,
+        "parent": 36,
+        "theme": "hearth",
+        "name": {
+          "ru": "Хозяйство",
+          "en": "Household"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "homePeacefulItem"
+          }
+        ],
+        "b": [
+          {
+            "stat": "homeTraits",
+            "value": 0.05
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "homeCountsAsTrip"
+          }
+        ]
+      },
+      {
+        "row": 6,
+        "parent": 37,
+        "theme": "pack",
+        "name": {
+          "ru": "Сбор стаи",
+          "en": "Pack Gathering"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "packLoot"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "packSlots"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "packOfFour"
+          }
+        ]
+      },
+      {
+        "row": 6,
+        "parent": 38,
+        "theme": "nest",
+        "name": {
+          "ru": "Выбор матери",
+          "en": "Mother's Choice"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "chosenEgg30"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "chosenEgg21"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "chosenEgg14"
+          }
+        ]
+      },
+      {
+        "row": 6,
+        "parent": 39,
+        "theme": "bonds",
+        "name": {
+          "ru": "Сердце стаи",
+          "en": "Heart of the Pack"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "heartsAllThemes"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "heartsAllThemes"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "heartsBar"
+          }
+        ]
+      },
+      {
+        "row": 6,
+        "parent": 40,
+        "theme": "underside",
+        "name": {
+          "ru": "Отражение",
+          "en": "Reflection"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "legendaryOwn"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "undersideForm"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "circleTreePoint"
+          }
+        ]
+      },
+      {
+        "row": 7,
+        "parent": 35,
+        "theme": "peak",
+        "name": {
+          "ru": "Бесконечная тропа",
+          "en": "Endless Trail"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "endlessTrips"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "endlessTrips"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "endlessTrips"
+          }
+        ],
+        "keystone": true
+      },
+      {
+        "row": 7,
+        "parent": 41,
+        "theme": "peak",
+        "name": {
+          "ru": "Домосед",
+          "en": "Homebody"
+        },
+        "a": [
+          {
+            "stat": "homeTraits",
+            "value": 0.4
+          }
+        ],
+        "b": [
+          {
+            "stat": "homeTraits",
+            "value": 0.1
+          }
+        ],
+        "c": [
+          {
+            "stat": "homeTraits",
+            "value": 0.1
+          }
+        ],
+        "keystone": true
+      },
+      {
+        "row": 7,
+        "parent": 42,
+        "theme": "peak",
+        "name": {
+          "ru": "Одна стая",
+          "en": "One Pack"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "onePack"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "onePack"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "onePack"
+          }
+        ],
+        "keystone": true
+      },
+      {
+        "row": 7,
+        "parent": 43,
+        "theme": "peak",
+        "name": {
+          "ru": "Мать Изнанки",
+          "en": "Underside Mother"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "instantEggs"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "instantEggs"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "instantEggs"
+          }
+        ],
+        "keystone": true
+      },
+      {
+        "row": 7,
+        "parent": 44,
+        "theme": "peak",
+        "name": {
+          "ru": "Одна любовь",
+          "en": "One Love"
+        },
+        "a": [
+          {
+            "stat": "none",
+            "waits": "oneLove"
+          }
+        ],
+        "b": [
+          {
+            "stat": "none",
+            "waits": "oneLove"
+          }
+        ],
+        "c": [
+          {
+            "stat": "none",
+            "waits": "oneLove"
+          }
+        ],
+        "keystone": true
+      }
+    ],
+    "majors": [
+      {
+        "at": 20,
+        "options": [
+          {
+            "id": "menagerie_m20_1",
+            "name": {
+              "ru": "Ранняя пташка",
+              "en": "Early Bird"
+            },
+            "lines": [
+              {
+                "stat": "none",
+                "waits": "morningTrips"
+              }
+            ]
+          },
+          {
+            "id": "menagerie_m20_2",
+            "name": {
+              "ru": "Обжорство",
+              "en": "Gluttony"
+            },
+            "lines": [
+              {
+                "stat": "foodCap",
+                "value": 100
+              },
+              {
+                "stat": "none",
+                "waits": "foodPrice"
+              }
+            ]
+          },
+          {
+            "id": "menagerie_m20_3",
+            "name": {
+              "ru": "Ласка",
+              "en": "Caress"
+            },
+            "lines": [
+              {
+                "stat": "petBond",
+                "value": 0.5
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "at": 50,
+        "options": [
+          {
+            "id": "menagerie_m50_1",
+            "name": {
+              "ru": "Следопыт",
+              "en": "Tracker"
+            },
+            "lines": [
+              {
+                "stat": "tripRare",
+                "value": 0.3
+              },
+              {
+                "stat": "tripItems",
+                "value": -0.1
+              }
+            ]
+          },
+          {
+            "id": "menagerie_m50_2",
+            "name": {
+              "ru": "Хозяйка",
+              "en": "Housekeeper"
+            },
+            "lines": [
+              {
+                "stat": "homeTraits",
+                "value": 0.15
+              },
+              {
+                "stat": "tripTime",
+                "value": -0.1
+              }
+            ]
+          },
+          {
+            "id": "menagerie_m50_3",
+            "name": {
+              "ru": "Зов",
+              "en": "Call"
+            },
+            "lines": [
+              {
+                "stat": "none",
+                "waits": "farTripPlusOne"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "at": 90,
+        "options": [
+          {
+            "id": "menagerie_m90_1",
+            "name": {
+              "ru": "Тень Колосса",
+              "en": "Colossus Shadow"
+            },
+            "lines": [
+              {
+                "stat": "ownBiomeLoot",
+                "value": 0.25
+              },
+              {
+                "stat": "none",
+                "waits": "foreignPenalty"
+              }
+            ]
+          },
+          {
+            "id": "menagerie_m90_2",
+            "name": {
+              "ru": "Звездочёт",
+              "en": "Stargazer"
+            },
+            "lines": [
+              {
+                "stat": "starCost",
+                "value": 0.15
+              },
+              {
+                "stat": "allExperience",
+                "value": -0.1
+              }
+            ]
+          },
+          {
+            "id": "menagerie_m90_3",
+            "name": {
+              "ru": "Наставник от бога",
+              "en": "Born Mentor"
+            },
+            "lines": [
+              {
+                "stat": "none",
+                "waits": "mentorShare"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "at": 140,
+        "options": [
+          {
+            "id": "menagerie_m140_1",
+            "name": {
+              "ru": "Дитя Разлома",
+              "en": "Rift Child"
+            },
+            "lines": [
+              {
+                "stat": "none",
+                "waits": "seventhStar"
+              }
+            ]
+          },
+          {
+            "id": "menagerie_m140_2",
+            "name": {
+              "ru": "Пробуждённый круг",
+              "en": "Awakened Circle"
+            },
+            "lines": [
+              {
+                "stat": "none",
+                "waits": "circleCost"
+              }
+            ]
+          },
+          {
+            "id": "menagerie_m140_3",
+            "name": {
+              "ru": "Сто зверей",
+              "en": "Hundred Beasts"
+            },
+            "lines": [
+              {
+                "stat": "none",
+                "waits": "perCompanionBonus"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "companions": [
+    {
+      "id": "camp_dog",
+      "name": {
+        "ru": "Пёс у костра",
+        "en": "Campfire Dog"
+      },
+      "rarity": "common",
+      "source": "start",
+      "biome": "green_hills",
+      "favourite": "herb_balls",
+      "stages": {
+        "ru": [
+          "Пёс у костра",
+          "Дворовый пёс",
+          "Сторож костра",
+          "Пёс Тридцати Полей"
+        ],
+        "en": [
+          "Campfire Dog",
+          "Yard Dog",
+          "Fire Warden",
+          "Dog of Thirty Fields"
+        ]
+      }
+    },
+    {
+      "id": "camp_crow",
+      "name": {
+        "ru": "Ворона-находчица",
+        "en": "Finder Crow"
+      },
+      "rarity": "common",
+      "source": "start",
+      "biome": "sand_ruins",
+      "favourite": "carp_pie",
+      "stages": {
+        "ru": [
+          "Ворона-находчица",
+          "Галка",
+          "Ворона-кладоискатель",
+          "Ворона Сфинкса"
+        ],
+        "en": [
+          "Finder Crow",
+          "Jackdaw",
+          "Treasure Crow",
+          "Sphinx Crow"
+        ]
+      }
+    },
+    {
+      "id": "pet_owl",
+      "name": {
+        "ru": "Сова",
+        "en": "Owl"
+      },
+      "rarity": "epic",
+      "source": "shop",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "night_owl",
+      "stages": {
+        "ru": [
+          "Сова",
+          "Сыч",
+          "Сова-сторож",
+          "Сова Облачного шпиля"
+        ],
+        "en": [
+          "Owl",
+          "Little Owl",
+          "Watch Owl",
+          "Cloudspire Owl"
+        ]
+      }
+    },
+    {
+      "id": "pet_fox",
+      "name": {
+        "ru": "Лис",
+        "en": "Fox"
+      },
+      "rarity": "epic",
+      "source": "shop",
+      "biome": "ice_peak",
+      "favourite": "frost_crucian",
+      "trait": "sly",
+      "stages": {
+        "ru": [
+          "Лис",
+          "Лисёнок",
+          "Песец",
+          "Лис Белой тишины"
+        ],
+        "en": [
+          "Fox",
+          "Fox Kit",
+          "Arctic Fox",
+          "Fox of White Silence"
+        ]
+      }
+    },
+    {
+      "id": "pet_firefly",
+      "name": {
+        "ru": "Светлячок",
+        "en": "Firefly"
+      },
+      "rarity": "epic",
+      "source": "shop",
+      "biome": "green_hills",
+      "favourite": "herb",
+      "trait": "lantern",
+      "stages": {
+        "ru": [
+          "Светлячок",
+          "Искорка",
+          "Светлячок",
+          "Звёздный рой"
+        ],
+        "en": [
+          "Firefly",
+          "Spark",
+          "Glowbug",
+          "Star Swarm"
+        ]
+      }
+    },
+    {
+      "id": "pet_golem",
+      "name": {
+        "ru": "Маленький голем",
+        "en": "Little Golem"
+      },
+      "rarity": "epic",
+      "source": "shop",
+      "biome": "volcanic_forge",
+      "favourite": "ember_stew",
+      "trait": "porter",
+      "stages": {
+        "ru": [
+          "Маленький голем",
+          "Камешек",
+          "Голем",
+          "Голем Кузни"
+        ],
+        "en": [
+          "Little Golem",
+          "Pebble",
+          "Golem",
+          "Forge Golem"
+        ]
+      }
+    },
+    {
+      "id": "pass1_companion",
+      "name": {
+        "ru": "Огненная саламандра",
+        "en": "Fire Salamander"
+      },
+      "rarity": "legendary",
+      "source": "pass",
+      "biome": "volcanic_forge",
+      "favourite": "char_feast",
+      "trait": "temper",
+      "stages": {
+        "ru": [
+          "Огненная саламандра",
+          "Саламандра",
+          "Огненный ящер",
+          "Дитя Кузнеца"
+        ],
+        "en": [
+          "Fire Salamander",
+          "Salamander",
+          "Fire Lizard",
+          "Smith's Child"
+        ]
+      }
+    },
+    {
+      "id": "pumpkin_companion",
+      "name": {
+        "ru": "Тыквёнок",
+        "en": "Pumpkinling"
+      },
+      "rarity": "epic",
+      "source": "event",
+      "biome": "green_hills",
+      "favourite": "herb",
+      "trait": "harvest",
+      "stages": {
+        "ru": [
+          "Тыквёнок",
+          "Тыквёнок",
+          "Тыквоголовый",
+          "Пугальце"
+        ],
+        "en": [
+          "Pumpkinling",
+          "Pumpkinling",
+          "Pumpkinhead",
+          "Little Scarecrow"
+        ]
+      }
+    },
+    {
+      "id": "longnight_companion",
+      "name": {
+        "ru": "Снеговичок",
+        "en": "Little Snowman"
+      },
+      "rarity": "epic",
+      "source": "event",
+      "biome": "ice_peak",
+      "favourite": "fish_soup",
+      "trait": "frost",
+      "stages": {
+        "ru": [
+          "Снеговичок",
+          "Снежок",
+          "Снеговичок",
+          "Снежный дед"
+        ],
+        "en": [
+          "Little Snowman",
+          "Snowball",
+          "Snowman",
+          "Snow Grandfather"
+        ]
+      }
+    },
+    {
+      "id": "flood_companion",
+      "name": {
+        "ru": "Лягушонок",
+        "en": "Froglet"
+      },
+      "rarity": "epic",
+      "source": "event",
+      "biome": "sand_ruins",
+      "favourite": "fish",
+      "trait": "croak",
+      "stages": {
+        "ru": [
+          "Лягушонок",
+          "Головастик",
+          "Лягушонок",
+          "Жаба Оазиса"
+        ],
+        "en": [
+          "Froglet",
+          "Tadpole",
+          "Froglet",
+          "Oasis Toad"
+        ]
+      }
+    },
+    {
+      "id": "solstice_companion",
+      "name": {
+        "ru": "Огонёк",
+        "en": "Little Flame"
+      },
+      "rarity": "epic",
+      "source": "event",
+      "biome": "sky_islands",
+      "favourite": "eel_skewers",
+      "trait": "sunny",
+      "stages": {
+        "ru": [
+          "Огонёк",
+          "Огонёк",
+          "Пламечко",
+          "Солнечный дух"
+        ],
+        "en": [
+          "Little Flame",
+          "Little Flame",
+          "Flicker",
+          "Sun Spirit"
+        ]
+      }
+    },
+    {
+      "id": "egg_boarlet",
+      "name": {
+        "ru": "Кабанёнок",
+        "en": "Boarlet"
+      },
+      "rarity": "common",
+      "source": "egg",
+      "biome": "green_hills",
+      "favourite": "herb",
+      "baseTrait": "herbalist",
+      "stages": {
+        "ru": [
+          "Кабанёнок",
+          "Поросёнок",
+          "Кабанчик",
+          "Кабан Изнанки"
+        ],
+        "en": [
+          "Boarlet",
+          "Piglet",
+          "Young Boar",
+          "Underside Boar"
+        ]
+      }
+    },
+    {
+      "id": "egg_scarab",
+      "name": {
+        "ru": "Скарабей",
+        "en": "Scarab"
+      },
+      "rarity": "common",
+      "source": "egg",
+      "biome": "sand_ruins",
+      "favourite": "carp_pie",
+      "baseTrait": "digger",
+      "stages": {
+        "ru": [
+          "Скарабей",
+          "Жучок",
+          "Скарабей",
+          "Солнечный жук"
+        ],
+        "en": [
+          "Scarab",
+          "Beetle",
+          "Scarab",
+          "Sun Beetle"
+        ]
+      }
+    },
+    {
+      "id": "egg_mammoth",
+      "name": {
+        "ru": "Мамонтёнок",
+        "en": "Mammoth Calf"
+      },
+      "rarity": "common",
+      "source": "egg",
+      "biome": "ice_peak",
+      "favourite": "frost_crucian",
+      "baseTrait": "herbalist",
+      "stages": {
+        "ru": [
+          "Мамонтёнок",
+          "Мамонтёнок",
+          "Шерстистый",
+          "Мамонт Пика"
+        ],
+        "en": [
+          "Mammoth Calf",
+          "Mammoth Calf",
+          "Woolly",
+          "Peak Mammoth"
+        ]
+      }
+    },
+    {
+      "id": "egg_wormlet",
+      "name": {
+        "ru": "Угольный червячок",
+        "en": "Coal Wormlet"
+      },
+      "rarity": "common",
+      "source": "egg",
+      "biome": "volcanic_forge",
+      "favourite": "ember_stew",
+      "baseTrait": "digger",
+      "stages": {
+        "ru": [
+          "Угольный червячок",
+          "Червячок",
+          "Лавовый червь",
+          "Червь Горна"
+        ],
+        "en": [
+          "Coal Wormlet",
+          "Wormlet",
+          "Lava Worm",
+          "Furnace Worm"
+        ]
+      }
+    },
+    {
+      "id": "egg_griffin",
+      "name": {
+        "ru": "Грифонёнок",
+        "en": "Griffin Chick"
+      },
+      "rarity": "common",
+      "source": "egg",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "baseTrait": "wanderer",
+      "stages": {
+        "ru": [
+          "Грифонёнок",
+          "Птенец",
+          "Грифон",
+          "Грифон Островов"
+        ],
+        "en": [
+          "Griffin Chick",
+          "Chick",
+          "Griffin",
+          "Island Griffin"
+        ]
+      }
+    },
+    {
+      "id": "museum_mole",
+      "name": {
+        "ru": "Кротёнок",
+        "en": "Molelet"
+      },
+      "rarity": "rare",
+      "source": "museum",
+      "biome": "sand_ruins",
+      "favourite": "fish",
+      "trait": "burrower",
+      "stages": {
+        "ru": [
+          "Кротёнок",
+          "Крот",
+          "Землекоп",
+          "Крот Глубины"
+        ],
+        "en": [
+          "Molelet",
+          "Mole",
+          "Digger Mole",
+          "Deep Mole"
+        ]
+      }
+    },
+    {
+      "id": "heart_fold",
+      "name": {
+        "ru": "Складочка",
+        "en": "Little Fold"
+      },
+      "rarity": "legendary",
+      "source": "heart",
+      "biome": "sky_islands",
+      "favourite": "herb",
+      "trait": "underside",
+      "stages": {
+        "ru": [
+          "Складочка",
+          "Складочка",
+          "Морщинка",
+          "Тень Пожирателя"
+        ],
+        "en": [
+          "Little Fold",
+          "Little Fold",
+          "Wrinkle",
+          "Devourer's Shadow"
+        ]
+      }
+    },
+    {
+      "id": "hills_piglet",
+      "name": {
+        "ru": "Кабанишка",
+        "en": "Piglet"
+      },
+      "rarity": "rare",
+      "source": "boss",
+      "biome": "green_hills",
+      "favourite": "herb_balls",
+      "trait": "snout",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "boar_mother",
+        "chance": 0.01
+      },
+      "stages": {
+        "ru": [
+          "Кабанишка",
+          "Кабанчик",
+          "Секач-копун",
+          "Холмовой вепрь"
+        ],
+        "en": [
+          "Piglet",
+          "Boarling",
+          "Rooting Boar",
+          "Hill Boar"
+        ]
+      }
+    },
+    {
+      "id": "jackal_pup",
+      "name": {
+        "ru": "Шакалёнок",
+        "en": "Jackal Pup"
+      },
+      "rarity": "rare",
+      "source": "boss",
+      "biome": "sand_ruins",
+      "favourite": "eel_skewers",
+      "trait": "treasurer",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "jackal_treasurer",
+        "chance": 0.01
+      },
+      "stages": {
+        "ru": [
+          "Шакалёнок",
+          "Шакал-подручный",
+          "Шакал-счетовод",
+          "Шакал-казначей"
+        ],
+        "en": [
+          "Jackal Pup",
+          "Jackal Helper",
+          "Jackal Clerk",
+          "Jackal Treasurer"
+        ]
+      }
+    },
+    {
+      "id": "walrus_pup",
+      "name": {
+        "ru": "Моржонок",
+        "en": "Walrus Pup"
+      },
+      "rarity": "rare",
+      "source": "boss",
+      "biome": "ice_peak",
+      "favourite": "frost_crucian",
+      "trait": "diver",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "walrus_matriarch",
+        "chance": 0.01
+      },
+      "stages": {
+        "ru": [
+          "Моржонок",
+          "Морж-подросток",
+          "Морж-ныряльщик",
+          "Ледяной морж"
+        ],
+        "en": [
+          "Walrus Pup",
+          "Young Walrus",
+          "Diving Walrus",
+          "Ice Walrus"
+        ]
+      }
+    },
+    {
+      "id": "little_cauldron",
+      "name": {
+        "ru": "Котелок",
+        "en": "Little Cauldron"
+      },
+      "rarity": "rare",
+      "source": "boss",
+      "biome": "volcanic_forge",
+      "favourite": "ember_stew",
+      "trait": "brew",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "crucible",
+        "chance": 0.01
+      },
+      "stages": {
+        "ru": [
+          "Котелок",
+          "Котёл на ножках",
+          "Бурлящий котёл",
+          "Тигелёк"
+        ],
+        "en": [
+          "Little Cauldron",
+          "Walking Pot",
+          "Bubbling Pot",
+          "Little Crucible"
+        ]
+      }
+    },
+    {
+      "id": "cloud_ray",
+      "name": {
+        "ru": "Скатик",
+        "en": "Cloud Ray"
+      },
+      "rarity": "rare",
+      "source": "boss",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "glide",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "cloud_mother",
+        "chance": 0.01
+      },
+      "stages": {
+        "ru": [
+          "Скатик",
+          "Облачный скат",
+          "Скат-парусник",
+          "Скат Облачницы"
+        ],
+        "en": [
+          "Cloud Ray",
+          "Sky Ray",
+          "Sail Ray",
+          "Cloudmother's Ray"
+        ]
+      }
+    },
+    {
+      "id": "post_griffin",
+      "name": {
+        "ru": "Почтовый грифончик",
+        "en": "Post Griffin"
+      },
+      "rarity": "legendary",
+      "source": "boss",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "postman",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "storm_dragon",
+        "chance": 0.002
+      },
+      "stages": {
+        "ru": [
+          "Почтовый грифончик",
+          "Грифон-курьер",
+          "Грифон-почтарь",
+          "Грифон Бурь"
+        ],
+        "en": [
+          "Post Griffin",
+          "Courier Griffin",
+          "Mail Griffin",
+          "Storm Griffin"
+        ]
+      }
+    },
+    {
+      "id": "little_crown",
+      "name": {
+        "ru": "Корона",
+        "en": "Little Crown"
+      },
+      "rarity": "legendary",
+      "source": "boss",
+      "biome": "green_hills",
+      "favourite": "herb_balls",
+      "trait": "giver",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "boar_king",
+        "chance": 0.002
+      },
+      "stages": {
+        "ru": [
+          "Корона",
+          "Корона на ножках",
+          "Корона-податель",
+          "Корона Короля-кабана"
+        ],
+        "en": [
+          "Little Crown",
+          "Walking Crown",
+          "Giving Crown",
+          "Boar King's Crown"
+        ]
+      }
+    },
+    {
+      "id": "market_hedgehog",
+      "name": {
+        "ru": "Рыночный ёж",
+        "en": "Market Hedgehog"
+      },
+      "rarity": "rare",
+      "source": "guild",
+      "biome": "green_hills",
+      "favourite": "herb",
+      "trait": "prickle",
+      "unlock": {
+        "kind": "guild",
+        "guild": "gardeners",
+        "level": 3
+      },
+      "stages": {
+        "ru": [
+          "Рыночный ёж",
+          "Ёж-садовник",
+          "Ёж с корзинкой",
+          "Ёж Зелёного рынка"
+        ],
+        "en": [
+          "Market Hedgehog",
+          "Garden Hedgehog",
+          "Basket Hedgehog",
+          "Green Market Hedgehog"
+        ]
+      }
+    },
+    {
+      "id": "harbour_cat",
+      "name": {
+        "ru": "Гаванский кот",
+        "en": "Harbour Cat"
+      },
+      "rarity": "rare",
+      "source": "guild",
+      "biome": "ice_peak",
+      "favourite": "fish",
+      "trait": "purr",
+      "unlock": {
+        "kind": "guild",
+        "guild": "fishers",
+        "level": 3
+      },
+      "stages": {
+        "ru": [
+          "Гаванский кот",
+          "Кот-рыболов",
+          "Кот с причала",
+          "Кот Ледяной гавани"
+        ],
+        "en": [
+          "Harbour Cat",
+          "Fishing Cat",
+          "Pier Cat",
+          "Ice Harbour Cat"
+        ]
+      }
+    },
+    {
+      "id": "forge_cricket",
+      "name": {
+        "ru": "Кузнечный сверчок",
+        "en": "Forge Cricket"
+      },
+      "rarity": "rare",
+      "source": "guild",
+      "biome": "volcanic_forge",
+      "favourite": "ember_stew",
+      "trait": "chirp",
+      "unlock": {
+        "kind": "guild",
+        "guild": "smiths",
+        "level": 3
+      },
+      "stages": {
+        "ru": [
+          "Кузнечный сверчок",
+          "Сверчок-подмастерье",
+          "Сверчок у горна",
+          "Сверчок Кузнечного ряда"
+        ],
+        "en": [
+          "Forge Cricket",
+          "Apprentice Cricket",
+          "Anvil Cricket",
+          "Smiths' Row Cricket"
+        ]
+      }
+    },
+    {
+      "id": "banner_pup",
+      "name": {
+        "ru": "Знамёныш",
+        "en": "Banner Pup"
+      },
+      "rarity": "epic",
+      "source": "clan",
+      "biome": "green_hills",
+      "favourite": "carp_pie",
+      "trait": "bannerman",
+      "unlock": {
+        "kind": "clan",
+        "target": 10
+      },
+      "stages": {
+        "ru": [
+          "Знамёныш",
+          "Знаменосец",
+          "Знамя клана",
+          "Клановый стяг"
+        ],
+        "en": [
+          "Banner Pup",
+          "Banner Bearer",
+          "Clan Banner",
+          "Clan Standard"
+        ]
+      }
+    },
+    {
+      "id": "party_pup",
+      "name": {
+        "ru": "Пёсик отряда",
+        "en": "Party Pup"
+      },
+      "rarity": "epic",
+      "source": "hideout",
+      "biome": "green_hills",
+      "favourite": "fish_soup",
+      "trait": "watchdog",
+      "unlock": {
+        "kind": "hideout",
+        "target": 4
+      },
+      "stages": {
+        "ru": [
+          "Пёсик отряда",
+          "Пёс-сторож",
+          "Пёс Пристанища",
+          "Хранитель Пристанища"
+        ],
+        "en": [
+          "Party Pup",
+          "Watch Pup",
+          "Hideout Dog",
+          "Hideout Keeper"
+        ]
+      }
+    },
+    {
+      "id": "echo_critter",
+      "name": {
+        "ru": "Эхо-зверёк",
+        "en": "Echo Critter"
+      },
+      "rarity": "legendary",
+      "source": "echo",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "resound",
+      "unlock": {
+        "kind": "prestige",
+        "target": 10
+      },
+      "stages": {
+        "ru": [
+          "Эхо-зверёк",
+          "Отзвук",
+          "Звенящий зверь",
+          "Зверь Эха"
+        ],
+        "en": [
+          "Echo Critter",
+          "Resounder",
+          "Ringing Beast",
+          "Beast of Echo"
+        ]
+      }
+    },
+    {
+      "id": "chronicler",
+      "name": {
+        "ru": "Летописец",
+        "en": "Chronicler"
+      },
+      "rarity": "legendary",
+      "source": "achievements",
+      "biome": "sand_ruins",
+      "favourite": "eel_skewers",
+      "trait": "chronicle",
+      "unlock": {
+        "kind": "achievements",
+        "target": 30
+      },
+      "stages": {
+        "ru": [
+          "Летописец",
+          "Писарь",
+          "Хронист",
+          "Хранитель Летописи"
+        ],
+        "en": [
+          "Chronicler",
+          "Scribe",
+          "Annalist",
+          "Keeper of Annals"
+        ]
+      }
+    },
+    {
+      "id": "double",
+      "name": {
+        "ru": "Двойник",
+        "en": "Double"
+      },
+      "rarity": "legendary",
+      "source": "rift",
+      "biome": "sky_islands",
+      "favourite": "char_feast",
+      "trait": "mirror",
+      "unlock": {
+        "kind": "server"
+      },
+      "stages": {
+        "ru": [
+          "Двойник",
+          "Отражение",
+          "Зеркальный зверь",
+          "Двойник Изнанки"
+        ],
+        "en": [
+          "Double",
+          "Reflection",
+          "Mirror Beast",
+          "Underside Double"
+        ]
+      }
+    },
+    {
+      "id": "eater_cub",
+      "name": {
+        "ru": "Детёныш Пожирателя",
+        "en": "Eater Cub"
+      },
+      "rarity": "legendary",
+      "source": "clan_raid",
+      "biome": "sky_islands",
+      "favourite": "char_feast",
+      "trait": "hunger",
+      "unlock": {
+        "kind": "server"
+      },
+      "stages": {
+        "ru": [
+          "Детёныш Пожирателя",
+          "Пожиратель-подросток",
+          "Голодный зверь",
+          "Малый Пожиратель"
+        ],
+        "en": [
+          "Eater Cub",
+          "Young Eater",
+          "Hungry Beast",
+          "Lesser Eater"
+        ]
+      }
+    },
+    {
+      "id": "rune_stoat",
+      "name": {
+        "ru": "Рунный горностай",
+        "en": "Rune Stoat"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "volcanic_forge",
+      "favourite": "ember_stew",
+      "trait": "carving",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "runedancer",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Рунный горностай",
+          "Горностай-резчик",
+          "Рунный страж",
+          "Горностай Тысячи Рун"
+        ],
+        "en": [
+          "Rune Stoat",
+          "Carver Stoat",
+          "Rune Warden",
+          "Stoat of a Thousand Runes"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "fencing_crane",
+      "name": {
+        "ru": "Фехтовальный журавль",
+        "en": "Fencing Crane"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "lunge",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "duelist",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Фехтовальный журавль",
+          "Журавль-ученик",
+          "Журавль-мастер",
+          "Журавль Первого Выпада"
+        ],
+        "en": [
+          "Fencing Crane",
+          "Apprentice Crane",
+          "Master Crane",
+          "Crane of the First Lunge"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "wind_swift",
+      "name": {
+        "ru": "Ветряной стриж",
+        "en": "Wind Swift"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "tailwind",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "windshot",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Ветряной стриж",
+          "Стриж-гонец",
+          "Стриж бурь",
+          "Стриж Верхних Ветров"
+        ],
+        "en": [
+          "Wind Swift",
+          "Courier Swift",
+          "Storm Swift",
+          "Swift of the High Winds"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "crystal_hedgehog",
+      "name": {
+        "ru": "Кристальный ёжик",
+        "en": "Crystal Hedgehog"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "sand_ruins",
+      "favourite": "eel_skewers",
+      "trait": "facet",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "shardcaller",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Кристальный ёжик",
+          "Ёжик-гранильщик",
+          "Кристальный ёж",
+          "Ёж Поющих Граней"
+        ],
+        "en": [
+          "Crystal Hedgehog",
+          "Cutter Hedgehog",
+          "Crystal Hedgehog",
+          "Hedgehog of Singing Facets"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "sand_jerboa",
+      "name": {
+        "ru": "Песочный тушканчик",
+        "en": "Sand Jerboa"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "sand_ruins",
+      "favourite": "eel_skewers",
+      "trait": "hourglass",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "sandwalker",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Песочный тушканчик",
+          "Тушканчик-часовщик",
+          "Тушканчик дюн",
+          "Тушканчик Песочных Часов"
+        ],
+        "en": [
+          "Sand Jerboa",
+          "Clock Jerboa",
+          "Dune Jerboa",
+          "Jerboa of the Hourglass"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "singing_cricket",
+      "name": {
+        "ru": "Певчий сверчок",
+        "en": "Singing Cricket"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "green_hills",
+      "favourite": "herb_balls",
+      "trait": "ditty",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "minstrel",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Певчий сверчок",
+          "Сверчок-запевала",
+          "Сверчок-менестрель",
+          "Сверчок Вечерних Песен"
+        ],
+        "en": [
+          "Singing Cricket",
+          "Lead Cricket",
+          "Minstrel Cricket",
+          "Cricket of Evening Songs"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "dream_dormouse",
+      "name": {
+        "ru": "Сонная соня",
+        "en": "Dream Dormouse"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "slumber",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "dreamcatcher",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Сонная соня",
+          "Соня-сновидица",
+          "Соня облаков",
+          "Соня Долгих Снов"
+        ],
+        "en": [
+          "Dream Dormouse",
+          "Dreamer Dormouse",
+          "Cloud Dormouse",
+          "Dormouse of Long Dreams"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "lantern_moth",
+      "name": {
+        "ru": "Фонарный мотылёк",
+        "en": "Lantern Moth"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "ice_peak",
+      "favourite": "frost_crucian",
+      "trait": "night_light",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "lanternbearer",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Фонарный мотылёк",
+          "Мотылёк-фонарщик",
+          "Мотылёк метели",
+          "Мотылёк Негаснущего Света"
+        ],
+        "en": [
+          "Lantern Moth",
+          "Lamplighter Moth",
+          "Blizzard Moth",
+          "Moth of Unfading Light"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "rag_puppy",
+      "name": {
+        "ru": "Тряпичный щенок",
+        "en": "Rag Puppy"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "green_hills",
+      "favourite": "herb_balls",
+      "trait": "thread",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "whisperer",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Тряпичный щенок",
+          "Щенок-лоскутик",
+          "Тряпичный пёс",
+          "Пёс Тихих Ниток"
+        ],
+        "en": [
+          "Rag Puppy",
+          "Patch Puppy",
+          "Rag Dog",
+          "Dog of Quiet Threads"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "clockwork_mouse",
+      "name": {
+        "ru": "Заводная мышь",
+        "en": "Clockwork Mouse"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "volcanic_forge",
+      "favourite": "ember_stew",
+      "trait": "winding",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "clockwright",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Заводная мышь",
+          "Мышь-шестерёнка",
+          "Заводная мышь-мастер",
+          "Мышь Вечного Завода"
+        ],
+        "en": [
+          "Clockwork Mouse",
+          "Cog Mouse",
+          "Master Clockwork Mouse",
+          "Mouse of the Endless Spring"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "flask_slime",
+      "name": {
+        "ru": "Склянник-слизень",
+        "en": "Flask Slime"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "volcanic_forge",
+      "favourite": "ember_stew",
+      "trait": "distilling",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "alchemist",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Склянник-слизень",
+          "Слизень-лаборант",
+          "Слизень-перегонщик",
+          "Слизень Великой Колбы"
+        ],
+        "en": [
+          "Flask Slime",
+          "Lab Slime",
+          "Distiller Slime",
+          "Slime of the Great Flask"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "dowsing_rat",
+      "name": {
+        "ru": "Лозоходная крыса",
+        "en": "Dowsing Rat"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "sand_ruins",
+      "favourite": "eel_skewers",
+      "trait": "sense",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "dowser",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Лозоходная крыса",
+          "Крыса-копатель",
+          "Крыса-лозоход",
+          "Крыса Подземных Жил"
+        ],
+        "en": [
+          "Dowsing Rat",
+          "Digger Rat",
+          "Dowsing Rat",
+          "Rat of the Deep Veins"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "spirit_firefly",
+      "name": {
+        "ru": "Духовый светлячок",
+        "en": "Spirit Firefly"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "binding",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "soulbinder",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Духовый светлячок",
+          "Светлячок-проводник",
+          "Светлячок душ",
+          "Светлячок Тысячи Огней"
+        ],
+        "en": [
+          "Spirit Firefly",
+          "Guide Firefly",
+          "Soul Firefly",
+          "Firefly of a Thousand Lights"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "ship_parrot",
+      "name": {
+        "ru": "Корабельный попугай",
+        "en": "Ship Parrot"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "ice_peak",
+      "favourite": "frost_crucian",
+      "trait": "compass",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "ghostcaptain",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Корабельный попугай",
+          "Попугай-юнга",
+          "Попугай-штурман",
+          "Попугай Призрачного Флота"
+        ],
+        "en": [
+          "Ship Parrot",
+          "Cabin Parrot",
+          "Navigator Parrot",
+          "Parrot of the Ghost Fleet"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "moon_moth",
+      "name": {
+        "ru": "Лунная моль",
+        "en": "Moon Moth"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "green_hills",
+      "favourite": "herb_balls",
+      "trait": "pollen",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "mothcaller",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Лунная моль",
+          "Моль-садовница",
+          "Лунная моль-хранительница",
+          "Моль Полной Луны"
+        ],
+        "en": [
+          "Moon Moth",
+          "Gardener Moth",
+          "Moon Keeper Moth",
+          "Moth of the Full Moon"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "card_fox",
+      "name": {
+        "ru": "Карточная лиса",
+        "en": "Card Fox"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "sand_ruins",
+      "favourite": "eel_skewers",
+      "trait": "spread",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "cartomancer",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Карточная лиса",
+          "Лиса-гадалка",
+          "Лиса-шулер",
+          "Лиса Последней Карты"
+        ],
+        "en": [
+          "Card Fox",
+          "Fortune Fox",
+          "Trickster Fox",
+          "Fox of the Last Card"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "moss_turtle",
+      "name": {
+        "ru": "Мшистая черепаха",
+        "en": "Moss Turtle"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "green_hills",
+      "favourite": "herb_balls",
+      "trait": "moss",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "herbwitch",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Мшистая черепаха",
+          "Черепаха-травница",
+          "Мшистая черепаха-знахарка",
+          "Черепаха Древнего Мха"
+        ],
+        "en": [
+          "Moss Turtle",
+          "Herbalist Turtle",
+          "Wise Moss Turtle",
+          "Turtle of the Ancient Moss"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "clay_pigeon",
+      "name": {
+        "ru": "Глиняный голубь",
+        "en": "Clay Pigeon"
+      },
+      "rarity": "rare",
+      "source": "character",
+      "biome": "volcanic_forge",
+      "favourite": "ember_stew",
+      "trait": "shaping",
+      "unlock": {
+        "kind": "classLevel",
+        "class": "golemancer",
+        "level": 50
+      },
+      "stages": {
+        "ru": [
+          "Глиняный голубь",
+          "Голубь-подмастерье",
+          "Глиняный голубь-гончар",
+          "Голубь Живой Глины"
+        ],
+        "en": [
+          "Clay Pigeon",
+          "Apprentice Pigeon",
+          "Potter Pigeon",
+          "Pigeon of Living Clay"
+        ]
+      },
+      "shopPrice": 300
+    },
+    {
+      "id": "crooked_boarlet",
+      "name": {
+        "ru": "Кабанчик-перекос",
+        "en": "Crooked Boarlet"
+      },
+      "rarity": "legendary",
+      "source": "underside",
+      "biome": "green_hills",
+      "favourite": "herb_balls",
+      "trait": "crooked",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "crooked_boar",
+        "chance": 0.002
+      },
+      "stages": {
+        "ru": [
+          "Кабанчик-перекос",
+          "Перекошенный кабан",
+          "Кабан Изнанки",
+          "Кабан Кривых Полей"
+        ],
+        "en": [
+          "Crooked Boarlet",
+          "Crooked Boar",
+          "Underside Boar",
+          "Boar of the Crooked Fields"
+        ]
+      }
+    },
+    {
+      "id": "upturned_sphinxling",
+      "name": {
+        "ru": "Сфинксёнок вверх ногами",
+        "en": "Upturned Sphinxling"
+      },
+      "rarity": "legendary",
+      "source": "underside",
+      "biome": "sand_ruins",
+      "favourite": "eel_skewers",
+      "trait": "upturned",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "upturned_sphinx",
+        "chance": 0.002
+      },
+      "stages": {
+        "ru": [
+          "Сфинксёнок вверх ногами",
+          "Перевёрнутый сфинкс",
+          "Сфинкс Изнанки",
+          "Сфинкс Обратных Загадок"
+        ],
+        "en": [
+          "Upturned Sphinxling",
+          "Upturned Sphinx",
+          "Underside Sphinx",
+          "Sphinx of Reverse Riddles"
+        ]
+      }
+    },
+    {
+      "id": "shadow_mammoth_calf",
+      "name": {
+        "ru": "Мамонтёнок-тень",
+        "en": "Shadow Mammoth Calf"
+      },
+      "rarity": "legendary",
+      "source": "underside",
+      "biome": "ice_peak",
+      "favourite": "frost_crucian",
+      "trait": "shade",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "shadow_mammoth",
+        "chance": 0.002
+      },
+      "stages": {
+        "ru": [
+          "Мамонтёнок-тень",
+          "Мамонт-тень",
+          "Мамонт Изнанки",
+          "Мамонт Чёрного Льда"
+        ],
+        "en": [
+          "Shadow Mammoth Calf",
+          "Shadow Mammoth",
+          "Underside Mammoth",
+          "Mammoth of the Black Ice"
+        ]
+      }
+    },
+    {
+      "id": "cold_grasshopper",
+      "name": {
+        "ru": "Кузнечик-холод",
+        "en": "Cold Grasshopper"
+      },
+      "rarity": "legendary",
+      "source": "underside",
+      "biome": "volcanic_forge",
+      "favourite": "ember_stew",
+      "trait": "chill",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "cold_smith",
+        "chance": 0.002
+      },
+      "stages": {
+        "ru": [
+          "Кузнечик-холод",
+          "Ледяной кузнечик",
+          "Кузнечик Изнанки",
+          "Кузнечик Холодного Горна"
+        ],
+        "en": [
+          "Cold Grasshopper",
+          "Icy Grasshopper",
+          "Underside Grasshopper",
+          "Grasshopper of the Cold Forge"
+        ]
+      }
+    },
+    {
+      "id": "quiet_dragonet",
+      "name": {
+        "ru": "Тихий дракончик",
+        "en": "Quiet Dragonet"
+      },
+      "rarity": "legendary",
+      "source": "underside",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "hush",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "quiet_storm_dragon",
+        "chance": 0.002
+      },
+      "stages": {
+        "ru": [
+          "Тихий дракончик",
+          "Тихий дракон",
+          "Дракон Изнанки",
+          "Дракон Безмолвной Бури"
+        ],
+        "en": [
+          "Quiet Dragonet",
+          "Quiet Dragon",
+          "Underside Dragon",
+          "Dragon of the Silent Storm"
+        ]
+      }
+    },
+    {
+      "id": "heart_crease",
+      "name": {
+        "ru": "Складка Сердца",
+        "en": "Heart Crease"
+      },
+      "rarity": "legendary",
+      "source": "underside",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "crease",
+      "unlock": {
+        "kind": "drop",
+        "enemy": "quiet_storm_dragon",
+        "chance": 0.002
+      },
+      "stages": {
+        "ru": [
+          "Складка Сердца",
+          "Складка Разлома",
+          "Складка Изнанки",
+          "Сердце Складок"
+        ],
+        "en": [
+          "Heart Crease",
+          "Rift Crease",
+          "Underside Crease",
+          "Heart of Creases"
+        ]
+      }
+    },
+    {
+      "id": "bloom_hare",
+      "name": {
+        "ru": "Цветочный зайчонок",
+        "en": "Bloom Hare"
+      },
+      "rarity": "epic",
+      "source": "event",
+      "biome": "green_hills",
+      "favourite": "herb_balls",
+      "trait": "blossom",
+      "unlock": {
+        "kind": "server"
+      },
+      "stages": {
+        "ru": [
+          "Цветочный зайчонок",
+          "Цветочный заяц",
+          "Заяц Первоцвета",
+          "Заяц Вечной Весны"
+        ],
+        "en": [
+          "Bloom Hare",
+          "Bloom Rabbit",
+          "Primrose Hare",
+          "Hare of the Endless Spring"
+        ]
+      }
+    },
+    {
+      "id": "star_kitten",
+      "name": {
+        "ru": "Звёздный котёнок",
+        "en": "Star Kitten"
+      },
+      "rarity": "epic",
+      "source": "event",
+      "biome": "sky_islands",
+      "favourite": "cloud_salad",
+      "trait": "starlit",
+      "unlock": {
+        "kind": "server"
+      },
+      "stages": {
+        "ru": [
+          "Звёздный котёнок",
+          "Звёздный кот",
+          "Кот Падающих Звёзд",
+          "Кот Звёздной Ночи"
+        ],
+        "en": [
+          "Star Kitten",
+          "Star Cat",
+          "Cat of Falling Stars",
+          "Cat of the Starry Night"
+        ]
+      }
+    }
+  ]
+}

@@ -60,6 +60,14 @@ namespace Game.Core.Sim
         TinctureBurst,
         ColossusSeedFound,
         ColossusGrown,
-        PartyMasterpiece
+        PartyMasterpiece,
+        CompanionLevelUp,
+        CompanionEvolved,
+        CompanionHeart,
+        CompanionStory,
+        CompanionPairScene,
+        CompanionEggFound,
+        CompanionHatched,
+        CompanionSpark
     }
 }

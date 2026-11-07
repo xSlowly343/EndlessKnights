@@ -13,6 +13,7 @@ namespace Game.Core.Settings
 
         private static readonly int[] FrameRates = { 30, 60, 144 };
         private static readonly string[] Languages = { "ru", "en" };
+        public static readonly string[] CompanionStripModes = { "always", "homeOnly", "off" };
 
         private static readonly Dictionary<string, NumberFormat> Formats = new Dictionary<string, NumberFormat>(StringComparer.Ordinal)
         {
@@ -57,6 +58,7 @@ namespace Game.Core.Settings
                     ["consentGiven"] = JsonValue.Of(settings.InputConsentGiven)
                 }),
                 ["language"] = JsonValue.Of(settings.Language),
+                ["companionStrip"] = JsonValue.Of(settings.CompanionStrip),
                 ["seenChangeLog"] = settings.SeenChangeLog.Length == 0 ? JsonValue.Null() : JsonValue.Of(settings.SeenChangeLog),
                 ["privacy"] = JsonValue.Object(new Dictionary<string, JsonValue>
                 {
@@ -95,6 +97,7 @@ namespace Game.Core.Settings
                 Read(root, "thousandsSeparator", node => Separator(node), settings.NumberFormat.ThousandsSeparator, problems),
                 Read(root, "decimalSeparator", node => Separator(node), settings.NumberFormat.DecimalSeparator, problems));
             settings.Language = Read(root, "language", node => Pick(node, node.AsString(), Languages), settings.Language, problems);
+            settings.CompanionStrip = Read(root, "companionStrip", node => Pick(node, node.AsString(), CompanionStripModes), settings.CompanionStrip, problems);
             settings.SeenChangeLog = Read(root, "seenChangeLog", node => node.IsNull ? string.Empty : node.AsString(), settings.SeenChangeLog, problems);
 
             if (root.HasField("volume"))
