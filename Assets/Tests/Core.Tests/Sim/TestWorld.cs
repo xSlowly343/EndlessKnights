@@ -40,6 +40,8 @@ namespace Game.Core.Tests.Sim
                 return System.Text.RegularExpressions.Regex.Replace(
                     System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"share\": [0-9.]+,", "\"pierce\": { \"share\": 0,"),
                     "\"hpPerExtraPlayer\": [0-9.]+,", "\"hpPerExtraPlayer\": 1.0,");
+            if (name == CampLevelRules.FileName)
+                return Regex.Replace(json, "\"neighbors\": \\[[^\\]]*\\]", "\"neighbors\": []", RegexOptions.Singleline);
             if (name == TalentRules.FileName)
                 return Regex.Replace(json, "\"perks\": \\[.*\\] \\}", "\"waits\": \"test\" }");
             if (name == CombatRules.FileName)

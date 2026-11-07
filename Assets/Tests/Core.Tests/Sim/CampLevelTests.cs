@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Sim
 
         private static GameLoop Camp()
         {
-            var loop = TestWorld.Loop(new FakeInputSource());
+            var loop = TestWorld.RealLoop();
             loop.State.RecordStage = 300;
             loop.Tick();
             return loop;
@@ -42,7 +42,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(CampLevelRules.Load(json, camp).Buildings.Count, Is.EqualTo(6));
             Assert.Throws<ContentException>(() => CampLevelRules.Load(json.Replace("\"building\": \"pier\"", "\"building\": \"moat\""), camp));
             Assert.Throws<ContentException>(() => CampLevelRules.Load(json.Replace("\"perLevel\": 0.05", "\"perLevel\": 0.2"), camp));
-            Assert.Throws<ContentException>(() => CampLevelRules.Load(json.Replace("[[10, 5], [20, 10],", "[[10], [20, 10],"), camp));
+            Assert.Throws<ContentException>(() => CampLevelRules.Load(json.Replace("\"amounts\": [\n    [\n      10,\n      5\n    ],", "\"amounts\": [\n    [\n      10\n    ],"), camp));
         }
 
         [Test]
@@ -99,6 +99,62 @@ namespace Game.Core.Tests.Sim
             Assert.That(cauldron.Status, Is.EqualTo("уровень 2 из 5"));
             Assert.That(cauldron.Cost, Is.EqualTo("herb_clickweed: 0/20 · ruin_shard: 0/10"));
             Assert.That(lines.Find(line => line.Building == "pier")!.Status, Is.EqualTo("Постройки ещё нет в убежище"));
+        }
+    
+
+        private static void RaiseTo(GameLoop loop, string building, int level)
+        {
+            for (var next = loop.CampLevels.Level(building) + 1; next <= level; next++)
+            {
+                Stock(loop, building, next);
+                Assert.That(loop.CampLevels.Upgrade(building), Is.EqualTo(CampLevelResult.Done));
+            }
+        }
+
+        [Test]
+        public void ABranchOpensAtTheThirdLevelAndChangingItCostsMaterials()
+        {
+            var loop = Camp();
+            Assert.That(loop.CampLevels.Specialize("garden_bed", "wild"), Is.EqualTo(CampLevelResult.LevelTooLow));
+            RaiseTo(loop, "garden_bed", 3);
+            var grow = loop.State.Perk(MuseumPerk.GrowFaster);
+            Assert.That(loop.CampLevels.Specialize("garden_bed", "moat"), Is.EqualTo(CampLevelResult.NoSuchBranch));
+            Assert.That(loop.CampLevels.Specialize("garden_bed", "greenhouse"), Is.EqualTo(CampLevelResult.Done), "the first choice is free");
+            Assert.That(loop.State.Perk(MuseumPerk.GrowFaster), Is.EqualTo(grow + 0.1).Within(1e-9));
+            Assert.That(loop.CampLevels.Specialize("garden_bed", "greenhouse"), Is.EqualTo(CampLevelResult.SameBranch));
+            Assert.That(loop.CampLevels.Specialize("garden_bed", "wild"), Is.EqualTo(CampLevelResult.NotEnough));
+            loop.Camp.Add("herb_knockbloom", 20);
+            loop.Camp.Add("ore_hills", 10);
+            Assert.That(loop.CampLevels.Specialize("garden_bed", "wild"), Is.EqualTo(CampLevelResult.Done));
+            Assert.That(loop.State.Perk(MuseumPerk.GrowFaster), Is.EqualTo(grow).Within(1e-9));
+            Assert.That(loop.State.Perk(MuseumPerk.MutationChance), Is.GreaterThanOrEqualTo(0.05));
+            Assert.That(loop.Camp.Count("herb_knockbloom"), Is.Zero);
+        }
+
+        [Test]
+        public void NeighboursOnTheStreetHelpEachOtherAndMovingIsFree()
+        {
+            var loop = Camp();
+            var street = loop.CampLevels.Street;
+            Assert.That(street, Is.EqualTo(loop.CampLevels.Rules.Street));
+            Assert.That(loop.CampLevels.Neighbors("cauldron", "garden_bed"), Is.True);
+            Assert.That(loop.State.Perk(MuseumPerk.MutationChance), Is.EqualTo(0.02).Within(1e-9));
+
+            Assert.That(loop.CampLevels.Move("garden_bed", street.Count - 1), Is.True);
+            Assert.That(loop.CampLevels.Neighbors("cauldron", "garden_bed"), Is.False);
+            Assert.That(loop.State.Perk(MuseumPerk.MutationChance), Is.Zero);
+            Assert.That(loop.CampLevels.Move("moat", 0), Is.False);
+
+            Assert.That(loop.CampLevels.Neighbors("pier", "bonfire"), Is.False, "the pier is not built without the fishers' hall");
+            loop.Camp.SetGuilds(new[] { "fishers" });
+            loop.CampLevels.Apply();
+            Assert.That(loop.CampLevels.Neighbors("pier", "bonfire"), Is.True);
+
+            RaiseTo(loop, "cauldron", 3);
+            loop.CampLevels.Specialize("cauldron", "generous");
+            var copy = GameStateJson.Read(new ContentNode(GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Camp.Branches["cauldron"], Is.EqualTo("generous"));
+            Assert.That(copy.Camp.Street[copy.Camp.Street.Count - 1], Is.EqualTo("garden_bed"));
         }
     }
 }

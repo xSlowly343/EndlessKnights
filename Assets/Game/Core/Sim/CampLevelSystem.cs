@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Core.Content;
 
 namespace Game.Core.Sim
@@ -9,7 +10,10 @@ namespace Game.Core.Sim
         NotOpen,
         TopLevel,
         GuildTooLow,
-        NotEnough
+        NotEnough,
+        LevelTooLow,
+        NoSuchBranch,
+        SameBranch
     }
 
     public sealed class CampLevelSystem
@@ -80,6 +84,99 @@ namespace Game.Core.Sim
             return CampLevelResult.Done;
         }
 
+        public string BranchOf(string building) => _state.Camp.Branches.TryGetValue(building, out var branch) ? branch : string.Empty;
+
+        public CampLevelResult CheckBranch(string building, string branch)
+        {
+            var def = _rules.Of(building);
+            if (def == null)
+                return CampLevelResult.NotLevelled;
+            if (def.Branch(branch) == null)
+                return CampLevelResult.NoSuchBranch;
+            if (Level(building) < _rules.BranchLevel)
+                return CampLevelResult.LevelTooLow;
+            var current = BranchOf(building);
+            if (current == branch)
+                return CampLevelResult.SameBranch;
+            if (current.Length == 0)
+                return CampLevelResult.Done;
+            for (var i = 0; i < def.Materials.Count; i++)
+            {
+                if (_camp.Count(def.Materials[i]) < _rules.ChangeAmounts[i])
+                    return CampLevelResult.NotEnough;
+            }
+            return CampLevelResult.Done;
+        }
+
+        public CampLevelResult Specialize(string building, string branch)
+        {
+            var result = CheckBranch(building, branch);
+            if (result != CampLevelResult.Done)
+                return result;
+            if (BranchOf(building).Length > 0)
+            {
+                var def = _rules.Of(building)!;
+                for (var i = 0; i < def.Materials.Count; i++)
+                    _camp.Take(def.Materials[i], _rules.ChangeAmounts[i]);
+            }
+            _state.Camp.Branches[building] = branch;
+            Apply();
+            return CampLevelResult.Done;
+        }
+
+        public IReadOnlyList<string> Street
+        {
+            get
+            {
+                var street = _state.Camp.Street;
+                if (street.Count != _rules.Street.Count || !SameSet(street, _rules.Street))
+                {
+                    street.Clear();
+                    street.AddRange(_rules.Street);
+                }
+                return street;
+            }
+        }
+
+        public bool Move(string building, int index)
+        {
+            var street = (List<string>)Street;
+            var from = street.IndexOf(building);
+            if (from < 0 || index < 0 || index >= street.Count)
+                return false;
+            street.RemoveAt(from);
+            street.Insert(index, building);
+            Apply();
+            return true;
+        }
+
+        public bool Neighbors(string a, string b)
+        {
+            var street = Street;
+            var i = -1;
+            var j = -1;
+            for (var k = 0; k < street.Count; k++)
+            {
+                if (street[k] == a)
+                    i = k;
+                if (street[k] == b)
+                    j = k;
+            }
+            if (i < 0 || j < 0 || System.Math.Abs(i - j) != 1)
+                return false;
+            return Level(a) > 0 && Level(b) > 0;
+        }
+
+        private static bool SameSet(List<string> street, IReadOnlyList<string> rules)
+        {
+            foreach (var id in rules)
+            {
+                if (!street.Contains(id))
+                    return false;
+            }
+            return true;
+        }
+
         public void Apply()
         {
             var perks = _state.CampPerks;
@@ -90,6 +187,17 @@ namespace Game.Core.Sim
                 var level = _state.Camp.Levels.TryGetValue(def.Building, out var stored) ? stored : 1;
                 if (level > 1)
                     perks[(int)def.Perk] += def.PerLevel * (level - 1);
+                var branch = def.Branch(BranchOf(def.Building));
+                if (branch != null && level >= _rules.BranchLevel)
+                {
+                    foreach (var perk in branch.Perks)
+                        perks[(int)perk.Perk] += perk.Value;
+                }
+            }
+            foreach (var pair in _rules.Neighbors)
+            {
+                if (Neighbors(pair.A, pair.B))
+                    perks[(int)pair.Perk] += pair.Value;
             }
         }
     }
