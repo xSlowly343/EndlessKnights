@@ -85,6 +85,9 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("tournament_mine", tournamentMineRpc);
     initializer.registerRpc("tournament_join", tournamentJoinRpc);
     initializer.registerRpc("tournament_submit", tournamentSubmitRpc);
+    initializer.registerRpc("clan_camp", clanCampRpc);
+    initializer.registerRpc("clan_camp_give", clanCampGiveRpc);
+    initializer.registerRpc("clan_feast_bring", clanFeastBringRpc);
     initializer.registerRpc("event_mine", eventMineRpc);
     initializer.registerRpc("event_progress", eventProgressRpc);
     initializer.registerRpc("event_buy", eventBuyRpc);
