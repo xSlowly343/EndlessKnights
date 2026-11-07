@@ -23,5 +23,6 @@ namespace Game.Core.Sim
         public double QuietSeconds { get; set; }
         public bool TeaOffered { get; set; }
         public long UnsentActions { get; set; }
+        public double ActionCarry { get; set; }
     }
 }

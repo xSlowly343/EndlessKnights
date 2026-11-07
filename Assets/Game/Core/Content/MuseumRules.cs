@@ -42,7 +42,12 @@ namespace Game.Core.Content
         ExpeditionShards,
         Reputation,
         OrderDust,
-        OrderRecipe
+        OrderRecipe,
+        ForecastSight,
+        BuildBoost,
+        DoublePotion,
+        FreeRedraw,
+        ExtraHerb
     }
 
     public readonly struct PerkValue
@@ -129,7 +134,12 @@ namespace Game.Core.Content
             ["expeditionShards"] = MuseumPerk.ExpeditionShards,
             ["reputation"] = MuseumPerk.Reputation,
             ["orderDust"] = MuseumPerk.OrderDust,
-            ["orderRecipe"] = MuseumPerk.OrderRecipe
+            ["orderRecipe"] = MuseumPerk.OrderRecipe,
+            ["forecastSight"] = MuseumPerk.ForecastSight,
+            ["buildBoost"] = MuseumPerk.BuildBoost,
+            ["doublePotion"] = MuseumPerk.DoublePotion,
+            ["freeRedraw"] = MuseumPerk.FreeRedraw,
+            ["extraHerb"] = MuseumPerk.ExtraHerb
         };
 
         public const double MaxPerk = 0.5;

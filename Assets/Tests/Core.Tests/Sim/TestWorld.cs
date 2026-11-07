@@ -40,6 +40,8 @@ namespace Game.Core.Tests.Sim
                 return System.Text.RegularExpressions.Regex.Replace(
                     System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"share\": [0-9.]+,", "\"pierce\": { \"share\": 0,"),
                     "\"hpPerExtraPlayer\": [0-9.]+,", "\"hpPerExtraPlayer\": 1.0,");
+            if (name == TalentRules.FileName)
+                return Regex.Replace(json, "\"perks\": \\[.*\\] \\}", "\"waits\": \"test\" }");
             if (name == CombatRules.FileName)
                 return System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"baseShare\": [0-9.]+,", "\"pierce\": { \"baseShare\": 0,");
             return json;
@@ -64,5 +66,7 @@ namespace Game.Core.Tests.Sim
 
         public static GameLoop Loop(IInputSource? input = null, GameState? state = null, StatSheet? hero = null) =>
             new GameLoop(Data, input ?? new FakeInputSource(), state ?? new GameState(), hero ?? new StatSheet());
+
+        public static GameLoop RealLoop(IInputSource? input = null) => new GameLoop(Real, input ?? new FakeInputSource(), new GameState(), new StatSheet());
     }
 }

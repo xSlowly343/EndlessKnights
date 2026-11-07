@@ -114,10 +114,21 @@ namespace Game.Core.Sim
             var work = Work(Activity);
             work.Keys += input.KeyDowns;
             work.Clicks += input.LeftClicks + input.RightClicks + input.MiddleClicks;
-            _state.Peaceful.UnsentActions += input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks;
+            CountActions(input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks);
             work.MouseMeters += input.MouseDistancePx * metersPerPixel;
             if (!input.HasAnyInput)
                 work.IdleSeconds += GameLoop.TickSeconds;
+        }
+
+        private void CountActions(int actions)
+        {
+            if (actions <= 0)
+                return;
+            var peaceful = _state.Peaceful;
+            peaceful.ActionCarry += actions * (1 + _state.Perk(MuseumPerk.BuildBoost));
+            var whole = (long)System.Math.Floor(peaceful.ActionCarry);
+            peaceful.UnsentActions += whole;
+            peaceful.ActionCarry -= whole;
         }
 
         private void Turn(int wheelTicks)

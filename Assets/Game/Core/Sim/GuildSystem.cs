@@ -54,6 +54,8 @@ namespace Game.Core.Sim
         {
             get
             {
+                if (_state.Perk(MuseumPerk.ForecastSight) > 0)
+                    return true;
                 foreach (var district in _rules.Districts)
                 {
                     if (district.Observatory && DistrictOpen(district))
