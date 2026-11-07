@@ -103,10 +103,14 @@ namespace Game.Core.Sim
             entry.Claimed = true;
             var reward = RewardOf(weekly, entry.Kind);
             Grant(reward, weekly ? 0 : StreakBonus);
+            if (!weekly)
+                DailyClaimed?.Invoke();
             if (reward.Friendship > 0)
                 State.PartyClaimBosses = System.Math.Max(State.PartyClaimBosses, (int)System.Math.Ceiling(entry.Target));
             return QuestResult.Done;
         }
+
+        public System.Action? DailyClaimed { get; set; }
 
         public QuestReward RewardOf(bool weekly, QuestKind kind) =>
             weekly ? _rules.WeeklyReward : _rules.Rule(kind).Party ? _rules.PartyReward : _rules.DailyReward;

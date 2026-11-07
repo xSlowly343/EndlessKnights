@@ -724,7 +724,10 @@ namespace Game.Core.Save
             var levels = new JsonValue[mount.Levels.Length];
             for (var i = 0; i < levels.Length; i++)
                 levels[i] = JsonValue.Of(mount.Levels[i]);
-            return Object(("levels", JsonValue.Array(levels)), ("scan", JsonValue.Of(mount.Scan)), ("cutters", JsonValue.Of(mount.Cutters)));
+            var facets = new JsonValue[mount.Facets.Length];
+            for (var i = 0; i < facets.Length; i++)
+                facets[i] = OptionalText(mount.Facets[i]);
+            return Object(("levels", JsonValue.Array(levels)), ("scan", JsonValue.Of(mount.Scan)), ("cutters", JsonValue.Of(mount.Cutters)), ("freeRebuilds", JsonValue.Of(mount.FreeRebuilds)), ("facets", JsonValue.Array(facets)));
         }
 
         private static void ReadMount(ContentNode node, MountState mount)
@@ -738,6 +741,17 @@ namespace Game.Core.Save
             }
             mount.Scan = node.HasField("scan") ? node.Field("scan").AsNumber(0, double.MaxValue) : 0;
             mount.Cutters = node.HasField("cutters") ? node.Field("cutters").AsLong(0) : 0;
+            mount.FreeRebuilds = node.HasField("freeRebuilds") ? node.Field("freeRebuilds").AsInt(0, 100) : 0;
+            if (node.HasField("facets"))
+            {
+                var j = 0;
+                foreach (var facet in node.Field("facets").Items())
+                {
+                    if (j < mount.Facets.Length)
+                        mount.Facets[j] = facet.IsNull ? string.Empty : facet.AsString();
+                    j++;
+                }
+            }
         }
 
         private static Expedition ReadExpedition(ContentNode node)

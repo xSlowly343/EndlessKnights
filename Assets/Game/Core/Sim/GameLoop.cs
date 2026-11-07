@@ -89,6 +89,7 @@ namespace Game.Core.Sim
         private readonly CompanionWorkSystem _companionWork;
         private readonly CompanionAbilitySystem _companionAbilities;
         private readonly MountSystem _mount;
+        private readonly FacetSystem _facets;
         private readonly MenagerieTreeSystem _menagerie;
         private readonly TownSystem _town;
         private readonly FishingSystem _fishing;
@@ -183,7 +184,14 @@ namespace Game.Core.Sim
             _strip = new CompanionStrip(state, _companions, _expeditions, _peaceful, Events);
             _forge = new ForgeSystem(data.Forge, state, data.Stages, _camp, _peaceful, _weapons, _gear, Events);
             _mount = new MountSystem(data.Combat.Mount, state, data.Stages, hero);
-            _mount.Changed = RefreshClassAttribute;
+            _facets = new FacetSystem(data.Combat.Facets, state, hero);
+            _mount.Changed = () =>
+            {
+                RefreshClassAttribute();
+                _facets.Rebuild();
+            };
+            _drops.GuardianKilled = _facets.NoteGuardian;
+            _quests.DailyClaimed = _facets.NoteDailyClaim;
             _drops.Salvaged = drop =>
             {
                 _forge.SalvageOre(drop);
@@ -286,6 +294,7 @@ namespace Game.Core.Sim
         public CompanionWorkSystem CompanionWork => _companionWork;
         public CompanionAbilitySystem CompanionAbilities => _companionAbilities;
         public MountSystem Mount => _mount;
+        public FacetSystem Facets => _facets;
         public MenagerieTreeSystem Menagerie => _menagerie;
         public TownSystem Town => _town;
         public FishingSystem Fishing => _fishing;
@@ -443,6 +452,7 @@ namespace Game.Core.Sim
             var equipped = TakeOffSkills();
             State.Class = heroClass;
             State.ClassChanges++;
+            _facets.NoteClassChange();
             reforge.Apply(State, _data.Gems);
             _weapons.Reforge(from, to);
             State.ClassTree = new ClassTreeAllocation(State.ClassName);
