@@ -120,6 +120,28 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public int Ripen()
+        {
+            if (!Open)
+                return 0;
+            EnsureBeds();
+            var ripened = 0;
+            for (var i = 0; i < OpenBeds; i++)
+            {
+                if (State.Beds[i].Empty || State.Beds[i].Ready)
+                    continue;
+                var plant = _rules.Plant(State.Beds[i].Plant);
+                if (plant == null)
+                    continue;
+                State.Beds[i].Grown = plant.GrowSeconds;
+                State.Beds[i].Ready = true;
+                _events.Add(GameEvent.ForStage(GameEventKind.PlantReady, _state.Tick, i));
+                TryMutate(i);
+                ripened++;
+            }
+            return ripened;
+        }
+
         public int OpenBeds => System.Math.Min(State.Beds.Count, _camp.Slots(BedBuilding));
 
         private const string BedBuilding = "garden_bed";

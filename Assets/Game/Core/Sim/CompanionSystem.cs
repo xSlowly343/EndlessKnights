@@ -33,7 +33,10 @@ namespace Game.Core.Sim
         MaxStars,
         NoSouls,
         NoIngredients,
-        NoEssence
+        NoEssence,
+        NothingToDo,
+        WrongClass,
+        Waits
     }
 
     public sealed class CompanionSystem
@@ -904,6 +907,7 @@ namespace Game.Core.Sim
 
         public CompanionGearSystem? Gear { get; set; }
         public CompanionWorkSystem? Work { get; set; }
+        public CompanionAbilitySystem? Abilities { get; set; }
 
         public bool Occupied(string companion) => AtHome(companion) || Work?.Helping(companion) == true;
 
@@ -1670,6 +1674,7 @@ namespace Game.Core.Sim
             if (seconds <= 0)
                 return;
             Work?.Advance(seconds);
+            Abilities?.Advance(seconds);
             var changed = false;
             var step = _rules.HomeHoursPerTrip * ExpeditionSystem.SecondsPerHour;
             for (var i = 0; i < State.Home.Count; i++)

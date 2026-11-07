@@ -208,7 +208,10 @@ namespace Game.Core.Sim
 
         private void Quench(ForgeMark mark)
         {
-            var inZone = InZone(State.Heat);
+            var sure = State.Work == ForgeWork.Temper && _state.Companions.SureForge;
+            if (sure)
+                _state.Companions.SureForge = false;
+            var inZone = sure || InZone(State.Heat);
             var boost = 1 + _state.Perk(MuseumPerk.TemperStep);
             var masterpiece = false;
             if (Together)

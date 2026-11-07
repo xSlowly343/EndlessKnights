@@ -8539,5 +8539,81 @@
         ]
       }
     ]
+  },
+  "abilities": {
+    "list": [
+      {
+        "family": "hills",
+        "kind": "harvest",
+        "name": {
+          "ru": "Урожайный день",
+          "en": "Harvest Day"
+        }
+      },
+      {
+        "family": "sands",
+        "kind": "dig",
+        "name": {
+          "ru": "Раскоп",
+          "en": "Quick Dig"
+        }
+      },
+      {
+        "family": "ice",
+        "kind": "bite",
+        "name": {
+          "ru": "Клёв",
+          "en": "Feeding Frenzy"
+        },
+        "value": 3,
+        "seconds": 600
+      },
+      {
+        "family": "forge",
+        "kind": "forge",
+        "name": {
+          "ru": "Горн",
+          "en": "True Heat"
+        }
+      },
+      {
+        "family": "sky",
+        "kind": "tailwind",
+        "name": {
+          "ru": "Попутный ветер",
+          "en": "Tailwind"
+        },
+        "seconds": 7200
+      },
+      {
+        "family": "underside",
+        "kind": "fold",
+        "name": {
+          "ru": "Складка",
+          "en": "Fold"
+        },
+        "value": 1.5
+      },
+      {
+        "family": "wardens",
+        "kind": "rally",
+        "name": {
+          "ru": "Клич",
+          "en": "Rally"
+        },
+        "value": 0.1,
+        "seconds": 3600
+      },
+      {
+        "family": "party",
+        "kind": "gathering",
+        "name": {
+          "ru": "Сбор",
+          "en": "Gathering"
+        },
+        "seconds": 14400,
+        "waits": "farPartyTrips"
+      }
+    ]
   }
 }

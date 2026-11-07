@@ -234,6 +234,25 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForStage(GameEventKind.ExpeditionLetter, _state.Tick, index));
         }
 
+        public int Hasten(double seconds)
+        {
+            var active = State.Active;
+            for (var i = 0; i < active.Count; i++)
+                active[i].Elapsed = System.Math.Min(active[i].Seconds, active[i].Elapsed + System.Math.Max(0, seconds));
+            var count = active.Count;
+            Advance(0);
+            return count;
+        }
+
+        public void FinishWithLoot(int index, double loot)
+        {
+            _lootFactor = System.Math.Max(0, loot);
+            Finish(index);
+            _lootFactor = 1;
+        }
+
+        private double _lootFactor = 1;
+
         public void Finish(int index)
         {
             var expedition = State.Active[index];
@@ -263,7 +282,7 @@ namespace Game.Core.Sim
 
         private void Loot(Expedition expedition, ExpeditionBiome place, CompanionTrait trait)
         {
-            var hours = expedition.Elapsed / SecondsPerHour;
+            var hours = expedition.Elapsed / SecondsPerHour * _lootFactor;
             var level = _companions?.LevelOf(expedition) ?? 1;
             if (expedition.Items.Length != place.Items.Count)
                 expedition.Items = new long[place.Items.Count];

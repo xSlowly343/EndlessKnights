@@ -50,6 +50,7 @@ namespace Game.Core.Sim
             GainXp(multiplier * _rules.XpPerKill * (type == EnemyType.Normal ? 1 : _rules.BossXpMultiplier));
 
         public double XpMultiplier { get; set; } = 1;
+        public double ExtraXp { get; set; }
 
         public void OnSkipped(long normals, long bosses) =>
             GainXp(_rules.XpPerKill * (normals + bosses * _rules.BossXpMultiplier));
@@ -58,7 +59,7 @@ namespace Game.Core.Sim
         {
             if (_state.HeroLevel >= _rules.MaxLevel)
                 return;
-            _state.HeroXp += xp * XpMultiplier;
+            _state.HeroXp += xp * XpMultiplier * (1 + ExtraXp);
             while (_state.HeroLevel < _rules.MaxLevel && _state.HeroXp >= _rules.XpToNext(_state.HeroLevel))
             {
                 _state.HeroXp -= _rules.XpToNext(_state.HeroLevel);

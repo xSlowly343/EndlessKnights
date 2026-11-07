@@ -87,6 +87,7 @@ namespace Game.Core.Sim
         private readonly CompanionStrip _strip;
         private readonly CompanionGearSystem _companionGear;
         private readonly CompanionWorkSystem _companionWork;
+        private readonly CompanionAbilitySystem _companionAbilities;
         private readonly MenagerieTreeSystem _menagerie;
         private readonly TownSystem _town;
         private readonly FishingSystem _fishing;
@@ -192,6 +193,7 @@ namespace Game.Core.Sim
             _alchemy.Shared = data.Hideout.Crafts;
             _fishing = new FishingSystem(data.Fishing, state, _camp, _peaceful, _expeditions, Events);
             _digs = new DigSystem(data.Digs, state, _camp, _peaceful, Events);
+            _companionAbilities = new CompanionAbilitySystem(state, _companions, _expeditions, _garden, _digs, _levels);
             _caravan = new CaravanSystem(data.Caravan, state, _camp, _expeditions);
             _distill = new DistillSystem(data.Distill, data.Colossus, state, _camp, _peaceful, _alchemy, Events);
             _colossus = new ColossusSeedSystem(data.Colossus, state, _camp, _garden, _peaceful, Events);
@@ -275,6 +277,7 @@ namespace Game.Core.Sim
         public CompanionStrip Strip => _strip;
         public CompanionGearSystem CompanionGear => _companionGear;
         public CompanionWorkSystem CompanionWork => _companionWork;
+        public CompanionAbilitySystem CompanionAbilities => _companionAbilities;
         public MenagerieTreeSystem Menagerie => _menagerie;
         public TownSystem Town => _town;
         public FishingSystem Fishing => _fishing;
