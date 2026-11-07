@@ -343,6 +343,17 @@ namespace Game.Net.Tests
             Assert.That(build.MyWants, Is.EqualTo(new[] { "garden" }));
             Assert.That(build.Leader, Is.True);
             Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"project\":null,\"here\":[]}")).Project, Is.Empty);
+
+            Assert.That(HideoutReply.CornerPayload("Huscarl", "", new[] { "decor_lantern", "decor_bench" }),
+                Is.EqualTo("{\"hero\":\"Huscarl\",\"path\":\"\",\"decor\":[\"decor_lantern\",\"decor_bench\"]}"));
+            var corners = HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"here\":[],\"cornerDecor\":3,\"myCorner\":true,"
+                + "\"corners\":[{\"userId\":\"a\",\"name\":\"Ann\",\"slot\":0,\"hero\":\"Huscarl\",\"path\":\"berserker\",\"decor\":[\"decor_bench\"]}]}"));
+            Assert.That(corners.MyCorner, Is.True);
+            Assert.That(corners.CornerDecor, Is.EqualTo(3));
+            Assert.That(corners.Corners[0].Name, Is.EqualTo("Ann"));
+            Assert.That(corners.Corners[0].Path, Is.EqualTo("berserker"));
+            Assert.That(corners.Corners[0].Decor, Is.EqualTo(new[] { "decor_bench" }));
+            Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"here\":[]}")).MyCorner, Is.False);
         }
 
         [Test]

@@ -85,7 +85,7 @@ function partyLoad(nk: nkruntime.Nakama, source: nkruntime.Group): nkruntime.Gro
         if (members.indexOf(userId) < 0)
             members.push(userId);
     if (members.length === 0) {
-        partyDissolve(nk, group.id, meta.code);
+        partyDissolve(nk, group.id, meta, hint);
         return null;
     }
     meta.members = members;
@@ -94,12 +94,51 @@ function partyLoad(nk: nkruntime.Nakama, source: nkruntime.Group): nkruntime.Gro
     return group;
 }
 
-function partyDissolve(nk: nkruntime.Nakama, groupId: string, code: string): void {
-    nk.storageDelete([
-        { collection: "party_codes", key: code, userId: PartySystemUser },
-        { collection: "party_match", key: groupId, userId: PartySystemUser }
-    ]);
+function partyDissolve(nk: nkruntime.Nakama, groupId: string, meta: PartyMeta, former: string[]): void {
+    nk.storageDelete([{ collection: "party_match", key: groupId, userId: PartySystemUser }]);
+    if (hideoutWorthFreezing(nk, groupId, former)) {
+        nk.storageWrite([{
+            collection: "party_codes", key: meta.code, userId: PartySystemUser, permissionRead: 0, permissionWrite: 0,
+            value: { partyId: groupId, frozenAt: Date.now(), title: meta.title, language: meta.language, access: meta.access, wanted: meta.wanted }
+        }]);
+    } else {
+        nk.storageDelete([{ collection: "party_codes", key: meta.code, userId: PartySystemUser }]);
+        chronicleForget(nk, groupId);
+        hideoutForget(nk, groupId);
+    }
     nk.groupDelete(groupId);
+}
+
+function partyArchive(nk: nkruntime.Nakama, code: string, partyId: string): void {
+    nk.storageDelete([{ collection: "party_codes", key: code, userId: PartySystemUser }]);
+    chronicleForget(nk, partyId);
+    hideoutForget(nk, partyId);
+}
+
+function partyThaw(nk: nkruntime.Nakama, userId: string, code: string, nowUnixMs: number): nkruntime.Group | null {
+    const objects = nk.storageRead([{ collection: "party_codes", key: code, userId: PartySystemUser }]);
+    if (objects.length === 0 || typeof objects[0].value.frozenAt !== "number")
+        return null;
+    const frozen = objects[0].value;
+    if (nowUnixMs - frozen.frozenAt > HideoutServerRules.frozenMs) {
+        partyArchive(nk, code, frozen.partyId);
+        throw new Error("unknown code");
+    }
+    if (hideoutFormerOf(nk, frozen.partyId).indexOf(userId) < 0)
+        throw new Error("the party rests until a former member returns");
+    partyEnsureFree(nk, userId);
+    const meta: PartyMeta = {
+        kind: PartyKind, code: code, access: frozen.access || PartyInvite, title: frozen.title || "", language: frozen.language || PartyDirectoryRules.languages[0],
+        wanted: frozen.wanted || PartyAnyRole, leader: userId, members: [userId], hours: partyEmptyHours(), hoursAt: nowUnixMs
+    };
+    const group = partyNative(nk.groupCreate(userId, PartyGroupPrefix + nk.uuidv4(), userId, meta.language, "", "", meta.access === PartyOpen, meta, PartyDirectoryRules.maxMembers));
+    nk.storageWrite([{ collection: "party_codes", key: code, userId: PartySystemUser, value: { partyId: group.id }, permissionRead: 0, permissionWrite: 0 }]);
+    partySaveMeta(nk, group, meta);
+    hideoutMove(nk, frozen.partyId, group.id);
+    chronicleMove(nk, frozen.partyId, group.id);
+    partyNoteMember(nk, userId, group.id, "", PartyNoSlot);
+    chronicleNote(nk, group.id, "joined", userId);
+    return group;
 }
 
 function partyGroupById(nk: nkruntime.Nakama, groupId: string): nkruntime.Group | null {
@@ -286,14 +325,14 @@ function partyRemove(nk: nkruntime.Nakama, group: nkruntime.Group, userId: strin
     const index = meta.members.indexOf(userId);
     if (index < 0)
         throw new Error("not a member");
+    hideoutLeaving(nk, group.id, userId);
     meta.members.splice(index, 1);
     nk.storageDelete([{ collection: "party", key: "current", userId: userId }]);
     const live = partyLiveMatchId(nk, group.id);
     if (live)
         nk.matchSignal(live, "leave:" + userId);
     if (meta.members.length === 0) {
-        chronicleForget(nk, group.id);
-        partyDissolve(nk, group.id, meta.code);
+        partyDissolve(nk, group.id, meta, [userId]);
         return;
     }
     chronicleNote(nk, group.id, "left", userId);
@@ -488,7 +527,11 @@ function partyJoinRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkru
     const request = partyRequest(payload);
     let group: nkruntime.Group | null;
     if (request.code !== undefined) {
-        group = partyGroupByCode(nk, partyNormalizeCode(request.code));
+        const code = partyNormalizeCode(request.code);
+        const thawed = partyThaw(nk, userId, code, Date.now());
+        if (thawed)
+            return JSON.stringify(partyView(nk, thawed));
+        group = partyGroupByCode(nk, code);
         if (!group)
             throw new Error("unknown code");
     } else if (typeof request.partyId === "string") {

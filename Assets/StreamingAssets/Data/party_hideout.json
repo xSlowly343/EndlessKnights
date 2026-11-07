@@ -4,6 +4,8 @@
   "hereSeconds": 90,
   "maxSitStepSeconds": 120,
   "maxCaughtPerMark": 5,
+  "cornerDecor": 3,
+  "frozenDays": 30,
   "tiers": [
     {
       "id": "rest",
@@ -165,6 +167,7 @@
       "orders": 18,
       "sitHours": 0,
       "fireLevel": 0,
+      "cornerDecor": 5,
       "needs": [
         {
           "counter": "riftDepth",

@@ -6,6 +6,7 @@ namespace Game.Core.Sim
     {
         public HashSet<string> Owned { get; } = new HashSet<string>(System.StringComparer.Ordinal);
         public List<string> Placed { get; } = new List<string>();
+        public List<string> Corner { get; } = new List<string>();
         public string Theme { get; set; } = string.Empty;
         public long GuestsWatered { get; set; }
         public long GuestHammers { get; set; }

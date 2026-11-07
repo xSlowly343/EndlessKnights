@@ -789,7 +789,7 @@ namespace Game.Core.Save
             var placed = new JsonValue[decor.Placed.Count];
             for (var i = 0; i < placed.Length; i++)
                 placed[i] = OptionalText(decor.Placed[i]);
-            return Object(("owned", WriteIdList(owned)), ("placed", JsonValue.Array(placed)), ("theme", OptionalText(decor.Theme)),
+            return Object(("owned", WriteIdList(owned)), ("placed", JsonValue.Array(placed)), ("corner", WriteIdList(decor.Corner)), ("theme", OptionalText(decor.Theme)),
                 ("guestsWatered", JsonValue.Of(decor.GuestsWatered)), ("guestHammers", JsonValue.Of(decor.GuestHammers)), ("gifts", JsonValue.Of(decor.Gifts)));
         }
 
@@ -799,6 +799,11 @@ namespace Game.Core.Save
                 decor.Owned.Add(item.AsString());
             foreach (var item in node.Field("placed").Items())
                 decor.Placed.Add(item.IsNull ? string.Empty : item.AsString());
+            if (node.HasField("corner"))
+            {
+                foreach (var item in node.Field("corner").Items())
+                    decor.Corner.Add(item.AsString());
+            }
             decor.Theme = ReadOptionalText(node, "theme");
             decor.GuestsWatered = node.Field("guestsWatered").AsLong(0);
             decor.GuestHammers = node.Field("guestHammers").AsLong(0);

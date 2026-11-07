@@ -171,6 +171,7 @@ namespace Game.Core.Sim
             _seasonal.BossWon = eventId => _drops.GiveEventPiece(eventId);
             _museum = new MuseumSystem(data.Museum, state, hero, _alchemy, Events);
             _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
+            _hideout.Decor = _decor;
             _fishing = new FishingSystem(data.Fishing, state, _camp, _peaceful, _expeditions, Events);
             _digs = new DigSystem(data.Digs, state, _camp, _peaceful, Events);
             _caravan = new CaravanSystem(data.Caravan, state, _camp, _expeditions);

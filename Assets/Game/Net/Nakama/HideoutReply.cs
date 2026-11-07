@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Game.Core.Content.Json;
+using Game.Core.Sim;
 
 namespace Game.Net.Nakama
 {
@@ -31,6 +32,12 @@ namespace Game.Net.Nakama
             Wants = Counts(NakamaJson.Field(json, "wants"));
             CanQueue = CosmeticsMineView.Ids(json, "canQueue");
             MyWants = CosmeticsMineView.Ids(json, "mine");
+            var corners = new List<HideoutCorner>();
+            foreach (var entry in NakamaJson.Items(json, "corners"))
+                corners.Add(new HideoutCorner(NakamaJson.Text(entry, "name"), NakamaJson.Text(entry, "hero"), NakamaJson.Text(entry, "path"), CosmeticsMineView.Ids(entry, "decor")));
+            Corners = corners;
+            CornerDecor = (int)NakamaJson.Number(json, "cornerDecor");
+            MyCorner = NakamaJson.Flag(json, "myCorner");
             var project = NakamaJson.Field(json, "project");
             if (project != null && project.Kind == JsonKind.Object)
             {
@@ -43,6 +50,9 @@ namespace Game.Net.Nakama
             }
         }
 
+        public IReadOnlyList<HideoutCorner> Corners { get; }
+        public int CornerDecor { get; }
+        public bool MyCorner { get; }
         public long HoursTogether { get; }
         public bool Leader { get; }
         public IReadOnlyDictionary<string, int> Buildings { get; }
@@ -59,6 +69,17 @@ namespace Game.Net.Nakama
         public static string QueuePayload(string building) => NakamaJson.Object(("building", NakamaJson.Quote(building)));
 
         public static string GivePayload(string item, int amount) => ClanCampReply.GivePayload(item, amount);
+
+        public static string CornerPayload(string hero, string path, IReadOnlyList<string> decor)
+        {
+            var items = new string[decor.Count];
+            for (var i = 0; i < items.Length; i++)
+                items[i] = NakamaJson.Quote(decor[i]);
+            return NakamaJson.Object(("hero", NakamaJson.Quote(hero)), ("path", NakamaJson.Quote(path)), ("decor", "[" + string.Join(",", items) + "]"));
+        }
+
+        public static async Task<HideoutReply> CornerAsync(NakamaClient client, NakamaSession session, string hero, string path, IReadOnlyList<string> decor, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_corner", CornerPayload(hero, path, decor), cancel).ConfigureAwait(false)));
 
         public static string WantPayload(string building, bool on) => NakamaJson.Object(("building", NakamaJson.Quote(building)), ("on", on ? "true" : "false"));
 

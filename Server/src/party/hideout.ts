@@ -4,6 +4,7 @@ interface HideoutTierRule {
     orders: number;
     sitSeconds: number;
     fireLevel: number;
+    cornerDecor: number;
     needs: { counter: string; target: number }[];
     opens: string[];
 }
@@ -18,6 +19,9 @@ interface HideoutRules {
     hereMs: number;
     maxSitStepMs: number;
     maxCaughtPerMark: number;
+    cornerDecor: number;
+    frozenMs: number;
+    decorIds: string[];
     tiers: HideoutTierRule[];
     buildings: HideoutBuildingRule[];
     levelTiers: number[];
@@ -33,6 +37,13 @@ interface HideoutProject {
     by: { [userId: string]: number };
 }
 
+interface HideoutCorner {
+    slot: number;
+    hero: string;
+    path: string;
+    decor: string[];
+}
+
 interface HideoutValue {
     tier: number;
     sitSeconds: number;
@@ -44,6 +55,8 @@ interface HideoutValue {
     project: HideoutProject | null;
     wants: { [userId: string]: string[] };
     counters: { [counter: string]: number };
+    corners: { [userId: string]: HideoutCorner };
+    former: string[];
 }
 
 interface HideoutChronicle {
@@ -57,9 +70,12 @@ declare const HideoutServerRules: HideoutRules;
 
 const HideoutCollection = "party_hideout";
 const HideoutWriteAttempts = 4;
+const HideoutMaxFormer = 16;
+const HideoutMaxCornerText = 40;
+const HideoutCornerBuilding = "corner";
 
 function hideoutEmpty(): HideoutValue {
-    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {} };
+    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [] };
 }
 
 function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutValue; version: string } {
@@ -78,6 +94,8 @@ function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutVal
     value.project = stored.project || null;
     value.wants = stored.wants || {};
     value.counters = stored.counters || {};
+    value.corners = stored.corners || {};
+    value.former = stored.former || [];
     return { value: value, version: objects[0].version };
 }
 
@@ -187,11 +205,52 @@ function hideoutCanQueue(nk: nkruntime.Nakama, value: HideoutValue, id: string):
     return "";
 }
 
+function hideoutCornerCount(tier: number): number {
+    let count = 0;
+    for (let i = 0; i < tier && i < HideoutServerRules.tiers.length; i++)
+        count += HideoutServerRules.tiers[i].opens.filter((id) => id === HideoutCornerBuilding).length;
+    return count;
+}
+
+function hideoutCornerDecor(tier: number): number {
+    let spots = HideoutServerRules.cornerDecor;
+    for (let i = 0; i < tier && i < HideoutServerRules.tiers.length; i++)
+        spots = Math.max(spots, HideoutServerRules.tiers[i].cornerDecor || 0);
+    return spots;
+}
+
+function hideoutNoteFormer(value: HideoutValue, userIds: string[]): void {
+    for (const id of userIds)
+        if (value.former.indexOf(id) < 0)
+            value.former.push(id);
+    if (value.former.length > HideoutMaxFormer)
+        value.former = value.former.slice(value.former.length - HideoutMaxFormer);
+}
+
+function hideoutSeatCorners(value: HideoutValue, members: string[]): void {
+    for (const id of Object.keys(value.corners))
+        if (members.indexOf(id) < 0)
+            delete value.corners[id];
+    const count = hideoutCornerCount(value.tier);
+    for (const id of members) {
+        if (value.corners[id])
+            continue;
+        const taken = Object.keys(value.corners).map((other) => value.corners[other].slot);
+        let slot = 0;
+        while (taken.indexOf(slot) >= 0)
+            slot++;
+        if (slot >= count)
+            break;
+        value.corners[id] = { slot: slot, hero: "", path: "", decor: [] };
+    }
+}
+
 function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: HideoutValue, chronicle: HideoutChronicle, userId: string, nowUnixMs: number): { [key: string]: any } {
     const meta = partyMetaOf(group);
     const here = hideoutHere(value, meta.members, nowUnixMs);
     const fishers = hideoutFishers(value, meta.members, nowUnixMs);
-    const named = here.concat(fishers.filter((id) => here.indexOf(id) < 0));
+    const cornered = Object.keys(value.corners).filter((id) => meta.members.indexOf(id) >= 0);
+    const named = here.concat(fishers, cornered).filter((id, index, all) => all.indexOf(id) === index);
     const users = named.length > 0 ? nk.usersGetId(named) : [];
     const nameOf = (id: string) => {
         const user = users.filter((entry) => entry.userId === id)[0];
@@ -214,7 +273,10 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
         buildings: value.buildings,
         canQueue: hideoutOpenBuildings(value.tier).filter((id) => hideoutCanQueue(nk, value, id) === ""),
         project: project && cost ? { building: project.building, level: project.level, points: project.points, target: cost.points, hours: cost.hours, yours: project.by[userId] || 0 } : null,
-        wants: wants, mine: value.wants[userId] || []
+        wants: wants, mine: value.wants[userId] || [],
+        corners: cornered.map((id) => ({ userId: id, name: nameOf(id), slot: value.corners[id].slot, hero: value.corners[id].hero, path: value.corners[id].path, decor: value.corners[id].decor }))
+            .sort((a, b) => a.slot - b.slot),
+        cornerDecor: hideoutCornerDecor(value.tier), myCorner: !!value.corners[userId] && meta.members.indexOf(userId) >= 0
     };
 }
 
@@ -235,6 +297,8 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
         hideoutSit(hideout, meta.members, nowUnixMs);
         hideoutFinish(hideout, chronicle);
         hideoutRise(nk, hideout, meta.members.length, chronicle);
+        hideoutNoteFormer(hideout, meta.members);
+        hideoutSeatCorners(hideout, meta.members);
         return hideout;
     });
     return hideoutView(nk, group, value, chronicle, userId, nowUnixMs);
@@ -323,4 +387,78 @@ function hideoutGiveRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
 function hideoutWantRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     const request = partyRequest(payload);
     return JSON.stringify(hideoutWant(nk, partyCaller(ctx), request.building, request.on, Date.now()));
+}
+
+function hideoutCornerText(value: unknown): string {
+    if (value === undefined || value === null)
+        return "";
+    if (typeof value !== "string" || value.length > HideoutMaxCornerText)
+        throw new Error("bad request");
+    return value;
+}
+
+function hideoutCorner(nk: nkruntime.Nakama, userId: string, hero: unknown, path: unknown, decor: unknown, nowUnixMs: number): { [key: string]: any } {
+    const heroText = hideoutCornerText(hero);
+    const pathText = hideoutCornerText(path);
+    if (!Array.isArray(decor))
+        throw new Error("bad request");
+    for (let i = 0; i < decor.length; i++)
+        if (typeof decor[i] !== "string" || HideoutServerRules.decorIds.indexOf(decor[i]) < 0 || decor.indexOf(decor[i]) !== i)
+            throw new Error("unknown decor");
+    return hideoutUpdate(nk, userId, (hideout, meta, chronicle) => {
+        hideoutRise(nk, hideout, meta.members.length, chronicle);
+        hideoutSeatCorners(hideout, meta.members);
+        const corner = hideout.corners[userId];
+        if (!corner)
+            throw new Error("no free corner");
+        if (decor.length > hideoutCornerDecor(hideout.tier))
+            throw new Error("the corner is full");
+        corner.hero = heroText;
+        corner.path = pathText;
+        corner.decor = (decor as string[]).slice();
+    }, nowUnixMs);
+}
+
+function hideoutCornerRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    const request = partyRequest(payload);
+    return JSON.stringify(hideoutCorner(nk, partyCaller(ctx), request.hero, request.path, request.decor, Date.now()));
+}
+
+function hideoutLeaving(nk: nkruntime.Nakama, partyId: string, userId: string): void {
+    if (nk.storageRead([{ collection: HideoutCollection, key: partyId, userId: PartySystemUser }]).length === 0)
+        return;
+    hideoutChange(nk, partyId, (hideout) => {
+        delete hideout.corners[userId];
+        delete hideout.here[userId];
+        delete hideout.fishing[userId];
+        hideoutNoteFormer(hideout, [userId]);
+    });
+}
+
+function hideoutWorthFreezing(nk: nkruntime.Nakama, partyId: string, former: string[]): boolean {
+    const objects = nk.storageRead([{ collection: HideoutCollection, key: partyId, userId: PartySystemUser }]);
+    if (objects.length === 0 || ((objects[0].value as HideoutValue).tier || 0) < 1)
+        return false;
+    hideoutChange(nk, partyId, (hideout) => {
+        hideout.corners = {};
+        hideout.here = {};
+        hideout.fishing = {};
+        hideoutNoteFormer(hideout, former);
+    });
+    return true;
+}
+
+function hideoutFormerOf(nk: nkruntime.Nakama, partyId: string): string[] {
+    return hideoutRead(nk, partyId).value.former;
+}
+
+function hideoutMove(nk: nkruntime.Nakama, from: string, to: string): void {
+    const objects = nk.storageRead([{ collection: HideoutCollection, key: from, userId: PartySystemUser }]);
+    if (objects.length > 0)
+        nk.storageWrite([{ collection: HideoutCollection, key: to, userId: PartySystemUser, value: objects[0].value, permissionRead: 0, permissionWrite: 0 }]);
+    nk.storageDelete([{ collection: HideoutCollection, key: from, userId: PartySystemUser }]);
+}
+
+function hideoutForget(nk: nkruntime.Nakama, partyId: string): void {
+    nk.storageDelete([{ collection: HideoutCollection, key: partyId, userId: PartySystemUser }]);
 }

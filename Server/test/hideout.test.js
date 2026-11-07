@@ -224,3 +224,81 @@ test("the presence rpc takes the fishing mark and checks it", () => {
   assert.throws(() => call("ann", "hideoutPresenceRpc", { here: true, fishing: true, caught: -1 }), /bad request/);
   assert.strictEqual(call("ann", "hideoutPresenceRpc", { here: true }).fishingTogether, true, "a mark without fishing keeps the old one");
 });
+
+const corner = (call, user, decor, hero, path) => call(user, "hideoutCornerRpc", { hero: hero || "Huscarl", path: path || "", decor: decor });
+
+test("each member gets a corner while the tier has room and fills it with decor", () => {
+  const { nk, call } = world("ann", "bob", "cid");
+  party(call, ["ann", "bob", "cid"]);
+  const view = corner(call, "ann", ["decor_lantern", "decor_bench"], "Huscarl", "berserker");
+  assert.strictEqual(view.myCorner, true);
+  assert.strictEqual(view.cornerDecor, rules.cornerDecor);
+  assert.deepStrictEqual(plain(view.corners.map((entry) => entry.name)), ["ann", "bob"], "the rest stop has two corners");
+  assert.deepStrictEqual(plain(view.corners[0].decor), ["decor_lantern", "decor_bench"]);
+  assert.strictEqual(view.corners[0].path, "berserker");
+  assert.strictEqual(at(nk, "cid", true, now).myCorner, false);
+  assert.throws(() => corner(call, "cid", []), /no free corner/);
+  assert.throws(() => corner(call, "ann", ["decor_lantern", "decor_lantern"]), /unknown decor/);
+  assert.throws(() => corner(call, "ann", ["sword_of_doom"]), /unknown decor/);
+  assert.throws(() => corner(call, "ann", ["decor_lantern", "decor_bench", "decor_flower_pot", "decor_fish_rack"]), /the corner is full|unknown decor/);
+  assert.throws(() => call("ann", "hideoutCornerRpc", { hero: 5, decor: [] }), /bad request/);
+});
+
+test("the stronghold gives five places in a corner", () => {
+  const stronghold = rules.tiers.findIndex((tier) => tier.cornerDecor > rules.cornerDecor) + 1;
+  assert.strictEqual(server.hideoutCornerDecor(stronghold - 1), rules.cornerDecor);
+  assert.strictEqual(server.hideoutCornerDecor(stronghold), 5);
+});
+
+test("a member who leaves empties the corner and the next one takes it", () => {
+  const { nk, call } = world("ann", "bob", "cid");
+  party(call, ["ann", "bob", "cid"]);
+  corner(call, "bob", ["decor_bench"]);
+  call("bob", "partyLeaveRpc");
+  const view = at(nk, "cid", true, now);
+  assert.strictEqual(view.myCorner, true);
+  assert.deepStrictEqual(plain(view.corners.map((entry) => entry.name)), ["ann", "cid"]);
+  assert.deepStrictEqual(plain(view.corners[1].decor), [], "the new corner starts empty");
+});
+
+test("a dissolved party with a hideout rests for thirty days and returns by the old code", () => {
+  const { nk, call } = world("ann", "bob", "eve");
+  const created = party(call, ["ann", "bob"]);
+  bosses(nk, "ann", 12);
+  corner(call, "ann", ["decor_lantern"]);
+  call("ann", "partyLeaveRpc");
+  call("bob", "partyLeaveRpc");
+  assert.strictEqual(nk.groupsGetId([created.id]).length, 0);
+  assert.throws(() => call("eve", "partyJoinRpc", { code: created.code }), /rests until a former member returns/);
+  const back = call("ann", "partyJoinRpc", { code: created.code });
+  assert.notStrictEqual(back.id, created.id);
+  assert.strictEqual(back.code, created.code);
+  const view = at(nk, "ann", true, now);
+  assert.strictEqual(view.tier, 1, "the tier came back too");
+  assert.strictEqual(view.bosses, 12, "the chronicle came back with the hideout");
+  call("bob", "partyJoinRpc", { code: created.code });
+  const both = at(nk, "bob", true, now + 1);
+  assert.strictEqual(both.tier, 1);
+  assert.deepStrictEqual(plain(both.corners.map((entry) => entry.decor.length)), [0, 0], "corners start empty after the rest");
+});
+
+test("after thirty days the rested hideout goes to the archive and the code is free", () => {
+  const { nk, call } = world("ann", "bob");
+  const created = party(call, ["ann", "bob"]);
+  at(nk, "ann", true, now);
+  call("ann", "partyLeaveRpc");
+  call("bob", "partyLeaveRpc");
+  const frozen = nk.storageRead([{ collection: "party_codes", key: created.code, userId: server.PartySystemUser }])[0].value;
+  assert.throws(() => server.partyThaw(nk, "ann", created.code, frozen.frozenAt + rules.frozenMs + 1), /unknown code/);
+  assert.strictEqual(nk.storageRead([{ collection: "party_codes", key: created.code, userId: server.PartySystemUser }]).length, 0);
+  assert.strictEqual(nk.storageRead([{ collection: "party_hideout", key: created.id, userId: server.PartySystemUser }]).length, 0);
+});
+
+test("a party that never had a hideout closes at once as before", () => {
+  const { nk, call } = world("ann");
+  const created = party(call, ["ann"]);
+  call("ann", "partyLeaveRpc");
+  assert.strictEqual(nk.storageRead([{ collection: "party_codes", key: created.code, userId: server.PartySystemUser }]).length, 0);
+  assert.throws(() => call("ann", "partyJoinRpc", { code: created.code }), /unknown code/);
+});
+
