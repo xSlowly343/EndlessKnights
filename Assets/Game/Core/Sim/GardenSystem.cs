@@ -69,7 +69,7 @@ namespace Game.Core.Sim
             var plant = _rules.Plant(target.Plant);
             if (plant != null)
             {
-                _camp.Add(plant.Herb, plant.Yield + (int)_state.Perk(MuseumPerk.ExtraHerb));
+                _camp.Add(plant.Herb, _state.PeacefulBonus.More(plant.Yield + (int)_state.Perk(MuseumPerk.ExtraHerb)));
                 State.Album.Add(plant.Id);
                 if (!plant.Starter && _state.Rng.NextDouble() < _rules.SeedBackChance + _state.Perk(MuseumPerk.SeedBack))
                     _camp.Add(plant.Seed, 1);
@@ -202,7 +202,7 @@ namespace Game.Core.Sim
             var plant = _rules.Plant(bed.Plant);
             if (plant == null)
                 return;
-            bed.Grown += seconds * (1 + _state.Perk(MuseumPerk.GrowFaster));
+            bed.Grown += seconds * (1 + _state.Perk(MuseumPerk.GrowFaster)) / _state.PeacefulBonus.TimeFactor;
             if (bed.Grown < plant.GrowSeconds)
                 return;
             bed.Ready = true;
@@ -220,7 +220,7 @@ namespace Game.Core.Sim
                     continue;
                 foreach (var mutation in _rules.Mutations)
                 {
-                    if (!mutation.Matches(plant, State.Beds[neighbor].Plant) || _state.Rng.NextDouble() >= mutation.Chance + _state.Perk(MuseumPerk.MutationChance))
+                    if (!mutation.Matches(plant, State.Beds[neighbor].Plant) || _state.Rng.NextDouble() >= (mutation.Chance + _state.Perk(MuseumPerk.MutationChance)) * _state.PeacefulBonus.LuckFactor)
                         continue;
                     var child = _rules.Plant(mutation.Child)!;
                     _camp.Add(child.Seed, 1);

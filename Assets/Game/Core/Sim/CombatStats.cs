@@ -8,6 +8,11 @@ namespace Game.Core.Sim
         public static readonly StatId CritChance = new StatId("critChance");
         public static readonly StatId CritMultiplier = new StatId("critMultiplier");
         public static readonly StatId OvercritMultiplier = new StatId("overcritMultiplier");
+        public static readonly StatId PeacefulSpeed = new StatId("peacefulSpeed");
+        public static readonly StatId PeacefulYield = new StatId("peacefulYield");
+        public static readonly StatId PeacefulLuck = new StatId("peacefulLuck");
+        public static readonly StatId PeacefulMastery = new StatId("peacefulMastery");
+        public static readonly StatId PartyPeaceful = new StatId("partyPeaceful");
         public static readonly StatId Gold = new StatId("gold");
         public static readonly StatId FocusGain = new StatId("focusGain");
         public static readonly StatId FocusMultiplier = new StatId("focusMultiplier");

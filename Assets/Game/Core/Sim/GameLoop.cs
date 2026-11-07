@@ -720,6 +720,7 @@ namespace Game.Core.Sim
             _drops.ApplyOffline(result);
             OfflineCalculator.Apply(State, result);
             AddIdleSeconds(result.AwaySeconds);
+            RefreshPeacefulBonus();
             _garden.Advance(result.AwaySeconds);
             _expeditions.Advance(result.AwaySeconds);
             _companions.Advance(result.AwaySeconds);
@@ -1017,6 +1018,23 @@ namespace Game.Core.Sim
                 State.StartedUnixMs = nowUnixMs;
         }
 
+        public void RefreshPeacefulBonus()
+        {
+            var bonus = State.PeacefulBonus;
+            bonus.Party = Basket(CombatStats.PartyPeaceful);
+            var party = 1 + bonus.Party;
+            bonus.Speed = Basket(CombatStats.PeacefulSpeed) * party;
+            bonus.Yield = Basket(CombatStats.PeacefulYield) * party;
+            bonus.Luck = Basket(CombatStats.PeacefulLuck) * party;
+            bonus.Mastery = Basket(CombatStats.PeacefulMastery) * party;
+        }
+
+        private double Basket(StatId stat)
+        {
+            var totals = Hero.TotalsOf(stat);
+            return (1 + totals.Flat + totals.IncreasedMultiplier - 1) * totals.MoreMultiplier - 1;
+        }
+
         public void Tick()
         {
             Hook?.BeforeTick();
@@ -1028,6 +1046,7 @@ namespace Game.Core.Sim
             SessionInput.PlaySeconds += TickSeconds;
             State.TotalInput.PlaySeconds += TickSeconds;
             _talents.Tick();
+            RefreshPeacefulBonus();
             _peaceful.Tick(LastInput, MetersPerPixel);
             _camp.Tick();
             _colossus.Tick();

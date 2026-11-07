@@ -115,7 +115,7 @@ namespace Game.Core.Sim
         private void Cast()
         {
             State.Phase = FishingPhase.Waiting;
-            State.Timer = (_rules.BiteMinSeconds + _state.Rng.NextDouble() * (_rules.BiteMaxSeconds - _rules.BiteMinSeconds)) * (1 - _state.Perk(MuseumPerk.BiteFaster));
+            State.Timer = (_rules.BiteMinSeconds + _state.Rng.NextDouble() * (_rules.BiteMaxSeconds - _rules.BiteMinSeconds)) * (1 - _state.Perk(MuseumPerk.BiteFaster)) * _state.PeacefulBonus.TimeFactor;
             State.Hooked = string.Empty;
             State.Reeled = 0;
         }
@@ -125,9 +125,9 @@ namespace Game.Core.Sim
             var spot = _rules.Spot(CurrentSpot)!;
             var together = Together ? 1 : 0;
             var pier = 1 + together * _state.Hideout.PierRareBoost;
-            if (_state.Rng.NextDouble() < (_rules.BottleChance + _state.Perk(MuseumPerk.BottleChance) + together * _rules.TogetherBottleChance) * pier)
+            if (_state.Rng.NextDouble() < (_rules.BottleChance + _state.Perk(MuseumPerk.BottleChance) + together * _rules.TogetherBottleChance) * pier * _state.PeacefulBonus.LuckFactor)
                 Hook(FishCatchKind.Bottle, string.Empty);
-            else if (!State.Album.ContainsKey(spot.Legend.Id) && _state.Rng.NextDouble() < (_rules.LegendChance + _state.Perk(MuseumPerk.LegendChance) + together * _rules.TogetherLegendChance) * pier)
+            else if (!State.Album.ContainsKey(spot.Legend.Id) && _state.Rng.NextDouble() < (_rules.LegendChance + _state.Perk(MuseumPerk.LegendChance) + together * _rules.TogetherLegendChance) * pier * _state.PeacefulBonus.LuckFactor)
                 Hook(FishCatchKind.Legend, spot.Legend.Id);
             else if (RiftWindow && _rules.RiftFish.Count > 0 && _state.Rng.NextDouble() < _rules.RiftChance)
                 Hook(FishCatchKind.Fish, Pick(_rules.RiftFish).Id);
