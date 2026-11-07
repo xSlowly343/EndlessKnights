@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "groupSize": 50,
+  "startDays": [0, 3],
+  "joinClosesHours": 12,
+  "formats": [
+    { "id": "climb", "name": { "ru": "Восхождение", "en": "Ascent" }, "maxScore": 1000000, "prestige": true },
+    { "id": "bosses", "name": { "ru": "Охота на боссов", "en": "Boss hunt" }, "maxScore": 100000 },
+    { "id": "kills", "name": { "ru": "Жатва", "en": "Harvest" }, "maxScore": 10000000 }
+  ],
+  "bands": [
+    { "from": 1, "scale": 1 },
+    { "from": 1000, "scale": 1.5 },
+    { "from": 5000, "scale": 2 },
+    { "from": 15000, "scale": 3 },
+    { "from": 30000, "scale": 4 },
+    { "from": 50000, "scale": 5 }
+  ],
+  "rewards": [
+    { "upTo": 1, "ingots": 120, "essence": 60 },
+    { "upTo": 3, "ingots": 80, "essence": 40 },
+    { "upTo": 10, "ingots": 50, "essence": 25 },
+    { "upTo": 25, "ingots": 30, "essence": 15 },
+    { "upTo": 50, "ingots": 15, "essence": 8 }
+  ]
+}

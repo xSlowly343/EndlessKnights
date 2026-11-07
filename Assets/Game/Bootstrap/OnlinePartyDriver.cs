@@ -180,7 +180,7 @@ namespace Game.Bootstrap
 
         private void ShowMail()
         {
-            _panels.Mail.ShowRows(MailText.Rows(_mailBox.Letters, _data.Chests));
+            _panels.Mail.ShowRows(MailText.Rows(_mailBox.Letters, _data.Chests, _data.Tournaments));
             if (_notifications != null)
                 _notifications.Marks.UnreadMail = _mailBox.Unread;
         }

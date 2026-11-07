@@ -82,6 +82,9 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("crystal_change", crystalChangeRpc);
     initializer.registerRpc("chest_shop", chestShopRpc);
     initializer.registerRpc("chest_buy", chestBuyRpc);
+    initializer.registerRpc("tournament_mine", tournamentMineRpc);
+    initializer.registerRpc("tournament_join", tournamentJoinRpc);
+    initializer.registerRpc("tournament_submit", tournamentSubmitRpc);
     initializer.registerRpc("event_mine", eventMineRpc);
     initializer.registerRpc("event_progress", eventProgressRpc);
     initializer.registerRpc("event_buy", eventBuyRpc);

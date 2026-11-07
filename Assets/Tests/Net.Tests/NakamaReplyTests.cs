@@ -293,6 +293,30 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ATournamentIsReadFromTheServerWithTheGroupAndMyRow()
+        {
+            Assert.That(TournamentReply.JoinPayload(12000), Is.EqualTo("{\"record\":12000}"));
+            Assert.That(TournamentReply.SubmitPayload(6001, 340), Is.EqualTo("{\"index\":6001,\"score\":340}"));
+            var reply = TournamentReply.From(NakamaJson.Parse("{\"index\":6001,\"format\":\"bosses\",\"startsAt\":100,\"endsAt\":900,\"joinUntil\":800,\"joined\":true,\"band\":2,\"group\":0,"
+                + "\"top\":[{\"rank\":1,\"userId\":\"bob\",\"name\":\"Bob\",\"score\":500},{\"rank\":2,\"userId\":\"ann\",\"name\":\"Ann\",\"score\":340}],"
+                + "\"mine\":{\"rank\":2,\"userId\":\"ann\",\"name\":\"Ann\",\"score\":340},\"fresh\":[\"tournament-6000\"]}"));
+            Assert.That(reply.Index, Is.EqualTo(6001));
+            Assert.That(reply.Format, Is.EqualTo("bosses"));
+            Assert.That(reply.Joined, Is.True);
+            Assert.That(reply.Band, Is.EqualTo(2));
+            Assert.That(reply.Top.Count, Is.EqualTo(2));
+            Assert.That(reply.Top[0].Name, Is.EqualTo("Bob"));
+            Assert.That(reply.Mine!.Value.Rank, Is.EqualTo(2));
+            Assert.That(reply.Mine!.Value.Score, Is.EqualTo(340));
+            Assert.That(reply.Fresh, Is.EqualTo(new[] { "tournament-6000" }));
+            Assert.That(reply.JoinOpen(799), Is.True);
+            Assert.That(reply.JoinOpen(800), Is.False);
+            var outside = TournamentReply.From(NakamaJson.Parse("{\"index\":6002,\"format\":\"kills\",\"joined\":false,\"band\":-1,\"group\":-1,\"top\":[],\"mine\":null,\"fresh\":[]}"));
+            Assert.That(outside.Joined, Is.False);
+            Assert.That(outside.Mine, Is.Null);
+        }
+
+        [Test]
         public void TheChestShopAndAChestLetterAreReadFromTheServer()
         {
             Assert.That(ChestShopReply.BuyPayload("smith"), Is.EqualTo("{\"id\":\"smith\"}"));

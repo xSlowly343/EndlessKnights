@@ -55,6 +55,7 @@ namespace Game.Core.Sim
         private readonly BestiarySystem _bestiary;
         private readonly CosmeticSystem _cosmetics;
         private readonly SeasonPassSystem _seasonPass;
+        private readonly TournamentSystem _tournament;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -160,6 +161,7 @@ namespace Game.Core.Sim
             _stage.Pierce = data.Combat.Pierce;
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades, hero);
+            _tournament = new TournamentSystem(data.Tournaments, state, _prestige);
             _book = new SkillBook(data.SkillBook, data.Weapons, state, _skills, hero);
             if (state.LegacyGems)
             {
@@ -240,6 +242,7 @@ namespace Game.Core.Sim
         public BestiarySystem Bestiary => _bestiary;
         public CosmeticSystem Cosmetics => _cosmetics;
         public SeasonPassSystem SeasonPass => _seasonPass;
+        public TournamentSystem Tournament => _tournament;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -855,6 +858,7 @@ namespace Game.Core.Sim
             _bestiary.UseCatalog(data.Bestiary);
             _cosmetics.UseCatalog(data.Cosmetics);
             _seasonPass.UseRules(data.SeasonPass);
+            _tournament.UseRules(data.Tournaments);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);
@@ -989,6 +993,7 @@ namespace Game.Core.Sim
             _quests.Tick(firstEvent);
             _seasonal.Tick(firstEvent);
             _seasonPass.Tick();
+            _tournament.Tick();
             _alchemy.BattleTick();
             _cooking.BattleTick();
             _forge.NoteKills(firstEvent);

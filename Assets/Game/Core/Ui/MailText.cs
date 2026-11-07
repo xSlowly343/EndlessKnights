@@ -34,15 +34,17 @@ namespace Game.Core.Ui
             MailLetter.MentorKind => "mail.mentor.title",
             MailLetter.RiftDepthKind => "mail.riftDepth.title",
             MailLetter.ChestKind => "mail.chest.title",
+            MailLetter.TournamentKind => "mail.tournament.title",
             _ => "mail.title"
         });
 
-        public static string Body(MailLetter letter, ChestCatalog? chests = null) => letter.Kind switch
+        public static string Body(MailLetter letter, ChestCatalog? chests = null, TournamentRules? tournaments = null) => letter.Kind switch
         {
             MailLetter.RiftKind => Texts.Format("mail.rift.body", letter.Place, letter.Of, letter.Depth, PartyCardText.Title(letter.Title)),
             MailLetter.MentorKind => Texts.Format("mail.mentor.body", letter.Depth),
             MailLetter.RiftDepthKind => Texts.Format("mail.riftDepth.body", letter.Depth, PartyCardText.Title(letter.Title)),
             MailLetter.ChestKind => Texts.Format("mail.chest.body", ChestName(letter.Title, chests)),
+            MailLetter.TournamentKind => Texts.Format("mail.tournament.body", TournamentView.FormatName(tournaments, letter.Title), letter.Place, letter.Of, letter.Depth),
             _ => string.Empty
         };
 
@@ -66,11 +68,11 @@ namespace Game.Core.Ui
 
         public static string Taken(MailLetter letter) => Texts.Format("mail.taken", Reward(letter));
 
-        public static IReadOnlyList<MailRow> Rows(IReadOnlyList<MailLetter> letters, ChestCatalog? chests = null)
+        public static IReadOnlyList<MailRow> Rows(IReadOnlyList<MailLetter> letters, ChestCatalog? chests = null, TournamentRules? tournaments = null)
         {
             var rows = new List<MailRow>(letters.Count);
             foreach (var letter in letters)
-                rows.Add(new MailRow(letter.Id, Title(letter), Body(letter, chests), Reward(letter), letter.Claimed));
+                rows.Add(new MailRow(letter.Id, Title(letter), Body(letter, chests, tournaments), Reward(letter), letter.Claimed));
             return rows;
         }
     }
