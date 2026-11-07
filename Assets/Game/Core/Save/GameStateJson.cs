@@ -116,6 +116,7 @@ namespace Game.Core.Save
                 ("garden", WriteGarden(state.Garden)),
                 ("alchemy", WriteAlchemy(state.Alchemy)),
                 ("expeditions", WriteExpeditions(state.Expeditions)),
+                ("companions", WriteCompanions(state.Companions)),
                 ("town", WriteTown(state.Town)),
                 ("fishing", WriteFishing(state.Fishing)),
                 ("digs", WriteDigs(state.Digs)),
@@ -318,6 +319,8 @@ namespace Game.Core.Save
                 ReadAlchemy(node.Field("alchemy"), state.Alchemy);
             if (node.HasField("expeditions"))
                 ReadExpeditions(node.Field("expeditions"), state.Expeditions);
+            if (node.HasField("companions"))
+                ReadCompanions(node.Field("companions"), state.Companions);
             if (node.HasField("town"))
                 ReadTown(node.Field("town"), state.Town);
             if (node.HasField("fishing"))
@@ -707,7 +710,7 @@ namespace Game.Core.Save
             var items = new JsonValue[expedition.Items.Length];
             for (var i = 0; i < items.Length; i++)
                 items[i] = JsonValue.Of(expedition.Items[i]);
-            return Object(("companion", JsonValue.Of(expedition.Companion)), ("biome", JsonValue.Of(expedition.Biome)), ("hours", JsonValue.Of(expedition.Hours)),
+            return Object(("companion", JsonValue.Of(expedition.Companion)), ("partner", OptionalText(expedition.Partner)), ("treat", OptionalText(expedition.Treat)), ("biome", JsonValue.Of(expedition.Biome)), ("hours", JsonValue.Of(expedition.Hours)),
                 ("seconds", JsonValue.Of(expedition.Seconds)), ("planned", JsonValue.Of(expedition.Planned)), ("elapsed", JsonValue.Of(expedition.Elapsed)), ("letter", JsonValue.Of(expedition.Letter)),
                 ("choice", JsonValue.Of(expedition.Choice)), ("waited", JsonValue.Of(expedition.Waited)), ("items", JsonValue.Array(items)),
                 ("shards", JsonValue.Of(expedition.Shards)), ("rare", OptionalText(expedition.Rare)), ("done", JsonValue.Of(expedition.Done)));
@@ -721,6 +724,8 @@ namespace Game.Core.Save
             return new Expedition
             {
                 Companion = node.Field("companion").AsString(),
+                Partner = ReadOptionalText(node, "partner"),
+                Treat = ReadOptionalText(node, "treat"),
                 Biome = node.Field("biome").AsString(),
                 Hours = node.Field("hours").AsInt(1, 48),
                 Seconds = node.Field("seconds").AsNumber(0, double.MaxValue),
@@ -734,6 +739,232 @@ namespace Game.Core.Save
                 Rare = ReadOptionalText(node, "rare"),
                 Done = node.Field("done").AsBool()
             };
+        }
+
+        private static JsonValue WriteCompanionGear(List<CompanionGearItem> gear)
+        {
+            var items = new JsonValue[gear.Count];
+            for (var i = 0; i < items.Length; i++)
+            {
+                var item = gear[i];
+                var affixes = new JsonValue[item.Affixes.Count];
+                for (var a = 0; a < affixes.Length; a++)
+                    affixes[a] = Object(("stat", JsonValue.Of(GearStatName(item.Affixes[a].Stat))), ("value", JsonValue.Of(item.Affixes[a].Value)));
+                items[i] = Object(("id", JsonValue.Of(item.Id)), ("slot", JsonValue.Of(GearSlotName(item.Slot))), ("rarity", JsonValue.Of(item.Rarity)),
+                    ("set", OptionalText(item.Set)), ("owner", OptionalText(item.Owner)), ("affixes", JsonValue.Array(affixes)));
+            }
+            return JsonValue.Array(items);
+        }
+
+        private static string GearSlotName(CompanionGearSlot slot)
+        {
+            foreach (var pair in CompanionGearRules.SlotNames)
+            {
+                if (pair.Value == slot)
+                    return pair.Key;
+            }
+            return "collar";
+        }
+
+        private static string GearStatName(CompanionGearStat stat)
+        {
+            foreach (var pair in CompanionGearRules.StatNames)
+            {
+                if (pair.Value == stat)
+                    return pair.Key;
+            }
+            return "loot";
+        }
+
+        private static void ReadCompanionGear(ContentNode node, CompanionState companions)
+        {
+            foreach (var item in node.Items())
+            {
+                var slotName = item.Field("slot").AsString();
+                if (!CompanionGearRules.SlotNames.TryGetValue(slotName, out var slot))
+                    throw item.Field("slot").Error($"unknown gear slot '{slotName}'");
+                var gear = new CompanionGearItem
+                {
+                    Id = item.Field("id").AsInt(1),
+                    Slot = slot,
+                    Rarity = item.Field("rarity").AsInt(1, 100),
+                    Set = ReadOptionalText(item, "set"),
+                    Owner = ReadOptionalText(item, "owner")
+                };
+                foreach (var affix in item.Field("affixes").Items())
+                {
+                    var statName = affix.Field("stat").AsString();
+                    if (!CompanionGearRules.StatNames.TryGetValue(statName, out var stat))
+                        throw affix.Field("stat").Error($"unknown gear stat '{statName}'");
+                    gear.Affixes.Add(new CompanionGearAffix { Stat = stat, Value = affix.Field("value").AsNumber(0, 100) });
+                }
+                companions.Gear.Add(gear);
+            }
+        }
+
+        private static JsonValue WriteCompanions(CompanionState companions)
+        {
+            var ids = new List<string>(companions.Progress.Keys);
+            ids.Sort(System.StringComparer.Ordinal);
+            var list = new JsonValue[ids.Count];
+            for (var i = 0; i < ids.Count; i++)
+            {
+                var progress = companions.Progress[ids[i]];
+                var talents = new List<string>(progress.Talents);
+                talents.Sort(System.StringComparer.Ordinal);
+                list[i] = Object(("id", JsonValue.Of(ids[i])), ("level", JsonValue.Of(progress.Level)), ("stage", JsonValue.Of(progress.Stage)), ("experience", JsonValue.Of(progress.Experience)),
+                    ("fedToday", JsonValue.Of(progress.FedToday)), ("favouriteKnown", JsonValue.Of(progress.FavouriteKnown)), ("fed", JsonValue.Of(progress.Fed)),
+                    ("traits", WriteIdList(progress.Traits)), ("traitTrips", WriteNumberMap(progress.TraitTrips)), ("homeSeconds", JsonValue.Of(progress.HomeSeconds)),
+                    ("bond", JsonValue.Of(progress.Bond)), ("petsToday", JsonValue.Of(progress.PetsToday)), ("favouriteBondsToday", JsonValue.Of(progress.FavouriteBondsToday)),
+                    ("friendPetsToday", JsonValue.Of(progress.FriendPetsToday)), ("name", OptionalText(progress.Name)), ("accessory", OptionalText(progress.Accessory)), ("coat", OptionalText(progress.Coat)), ("stars", JsonValue.Of(progress.Stars)), ("form", OptionalText(progress.Form)), ("forms", WriteIdList(progress.Forms)), ("ownSparks", JsonValue.Of(progress.OwnSparks)), ("trips", JsonValue.Of(progress.Trips)), ("instantDay", JsonValue.Of(progress.InstantDay)), ("treat", OptionalText(progress.Treat)), ("delicacyDay", JsonValue.Of(progress.DelicacyDay)), ("firstTripDay", JsonValue.Of(progress.FirstTripDay)), ("story", JsonValue.Of(progress.Story)),
+                    ("talents", WriteIdList(talents)), ("freeResetDay", JsonValue.Of(progress.FreeResetDay)), ("forageSeconds", JsonValue.Of(progress.ForageSeconds)), ("forages", JsonValue.Of(progress.Forages)));
+            }
+            var owned = new List<string>(companions.Owned);
+            owned.Sort(System.StringComparer.Ordinal);
+            var eggs = new JsonValue[companions.Eggs.Count];
+            for (var i = 0; i < eggs.Length; i++)
+                eggs[i] = Object(("biome", JsonValue.Of(companions.Eggs[i].Biome)), ("secondsLeft", JsonValue.Of(companions.Eggs[i].SecondsLeft)));
+            return Object(("day", JsonValue.Of(companions.Day)), ("home", WriteIdList(companions.Home)), ("owned", WriteIdList(owned)),
+                ("eggs", JsonValue.Array(eggs)), ("eggCooldown", JsonValue.Of(companions.EggCooldown)), ("sparks", JsonValue.Of(companions.Sparks)),
+                ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)),
+                ("gear", WriteCompanionGear(companions.Gear)), ("nextGearId", JsonValue.Of(companions.NextGearId)),
+                ("boardDay", JsonValue.Of(companions.BoardDay)), ("board", WriteIdList(companions.Board)), ("boardDone", WriteIdList(companions.BoardDone)), ("rerolls", JsonValue.Of(companions.Rerolls)),
+                ("helper", OptionalText(companions.Helper)), ("helpGuild", OptionalText(companions.HelpGuild)), ("helpSeconds", JsonValue.Of(companions.HelpSeconds)), ("burrowWeek", JsonValue.Of(companions.BurrowWeek)),
+                ("tree", WriteTreeRanks(companions.TreeRanks)), ("treeMajors", WriteTreeMajors(companions.TreeMajors)), ("menagerieLevel", JsonValue.Of(companions.MenagerieLevel)),
+                ("menagerieExperience", JsonValue.Of(companions.MenagerieExperience)), ("treeResetDay", JsonValue.Of(companions.TreeResetDay)), ("rewindDay", JsonValue.Of(companions.RewindDay)), ("progress", JsonValue.Array(list)));
+        }
+
+        private static JsonValue WriteTreeRanks(Dictionary<int, int> ranks)
+        {
+            var keys = new List<int>(ranks.Keys);
+            keys.Sort();
+            var list = new JsonValue[keys.Count];
+            for (var i = 0; i < keys.Count; i++)
+                list[i] = Object(("node", JsonValue.Of(keys[i])), ("rank", JsonValue.Of(ranks[keys[i]])));
+            return JsonValue.Array(list);
+        }
+
+        private static JsonValue WriteTreeMajors(Dictionary<int, string> majors)
+        {
+            var keys = new List<int>(majors.Keys);
+            keys.Sort();
+            var list = new JsonValue[keys.Count];
+            for (var i = 0; i < keys.Count; i++)
+                list[i] = Object(("at", JsonValue.Of(keys[i])), ("id", JsonValue.Of(majors[keys[i]])));
+            return JsonValue.Array(list);
+        }
+
+        private static void ReadTree(ContentNode node, CompanionState companions)
+        {
+            companions.TreeRanks.Clear();
+            companions.TreeMajors.Clear();
+            if (node.HasField("tree"))
+                foreach (var item in node.Field("tree").Items())
+                    companions.TreeRanks[item.Field("node").AsInt(1, 1000)] = item.Field("rank").AsInt(1, Content.MenagerieTreeRules.MaxRank);
+            if (node.HasField("treeMajors"))
+                foreach (var item in node.Field("treeMajors").Items())
+                    companions.TreeMajors[item.Field("at").AsInt(1, 100000)] = item.Field("id").AsString();
+            companions.MenagerieLevel = node.HasField("menagerieLevel") ? node.Field("menagerieLevel").AsInt(1, 100000) : 1;
+            companions.MenagerieExperience = node.HasField("menagerieExperience") ? node.Field("menagerieExperience").AsNumber(0, double.MaxValue) : 0;
+            companions.TreeResetDay = node.HasField("treeResetDay") ? node.Field("treeResetDay").AsLong() : -1;
+            companions.RewindDay = node.HasField("rewindDay") ? node.Field("rewindDay").AsLong() : -1;
+        }
+
+        private static JsonValue WriteNumberMap(Dictionary<string, double> map)
+        {
+            var keys = new List<string>(map.Keys);
+            keys.Sort(System.StringComparer.Ordinal);
+            var list = new JsonValue[keys.Count];
+            for (var i = 0; i < keys.Count; i++)
+                list[i] = Object(("id", JsonValue.Of(keys[i])), ("value", JsonValue.Of(map[keys[i]])));
+            return JsonValue.Array(list);
+        }
+
+        private static void ReadCompanions(ContentNode node, CompanionState companions)
+        {
+            companions.Day = node.Field("day").AsLong(-1);
+            companions.Progress.Clear();
+            foreach (var item in node.Field("progress").Items())
+            {
+                companions.Progress[item.Field("id").AsString()] = new CompanionProgress
+                {
+                    Level = item.Field("level").AsInt(1, 1000),
+                    Stage = item.HasField("stage") ? item.Field("stage").AsInt(0, 100) : 0,
+                    Experience = item.Field("experience").AsNumber(0, double.MaxValue),
+                    FedToday = item.Field("fedToday").AsNumber(0, double.MaxValue),
+                    FavouriteKnown = item.Field("favouriteKnown").AsBool(),
+                    Fed = item.Field("fed").AsLong(0),
+                    HomeSeconds = item.HasField("homeSeconds") ? item.Field("homeSeconds").AsNumber(0, double.MaxValue) : 0,
+                    Bond = item.HasField("bond") ? item.Field("bond").AsNumber(0, double.MaxValue) : 0,
+                    PetsToday = item.HasField("petsToday") ? item.Field("petsToday").AsInt(0, 1_000_000) : 0,
+                    FavouriteBondsToday = item.HasField("favouriteBondsToday") ? item.Field("favouriteBondsToday").AsInt(0, 1_000_000) : 0,
+                    FriendPetsToday = item.HasField("friendPetsToday") ? item.Field("friendPetsToday").AsInt(0, 1_000_000) : 0,
+                    Name = ReadOptionalText(item, "name"),
+                    Accessory = ReadOptionalText(item, "accessory"),
+                    Coat = ReadOptionalText(item, "coat"),
+                    Stars = item.HasField("stars") ? item.Field("stars").AsInt(0, 100) : 0,
+                    Form = ReadOptionalText(item, "form"),
+                    OwnSparks = item.HasField("ownSparks") ? item.Field("ownSparks").AsInt(0) : 0,
+                    Trips = item.HasField("trips") ? item.Field("trips").AsInt(0) : 0,
+                    InstantDay = item.HasField("instantDay") ? item.Field("instantDay").AsLong() : -1,
+                    Treat = ReadOptionalText(item, "treat"),
+                    DelicacyDay = item.HasField("delicacyDay") ? item.Field("delicacyDay").AsLong() : -1000,
+                    FirstTripDay = item.HasField("firstTripDay") ? item.Field("firstTripDay").AsLong() : -1,
+                    Story = item.HasField("story") ? item.Field("story").AsInt(0, 1_000_000) : 0,
+                    FreeResetDay = item.HasField("freeResetDay") ? item.Field("freeResetDay").AsLong(-1) : -1,
+                    ForageSeconds = item.HasField("forageSeconds") ? item.Field("forageSeconds").AsNumber(0, double.MaxValue) : 0,
+                    Forages = item.HasField("forages") ? item.Field("forages").AsLong(0) : 0
+                };
+                var progress = companions.Progress[item.Field("id").AsString()];
+                if (item.HasField("traits"))
+                    foreach (var trait in item.Field("traits").Items())
+                        progress.Traits.Add(trait.AsString());
+                if (item.HasField("talents"))
+                    foreach (var talent in item.Field("talents").Items())
+                        progress.Talents.Add(talent.AsString());
+                if (item.HasField("forms"))
+                    foreach (var form in item.Field("forms").Items())
+                        progress.Forms.Add(form.AsString());
+                if (item.HasField("traitTrips"))
+                    foreach (var trip in item.Field("traitTrips").Items())
+                        progress.TraitTrips[trip.Field("id").AsString()] = trip.Field("value").AsNumber(0, double.MaxValue);
+            }
+            companions.Eggs.Clear();
+            if (node.HasField("eggs"))
+                foreach (var egg in node.Field("eggs").Items())
+                    companions.Eggs.Add(new CompanionEgg { Biome = egg.Field("biome").AsString(), SecondsLeft = egg.Field("secondsLeft").AsNumber(-1e12, double.MaxValue) });
+            companions.EggCooldown = node.HasField("eggCooldown") ? node.Field("eggCooldown").AsNumber(0, double.MaxValue) : 0;
+            companions.Sparks = node.HasField("sparks") ? node.Field("sparks").AsLong(0) : 0;
+            companions.CoalToday = node.HasField("coalToday") ? node.Field("coalToday").AsNumber(0, double.MaxValue) : 0;
+            companions.Hatched = node.HasField("hatched") ? node.Field("hatched").AsLong(0) : 0;
+            companions.Shown = ReadOptionalText(node, "shown");
+            companions.Souls = node.HasField("souls") ? node.Field("souls").AsLong(0) : 0;
+            companions.SoulHours = node.HasField("soulHours") ? node.Field("soulHours").AsNumber(0, 1e9) : 0;
+            companions.SoulHostDay = node.HasField("soulHostDay") ? node.Field("soulHostDay").AsLong() : -1;
+            if (node.HasField("gear"))
+                ReadCompanionGear(node.Field("gear"), companions);
+            companions.NextGearId = node.HasField("nextGearId") ? node.Field("nextGearId").AsInt(1) : 1;
+            companions.BoardDay = node.HasField("boardDay") ? node.Field("boardDay").AsLong() : -1;
+            if (node.HasField("board"))
+                foreach (var id in node.Field("board").Items())
+                    companions.Board.Add(id.AsString());
+            if (node.HasField("boardDone"))
+                foreach (var id in node.Field("boardDone").Items())
+                    companions.BoardDone.Add(id.AsString());
+            companions.Rerolls = node.HasField("rerolls") ? node.Field("rerolls").AsInt(0) : 0;
+            companions.Helper = ReadOptionalText(node, "helper");
+            companions.HelpGuild = ReadOptionalText(node, "helpGuild");
+            companions.HelpSeconds = node.HasField("helpSeconds") ? node.Field("helpSeconds").AsNumber(0, 1e9) : 0;
+            companions.BurrowWeek = node.HasField("burrowWeek") ? node.Field("burrowWeek").AsLong() : -1;
+            ReadTree(node, companions);
+            companions.Owned.Clear();
+            if (node.HasField("owned"))
+                foreach (var id in node.Field("owned").Items())
+                    companions.Owned.Add(id.AsString());
+            companions.Home.Clear();
+            if (node.HasField("home"))
+                foreach (var id in node.Field("home").Items())
+                    companions.Home.Add(id.AsString());
         }
 
         private static JsonValue WriteExpeditions(ExpeditionState expeditions)

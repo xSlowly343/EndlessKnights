@@ -69,6 +69,7 @@ namespace Game.Net.Nakama
                     feats.Add(new TrophyFeat(NakamaJson.Text(entry, "id"), (int)NakamaJson.Number(entry, "level")));
             }
             TrophyFeats = feats;
+            Companions = CompanionCoopReply.From(json);
             var crafts = NakamaJson.Field(json, "crafts");
             ForgePartners = crafts != null && crafts.Kind == JsonKind.Object ? CosmeticsMineView.Ids(crafts, "forge") : System.Array.Empty<string>();
             CauldronPartners = crafts != null && crafts.Kind == JsonKind.Object ? CosmeticsMineView.Ids(crafts, "cauldron") : System.Array.Empty<string>();
@@ -207,6 +208,7 @@ namespace Game.Net.Nakama
             return counts;
         }
 
+        public CompanionCoopReply Companions { get; }
         public int Tier { get; }
         public int Members { get; }
         public long Bosses { get; }

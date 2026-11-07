@@ -23,6 +23,7 @@ namespace Game.Core.Settings
         public bool CountClicks { get; set; } = true;
         public bool CountWheel { get; set; } = true;
         public string Language { get; set; } = "ru";
+        public string CompanionStrip { get; set; } = "always";
         public bool InputConsentGiven { get; set; }
         public bool TelemetryConsentGiven { get; set; }
         public bool ErrorReportConsentGiven { get; set; }

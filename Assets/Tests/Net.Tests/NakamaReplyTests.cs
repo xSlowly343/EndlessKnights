@@ -311,6 +311,28 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void CompanionsInTheHideoutAndThePartyTripAreRead()
+        {
+            Assert.That(CompanionCoopReply.PlacePayload("camp_dog", "Rex", 1), Is.EqualTo("{\"companion\":\"camp_dog\",\"name\":\"Rex\",\"stage\":1}"));
+            Assert.That(CompanionCoopReply.PlacePayload("", "", 0), Is.EqualTo("{\"companion\":null}"));
+            Assert.That(CompanionCoopReply.OwnerPayload("u1"), Is.EqualTo("{\"owner\":\"u1\"}"));
+            Assert.That(CompanionCoopReply.CompanionPayload(""), Is.EqualTo("{\"companion\":null}"));
+            var hideout = HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"companions\":{\"pets\":[{\"userId\":\"a\",\"owner\":\"Ann\",\"companion\":\"camp_dog\",\"name\":\"Rex\",\"stage\":2,\"mine\":false}],"
+                + "\"petsLeft\":2,\"warmed\":[\"a\"],\"far\":{\"sent\":[{\"owner\":\"Ann\",\"companion\":\"camp_dog\",\"mine\":false},{\"owner\":\"Bob\",\"companion\":\"pet_owl\",\"mine\":true}],"
+                + "\"biomes\":[\"green_hills\",\"sky_islands\"],\"endsAt\":1800086400000,\"running\":true,\"ready\":false},\"farLeft\":0}}"));
+            var companions = hideout.Companions;
+            Assert.That(companions.Pets.Single().Name, Is.EqualTo("Rex"));
+            Assert.That(companions.Pets.Single().Stage, Is.EqualTo(2));
+            Assert.That(companions.PetsLeft, Is.EqualTo(2));
+            Assert.That(companions.Warmed, Is.EqualTo(new[] { "a" }));
+            Assert.That(companions.FarSent.Select(member => member.Companion), Is.EqualTo(new[] { "camp_dog", "pet_owl" }));
+            Assert.That(companions.FarBiomes.Count, Is.EqualTo(2));
+            Assert.That(companions.FarRunning, Is.True);
+            Assert.That(companions.FarEndsAt, Is.EqualTo(1800086400000));
+            Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":0}")).Companions.Pets, Is.Empty);
+        }
+
+        [Test]
         public void TheHideoutIsReadFromTheServerWithWhoIsByTheFire()
         {
             Assert.That(HideoutReply.PresencePayload(true), Is.EqualTo("{\"here\":true}"));

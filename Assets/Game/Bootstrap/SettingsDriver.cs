@@ -167,7 +167,10 @@ namespace Game.Bootstrap
         private void ApplyPermissions()
         {
             if (_loop != null)
+            {
                 _loop.Permissions = InputPermissions.From(Settings);
+                _loop.Strip.Mode = SettingsScreen.StripModeOf(Settings);
+            }
         }
 
         private static void ApplyText(GameSettings settings)

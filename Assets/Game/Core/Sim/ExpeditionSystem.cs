@@ -11,7 +11,8 @@ namespace Game.Core.Sim
         UnknownBiome,
         BiomeClosed,
         BadHours,
-        NoChoice
+        NoChoice,
+        NoTripSlot
     }
 
     public sealed class ExpeditionSystem
@@ -25,6 +26,7 @@ namespace Game.Core.Sim
         private readonly CampSystem _camp;
         private readonly EventQueue _events;
         private ExpeditionRules _rules;
+        private CompanionSystem? _companions;
 
         public ExpeditionSystem(ExpeditionRules rules, GameState state, StageTable stages, CosmeticCatalog cosmetics, CampSystem camp, EventQueue events)
         {
@@ -41,11 +43,19 @@ namespace Game.Core.Sim
 
         public void UseRules(ExpeditionRules rules) => _rules = rules;
 
+        public void UseCompanions(CompanionSystem companions) => _companions = companions;
+
         public List<string> Companions()
         {
             var companions = new List<string>();
             foreach (var companion in _rules.Companions)
                 companions.Add(companion.Id);
+            if (_companions != null)
+            {
+                var granted = new List<string>(_companions.State.Owned);
+                granted.Sort(System.StringComparer.Ordinal);
+                companions.AddRange(granted);
+            }
             var owned = new List<string>();
             foreach (var id in _state.Cosmetics.Owned)
             {
@@ -59,12 +69,15 @@ namespace Game.Core.Sim
 
         public CompanionTrait? TraitOf(string companion)
         {
-            foreach (var free in _rules.Companions)
+            var free = _rules.Companions;
+            for (var i = 0; i < free.Count; i++)
             {
-                if (free.Id == companion)
-                    return _rules.Trait(free.Trait);
+                if (free[i].Id == companion)
+                    return _rules.Trait(free[i].Trait);
             }
-            return IsOwnedCompanion(companion) ? _rules.Trait(_rules.CosmeticTrait) : null;
+            if (IsOwnedCompanion(companion))
+                return _rules.Trait(_rules.CosmeticTrait);
+            return _companions != null && _companions.Owns(companion) ? _rules.Trait(_companions.GrantedTrait(companion)) : null;
         }
 
         public bool Busy(string companion)
@@ -72,7 +85,7 @@ namespace Game.Core.Sim
             var active = State.Active;
             for (var i = 0; i < active.Count; i++)
             {
-                if (active[i].Companion == companion)
+                if (active[i].Companion == companion || active[i].Partner == companion)
                     return true;
             }
             return false;
@@ -89,30 +102,64 @@ namespace Game.Core.Sim
             return false;
         }
 
+        public ExpeditionResult SendTogether(string companion, string partner, string biome, int hours)
+        {
+            if (_companions == null || partner == companion || TraitOf(partner) == null)
+                return ExpeditionResult.UnknownCompanion;
+            if (Busy(partner) || _companions.Occupied(partner))
+                return ExpeditionResult.CompanionBusy;
+            if (!Contains(_rules.Hours, hours) && !_companions.AllowsHours(partner, hours))
+                return ExpeditionResult.BadHours;
+            var result = Send(companion, biome, hours);
+            if (result != ExpeditionResult.Done)
+                return result;
+            var expedition = State.Active[State.Active.Count - 1];
+            expedition.Partner = partner;
+            var seconds = hours * SecondsPerHour * System.Math.Max(DurationFactor(companion, biome), DurationFactor(partner, biome)) * TreatDuration(expedition);
+            expedition.Seconds = seconds;
+            expedition.Planned = seconds;
+            return ExpeditionResult.Done;
+        }
+
         public ExpeditionResult Send(string companion, string biome, int hours)
         {
             var trait = TraitOf(companion);
             if (trait == null)
                 return ExpeditionResult.UnknownCompanion;
-            if (Busy(companion))
+            if (Busy(companion) || _companions?.Occupied(companion) == true)
                 return ExpeditionResult.CompanionBusy;
+            if (_companions != null && State.Active.Count >= _companions.TripSlots)
+                return ExpeditionResult.NoTripSlot;
             var place = _rules.Biome(biome);
             if (place == null)
                 return ExpeditionResult.UnknownBiome;
             if (!BiomeOpen(biome))
                 return ExpeditionResult.BiomeClosed;
-            if (!Contains(_rules.Hours, hours))
+            if (!Contains(_rules.Hours, hours) && _companions?.AllowsHours(companion, hours) != true)
                 return ExpeditionResult.BadHours;
+            var seconds = hours * SecondsPerHour * DurationFactor(companion, biome);
             State.Active.Add(new Expedition
             {
                 Companion = companion,
                 Biome = biome,
                 Hours = hours,
-                Seconds = hours * SecondsPerHour * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.ShorterTrips)),
-                Planned = hours * SecondsPerHour * System.Math.Max(0.1, 1 - _state.Perk(MuseumPerk.ShorterTrips)),
+                Seconds = seconds,
+                Planned = seconds,
                 Items = new long[place.Items.Count]
             });
+            var sent = State.Active[State.Active.Count - 1];
+            _companions?.PackTreat(sent);
+            sent.Seconds *= TreatDuration(sent) * (1 - (_companions?.FirstTripCut(companion) ?? 0));
+            sent.Planned = sent.Seconds;
             return ExpeditionResult.Done;
+        }
+
+        private double TreatDuration(Expedition expedition) => 1 - (_companions?.TreatBonus(expedition, TreatStat.Duration) ?? 0);
+
+        public double DurationFactor(string companion, string biome = "")
+        {
+            var perk = _state.Perk(MuseumPerk.ShorterTrips);
+            return _companions?.DurationFactor(companion, perk, biome) ?? System.Math.Max(0.1, 1 - perk);
         }
 
         public ExpeditionResult Answer(int index, bool wait)
@@ -143,18 +190,29 @@ namespace Game.Core.Sim
             {
                 var expedition = active[i];
                 expedition.Elapsed = System.Math.Min(expedition.Seconds, expedition.Elapsed + System.Math.Max(0, seconds));
-                if (!expedition.LetterSent && expedition.Elapsed * 2 >= PlannedOf(expedition))
+                if (!expedition.LetterSent && expedition.Elapsed >= PlannedOf(expedition) * LetterShare(expedition.Companion))
                     SendLetter(expedition, i);
                 if (expedition.Elapsed >= expedition.Seconds)
                     Return(i);
             }
         }
 
+        private double LetterShare(string companion) => 0.5 * (1 - System.Math.Min(0.9, _companions?.Own(companion, OwnEffectKind.LetterEarlier) ?? 0));
+
         private void SendLetter(Expedition expedition, int index)
         {
             expedition.Letter = _rules.Letters.Count == 0 ? 0 : (int)(_state.Rng.NextDouble() * _rules.Letters.Count) % _rules.Letters.Count;
-            expedition.Choice = _state.Rng.NextDouble() < _rules.ChoiceChance + _state.Perk(MuseumPerk.LetterChoice);
+            expedition.Choice = _state.Rng.NextDouble() < (_rules.ChoiceChance + _state.Perk(MuseumPerk.LetterChoice)) * (1 + (_companions?.Own(expedition.Companion, OwnEffectKind.Choice) ?? 0));
             _events.Add(GameEvent.ForStage(GameEventKind.ExpeditionLetter, _state.Tick, index));
+        }
+
+        public void Finish(int index)
+        {
+            var expedition = State.Active[index];
+            expedition.Elapsed = expedition.Seconds;
+            if (!expedition.LetterSent)
+                SendLetter(expedition, index);
+            Return(index);
         }
 
         private void Return(int index)
@@ -167,6 +225,7 @@ namespace Game.Core.Sim
             var trait = TraitOf(expedition.Companion) ?? _rules.Trait(_rules.CosmeticTrait);
             if (place != null && trait != null)
                 Loot(expedition, place, trait);
+            _companions?.TripDone(expedition);
             State.Returned++;
             State.Reports.Insert(0, expedition);
             if (State.Reports.Count > ExpeditionState.ReportsKept)
@@ -177,23 +236,25 @@ namespace Game.Core.Sim
         private void Loot(Expedition expedition, ExpeditionBiome place, CompanionTrait trait)
         {
             var hours = expedition.Elapsed / SecondsPerHour;
+            var level = _companions?.LevelOf(expedition) ?? 1;
             if (expedition.Items.Length != place.Items.Count)
                 expedition.Items = new long[place.Items.Count];
             for (var i = 0; i < place.Items.Count; i++)
             {
-                var count = (long)System.Math.Floor(place.Items[i].PerHour * hours * trait.ItemMultiplier * (1 + _state.Perk(MuseumPerk.ExpeditionLoot)));
+                var count = (long)System.Math.Floor(place.Items[i].PerHour * hours * (_companions?.StatOf(expedition, TravelStat.Items) ?? trait.ItemMultiplier) * (_companions?.HerbOf(expedition, place.Items[i].Item) ?? 1) * level * (1 + _state.Perk(MuseumPerk.ExpeditionLoot)));
                 expedition.Items[i] = count;
                 _camp.Add(place.Items[i].Item, count);
             }
-            expedition.Shards = (long)System.Math.Floor(place.ShardsPerHour * hours * trait.ShardsMultiplier * (1 + _state.Perk(MuseumPerk.ExpeditionShards)));
+            expedition.Shards = (long)System.Math.Floor(place.ShardsPerHour * hours * (_companions?.StatOf(expedition, TravelStat.Shards) ?? trait.ShardsMultiplier) * level * (1 + _state.Perk(MuseumPerk.ExpeditionShards)));
             _state.Drops.Shards += expedition.Shards;
-            var chance = place.RareChancePerHour * hours * trait.RareMultiplier * (1 + _state.Perk(MuseumPerk.RareFind)) * (expedition.Waited ? _rules.WaitRareMultiplier : 1);
+            var chance = place.RareChancePerHour * hours * (_companions?.StatOf(expedition, TravelStat.Rare) ?? trait.RareMultiplier) * (1 + _state.Perk(MuseumPerk.RareFind)) * (_companions?.RareOf(expedition) ?? 1) * (expedition.Waited ? _rules.WaitRareMultiplier : 1);
             if (_state.Rng.NextDouble() < chance)
             {
                 expedition.Rare = place.Rare;
                 _camp.Add(place.Rare, 1);
                 State.Finds.Add(place.Rare);
             }
+            _companions?.Extras(expedition, place);
         }
 
         private static double PlannedOf(Expedition expedition) => expedition.Planned > 0 ? expedition.Planned : expedition.Hours * SecondsPerHour;

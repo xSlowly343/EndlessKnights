@@ -10,12 +10,13 @@
     { "id": "chef_table", "name": { "ru": "Стол повара", "en": "Chef's Table" }, "guild": "cooks" },
     { "id": "dig_site", "name": { "ru": "Площадка раскопок", "en": "Dig Site" }, "guild": "diggers" },
     { "id": "observatory", "name": { "ru": "Башня-обсерватория", "en": "Observatory Tower" } },
+    { "id": "nest", "name": { "ru": "Гнездовье", "en": "Nest" } },
     { "id": "banner_spot", "name": { "ru": "Место для знамени", "en": "Banner Spot" } }
   ],
   "tiers": [
-    { "id": "camp_site", "name": { "ru": "Стоянка", "en": "Camp Site" }, "fromRecord": 1, "slots": { "bonfire": 1, "garden_bed": 4, "cauldron": 1 } },
-    { "id": "camp", "name": { "ru": "Лагерь", "en": "Camp" }, "fromRecord": 51, "slots": { "bonfire": 1, "garden_bed": 8, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1 } },
-    { "id": "outpost", "name": { "ru": "Застава", "en": "Outpost" }, "fromRecord": 101, "slots": { "bonfire": 1, "garden_bed": 12, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1, "chef_table": 1, "dig_site": 1 } },
-    { "id": "stronghold", "name": { "ru": "Крепость", "en": "Stronghold" }, "fromRecord": 201, "slots": { "bonfire": 1, "garden_bed": 16, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1, "chef_table": 1, "dig_site": 1, "observatory": 1, "banner_spot": 1 } }
+    { "id": "camp_site", "name": { "ru": "Стоянка", "en": "Camp Site" }, "fromRecord": 1, "slots": { "nest": 1, "bonfire": 1, "garden_bed": 4, "cauldron": 1 } },
+    { "id": "camp", "name": { "ru": "Лагерь", "en": "Camp" }, "fromRecord": 51, "slots": { "nest": 1, "bonfire": 1, "garden_bed": 8, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1 } },
+    { "id": "outpost", "name": { "ru": "Застава", "en": "Outpost" }, "fromRecord": 101, "slots": { "nest": 2, "bonfire": 1, "garden_bed": 12, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1, "chef_table": 1, "dig_site": 1 } },
+    { "id": "stronghold", "name": { "ru": "Крепость", "en": "Stronghold" }, "fromRecord": 201, "slots": { "nest": 2, "bonfire": 1, "garden_bed": 16, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1, "chef_table": 1, "dig_site": 1, "observatory": 1, "banner_spot": 1 } }
   ]
 }

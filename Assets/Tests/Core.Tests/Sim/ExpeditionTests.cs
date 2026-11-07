@@ -108,7 +108,7 @@ namespace Game.Core.Tests.Sim
                 for (var seed = 1UL; seed <= 300; seed++)
                 {
                     var loop = Camp(seed);
-                    loop.State.Cosmetics.Owned.Add("pet_fox");
+                    loop.Companions.Grant("egg_griffin");
                     loop.Expeditions.Send(companion, "green_hills", 8);
                     loop.Expeditions.Advance(8 * Hour);
                     found += loop.State.Expeditions.Reports[0].Rare.Length > 0 ? 1 : 0;
@@ -116,7 +116,7 @@ namespace Game.Core.Tests.Sim
                 return found;
             }
             var dog = Finds("camp_dog");
-            var fox = Finds("pet_fox");
+            var fox = Finds("egg_griffin");
             Assert.That(dog, Is.InRange(30, 120));
             Assert.That(fox, Is.GreaterThan(dog));
         }
@@ -142,7 +142,7 @@ namespace Game.Core.Tests.Sim
             loop.Tick();
             loop.Expeditions.Send("camp_dog", "green_hills", 8);
             loop.Expeditions.Send("camp_crow", "green_hills", 8);
-            for (var i = 0; i < 50; i++)
+            for (var i = 0; i < 300; i++)
             {
                 input.PressKeys(1);
                 loop.Tick();

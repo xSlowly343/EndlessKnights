@@ -96,11 +96,20 @@ namespace Game.Core.Sim
 
         public void Remove(string collectionId) => State.Shelf.Remove(collectionId);
 
+        public CompanionSystem? Companions { get; set; }
+
         public MuseumResult SetTitle(string collectionId)
         {
             if (collectionId.Length == 0)
             {
                 State.Title = string.Empty;
+                return MuseumResult.Done;
+            }
+            if (Companions != null && collectionId == Companions.Rules.Album.Title)
+            {
+                if (!Companions.AlbumTitle)
+                    return MuseumResult.NotCollected;
+                State.Title = collectionId;
                 return MuseumResult.Done;
             }
             var collection = _rules.Collection(collectionId);
