@@ -63,6 +63,7 @@ namespace Game.Core.Sim
         private readonly CampLevelSystem _campLevels;
         private readonly ApprenticeSystem _apprentices;
         private readonly CampModuleSystem _modules;
+        private readonly DigSystem _digs;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -168,6 +169,7 @@ namespace Game.Core.Sim
             _museum = new MuseumSystem(data.Museum, state, hero, _alchemy, Events);
             _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
             _fishing = new FishingSystem(data.Fishing, state, _camp, _peaceful, _expeditions, Events);
+            _digs = new DigSystem(data.Digs, state, _camp, _peaceful, Events);
             _town = new TownSystem(data.Town, state, _camp, _alchemy, _expeditions, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
@@ -264,6 +266,7 @@ namespace Game.Core.Sim
         public CampLevelSystem CampLevels => _campLevels;
         public ApprenticeSystem Apprentices => _apprentices;
         public CampModuleSystem Modules => _modules;
+        public DigSystem Digs => _digs;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -908,6 +911,7 @@ namespace Game.Core.Sim
             _expeditions.UseRules(data.Expeditions);
             _town.UseRules(data.Town);
             _fishing.UseRules(data.Fishing);
+            _digs.UseRules(data.Digs);
             _cooking.UseRules(data.Cooking);
             _forge.UseRules(data.Forge);
             _museum.UseRules(data.Museum);
@@ -979,6 +983,7 @@ namespace Game.Core.Sim
             _alchemy.Tick();
             _expeditions.Tick();
             _fishing.Tick();
+            _digs.Tick();
             _cooking.Tick();
             _forge.Tick();
             _museum.Tick();
@@ -1028,6 +1033,7 @@ namespace Game.Core.Sim
             _cooking.BattleTick();
             _apprentices.BattleTick();
             _modules.NoteBosses(firstEvent);
+            _digs.NoteGuardians(firstEvent);
             _forge.NoteKills(firstEvent);
             _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);

@@ -118,6 +118,7 @@ namespace Game.Core.Save
                 ("expeditions", WriteExpeditions(state.Expeditions)),
                 ("town", WriteTown(state.Town)),
                 ("fishing", WriteFishing(state.Fishing)),
+                ("digs", WriteDigs(state.Digs)),
                 ("cooking", WriteCooking(state.Cooking)),
                 ("museum", WriteMuseum(state.Museum)),
                 ("decor", WriteDecor(state.Decor)),
@@ -313,6 +314,8 @@ namespace Game.Core.Save
                 ReadTown(node.Field("town"), state.Town);
             if (node.HasField("fishing"))
                 ReadFishing(node.Field("fishing"), state.Fishing);
+            if (node.HasField("digs"))
+                ReadDigs(node.Field("digs"), state.Digs);
             if (node.HasField("cooking"))
                 ReadCooking(node.Field("cooking"), state.Cooking);
             if (node.HasField("decor"))
@@ -780,6 +783,23 @@ namespace Game.Core.Save
             foreach (var item in node.Field("book").Items())
                 cooking.Book.Add(item.AsString());
             cooking.Cooked = node.Field("cooked").AsLong(0);
+        }
+
+        private static JsonValue WriteDigs(DigState digs) =>
+            Object(("sites", WriteIdList(digs.Sites)), ("phase", JsonValue.Of((int)digs.Phase)), ("brushed", JsonValue.Of(digs.Brushed)), ("quality", JsonValue.Of(digs.Quality)),
+                ("dug", JsonValue.Of(digs.Dug)), ("cracks", JsonValue.Of(digs.Cracks)), ("skeletons", WriteIdList(Sorted(digs.Skeletons))));
+
+        private static void ReadDigs(ContentNode node, DigState digs)
+        {
+            foreach (var item in node.Field("sites").Items())
+                digs.Sites.Add(item.AsString());
+            digs.Phase = (DigPhase)node.Field("phase").AsInt(0, (int)DigPhase.Exposed);
+            digs.Brushed = node.Field("brushed").AsNumber(0, double.MaxValue);
+            digs.Quality = node.Field("quality").AsNumber(0, 1);
+            digs.Dug = node.Field("dug").AsLong(0);
+            digs.Cracks = node.Field("cracks").AsLong(0);
+            foreach (var item in node.Field("skeletons").Items())
+                digs.Skeletons.Add(item.AsString());
         }
 
         private static JsonValue WriteFishing(FishingState fishing)

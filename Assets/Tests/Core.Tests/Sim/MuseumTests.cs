@@ -160,7 +160,7 @@ namespace Game.Core.Tests.Sim
         private static MuseumRules Load(string json)
         {
             var data = TestWorld.Data;
-            return MuseumRules.Load(json, data.Fishing, data.Garden, data.Cooking, data.Alchemy, data.Expeditions);
+            return MuseumRules.Load(json, data.Fishing, data.Garden, data.Cooking, data.Alchemy, data.Expeditions, data.Digs);
         }
     }
 }

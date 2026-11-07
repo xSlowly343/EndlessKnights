@@ -120,6 +120,7 @@ namespace Game.Core.Sim
             CollectionKind.Plants => _state.Garden.Album.Contains(id),
             CollectionKind.Dishes => _state.Cooking.Book.Contains(id),
             CollectionKind.Recipes => _alchemy.Knows(id),
+            CollectionKind.Skeletons => _state.Digs.Skeletons.Contains(id),
             _ => _state.Expeditions.Finds.Contains(id)
         };
 

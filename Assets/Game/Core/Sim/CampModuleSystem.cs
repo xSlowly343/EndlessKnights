@@ -165,23 +165,24 @@ namespace Game.Core.Sim
 
         private void DropBlueprint(ulong roll)
         {
+            var modules = _rules.Modules;
             var missing = 0;
-            foreach (var def in _rules.Modules)
+            for (var i = 0; i < modules.Count; i++)
             {
-                if (Missing(def))
+                if (Missing(modules[i]))
                     missing++;
             }
             if (missing == 0)
                 return;
             var pick = (int)(roll % (ulong)missing);
-            foreach (var def in _rules.Modules)
+            for (var i = 0; i < modules.Count; i++)
             {
-                if (!Missing(def))
+                if (!Missing(modules[i]))
                     continue;
                 if (pick-- > 0)
                     continue;
-                Camp.Blueprints.Add(def.Id);
-                LastBlueprint = def.Id;
+                Camp.Blueprints.Add(modules[i].Id);
+                LastBlueprint = modules[i].Id;
                 return;
             }
         }

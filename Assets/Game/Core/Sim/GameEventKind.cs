@@ -53,6 +53,8 @@ namespace Game.Core.Sim
         MealEnded,
         ItemSmelted,
         ItemTempered,
-        CollectionCompleted
+        CollectionCompleted,
+        FindCracked,
+        FindDug
     }
 }
