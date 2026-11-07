@@ -38,6 +38,8 @@ namespace Game.Core.Sim
         public string Temper { get; set; } = string.Empty;
         public string Student { get; set; } = string.Empty;
         public int Circle { get; set; }
+        public string Path { get; set; } = string.Empty;
+        public List<string> Forks { get; } = new List<string>();
         public double CircleCount { get; set; }
         public long CircleDay { get; set; } = -1;
         public long TemperFreeDay { get; set; } = -1;

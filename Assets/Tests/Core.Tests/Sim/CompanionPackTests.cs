@@ -56,8 +56,8 @@ namespace Game.Core.Tests.Sim
             var sum = companions.TravelMultiplier("camp_dog", TravelStat.Items) + companions.TravelMultiplier("egg_boarlet", TravelStat.Items)
                 + companions.TravelMultiplier("hills_piglet", TravelStat.Items) - 2;
             var pack = companions.Rules.Pack;
-            var expected = sum * pack.Loot * (1 + pack.FamilyBonus) * (1 + companions.Temper("camp_dog", TemperStat.JointLoot) + companions.Temper("egg_boarlet", TemperStat.JointLoot)
-                + companions.Temper("hills_piglet", TemperStat.JointLoot));
+            var expected = sum * pack.Loot * (1 + pack.FamilyBonus) * (1 + companions.Temper("camp_dog", CompanionStat.JointLoot) + companions.Temper("egg_boarlet", CompanionStat.JointLoot)
+                + companions.Temper("hills_piglet", CompanionStat.JointLoot));
             Assert.That(companions.StatOf(trip, TravelStat.Items), Is.EqualTo(expected).Within(1e-9));
         }
 

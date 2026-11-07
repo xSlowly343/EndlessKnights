@@ -8106,5 +8106,438 @@
         }
       }
     ]
+  },
+  "paths": {
+    "changeEssence": 100,
+    "firstLevelCircle": 4,
+    "list": [
+      {
+        "id": "hearth",
+        "name": {
+          "ru": "Страж очага",
+          "en": "Hearth Warden"
+        },
+        "levels": [
+          [
+            {
+              "stat": "homeTraits",
+              "value": 0.1
+            }
+          ],
+          [
+            {
+              "stat": "homeTraits",
+              "value": 0.175
+            }
+          ],
+          [
+            {
+              "stat": "homeTraits",
+              "value": 0.25
+            }
+          ],
+          [
+            {
+              "stat": "homeTraits",
+              "value": 0.325
+            }
+          ],
+          [
+            {
+              "stat": "homeTraits",
+              "value": 0.4
+            }
+          ]
+        ],
+        "forks": [
+          [
+            {
+              "id": "keeper",
+              "name": {
+                "ru": "Хранитель",
+                "en": "Keeper"
+              },
+              "lines": [
+                {
+                  "stat": "none",
+                  "waits": "homeNoFood"
+                }
+              ]
+            },
+            {
+              "id": "host",
+              "name": {
+                "ru": "Хозяин",
+                "en": "Host"
+              },
+              "lines": [
+                {
+                  "stat": "homeTraits",
+                  "value": 0.15
+                },
+                {
+                  "stat": "none",
+                  "waits": "homeFoodTwice"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "id": "artisan",
+              "name": {
+                "ru": "Ремесленник",
+                "en": "Artisan"
+              },
+              "lines": [
+                {
+                  "stat": "none",
+                  "waits": "threeBuildings"
+                }
+              ]
+            },
+            {
+              "id": "master",
+              "name": {
+                "ru": "Мастер одной",
+                "en": "Master of One"
+              },
+              "lines": [
+                {
+                  "stat": "none",
+                  "waits": "oneBuilding"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "id": "heart",
+              "name": {
+                "ru": "Сердце дома",
+                "en": "Heart of the Home"
+              },
+              "lines": [
+                {
+                  "stat": "none",
+                  "waits": "allHomeTraits"
+                }
+              ]
+            },
+            {
+              "id": "alone",
+              "name": {
+                "ru": "Один в доме",
+                "en": "Alone at Home"
+              },
+              "lines": [
+                {
+                  "stat": "homeTraits",
+                  "value": 0.5
+                },
+                {
+                  "stat": "none",
+                  "waits": "onlyHome"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "id": "tracker",
+        "name": {
+          "ru": "Следопыт",
+          "en": "Tracker"
+        },
+        "levels": [
+          [
+            {
+              "stat": "tripLoot",
+              "value": 0.1
+            }
+          ],
+          [
+            {
+              "stat": "tripLoot",
+              "value": 0.175
+            }
+          ],
+          [
+            {
+              "stat": "tripLoot",
+              "value": 0.25
+            }
+          ],
+          [
+            {
+              "stat": "tripLoot",
+              "value": 0.325
+            }
+          ],
+          [
+            {
+              "stat": "tripLoot",
+              "value": 0.4
+            }
+          ]
+        ],
+        "forks": [
+          [
+            {
+              "id": "swift",
+              "name": {
+                "ru": "Быстрые ноги",
+                "en": "Swift Feet"
+              },
+              "lines": [
+                {
+                  "stat": "tripTime",
+                  "value": -0.2
+                },
+                {
+                  "stat": "tripLoot",
+                  "value": -0.05
+                }
+              ]
+            },
+            {
+              "id": "heavy",
+              "name": {
+                "ru": "Тяжёлые сумки",
+                "en": "Heavy Bags"
+              },
+              "lines": [
+                {
+                  "stat": "tripLoot",
+                  "value": 0.15
+                },
+                {
+                  "stat": "tripTime",
+                  "value": 0.15
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "id": "hunter",
+              "name": {
+                "ru": "Охотник за редким",
+                "en": "Rare Hunter"
+              },
+              "lines": [
+                {
+                  "stat": "tripRare",
+                  "value": 1.0
+                },
+                {
+                  "stat": "tripItems",
+                  "value": -0.2
+                }
+              ]
+            },
+            {
+              "id": "gatherer",
+              "name": {
+                "ru": "Сборщик",
+                "en": "Gatherer"
+              },
+              "lines": [
+                {
+                  "stat": "tripItems",
+                  "value": 0.25
+                },
+                {
+                  "stat": "tripRare",
+                  "value": -0.2
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "id": "twopaths",
+              "name": {
+                "ru": "Две тропы",
+                "en": "Two Trails"
+              },
+              "lines": [
+                {
+                  "stat": "none",
+                  "waits": "twoBiomes"
+                }
+              ]
+            },
+            {
+              "id": "onepath",
+              "name": {
+                "ru": "Одна тропа",
+                "en": "One Trail"
+              },
+              "lines": [
+                {
+                  "stat": "ownBiomeLoot",
+                  "value": 0.5
+                },
+                {
+                  "stat": "none",
+                  "waits": "noForeignBiomes"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "id": "spirit",
+        "name": {
+          "ru": "Дух Изнанки",
+          "en": "Underside Spirit"
+        },
+        "levels": [
+          [
+            {
+              "stat": "tripSouls",
+              "value": 0.1
+            },
+            {
+              "stat": "none",
+              "waits": "tripEssence"
+            }
+          ],
+          [
+            {
+              "stat": "tripSouls",
+              "value": 0.175
+            },
+            {
+              "stat": "none",
+              "waits": "tripEssence"
+            }
+          ],
+          [
+            {
+              "stat": "tripSouls",
+              "value": 0.25
+            },
+            {
+              "stat": "none",
+              "waits": "tripEssence"
+            }
+          ],
+          [
+            {
+              "stat": "tripSouls",
+              "value": 0.325
+            },
+            {
+              "stat": "none",
+              "waits": "tripEssence"
+            }
+          ],
+          [
+            {
+              "stat": "tripSouls",
+              "value": 0.4
+            },
+            {
+              "stat": "none",
+              "waits": "tripEssence"
+            }
+          ]
+        ],
+        "forks": [
+          [
+            {
+              "id": "depth",
+              "name": {
+                "ru": "Глубина",
+                "en": "Depth"
+              },
+              "lines": [
+                {
+                  "stat": "none",
+                  "waits": "burrowFloor"
+                }
+              ]
+            },
+            {
+              "id": "breadth",
+              "name": {
+                "ru": "Ширина",
+                "en": "Breadth"
+              },
+              "lines": [
+                {
+                  "stat": "none",
+                  "waits": "sparkEveryThreeTrips"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "id": "reflection",
+              "name": {
+                "ru": "Отражение",
+                "en": "Reflection"
+              },
+              "lines": [
+                {
+                  "stat": "none",
+                  "waits": "copyBestTrait"
+                }
+              ]
+            },
+            {
+              "id": "shadow",
+              "name": {
+                "ru": "Тень",
+                "en": "Shadow"
+              },
+              "lines": [
+                {
+                  "stat": "ownTraits",
+                  "value": 0.3
+                },
+                {
+                  "stat": "none",
+                  "waits": "noPack"
+                }
+              ]
+            }
+          ],
+          [
+            {
+              "id": "rift",
+              "name": {
+                "ru": "Разлом",
+                "en": "Rift"
+              },
+              "lines": [
+                {
+                  "stat": "none",
+                  "waits": "weeklyHeartTrip"
+                }
+              ]
+            },
+            {
+              "id": "seam",
+              "name": {
+                "ru": "Шов",
+                "en": "Seam"
+              },
+              "lines": [
+                {
+                  "stat": "none",
+                  "waits": "dailyInstantTrip"
+                }
+              ]
+            }
+          ]
+        ]
+      }
+    ]
   }
 }
