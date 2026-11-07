@@ -293,6 +293,24 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheClanFairIsReadWithItsContestsAndPlaces()
+        {
+            Assert.That(FairReply.FishPayload("fish_hills_pike", 81.25), Is.EqualTo("{\"fish\":\"fish_hills_pike\",\"cm\":81.3}"));
+            Assert.That(FairReply.GardenPayload(12, 2), Is.EqualTo("{\"harvests\":12,\"mutations\":2}"));
+            var fair = FairReply.From(NakamaJson.Parse("{\"week\":3000,\"endsAt\":1789,\"contests\":[{\"id\":\"big_fish\",\"top\":[{\"rank\":1,\"userId\":\"b\",\"name\":\"Bob\",\"score\":100},{\"rank\":2,\"userId\":\"a\",\"name\":\"Ann\",\"score\":90.5}],"
+                + "\"mine\":{\"rank\":2,\"score\":90.5},\"entrants\":2},{\"id\":\"best_garden\",\"top\":[],\"mine\":null,\"entrants\":0}],\"fish\":{\"fish\":\"fish_hills_pike\",\"cm\":81.5,\"score\":90.5}}"));
+            Assert.That(fair.Week, Is.EqualTo(3000));
+            Assert.That(fair.EndsAtUnixMs, Is.EqualTo(1789));
+            var fish = fair.Contest("big_fish")!;
+            Assert.That(fish.Top.Select(row => row.Name), Is.EqualTo(new[] { "Bob", "Ann" }));
+            Assert.That(fish.MyRank, Is.EqualTo(2));
+            Assert.That(fish.MyScore, Is.EqualTo(90.5));
+            Assert.That(fair.Contest("best_garden")!.MyRank, Is.Zero);
+            Assert.That(fair.BestFish, Is.EqualTo("fish_hills_pike"));
+            Assert.That(fair.BestCm, Is.EqualTo(81.5));
+        }
+
+        [Test]
         public void TheHideoutIsReadFromTheServerWithWhoIsByTheFire()
         {
             Assert.That(HideoutReply.PresencePayload(true), Is.EqualTo("{\"here\":true}"));

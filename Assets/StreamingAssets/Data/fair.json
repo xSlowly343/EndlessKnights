@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "contests": [
+    { "id": "big_fish", "name": { "ru": "Самая большая рыба", "en": "The Biggest Fish" } },
+    { "id": "best_garden", "name": { "ru": "Лучший сад", "en": "The Best Garden" } }
+  ],
+  "garden": { "harvestPoints": 1, "mutationPoints": 5, "maxHarvestsPerDay": 200, "maxMutationsPerDay": 20 },
+  "rewards": [
+    { "place": 1, "friendship": 15 },
+    { "place": 2, "friendship": 10 },
+    { "place": 3, "friendship": 6 }
+  ],
+  "takingPart": 2,
+  "minEntrants": 2,
+  "top": 10
+}

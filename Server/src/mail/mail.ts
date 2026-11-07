@@ -51,6 +51,11 @@ function mailListRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrun
     } catch (error) {
         logger.warn("tournament rewards for %s were not settled: %s", userId, String(error));
     }
+    try {
+        fairSettleFor(nk, logger, userId, Date.now());
+    } catch (error) {
+        logger.warn("fair rewards for %s were not settled: %s", userId, String(error));
+    }
     const letters = mailLetters(nk, userId);
     let unread = 0;
     for (const letter of letters)

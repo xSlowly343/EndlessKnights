@@ -14,6 +14,7 @@ namespace Game.Core.Sim
     {
         public List<GardenBed> Beds { get; } = new List<GardenBed>();
         public long Harvests { get; set; }
+        public long Mutations { get; set; }
         public HashSet<string> Album { get; } = new HashSet<string>(System.StringComparer.Ordinal);
     }
 }
