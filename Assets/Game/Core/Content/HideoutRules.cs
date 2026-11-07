@@ -111,12 +111,16 @@ namespace Game.Core.Content
 
         public const string CornerBuilding = "corner";
 
-        private HideoutRules(int presenceSeconds, int cornerDecor, int frozenDays, HideoutCrafts crafts, IReadOnlyList<HideoutTier> tiers, IReadOnlyList<HideoutBuilding> buildings, IReadOnlyList<int> levelTiers)
+        private HideoutRules(int presenceSeconds, int cornerDecor, int frozenDays, HideoutCrafts crafts, string dummy, string pier, string trophyHall, double pierRareBoost, IReadOnlyList<HideoutTier> tiers, IReadOnlyList<HideoutBuilding> buildings, IReadOnlyList<int> levelTiers)
         {
             PresenceSeconds = presenceSeconds;
             CornerDecor = cornerDecor;
             FrozenDays = frozenDays;
             Crafts = crafts;
+            Dummy = dummy;
+            Pier = pier;
+            TrophyHall = trophyHall;
+            PierRareBoost = pierRareBoost;
             Tiers = tiers;
             Buildings = buildings;
             LevelTiers = levelTiers;
@@ -126,6 +130,10 @@ namespace Game.Core.Content
         public int CornerDecor { get; }
         public int FrozenDays { get; }
         public HideoutCrafts Crafts { get; }
+        public string Dummy { get; }
+        public string Pier { get; }
+        public string TrophyHall { get; }
+        public double PierRareBoost { get; }
         public IReadOnlyList<int> LevelTiers { get; }
         public IReadOnlyList<HideoutTier> Tiers { get; }
         public IReadOnlyList<HideoutBuilding> Buildings { get; }
@@ -236,9 +244,14 @@ namespace Game.Core.Content
             var crafts = new HideoutCrafts(Known(forge.Field("building"), ids), forge.Field("hammersShare").AsNumber(0, 0.9), forge.Field("stepBoost").AsNumber(0, 2),
                 forge.Field("masterpieceChance").AsNumber(0, 1), forge.Field("masterpieceBoost").AsNumber(1, 5),
                 Known(cauldron.Field("building"), ids), cauldron.Field("stirsShare").AsNumber(0, 0.9), cauldron.Field("fineChance").AsNumber(0, 1));
+            var places = root.Field("places");
+            var dummy = Known(places.Field("dummy"), ids);
+            var pier = Known(places.Field("pier"), ids);
+            var trophyHall = Known(places.Field("trophyHall"), ids);
+            var pierRareBoost = places.Field("pierRareBoost").AsNumber(0, 1);
             if (!ids.Contains(CornerBuilding))
                 throw root.Field("buildings").Error($"the hideout needs the '{CornerBuilding}' building");
-            return new HideoutRules(presence, cornerDecor, frozenDays, crafts, tiers, buildings, levelTiers);
+            return new HideoutRules(presence, cornerDecor, frozenDays, crafts, dummy, pier, trophyHall, pierRareBoost, tiers, buildings, levelTiers);
         }
     }
 }

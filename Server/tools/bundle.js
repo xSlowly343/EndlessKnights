@@ -472,6 +472,7 @@ const hideoutRules = {
   cornerDecor: hideout.cornerDecor,
   frozenMs: hideout.frozenDays * 86400000,
   decorIds: JSON.parse(fs.readFileSync(path.join(data, "decor.json"), "utf8")).items.map((item) => item.id),
+  trophyHall: hideout.places.trophyHall,
   fireSignMs: hideout.fire.signEveryMinutes * 60000,
   stations: { forge: hideout.crafts.forge.building, cauldron: hideout.crafts.cauldron.building },
   brewsPerDay: hideout.crafts.brewsPerDay,

@@ -57,6 +57,18 @@ namespace Game.Net.Nakama
             }
             Beds = beds;
             Journal = journal;
+            var trophies = NakamaJson.Field(json, "trophies");
+            var feats = new List<TrophyFeat>();
+            if (trophies != null && trophies.Kind == JsonKind.Object)
+            {
+                TrophyBosses = (long)NakamaJson.Number(trophies, "bosses");
+                TrophyGuardians = (long)NakamaJson.Number(trophies, "guardians");
+                TrophyRiftDepth = (long)NakamaJson.Number(trophies, "riftDepth");
+                TrophyHours = (long)NakamaJson.Number(trophies, "hours");
+                foreach (var entry in NakamaJson.Items(trophies, "feats"))
+                    feats.Add(new TrophyFeat(NakamaJson.Text(entry, "id"), (int)NakamaJson.Number(entry, "level")));
+            }
+            TrophyFeats = feats;
             var crafts = NakamaJson.Field(json, "crafts");
             ForgePartners = crafts != null && crafts.Kind == JsonKind.Object ? CosmeticsMineView.Ids(crafts, "forge") : System.Array.Empty<string>();
             CauldronPartners = crafts != null && crafts.Kind == JsonKind.Object ? CosmeticsMineView.Ids(crafts, "cauldron") : System.Array.Empty<string>();
@@ -73,6 +85,11 @@ namespace Game.Net.Nakama
         }
 
         public bool Together { get; }
+        public long TrophyBosses { get; }
+        public long TrophyGuardians { get; }
+        public long TrophyRiftDepth { get; }
+        public long TrophyHours { get; }
+        public IReadOnlyList<TrophyFeat> TrophyFeats { get; }
         public IReadOnlyList<string> ForgePartners { get; }
         public IReadOnlyList<string> CauldronPartners { get; }
         public IReadOnlyList<SharedBed> Beds { get; }

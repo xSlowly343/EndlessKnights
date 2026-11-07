@@ -232,10 +232,11 @@ namespace Game.Core.Tests.Sim
             Assert.That(rules.TogetherLegendChance, Is.GreaterThan(0));
             Assert.That(rules.TogetherBottleChance, Is.GreaterThan(0));
 
-            int Bottles(bool together)
+            int Bottles(bool together, double pier = 0)
             {
                 var (loop, input) = Angler(7);
                 loop.Fishing.Together = together;
+                loop.State.Hideout.PierRareBoost = pier;
                 var bottles = 0;
                 for (var i = 0; i < 300; i++)
                 {
@@ -250,6 +251,8 @@ namespace Game.Core.Tests.Sim
             }
 
             Assert.That(Bottles(true), Is.GreaterThan(Bottles(false)));
+            Assert.That(Bottles(true, 3), Is.GreaterThan(Bottles(true)), "the party pier raises the rare catch of fishing together");
+            Assert.That(Bottles(false, 3), Is.EqualTo(Bottles(false)), "alone the pier gives nothing");
 
             var (angler, hands) = Angler();
             Assert.That(angler.Fishing.Fishing, Is.True);

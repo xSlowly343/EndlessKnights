@@ -56,6 +56,28 @@ namespace Game.Core.Sim
         public bool Together => Built && Partners.Count > 0;
     }
 
+    public readonly struct TrophyFeat
+    {
+        public TrophyFeat(string id, int level)
+        {
+            Id = id;
+            Level = level;
+        }
+
+        public string Id { get; }
+        public int Level { get; }
+    }
+
+    public sealed class TrophyHall
+    {
+        public bool Built { get; set; }
+        public long Bosses { get; set; }
+        public long Guardians { get; set; }
+        public long RiftDepth { get; set; }
+        public long Hours { get; set; }
+        public List<TrophyFeat> Feats { get; } = new List<TrophyFeat>();
+    }
+
     public sealed class HideoutState
     {
         public int Tier { get; set; }
@@ -81,6 +103,9 @@ namespace Game.Core.Sim
         public bool Together { get; set; }
         public CraftStation Forge { get; } = new CraftStation();
         public CraftStation Cauldron { get; } = new CraftStation();
+        public TrophyHall Trophies { get; } = new TrophyHall();
+        public double PierRareBoost { get; set; }
+        public bool DummyBuilt { get; set; }
         public List<SharedBed> Beds { get; } = new List<SharedBed>();
         public Dictionary<string, long> Owed { get; } = new Dictionary<string, long>(System.StringComparer.Ordinal);
         public bool StorageBuilt { get; set; }

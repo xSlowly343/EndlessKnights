@@ -71,6 +71,11 @@ namespace Game.Core.Sim
                 hideout.Wants[pair.Key] = pair.Value;
             hideout.MyWants.Clear();
             hideout.MyWants.AddRange(myWants);
+            hideout.PierRareBoost = LevelOf(_rules.Pier) > 0 ? _rules.PierRareBoost : 0;
+            hideout.DummyBuilt = LevelOf(_rules.Dummy) > 0;
+            hideout.Trophies.Built = LevelOf(_rules.TrophyHall) > 0;
+            Fill(hideout.Forge, _rules.Crafts.ForgeBuilding, hideout.Forge.Partners);
+            Fill(hideout.Cauldron, _rules.Crafts.CauldronBuilding, hideout.Cauldron.Partners);
         }
 
         public ClanCampResult PackMaterial(string item, int amount)
@@ -162,8 +167,21 @@ namespace Game.Core.Sim
         private void Fill(CraftStation station, string building, IReadOnlyList<string> partners)
         {
             station.Built = LevelOf(building) > 0;
+            if (ReferenceEquals(partners, station.Partners))
+                return;
             station.Partners.Clear();
             station.Partners.AddRange(partners);
+        }
+
+        public void UseTrophies(long bosses, long guardians, long riftDepth, long hours, IReadOnlyList<TrophyFeat> feats)
+        {
+            var trophies = State.Trophies;
+            trophies.Bosses = bosses;
+            trophies.Guardians = guardians;
+            trophies.RiftDepth = riftDepth;
+            trophies.Hours = hours;
+            trophies.Feats.Clear();
+            trophies.Feats.AddRange(feats);
         }
 
         public List<Potion> TakeSharedBrews()
@@ -244,6 +262,7 @@ namespace Game.Core.Sim
 
         public void Leave()
         {
+            UseTrophies(0, 0, 0, 0, System.Array.Empty<TrophyFeat>());
             UseCrafts(System.Array.Empty<string>(), System.Array.Empty<string>());
             UseCommons(false, System.Array.Empty<SharedBed>(), new Dictionary<string, long>(), false, new Dictionary<string, long>(), System.Array.Empty<StorageEntry>(), 0, 0);
             UseCorners(false, System.Array.Empty<HideoutCorner>());

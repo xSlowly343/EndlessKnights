@@ -21,6 +21,7 @@ interface HideoutRules {
     maxCaughtPerMark: number;
     cornerDecor: number;
     frozenMs: number;
+    trophyHall: string;
     decorIds: string[];
     tiers: HideoutTierRule[];
     buildings: HideoutBuildingRule[];
@@ -300,7 +301,8 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
             .sort((a, b) => a.slot - b.slot),
         cornerDecor: hideoutCornerDecor(value.tier), myCorner: !!value.corners[userId] && meta.members.indexOf(userId) >= 0,
         commons: hideoutCommonsView(nk, value, meta.members, userId, nowUnixMs),
-        crafts: hideoutCraftView(value, meta.members, userId, nowUnixMs, nameOf)
+        crafts: hideoutCraftView(value, meta.members, userId, nowUnixMs, nameOf),
+        trophies: hideoutTrophies(nk, group.id, value, chronicle)
     };
 }
 
@@ -501,4 +503,14 @@ function hideoutMove(nk: nkruntime.Nakama, from: string, to: string): void {
 
 function hideoutForget(nk: nkruntime.Nakama, partyId: string): void {
     nk.storageDelete([{ collection: HideoutCollection, key: partyId, userId: PartySystemUser }]);
+}
+
+function hideoutTrophies(nk: nkruntime.Nakama, partyId: string, value: HideoutValue, chronicle: HideoutChronicle): { [key: string]: any } | null {
+    if (!(value.buildings[HideoutServerRules.trophyHall] > 0))
+        return null;
+    const feats = chronicleRead(nk, partyId).value.feats;
+    return {
+        bosses: chronicle.bosses, guardians: chronicle.guardiansTogether, riftDepth: chronicle.riftDepth, hours: Math.floor(chronicle.hours),
+        feats: Object.keys(feats).filter((id) => feats[id].level > 0).sort().map((id) => ({ id: id, level: feats[id].level }))
+    };
 }
