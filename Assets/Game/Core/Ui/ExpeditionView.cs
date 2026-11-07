@@ -15,6 +15,7 @@ namespace Game.Core.Ui
         public int Index { get; internal set; }
         public string Companion { get; internal set; } = string.Empty;
         public string Partner { get; internal set; } = string.Empty;
+        public string Third { get; internal set; } = string.Empty;
         public string Biome { get; internal set; } = string.Empty;
         public double Progress { get; internal set; }
         public double SecondsLeft { get; internal set; }
@@ -54,6 +55,7 @@ namespace Game.Core.Ui
                     Index = i,
                     Companion = expedition.Companion,
                     Partner = expedition.Partner,
+                    Third = expedition.Third,
                     Biome = expedition.Biome,
                     Progress = expedition.Seconds <= 0 ? 1 : System.Math.Min(1, expedition.Elapsed / expedition.Seconds),
                     SecondsLeft = System.Math.Max(0, expedition.Seconds - expedition.Elapsed),

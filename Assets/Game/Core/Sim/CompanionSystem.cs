@@ -692,13 +692,17 @@ namespace Game.Core.Sim
                 if (Friends(expedition.Companion, expedition.Partner))
                     _events.Add(GameEvent.ForStage(GameEventKind.CompanionPairScene, _state.Tick, PairIndex(expedition.Companion, expedition.Partner)));
             }
+            if (expedition.Pack)
+                TripDone(expedition, expedition.Third);
         }
 
         private void TripDone(Expedition expedition, string companion)
         {
             var planned = expedition.Planned > 0 ? expedition.Planned : expedition.Hours * ExpeditionSystem.SecondsPerHour;
             var share = planned <= 0 ? 1 : System.Math.Min(1, expedition.Elapsed / planned);
-            Gain(companion, expedition.Hours * share * _rules.ExperiencePerTripHour * OwnMultiplier(companion, OwnEffectKind.Experience));
+            var experience = expedition.Hours * share * _rules.ExperiencePerTripHour * OwnMultiplier(companion, OwnEffectKind.Experience);
+            Gain(companion, experience);
+            Teach(companion, experience);
             NoteTripHours(expedition.Hours * share);
             Progress(companion).Trips++;
             AddBond(companion, _rules.Bond.TripPoints);
@@ -742,7 +746,7 @@ namespace Game.Core.Sim
             var main = expedition.Companion;
             var bonus = expedition.Partner.Length == 0
                 ? Temper(main, TemperStat.SoloLoot)
-                : Temper(main, TemperStat.JointLoot) + Temper(expedition.Partner, TemperStat.JointLoot);
+                : Temper(main, TemperStat.JointLoot) + Temper(expedition.Partner, TemperStat.JointLoot) + (expedition.Pack ? Temper(expedition.Third, TemperStat.JointLoot) : 0);
             if (expedition.Hours >= _rules.Tempers.LongTripHours)
                 bonus += Temper(main, TemperStat.LongTripLoot);
             return bonus;
@@ -761,6 +765,8 @@ namespace Game.Core.Sim
             var main = TravelMultiplier(expedition.Companion, stat);
             if (expedition.Partner.Length == 0)
                 return main;
+            if (expedition.Pack)
+                return PackStat(expedition, stat, main);
             var partner = TravelMultiplier(expedition.Partner, stat);
             var pack = Talent(expedition.Companion, TalentEffect.PackTrait);
             partner = 1 + (partner - 1) * (1 + pack);
@@ -768,10 +774,31 @@ namespace Game.Core.Sim
             return stat == TravelStat.Rare ? best : best * JointFactor(expedition.Companion, expedition.Partner);
         }
 
+        private double PackStat(Expedition expedition, TravelStat stat, double main)
+        {
+            var partner = TravelMultiplier(expedition.Partner, stat);
+            var third = TravelMultiplier(expedition.Third, stat);
+            if (stat == TravelStat.Rare)
+                return System.Math.Max(main, System.Math.Max(partner, third));
+            var rules = _rules.Pack;
+            return (main + partner + third - 2) * rules.Loot * (OneFamily(expedition) ? 1 + rules.FamilyBonus : 1);
+        }
+
+        public bool OneFamily(Expedition expedition)
+        {
+            if (!expedition.Pack)
+                return false;
+            var families = _rules.Families;
+            var family = families.FamilyOf(expedition.Companion);
+            return family != null && families.FamilyOf(expedition.Partner) == family && families.FamilyOf(expedition.Third) == family;
+        }
+
         public double HerbOf(Expedition expedition, string item)
         {
             var main = HerbMultiplier(expedition.Companion, item);
             var best = expedition.Partner.Length == 0 ? main : System.Math.Max(main, HerbMultiplier(expedition.Partner, item));
+            if (expedition.Pack)
+                best = System.Math.Max(best, HerbMultiplier(expedition.Third, item));
             return best * (1 + (item.StartsWith("herb_", System.StringComparison.Ordinal) ? TreeStat(MenagerieStat.TripHerbs)
                 : item.StartsWith("fish_", System.StringComparison.Ordinal) ? TreeStat(MenagerieStat.TripFish) : 0));
         }
@@ -781,13 +808,17 @@ namespace Game.Core.Sim
             var main = (1 + LootBonus(expedition.Companion)) * (1 + BiomeBonus(expedition.Companion, expedition.Biome));
             if (expedition.Partner.Length == 0)
                 return main;
-            return System.Math.Max(main, (1 + LootBonus(expedition.Partner)) * (1 + BiomeBonus(expedition.Partner, expedition.Biome)));
+            var best = System.Math.Max(main, (1 + LootBonus(expedition.Partner)) * (1 + BiomeBonus(expedition.Partner, expedition.Biome)));
+            return expedition.Pack ? System.Math.Max(best, (1 + LootBonus(expedition.Third)) * (1 + BiomeBonus(expedition.Third, expedition.Biome))) : best;
         }
 
         public double RareOf(Expedition expedition)
         {
             var main = RareMultiplier(expedition.Companion);
-            return expedition.Partner.Length == 0 ? main : System.Math.Max(main, RareMultiplier(expedition.Partner));
+            if (expedition.Partner.Length == 0)
+                return main;
+            var best = System.Math.Max(main, RareMultiplier(expedition.Partner));
+            return expedition.Pack ? System.Math.Max(best, RareMultiplier(expedition.Third)) : best;
         }
 
         public string BaseTrait(string companion)
@@ -1160,6 +1191,8 @@ namespace Game.Core.Sim
             Extras(expedition, place, expedition.Companion);
             if (expedition.Partner.Length > 0)
                 Extras(expedition, place, expedition.Partner);
+            if (expedition.Pack)
+                Extras(expedition, place, expedition.Third);
         }
 
         private void Extras(Expedition expedition, ExpeditionBiome place, string companion)
@@ -1294,6 +1327,73 @@ namespace Game.Core.Sim
             progress.Temper = temper;
             ApplyPerks();
             return CompanionResult.Done;
+        }
+
+        public string MentorOf(string student)
+        {
+            foreach (var pair in State.Progress)
+            {
+                if (pair.Value.Student == student)
+                    return pair.Key;
+            }
+            return string.Empty;
+        }
+
+        public CompanionResult TakeStudent(string mentor, string student)
+        {
+            if (!Known(mentor) || !Known(student) || mentor == student)
+                return CompanionResult.UnknownCompanion;
+            if (StarsOf(mentor) < _rules.Pack.MentorMinStars)
+                return CompanionResult.Locked;
+            if (LevelOf(student) >= _rules.Pack.StudentMaxLevel)
+                return CompanionResult.LowLevel;
+            if (Progress(student).Student.Length > 0 || MentorOf(student).Length > 0)
+                return CompanionResult.Busy;
+            Progress(mentor).Student = student;
+            return CompanionResult.Done;
+        }
+
+        public void ReleaseStudent(string mentor)
+        {
+            if (State.Progress.TryGetValue(mentor, out var progress))
+                progress.Student = string.Empty;
+        }
+
+        private void Teach(string mentor, double experience)
+        {
+            if (!State.Progress.TryGetValue(mentor, out var progress) || progress.Student.Length == 0)
+                return;
+            var student = progress.Student;
+            if (LevelOf(student) >= _rules.Pack.StudentMaxLevel)
+            {
+                progress.Student = string.Empty;
+                return;
+            }
+            Gain(student, experience * _rules.Pack.MentorShare);
+            if (LevelOf(student) >= _rules.Pack.StudentMaxLevel)
+                progress.Student = string.Empty;
+        }
+
+        public string SparkHeir(string companion)
+        {
+            if (StarsOf(companion) < _rules.Stars.MaxStars)
+                return companion;
+            if (State.Progress.TryGetValue(companion, out var progress) && progress.Student.Length > 0 && StarsOf(progress.Student) < _rules.Stars.MaxStars)
+                return progress.Student;
+            var heir = string.Empty;
+            var lowest = int.MaxValue;
+            foreach (var owned in State.Owned)
+            {
+                var stars = StarsOf(owned);
+                if (stars >= _rules.Stars.MaxStars || owned == companion)
+                    continue;
+                if (stars < lowest || (stars == lowest && string.CompareOrdinal(owned, heir) < 0))
+                {
+                    lowest = stars;
+                    heir = owned;
+                }
+            }
+            return heir.Length > 0 ? heir : companion;
         }
 
         public bool AtHome(string companion) => State.Home.Contains(companion);

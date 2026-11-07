@@ -85,10 +85,38 @@ namespace Game.Core.Sim
             var active = State.Active;
             for (var i = 0; i < active.Count; i++)
             {
-                if (active[i].Companion == companion || active[i].Partner == companion)
+                if (active[i].Companion == companion || active[i].Partner == companion || active[i].Third == companion)
                     return true;
             }
             return false;
+        }
+
+        public int UsedSlots()
+        {
+            var used = 0;
+            var active = State.Active;
+            for (var i = 0; i < active.Count; i++)
+                used += active[i].Pack && _companions != null ? _companions.Rules.Pack.Slots : 1;
+            return used;
+        }
+
+        public ExpeditionResult SendPack(string companion, string partner, string third, string biome, int hours)
+        {
+            if (_companions == null || partner == companion || third == companion || third == partner || TraitOf(partner) == null || TraitOf(third) == null)
+                return ExpeditionResult.UnknownCompanion;
+            if (Busy(partner) || _companions.Occupied(partner) || Busy(third) || _companions.Occupied(third))
+                return ExpeditionResult.CompanionBusy;
+            if (UsedSlots() + _companions.Rules.Pack.Slots > _companions.TripSlots)
+                return ExpeditionResult.NoTripSlot;
+            var result = SendTogether(companion, partner, biome, hours);
+            if (result != ExpeditionResult.Done)
+                return result;
+            var expedition = State.Active[State.Active.Count - 1];
+            expedition.Third = third;
+            var slowest = System.Math.Max(System.Math.Max(DurationFactor(companion, biome, hours), DurationFactor(partner, biome, hours)), DurationFactor(third, biome, hours));
+            expedition.Seconds = hours * SecondsPerHour * slowest * TreatDuration(expedition);
+            expedition.Planned = expedition.Seconds;
+            return ExpeditionResult.Done;
         }
 
         public bool BiomeOpen(string biome)
@@ -128,7 +156,7 @@ namespace Game.Core.Sim
                 return ExpeditionResult.UnknownCompanion;
             if (Busy(companion) || _companions?.Occupied(companion) == true)
                 return ExpeditionResult.CompanionBusy;
-            if (_companions != null && State.Active.Count >= _companions.TripSlots)
+            if (_companions != null && UsedSlots() >= _companions.TripSlots)
                 return ExpeditionResult.NoTripSlot;
             var place = _rules.Biome(biome);
             if (place == null)
