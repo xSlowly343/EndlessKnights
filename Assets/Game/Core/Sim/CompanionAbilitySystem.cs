@@ -96,17 +96,17 @@ namespace Game.Core.Sim
         private bool Fold(double loot, int trip)
         {
             var active = _state.Expeditions.Active;
-            if (active.Count == 0)
-                return false;
             if (trip < 0 || trip >= active.Count)
             {
-                trip = 0;
-                for (var i = 1; i < active.Count; i++)
+                trip = -1;
+                for (var i = 0; i < active.Count; i++)
                 {
-                    if (active[i].Seconds - active[i].Elapsed > active[trip].Seconds - active[trip].Elapsed)
+                    if (!active[i].Colossus && (trip < 0 || active[i].Seconds - active[i].Elapsed > active[trip].Seconds - active[trip].Elapsed))
                         trip = i;
                 }
             }
+            if (trip < 0 || active[trip].Colossus)
+                return false;
             _expeditions.FinishWithLoot(trip, loot);
             return true;
         }

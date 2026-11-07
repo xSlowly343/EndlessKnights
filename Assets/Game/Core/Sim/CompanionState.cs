@@ -43,6 +43,8 @@ namespace Game.Core.Sim
         public double CircleCount { get; set; }
         public long CircleDay { get; set; } = -1;
         public long AbilityDay { get; set; } = -1;
+        public List<string> ColossusAnswers { get; } = new List<string>();
+        public string ColossusForm { get; set; } = string.Empty;
         public long TemperFreeDay { get; set; } = -1;
     }
 

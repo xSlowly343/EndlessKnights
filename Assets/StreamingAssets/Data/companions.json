@@ -1924,6 +1924,12 @@
         "slot": "amulet",
         "stage": 3,
         "stars": 6
+      },
+      {
+        "slot": "bracelet",
+        "stage": 3,
+        "stars": 0,
+        "unlock": "colossus"
       }
     ],
     "affixes": [
@@ -8615,5 +8621,42 @@
         "waits": "farPartyTrips"
       }
     ]
+  },
+  "colossus": {
+    "hours": 12,
+    "letters": 3,
+    "answers": [
+      "retreat",
+      "call",
+      "stay"
+    ],
+    "defaultAnswer": "stay",
+    "forms": [
+      {
+        "id": "wary",
+        "answer": "retreat",
+        "name": {
+          "ru": "Осторожный Колосс",
+          "en": "Wary Colossus"
+        }
+      },
+      {
+        "id": "herald",
+        "answer": "call",
+        "name": {
+          "ru": "Колосс-глашатай",
+          "en": "Herald Colossus"
+        }
+      },
+      {
+        "id": "steadfast",
+        "answer": "stay",
+        "name": {
+          "ru": "Стойкий Колосс",
+          "en": "Steadfast Colossus"
+        }
+      }
+    ],
+    "numbers": 0.1
   }
 }

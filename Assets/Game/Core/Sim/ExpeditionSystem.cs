@@ -182,6 +182,30 @@ namespace Game.Core.Sim
             return ExpeditionResult.Done;
         }
 
+        public ExpeditionResult SendColossus(string companion, string biome, double seconds)
+        {
+            var place = _rules.Biome(biome);
+            if (TraitOf(companion) == null)
+                return ExpeditionResult.UnknownCompanion;
+            if (Busy(companion) || _companions?.Occupied(companion) == true)
+                return ExpeditionResult.CompanionBusy;
+            if (_companions != null && UsedSlots() >= _companions.TripSlots)
+                return ExpeditionResult.NoTripSlot;
+            if (place == null)
+                return ExpeditionResult.UnknownBiome;
+            State.Active.Add(new Expedition
+            {
+                Companion = companion,
+                Biome = biome,
+                Hours = (int)System.Math.Ceiling(seconds / SecondsPerHour),
+                Seconds = seconds,
+                Planned = seconds,
+                Colossus = true,
+                Items = new long[place.Items.Count]
+            });
+            return ExpeditionResult.Done;
+        }
+
         private double TreatDuration(Expedition expedition) => 1 - (_companions?.TreatBonus(expedition, TreatStat.Duration) ?? 0);
 
         public double DurationFactor(string companion, string biome = "", int hours = 0)

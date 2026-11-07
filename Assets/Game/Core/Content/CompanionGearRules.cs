@@ -7,7 +7,8 @@ namespace Game.Core.Content
     {
         Collar,
         Bag,
-        Amulet
+        Amulet,
+        Bracelet
     }
 
     public enum CompanionGearStat
@@ -29,16 +30,18 @@ namespace Game.Core.Content
 
     public sealed class GearSlotRule
     {
-        public GearSlotRule(CompanionGearSlot slot, int stage, int stars)
+        public GearSlotRule(CompanionGearSlot slot, int stage, int stars, string unlock = "")
         {
             Slot = slot;
             Stage = stage;
             Stars = stars;
+            Unlock = unlock;
         }
 
         public CompanionGearSlot Slot { get; }
         public int Stage { get; }
         public int Stars { get; }
+        public string Unlock { get; }
     }
 
     public sealed class GearAffixRule
@@ -121,7 +124,8 @@ namespace Game.Core.Content
         {
             ["collar"] = CompanionGearSlot.Collar,
             ["bag"] = CompanionGearSlot.Bag,
-            ["amulet"] = CompanionGearSlot.Amulet
+            ["amulet"] = CompanionGearSlot.Amulet,
+            ["bracelet"] = CompanionGearSlot.Bracelet
         };
 
         public static readonly Dictionary<string, CompanionGearStat> StatNames = new Dictionary<string, CompanionGearStat>(StringComparer.Ordinal)
@@ -149,7 +153,7 @@ namespace Game.Core.Content
                 var name = item.Field("slot").AsString();
                 if (!SlotNames.TryGetValue(name, out var slot))
                     throw item.Field("slot").Error($"unknown gear slot '{name}'");
-                slots.Add(new GearSlotRule(slot, item.Field("stage").AsInt(0, stages - 1), item.Field("stars").AsInt(0, maxStars)));
+                slots.Add(new GearSlotRule(slot, item.Field("stage").AsInt(0, stages - 1), item.Field("stars").AsInt(0, maxStars), item.HasField("unlock") ? item.Field("unlock").AsString() : string.Empty));
             }
             var affixes = new List<GearAffixRule>();
             foreach (var item in node.Field("affixes").Items())

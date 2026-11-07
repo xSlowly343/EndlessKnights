@@ -700,6 +700,8 @@ namespace Game.Core.Sim
             }
             if (expedition.Pack)
                 TripDone(expedition, expedition.Third);
+            if (expedition.Colossus)
+                FinishColossus(expedition.Companion);
         }
 
         private void TripDone(Expedition expedition, string companion)
@@ -1030,7 +1032,7 @@ namespace Game.Core.Sim
         public double TraitFactor(string companion)
         {
             var def = _rules.Companion(companion);
-            var factor = (def == null ? 1 : _rules.RarityFactor(def.Rarity)) * StarFactor(companion) * (1 + TreeStat(MenagerieStat.OwnTraits)) * (1 + CircleTraits(companion)) * System.Math.Max(0, 1 + Bonus(companion, CompanionStat.OwnTraits));
+            var factor = (def == null ? 1 : _rules.RarityFactor(def.Rarity)) * (IsColossus(companion) ? 1 + _rules.Colossus.Numbers : 1) * StarFactor(companion) * (1 + TreeStat(MenagerieStat.OwnTraits)) * (1 + CircleTraits(companion)) * System.Math.Max(0, 1 + Bonus(companion, CompanionStat.OwnTraits));
             if (State.Progress.TryGetValue(companion, out var progress) && progress.Coat.Length > 0)
                 factor *= 1 + (_rules.Coat(progress.Coat)?.TraitBonus ?? 0);
             return factor;
@@ -1585,6 +1587,90 @@ namespace Game.Core.Sim
             ApplyPerks();
             _events.Add(GameEvent.ForStage(GameEventKind.CompanionEvolved, _state.Tick, progress.Stage));
             return CompanionResult.Done;
+        }
+
+        public const string ColossusUnlock = "colossus";
+        public const string HallUnlock = "hall";
+
+        public bool IsColossus(string companion) => Unlocked(companion, ColossusUnlock);
+
+        public bool InHall(string companion) => Unlocked(companion, HallUnlock);
+
+        public ColossusForm? ColossusFormOf(string companion) =>
+            IsColossus(companion) && State.Progress.TryGetValue(companion, out var progress) ? _rules.Colossus.Form(progress.ColossusForm) : null;
+
+        public List<string> Statuettes()
+        {
+            var shelf = new List<string>();
+            foreach (var companion in State.Progress.Keys)
+            {
+                if (IsColossus(companion))
+                    shelf.Add(companion);
+            }
+            shelf.Sort(System.StringComparer.Ordinal);
+            return shelf;
+        }
+
+        public Expedition? ColossusTrip(string companion)
+        {
+            var active = _state.Expeditions.Active;
+            for (var i = 0; i < active.Count; i++)
+            {
+                if (active[i].Colossus && active[i].Companion == companion)
+                    return active[i];
+            }
+            return null;
+        }
+
+        public CompanionResult StartColossus(string companion)
+        {
+            if (!Known(companion))
+                return CompanionResult.UnknownCompanion;
+            var next = NextCircle(companion);
+            if (next == null || next.Trial != CircleTrial.Colossus)
+                return CompanionResult.Locked;
+            if (CircleProgress(companion) >= next.Count)
+                return CompanionResult.Repeat;
+            var biome = _rules.Companion(companion)?.Biome ?? string.Empty;
+            var sent = _expeditions.SendColossus(companion, biome, _rules.Colossus.Hours * ExpeditionSystem.SecondsPerHour);
+            if (sent == ExpeditionResult.NoTripSlot)
+                return CompanionResult.NoSlot;
+            if (sent != ExpeditionResult.Done)
+                return CompanionResult.Busy;
+            Progress(companion).ColossusAnswers.Clear();
+            return CompanionResult.Done;
+        }
+
+        public int ColossusLetters(string companion)
+        {
+            var trip = ColossusTrip(companion);
+            if (trip == null || trip.Planned <= 0)
+                return 0;
+            var letters = _rules.Colossus.Letters;
+            var arrived = (int)System.Math.Floor(trip.Elapsed / trip.Planned * (letters + 1) + 1e-9);
+            return System.Math.Max(0, System.Math.Min(letters, arrived) - Progress(companion).ColossusAnswers.Count);
+        }
+
+        public CompanionResult AnswerColossus(string companion, string answer)
+        {
+            if (ColossusTrip(companion) == null)
+                return CompanionResult.Locked;
+            if (!_rules.Colossus.Known(answer))
+                return CompanionResult.UnknownTrait;
+            if (ColossusLetters(companion) <= 0)
+                return CompanionResult.TooSoon;
+            Progress(companion).ColossusAnswers.Add(answer);
+            return CompanionResult.Done;
+        }
+
+        private void FinishColossus(string companion)
+        {
+            var progress = Progress(companion);
+            while (progress.ColossusAnswers.Count < _rules.Colossus.Letters)
+                progress.ColossusAnswers.Add(_rules.Colossus.DefaultAnswer);
+            progress.ColossusForm = _rules.Colossus.Choose(progress.ColossusAnswers)?.Id ?? string.Empty;
+            progress.ColossusAnswers.Clear();
+            NoteCircle(companion, CircleTrial.Colossus, 1);
         }
 
         public void NoteCircle(string companion, CircleTrial trial, double amount)
