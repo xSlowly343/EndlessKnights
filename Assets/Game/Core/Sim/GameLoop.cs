@@ -65,6 +65,8 @@ namespace Game.Core.Sim
         private readonly CampModuleSystem _modules;
         private readonly DigSystem _digs;
         private readonly CaravanSystem _caravan;
+        private readonly DistillSystem _distill;
+        private readonly ColossusSeedSystem _colossus;
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
@@ -172,6 +174,8 @@ namespace Game.Core.Sim
             _fishing = new FishingSystem(data.Fishing, state, _camp, _peaceful, _expeditions, Events);
             _digs = new DigSystem(data.Digs, state, _camp, _peaceful, Events);
             _caravan = new CaravanSystem(data.Caravan, state, _camp, _expeditions);
+            _distill = new DistillSystem(data.Distill, data.Colossus, state, _camp, _peaceful, _alchemy, Events);
+            _colossus = new ColossusSeedSystem(data.Colossus, state, _camp, _garden, _peaceful, Events);
             _town = new TownSystem(data.Town, state, _camp, _alchemy, _expeditions, Events);
             _stage.ChestGold = data.Atlas.ChestGold;
             _loot.JackpotMultiplier = data.Artifacts.JackpotMultiplier;
@@ -270,6 +274,8 @@ namespace Game.Core.Sim
         public CampModuleSystem Modules => _modules;
         public DigSystem Digs => _digs;
         public CaravanSystem Caravan => _caravan;
+        public DistillSystem Distill => _distill;
+        public ColossusSeedSystem Colossus => _colossus;
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
@@ -688,6 +694,8 @@ namespace Game.Core.Sim
             _expeditions.Advance(result.AwaySeconds);
             _apprentices.AdvanceOffline(result.AwaySeconds);
             _caravan.Collect();
+            _colossus.Advance(result.AwaySeconds);
+            _colossus.Collect();
             _stage.EnsureEnemy();
         }
 
@@ -917,6 +925,8 @@ namespace Game.Core.Sim
             _fishing.UseRules(data.Fishing);
             _digs.UseRules(data.Digs);
             _caravan.UseRules(data.Caravan);
+            _distill.UseRules(data.Distill);
+            _colossus.UseRules(data.Colossus);
             _cooking.UseRules(data.Cooking);
             _forge.UseRules(data.Forge);
             _museum.UseRules(data.Museum);
@@ -984,12 +994,14 @@ namespace Game.Core.Sim
             _talents.Tick();
             _peaceful.Tick(LastInput, MetersPerPixel);
             _camp.Tick();
+            _colossus.Tick();
             _garden.Tick();
             _alchemy.Tick();
             _expeditions.Tick();
             _fishing.Tick();
             _digs.Tick();
             _caravan.Tick();
+            _distill.Tick();
             _cooking.Tick();
             _forge.Tick();
             _museum.Tick();
@@ -1040,6 +1052,7 @@ namespace Game.Core.Sim
             _apprentices.BattleTick();
             _modules.NoteBosses(firstEvent);
             _digs.NoteGuardians(firstEvent);
+            _colossus.NoteGuardians(firstEvent);
             _forge.NoteKills(firstEvent);
             _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);
@@ -1057,6 +1070,7 @@ namespace Game.Core.Sim
             _castRequests = 0;
             _apprentices.Collect();
             _caravan.Collect();
+            _colossus.Collect();
             _quests.Tick(firstEvent);
             _seasonal.Tick(firstEvent);
             _seasonPass.Tick();

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "building": "cauldron",
+  "guild": "distillers",
+  "fuel": { "item": "ember_coal", "count": 1 },
+  "heatMeters": 30,
+  "pressurePerSecond": 0.05,
+  "vent": 0.35,
+  "edge": 0.8,
+  "miracleChance": 0.03,
+  "edgeMiracleChance": 0.1,
+  "burstMiracleChance": 0.25,
+  "tinctureLasting": 2,
+  "miracleLasting": 3
+}

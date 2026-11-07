@@ -51,7 +51,8 @@ namespace Game.Core.Content
         ExtraHerb,
         MoreBones,
         LighterBrush,
-        LongerRoad
+        LongerRoad,
+        SlowerPressure
     }
 
     public readonly struct PerkValue
@@ -147,7 +148,8 @@ namespace Game.Core.Content
             ["extraHerb"] = MuseumPerk.ExtraHerb,
             ["moreBones"] = MuseumPerk.MoreBones,
             ["lighterBrush"] = MuseumPerk.LighterBrush,
-            ["longerRoad"] = MuseumPerk.LongerRoad
+            ["longerRoad"] = MuseumPerk.LongerRoad,
+            ["slowerPressure"] = MuseumPerk.SlowerPressure
         };
 
         public const double MaxPerk = 0.5;
