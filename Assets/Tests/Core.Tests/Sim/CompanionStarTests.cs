@@ -53,7 +53,7 @@ namespace Game.Core.Tests.Sim
             loop.Companions.Progress("jackal_pup").Stars = 1;
             loop.Companions.Gain("jackal_pup", 10_000);
             Assert.That(loop.Companions.LevelOf("jackal_pup"), Is.EqualTo(35));
-            Assert.That(loop.Companions.OwnMultiplier("jackal_pup", OwnEffectKind.Shards), Is.EqualTo(1 + 0.3 * 1.1).Within(1e-9));
+            Assert.That(loop.Companions.OwnMultiplier("jackal_pup", OwnEffectKind.Shards), Is.EqualTo(1 + (1.3 * 1.05 - 1) * 1.1).Within(1e-9), "the jackal branch adds its coin nose");
         }
 
         [Test]
