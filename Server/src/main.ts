@@ -95,6 +95,9 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("hideout_queue", hideoutQueueRpc);
     initializer.registerRpc("hideout_give", hideoutGiveRpc);
     initializer.registerRpc("hideout_want", hideoutWantRpc);
+    initializer.registerRpc("fair_view", fairViewRpc);
+    initializer.registerRpc("fair_fish", fairFishRpc);
+    initializer.registerRpc("fair_garden", fairGardenRpc);
     initializer.registerRpc("event_mine", eventMineRpc);
     initializer.registerRpc("event_progress", eventProgressRpc);
     initializer.registerRpc("event_buy", eventBuyRpc);

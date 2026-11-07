@@ -202,6 +202,7 @@ namespace Game.Core.Sim
                         continue;
                     var child = _rules.Plant(mutation.Child)!;
                     _camp.Add(child.Seed, 1);
+                    State.Mutations++;
                     _events.Add(GameEvent.ForStage(GameEventKind.MutationFound, _state.Tick, index));
                 }
             }

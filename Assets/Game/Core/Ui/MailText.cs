@@ -35,16 +35,18 @@ namespace Game.Core.Ui
             MailLetter.RiftDepthKind => "mail.riftDepth.title",
             MailLetter.ChestKind => "mail.chest.title",
             MailLetter.TournamentKind => "mail.tournament.title",
+            MailLetter.FairKind => "mail.fair.title",
             _ => "mail.title"
         });
 
-        public static string Body(MailLetter letter, ChestCatalog? chests = null, TournamentRules? tournaments = null) => letter.Kind switch
+        public static string Body(MailLetter letter, ChestCatalog? chests = null, TournamentRules? tournaments = null, FairRules? fair = null) => letter.Kind switch
         {
             MailLetter.RiftKind => Texts.Format("mail.rift.body", letter.Place, letter.Of, letter.Depth, PartyCardText.Title(letter.Title)),
             MailLetter.MentorKind => Texts.Format("mail.mentor.body", letter.Depth),
             MailLetter.RiftDepthKind => Texts.Format("mail.riftDepth.body", letter.Depth, PartyCardText.Title(letter.Title)),
             MailLetter.ChestKind => Texts.Format("mail.chest.body", ChestName(letter.Title, chests)),
             MailLetter.TournamentKind => Texts.Format("mail.tournament.body", TournamentView.FormatName(tournaments, letter.Title), letter.Place, letter.Of, letter.Depth),
+            MailLetter.FairKind => Texts.Format("mail.fair.body", ContestName(letter.Title, fair), letter.Place, letter.Of, letter.Depth),
             _ => string.Empty
         };
 
@@ -61,6 +63,8 @@ namespace Game.Core.Ui
                 parts.Add(Texts.Format("rift.reward.friendship", letter.Reward.Friendship));
             return string.Join(" · ", parts);
         }
+
+        private static string ContestName(string id, FairRules? fair) => fair?.Contest(id) is FairContest contest ? Texts.Pick(contest.NameRu, contest.NameEn) : id;
 
         private static string ChestName(string id, ChestCatalog? chests) => chests != null && chests.TryGet(id, out var chest) ? Texts.Pick(chest.NameRu, chest.NameEn) : id;
 

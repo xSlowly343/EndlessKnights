@@ -119,6 +119,7 @@ namespace Game.Core.Save
                 ("town", WriteTown(state.Town)),
                 ("fishing", WriteFishing(state.Fishing)),
                 ("digs", WriteDigs(state.Digs)),
+                ("fair", Object(("sentHarvests", JsonValue.Of(state.Fair.SentHarvests)), ("sentMutations", JsonValue.Of(state.Fair.SentMutations)))),
                 ("cooking", WriteCooking(state.Cooking)),
                 ("museum", WriteMuseum(state.Museum)),
                 ("decor", WriteDecor(state.Decor)),
@@ -316,6 +317,11 @@ namespace Game.Core.Save
                 ReadFishing(node.Field("fishing"), state.Fishing);
             if (node.HasField("digs"))
                 ReadDigs(node.Field("digs"), state.Digs);
+            if (node.HasField("fair"))
+            {
+                state.Fair.SentHarvests = node.Field("fair").Field("sentHarvests").AsLong(0);
+                state.Fair.SentMutations = node.Field("fair").Field("sentMutations").AsLong(0);
+            }
             if (node.HasField("cooking"))
                 ReadCooking(node.Field("cooking"), state.Cooking);
             if (node.HasField("decor"))
@@ -841,7 +847,7 @@ namespace Game.Core.Save
             }
             var album = new List<string>(garden.Album);
             album.Sort(System.StringComparer.Ordinal);
-            return Object(("beds", JsonValue.Array(beds)), ("harvests", JsonValue.Of(garden.Harvests)), ("album", WriteIdList(album)));
+            return Object(("beds", JsonValue.Array(beds)), ("harvests", JsonValue.Of(garden.Harvests)), ("mutations", JsonValue.Of(garden.Mutations)), ("album", WriteIdList(album)));
         }
 
         private static void ReadGarden(ContentNode node, GardenState garden)
@@ -849,6 +855,8 @@ namespace Game.Core.Save
             foreach (var item in node.Field("beds").Items())
                 garden.Beds.Add(new GardenBed { Plant = ReadOptionalText(item, "plant"), Grown = item.Field("grown").AsNumber(0, double.MaxValue), Ready = item.Field("ready").AsBool() });
             garden.Harvests = node.Field("harvests").AsLong(0);
+            if (node.HasField("mutations"))
+                garden.Mutations = node.Field("mutations").AsLong(0);
             foreach (var item in node.Field("album").Items())
                 garden.Album.Add(item.AsString());
         }
