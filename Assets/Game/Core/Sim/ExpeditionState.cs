@@ -6,6 +6,8 @@ namespace Game.Core.Sim
     {
         public string Companion { get; set; } = string.Empty;
         public string Partner { get; set; } = string.Empty;
+        public string Third { get; set; } = string.Empty;
+        public bool Pack => Third.Length > 0;
         public string Treat { get; set; } = string.Empty;
         public string Biome { get; set; } = string.Empty;
         public int Hours { get; set; }

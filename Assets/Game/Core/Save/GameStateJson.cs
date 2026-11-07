@@ -710,7 +710,7 @@ namespace Game.Core.Save
             var items = new JsonValue[expedition.Items.Length];
             for (var i = 0; i < items.Length; i++)
                 items[i] = JsonValue.Of(expedition.Items[i]);
-            return Object(("companion", JsonValue.Of(expedition.Companion)), ("partner", OptionalText(expedition.Partner)), ("treat", OptionalText(expedition.Treat)), ("biome", JsonValue.Of(expedition.Biome)), ("hours", JsonValue.Of(expedition.Hours)),
+            return Object(("companion", JsonValue.Of(expedition.Companion)), ("partner", OptionalText(expedition.Partner)), ("third", OptionalText(expedition.Third)), ("treat", OptionalText(expedition.Treat)), ("biome", JsonValue.Of(expedition.Biome)), ("hours", JsonValue.Of(expedition.Hours)),
                 ("seconds", JsonValue.Of(expedition.Seconds)), ("planned", JsonValue.Of(expedition.Planned)), ("elapsed", JsonValue.Of(expedition.Elapsed)), ("letter", JsonValue.Of(expedition.Letter)),
                 ("choice", JsonValue.Of(expedition.Choice)), ("waited", JsonValue.Of(expedition.Waited)), ("items", JsonValue.Array(items)),
                 ("shards", JsonValue.Of(expedition.Shards)), ("rare", OptionalText(expedition.Rare)), ("done", JsonValue.Of(expedition.Done)));
@@ -725,6 +725,7 @@ namespace Game.Core.Save
             {
                 Companion = node.Field("companion").AsString(),
                 Partner = ReadOptionalText(node, "partner"),
+                Third = ReadOptionalText(node, "third"),
                 Treat = ReadOptionalText(node, "treat"),
                 Biome = node.Field("biome").AsString(),
                 Hours = node.Field("hours").AsInt(1, 48),
@@ -818,7 +819,7 @@ namespace Game.Core.Save
                     ("bond", JsonValue.Of(progress.Bond)), ("petsToday", JsonValue.Of(progress.PetsToday)), ("favouriteBondsToday", JsonValue.Of(progress.FavouriteBondsToday)),
                     ("friendPetsToday", JsonValue.Of(progress.FriendPetsToday)), ("name", OptionalText(progress.Name)), ("accessory", OptionalText(progress.Accessory)), ("coat", OptionalText(progress.Coat)), ("stars", JsonValue.Of(progress.Stars)), ("form", OptionalText(progress.Form)), ("forms", WriteIdList(progress.Forms)), ("ownSparks", JsonValue.Of(progress.OwnSparks)), ("trips", JsonValue.Of(progress.Trips)), ("instantDay", JsonValue.Of(progress.InstantDay)), ("treat", OptionalText(progress.Treat)), ("delicacyDay", JsonValue.Of(progress.DelicacyDay)), ("firstTripDay", JsonValue.Of(progress.FirstTripDay)), ("story", JsonValue.Of(progress.Story)),
                     ("talents", WriteIdList(talents)), ("freeResetDay", JsonValue.Of(progress.FreeResetDay)), ("forageSeconds", JsonValue.Of(progress.ForageSeconds)), ("forages", JsonValue.Of(progress.Forages)),
-                    ("temper", OptionalText(progress.Temper)), ("temperFreeDay", JsonValue.Of(progress.TemperFreeDay)));
+                    ("temper", OptionalText(progress.Temper)), ("student", OptionalText(progress.Student)), ("temperFreeDay", JsonValue.Of(progress.TemperFreeDay)));
             }
             var owned = new List<string>(companions.Owned);
             owned.Sort(System.StringComparer.Ordinal);
@@ -915,6 +916,7 @@ namespace Game.Core.Save
                     FreeResetDay = item.HasField("freeResetDay") ? item.Field("freeResetDay").AsLong(-1) : -1,
                     ForageSeconds = item.HasField("forageSeconds") ? item.Field("forageSeconds").AsNumber(0, double.MaxValue) : 0,
                     Temper = ReadOptionalText(item, "temper"),
+                    Student = ReadOptionalText(item, "student"),
                     TemperFreeDay = item.HasField("temperFreeDay") ? item.Field("temperFreeDay").AsLong(-1) : -1,
                     Forages = item.HasField("forages") ? item.Field("forages").AsLong(0) : 0
                 };

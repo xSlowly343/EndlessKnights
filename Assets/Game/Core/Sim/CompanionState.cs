@@ -36,6 +36,7 @@ namespace Game.Core.Sim
         public double ForageSeconds { get; set; }
         public long Forages { get; set; }
         public string Temper { get; set; } = string.Empty;
+        public string Student { get; set; } = string.Empty;
         public long TemperFreeDay { get; set; } = -1;
     }
 

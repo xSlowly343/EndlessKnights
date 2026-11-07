@@ -141,7 +141,7 @@ namespace Game.Core.Sim
                 return;
             }
             if (companion.Length > 0)
-                _companions.Progress(companion).OwnSparks++;
+                _companions.Progress(_companions.SparkHeir(companion)).OwnSparks++;
             State.Sparks++;
             _events.Add(GameEvent.ForStage(GameEventKind.CompanionSpark, _state.Tick, State.Sparks));
         }

@@ -135,7 +135,7 @@ namespace Game.Core.Sim
                 var task = Rules.Task(State.Board[i]);
                 if (task == null || task.Kind != BoardTaskKind.Trip || State.BoardDone.Contains(task.Id) || task.Biome != expedition.Biome)
                     continue;
-                if (task.Trait.Length > 0 && !HasTrait(expedition.Companion, task.Trait) && (expedition.Partner.Length == 0 || !HasTrait(expedition.Partner, task.Trait)))
+                if (task.Trait.Length > 0 && !HasTrait(expedition.Companion, task.Trait) && (expedition.Partner.Length == 0 || !HasTrait(expedition.Partner, task.Trait)) && (!expedition.Pack || !HasTrait(expedition.Third, task.Trait)))
                     continue;
                 Reward(task, expedition.Companion);
             }

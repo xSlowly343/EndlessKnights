@@ -457,6 +457,7 @@ namespace Game.Core.Content
         public MenagerieTreeRules Menagerie { get; private set; } = new MenagerieTreeRules();
         public CompanionFamilyRules Families { get; private set; } = new CompanionFamilyRules();
         public CompanionTemperRules Tempers { get; private set; } = new CompanionTemperRules();
+        public CompanionPackRules Pack { get; private set; } = new CompanionPackRules();
         public int TopLevel => MaxLevel + Stars.LevelsPerStar * Stars.MaxStars;
         public IReadOnlyDictionary<string, double> RarityTraitMultiplier { get; private set; } = new Dictionary<string, double>();
         public IReadOnlyList<CompanionCoat> Coats { get; private set; } = Array.Empty<CompanionCoat>();
@@ -724,6 +725,7 @@ namespace Game.Core.Content
             {
                 Families = families,
                 Tempers = CompanionTemperRules.Load(root.Field("tempers")),
+                Pack = CompanionPackRules.Load(root.Field("pack"), root.Field("mentor")),
                 Bond = bondRules,
                 Album = CompanionAlbumRules.Load(root.Field("album"), bondRules.MaxHearts),
                 Strip = CompanionStripRules.Load(root.Field("strip")),
