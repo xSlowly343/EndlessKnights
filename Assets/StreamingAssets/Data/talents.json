@@ -18,6 +18,6 @@
     { "class": "mothcaller", "name": { "ru": "Опыление", "en": "Pollination" }, "about": { "ru": "Скрещивание в саду удаётся на 25% чаще.", "en": "Garden crossbreeding succeeds 25% more often." }, "perks": [{ "perk": "mutationChance", "value": 0.0375 }] },
     { "class": "cartomancer", "name": { "ru": "Счастливая карта", "en": "Lucky Card" }, "about": { "ru": "Раз в день один заказ доски у Ворот можно заменить другим.", "en": "Once a day one order on the Gates board can be swapped for another." }, "perks": [{ "perk": "freeRedraw", "value": 1 }] },
     { "class": "herbwitch", "name": { "ru": "Тропа травника", "en": "Herbalist's Path" }, "about": { "ru": "+1 трава при сборе, растения растут на 15% быстрее.", "en": "+1 herb per harvest, plants grow 15% faster." }, "perks": [{ "perk": "extraHerb", "value": 1 }, { "perk": "growFaster", "value": 0.15 }] },
-    { "class": "golemancer", "name": { "ru": "Глиняный носильщик", "en": "Clay Porter" }, "about": { "ru": "Маленький голем сам относит урожай и улов на склад.", "en": "A little golem carries the harvest and catch to storage itself." }, "waits": "bag" }
+    { "class": "golemancer", "name": { "ru": "Глиняный носильщик", "en": "Clay Porter" }, "about": { "ru": "Голем сам относит выполненные заказы в Кромку: репутация гильдий за заказы +25%.", "en": "A golem carries finished orders to the Edge: +25% guild reputation from orders." }, "perks": [{ "perk": "reputation", "value": 0.25 }] }
   ]
 }
