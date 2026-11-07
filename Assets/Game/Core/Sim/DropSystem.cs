@@ -324,10 +324,14 @@ namespace Game.Core.Sim
 
         public int BiomeNumber(long stage) => (int)System.Math.Min(int.MaxValue, (stage - 1) / _stages.BiomeLength + 1);
 
+        public System.Action<long, bool>? GuardianKilled { get; set; }
+
         public void OnBossDefeated(long stage, EnemyType type, long recordBefore, bool raisesRecord)
         {
             if (!raisesRecord)
                 return;
+            if (type == EnemyType.Guardian)
+                GuardianKilled?.Invoke(stage, stage >= recordBefore);
             GiveShards(stage, type, recordBefore);
             if (stage >= recordBefore)
             {
