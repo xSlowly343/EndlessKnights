@@ -219,6 +219,7 @@ namespace Game.Core.Sim
             _stage.Encounters = data.Combat.Encounters;
             _stage.Pierce = data.Combat.Pierce;
             _stage.Defense = data.Combat.Defense;
+            _stage.Elements = data.Combat.Elements;
             _upgrades = new StrikeUpgradeSystem(data.Combat.StrikeUpgrade, state, hero);
             _prestige = new PrestigeSystem(data.Prestige, state, Events, _stage, _upgrades, hero);
             _tournament = new TournamentSystem(data.Tournaments, state, _prestige);
@@ -1007,6 +1008,7 @@ namespace Game.Core.Sim
             _stage.Encounters = data.Combat.Encounters;
             _stage.Pierce = data.Combat.Pierce;
             _stage.Defense = data.Combat.Defense;
+            _stage.Elements = data.Combat.Elements;
             _tutorial.UseRules(data.Tutorial);
             _partyBuffs.UseRules(data.Party.Buffs);
             _synergy.UseRules(data.Synergy);

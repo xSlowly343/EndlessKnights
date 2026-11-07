@@ -291,6 +291,7 @@ namespace Game.Core.Sim
                 _state.VulnerabilityShare = 0;
             CountStreakTime();
             FractureFade();
+            Embers();
             ClearTraitParty();
             _runedancer.Tick();
             _duelist.Tick();
@@ -399,7 +400,7 @@ namespace Game.Core.Sim
             if (source == DamageSource.Strike)
                 multiplier *= _state.SupportKeyBonus;
             LastHitCrit = false;
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken() * FractureTaken() * PillarMultiplier() * DefenseGain(tags));
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken() * FractureTaken() * PillarMultiplier() * DefenseGain(tags) * ElementMultiplier(tags));
             if (damage.Sign <= 0)
                 return;
             _state.HitsOnEnemy++;
@@ -425,6 +426,8 @@ namespace Game.Core.Sim
 
             if (RollDoubleHit(tags))
                 damage *= 2;
+            if (RollDischarge())
+                damage *= 1 + _rules.Elements.LightningPower;
 
             if (supporting != null && Redirected(supporting, damage))
                 return;
@@ -434,6 +437,7 @@ namespace Game.Core.Sim
             var hpBefore = _state.EnemyHp;
             _state.EnemyHp -= damage;
             LayFracture(tags);
+            ElementAfterHit(damage);
             NoteDamage(damage);
             LastTickDamage += damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
@@ -718,7 +722,7 @@ namespace Game.Core.Sim
         private void LayFracture(StatTags tags)
         {
             _state.FractureQuietTicks = 0;
-            var chance = FractureChance(tags);
+            var chance = System.Math.Min(1, FractureChance(tags) + _rules.Elements.CorrosionChance * _portion[(int)Element.Corrosion]);
             if (!(chance > 0) || _state.FractureStacks >= FractureMax)
                 return;
             if (chance < 1 && _state.Rng.NextDouble() >= chance)
@@ -759,7 +763,7 @@ namespace Game.Core.Sim
 
         public double ArmorPen(StatTags tags) => System.Math.Min(_rules.Defense.ArmorPenCap, System.Math.Max(0, _hero.Value(CombatStats.ArmorPen, 0, tags)));
 
-        public double DefenseShred => System.Math.Min(_rules.Defense.ShredCap, System.Math.Max(0, _hero.Value(CombatStats.DefenseShred, 0)));
+        public double DefenseShred => System.Math.Min(_rules.Defense.ShredCap, System.Math.Max(0, _hero.Value(CombatStats.DefenseShred, 0)) + _state.EarthShred);
 
         public double DefenseGain(StatTags tags)
         {
@@ -801,6 +805,101 @@ namespace Game.Core.Sim
             foreach (HeroClass heroClass in classes)
                 ids[(int)heroClass] = Content.Gems.GemDef.NetIdOf("shred_" + heroClass);
             return ids;
+        }
+
+        private readonly double[] _portion = new double[ElementRules.Count];
+
+        public ElementRules Elements => _rules.Elements;
+
+        public double Portion(Element element) => _portion[(int)element];
+
+        public double ElementMultiplier(StatTags tags)
+        {
+            var rules = _rules.Elements;
+            var total = 0.0;
+            for (var i = 0; i < ElementRules.Count; i++)
+            {
+                _portion[i] = System.Math.Max(0, _hero.Value(ElementRules.Conversion[i], 0, tags));
+                total += _portion[i];
+            }
+            if (!(total > 0))
+                return 1;
+            var scale = total > 1 ? 1 / total : 1;
+            var multiplier = 1 - total * scale;
+            for (var i = 0; i < ElementRules.Count; i++)
+            {
+                if (!(_portion[i] > 0))
+                    continue;
+                var resist = System.Math.Max(rules.MinResist, rules.Resistance(i, _state.EnemyResists, _state.EnemyWeakTo) - System.Math.Max(0, _hero.Value(ElementRules.Pen[i], 0, tags)));
+                _portion[i] *= scale * _hero.Value(ElementRules.Damage[i], 1, tags) * (1 - resist);
+                multiplier += _portion[i];
+            }
+            if (!(multiplier > 0))
+                return 0;
+            for (var i = 0; i < ElementRules.Count; i++)
+                _portion[i] /= multiplier;
+            return multiplier;
+        }
+
+        private bool RollDischarge()
+        {
+            var chance = _rules.Elements.LightningChance * _portion[(int)Element.Lightning];
+            if (!(chance > 0))
+                return false;
+            if (_state.Rng.NextDouble() >= chance)
+                return false;
+            _state.Discharges++;
+            return true;
+        }
+
+        private void ElementAfterHit(BigNumber damage)
+        {
+            var rules = _rules.Elements;
+            var fire = _portion[(int)Element.Fire];
+            if (fire > 0 && rules.BurnShare > 0)
+            {
+                _state.EmberPool += damage * (fire * rules.BurnShare);
+                _state.EmberTicks = System.Math.Max(1, (int)System.Math.Round(rules.BurnSeconds * GameLoop.TicksPerSecond));
+            }
+            var air = _portion[(int)Element.Air];
+            if (air > 0 && rules.AirShare > 0 && _state.EnemyType == EnemyType.Normal)
+                _state.QueueDamage[0] += damage * (air * rules.AirShare);
+            var earth = _portion[(int)Element.Earth];
+            if (earth > 0)
+                _state.EarthShred = System.Math.Min(rules.EarthMax, _state.EarthShred + rules.EarthShred * earth);
+            var water = _portion[(int)Element.Water];
+            if (water > 0 && _state.FightingBoss && _state.BossTicksLeft > 0)
+                AddWater(System.Math.Min(rules.WaterMax - _state.WaterSeconds, rules.WaterSeconds * water));
+            System.Array.Clear(_portion, 0, _portion.Length);
+        }
+
+        private void AddWater(double seconds)
+        {
+            if (!(seconds > 0))
+                return;
+            _state.WaterSeconds += seconds;
+            _state.WaterCarry += seconds * GameLoop.TicksPerSecond;
+            var whole = (int)System.Math.Floor(_state.WaterCarry + 1e-9);
+            if (whole <= 0)
+                return;
+            _state.WaterCarry -= whole;
+            _state.BossTicksLeft += whole;
+        }
+
+        private void Embers()
+        {
+            if (_state.EmberTicks <= 0)
+                return;
+            if (!_state.EnemyAlive)
+            {
+                _state.EmberTicks = 0;
+                _state.EmberPool = BigNumber.Zero;
+                return;
+            }
+            var burn = _state.EmberPool * (1.0 / _state.EmberTicks);
+            _state.EmberPool -= burn;
+            _state.EmberTicks--;
+            DirectHit(burn);
         }
 
         private bool RollDoubleHit(StatTags tags)
