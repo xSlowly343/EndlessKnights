@@ -48,6 +48,7 @@ namespace Game.Core.Content
         public double BasePierce { get; private set; }
         public PierceRules Pierce { get; private set; } = new PierceRules();
         public AttackRules Attack { get; private set; } = new AttackRules();
+        public MountRules Mount { get; private set; } = new MountRules();
 
         public static CombatRules Load(string json)
         {
@@ -80,6 +81,7 @@ namespace Game.Core.Content
                 EncounterRules.Read(root.Field("encounters")))
             {
                 Attack = AttackRules.Read(root.Field("attack")),
+                Mount = MountRules.Read(root.Field("mount")),
                 BasePierce = root.HasField("pierce") ? root.Field("pierce").Field("baseShare").AsNumber(0, 1) : 0,
                 Pierce = root.HasField("pierce") ? PierceRules.Read(root.Field("pierce")) : new PierceRules()
             };

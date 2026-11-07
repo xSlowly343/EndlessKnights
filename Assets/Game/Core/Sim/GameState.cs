@@ -138,6 +138,7 @@ namespace Game.Core.Sim
         public long Crits { get; set; }
         public long Overcrits { get; set; }
         public PeacefulBonus PeacefulBonus { get; } = new PeacefulBonus();
+        public MountState Mount { get; } = new MountState();
         public double MouseBurstCarryPx { get; set; }
         public GearState Gear { get; } = new GearState();
         public HashSet<string> SetCollection { get; } = new HashSet<string>(System.StringComparer.Ordinal);

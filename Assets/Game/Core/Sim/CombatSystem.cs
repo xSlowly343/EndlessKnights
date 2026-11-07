@@ -125,7 +125,7 @@ namespace Game.Core.Sim
             {
                 var item = worn[i];
                 if (item != null && item.Wearable)
-                    total += _rules.Attack.Attribute(item.Rarity, item.ItemLevel);
+                    total += _rules.Attack.Attribute(item.Rarity, item.ItemLevel) * _rules.Mount.Factor(_state.Mount.Levels[i + 1]);
             }
             return total;
         }
@@ -134,7 +134,7 @@ namespace Game.Core.Sim
         {
             var rules = _rules.Attack;
             var held = _state.Weapons.Held;
-            var weapon = (held == null ? rules.BaseWeaponDamage : rules.WeaponDamage(held.Rarity, held.ItemLevel)) + System.Math.Max(0, _hero.Value(CombatStats.WeaponDamage, 0));
+            var weapon = ((held == null ? rules.BaseWeaponDamage : rules.WeaponDamage(held.Rarity, held.ItemLevel)) + System.Math.Max(0, _hero.Value(CombatStats.WeaponDamage, 0))) * _rules.Mount.Factor(_state.Mount.Levels[MountSystem.WeaponSlot]);
             var attribute = rules.BaseAttribute + System.Math.Max(0, classPoints) + ItemAttribute() + System.Math.Max(0, _hero.Value(CombatStats.ItemAttribute, 0));
             Attack = rules.Attack(attribute, weapon, _hero.Value(CombatStats.FlatAttack, 0));
             AttackScale = rules.BaseAttack > 0 ? Attack / rules.BaseAttack : 1;
