@@ -304,6 +304,19 @@ namespace Game.Net.Tests
             Assert.That(hideout.Bosses, Is.EqualTo(14));
             Assert.That(hideout.SitSeconds, Is.EqualTo(7300));
             Assert.That(hideout.Here, Is.EqualTo(new[] { "Ann", "Bob" }));
+
+            Assert.That(HideoutReply.QueuePayload("bonfire"), Is.EqualTo("{\"building\":\"bonfire\"}"));
+            Assert.That(HideoutReply.WantPayload("garden", true), Is.EqualTo("{\"building\":\"garden\",\"on\":true}"));
+            var build = HideoutReply.From(NakamaJson.Parse("{\"tier\":2,\"hoursTogether\":12,\"leader\":true,\"buildings\":{\"bonfire\":2},\"canQueue\":[\"board\"],"
+                + "\"project\":{\"building\":\"board\",\"level\":1,\"points\":40,\"target\":120,\"hours\":2,\"yours\":15},\"wants\":{\"garden\":2},\"mine\":[\"garden\"],\"here\":[]}"));
+            Assert.That(build.Buildings["bonfire"], Is.EqualTo(2));
+            Assert.That(build.Project, Is.EqualTo("board"));
+            Assert.That(build.ProjectTarget, Is.EqualTo(120));
+            Assert.That(build.ProjectYours, Is.EqualTo(15));
+            Assert.That(build.Wants["garden"], Is.EqualTo(2));
+            Assert.That(build.MyWants, Is.EqualTo(new[] { "garden" }));
+            Assert.That(build.Leader, Is.True);
+            Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"project\":null,\"here\":[]}")).Project, Is.Empty);
         }
 
         [Test]

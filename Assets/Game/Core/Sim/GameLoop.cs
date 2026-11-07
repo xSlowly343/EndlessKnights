@@ -148,9 +148,9 @@ namespace Game.Core.Sim
             _seasonal = new EventSystem(data, state, _stage, Events);
             _peaceful = new PeacefulSystem(data.Peaceful, state, Events);
             _talents = new TalentSystem(data.Talents, state);
-            _hideout = new HideoutSystem(data.Hideout, state);
             _camp = new CampSystem(data.Camp, state, Events);
             _clanCamp = new ClanCampSystem(data.ClanCamp, state, hero, _camp);
+            _hideout = new HideoutSystem(data.Hideout, data.ClanCamp, state, _camp);
             _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden);
             _garden = new GardenSystem(data.Garden, state, _camp, _peaceful, Events);
             _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
@@ -874,7 +874,7 @@ namespace Game.Core.Sim
             _clanCamp.UseRules(data.ClanCamp);
             _guilds.UseRules(data.Guilds);
             _talents.UseRules(data.Talents);
-            _hideout.UseRules(data.Hideout);
+            _hideout.UseRules(data.Hideout, data.ClanCamp);
             _skills.UseGems(data.Gems);
             _skills.Levels = data.Gems.Levels;
             _gemExperience.UseLevels(data.Gems.Levels);

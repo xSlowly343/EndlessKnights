@@ -22,11 +22,16 @@ namespace Game.Core.Tests.Sim
         public void TheBaseTiersAndTheirBuildingsComeFromTheRules()
         {
             var rules = TestWorld.Real.Hideout;
-            Assert.That(rules.Tiers.Count, Is.EqualTo(3));
+            Assert.That(rules.Tiers.Count, Is.EqualTo(9));
+            var json = TestData.ReadGameDataFile(HideoutRules.FileName);
+            Assert.That(rules.Building("corner")!.Personal, Is.True);
+            Assert.That(rules.Building("pier")!.Guild, Is.EqualTo("fishers"));
+            Assert.That(rules.Building("bonfire")!.Levels.Count, Is.EqualTo(3));
+            Assert.Throws<ContentException>(() => HideoutRules.Load(json.Replace("\"counter\": \"partyTrips\"", "\"counter\": \"dragons\"")));
+            Assert.Throws<ContentException>(() => HideoutRules.Load(json.Replace("\"levelTiers\": [\n    0,\n    2,\n    5\n  ]", "\"levelTiers\": [\n    0,\n    4,\n    5\n  ]")));
             Assert.That(rules.Tiers[0].NameRu, Is.EqualTo("Привал"));
             Assert.That(rules.Tiers[1].SitHours, Is.EqualTo(2));
-            var json = TestData.ReadGameDataFile(HideoutRules.FileName);
-            Assert.Throws<ContentException>(() => HideoutRules.Load(json.Replace("\"opens\": [\"garden\", \"storage\"]", "\"opens\": [\"moat\"]")));
+            Assert.Throws<ContentException>(() => HideoutRules.Load(json.Replace("\"opens\": [\n        \"garden\",", "\"opens\": [\n        \"moat\",")));
             Assert.Throws<ContentException>(() => HideoutRules.Load(json.Replace("\"bosses\": 50,", "\"bosses\": 5,")));
         }
 
@@ -53,6 +58,8 @@ namespace Game.Core.Tests.Sim
             Assert.That(HideoutView.AtTheFire(hideout.State), Is.EqualTo("У костра никого"));
 
             hideout.Use(3, 2, 60, 1, 7300, 2, System.Array.Empty<string>());
+            Assert.That(HideoutView.NextTier(hideout), Has.Member("сборов с общей грядки: 20"));
+            hideout.Use(9, 2, 6000, 30, 7300, 3, System.Array.Empty<string>());
             Assert.That(hideout.NextTier, Is.Null);
             Assert.That(HideoutView.NextTier(hideout), Is.Empty);
         }
@@ -92,6 +99,50 @@ namespace Game.Core.Tests.Sim
             loop.Hideout.Leave();
             Assert.That(loop.Hideout.State.Tier, Is.Zero);
             Assert.That(loop.State.Peaceful.Place, Is.EqualTo(PeacefulPlace.Refuge));
+        }
+    
+
+        [Test]
+        public void TheBuildPlanShowsLevelsTheProjectAndWants()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            var hideout = loop.Hideout;
+            hideout.Use(2, 2, 12, 0, 7300, 1, System.Array.Empty<string>());
+            hideout.UseBuild(new System.Collections.Generic.Dictionary<string, int> { ["bonfire"] = 1 }, new[] { "bonfire", "board" }, string.Empty, 0, 0, 0, 0, 3, true,
+                new System.Collections.Generic.Dictionary<string, int> { ["board"] = 2 }, new[] { "board" });
+            var plan = HideoutView.Plan(hideout);
+            Assert.That(plan.ConvertAll(line => line.Id), Is.EqualTo(new[] { "bonfire", "chronicle_table", "board" }), "corners are personal and not in the plan");
+            var board = plan.Find(line => line.Id == "board")!;
+            Assert.That(board.CanQueue, Is.True);
+            Assert.That(board.Wants, Is.EqualTo(2));
+            Assert.That(board.IWant, Is.True);
+            Assert.That(board.Status, Is.EqualTo("следующий уровень: 120 очков материалов, 2 ч боя вместе"));
+            Assert.That(plan.Find(line => line.Id == "chronicle_table")!.Status, Is.EqualTo("ждёт ступени или здания в Кромке"));
+            Assert.That(HideoutView.Project(hideout), Is.EqualTo("Выбери, что строить дальше"));
+
+            hideout.UseBuild(new System.Collections.Generic.Dictionary<string, int> { ["bonfire"] = 1 }, System.Array.Empty<string>(), "board", 1, 40, 120, 2, 1, false,
+                new System.Collections.Generic.Dictionary<string, int>(), System.Array.Empty<string>());
+            Assert.That(HideoutView.Project(hideout), Is.EqualTo("Строим «Доска заказов» (1 ур.): материалы 40 из 120, бой вместе 1 из 2 ч"));
+            Assert.That(HideoutView.Plan(hideout).Find(line => line.Id == "board")!.Status, Is.EqualTo("строится"));
+            Assert.That(HideoutView.Plan(hideout).TrueForAll(line => !line.CanQueue), Is.True, "only the leader queues");
+        }
+
+        [Test]
+        public void MaterialsLeaveTheBagForTheBuildAndComeBackOnRefusal()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            loop.State.Camp.Bag["herb_windwort"] = 4;
+            Assert.That(loop.Hideout.PackMaterial("herb_windwort", 5), Is.EqualTo(ClanCampResult.NotEnough));
+            Assert.That(loop.Hideout.PackMaterial("fish_hills_roach", 1), Is.EqualTo(ClanCampResult.NotAMaterial));
+            Assert.That(loop.Hideout.PackMaterial("herb_windwort", 4), Is.EqualTo(ClanCampResult.Done));
+            Assert.That(loop.State.Camp.Bag.ContainsKey("herb_windwort"), Is.False);
+            loop.Hideout.ReturnMaterial("herb_windwort", 4);
+            Assert.That(loop.State.Camp.Bag["herb_windwort"], Is.EqualTo(4));
+
+            loop.Hideout.UseBuild(new System.Collections.Generic.Dictionary<string, int> { ["bonfire"] = 2 }, System.Array.Empty<string>(), string.Empty, 0, 0, 0, 0, 0, false,
+                new System.Collections.Generic.Dictionary<string, int>(), System.Array.Empty<string>());
+            var copy = GameStateJson.Read(new ContentNode(GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Hideout.Buildings["bonfire"], Is.EqualTo(2));
         }
     }
 }
