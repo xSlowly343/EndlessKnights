@@ -237,6 +237,9 @@ namespace Game.Core.Sim
             run.Souls = (int)System.Math.Floor(run.Souls * burrow + 1e-9);
             run.Shards = (long)System.Math.Floor(run.Shards * burrow + 1e-9);
             _companions.AddSouls(run.Souls);
+            _companions.State.Essence += _companions.Rules.Circles.BurrowEssence(run.Floors);
+            for (var i = 0; i < party.Count; i++)
+                _companions.NoteBurrow(party[i], run.Floors);
             _state.Drops.Shards += run.Shards;
             if (run.Bones > 0)
             {

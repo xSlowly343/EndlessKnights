@@ -58,8 +58,7 @@ namespace Game.Core.Sim
         {
             get
             {
-                var shown = _companions.State.Shown;
-                return shown.Length > 0 && _companions.Known(shown) ? shown : _companions.Rules.Companions.Count > 0 ? _companions.Rules.Companions[0].Id : string.Empty;
+                return _companions.Shown;
             }
         }
 
