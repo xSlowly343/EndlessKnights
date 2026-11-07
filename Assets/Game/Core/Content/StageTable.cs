@@ -147,6 +147,7 @@ namespace Game.Core.Content
                 BossHintRules.Read(root.Field("bossHint")))
             {
                 Gates = gates.ToArray(),
+                ItemLevelRate = root.Field("enemyHp").HasField("itemLevelRate") ? root.Field("enemyHp").Field("itemLevelRate").AsNumber(1, 2) : 1,
                 _wallsOnTop = wallExtra > 0,
                 _hpSteps = hpSteps,
                 _goldSteps = goldSteps,
@@ -240,10 +241,14 @@ namespace Game.Core.Content
             return wave < _waves.Count ? kills / (double)_waves.Size(stage, wave) : 1d;
         }
 
+        public double ItemLevelRate { get; private set; } = 1;
+
+        public int ItemLevelAt(long stage) => (int)System.Math.Min(int.MaxValue, (System.Math.Max(1, stage) - 1) / BiomeLength + 1);
+
         public BigNumber EnemyHp(long stage)
         {
             var walls = WallStagesUpTo(stage) - WallStagesUpTo(1);
-            var log10 = System.Math.Log10(_enemyHp.Base) + walls * System.Math.Log10(_wallRate);
+            var log10 = System.Math.Log10(_enemyHp.Base) + walls * System.Math.Log10(_wallRate) + (ItemLevelAt(stage) - 1) * System.Math.Log10(ItemLevelRate);
             if (_hpSteps.Length == 0)
                 return ExponentialCurve.FromLog10(log10 + (stage - 1 - walls) * System.Math.Log10(_enemyHp.Rate));
             for (var i = 0; i < _hpSteps.Length; i++)

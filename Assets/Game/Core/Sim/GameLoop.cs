@@ -477,7 +477,11 @@ namespace Game.Core.Sim
 
         public ClassAttributeDef ClassAttributeDef => ClassTreeDef?.Attribute ?? ClassAttributeDef.None;
 
-        public void RefreshClassAttribute() => _classAttribute.Refresh(ClassAttributeDef);
+        public void RefreshClassAttribute()
+        {
+            _classAttribute.Refresh(ClassAttributeDef);
+            _combat.RefreshAttack(ClassAttribute);
+        }
 
         public bool ClassTreeResetFree => State.GatesCleared.Count == 0;
 

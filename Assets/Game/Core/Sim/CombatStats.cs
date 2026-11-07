@@ -13,6 +13,9 @@ namespace Game.Core.Sim
         public static readonly StatId PeacefulLuck = new StatId("peacefulLuck");
         public static readonly StatId PeacefulMastery = new StatId("peacefulMastery");
         public static readonly StatId PartyPeaceful = new StatId("partyPeaceful");
+        public static readonly StatId WeaponDamage = new StatId("weaponDamage");
+        public static readonly StatId ItemAttribute = new StatId("itemAttribute");
+        public static readonly StatId FlatAttack = new StatId("flatAttack");
         public static readonly StatId Gold = new StatId("gold");
         public static readonly StatId FocusGain = new StatId("focusGain");
         public static readonly StatId FocusMultiplier = new StatId("focusMultiplier");

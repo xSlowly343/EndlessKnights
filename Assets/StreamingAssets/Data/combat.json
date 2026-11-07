@@ -39,6 +39,7 @@
     }
   },
   "crit": { "chance": 0.05, "multiplier": 2 },
+  "attack": { "baseAttribute": 100, "weaponDamage": 600, "divisor": 6, "perItemLevel": 1.004, "weaponRarity": [1, 1.1, 1.2, 1.35, 1.5, 1.7, 1.95, 2.25, 2.6, 3, 3.5], "gearAttribute": 3, "gearRarity": [1, 1.1, 1.2, 1.35, 1.5, 1.7, 1.95, 2.25, 2.6, 3, 3.5] },
   "classes": {
     "keyStreak": { "gapSeconds": 1.5 },
     "shardcaller": {
