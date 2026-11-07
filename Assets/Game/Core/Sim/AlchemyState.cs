@@ -13,6 +13,7 @@ namespace Game.Core.Sim
     public sealed class AlchemyState
     {
         public HashSet<string> Known { get; } = new HashSet<string>(System.StringComparer.Ordinal);
+        public List<Potion> SharedBrews { get; } = new List<Potion>();
         public Potion? Brewing { get; set; }
         public double Stirs { get; set; }
         public List<Potion> Potions { get; } = new List<Potion>();

@@ -39,6 +39,9 @@ namespace Game.Core.Sim
         public AlchemyRules Rules => _rules;
         public AlchemyState State => _state.Alchemy;
         public bool Brewing => State.Brewing != null;
+        public HideoutCrafts? Shared { get; set; }
+        public bool Together => _peaceful.InHideout && _state.Hideout.Cauldron.Together && Shared != null;
+        public double StirsNeeded(PotionRecipe recipe) => recipe.Stirs * (Together ? 1 - Shared!.StirsShare : 1);
 
         public void UseRules(AlchemyRules rules)
         {
@@ -90,7 +93,7 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            if (State.Brewing == null || !_peaceful.InCamp || _peaceful.Activity != Activity)
+            if (State.Brewing == null || !_peaceful.InCamp || _peaceful.Activity != Activity || (_peaceful.InHideout && !_state.Hideout.Cauldron.Built))
                 return;
             var work = _peaceful.Work(Activity);
             State.Stirs += work.Keys * (1 + _state.Perk(MuseumPerk.StirFaster));
@@ -99,9 +102,11 @@ namespace Game.Core.Sim
             work.MouseMeters = 0;
             work.IdleSeconds = 0;
             var recipe = _rules.Recipe(State.Brewing.Recipe);
-            if (recipe == null || State.Stirs < recipe.Stirs)
+            if (recipe == null || State.Stirs < StirsNeeded(recipe))
                 return;
             State.Potions.Add(State.Brewing);
+            if (Together && !State.Brewing.Unknown)
+                State.SharedBrews.Add(new Potion { Recipe = State.Brewing.Recipe, Fine = State.Brewing.Fine });
             if (_state.Rng.NextDouble() < _state.Perk(MuseumPerk.DoublePotion))
                 State.Potions.Add(new Potion { Recipe = State.Brewing.Recipe, Fine = State.Brewing.Fine, Unknown = State.Brewing.Unknown });
             State.Brewing = null;
@@ -129,7 +134,8 @@ namespace Game.Core.Sim
                 return AlchemyResult.NoHerbs;
             foreach (var herb in herbs)
                 _camp.Take(herb, 1);
-            State.Brewing = new Potion { Recipe = recipe.Id, Fine = _rules.Fine(herbs) || _state.Rng.NextDouble() < _state.Perk(MuseumPerk.FinePotion), Unknown = unknown };
+            var fineChance = _state.Perk(MuseumPerk.FinePotion) + (Together ? Shared!.FineChance : 0);
+            State.Brewing = new Potion { Recipe = recipe.Id, Fine = _rules.Fine(herbs) || _state.Rng.NextDouble() < fineChance, Unknown = unknown };
             State.Stirs = 0;
             return AlchemyResult.Done;
         }

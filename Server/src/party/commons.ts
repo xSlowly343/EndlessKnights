@@ -20,6 +20,9 @@ interface HideoutCommonsRules {
     storageNever: string[];
     takePerDay: number;
     journalSize: number;
+    stations: { [station: string]: string };
+    brewsPerDay: number;
+    recipes: string[];
 }
 
 interface HideoutBed {
@@ -268,4 +271,54 @@ function hideoutStorePutRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk
 function hideoutStoreTakeRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     const request = partyRequest(payload);
     return JSON.stringify(hideoutStore(nk, partyCaller(ctx), request.item, request.amount, false, Date.now()));
+}
+
+function hideoutReadStation(raw: unknown): string | null {
+    if (raw === undefined || raw === null || raw === "")
+        return null;
+    if (typeof raw !== "string" || !hideoutCommons().stations[raw])
+        throw new Error("bad request");
+    return raw;
+}
+
+function hideoutStationBuilt(value: HideoutValue, station: string): boolean {
+    const building = hideoutCommons().stations[station];
+    return !!building && (value.buildings[building] || 0) > 0;
+}
+
+function hideoutAtStation(value: HideoutValue, members: string[], station: string, nowUnixMs: number): string[] {
+    return hideoutHere(value, members, nowUnixMs).filter((id) => value.crafting[id] === station);
+}
+
+function hideoutCraftView(value: HideoutValue, members: string[], userId: string, nowUnixMs: number, nameOf: (id: string) => string): { [station: string]: string[] } {
+    const partners: { [station: string]: string[] } = {};
+    for (const station of Object.keys(hideoutCommons().stations)) {
+        const at = hideoutAtStation(value, members, station, nowUnixMs);
+        partners[station] = hideoutStationBuilt(value, station) && at.indexOf(userId) >= 0 ? at.filter((id) => id !== userId).map(nameOf) : [];
+    }
+    return partners;
+}
+
+function hideoutBrewed(nk: nkruntime.Nakama, userId: string, recipe: unknown, fine: unknown, nowUnixMs: number): { [key: string]: any } {
+    if (typeof recipe !== "string" || hideoutCommons().recipes.indexOf(recipe) < 0 || typeof fine !== "boolean")
+        throw new Error("bad request");
+    return hideoutUpdate(nk, userId, (hideout, meta) => {
+        if (!hideoutStationBuilt(hideout, "cauldron"))
+            throw new Error("the shared cauldron is not built");
+        const partners = hideoutAtStation(hideout, meta.members, "cauldron", nowUnixMs).filter((id) => id !== userId);
+        if (hideout.crafting[userId] !== "cauldron" || partners.length === 0)
+            throw new Error("nobody brews with you");
+        const day = walletDayOf(nowUnixMs);
+        const brews = hideout.brews[userId] && hideout.brews[userId].day === day ? hideout.brews[userId].count : 0;
+        if (brews >= hideoutCommons().brewsPerDay)
+            throw new Error("the daily brew limit is reached");
+        hideout.brews[userId] = { day: day, count: brews + 1 };
+        for (const id of partners)
+            hideoutOwe(hideout, id, "potion:" + recipe + (fine ? ":fine" : ""), 1);
+    }, nowUnixMs);
+}
+
+function hideoutBrewedRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    const request = partyRequest(payload);
+    return JSON.stringify(hideoutBrewed(nk, partyCaller(ctx), request.recipe, request.fine, Date.now()));
 }

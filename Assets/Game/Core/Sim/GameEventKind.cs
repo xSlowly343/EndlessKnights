@@ -59,6 +59,7 @@ namespace Game.Core.Sim
         TinctureDistilled,
         TinctureBurst,
         ColossusSeedFound,
-        ColossusGrown
+        ColossusGrown,
+        PartyMasterpiece
     }
 }

@@ -145,6 +145,37 @@ namespace Game.Core.Sim
                 ReturnCorner();
         }
 
+        public const string ForgeStation = "forge";
+        public const string CauldronStation = "cauldron";
+
+        public string Station => !Inside ? string.Empty
+            : _state.Peaceful.Activity == ForgeSystem.Activity ? ForgeStation
+            : _state.Peaceful.Activity == AlchemySystem.Activity ? CauldronStation
+            : string.Empty;
+
+        public void UseCrafts(IReadOnlyList<string> forgePartners, IReadOnlyList<string> cauldronPartners)
+        {
+            Fill(State.Forge, _rules.Crafts.ForgeBuilding, forgePartners);
+            Fill(State.Cauldron, _rules.Crafts.CauldronBuilding, cauldronPartners);
+        }
+
+        private void Fill(CraftStation station, string building, IReadOnlyList<string> partners)
+        {
+            station.Built = LevelOf(building) > 0;
+            station.Partners.Clear();
+            station.Partners.AddRange(partners);
+        }
+
+        public List<Potion> TakeSharedBrews()
+        {
+            var brews = new List<Potion>(_state.Alchemy.SharedBrews);
+            _state.Alchemy.SharedBrews.Clear();
+            return brews;
+        }
+
+        public const string PotionPrefix = "potion:";
+        public const string FineSuffix = ":fine";
+
         public PeacefulWork TakeTending()
         {
             var work = _state.Peaceful.HideoutWork;
@@ -177,8 +208,17 @@ namespace Game.Core.Sim
         {
             foreach (var pair in items)
             {
-                if (pair.Value > 0)
+                if (pair.Value <= 0)
+                    continue;
+                if (!pair.Key.StartsWith(PotionPrefix, System.StringComparison.Ordinal))
+                {
                     _camp.Add(pair.Key, pair.Value);
+                    continue;
+                }
+                var fine = pair.Key.EndsWith(FineSuffix, System.StringComparison.Ordinal);
+                var recipe = pair.Key.Substring(PotionPrefix.Length, pair.Key.Length - PotionPrefix.Length - (fine ? FineSuffix.Length : 0));
+                for (var i = 0; i < pair.Value; i++)
+                    _state.Alchemy.Potions.Add(new Potion { Recipe = recipe, Fine = fine });
             }
         }
 
@@ -204,6 +244,7 @@ namespace Game.Core.Sim
 
         public void Leave()
         {
+            UseCrafts(System.Array.Empty<string>(), System.Array.Empty<string>());
             UseCommons(false, System.Array.Empty<SharedBed>(), new Dictionary<string, long>(), false, new Dictionary<string, long>(), System.Array.Empty<StorageEntry>(), 0, 0);
             UseCorners(false, System.Array.Empty<HideoutCorner>());
             Use(0, 0, 0, 0, 0, 0, System.Array.Empty<string>());
