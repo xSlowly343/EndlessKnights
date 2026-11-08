@@ -75,3 +75,5 @@ art/out/preview/bg_*.png
 art/out/sprites/
 art/out/tmp/
 __pycache__/
+art/out/preview/roster_*.gif
+art/out/preview/sheet_*.png
