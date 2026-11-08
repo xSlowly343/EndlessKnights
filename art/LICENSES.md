@@ -22,6 +22,20 @@
 | Skoll | `sound-waves` |
 | Willdabeast | `round-shield` |
 
+## Цветные иконки скиллов (08.11.2026)
+
+Исходники уменьшены до 128 px и лежат в `art/sources/packs/<набор>/`, из них `art/scripts/build_ui_icons.py` собирает иконки группы `skills` (масштаб, скруглённые углы, рамка). Оригиналы и превью наборов — в общей папке проекта `icon-packs/`.
+
+| Папка | Набор | Автор | Лицензия | ИИ |
+| --- | --- | --- | --- | --- |
+| `packs/inking/<стихия>/` | 100 Fire, Water, Earth, Wind, Lightning; 50 Dark, Light, Chaos, Space-Time skill icons — https://inking.itch.io | InKing | бесплатно для личных и коммерческих проектов, указывать автора не обязательно | да |
+| `packs/painterly/` | Painterly Spell Icons 1–4 — https://opengameart.org/content/painterly-spell-icons-part-1 | J. W. Bjerk (eleazzaar), http://www.jwbjerk.com/art | CC BY 3.0, автор в титрах | нет |
+| `packs/captaincatsparrow/<набор>/` | 25 FREE blood mage, druid, engineer, frost mage, hunter, necromancer skill icons; Free icon (морской); 40 Free Skill/Ability Icons Vol. 1 — https://captaincatsparrow.itch.io | CaptainCatSparrow | личные и коммерческие проекты | да |
+
+Строка для титров (вместе со строкой game-icons):
+
+> Иконки скиллов: InKing, J. W. Bjerk (eleazzaar, CC BY 3.0), CaptainCatSparrow
+
 ## Шрифты (OFL)
 
 Rubik и Lilita One — `Assets/Game/Art/Fonts`, лицензии лежат рядом с файлами шрифтов.
