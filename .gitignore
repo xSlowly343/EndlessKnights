@@ -74,3 +74,4 @@ art/out/backgrounds/
 art/out/preview/bg_*.png
 art/out/sprites/
 art/out/tmp/
+__pycache__/
