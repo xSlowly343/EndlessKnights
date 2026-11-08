@@ -1,0 +1,30 @@
+{
+  "biome": "autumn_forest",
+  "scale": 2,
+  "fps": 10,
+  "loop": ["idle", "walk"],
+  "enemies": {
+    "leaf_wisp": {"source": "elthen/Leaf Elemental S Sprite Sheet.png", "cell": [32, 32], "mirror": true, "hue_shift": -95,
+      "rows": {"idle": 0, "walk": 1, "attack": 5, "hit": 3, "death": 4}},
+    "fox": {"source": "elthen/Fox Sprite Sheet.png", "cell": [32, 32], "mirror": true,
+      "rows": {"idle": 0, "walk": 2, "attack": 3, "hit": 4, "death": 6}},
+    "red_panda": {"source": "elthen/Red Panda Sprite Sheet.png", "cell": [32, 32], "mirror": true,
+      "rows": {"idle": 0, "walk": 2, "attack": 3, "hit": 4, "death": 6}},
+    "swampling": {"source": "elthen/Swampling Sprite Sheet.png", "cell": [32, 32], "mirror": true,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
+    "ghoul": {"source": "elthen/Ghoul Sprite Sheet.png", "cell": [32, 32], "mirror": true,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
+    "giant_fly": {"source": "elthen/Giant Fly Sprite Sheet.png", "cell": [32, 32], "mirror": true,
+      "rows": {"idle": 0, "walk": 0, "attack": 1, "hit": 2, "death": 3}},
+    "kobold_priest": {"source": "elthen/Kobold Priest Sprite Sheet.png", "cell": [32, 32], "mirror": true,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
+    "witch": {"source": "elthen/Witch Sprite Sheet.png", "cell": [32, 32], "mirror": true, "boss": true, "scale": 3,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
+    "bandit_necromancer": {"source": "elthen/Bandit Necromancer Sprite Sheet.png", "cell": [32, 32], "mirror": true, "boss": true, "scale": 3,
+      "rows": {"idle": 0, "walk": 1, "attack": 3, "hit": 4, "death": 5}},
+    "shardsoul_slayer": {"source": "elthen/Shardsoul Slayer Sprite Sheet.png", "cell": [64, 64], "mirror": true, "boss": true,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
+    "goblin_mech": {"source": "elthen/Goblin Mech Rider Sprite Sheet.png", "cell": [160, 96], "mirror": true, "boss": true, "master": true,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}}
+  }
+}
