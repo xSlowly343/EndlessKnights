@@ -1,6 +1,1 @@
-{
-  "version": 1,
-  "minStage": 30,
-  "echo": { "k": 10, "goldBase": 5000, "power": 0.5 },
-  "highlightGain": 1.0, "maxStartShare": 0.9, "rushRecordShare": 0.99
-}
+{"version": 1, "minStage": 30, "echo": {"k": 10, "goldBase": 5000, "power": 0.5, "byStage": {"base": 10, "rate": 1.003, "steps": [{"from": 1000, "rate": 1.00098}, {"from": 5000, "rate": 1.000307}, {"from": 20000, "rate": 1.000154}, {"from": 50000, "rate": 1.0000903}, {"from": 101000, "rate": 1.0000618}]}}, "highlightGain": 1.0, "maxStartShare": 0.9, "rushRecordShare": 0.99}

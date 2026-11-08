@@ -187,7 +187,9 @@ namespace Game.Core.Tests.Sim
             var plain = With();
             var codex = With(("rift_codex", 4));
             plain.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            plain.State.HighestStage = 5000;
             codex.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            codex.State.HighestStage = 5000;
 
             var expected = System.Math.Floor(plain.Prestige.EchoGain.ToDouble() * System.Math.Pow(1.05, 4));
             Assert.That(plain.Prestige.EchoGain.Sign, Is.GreaterThan(0));
@@ -199,6 +201,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = With(("rift_codex", 100000), ("rebirth_star", 100000), ("returning_seal", 100000), ("ancient_treasury", 100000));
             loop.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            loop.State.HighestStage = 5000;
 
             var gain = loop.Prestige.EchoGain;
             Assert.That(gain.Sign, Is.GreaterThan(0));
@@ -211,7 +214,9 @@ namespace Game.Core.Tests.Sim
             var plain = With();
             var both = With(("rift_codex", 100), ("rebirth_star", 50));
             plain.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            plain.State.HighestStage = 5000;
             both.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            both.State.HighestStage = 5000;
 
             var factor = System.Math.Pow(1.05, 100) * System.Math.Pow(1.02, 50);
             Assert.That(both.Prestige.EchoGain.ToDouble() / plain.Prestige.EchoGain.ToDouble(), Is.EqualTo(factor).Within(factor * 1e-3));
