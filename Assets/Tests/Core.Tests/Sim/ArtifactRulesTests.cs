@@ -195,6 +195,17 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void CompoundedEchoStaysFiniteAtHugeLevels()
+        {
+            var loop = With(("rift_codex", 100000), ("rebirth_star", 100000), ("returning_seal", 100000), ("ancient_treasury", 100000));
+            loop.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+
+            var gain = loop.Prestige.EchoGain;
+            Assert.That(gain.Sign, Is.GreaterThan(0));
+            Assert.That(gain.Log10(), Is.LessThan(400));
+        }
+
+        [Test]
         public void EchoArtifactsCompoundPerLevelAndMultiplyEachOther()
         {
             var plain = With();
