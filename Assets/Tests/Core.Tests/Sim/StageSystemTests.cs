@@ -15,13 +15,6 @@ namespace Game.Core.Tests.Sim
             return hero;
         }
 
-        private static StatSheet Unstoppable()
-        {
-            var hero = new StatSheet();
-            hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, 1e300));
-            return hero;
-        }
-
         private static void TypeFor(GameLoop loop, FakeInputSource input, int keys)
         {
             for (var key = 0; key < keys; key++)
@@ -61,45 +54,6 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Stage, Is.EqualTo(2));
             Assert.That(loop.State.KillsOnStage, Is.EqualTo(0));
             Assert.That(loop.State.EnemyType, Is.EqualTo(EnemyType.Normal));
-        }
-
-        [Test]
-        public void BelowNinetyPercentOfTheRecordEachKillRushesTenStages()
-        {
-            var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, new GameState { RecordStage = 1000 }, Overpowered());
-            var rush = TestWorld.Data.Stages.Rush!;
-
-            TypeFor(loop, input, 1);
-
-            Assert.That(loop.State.Stage, Is.EqualTo(1 + rush.StagesPerKill));
-            Assert.That(loop.State.HighestStage, Is.EqualTo(1 + rush.StagesPerKill));
-            Assert.That(loop.Events.CountOf(GameEventKind.StageRushed), Is.EqualTo(1));
-        }
-
-        [Test]
-        public void TheRushStopsAtNinetyPercentOfTheRecord()
-        {
-            var input = new FakeInputSource();
-            var loop = TestWorld.Loop(input, new GameState { RecordStage = 1000 }, Unstoppable());
-
-            TypeFor(loop, input, 400);
-
-            Assert.That(loop.State.Stage, Is.GreaterThanOrEqualTo(900));
-            Assert.That(loop.State.Stage, Is.LessThan(1000));
-            Assert.That(loop.Events.CountOf(GameEventKind.StageRushed), Is.EqualTo(90));
-        }
-
-        [Test]
-        public void TheRushNeverPassesAnUnclearedGate()
-        {
-            var input = new FakeInputSource();
-            var gate = TestWorld.Data.Stages.Gates[0].Stage;
-            var loop = TestWorld.Loop(input, new GameState { RecordStage = gate * 2, Stage = gate - 15, HighestStage = gate - 15 }, Unstoppable());
-
-            TypeFor(loop, input, 6);
-
-            Assert.That(loop.State.Stage, Is.EqualTo(gate));
         }
 
         [Test]

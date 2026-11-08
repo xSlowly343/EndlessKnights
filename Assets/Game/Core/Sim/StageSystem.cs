@@ -134,8 +134,6 @@ namespace Game.Core.Sim
                 AdvanceStage();
             else if (_state.Farming)
                 CountFarmKill();
-            else if (RushTarget() is long rushTo)
-                RushTo(rushTo);
             else if (_state.KillsOnStage < EnemiesOnStage(_state.Stage))
             {
                 _state.KillsOnStage++;
@@ -379,23 +377,6 @@ namespace Game.Core.Sim
             if (--_state.GoldenTicks > 0 || !_state.EnemyAlive)
                 return;
             SpawnNormal();
-        }
-
-        private long? RushTarget()
-        {
-            if (_stages.Rush is not { } rush)
-                return null;
-            var ceiling = System.Math.Min(rush.CeilingFor(_state.RecordStage), NextUnclearedGateFrom(_state.Stage));
-            var target = System.Math.Min(_state.Stage + rush.StagesPerKill, ceiling);
-            return target > _state.Stage ? target : null;
-        }
-
-        private void RushTo(long target)
-        {
-            _state.KillsOnStage = 0;
-            _state.BossFailsInARow = 0;
-            _state.BossBestFraction = 0;
-            JumpTo(target, GameEventKind.StageRushed);
         }
 
         private void Jump()
