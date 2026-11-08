@@ -64,7 +64,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(Rules.EchoForStage(Rules.MinStage).ToDouble(), Is.EqualTo(10));
             var log1000 = Rules.EchoForStage(1000).Log10();
             var log5000 = Rules.EchoForStage(5000).Log10();
-            Assert.That(log5000 - log1000, Is.EqualTo(4000 * System.Math.Log10(1.00098)).Within(0.01));
+            Assert.That(log5000 - log1000, Is.EqualTo(4000 * System.Math.Log10(1.0011)).Within(0.01));
             Assert.That(Rules.EchoForStage(250000).Log10(), Is.LessThan(20));
         }
 
