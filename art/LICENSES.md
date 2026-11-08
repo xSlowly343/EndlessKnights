@@ -45,3 +45,14 @@
 ## Шрифты (OFL)
 
 Rubik и Lilita One — `Assets/Game/Art/Fonts`, лицензии лежат рядом с файлами шрифтов.
+
+## Пиксельная графика полоски (08.11.2026)
+
+Исходники наборов лежат в общей папке проекта `art/packs/` (в репозиторий не кладём: лицензия CraftPix запрещает распространять исходные файлы отдельно от игры).
+
+| Набор | Автор | Лицензия | Что берём |
+| --- | --- | --- | --- |
+| [Nature Landscapes Free Pixel Art](https://free-game-assets.itch.io/nature-landscapes-free-pixel-art) (он же [CraftPix Free Nature Backgrounds](https://craftpix.net/freebies/free-nature-backgrounds-pixel-art/)) | CraftPix | [CraftPix freebie](https://craftpix.net/file-licenses/): коммерческая игра можно, без указания автора, нельзя перепродавать файлы | фон «Зелёные холмы» (`nature_2`) |
+| [Monsters Creatures Fantasy](https://luizmelo.itch.io/monsters-creatures-fantasy) | LuizMelo | CC0 | гоблин, гриб (и скелет, летающий глаз на будущее) |
+| [Animated Wild Animals](https://opengameart.org/content/animated-wild-animals) | ScratchIO | CC0 | кабан |
+| [Ents](https://opengameart.org/content/ents) | см. страницу OGA | CC BY 4.0: указать автора в титрах | энт |
