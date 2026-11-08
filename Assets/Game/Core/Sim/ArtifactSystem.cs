@@ -261,7 +261,7 @@ namespace Game.Core.Sim
                 if (artifact.Class == null || _state.Is(artifact.Class.Value))
                 {
                     foreach (var modifier in artifact.PerLevel)
-                        modifiers.Add(modifier.WithValue(modifier.Value * level * scale));
+                        modifiers.Add(PerLevel(modifier, level, scale));
                     foreach (var modifier in artifact.PerArtifact)
                         modifiers.Add(modifier.WithValue(modifier.Value * level * owned.Count * scale));
                 }
@@ -270,6 +270,11 @@ namespace Game.Core.Sim
             _layer.Set(modifiers);
             Rebuilt?.Invoke();
         }
+
+        private static Modifier PerLevel(Modifier modifier, int level, double scale) =>
+            modifier.Kind == ModifierKind.More
+                ? modifier.WithValue(System.Math.Pow(1 + modifier.Value * scale, level) - 1)
+                : modifier.WithValue(modifier.Value * level * scale);
 
         private Modifier General(int level, double boost)
         {

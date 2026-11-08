@@ -189,9 +189,21 @@ namespace Game.Core.Tests.Sim
             plain.State.RunGoldEarned = BigNumber.FromDouble(1e9);
             codex.State.RunGoldEarned = BigNumber.FromDouble(1e9);
 
-            var expected = System.Math.Floor(plain.Prestige.EchoGain.ToDouble() * 1.2);
+            var expected = System.Math.Floor(plain.Prestige.EchoGain.ToDouble() * System.Math.Pow(1.05, 4));
             Assert.That(plain.Prestige.EchoGain.Sign, Is.GreaterThan(0));
             Assert.That(codex.Prestige.EchoGain.ToDouble(), Is.EqualTo(expected).Within(1));
+        }
+
+        [Test]
+        public void EchoArtifactsCompoundPerLevelAndMultiplyEachOther()
+        {
+            var plain = With();
+            var both = With(("rift_codex", 100), ("rebirth_star", 50));
+            plain.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            both.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+
+            var factor = System.Math.Pow(1.05, 100) * System.Math.Pow(1.02, 50);
+            Assert.That(both.Prestige.EchoGain.ToDouble() / plain.Prestige.EchoGain.ToDouble(), Is.EqualTo(factor).Within(factor * 1e-3));
         }
 
         [Test]
