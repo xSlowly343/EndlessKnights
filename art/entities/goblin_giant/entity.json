@@ -1,0 +1,12 @@
+{
+  "id": "goblin_giant",
+  "type": "enemy",
+  "biome": "green_hills",
+  "height_px": 104,
+  "cell": [128, 128],
+  "facing": "left",
+  "anims": { "idle": 8, "hit": 3, "death": 7 },
+  "palette_slots": ["skin", "cloth", "accent", "wood"],
+  "colors": { "skin": "#7DBE4E", "cloth": "#8A5A3C", "accent": "#E8443A", "wood": "#9C6B43" },
+  "variants": []
+}

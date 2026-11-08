@@ -1,0 +1,12 @@
+{
+  "id": "test_shapes",
+  "type": "test",
+  "biome": "green_hills",
+  "height_px": 104,
+  "cell": [128, 128],
+  "facing": "left",
+  "anims": { "idle": 1 },
+  "palette_slots": ["main", "accent"],
+  "colors": { "main": "#5FA8E8", "accent": "#F2C14E" },
+  "variants": []
+}
