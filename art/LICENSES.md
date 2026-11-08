@@ -53,6 +53,9 @@ Rubik и Lilita One — `Assets/Game/Art/Fonts`, лицензии лежат р�
 | Набор | Автор | Лицензия | Что берём |
 | --- | --- | --- | --- |
 | [Nature Landscapes Free Pixel Art](https://free-game-assets.itch.io/nature-landscapes-free-pixel-art) (он же [CraftPix Free Nature Backgrounds](https://craftpix.net/freebies/free-nature-backgrounds-pixel-art/)) | CraftPix | [CraftPix freebie](https://craftpix.net/file-licenses/): коммерческая игра можно, без указания автора, нельзя перепродавать файлы | фон «Зелёные холмы» (`nature_2`) |
-| [Monsters Creatures Fantasy](https://luizmelo.itch.io/monsters-creatures-fantasy) | LuizMelo | CC0 | гоблин, гриб (и скелет, летающий глаз на будущее) |
-| [Animated Wild Animals](https://opengameart.org/content/animated-wild-animals) | ScratchIO | CC0 | кабан |
-| [Ents](https://opengameart.org/content/ents) | см. страницу OGA | CC BY 4.0: указать автора в титрах | энт |
+| [Monsters Creatures Fantasy](https://luizmelo.itch.io/monsters-creatures-fantasy) | LuizMelo | CC0 | пробы, в состав не вошли (другой стиль) |
+| [Animated Wild Animals](https://opengameart.org/content/animated-wild-animals) | ScratchIO | CC0 | пробы, в состав не вошли |
+| [Ents](https://opengameart.org/content/ents) | см. страницу OGA | CC BY 4.0: указать автора в титрах | пробы, в состав не вошли |
+| [Elthen's Pixel Art Shop](https://elthen.itch.io): Twig Blight, Mini Golem, Leafy Leshy, Porcupine, Spider, Ratfolk Axe, Cyclops, Goblin King, Minotaur (бесплатные) | Elthen | «Feel free to use the sprites in commercial/non-commercial projects», указывать автора не обязательно, условия — [пост на Patreon](https://www.patreon.com/posts/27430241) | враги «Зелёных холмов» (утверждены 08.11.2026) |
+| [Evil Tree Pixel Art](https://jose-moyano.itch.io/evil-tree-pixel-art) | Jose Moyano | бесплатно (name your price); на вопрос о коммерции автор ответил «Sure!» в комментариях, формальной лицензии нет | злой пень (зеркально) |
+| [Nature Landscapes Free Pixel Art](https://free-game-assets.itch.io/nature-landscapes-free-pixel-art) | CraftPix | как выше | фон «Зелёные холмы» (`nature_5`, утверждён 08.11.2026; `nature_2` — прежний вариант) |
