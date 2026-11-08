@@ -57,6 +57,7 @@ namespace Game.Core.Content
         public System.Collections.Generic.IReadOnlyList<string> Rotation => _biomes;
         private string[] _allBiomes = System.Array.Empty<string>();
         public StageGate[] Gates { get; private set; } = System.Array.Empty<StageGate>();
+        public RushRules? Rush { get; private set; }
 
         public StageGate? GateAt(long stage)
         {
@@ -147,6 +148,7 @@ namespace Game.Core.Content
                 BossHintRules.Read(root.Field("bossHint")))
             {
                 Gates = gates.ToArray(),
+                Rush = root.HasField("rush") ? RushRules.Read(root.Field("rush")) : null,
                 ItemLevelRate = root.Field("enemyHp").HasField("itemLevelRate") ? root.Field("enemyHp").Field("itemLevelRate").AsNumber(1, 2) : 1,
                 _wallsOnTop = wallExtra > 0,
                 _hpSteps = hpSteps,

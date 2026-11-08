@@ -20,6 +20,7 @@ namespace Game.Core.Sim
         WandererJumped,
         PortalJumped,
         StageSkipped,
+        StageRushed,
         EnemiesSkipped,
         GateNeedsLimitFight,
         GoldenColossusAppeared,
