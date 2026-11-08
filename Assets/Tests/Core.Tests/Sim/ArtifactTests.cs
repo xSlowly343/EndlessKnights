@@ -23,11 +23,11 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ThereAreFourGroupsOfThirtyFour()
+        public void ThereAreFiveGroupsOfThirtyFive()
         {
-            Assert.That(Catalog.All.Count, Is.EqualTo(140));
-            Assert.That(Catalog.Groups, Is.EqualTo(4));
-            for (var group = 1; group <= 4; group++)
+            Assert.That(Catalog.All.Count, Is.EqualTo(175));
+            Assert.That(Catalog.Groups, Is.EqualTo(5));
+            for (var group = 1; group <= 5; group++)
                 Assert.That(Catalog.All.Count(a => a.Group == group), Is.EqualTo(35), "group " + group);
         }
 
@@ -48,7 +48,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EachUnlockCostsMoreThanThePrevious()
         {
-            var loop = WithEcho(1e9);
+            var loop = WithEcho(1e12);
             var previous = BigNumber.Zero;
 
             for (var i = 0; i < Catalog.All.Count; i++)
@@ -63,7 +63,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void NoDuplicatesUntilAllAreOpen()
         {
-            var loop = WithEcho(1e9);
+            var loop = WithEcho(1e12);
             var seen = new HashSet<string>();
 
             for (var i = 0; i < Catalog.All.Count; i++)

@@ -91,7 +91,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Artifacts.TryLevelUp("hourglass"), Is.False);
             Assert.That(loop.State.Artifacts["hourglass"], Is.EqualTo(30));
             Assert.That(loop.Artifacts.TryLevelUp("pathfinder_seal"), Is.True);
-            Assert.That(Catalog.All.Where(a => a.Capped).Select(a => a.Id), Is.EquivalentTo(new[] { "hourglass", "clockwork", "through_arrow", "ninth_wave", "gatekeeper_cloak", "siege_horn" }));
+            Assert.That(Catalog.All.Where(a => a.Capped).Select(a => a.Id), Is.EquivalentTo(new[] { "hourglass", "clockwork", "through_arrow", "ninth_wave", "gatekeeper_cloak", "siege_horn", "metronome", "hammock", "crack_lattice", "piercing_awl", "rust_flask", "fault_chisel" }));
         }
 
         [Test]

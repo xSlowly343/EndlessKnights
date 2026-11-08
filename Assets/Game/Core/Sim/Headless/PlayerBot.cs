@@ -406,7 +406,7 @@ namespace Game.Core.Sim.Headless
             }
             var bossFailed = state.BossFailsInARow >= BossFailsBeforePrestige;
             var slowStage = _stageSeconds > SlowStageSeconds;
-            if (!bossFailed && !slowStage && _stuckSeconds < _stuckSecondsBeforePrestige)
+            if (!bossFailed && !slowStage && !EchoWorthIt() && _stuckSeconds < _stuckSecondsBeforePrestige)
                 return;
             if (!_loop.Prestige.Available || _loop.Prestige.EchoGain.Sign <= 0)
                 return;
@@ -415,6 +415,12 @@ namespace Game.Core.Sim.Headless
                 _stuckSeconds = 0;
                 _stageSeconds = 0;
             }
+        }
+
+        private bool EchoWorthIt()
+        {
+            var state = _loop.State;
+            return state.EchoEarned.Sign > 0 && state.HighestStage >= state.RecordStage && _loop.Prestige.Highlighted;
         }
 
         private void SpendEcho()
