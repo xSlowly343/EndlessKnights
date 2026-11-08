@@ -861,6 +861,8 @@ namespace Game.Core.Sim
 
         public double Portion(Element element) => _portion[(int)element];
 
+        public int ClassElement { get; set; } = ElementRules.None;
+
         public double ElementMultiplier(StatTags tags) => ElementMultiplier(tags, _portion);
 
         public double ElementFactor(StatTags tags) => ElementMultiplier(tags, _sheetPortion);
@@ -873,7 +875,7 @@ namespace Game.Core.Sim
             var total = 0.0;
             for (var i = 0; i < ElementRules.Count; i++)
             {
-                portion[i] = System.Math.Max(0, _hero.Value(ElementRules.Conversion[i], 0, tags));
+                portion[i] = System.Math.Max(0, _hero.Value(ElementRules.Conversion[i], 0, tags) + ClassShare(i, CombatStats.ClassElementConversion, tags));
                 total += portion[i];
             }
             if (!(total > 0))
@@ -884,8 +886,8 @@ namespace Game.Core.Sim
             {
                 if (!(portion[i] > 0))
                     continue;
-                var resist = System.Math.Max(rules.MinResist, rules.Resistance(i, _state.EnemyResists, _state.EnemyWeakTo) - System.Math.Max(0, _hero.Value(ElementRules.Pen[i], 0, tags)));
-                portion[i] *= scale * _hero.Value(ElementRules.Damage[i], 1, tags) * (1 - resist);
+                var resist = System.Math.Max(rules.MinResist, rules.Resistance(i, _state.EnemyResists, _state.EnemyWeakTo) - System.Math.Max(0, _hero.Value(ElementRules.Pen[i], 0, tags) + ClassShare(i, CombatStats.ClassElementPen, tags)));
+                portion[i] *= scale * (_hero.Value(ElementRules.Damage[i], 1, tags) + ClassShare(i, CombatStats.ClassElementDamage, tags)) * (1 - resist);
                 multiplier += portion[i];
             }
             if (!(multiplier > 0))
@@ -894,6 +896,9 @@ namespace Game.Core.Sim
                 portion[i] /= multiplier;
             return multiplier;
         }
+
+        private double ClassShare(int element, StatId stat, StatTags tags) =>
+            element == ClassElement ? System.Math.Max(0, _hero.Value(stat, 0, tags)) : 0;
 
         private bool RollDischarge()
         {

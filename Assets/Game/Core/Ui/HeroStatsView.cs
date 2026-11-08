@@ -152,10 +152,13 @@ namespace Game.Core.Ui
             var state = loop.State;
             if (state.EnemyResists != ElementRules.None)
                 lines.Add(Line(0, "hero.stats.enemyElements", Texts.Format("hero.stats.enemyElementsShow", ElementName(state.EnemyResists), ElementName(state.EnemyWeakTo))));
+            var classElement = loop.Combat.ClassElement;
+            if (classElement != ElementRules.None)
+                lines.Add(Line(0, "hero.stats.classElement", ElementName(classElement)));
             var parts = new System.Text.StringBuilder();
             for (var i = 0; i < ElementRules.Count; i++)
             {
-                var share = loop.Hero.Value(ElementRules.Conversion[i], 0, StatTags.Strike);
+                var share = loop.Hero.Value(ElementRules.Conversion[i], 0, StatTags.Strike) + (i == classElement ? System.Math.Max(0, loop.Hero.Value(CombatStats.ClassElementConversion, 0, StatTags.Strike)) : 0);
                 if (!(share > 0))
                     continue;
                 if (parts.Length > 0)
