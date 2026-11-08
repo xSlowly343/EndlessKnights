@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Content;
+using Game.Core.Content.Items;
 using Game.Core.Math;
 
 namespace Game.Core.Sim.Headless
@@ -23,6 +24,41 @@ namespace Game.Core.Sim.Headless
             RaiseMount();
             ChooseFacets();
             RerollQuality();
+            ClaimQuests();
+            CraftSets();
+        }
+
+        private void ClaimQuests()
+        {
+            var quests = _loop.Quests;
+            for (var i = 0; i < quests.State.Daily.Count; i++)
+                quests.Claim(false, i);
+            for (var i = 0; i < quests.State.Weekly.Count; i++)
+                quests.Claim(true, i);
+        }
+
+        private void CraftSets()
+        {
+            var drops = _loop.Drops;
+            if (!_loop.Unlocks.IsOpen(Feature.SetCraft) || drops.BagFull)
+                return;
+            var set = SetToCraft();
+            if (set != null)
+                drops.CraftSetPiece(set.Id);
+        }
+
+        private SetDef? SetToCraft()
+        {
+            var ceiling = _loop.Drops.Rules.CeilingAt(System.Math.Max(1, _loop.State.RecordStage));
+            SetDef? best = null;
+            foreach (var set in _loop.Data.Items.Sets)
+            {
+                if (set.Event != null || set.Rarity > ceiling || _loop.Gear.Collected(set))
+                    continue;
+                if (best == null || set.Rarity > best.Rarity || (set.Rarity == best.Rarity && _loop.Gear.CollectedPieces(set) > _loop.Gear.CollectedPieces(best)))
+                    best = set;
+            }
+            return best;
         }
 
         private void RaiseMount()
