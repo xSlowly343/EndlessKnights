@@ -4,23 +4,29 @@
 
 ## Иконки game-icons.net (CC BY 3.0)
 
-Источник: [game-icons.net](https://game-icons.net), белые силуэты 512 px. Копии исходников лежат в `art/sources/game-icons/<автор>/`, из них `art/scripts/build_ui_icons.py` собирает спрайты по списку `art/ui/icons.json`. Изменения: обрезка, масштаб, тёмный контур.
+Источник: [game-icons.net](https://game-icons.net), белые силуэты 512 px. Копии исходников лежат в `art/sources/game-icons/<автор>/`, из них `art/scripts/build_ui_icons.py` собирает спрайты по списку `art/ui/icons.json`. Изменения: обрезка, масштаб, тёмный контур; у групп `artifacts`, `companions` и `sets` ещё цветная заливка, свечение и фон (стиль `glow`).
 
 Условие CC BY 3.0: в титрах игры указать авторов. Строка для Настроек (задача 12.13):
 
-> Иконки: Lorc, Delapouite, Caro Asercion, PriorBlue, Guard13007, HeavenlyDog, John Colburn, Skoll, Willdabeast — game-icons.net, CC BY 3.0
+> Иконки: Lorc, Delapouite, Caro Asercion, Skoll, Willdabeast, PriorBlue, John Colburn, HeavenlyDog, Quoting, Starseeker, Aussiesim, Lucas, Carl Olsen, Sbed, Guard13007 — game-icons.net, CC BY 3.0
 
 | Автор | Файлы |
 | --- | --- |
-| Lorc | `archery-target`, `axe-swing`, `battle-axe`, `boots`, `broadsword`, `campfire`, `coffee-mug`, `cog`, `comet-spark`, `conversation`, `cross-mark`, `crown`, `crystal-ball`, `crystal-cluster`, `cut-diamond`, `cycle`, `drop`, `echo-ripples`, `floating-crystal`, `flying-flag`, `focused-lightning`, `frozen-block`, `gears`, `gem-pendant`, `guillotine`, `guitar`, `hourglass`, `hunting-horn`, `lightning-arc`, `lightning-branches`, `love-howl`, `magic-portal`, `magnifying-glass`, `open-book`, `portal`, `potion-ball`, `punch-blast`, `quill-ink`, `radial-balance`, `reaper-scythe`, `return-arrow`, `shouting`, `skull-crossed-bones`, `sleepy`, `sonic-shout`, `spade`, `sparkling-sabre`, `spinning-blades`, `spotted-wound`, `sprint`, `stopwatch`, `swap-bag`, `syringe`, `tornado`, `tree-branch`, `two-shadows`, `visored-helm`, `voodoo-doll`, `wind-slap`, `wizard-staff` |
-| Delapouite | `alarm-clock`, `arrow-cursor`, `blindfold`, `bow-arrow`, `chart`, `checkered-flag`, `chest-armor`, `drum`, `enrage`, `eye-target`, `gloves`, `gold-stack`, `hamburger-menu`, `headphones`, `heart-shield`, `horizon-road`, `katana`, `key-card`, `keyboard`, `lasso`, `lungs`, `mouse`, `musical-notes`, `notebook`, `pendulum-swing`, `pool-dive`, `position-marker`, `ring`, `shield-bash`, `shop`, `speaker`, `tally-mark-5`, `thermometer-hot`, `thor-hammer`, `three-friends`, `two-coins`, `viking-helmet`, `warhammer` |
-| Caro Asercion | `coinflip`, `ricochet` |
+| Lorc | `anchor`, `anvil`, `anvil-impact`, `archery-target`, `arrow-flights`, `axe-swing`, `barbed-arrow`, `barbed-spear`, `battle-axe`, `beams-aura`, `belt-buckles`, `bestial-fangs`, `big-wave`, `boar-tusks`, `book-aura`, `boots`, `broadsword`, `broken-shield`, `bubbling-flask`, `bull-horns`, `burning-round-shot`, `butterfly`, `campfire`, `candle-flame`, `candle-holder`, `candlebright`, `cannon`, `cat`, `cauldron`, `cheese-wedge`, `clockwork`, `cloudy-fork`, `coffee-mug`, `cog`, `comet-spark`, `compass`, `conversation`, `corked-tube`, `cracked-glass`, `cross-mark`, `crossed-swords`, `crow-dive`, `crown`, `crown-coin`, `crystal-ball`, `crystal-cluster`, `crystal-growth`, `cut-diamond`, `cycle`, `dove`, `dragon-head`, `dragonfly`, `drill`, `drop`, `droplet-splash`, `earth-crack`, `echo-ripples`, `energy-breath`, `feather`, `fire-ace`, `fizzing-flask`, `flat-hammer`, `floating-crystal`, `flying-flag`, `focused-lightning`, `fox-head`, `frog`, `frozen-block`, `frozen-orb`, `gears`, `gem-pendant`, `guillotine`, `guitar`, `heart-drop`, `heart-inside`, `horned-skull`, `hourglass`, `hunting-horn`, `iron-mask`, `jeweled-chalice`, `knapsack`, `lantern-flame`, `laurel-crown`, `lightning-arc`, `lightning-branches`, `linked-rings`, `long-antennae-bug`, `love-howl`, `magic-portal`, `magnifying-glass`, `microscope-lens`, `mirror-mirror`, `molotov`, `moon`, `mouse`, `night-sky`, `open-book`, `owl`, `paper-lantern`, `parrot-head`, `pollen-dust`, `portal`, `potion-ball`, `pumpkin-lantern`, `punch-blast`, `quill`, `quill-ink`, `radial-balance`, `raven`, `reaper-scythe`, `return-arrow`, `ribbon`, `ringing-bell`, `round-bottom-flask`, `rune-stone`, `salamander`, `sands-of-time`, `scarab-beetle`, `scroll-unfurled`, `sewing-needle`, `shadow-follower`, `shard-sword`, `shiny-purse`, `shouting`, `skull-crack`, `skull-crossed-bones`, `sleepy`, `snake-bite`, `snowman`, `sonic-shout`, `spade`, `spark-spirit`, `sparkling-sabre`, `spectacle-lenses`, `spinning-blades`, `spotted-wound`, `sprint`, `spyglass`, `stone-sphere`, `stopwatch`, `sun`, `swallow`, `swap-bag`, `sword-smithing`, `syringe`, `tattered-banner`, `tear-tracks`, `tesla-coil`, `thunder-blade`, `thunderball`, `tornado`, `tree-branch`, `turtle`, `twin-shell`, `two-feathers`, `two-shadows`, `visored-helm`, `voodoo-doll`, `walking-boot`, `wave-crest`, `wax-seal`, `wind-slap`, `wing-cloak`, `wizard-staff`, `wolf-head`, `worm-mouth` |
+| Delapouite | `alarm-clock`, `all-seeing-eye`, `ancient-ruins`, `arrow-cursor`, `attack-gauge`, `balloon-dog`, `bed`, `bed-lamp`, `beer-horn`, `belt-armor`, `blindfold`, `bow-arrow`, `bow-string`, `brick-pile`, `butterfly-flower`, `caravan`, `card-joker`, `ceremonial-mask`, `chart`, `checkered-flag`, `chest-armor`, `chisel`, `clay-brick`, `cloth-jar`, `crane`, `cricket`, `crystal-earrings`, `diamond-hilt`, `diamond-ring`, `direction-sign`, `djed-pillar`, `dream-catcher`, `drum`, `enrage`, `ermine`, `eye-target`, `fairy-wings`, `falling-star`, `fertilizer-bag`, `film-spool`, `fishing-pole`, `flint-spark`, `fox-tail`, `gloves`, `gold-nuggets`, `gold-stack`, `golem-head`, `greek-sphinx`, `griffin-shield`, `griffin-symbol`, `hamburger-menu`, `hand-of-god`, `headphones`, `heart-armor`, `heart-shield`, `heart-wings`, `herbs-bundle`, `horizon-road`, `jumping-dog`, `kangaroo`, `katana`, `key-card`, `keyboard`, `king-ju-mask`, `knight-banner`, `knot`, `lasso`, `light-projector`, `locked-box`, `lungs`, `magic-axe`, `mammoth`, `manta-ray`, `metronome`, `mighty-horn`, `mouse`, `musical-notes`, `notebook`, `old-lantern`, `paint-brush`, `painted-pottery`, `pendant-key`, `pendulum-swing`, `pirate-hook`, `plague-doctor-profile`, `plant-seed`, `polar-star`, `pool-dive`, `position-marker`, `powder-bag`, `prism`, `pumpkin`, `quiver`, `rabbit`, `rat`, `ring`, `rod-of-asclepius`, `rolled-cloth`, `rooster`, `rusty-sword`, `sandal`, `sandstorm`, `scabbard`, `sewing-string`, `shaking-hands`, `shield-bash`, `shinto-shrine-mirror`, `shop`, `sickle`, `sitting-dog`, `slime`, `sniffing-dog`, `soul-vessel`, `sparkles`, `speaker`, `spiky-wing`, `split-arrows`, `spring`, `stabbed-note`, `stamper`, `star-formation`, `stone-stack`, `tally-mark-5`, `thermometer-hot`, `thor-hammer`, `three-friends`, `token`, `tree-roots`, `trophy-cup`, `two-coins`, `valve`, `viking-helmet`, `viking-shield`, `walrus-head`, `war-bonnet`, `war-pick`, `warhammer`, `watering-can`, `windmill`, `windsock`, `worms` |
+| Caro Asercion | `boar`, `coinflip`, `fox`, `hedgehog`, `mole`, `ricochet` |
+| Skoll | `open-treasure-chest`, `pig`, `sound-waves`, `spotted-bug`, `trench-spade` |
+| Willdabeast | `gold-bar`, `round-shield` |
 | PriorBlue | `battery-100`, `battery-25` |
-| Guard13007 | `pause-button` |
-| HeavenlyDog | `defensive-wall` |
 | John Colburn | `pistol-gun` |
-| Skoll | `sound-waves` |
-| Willdabeast | `round-shield` |
+| HeavenlyDog | `defensive-wall` |
+| Quoting | `card-pickup` |
+| Starseeker | `potion-of-madness` |
+| Aussiesim | `card-ace-spades` |
+| Lucas | `cloak` |
+| Carl Olsen | `flame` |
+| Sbed | `poison-cloud` |
+| Guard13007 | `pause-button` |
 
 ## Цветные иконки скиллов (08.11.2026)
 
