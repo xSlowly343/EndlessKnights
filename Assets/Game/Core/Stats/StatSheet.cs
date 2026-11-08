@@ -105,6 +105,17 @@ namespace Game.Core.Stats
 
         public Totals TotalsOf(StatId stat, StatTags tags = StatTags.None) => TotalsFor(stat, tags);
 
+        public double IncreasedIn(StatId stat, StatTags tags, ModifierPool pool)
+        {
+            var increased = 0.0;
+            foreach (var modifier in _modifiers)
+            {
+                if (modifier.Kind == ModifierKind.Increased && modifier.Pool == pool && modifier.AppliesTo(stat, tags) && modifier.ActiveUnder(_conditions))
+                    increased += modifier.Value;
+            }
+            return increased;
+        }
+
         private Totals TotalsFor(StatId stat, StatTags tags)
         {
             var key = (stat, tags);

@@ -538,7 +538,7 @@ namespace Game.Core.Sim
             return CommonTreeResult.Chosen;
         }
 
-        private (ClassTree Tree, ClassTreeAllocation Allocation)? TreeOfNode(string nodeId)
+        public (ClassTree Tree, ClassTreeAllocation Allocation)? TreeOfNode(string nodeId)
         {
             if (ClassTreeDef is { } classTree && classTree.TryGet(nodeId, out _))
                 return (classTree, State.ClassTree);

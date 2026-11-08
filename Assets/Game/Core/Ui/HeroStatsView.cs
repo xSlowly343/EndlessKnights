@@ -72,12 +72,12 @@ namespace Game.Core.Ui
             var critMultiplier = combat.CritMultiplier(StatTags.Strike);
             var overcrit = combat.Overcrit(StatTags.Strike);
             var overcritMultiplier = combat.OvercritMultiplier(StatTags.Strike);
-            var damage = loop.Hero.TotalsOf(CombatStats.Damage, StatTags.Strike);
             var every = (long)System.Math.Round(loop.Hero.Value(CombatStats.KeyStrikeEvery, 0, StatTags.Strike));
             var heavy = System.Math.Max(1, loop.Hero.Value(CombatStats.KeyStrikeMultiplier, 0, StatTags.Strike));
             var boss = loop.Hero.TotalsOf(CombatStats.DamageVsBoss);
             lines.Add(Header(0, "hero.stats.damage"));
             lines.Add(Line(0, "hero.stats.attack", Invariant("{0:0.#}", combat.Attack)));
+            lines.Add(Line(0, "hero.stats.attackFrom", Texts.Format("hero.stats.attackFromShow", TreeNodeText.AttributeName(loop.ClassAttributeDef), Whole(combat.AttributeTotal, format), Whole(combat.WeaponDamage, format), Whole(combat.FlatAttack, format))));
             lines.Add(Line(0, "hero.stats.keyHit", NumberFormatter.Format(hit, format)));
             lines.Add(Line(0, "hero.stats.averageHit", NumberFormatter.Format(BigNumber.FromDouble(AverageHit(hit.ToDouble(), crit, critMultiplier, overcrit, overcritMultiplier)), format)));
             lines.Add(Line(0, "hero.stats.dps", NumberFormatter.Format(loop.State.RecentDps, format)));
@@ -92,11 +92,40 @@ namespace Game.Core.Ui
             AddDefense(lines, loop);
             AddElements(lines, loop);
             AddTempo(lines, loop);
-            lines.Add(Line(0, "hero.stats.increased", Percent(damage.IncreasedMultiplier - 1)));
-            lines.Add(Line(0, "hero.stats.more", Invariant("×{0:0.##}", damage.MoreMultiplier)));
             lines.Add(Line(0, "hero.stats.heavyStrike", every >= 1 ? Texts.Format("hero.stats.heavyEvery", every, heavy.ToString("0.#", CultureInfo.InvariantCulture)) : Texts.Get("hero.stats.none")));
             lines.Add(Line(0, "hero.stats.vsBoss", Percent(boss.IncreasedMultiplier * boss.MoreMultiplier - 1)));
+            AddGroups(lines, DamageBreakdown.Of(loop));
         }
+
+        public static IReadOnlyList<(string Key, double Factor)> Groups(in DamageBreakdown breakdown) => new[]
+        {
+            ("hero.stats.increased", breakdown.Increased),
+            ("hero.stats.treeBasket", breakdown.TreeBasket),
+            ("hero.stats.more", breakdown.More),
+            ("hero.stats.additional", breakdown.Additional),
+            ("hero.stats.critAverage", breakdown.Crit),
+            ("hero.stats.defenseGroup", breakdown.Defense),
+            ("hero.stats.elementGroup", breakdown.Element),
+            ("hero.stats.fractureGroup", breakdown.Fracture),
+            ("hero.stats.tempoGroup", breakdown.Tempo),
+            ("hero.stats.pillarGroup", breakdown.Pillar)
+        };
+
+        private static void AddGroups(List<HeroStatLine> lines, in DamageBreakdown breakdown)
+        {
+            lines.Add(Header(0, "hero.stats.groups"));
+            foreach (var (key, factor) in Groups(breakdown))
+            {
+                if (key == "hero.stats.increased" || key == "hero.stats.more" || System.Math.Abs(factor - 1) > 1e-9)
+                    lines.Add(Line(0, key, Factor(factor)));
+            }
+            lines.Add(Line(0, "hero.stats.groupsTotal", Factor(breakdown.Groups)));
+        }
+
+        public static string Factor(double factor) =>
+            factor < 1000 ? Invariant("×{0:0.##}", factor) : "×" + NumberFormatter.Format(BigNumber.FromDouble(factor), NumberFormatSettings.Default);
+
+        private static string Whole(double value, NumberFormatSettings format) => NumberFormatter.Format(BigNumber.FromDouble(System.Math.Floor(System.Math.Max(0, value))), format);
 
         private static void AddFracture(List<HeroStatLine> lines, GameLoop loop)
         {

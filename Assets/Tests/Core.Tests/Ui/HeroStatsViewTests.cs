@@ -36,6 +36,64 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
+        public void TheSheetShowsTheAttackSourcesAndOneLinePerDamageGroup()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
+            loop.Hero.Add(new Modifier(CombatStats.AdditionalDamage, ModifierKind.Flat, 0.25));
+            loop.RefreshClassAttribute();
+
+            var lines = HeroStatsView.Lines(loop, NumberFormatSettings.Default);
+            var labels = lines.Select(line => line.Label).ToList();
+
+            Assert.That(labels, Does.Contain("Из чего АТК").And.Contain("Группы урона").And.Contain("Сила атаки %").And.Contain("Наносимый урон").And.Contain("Все группы"));
+            Assert.That(lines.First(line => line.Label == "Доп. урон").Value, Is.EqualTo("×1.25"));
+            Assert.That(labels, Does.Not.Contain("Темп"));
+        }
+
+        [Test]
+        public void AFactorAboveAThousandIsShortened()
+        {
+            Assert.That(HeroStatsView.Factor(1.234), Is.EqualTo("×1.23"));
+            Assert.That(HeroStatsView.Factor(2.5e6), Does.StartWith("×").And.Not.Contain("2500000"));
+        }
+
+        [Test]
+        public void ThePreviewNamesOnlyTheGroupsThatMove()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
+            loop.Tick();
+            var weapon = loop.Weapons.Give(TestWorld.Data.Weapons.Bases[0], Game.Core.Content.Items.ItemRarity.Legendary);
+
+            var change = DamagePreview.Weapon(loop, weapon);
+            var groups = DamagePreviewText.Groups(change);
+
+            Assert.That(DamagePreviewText.Summary(change), Does.StartWith("Урон за удар ×"));
+            Assert.That(groups.Select(line => line.Label), Does.Contain("Сила атаки").And.Not.Contain("Крит в среднем"));
+            Assert.That(DamagePreviewText.Summary(DamageChange.None), Is.EqualTo("урон не меняется"));
+        }
+
+        [Test]
+        public void TheMountRowsCoverEverySlotWithItsFacets()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer });
+            loop.State.Mount.Levels[0] = 6;
+
+            var rows = MountView.Rows(loop);
+            var facets = MountView.Facets(loop, 0);
+
+            Assert.That(rows.Count, Is.EqualTo(Game.Core.Content.MountRules.Slots));
+            Assert.That(rows[0].Name, Is.EqualTo("Оружие"));
+            Assert.That(rows[0].Badge, Is.EqualTo("+6"));
+            Assert.That(rows[1].Badge, Is.Empty);
+            Assert.That(facets.Count, Is.EqualTo(5));
+            Assert.That(facets[0].Open, Is.True);
+            Assert.That(facets[1].Open, Is.False);
+            Assert.That(facets[0].Options.Count, Is.EqualTo(3));
+            Assert.That(MountView.OptionName(facets[0].Options[0]), Is.EqualTo("Остриё"));
+            Assert.That(MountView.Summary(loop), Does.Contain("Скань").And.Contain("дальше +5%"));
+        }
+
+        [Test]
         public void AverageHitWeighsCritsByChance()
         {
             Assert.That(HeroStatsView.AverageHit(100, 0.25, 3), Is.EqualTo(150).Within(1e-9));
