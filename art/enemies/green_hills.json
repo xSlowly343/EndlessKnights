@@ -1,6 +1,6 @@
 {
   "biome": "green_hills",
-  "scale": 2,
+  "scale": 3,
   "fps": 10,
   "loop": ["idle", "walk"],
   "enemies": {
@@ -16,13 +16,13 @@
       "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 5, "death": 6}},
     "ratfolk_axe": {"source": "elthen/Ratfolk Axe Sprite Sheet.png", "cell": [64, 32], "mirror": true,
       "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
-    "evil_stump": {"source": "jose_moyano/tronchungo3.png", "slot": 48, "right_edge": 300, "mirror": true,
+    "evil_stump": {"source": "jose_moyano/tronchungo3.png", "slot": 48, "right_edge": 300, "mirror": true, "scale": 2,
       "bands": {"idle": [4, 44], "walk": [45, 86], "attack": [97, 132], "hit": [270, 304], "death": [224, 256]}},
     "cyclops": {"source": "elthen/Cyclops Sprite Sheet.png", "cell": [64, 64], "mirror": true, "boss": true,
       "rows": {"idle": 0, "walk": 1, "attack": 2, "throw": 3, "hit": 4, "death": 6}},
     "goblin_king": {"source": "elthen/Goblin King Sprite Sheet.png", "cell": [64, 64], "mirror": true, "boss": true,
       "rows": {"idle": 0, "walk": 1, "attack": 9, "throw": 5, "hit": 6, "death": 7}},
-    "minotaur": {"source": "elthen/Minotaur - Sprite Sheet.png", "cell": [96, 96], "mirror": true, "boss": true,
+    "minotaur": {"source": "elthen/Minotaur - Sprite Sheet.png", "cell": [96, 96], "mirror": true, "master": true, "boss": true,
       "rows": {"idle": 0, "walk": 1, "attack": 3, "attack2": 4, "hit": 7, "death": 9}}
   }
 }
