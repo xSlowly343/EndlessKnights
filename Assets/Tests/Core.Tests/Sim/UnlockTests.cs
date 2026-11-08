@@ -27,8 +27,9 @@ namespace Game.Core.Tests.Sim
             Assert.That(rules.For(Feature.Resonance).Stage, Is.LessThan(rules.For(Feature.Spirits).Stage));
             Assert.That(rules.For(Feature.Spirits).Stage, Is.LessThan(rules.For(Feature.Atlas).Stage));
             Assert.That(rules.For(Feature.Atlas).Stage, Is.LessThan(rules.For(Feature.Chronicle).Stage));
-            Assert.That(rules.ArtifactGroupStage(3), Is.EqualTo(50000));
-            Assert.That(rules.ArtifactGroupStage(4), Is.GreaterThan(50000));
+            for (var group = 2; group <= 5; group++)
+                Assert.That(rules.ArtifactGroupStage(group), Is.GreaterThan(rules.ArtifactGroupStage(group - 1)));
+            Assert.That(rules.ArtifactGroupStage(5), Is.LessThanOrEqualTo(101000));
         }
 
         [Test]
@@ -52,14 +53,14 @@ namespace Game.Core.Tests.Sim
             Assert.That(fresh.Artifacts.TryUnlock(), Is.Null);
 
             var loop = Real(500, prestiges: 1);
-            for (var i = 0; i < 70; i++)
+            for (var i = 0; i < 35; i++)
                 Assert.That(loop.Artifacts.TryUnlock(), Is.Not.Null);
             Assert.That(loop.Artifacts.TryUnlock(), Is.Null);
             Assert.That(loop.Artifacts.WaitsForGroup, Is.True);
             Assert.That(loop.Artifacts.AllUnlocked, Is.False);
 
-            loop.State.RecordStage = 50000;
-            Assert.That(loop.Artifacts.TryUnlock()!.Group, Is.EqualTo(3));
+            loop.State.RecordStage = 5000;
+            Assert.That(loop.Artifacts.TryUnlock()!.Group, Is.EqualTo(2));
         }
 
         [Test]

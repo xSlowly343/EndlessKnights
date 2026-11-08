@@ -91,7 +91,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Artifacts.TryLevelUp("hourglass"), Is.False);
             Assert.That(loop.State.Artifacts["hourglass"], Is.EqualTo(30));
             Assert.That(loop.Artifacts.TryLevelUp("pathfinder_seal"), Is.True);
-            Assert.That(Catalog.All.Where(a => a.Capped).Select(a => a.Id), Is.EquivalentTo(new[] { "hourglass", "clockwork", "through_arrow", "ninth_wave", "gatekeeper_cloak", "siege_horn" }));
+            Assert.That(Catalog.All.Where(a => a.Capped).Select(a => a.Id), Is.EquivalentTo(new[] { "hourglass", "clockwork", "through_arrow", "ninth_wave", "gatekeeper_cloak", "siege_horn", "metronome", "hammock", "crack_lattice", "piercing_awl", "rust_flask", "fault_chisel", "foresight_parchment" }));
         }
 
         [Test]
@@ -187,26 +187,60 @@ namespace Game.Core.Tests.Sim
             var plain = With();
             var codex = With(("rift_codex", 4));
             plain.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            plain.State.HighestStage = 5000;
             codex.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            codex.State.HighestStage = 5000;
 
-            var expected = System.Math.Floor(plain.Prestige.EchoGain.ToDouble() * 1.2);
+            var expected = System.Math.Floor(plain.Prestige.EchoGain.ToDouble() * System.Math.Pow(1.05, 4));
             Assert.That(plain.Prestige.EchoGain.Sign, Is.GreaterThan(0));
             Assert.That(codex.Prestige.EchoGain.ToDouble(), Is.EqualTo(expected).Within(1));
         }
 
         [Test]
+        public void CompoundedEchoStaysFiniteAtHugeLevels()
+        {
+            var loop = With(("rift_codex", 100000), ("rebirth_star", 100000), ("returning_seal", 100000), ("ancient_treasury", 100000));
+            loop.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            loop.State.HighestStage = 5000;
+
+            var gain = loop.Prestige.EchoGain;
+            Assert.That(gain.Sign, Is.GreaterThan(0));
+            Assert.That(gain.Log10(), Is.LessThan(400));
+        }
+
+        [Test]
+        public void EchoArtifactsCompoundPerLevelAndMultiplyEachOther()
+        {
+            var plain = With();
+            var both = With(("rift_codex", 100), ("rebirth_star", 50));
+            plain.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            plain.State.HighestStage = 5000;
+            both.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            both.State.HighestStage = 5000;
+
+            var factor = System.Math.Pow(1.05, 100) * System.Math.Pow(1.02, 50);
+            Assert.That(both.Prestige.EchoGain.ToDouble() / plain.Prestige.EchoGain.ToDouble(), Is.EqualTo(factor).Within(factor * 1e-3));
+        }
+
+        [Test]
         public void ParchmentOfForesightStartsTheRunFurtherButNotPastTheRecord()
         {
-            var loop = With(("foresight_parchment", 5));
-            loop.State.HighestStage = 80;
-            loop.State.RecordStage = 80;
-            loop.State.RunGoldEarned = BigNumber.FromDouble(1e9);
+            var loop = With(("foresight_parchment", 20));
+            loop.State.HighestStage = 1000;
+            loop.State.RecordStage = 1000;
 
             Assert.That(loop.Prestige.TryPrestige(), Is.True);
-            Assert.That(loop.State.Stage, Is.EqualTo(6));
-            Assert.That(loop.State.HighestStage, Is.EqualTo(6));
+            Assert.That(loop.State.Stage, Is.EqualTo(201));
+            Assert.That(loop.State.HighestStage, Is.EqualTo(201));
 
-            var low = With(("foresight_parchment", 5));
+            var capped = With(("foresight_parchment", 50));
+            capped.State.HighestStage = 1000;
+            capped.State.RecordStage = 1000;
+            Assert.That(capped.Prestige.StartStage, Is.EqualTo(501));
+            Assert.That(capped.Artifacts.TryLevelUp("foresight_parchment"), Is.False);
+
+            var low = With(("foresight_parchment", 20));
+            low.State.HighestStage = 1000;
             low.State.RecordStage = 3;
             Assert.That(low.Prestige.StartStage, Is.EqualTo(3));
         }

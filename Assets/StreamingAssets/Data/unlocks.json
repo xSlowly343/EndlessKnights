@@ -10,5 +10,5 @@
     "dungeons": { "stage": 150 },
     "slates": { "stage": 150 }
   },
-  "artifactGroups": [0, 0, 50000, 100000]
+  "artifactGroups": [0, 5000, 20000, 45000, 75000]
 }

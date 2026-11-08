@@ -39,7 +39,17 @@ namespace Game.Core.Sim.Headless
             [CombatStats.ResourcePerCrit.Name] = 0.02,
             [CombatStats.ResourcePerFastSkill.Name] = 0.02,
             [CombatStats.ResourcePerCircle.Name] = 0.02,
-            [CombatStats.ResourcePerFlick.Name] = 0.02
+            [CombatStats.ResourcePerFlick.Name] = 0.02,
+            [CombatStats.AdditionalDamage.Name] = 1.5,
+            [CombatStats.ArmorPen.Name] = 1,
+            [CombatStats.DefenseShred.Name] = 1,
+            [CombatStats.OvercritMultiplier.Name] = 0.3,
+            [CombatStats.FractureChance.Name] = 0.5,
+            [CombatStats.FractureEffect.Name] = 0.2,
+            [CombatStats.TempoDamage.Name] = 10,
+            [CombatStats.WeaponDamage.Name] = 0.0008,
+            [CombatStats.FlatAttack.Name] = 0.01,
+            [CombatStats.ItemAttribute.Name] = AttributeWeight
         };
 
         private readonly HashSet<string> _traitStats = new HashSet<string>(System.StringComparer.Ordinal);

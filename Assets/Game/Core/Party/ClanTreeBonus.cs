@@ -15,7 +15,7 @@ namespace Game.Core.Party
         {
             _catalog = catalog;
             _saved = saved;
-            _layer = new ModifierLayer(hero);
+            _layer = new ModifierLayer(hero, ModifierPool.Party);
         }
 
         public IReadOnlyList<string> Taken => _saved.Nodes;

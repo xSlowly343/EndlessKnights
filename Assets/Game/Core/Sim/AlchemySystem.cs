@@ -32,7 +32,7 @@ namespace Game.Core.Sim
             _camp = camp;
             _peaceful = peaceful;
             _events = events;
-            _layer = new ModifierLayer(hero);
+            _layer = new ModifierLayer(hero, ModifierPool.World);
             ApplyActive();
         }
 
