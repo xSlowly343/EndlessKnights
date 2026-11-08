@@ -1,0 +1,157 @@
+{
+  "biome": "pink_forest",
+  "scale": 4,
+  "fps": 10,
+  "loop": [
+    "idle",
+    "walk"
+  ],
+  "enemies": {
+    "glow_jelly": {
+      "source": "elthen/Jellyfish Sprite Sheet.png",
+      "cell": [
+        32,
+        32
+      ],
+      "mirror": true,
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 0,
+        "death": 3
+      }
+    },
+    "watcher_eye": {
+      "source": "elthen/Eye Monster Sprite Sheet.png",
+      "cell": [
+        32,
+        32
+      ],
+      "mirror": true,
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 1,
+        "death": 4
+      }
+    },
+    "fae_squirrel": {
+      "source": "elthen/Squirrel Sprite Sheet.png",
+      "cell": [
+        32,
+        32
+      ],
+      "mirror": true,
+      "rows": {
+        "idle": 0,
+        "walk": 2,
+        "attack": 3,
+        "hit": 4,
+        "death": 6
+      }
+    },
+    "dusk_dragonfly": {
+      "source": "elthen/Dragonfly Sprite Sheet.png",
+      "cell": [
+        32,
+        32
+      ],
+      "mirror": true,
+      "hue_shift": 150,
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 2,
+        "death": 3
+      }
+    },
+    "moss_frog": {
+      "source": "elthen/Frog Sprite Sheet.png",
+      "cell": [
+        32,
+        24
+      ],
+      "mirror": true,
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 0,
+        "death": 3
+      }
+    },
+    "akaname": {
+      "source": "elthen/Akaname Sprite Sheet.png",
+      "cell": [
+        32,
+        32
+      ],
+      "mirror": true,
+      "scale": 5,
+      "boss": true,
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 0,
+        "death": 3
+      }
+    },
+    "incubus": {
+      "source": "elthen/Incubus Sprite Sheet.png",
+      "cell": [
+        96,
+        64
+      ],
+      "mirror": true,
+      "boss": true,
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 3,
+        "death": 4
+      },
+      "scale": 3
+    },
+    "mind_eater": {
+      "source": "elthen/Intellect Devourer Sprites.png",
+      "cell": [
+        32,
+        32
+      ],
+      "mirror": true,
+      "scale": 5,
+      "boss": true,
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 4,
+        "death": 5
+      }
+    },
+    "thicket_maw": {
+      "source": "elthen/Cacodaemon Sprite Sheet.png",
+      "cell": [
+        64,
+        64
+      ],
+      "mirror": true,
+      "hue_shift": -60,
+      "boss": true,
+      "rows": {
+        "idle": 0,
+        "walk": 0,
+        "attack": 1,
+        "hit": 2,
+        "death": 3
+      },
+      "scale": 3,
+      "master": true
+    }
+  }
+}

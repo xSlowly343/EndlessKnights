@@ -64,12 +64,17 @@ def band_frames(sheet, band, slot, right_edge, min_width=12):
 def strip_frames(packs, strip, width):
     sheet = Image.open(packs / strip["file"]).convert("RGBA")
     frame_width = strip["width"]
+    frame_height = strip.get("height", sheet.height)
     frames = []
-    for column in range(sheet.width // frame_width):
-        part = sheet.crop((column * frame_width, 0, (column + 1) * frame_width, sheet.height))
-        frame = Image.new("RGBA", (width, sheet.height))
-        frame.alpha_composite(part, ((width - frame_width) // 2, 0))
-        frames.append(frame)
+    for row in range(sheet.height // frame_height):
+        for column in range(sheet.width // frame_width):
+            box = (column * frame_width, row * frame_height, (column + 1) * frame_width, (row + 1) * frame_height)
+            part = sheet.crop(box)
+            if part.getbbox() is None:
+                continue
+            frame = Image.new("RGBA", (width, frame_height))
+            frame.alpha_composite(part, ((width - frame_width) // 2, 0))
+            frames.append(frame)
     return frames
 
 
