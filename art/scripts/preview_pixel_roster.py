@@ -52,6 +52,8 @@ def background(name, offset):
 
 
 def render(group, scene, path, fps):
+    if not group:
+        return
     loaded = [load(name) for name in group]
     lines = [timeline(anims) for _, anims in loaded]
     widths = [meta["cell"][0] for meta, _ in loaded]

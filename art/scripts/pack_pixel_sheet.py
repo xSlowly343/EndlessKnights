@@ -61,6 +61,26 @@ def band_frames(sheet, band, slot, right_edge, min_width=12):
     return frames
 
 
+def strip_frames(packs, strip, width):
+    sheet = Image.open(packs / strip["file"]).convert("RGBA")
+    frame_width = strip["width"]
+    frames = []
+    for column in range(sheet.width // frame_width):
+        part = sheet.crop((column * frame_width, 0, (column + 1) * frame_width, sheet.height))
+        frame = Image.new("RGBA", (width, sheet.height))
+        frame.alpha_composite(part, ((width - frame_width) // 2, 0))
+        frames.append(frame)
+    return frames
+
+
+def resampled(frame, factor):
+    size = (max(1, round(frame.width * factor)), max(1, round(frame.height * factor)))
+    shrunk = frame.resize(size, Image.BOX)
+    alpha = shrunk.getchannel("A").point(lambda value: 255 if value > 110 else 0)
+    shrunk.putalpha(alpha)
+    return shrunk
+
+
 def trimmed_to_feet(frames):
     feet = max(frame.getbbox()[3] for frame in frames)
     return [frame.crop((0, 0, frame.width, feet)) for frame in frames]
@@ -85,15 +105,23 @@ def hue_shifted(frame, degrees):
     return shifted
 
 
-def load_anims(spec, packs):
+def source_anims(spec, packs):
+    if "strips" in spec:
+        width = max(strip["width"] for strip in spec["strips"].values())
+        return {name: strip_frames(packs, strip, width) for name, strip in spec["strips"].items()}
     sheet = Image.open(packs / spec["source"]).convert("RGBA")
     if "bands" in spec:
         right_edge = spec.get("right_edge", sheet.width)
         anims = {name: trimmed_to_feet(band_frames(sheet, band, spec["slot"], right_edge)) for name, band in spec["bands"].items()}
         height = max(frames[0].height for frames in anims.values())
-        anims = {name: bottom_aligned(frames, height) for name, frames in anims.items()}
-    else:
-        anims = {name: grid_frames(sheet, tuple(spec["cell"]), row) for name, row in spec["rows"].items()}
+        return {name: bottom_aligned(frames, height) for name, frames in anims.items()}
+    return {name: grid_frames(sheet, tuple(spec["cell"]), row) for name, row in spec["rows"].items()}
+
+
+def load_anims(spec, packs):
+    anims = source_anims(spec, packs)
+    if "resample" in spec:
+        anims = {name: [resampled(frame, spec["resample"]) for frame in frames] for name, frames in anims.items()}
     if "hue_shift" in spec:
         anims = {name: [hue_shifted(frame, spec["hue_shift"]) for frame in frames] for name, frames in anims.items()}
     if spec["mirror"]:
