@@ -125,6 +125,21 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void ADeepDungeonHasTheDefenseAndElementsOfItsStage()
+        {
+            var (loop, _) = Hero(60000);
+            var key = Key(9);
+            loop.State.Dungeons.Keys.Add(key);
+
+            Assert.That(loop.Dungeons.Enter(key), Is.EqualTo(DungeonResult.Entered));
+
+            var defense = TestWorld.Data.Combat.Defense.Defense(loop.State.Stage, loop.State.EnemyType != EnemyType.Normal);
+            Assert.That(defense, Is.GreaterThan(0));
+            Assert.That(loop.State.EnemyDefense, Is.EqualTo(defense));
+            Assert.That(loop.State.EnemyResists, Is.Not.EqualTo(ElementRules.None));
+        }
+
+        [Test]
         public void AFailedBossEndsTheDungeon()
         {
             var (loop, _) = Hero();
