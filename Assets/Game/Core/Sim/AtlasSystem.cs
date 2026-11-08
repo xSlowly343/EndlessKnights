@@ -16,7 +16,7 @@ namespace Game.Core.Sim
         {
             _catalog = catalog;
             _state = state;
-            _layer = new ModifierLayer(hero);
+            _layer = new ModifierLayer(hero, ModifierPool.Echo);
             Rebuild();
         }
 

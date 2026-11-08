@@ -32,7 +32,7 @@ namespace Game.Core.Sim
             _rift = rift;
             _state = state;
             _hero = hero;
-            _layer = new ModifierLayer(hero);
+            _layer = new ModifierLayer(hero, ModifierPool.Artifact);
             Rebuild();
         }
 

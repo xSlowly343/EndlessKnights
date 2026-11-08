@@ -11,6 +11,11 @@ namespace Game.Core.Stats
         private readonly List<Modifier> _modifiers = new List<Modifier>(ModifierCapacity);
         private readonly Dictionary<(StatId Stat, StatTags Tags), Totals> _cache = new Dictionary<(StatId, StatTags), Totals>(CacheCapacity);
 
+        private static readonly int PoolCount = System.Enum.GetValues(typeof(ModifierPool)).Length;
+
+        private readonly double[] _poolIncreased = new double[PoolCount];
+        private readonly double[] _poolExpected = new double[PoolCount];
+
         private ulong _conditions;
         private ulong _usedConditions;
 
@@ -112,8 +117,7 @@ namespace Game.Core.Stats
                 return cached;
 
             var flat = 0.0;
-            var increased = 0.0;
-            var treeIncreased = 0.0;
+            ClearPools();
             var more = 1.0;
             var moreLog10 = 0.0;
             foreach (var modifier in _modifiers)
@@ -125,11 +129,8 @@ namespace Game.Core.Stats
                     case ModifierKind.Flat:
                         flat += modifier.Value;
                         break;
-                    case ModifierKind.Increased when modifier.Pool == ModifierPool.Tree:
-                        treeIncreased += modifier.Value;
-                        break;
                     case ModifierKind.Increased:
-                        increased += modifier.Value;
+                        _poolIncreased[(int)modifier.Pool] += modifier.Value;
                         break;
                     case ModifierKind.More:
                         more *= 1.0 + modifier.Value;
@@ -138,7 +139,7 @@ namespace Game.Core.Stats
                 }
             }
 
-            var totals = new Totals(flat, (1.0 + increased) * (1.0 + treeIncreased), more, moreLog10);
+            var totals = new Totals(flat, PoolProduct(_poolIncreased), more, moreLog10);
             _cache[key] = totals;
             RecalculationCount++;
             return totals;
@@ -148,10 +149,7 @@ namespace Game.Core.Stats
         {
             var flat = 0.0;
             var flatExpected = 0.0;
-            var increased = 0.0;
-            var increasedExpected = 0.0;
-            var treeIncreased = 0.0;
-            var treeExpected = 0.0;
+            ClearPools();
             var more = 1.0;
             foreach (var modifier in _modifiers)
             {
@@ -166,27 +164,22 @@ namespace Game.Core.Stats
                         flat += own;
                         flatExpected += modifier.Value * weight;
                         break;
-                    case ModifierKind.Increased when modifier.Pool == ModifierPool.Tree:
-                        treeIncreased += own;
-                        treeExpected += modifier.Value * weight;
-                        break;
                     case ModifierKind.Increased:
-                        increased += own;
-                        increasedExpected += modifier.Value * weight;
+                        _poolIncreased[(int)modifier.Pool] += own;
+                        _poolExpected[(int)modifier.Pool] += modifier.Value * weight;
                         break;
                     case ModifierKind.More when !always:
                         more *= 1.0 + modifier.Value * weight;
                         break;
                 }
             }
-            return Ratio(baseValue + flatExpected, baseValue + flat) * Ratio(1 + increasedExpected, 1 + increased) * Ratio(1 + treeExpected, 1 + treeIncreased) * more;
+            return Ratio(baseValue + flatExpected, baseValue + flat) * PoolRatio() * more;
         }
 
         public double ExpectedValue(StatId stat, double baseValue, StatTags tags, IReadOnlyList<double> conditionShares)
         {
             var flat = 0.0;
-            var increased = 0.0;
-            var treeIncreased = 0.0;
+            ClearPools();
             var more = 1.0;
             foreach (var modifier in _modifiers)
             {
@@ -198,18 +191,37 @@ namespace Game.Core.Stats
                     case ModifierKind.Flat:
                         flat += modifier.Value * weight;
                         break;
-                    case ModifierKind.Increased when modifier.Pool == ModifierPool.Tree:
-                        treeIncreased += modifier.Value * weight;
-                        break;
                     case ModifierKind.Increased:
-                        increased += modifier.Value * weight;
+                        _poolIncreased[(int)modifier.Pool] += modifier.Value * weight;
                         break;
                     case ModifierKind.More:
                         more *= 1.0 + modifier.Value * weight;
                         break;
                 }
             }
-            return (baseValue + flat) * (1.0 + increased) * (1.0 + treeIncreased) * more;
+            return (baseValue + flat) * PoolProduct(_poolIncreased) * more;
+        }
+
+        private void ClearPools()
+        {
+            System.Array.Clear(_poolIncreased, 0, PoolCount);
+            System.Array.Clear(_poolExpected, 0, PoolCount);
+        }
+
+        private static double PoolProduct(double[] pools)
+        {
+            var product = 1.0;
+            foreach (var increased in pools)
+                product *= 1.0 + increased;
+            return product;
+        }
+
+        private double PoolRatio()
+        {
+            var ratio = 1.0;
+            for (var i = 0; i < PoolCount; i++)
+                ratio *= Ratio(1 + _poolExpected[i], 1 + _poolIncreased[i]);
+            return ratio;
         }
 
         private static double Ratio(double expected, double plain) => plain > 0 ? System.Math.Max(0, expected) / plain : 1;

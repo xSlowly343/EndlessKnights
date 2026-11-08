@@ -26,7 +26,7 @@ namespace Game.Core.Sim
             _rules = rules;
             _state = state;
             _camp = camp;
-            _layer = new ModifierLayer(hero);
+            _layer = new ModifierLayer(hero, ModifierPool.Party);
         }
 
         public ClanCampRules Rules => _rules;

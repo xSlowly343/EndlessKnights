@@ -19,7 +19,7 @@ namespace Game.Core.Party
             _rules = rules;
             _levels = levels;
             _state = state;
-            _layer = new ModifierLayer(hero);
+            _layer = new ModifierLayer(hero, ModifierPool.Party);
         }
 
         public bool Active { get; private set; }

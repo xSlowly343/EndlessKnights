@@ -23,7 +23,7 @@ namespace Game.Core.Party
             _rules = rules;
             _state = state;
             _hero = hero;
-            _layer = new ModifierLayer(hero);
+            _layer = new ModifierLayer(hero, ModifierPool.Party);
         }
 
         public IReadOnlyList<Modifier> Modifiers => _layer.Applied;

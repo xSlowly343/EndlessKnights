@@ -32,6 +32,44 @@ namespace Game.Core.Tests.Stats
         }
 
         [Test]
+        public void EachMechanicPoolMultipliesWithTheOthers()
+        {
+            var sheet = new StatSheet();
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 1));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.5, StatTags.None, ModifierPool.Artifact));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.5, StatTags.None, ModifierPool.Artifact));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.5, StatTags.None, ModifierPool.Echo));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.5, StatTags.None, ModifierPool.World));
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 0.5, StatTags.None, ModifierPool.Party));
+
+            Assert.That(Value(sheet, Damage, 10), Is.EqualTo(10 * 2 * 2 * 1.5 * 1.5 * 1.5).Within(Tolerance));
+        }
+
+        [Test]
+        public void ALayerMovesItsModifiersIntoItsPool()
+        {
+            var sheet = new StatSheet();
+            var layer = new ModifierLayer(sheet, ModifierPool.Artifact);
+            layer.Set(new[] { new Modifier(Damage, ModifierKind.Increased, 1) });
+            sheet.Add(new Modifier(Damage, ModifierKind.Increased, 1));
+
+            Assert.That(Value(sheet, Damage, 10), Is.EqualTo(40).Within(Tolerance));
+            layer.Set(System.Array.Empty<Modifier>());
+            Assert.That(Value(sheet, Damage, 10), Is.EqualTo(20).Within(Tolerance));
+        }
+
+        [Test]
+        public void TheArtifactLayerOfTheGameLoopUsesTheArtifactPool()
+        {
+            var loop = Sim.TestWorld.Loop();
+            loop.State.Artifacts["typewriter"] = 3;
+            loop.Artifacts.Rebuild();
+
+            var artifactLines = System.Linq.Enumerable.Where(loop.Hero.Modifiers, modifier => modifier.Pool == ModifierPool.Artifact);
+            Assert.That(artifactLines, Is.Not.Empty);
+        }
+
+        [Test]
         public void TheTreeLayerOfTheGameLoopUsesTheTreePool()
         {
             var loop = Sim.TestWorld.Loop(state: new Game.Core.Sim.GameState { HeroLevel = 10 });
