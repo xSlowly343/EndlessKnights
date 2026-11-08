@@ -75,8 +75,9 @@ def main():
     config = json.loads((BIOMES / f"{args.biome}.json").read_text())
     folder = Path(args.packs) / config["source"]
     layers = {name: build_layer(folder, files, config["window"], config["dim"]) for name, files in config["layers"].items()}
-    floor = floor_strip(layers["ground"].width, config["floor"])
-    layers["ground"].alpha_composite(floor, (0, VIEW[1] - floor.height))
+    if "floor" in config:
+        floor = floor_strip(layers["ground"].width, config["floor"])
+        layers["ground"].alpha_composite(floor, (0, VIEW[1] - floor.height))
     out = OUT_DIR / args.biome
     out.mkdir(parents=True, exist_ok=True)
     for name, image in layers.items():
