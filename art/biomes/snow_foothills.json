@@ -1,0 +1,15 @@
+{
+  "id": "snow_foothills",
+  "source": "craftpix/winter_holiday",
+  "scale": 0.3,
+  "canvas": [1920, 1080],
+  "window": {"top": 50, "height": 180},
+  "palette": 48,
+  "layers": {
+    "back": ["sky.png", "bg.png"],
+    "mid": ["middle.png"],
+    "ground": ["foreground.png", {"file": "ground_01.png", "y": -150}],
+    "front": [{"file": "ground_02.png", "y": -290}]
+  },
+  "dim": {"color": 1.0, "brightness": 1.0}
+}
