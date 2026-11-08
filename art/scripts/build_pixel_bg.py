@@ -10,7 +10,7 @@ BIOMES = ROOT / "art" / "biomes"
 OUT_DIR = ROOT / "art" / "out" / "backgrounds"
 PREVIEW_DIR = ROOT / "art" / "out" / "preview"
 VIEW = (480, 180)
-PARALLAX_SHIFT = {"back": 0, "mid": 40, "ground": 120}
+PARALLAX_SHIFT = {"back": 0, "mid": 40, "ground": 120, "front": 160}
 PREVIEW_STEPS = 3
 
 
@@ -50,16 +50,57 @@ def dimmed(image, spec):
     return ImageEnhance.Brightness(image).enhance(spec["brightness"])
 
 
-def build_layer(folder, files, window, dim):
+def layer_entry(entry):
+    return (entry, 0) if isinstance(entry, str) else (entry["file"], entry["y"])
+
+
+def placed_part(folder, entry, scale, canvas):
+    name, y = layer_entry(entry)
+    part = Image.open(folder / name).convert("RGBA")
+    if scale == 1:
+        return part
+    size = (round(part.width * scale), round(part.height * scale))
+    placed = Image.new("RGBA", (round(canvas[0] * scale), round(canvas[1] * scale)))
+    placed.alpha_composite(part.resize(size, Image.BOX), (0, round(y * scale)))
+    return placed
+
+
+def build_layer(folder, files, config):
+    window, scale = config["window"], config.get("scale", 1)
     layer = None
-    for name in files:
-        part = Image.open(folder / name).convert("RGBA")
+    for entry in files:
+        part = placed_part(folder, entry, scale, config.get("canvas"))
         part = part.crop((0, window["top"], part.width, window["top"] + window["height"]))
         layer = part if layer is None else Image.alpha_composite(layer, part)
     alpha = layer.getchannel("A")
-    layer = dimmed(layer.convert("RGB"), dim).convert("RGBA")
+    layer = dimmed(layer.convert("RGB"), config["dim"]).convert("RGBA")
     layer.putalpha(alpha)
     return layer
+
+
+def mirror_tiled(image):
+    joined = Image.new("RGBA", (image.width * 2, image.height))
+    joined.paste(image, (0, 0))
+    joined.paste(image.transpose(Image.FLIP_LEFT_RIGHT), (image.width, 0))
+    return joined
+
+
+def flattened(layers):
+    flat = Image.new("RGBA", next(iter(layers.values())).size, (0, 0, 0, 255))
+    for image in layers.values():
+        flat.alpha_composite(image)
+    return flat
+
+
+def with_palette(layers, colors):
+    palette = flattened(layers).convert("RGB").quantize(colors, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+    result = {}
+    for name, image in layers.items():
+        alpha = image.getchannel("A").point(lambda value: 255 if value > 110 else 0)
+        mapped = image.convert("RGB").quantize(palette=palette, dither=Image.Dither.NONE).convert("RGBA")
+        mapped.putalpha(alpha)
+        result[name] = mapped
+    return result
 
 
 def tiled(image, offset, width):
@@ -74,7 +115,11 @@ def main():
     args = parse_args()
     config = json.loads((BIOMES / f"{args.biome}.json").read_text())
     folder = Path(args.packs) / config["source"]
-    layers = {name: build_layer(folder, files, config["window"], config["dim"]) for name, files in config["layers"].items()}
+    layers = {name: build_layer(folder, files, config) for name, files in config["layers"].items()}
+    if config.get("mirror_tile"):
+        layers = {name: mirror_tiled(image) for name, image in layers.items()}
+    if "palette" in config:
+        layers = with_palette(layers, config["palette"])
     if "floor" in config:
         floor = floor_strip(layers["ground"].width, config["floor"])
         layers["ground"].alpha_composite(floor, (0, VIEW[1] - floor.height))

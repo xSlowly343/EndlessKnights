@@ -75,6 +75,16 @@ def bottom_aligned(frames, height):
     return aligned
 
 
+def hue_shifted(frame, degrees):
+    alpha = frame.getchannel("A")
+    hue, saturation, value = frame.convert("RGB").convert("HSV").split()
+    offset = round(degrees * 256 / 360)
+    hue = hue.point(lambda h: (h + offset) % 256)
+    shifted = Image.merge("HSV", (hue, saturation, value)).convert("RGBA")
+    shifted.putalpha(alpha)
+    return shifted
+
+
 def load_anims(spec, packs):
     sheet = Image.open(packs / spec["source"]).convert("RGBA")
     if "bands" in spec:
@@ -84,6 +94,8 @@ def load_anims(spec, packs):
         anims = {name: bottom_aligned(frames, height) for name, frames in anims.items()}
     else:
         anims = {name: grid_frames(sheet, tuple(spec["cell"]), row) for name, row in spec["rows"].items()}
+    if "hue_shift" in spec:
+        anims = {name: [hue_shifted(frame, spec["hue_shift"]) for frame in frames] for name, frames in anims.items()}
     if spec["mirror"]:
         anims = {name: [frame.transpose(Image.FLIP_LEFT_RIGHT) for frame in frames] for name, frames in anims.items()}
     return anims
@@ -98,7 +110,7 @@ def baseline(frames):
 
 
 def build(name, spec, roster, packs):
-    scale = roster["scale"]
+    scale = spec.get("scale", roster["scale"])
     anims = load_anims(spec, packs)
     cell = (anims["idle"][0].width * scale, anims["idle"][0].height * scale)
     columns = max(len(frames) for frames in anims.values())

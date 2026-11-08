@@ -1,0 +1,16 @@
+{
+  "id": "autumn_forest",
+  "source": "craftpix/rpg_battle_autumn",
+  "scale": 0.15,
+  "canvas": [3840, 2160],
+  "window": {"top": 12, "height": 180},
+  "palette": 48,
+  "mirror_tile": true,
+  "layers": {
+    "back": ["sky.png"],
+    "ground": [{"file": "ground.png", "y": 266}],
+    "mid": [{"file": "trees.png", "y": 0}, {"file": "leaves.png", "y": 0}],
+    "front": [{"file": "bushes.png", "y": 1053}]
+  },
+  "dim": {"color": 1.0, "brightness": 1.0}
+}

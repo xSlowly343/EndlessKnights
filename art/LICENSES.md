@@ -42,6 +42,14 @@
 
 > Иконки скиллов: InKing, J. W. Bjerk (eleazzaar, CC BY 3.0), CaptainCatSparrow
 
+## Эффекты скиллов и ударов (08.11.2026)
+
+| Набор | Автор | Лицензия | Что берём |
+| --- | --- | --- | --- |
+| [pixelfx](https://github.com/patch-gg/pixelfx) | patch-gg | MIT (код и эффекты), коммерция разрешена; часть кода взята из других MIT-проектов, подробности в `NOTICE.md` репозитория; шрифт Patch Pixel под MIT не входит | эффекты скиллов и ударов, рендер в спрайт-листы PNG + JSON |
+
+Условие MIT: копия лицензии и строка об авторских правах должны лежать вместе с использованными эффектами (например, в папке с отрендеренными листами и в титрах/файле лицензий игры).
+
 ## Шрифты (OFL)
 
 Rubik и Lilita One — `Assets/Game/Art/Fonts`, лицензии лежат рядом с файлами шрифтов.
@@ -53,9 +61,11 @@ Rubik и Lilita One — `Assets/Game/Art/Fonts`, лицензии лежат р�
 | Набор | Автор | Лицензия | Что берём |
 | --- | --- | --- | --- |
 | [Nature Landscapes Free Pixel Art](https://free-game-assets.itch.io/nature-landscapes-free-pixel-art) (он же [CraftPix Free Nature Backgrounds](https://craftpix.net/freebies/free-nature-backgrounds-pixel-art/)) | CraftPix | [CraftPix freebie](https://craftpix.net/file-licenses/): коммерческая игра можно, без указания автора, нельзя перепродавать файлы | фон «Зелёные холмы» (`nature_2`) |
+| [Free 4 Nature Backgrounds for RPG Battle](https://craftpix.net/freebies/free-4-nature-backgrounds-for-rpg-battle/) | CraftPix | как выше | фон «Осенний лес», осенняя картинка (утверждён 08.11.2026). Слои скачал Сергей, они лежат вне репозитория |
 | [Monsters Creatures Fantasy](https://luizmelo.itch.io/monsters-creatures-fantasy) | LuizMelo | CC0 | пробы, в состав не вошли (другой стиль) |
 | [Animated Wild Animals](https://opengameart.org/content/animated-wild-animals) | ScratchIO | CC0 | пробы, в состав не вошли |
 | [Ents](https://opengameart.org/content/ents) | см. страницу OGA | CC BY 4.0: указать автора в титрах | пробы, в состав не вошли |
 | [Elthen's Pixel Art Shop](https://elthen.itch.io): Twig Blight, Mini Golem, Leafy Leshy, Porcupine, Spider, Ratfolk Axe, Cyclops, Goblin King, Minotaur (бесплатные) | Elthen | «Feel free to use the sprites in commercial/non-commercial projects», указывать автора не обязательно, условия — [пост на Patreon](https://www.patreon.com/posts/27430241) | враги «Зелёных холмов» (утверждены 08.11.2026) |
+| [Elthen's Pixel Art Shop](https://elthen.itch.io): Leaf Elemental (перекрашен), Fox, Red Panda, Swampling, Ghoul, Giant Fly, Kobold Priest, Witch, Bandit Necromancer, Shardsoul Slayer, Goblin Mech Rider (бесплатные) | Elthen | как выше | враги «Осеннего леса» (утверждены 08.11.2026) |
 | [Evil Tree Pixel Art](https://jose-moyano.itch.io/evil-tree-pixel-art) | Jose Moyano | бесплатно (name your price); на вопрос о коммерции автор ответил «Sure!» в комментариях, формальной лицензии нет | злой пень (зеркально) |
 | [Nature Landscapes Free Pixel Art](https://free-game-assets.itch.io/nature-landscapes-free-pixel-art) | CraftPix | как выше | фон «Зелёные холмы» (`nature_5`, утверждён 08.11.2026; `nature_2` — прежний вариант) |

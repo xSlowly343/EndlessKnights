@@ -6,6 +6,7 @@ from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[2]
 ENEMIES = ROOT / "art" / "enemies"
+BIOMES = ROOT / "art" / "biomes"
 SPRITES = ROOT / "art" / "out" / "sprites"
 BACKGROUNDS = ROOT / "art" / "out" / "backgrounds"
 PREVIEW = ROOT / "art" / "out" / "preview"
@@ -43,7 +44,8 @@ def timeline(anims):
 
 def background(name, offset):
     scene = Image.new("RGBA", VIEW)
-    for layer in ("back", "mid", "ground"):
+    layers = json.loads((BIOMES / f"{name}.json").read_text())["layers"]
+    for layer in layers:
         image = Image.open(BACKGROUNDS / name / f"{layer}.png").convert("RGBA")
         scene.alpha_composite(image.crop((offset, 0, offset + VIEW[0], VIEW[1])))
     return scene
@@ -75,12 +77,15 @@ def main():
     roster = json.loads((ENEMIES / f"{args.roster}.json").read_text())
     scene = background(args.background, args.offset)
     mobs = [name for name, spec in roster["enemies"].items() if not spec.get("boss")]
-    bosses = [name for name, spec in roster["enemies"].items() if spec.get("boss")]
+    bosses = [name for name, spec in roster["enemies"].items() if spec.get("boss") and not spec.get("master")]
+    masters = [name for name, spec in roster["enemies"].items() if spec.get("master")]
     PREVIEW.mkdir(parents=True, exist_ok=True)
     half = (len(mobs) + 1) // 2
     render(mobs[:half], scene, PREVIEW / f"roster_{args.roster}_mobs_a.gif", roster["fps"])
     render(mobs[half:], scene, PREVIEW / f"roster_{args.roster}_mobs_b.gif", roster["fps"])
     render(bosses, scene, PREVIEW / f"roster_{args.roster}_bosses.gif", roster["fps"])
+    if masters:
+        render(masters, scene, PREVIEW / f"roster_{args.roster}_master.gif", roster["fps"])
 
 
 main()
