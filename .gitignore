@@ -69,3 +69,8 @@ Desktop.ini
 /Tools/**/[Oo]bj/
 /Tools/**/TestResults/
 .claude/settings.local.json
+art/out/backgrounds/*/raw/
+art/out/backgrounds/
+art/out/preview/bg_*.png
+art/out/sprites/
+art/out/tmp/

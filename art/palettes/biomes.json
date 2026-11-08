@@ -1,0 +1,26 @@
+{
+  "green_hills": {
+    "sky_top": "#5FB8EC",
+    "sky_bottom": "#CFEFFB",
+    "cloud": "#FFFFFF",
+    "cloud_shadow": "#B9D9F0",
+    "far_hill": "#9CCBB0",
+    "far_hill_rim": "#B6DCC4",
+    "castle": "#8FAFC2",
+    "castle_roof": "#C27A7A",
+    "mid_hill": "#79BE62",
+    "mid_hill_rim": "#96D27A",
+    "tree": "#4FA052",
+    "tree_dark": "#3A8445",
+    "trunk": "#8A6142",
+    "ground": "#86C957",
+    "ground_rim": "#A4DB6C",
+    "path": "#E6CB8E",
+    "flower_pink": "#FF8FB4",
+    "flower_yellow": "#FFE16B",
+    "flower_white": "#FFFFFF",
+    "outline": "#22362B",
+    "rift": "#B47CFF",
+    "rift_core": "#F2E6FF"
+  }
+}
