@@ -85,3 +85,19 @@
 1. Какой подход: А (LPC, слои, бесплатно) или Б (готовые листы, Elthen за деньги или LuizMelo)?
 2. Масштаб героя: ×2 (≈ 92 px, как в `visual-style.md` §3) или крупнее?
 3. Нужна ли видимая смена всех четырёх слотов брони, или достаточно смены цвета и оружия?
+
+## 8. Ещё герои к LuizMelo (дополнение 09.11.2026)
+
+Сергей: «LuizMelo красивые, но надо как-то ещё других добавить». Скачаны бесплатные герои других авторов (вид сбоку, полный набор анимаций, коммерция разрешена) и поставлены рядом с Huntress 2:
+
+| Набор | Автор и лицензия | Кто там | Размер в полоске | Насколько похож на LuizMelo |
+| --- | --- | --- | --- | --- |
+| [Free Wizard Sprite Sheets](https://free-game-assets.itch.io/free-wizard-sprite-sheets-pixel-art) | CraftPix, [freebie](https://craftpix.net/file-licenses/) | Lightning Mage (девушка-маг света с посохом-молнией), Wanderer Magician (тёмный маг со сферой), Fire Wizard | ×1, 66–82 px | ближе всех: тот же мелкий пиксель и пропорции; есть покой, 2 атаки, урон, смерть, снаряды |
+| [Warrior Free Animation Set](https://clembod.itch.io/warrior-free-animation-set) | Clembod; коммерция и правки разрешены, нельзя перепродавать и распространять | воительница с мечом | ×3, ≈ 99 px | пиксель крупнее, но аккуратная и яркая |
+| [Animated Pixel Adventurer](https://rvros.itch.io/animated-pixel-hero) | rvros; коммерция разрешена, автора указывать не обязательно | искатель приключений с мечом (есть лук и каст) | ×3, ≈ 87 px | пиксель крупнее, мужской силуэт |
+| [Female Adventurer](https://elthen.itch.io/2d-pixel-art-female-adventurer-sprites) | Elthen; как у врагов Elthen | искательница приключений | ×3, ≈ 60 px | стиль врагов Elthen, но чиби и мелкая |
+| [Free 3 Character Sprite](https://free-game-assets.itch.io/free-3-character-sprite-pixel-art) | CraftPix freebie | дровосек, расхититель могил, паровой человек (48 px) | — | мужские рабочие, к составу не подходят |
+
+Превью: `art/heroes/more-heroes-craftpix.png` и `-attack.png` (LuizMelo + CraftPix), `more-heroes-others.png` и `-attack.png` (Clembod, rvros, Elthen), анимации `more-heroes-anim-a.gif`, `-b.gif`.
+
+Вывод: в стиле LuizMelo бесплатно набирается 4–5 героинь (Huntress, Huntress 2, Lightning Mage, Clembod Warrior и, с натяжкой, тёмный маг CraftPix). На 18 персонажей этого мало, и ни у кого нет оружия из `weapons.json`, кроме лука и посоха. Поэтому готовые листы годятся как основа для части персонажей (Windshot — Huntress 2, Shardcaller — Lightning Mage), а для остальных нужны или покупка в одном стиле, или слои LPC.
