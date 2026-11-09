@@ -90,3 +90,12 @@ Rubik и Lilita One — `Assets/Game/Art/Fonts`, лицензии лежат р�
 | [Bosses - Frogger](https://admurin.itch.io/bosses-frogger) | Admurin | можно в любом проекте, в том числе коммерческом, указывать автора не обязательно; нельзя перепродавать как ассет, делать NFT и учить на нём ИИ | хозяин «Поющих каскадов» — Запевала (утверждён 09.11.2026) |
 | [Evil Tree Pixel Art](https://jose-moyano.itch.io/evil-tree-pixel-art) | Jose Moyano | бесплатно (name your price); на вопрос о коммерции автор ответил «Sure!» в комментариях, формальной лицензии нет | злой пень (зеркально) |
 | [Nature Landscapes Free Pixel Art](https://free-game-assets.itch.io/nature-landscapes-free-pixel-art) | CraftPix | как выше | фон «Зелёные холмы» (`nature_5`, утверждён 08.11.2026; `nature_2` — прежний вариант) |
+
+## Герои: кандидаты (09.11.2026, на выбор Сергея)
+
+Пока только пробы, в игру не вошли. Разбор и превью — `docs/hero-look.md`, файлы проб в общей папке проекта `art/heroes/`.
+
+| Набор | Автор | Лицензия | Что пробовали |
+| --- | --- | --- | --- |
+| [LPC Universal Spritesheet Character Generator](https://github.com/liberatedpixelcup/Universal-LPC-Spritesheet-Character-Generator) | авторы Liberated Pixel Cup, у каждой детали свой список | у каждой детали своя: CC0, OGA-BY 3.0, CC-BY 3.0/4.0, CC-BY-SA 3.0, GPL 2.0/3.0. Обязательно указать всех авторов использованных деталей (генератор выдаёт CREDITS.csv; списки проб — `art/heroes/lpc-credits/`). Для игры берём только CC0, OGA-BY и CC-BY | 6 героинь и 4 набора брони по редкостям |
+| [Huntress](https://luizmelo.itch.io/huntress), [Huntress 2](https://luizmelo.itch.io/huntress-2), [Wizard Pack](https://luizmelo.itch.io/wizard-pack), [Fantasy Warrior](https://luizmelo.itch.io/fantasy-warrior), [Medieval Warrior Pack 2](https://luizmelo.itch.io/medieval-warrior-pack-2), [Medieval King Pack 2](https://luizmelo.itch.io/medieval-king-pack-2), [Evil Wizard 2](https://luizmelo.itch.io/evil-wizard-2) | LuizMelo | CC0 | готовые листы героев и перекраска по редкости |
