@@ -73,6 +73,20 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void TheEventBossHasTheDefenseOfTheRecordStage()
+        {
+            var loop = InEvent(new FakeInputSource());
+            loop.State.RecordStage = 20000;
+
+            Assert.That(loop.SeasonalEvents.StartBossFight(), Is.EqualTo(EventFightResult.Started));
+
+            var defense = TestWorld.Data.Combat.Defense.Defense(20000, loop.State.EnemyType != EnemyType.Normal);
+            Assert.That(defense, Is.GreaterThan(0));
+            Assert.That(loop.State.EnemyDefense, Is.EqualTo(defense));
+            Assert.That(loop.State.EnemyResists, Is.Not.EqualTo(ElementRules.None));
+        }
+
+        [Test]
         public void TheEventBossIsFoughtOnceADayAndAWinPaysTokensAndAScore()
         {
             var input = new FakeInputSource();

@@ -36,7 +36,19 @@ namespace Game.Core.Content.Tree
             return new ClassTree(heroClass, false, nodes, shape.RowThresholds, templates.BarEvery, barPassives, majors, templates.Respec)
             {
                 Attribute = ClassAttributeDef.Read(root.Field("attribute")),
+                Element = ReadElement(root),
             };
+        }
+
+        private static int ReadElement(ContentNode root)
+        {
+            if (!root.HasField("element"))
+                return ElementRules.None;
+            var field = root.Field("element");
+            var element = ElementRules.ParseId(field.AsString());
+            if (element == ElementRules.None)
+                throw field.Error($"unknown element {field.AsString()}");
+            return element;
         }
 
         public static ClassTree LoadCommon(TreeTemplates templates, string treeId, string json)

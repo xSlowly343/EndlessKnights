@@ -23,6 +23,9 @@ namespace Game.Core.Content
         public static readonly StatId[] Conversion = Stats("Conversion");
         public static readonly StatId[] Damage = Stats("Damage");
         public static readonly StatId[] Pen = Stats("Pen");
+        public static readonly StatId[] Shift = Stats("Shift");
+
+        public static int ParseId(string id) => System.Array.IndexOf(Ids, id);
 
         private readonly Dictionary<string, (int Resist, int Weak)> _biomes = new Dictionary<string, (int, int)>();
 
@@ -59,7 +62,7 @@ namespace Game.Core.Content
         private static int Parse(ContentNode node)
         {
             var id = node.AsString();
-            var index = System.Array.IndexOf(Ids, id);
+            var index = ParseId(id);
             if (index < 0)
                 throw node.Error($"unknown element {id}");
             return index;

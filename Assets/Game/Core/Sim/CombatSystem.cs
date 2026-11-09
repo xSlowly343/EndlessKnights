@@ -117,6 +117,9 @@ namespace Game.Core.Sim
         public double Additional { get; private set; } = 1;
         public double Attack { get; private set; }
         public double AttackScale { get; private set; } = 1;
+        public double WeaponDamage { get; private set; }
+        public double AttributeTotal { get; private set; }
+        public double FlatAttack { get; private set; }
 
         public double ItemAttribute()
         {
@@ -137,7 +140,10 @@ namespace Game.Core.Sim
             var held = _state.Weapons.Held;
             var weapon = ((held == null ? rules.BaseWeaponDamage : rules.WeaponDamage(held.Rarity, held.ItemLevel)) + System.Math.Max(0, _hero.Value(CombatStats.WeaponDamage, 0))) * _rules.Mount.Factor(_state.Mount.Levels[MountSystem.WeaponSlot]);
             var attribute = rules.BaseAttribute + System.Math.Max(0, classPoints) + ItemAttribute() + System.Math.Max(0, _hero.Value(CombatStats.ItemAttribute, 0));
-            Attack = rules.Attack(attribute, weapon, _hero.Value(CombatStats.FlatAttack, 0));
+            WeaponDamage = weapon;
+            AttributeTotal = attribute;
+            FlatAttack = _hero.Value(CombatStats.FlatAttack, 0);
+            Attack = rules.Attack(attribute, weapon, FlatAttack);
             AttackScale = rules.BaseAttack > 0 ? Attack / rules.BaseAttack : 1;
             Additional = 1 + System.Math.Max(0, _hero.Value(CombatStats.AdditionalDamage, 0)) + (held == null ? 0 : rules.QualityBonus(held.Quality));
         }
@@ -757,9 +763,9 @@ namespace Game.Core.Sim
             ? System.Math.Max(0, _hero.Value(CombatStats.Pillar, 0)) * System.Math.Min(_rules.Fracture.PillarMembers, _state.PartyMembers)
             : 0;
 
-        private double PillarMultiplier() => 1 + PillarBonus;
+        public double PillarMultiplier() => 1 + PillarBonus;
 
-        private double FractureTaken() => _state.SharedEnemy || _state.FractureStacks == 0 ? 1 : 1 + FractureBonus;
+        public double FractureTaken() => _state.SharedEnemy || _state.FractureStacks == 0 ? 1 : 1 + FractureBonus;
 
         private void LayFracture(StatTags tags)
         {
@@ -855,14 +861,22 @@ namespace Game.Core.Sim
 
         public double Portion(Element element) => _portion[(int)element];
 
-        public double ElementMultiplier(StatTags tags)
+        public int ClassElement { get; set; } = ElementRules.None;
+
+        public double ElementMultiplier(StatTags tags) => ElementMultiplier(tags, _portion);
+
+        public double ElementFactor(StatTags tags) => ElementMultiplier(tags, _sheetPortion);
+
+        private readonly double[] _sheetPortion = new double[ElementRules.Count];
+
+        private double ElementMultiplier(StatTags tags, double[] portion)
         {
             var rules = _rules.Elements;
             var total = 0.0;
             for (var i = 0; i < ElementRules.Count; i++)
             {
-                _portion[i] = System.Math.Max(0, _hero.Value(ElementRules.Conversion[i], 0, tags));
-                total += _portion[i];
+                portion[i] = System.Math.Max(0, _hero.Value(ElementRules.Conversion[i], 0, tags) + ClassShare(i, CombatStats.ClassElementConversion, tags));
+                total += portion[i];
             }
             if (!(total > 0))
                 return 1;
@@ -870,18 +884,21 @@ namespace Game.Core.Sim
             var multiplier = 1 - total * scale;
             for (var i = 0; i < ElementRules.Count; i++)
             {
-                if (!(_portion[i] > 0))
+                if (!(portion[i] > 0))
                     continue;
-                var resist = System.Math.Max(rules.MinResist, rules.Resistance(i, _state.EnemyResists, _state.EnemyWeakTo) - System.Math.Max(0, _hero.Value(ElementRules.Pen[i], 0, tags)));
-                _portion[i] *= scale * _hero.Value(ElementRules.Damage[i], 1, tags) * (1 - resist);
-                multiplier += _portion[i];
+                var resist = System.Math.Max(rules.MinResist, rules.Resistance(i, _state.EnemyResists, _state.EnemyWeakTo) - System.Math.Max(0, _hero.Value(ElementRules.Pen[i], 0, tags) + ClassShare(i, CombatStats.ClassElementPen, tags)));
+                portion[i] *= scale * (_hero.Value(ElementRules.Damage[i], 1, tags) + ClassShare(i, CombatStats.ClassElementDamage, tags)) * (1 - resist);
+                multiplier += portion[i];
             }
             if (!(multiplier > 0))
                 return 0;
             for (var i = 0; i < ElementRules.Count; i++)
-                _portion[i] /= multiplier;
+                portion[i] /= multiplier;
             return multiplier;
         }
+
+        private double ClassShare(int element, StatId stat, StatTags tags) =>
+            element == ClassElement ? System.Math.Max(0, _hero.Value(stat, 0, tags)) : 0;
 
         private bool RollDischarge()
         {

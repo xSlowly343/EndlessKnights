@@ -143,6 +143,7 @@ namespace Game.Core.Tests.Party
             for (var i = 0; i < 64; i++)
                 events.Add(GameEvent.Damage(i, hp * 0.01, (DamageSource)(1 + i % 3), HitFlags.None));
             tally.Tick(0);
+            tally.Take();
 
             var before = System.GC.GetAllocatedBytesForCurrentThread();
             for (var i = 0; i < 1000; i++)
