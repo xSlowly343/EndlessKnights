@@ -17,6 +17,7 @@ namespace Game.Core.Sim
         {
             Rng = new Rng(seed);
             Drops = new DropState(seed);
+            Oddities = new OddityState(seed);
             Slates = new SlateState(seed);
         }
 
@@ -248,6 +249,7 @@ namespace Game.Core.Sim
         public int HitsOnEnemy { get; set; }
         public int BossTimerStopTicks { get; set; }
         public bool WandererBoss { get; set; }
+        public OddityState Oddities { get; }
         public int GoldenTicks { get; set; }
         public BigNumber GoldenNormalHp { get; set; }
         public BigNumber GoldenDamage { get; set; }
@@ -384,6 +386,7 @@ namespace Game.Core.Sim
             WandererBoss = false;
             GoldenTicks = 0;
             GoldenDamage = BigNumber.Zero;
+            Oddities.OnSpawn();
             BossTimerBonusUsed = false;
             EnemySpawnTick = Tick;
             PoisonStacks = 0;

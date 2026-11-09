@@ -27,7 +27,8 @@ namespace Game.Core.Tests.Sim
         public static GameData WithPierce => DataWithPierce.Value;
 
         private static readonly Lazy<GameData> DataWithPierce = new Lazy<GameData>(() => GameData.Load(name =>
-            name == CombatRules.FileName || name == Game.Core.Party.PartyRules.FileName ? TestData.ReadGameDataFile(name) : NeutralFile(name)));
+            name == CombatRules.FileName ? WithoutOddities(TestData.ReadGameDataFile(name))
+            : name == Game.Core.Party.PartyRules.FileName ? TestData.ReadGameDataFile(name) : NeutralFile(name)));
 
         private static string NeutralFile(string name)
         {
@@ -45,9 +46,12 @@ namespace Game.Core.Tests.Sim
             if (name == TalentRules.FileName)
                 return Regex.Replace(json, "\"perks\": \\[.*\\] \\}", "\"waits\": \"test\" }");
             if (name == CombatRules.FileName)
-                return System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"baseShare\": [0-9.]+,", "\"pierce\": { \"baseShare\": 0,");
+                return WithoutOddities(System.Text.RegularExpressions.Regex.Replace(json, "\"pierce\": \\{ \"baseShare\": [0-9.]+,", "\"pierce\": { \"baseShare\": 0,"));
             return json;
         }
+
+        public static string WithoutOddities(string combatJson) =>
+            Regex.Replace(combatJson, ",\\s*\"oddities\": \\[.*?\\n    \\],\\s*\"wisp\": \\{.*?\\n    \\}", string.Empty, RegexOptions.Singleline);
 
         public static GameState WithAllSkillsOpen(GameState state)
         {

@@ -64,6 +64,8 @@ namespace Game.Core.Sim
                 gained += resource.ReadingPerSecond * GameLoop.TickSeconds * _hero.Value(CombatStats.ResourceGain, 1, StatTags.Mouse) * System.Math.Max(0, _hero.Value(CombatStats.ReadingGain, 1));
             gained += _state.PendingResource;
             _state.PendingResource = 0;
+            gained += _state.Oddities.PendingResourceShare * Max;
+            _state.Oddities.PendingResourceShare = 0;
             var value = System.Math.Min(Max, _state.Resource + gained);
             GainedThisTick += System.Math.Max(0, value - _state.Resource);
             if (Decays(resource, input))

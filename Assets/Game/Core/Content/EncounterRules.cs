@@ -26,6 +26,7 @@ namespace Game.Core.Content
         public double GoldenHpMultiplier { get; }
         public double GoldenGold { get; }
         public int PortalStages { get; private set; } = 50;
+        public OddityRules Oddities { get; private set; } = OddityRules.None;
 
         public static EncounterRules Read(ContentNode node)
         {
@@ -46,7 +47,8 @@ namespace Game.Core.Content
                 golden.Field("hpMultiplier").AsNumber(1, 1e12),
                 golden.Field("goldPerHp").AsNumber(0, 1e6))
             {
-                PortalStages = node.HasField("portal") ? node.Field("portal").Field("stages").AsInt(0, 100000) : 50
+                PortalStages = node.HasField("portal") ? node.Field("portal").Field("stages").AsInt(0, 100000) : 50,
+                Oddities = OddityRules.Read(node)
             };
         }
     }

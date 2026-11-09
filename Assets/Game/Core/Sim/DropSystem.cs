@@ -271,6 +271,15 @@ namespace Game.Core.Sim
 
         public void GiveShards(long shards) => AddShards(shards);
 
+        public void GiveOddityShards(double share)
+        {
+            var oddities = _state.Oddities;
+            oddities.ShardCarry += System.Math.Max(0, _hero.Value(CombatStats.ShardDrop, _rules.Shards.SpecialBoss * share));
+            var whole = (long)System.Math.Floor(oddities.ShardCarry + 1e-9);
+            oddities.ShardCarry = System.Math.Max(0, oddities.ShardCarry - whole);
+            AddShards(whole);
+        }
+
         public void GiveTrophy() => _state.PendingTrophies++;
 
         public void GiveSpiritLoot(int trophies, long shards)
