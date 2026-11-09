@@ -51,17 +51,17 @@ def dimmed(image, spec):
 
 
 def layer_entry(entry):
-    return (entry, 0) if isinstance(entry, str) else (entry["file"], entry["y"])
+    return (entry, 0, 0) if isinstance(entry, str) else (entry["file"], entry.get("x", 0), entry.get("y", 0))
 
 
 def placed_part(folder, entry, scale, canvas):
-    name, y = layer_entry(entry)
+    name, x, y = layer_entry(entry)
     part = Image.open(folder / name).convert("RGBA")
     if scale == 1:
         return part
     size = (round(part.width * scale), round(part.height * scale))
     placed = Image.new("RGBA", (round(canvas[0] * scale), round(canvas[1] * scale)))
-    placed.alpha_composite(part.resize(size, Image.BOX), (0, round(y * scale)))
+    placed.alpha_composite(part.resize(size, Image.BOX), (round(x * scale), round(y * scale)))
     return placed
 
 

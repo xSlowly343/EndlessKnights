@@ -1,0 +1,44 @@
+{
+  "id": "throne_room",
+  "source": "rift_beyond/throne_room",
+  "scale": 0.125,
+  "canvas": [
+    3840,
+    2160
+  ],
+  "window": {
+    "top": 0,
+    "height": 180
+  },
+  "palette": 48,
+  "layers": {
+    "back": [
+      "wall.png"
+    ],
+    "ground": [
+      {
+        "file": "floor.png",
+        "y": 936
+      }
+    ],
+    "mid": [
+      "throne.png",
+      {
+        "file": "candles.png",
+        "x": 464,
+        "y": 216
+      }
+    ],
+    "front": [
+      {
+        "file": "gargoyles.png",
+        "y": 943
+      }
+    ]
+  },
+  "dim": {
+    "color": 1.0,
+    "brightness": 1.0
+  },
+  "mirror_tile": true
+}

@@ -1,0 +1,43 @@
+{
+  "id": "rift_castle",
+  "source": "rift_beyond/castle",
+  "scale": 0.125,
+  "canvas": [
+    3840,
+    2160
+  ],
+  "window": {
+    "top": 0,
+    "height": 180
+  },
+  "palette": 48,
+  "layers": {
+    "back": [
+      "sky.png",
+      {
+        "file": "castle.png",
+        "x": 424
+      }
+    ],
+    "ground": [
+      {
+        "file": "ground.png",
+        "y": 792
+      }
+    ],
+    "mid": [
+      "gate.png"
+    ],
+    "front": [
+      {
+        "file": "thorns.png",
+        "y": 1022
+      }
+    ]
+  },
+  "dim": {
+    "color": 1.0,
+    "brightness": 1.0
+  },
+  "mirror_tile": true
+}
