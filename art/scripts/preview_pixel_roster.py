@@ -74,6 +74,30 @@ def render(group, scene, path, fps):
     frames[0].save(path, save_all=True, append_images=frames[1:], duration=1000 // fps, loop=0, optimize=True)
 
 
+def cell_width(name):
+    return json.loads((SPRITES / name / f"{name}.json").read_text())["cell"][0]
+
+
+def fitting_groups(group):
+    groups, width = [[]], 0
+    for name in group:
+        if groups[-1] and width + cell_width(name) > VIEW[0]:
+            groups.append([])
+            width = 0
+        groups[-1].append(name)
+        width += cell_width(name)
+    return groups
+
+
+def render_split(group, scene, stem, fps):
+    groups = fitting_groups(group)
+    if len(groups) == 1:
+        render(group, scene, PREVIEW / f"{stem}.gif", fps)
+        return
+    for index, part in enumerate(groups):
+        render(part, scene, PREVIEW / f"{stem}_{chr(ord('a') + index)}.gif", fps)
+
+
 def main():
     args = parse_args()
     roster = json.loads((ENEMIES / f"{args.roster}.json").read_text())
@@ -85,7 +109,7 @@ def main():
     half = (len(mobs) + 1) // 2
     render(mobs[:half], scene, PREVIEW / f"roster_{args.roster}_mobs_a.gif", roster["fps"])
     render(mobs[half:], scene, PREVIEW / f"roster_{args.roster}_mobs_b.gif", roster["fps"])
-    render(bosses, scene, PREVIEW / f"roster_{args.roster}_bosses.gif", roster["fps"])
+    render_split(bosses, scene, f"roster_{args.roster}_bosses", roster["fps"])
     if masters:
         render(masters, scene, PREVIEW / f"roster_{args.roster}_master.gif", roster["fps"])
 

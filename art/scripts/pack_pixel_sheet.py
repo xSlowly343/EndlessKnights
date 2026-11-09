@@ -1,5 +1,6 @@
 import argparse
 import json
+import random
 from pathlib import Path
 
 from PIL import Image
@@ -65,8 +66,9 @@ def strip_frames(packs, strip, width):
     sheet = Image.open(packs / strip["file"]).convert("RGBA")
     frame_width = strip["width"]
     frame_height = strip.get("height", sheet.height)
+    rows = [strip["row"]] if "row" in strip else range(sheet.height // frame_height)
     frames = []
-    for row in range(sheet.height // frame_height):
+    for row in rows:
         for column in range(sheet.width // frame_width):
             box = (column * frame_width, row * frame_height, (column + 1) * frame_width, (row + 1) * frame_height)
             part = sheet.crop(box)
@@ -123,8 +125,51 @@ def source_anims(spec, packs):
     return {name: grid_frames(sheet, tuple(spec["cell"]), row) for name, row in spec["rows"].items()}
 
 
+def dissolved(frame, steps, seed):
+    pixels = [(x, y) for y in range(frame.height) for x in range(frame.width) if frame.getpixel((x, y))[3]]
+    random.Random(seed).shuffle(pixels)
+    frames, current = [], frame.copy()
+    for step in range(1, steps + 1):
+        current = current.copy()
+        for x, y in pixels[(step - 1) * len(pixels) // steps:step * len(pixels) // steps]:
+            current.putpixel((x, y), (0, 0, 0, 0))
+        frames.append(current)
+    return frames
+
+
+def flashed(frame):
+    white = Image.new("RGB", frame.size, (255, 255, 255))
+    lit = Image.blend(frame.convert("RGB"), white, 0.6).convert("RGBA")
+    lit.putalpha(frame.getchannel("A"))
+    return lit
+
+
+def with_flash_hit(anims):
+    rest = anims["idle"][0]
+    anims["hit"] = [flashed(rest), rest, flashed(rest), rest]
+    return anims
+
+
+def with_dissolve_death(anims, steps, seed):
+    hit = anims["hit"]
+    anims["death"] = hit + dissolved(hit[-1], steps, seed)
+    return anims
+
+
+def trimmed_sides(anims):
+    boxes = [frame.getbbox() for frames in anims.values() for frame in frames if frame.getbbox()]
+    left, right = min(box[0] for box in boxes), max(box[2] for box in boxes)
+    return {name: [frame.crop((left, 0, right, frame.height)) for frame in frames] for name, frames in anims.items()}
+
+
 def load_anims(spec, packs):
     anims = source_anims(spec, packs)
+    if spec.get("flash_hit"):
+        anims = with_flash_hit(anims)
+    if "dissolve" in spec:
+        anims = with_dissolve_death(anims, spec["dissolve"], spec.get("seed", 7))
+    if spec.get("trim"):
+        anims = trimmed_sides(anims)
     if "resample" in spec:
         anims = {name: [resampled(frame, spec["resample"]) for frame in frames] for name, frames in anims.items()}
     if "hue_shift" in spec:
