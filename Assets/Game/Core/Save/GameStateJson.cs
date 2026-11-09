@@ -86,6 +86,7 @@ namespace Game.Core.Save
                     ("stageRush", JsonValue.Of(state.StageRush)))),
                 ("artifacts", JsonValue.Array(WriteArtifacts(state.Artifacts))),
                 ("rift", WriteRift(state.Rift)),
+                ("oddities", OddityStateJson.Write(state.Oddities)),
                 ("weapons", WriteWeapons(state.Weapons)),
                 ("drops", WriteDrops(state.Drops)),
                 ("mount", WriteMount(state.Mount)),
@@ -260,6 +261,9 @@ namespace Game.Core.Save
                 state.GoldenTicks = enemy.Field("goldenTicks").AsInt(0, 100000);
                 state.GoldenNormalHp = SaveValues.ReadBigNumber(enemy.Field("goldenNormalHp"));
             }
+            state.Oddities.Rng = new Rng(rng0 ^ rng1 ^ OddityState.SeedSalt);
+            if (node.HasField("oddities"))
+                OddityStateJson.Read(node.Field("oddities"), state.Oddities);
             ReadSkills(node.Field("skills"), gems, state);
             foreach (var id in node.Field("ownedGems").Items())
             {

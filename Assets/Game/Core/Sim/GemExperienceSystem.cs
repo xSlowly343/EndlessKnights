@@ -37,8 +37,9 @@ namespace Game.Core.Sim
         {
             GrantCasts();
             GrantTrophies();
-            var kills = _state.Kills - _seenKills;
+            var kills = _state.Kills - _seenKills + _state.Oddities.PendingGemKills;
             _seenKills = _state.Kills;
+            _state.Oddities.PendingGemKills = 0;
             if (kills <= 0)
                 return;
             var amount = kills * _levels.ExperiencePerKill * GemMultiplier;

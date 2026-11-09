@@ -70,6 +70,7 @@ namespace Game.Core.Sim
         private readonly OverloadSystem _overload;
         private readonly PathSystem _paths;
         private readonly GemExperienceSystem _gemExperience;
+        private readonly OdditySystem _oddities;
         private readonly GearSystem _gear;
         private readonly RerollSystem _reroll;
         private readonly ClassAttributeSystem _classAttribute;
@@ -137,6 +138,7 @@ namespace Game.Core.Sim
             _cosmetics = new CosmeticSystem(data.Cosmetics, state);
             _seasonPass = new SeasonPassSystem(data.SeasonPass, state);
             _stage.Drops = _drops;
+            _oddities = new OdditySystem(state, hero, Events, _stage, _loot, _drops);
             _reroll = new RerollSystem(data.Drops, state, _gear, _weapons);
             _combat.Dreamcatcher.UseLoot(_drops, _loot);
             _combat.Dreamcatcher.UseEnemies(data.Enemies);
@@ -327,6 +329,7 @@ namespace Game.Core.Sim
         public OverloadSystem Overload => _overload;
         public PathSystem Paths => _paths;
         public GemExperienceSystem GemExperience => _gemExperience;
+        public OdditySystem Oddities => _oddities;
         public GameData Data => _data;
         public BossHint? BossHint => BossHint.For(State, _data.Stages.BossHint, _prestige, _upgrades, UnusedLevers());
 
@@ -1137,6 +1140,7 @@ namespace Game.Core.Sim
             _conditions.Tick();
             _rift.Tick();
             _stage.Tick();
+            _oddities.Tick(input);
             _dungeons.Tick();
             _chronicle.Tick();
             _combat.Tick(input);

@@ -68,6 +68,12 @@ namespace Game.Core.Sim
         CompanionPairScene,
         CompanionEggFound,
         CompanionHatched,
-        CompanionSpark
+        CompanionSpark,
+        OddityAppeared,
+        OddityRewarded,
+        CrowdThinned,
+        WispAppeared,
+        WispCaught,
+        WispEscaped
     }
 }

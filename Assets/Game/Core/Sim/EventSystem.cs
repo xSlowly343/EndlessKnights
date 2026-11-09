@@ -244,6 +244,7 @@ namespace Game.Core.Sim
             events.Guest = false;
             _stage.UseData(_home, _enemies);
             _stage.RaisesRecord = true;
+            _stage.Scripted = false;
             Respawn();
         }
 
@@ -251,6 +252,7 @@ namespace Game.Core.Sim
         {
             _stage.UseData(_home.ForDungeon(1, _rules.BossHpMultiplier, _rules.BossTimerSeconds), _enemies);
             _stage.RaisesRecord = false;
+            _stage.Scripted = true;
         }
 
         private void Respawn()

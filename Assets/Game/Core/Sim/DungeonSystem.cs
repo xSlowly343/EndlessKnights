@@ -120,6 +120,7 @@ namespace Game.Core.Sim
             dungeons.Active = null;
             _stage.UseData(_home, _enemies);
             _stage.RaisesRecord = true;
+            _stage.Scripted = false;
             _layer.Set(System.Array.Empty<Modifier>());
             Respawn();
         }
@@ -142,6 +143,7 @@ namespace Game.Core.Sim
             }
             _stage.UseData(_home.ForDungeon(enemyHp, bossHp, _rules.BossTimerSeconds * timer), _enemies);
             _stage.RaisesRecord = false;
+            _stage.Scripted = true;
             _layer.Set(modifiers);
         }
 

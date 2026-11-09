@@ -116,6 +116,8 @@
     {"id": "watchman_coin", "name": {"ru": "Монета ночного сторожа", "en": "Night Watchman's Coin"}, "group": 5, "type": "economy", "perLevel": [{"stat": "offlineGold", "kind": "increased", "value": 0.12, "tags": ["Gold"]}]},
     {"id": "kitsune_tail", "name": {"ru": "Хвост кицунэ", "en": "Kitsune Tail"}, "group": 5, "type": "economy", "perLevel": [{"stat": "goldJackpotChance", "kind": "flat", "value": 0.001}]},
     {"id": "rift_boots", "name": {"ru": "Сапоги Разлома", "en": "Rift Boots"}, "group": 5, "type": "tempo", "perLevel": [{"stat": "wandererChance", "kind": "flat", "value": 0.001}]},
+    {"id": "rift_lure", "name": {"ru": "Манок Изнанки", "en": "Rift Lure"}, "group": 5, "type": "tempo", "maxLevel": 20, "perLevel": [{"stat": "oddityChance", "kind": "increased", "value": 0.01}]},
+    {"id": "trail_incense", "name": {"ru": "Благовоние следа", "en": "Trail Incense"}, "group": 5, "type": "economy", "maxLevel": 3, "perLevel": [{"stat": "trailStages", "kind": "flat", "value": 1}]},
     {"id": "warden_mirror", "name": {"ru": "Зеркало стража", "en": "Warden's Mirror"}, "group": 5, "type": "tempo", "perLevel": [{"stat": "guardianHp", "kind": "increased", "value": -0.01}]},
     {"id": "ancient_treasury", "name": {"ru": "Казна древних", "en": "Ancient Treasury"}, "group": 5, "type": "meta", "perLevel": [], "boost": {"types": ["economy"], "value": 0.02}},
     {"id": "star_dust", "name": {"ru": "Звёздная пыль", "en": "Star Dust"}, "group": 5, "type": "meta", "perLevel": [], "perArtifact": [{"stat": "attackPower", "kind": "increased", "value": 0.001}]},

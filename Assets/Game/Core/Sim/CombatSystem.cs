@@ -690,6 +690,8 @@ namespace Game.Core.Sim
             _state.TotalDamage += damage;
             if (_state.GoldenTicks > 0)
                 _state.GoldenDamage += damage;
+            if (_state.Oddities.Kind == OddityKind.Dummy)
+                _state.Oddities.DummyDamage += damage;
             if (_state.WishShare > 0)
                 _state.WishStored += damage * _state.WishShare;
         }

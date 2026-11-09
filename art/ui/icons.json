@@ -784,6 +784,8 @@
     { "group": "artifacts", "id": "watchman_coin", "source": "lorc/crown-coin", "color": "#F05A5A" },
     { "group": "artifacts", "id": "kitsune_tail", "source": "delapouite/fox-tail", "color": "#F05A5A" },
     { "group": "artifacts", "id": "rift_boots", "source": "lorc/walking-boot", "color": "#F05A5A" },
+    { "group": "artifacts", "id": "rift_lure", "source": "lorc/vortex", "color": "#F05A5A" },
+    { "group": "artifacts", "id": "trail_incense", "source": "lorc/incense", "color": "#F05A5A" },
     { "group": "artifacts", "id": "warden_mirror", "source": "delapouite/shinto-shrine-mirror", "color": "#F05A5A" },
     { "group": "artifacts", "id": "ancient_treasury", "source": "delapouite/ancient-ruins", "color": "#F05A5A" },
     { "group": "artifacts", "id": "star_dust", "source": "delapouite/sparkles", "color": "#F05A5A" },

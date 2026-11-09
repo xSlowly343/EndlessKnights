@@ -5,7 +5,7 @@ using Game.Core.Stats;
 
 namespace Game.Core.Sim
 {
-    public sealed class StageSystem : IKillHandler
+    public sealed partial class StageSystem : IKillHandler
     {
         public const double StaggerHpShare = 1e-12;
         public const double MaxHpCut = 0.9;
@@ -52,6 +52,7 @@ namespace Game.Core.Sim
 
         public bool Linked { get; private set; }
         public bool RaisesRecord { get; set; } = true;
+        public bool Scripted { get; set; }
         public IBossListener? BossListener { get; set; }
         public IKillTimeListener? KillTimeListener { get; set; }
         public DropSystem? Drops { get; set; }
@@ -75,6 +76,7 @@ namespace Game.Core.Sim
             if (Linked)
                 return;
             TickGolden();
+            TickOddities();
             Regenerate();
             StripShield();
             if (!_state.FightingBoss || !_state.EnemyAlive)
@@ -123,6 +125,7 @@ namespace Game.Core.Sim
                 _state.EnemyHp = _state.EnemyMaxHp * StaggerHpShare;
                 return;
             }
+            var oddity = _state.Oddities.Kind;
             _state.Kills++;
             NoteWeakenedKill();
             _state.KillStreak++;
@@ -130,6 +133,11 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
             Reward();
             KillTimeListener?.OnKillTimed(_state.EnemyType, _state.EnemyLifeSeconds, false);
+            if (oddity == OddityKind.SplitterPart)
+            {
+                OnPartKilled();
+                return;
+            }
             if (_state.FightingBoss)
                 AdvanceStage();
             else if (_state.Farming)
@@ -141,6 +149,8 @@ namespace Game.Core.Sim
             }
             if (!_state.FightingBoss && !_state.Farming)
                 TryPortal();
+            if (RewardOddity(oddity))
+                return;
             SpawnNext();
         }
 
@@ -227,7 +237,7 @@ namespace Game.Core.Sim
         {
             var multiplier = _state.NextKillReward;
             _state.NextKillReward = 1;
-            _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy, multiplier * (1 + _state.EnemyGoldBonus));
+            _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy, multiplier * (1 + _state.EnemyGoldBonus) * OddityGold());
             _levels.OnKill(_state.EnemyType, multiplier);
             RewardListener?.OnKillRewarded();
             if (multiplier > 1 && _state.NextKillShardChance > 0 && _state.Rng.NextDouble() < _state.NextKillShardChance)
@@ -291,6 +301,7 @@ namespace Game.Core.Sim
             _state.BossBestFraction = 0;
             if (_state.Stage > _state.HighestStage)
                 _state.HighestStage = _state.Stage;
+            CountOddityStages();
             if (wanderer)
                 Jump();
             else
@@ -342,6 +353,8 @@ namespace Game.Core.Sim
                 _events.Add(GameEvent.ForStage(GameEventKind.GoldenColossusAppeared, _state.Tick, stage));
                 return;
             }
+            if (TrySpawnOddity(stage, enemy, cut))
+                return;
             Spawn(enemy, EnemyType.Normal, _stages.NormalHp(stage) * (Multiplier(enemy) * (1 - cut)));
         }
 
@@ -357,7 +370,8 @@ namespace Game.Core.Sim
         }
 
         private bool GoldenComes(long stage) =>
-            RaisesRecord && Encounters.GoldenChance > 0 && stage >= Encounters.GoldenMinStage && _state.Rng.NextDouble() < Encounters.GoldenChance;
+            !Scripted && !Linked && !Encounters.Oddities.Excludes(stage) && Encounters.GoldenChance > 0 && stage >= Encounters.GoldenMinStage
+            && _state.Rng.NextDouble() < Encounters.GoldenChance * OddityChanceMultiplier;
 
         private bool WandererComes(long stage, bool guardian) =>
             RaisesRecord && !guardian && WandererChance > 0 && stage >= Encounters.WandererMinStage
@@ -545,8 +559,12 @@ namespace Game.Core.Sim
 
         public double ShieldShare => _state.EnemyShieldFloor.Sign > 0 && _state.EnemyMaxHp.Sign > 0 ? System.Math.Min(1, (_state.EnemyShieldFloor / _state.EnemyMaxHp).ToDouble()) : 0;
 
-        private int EnemiesOnStage(long stage) =>
-            (int)System.Math.Floor(_stages.EnemiesOnStage(stage) * System.Math.Max(1, _hero.Value(CombatStats.StageEnemies, 1)) + 1e-9);
+        private int EnemiesOnStage(long stage)
+        {
+            var count = (int)System.Math.Floor(_stages.EnemiesOnStage(stage) * System.Math.Max(1, _hero.Value(CombatStats.StageEnemies, 1)) + 1e-9);
+            var crowd = CrowdShare;
+            return crowd < 1 && count > 1 ? System.Math.Max(1, (int)System.Math.Floor(count * crowd + 1e-9)) : count;
+        }
 
         private void Regenerate()
         {

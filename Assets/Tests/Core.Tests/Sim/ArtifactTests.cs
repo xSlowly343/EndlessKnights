@@ -23,12 +23,12 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void ThereAreFiveGroupsOfThirtyFive()
+        public void ThereAreFiveGroupsOfThirtyFiveAndTwoOddityArtifactsInTheLast()
         {
-            Assert.That(Catalog.All.Count, Is.EqualTo(175));
+            Assert.That(Catalog.All.Count, Is.EqualTo(177));
             Assert.That(Catalog.Groups, Is.EqualTo(5));
             for (var group = 1; group <= 5; group++)
-                Assert.That(Catalog.All.Count(a => a.Group == group), Is.EqualTo(35), "group " + group);
+                Assert.That(Catalog.All.Count(a => a.Group == group), Is.EqualTo(group == 5 ? 37 : 35), "group " + group);
         }
 
         [Test]

@@ -197,7 +197,26 @@
   "encounters": {
     "wanderer": { "chance": 0.05, "minStage": 30, "jumpMin": 10, "jumpMax": 50 },
     "portal": { "stages": 50 },
-    "golden": { "chance": 0.002, "minStage": 10, "seconds": 15, "hpMultiplier": 1000, "goldPerHp": 1 }
+    "golden": { "chance": 0.002, "minStage": 10, "seconds": 15, "hpMultiplier": 1000, "goldPerHp": 1 },
+    "excludeStages": [50000],
+    "oddities": [
+      { "id": "splitter", "chance": 0.005, "minStage": 100, "hpMultiplier": 1, "parts": 4, "partHp": 0.25, "seconds": 5, "crowdStages": 10, "crowdCut": 0.3 },
+      { "id": "dummy", "chance": 0.003, "minStage": 30, "hpMultiplier": 1000000, "seconds": 10, "maxKills": 50 },
+      { "id": "sprout", "chance": 0.002, "minStage": 500, "hpMultiplier": 3, "damage": 0.02, "maxStacks": 50 },
+      { "id": "barrel", "chance": 0.005, "minStage": 50, "hpMultiplier": 5, "shardShare": 0.5 },
+      { "id": "miser", "chance": 0.01, "minStage": 10, "hpMultiplier": 3, "trailStages": 5, "trailGold": 5 },
+      { "id": "bee", "chance": 0.01, "minStage": 5, "hpMultiplier": 0.5, "resourceShare": 0.25 }
+    ],
+    "wisp": {
+      "everySeconds": 180, "flySeconds": 8, "actions": 15, "mousePxPerAction": 100,
+      "rewards": [
+        { "kind": "gold", "weight": 40, "amount": 20 },
+        { "kind": "resource", "weight": 25, "amount": 0.25 },
+        { "kind": "goldSpree", "weight": 15, "amount": 3, "seconds": 60 },
+        { "kind": "damageSpree", "weight": 15, "amount": 2, "seconds": 30 },
+        { "kind": "shards", "weight": 5, "amount": 1 }
+      ]
+    }
   },
   "paths": {
     "balanceWindowSeconds": 10,
