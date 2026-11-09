@@ -65,8 +65,9 @@ def strip_frames(packs, strip, width):
     sheet = Image.open(packs / strip["file"]).convert("RGBA")
     frame_width = strip["width"]
     frame_height = strip.get("height", sheet.height)
+    rows = [strip["row"]] if "row" in strip else range(sheet.height // frame_height)
     frames = []
-    for row in range(sheet.height // frame_height):
+    for row in rows:
         for column in range(sheet.width // frame_width):
             box = (column * frame_width, row * frame_height, (column + 1) * frame_width, (row + 1) * frame_height)
             part = sheet.crop(box)

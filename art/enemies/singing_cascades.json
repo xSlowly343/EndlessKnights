@@ -1,0 +1,226 @@
+{
+  "biome": "singing_cascades",
+  "scale": 4,
+  "fps": 10,
+  "loop": [
+    "idle",
+    "walk"
+  ],
+  "enemies": {
+    "cascade_crab": {
+      "source": "elthen/Crab Sprite Sheet.png",
+      "cell": [
+        32,
+        32
+      ],
+      "mirror": true,
+      "scale": 5,
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 3,
+        "hit": 0,
+        "death": 2
+      }
+    },
+    "lagoon_octopus": {
+      "source": "elthen/Octopus Sprite Sheet.png",
+      "cell": [
+        32,
+        32
+      ],
+      "mirror": true,
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 3,
+        "death": 6
+      }
+    },
+    "spray_slime": {
+      "source": "elthen/Slime Sprite Sheet.png",
+      "cell": [
+        32,
+        32
+      ],
+      "mirror": true,
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 3,
+        "death": 4
+      }
+    },
+    "falls_bat": {
+      "source": "elthen/Bat Sprite Sheet.png",
+      "cell": [
+        16,
+        24
+      ],
+      "mirror": true,
+      "rows": {
+        "idle": 1,
+        "walk": 1,
+        "attack": 0,
+        "hit": 1,
+        "death": 2
+      }
+    },
+    "fire_bloom": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/predator_plants/Plant1/Idle/Plant1_Idle_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "walk": {
+          "file": "craftpix/predator_plants/Plant1/Walk/Plant1_Walk_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "attack": {
+          "file": "craftpix/predator_plants/Plant1/Attack/Plant1_Attack_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "hit": {
+          "file": "craftpix/predator_plants/Plant1/Hurt/Plant1_Hurt_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "death": {
+          "file": "craftpix/predator_plants/Plant1/Death/Plant1_Death_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        }
+      },
+      "mirror": false,
+      "scale": 2
+    },
+    "lagoon_idol": {
+      "source": "elthen/Buff Totem Sprite Sheet v1.1.png",
+      "cell": [
+        32,
+        32
+      ],
+      "mirror": true,
+      "boss": true,
+      "rows": {
+        "idle": 0,
+        "walk": 0,
+        "attack": 2,
+        "hit": 0,
+        "death": 3
+      }
+    },
+    "pitcher_maw": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/predator_plants/Plant2/Idle/Plant2_Idle_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "walk": {
+          "file": "craftpix/predator_plants/Plant2/Walk/Plant2_Walk_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "attack": {
+          "file": "craftpix/predator_plants/Plant2/Attack/Plant2_Attack_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "hit": {
+          "file": "craftpix/predator_plants/Plant2/Hurt/Plant2_Hurt_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "death": {
+          "file": "craftpix/predator_plants/Plant2/Death/Plant2_Death_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        }
+      },
+      "mirror": false,
+      "scale": 3,
+      "boss": true
+    },
+    "snapjaw_queen": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/predator_plants/Plant3/Idle/Plant3_Idle_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "walk": {
+          "file": "craftpix/predator_plants/Plant3/Walk/Plant3_Walk_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "attack": {
+          "file": "craftpix/predator_plants/Plant3/Attack/Plant3_Attack_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "hit": {
+          "file": "craftpix/predator_plants/Plant3/Hurt/Plant3_Hurt_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        },
+        "death": {
+          "file": "craftpix/predator_plants/Plant3/Death/Plant3_Death_full.png",
+          "width": 64,
+          "height": 64,
+          "row": 2
+        }
+      },
+      "mirror": false,
+      "scale": 3,
+      "boss": true
+    },
+    "cascade_singer": {
+      "strips": {
+        "idle": {
+          "file": "wild_frog_boss/SpriteSheets/WildFrog-Idle.png",
+          "width": 128
+        },
+        "walk": {
+          "file": "wild_frog_boss/SpriteSheets/ImpulseJump/WildFrog-Impulse.png",
+          "width": 128
+        },
+        "attack": {
+          "file": "wild_frog_boss/SpriteSheets/LickAttack/WildFrog-LickAttack.png",
+          "width": 128
+        },
+        "hit": {
+          "file": "wild_frog_boss/SpriteSheets/WildFrog-Idle.png",
+          "width": 128
+        },
+        "death": {
+          "file": "wild_frog_boss/SpriteSheets/Death/WildFrog-Death.png",
+          "width": 128
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true,
+      "master": true
+    }
+  }
+}
