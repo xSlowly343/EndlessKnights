@@ -39,7 +39,7 @@
 | Снежные предгорья | CraftPix [Free Winter Holiday Game Backgrounds](https://craftpix.net/freebies/free-winter-holiday-game-backgrounds/) (принято 08.11.2026) |
 | Мистический розовый лес | CraftPix [Free Fairy Tale Game Backgrounds](https://craftpix.net/freebies/free-fairy-tale-game-backgrounds/), фон 2 (принято 08.11.2026) |
 | Поющие каскады | CraftPix [Free Fairy Tale Game Backgrounds](https://craftpix.net/freebies/free-fairy-tale-game-backgrounds/), фон 1 (выбран 09.11.2026) |
-| За Разломом | слои трёх фонов прислал Сергей 09.11.2026 (источник уточнить) |
+| За Разломом | CraftPix [Free Vampires Locations Battle Background Pack](https://craftpix.net/freebies/free-vampires-locations-battle-background-pack/), слои прислал Сергей 09.11.2026 |
 
 ## 3. Герой и персонажи
 Герой один, левый угол, высота 96 px, смотрит вправо. У каждого из 14 персонажей свой силуэт и своё оружие, чтобы его узнавали издалека. Оружие и цвет сектора — из `skills.md`, образы описаны в `class-resources.md` §2. Силуэты и цвета одежды допишем, когда Сергей утвердит образы (class-resources.md §7, вопрос 4).
