@@ -121,8 +121,9 @@ class Part:
             defs.append(f'<g id="{gid}">{paths}</g>')
             defs.append(f'<clipPath id="c{gid}">{paths}</clipPath>')
             if outline:
-                outl.append(f'<use href="#{gid}" fill="none" stroke="{rgb(self.outline_color)}" stroke-width="{2 * self.outline_width:.3f}" stroke-linejoin="round"/>')
-                outl.append(f'<use href="#{gid}" fill="{rgb(self.outline_color)}"/>')
+                edge = rgb(pal[0] if self.outline_color is None else self.outline_color)
+                outl.append(f'<use href="#{gid}" fill="none" stroke="{edge}" stroke-width="{2 * self.outline_width:.3f}" stroke-linejoin="round"/>')
+                outl.append(f'<use href="#{gid}" fill="{edge}"/>')
             body.append(f'<use href="#{gid}" fill="{rgb(pal[tone])}"/>')
             if shade > 0:
                 defs.append(f'<mask id="ms{gid}">{big} fill="white"/><use href="#{gid}" fill="black" transform="translate({lx * shade:.3f},{-ly * shade:.3f})"/></mask>')
@@ -139,7 +140,7 @@ class Part:
                 f'<defs>{"".join(defs)}</defs>{"".join(outl)}{"".join(body)}</svg>'), (x0, y0, x1, y1)
 
     def colors(self):
-        cols = [self.outline_color]
+        cols = [] if self.outline_color is None else [self.outline_color]
         for shapes, mat, *_ in self.groups:
             cols += list(self.palette[mat])
         cols += [c for _, _, c in self.flats]

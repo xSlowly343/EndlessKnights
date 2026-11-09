@@ -1311,7 +1311,7 @@
    }
   },
   {
-   "name": "hair_back",
+   "name": "hair_short_back",
    "slot": "hair_back",
    "layer": 5,
    "tint": 1.0,
@@ -1333,7 +1333,7 @@
    }
   },
   {
-   "name": "hair_front",
+   "name": "hair_short_front",
    "slot": "hair_front",
    "layer": 60,
    "tint": 1.0,

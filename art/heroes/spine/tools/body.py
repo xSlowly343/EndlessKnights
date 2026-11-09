@@ -63,7 +63,7 @@ class Body:
         self.parts = []
 
     def new(self, name, ow=1.0):
-        return Part(name, MATERIALS, OUTLINE, ow)
+        return Part(name, MATERIALS, None, ow)
 
     def add(self, part, slot, layer, tint=1.0, pivots=None):
         self.parts.append({"part": part, "slot": slot, "layer": layer, "tint": tint, "pivots": pivots or {}})
@@ -291,44 +291,62 @@ class Body:
     def hair_pivots(self, pivots):
         return {k: self.hs([v_])[0] for k, v_ in pivots.items()}
 
-    def build_hair(self):
+    def hair_piece(self, style, piece, pts, layer, pivots, shade=0.8, light=0.0, streaks=()):
         hair = self.p["hair"]
-        light = MATERIALS[hair][3]
+        p = self.new(f"hair_{style}_{piece}")
+        p.smooth(self.hs(pts), hair, shade=shade, light=light)
+        for line, tone in streaks:
+            p.line(self.hs(line), MATERIALS[hair][tone], 0.5)
+        self.add(p, f"hair_{piece}", layer, 1.0, self.hair_pivots(pivots))
+
+    def build_hair(self):
         if self.sex == "male":
-            front = [(-6.4, 37.4), (-7.0, 41.0), (-6.8, 44.6), (-7.3, 46.6), (-5.6, 47.4), (-5.0, 49.3), (-3.0, 48.9), (-1.6, 50.6), (0.2, 49.6),
-                     (1.3, 51.7), (2.2, 49.6), (4.4, 49.4), (6.2, 47.8), (7.2, 45.2), (7.4, 42.4), (7.0, 39.8), (6.5, 41.4), (5.8, 40.4), (5.0, 41.9),
-                     (3.9, 40.3), (3.0, 42.1), (1.8, 40.5), (0.7, 42.3), (-0.6, 40.7), (-1.8, 41.9), (-2.6, 39.6), (-3.6, 37.6), (-4.8, 36.8), (-5.8, 36.6)]
-            back = [(-6.6, 36.0), (-7.4, 40.0), (-7.0, 44.6), (-4.6, 47.6), (-1.0, 48.4), (-1.0, 40.0), (-3.0, 35.0)]
-            p = self.new("hair_back")
-            p.smooth(self.hs(back), hair, shade=0.8, light=0.0)
-            self.add(p, "hair_back", 5, 1.0, self.hair_pivots({"hair_root": (0.4, 46.0)}))
-            p = self.new("hair_front")
-            p.smooth(self.hs(front), hair, shade=0.8, light=0.4)
-            p.line(self.hs([(-3.6, 47.4), (-0.6, 48.6), (2.6, 48.4)]), light, 0.5)
-            self.add(p, "hair_front", 60, 1.0, self.hair_pivots({"hair_root": (0.4, 46.0), "bangs": (2.5, 42.0)}))
+            self.build_hair_short()
         else:
-            front = [(-6.4, 35.2), (-7.0, 40.0), (-6.6, 44.4), (-4.8, 47.4), (-1.6, 49.0), (1.6, 49.2), (4.6, 48.0), (6.6, 45.6), (7.4, 42.4),
-                     (7.4, 38.6), (7.0, 35.6), (6.4, 37.4), (6.2, 40.0), (5.6, 41.8), (4.8, 40.2), (3.8, 42.0), (2.6, 40.0), (1.4, 41.8), (0.2, 40.2),
-                     (-1.0, 41.8), (-2.2, 39.8), (-3.2, 37.0), (-4.4, 35.0), (-5.4, 34.2)]
-            back = [(-6.6, 44.0), (-7.6, 39.0), (-7.8, 33.0), (-7.4, 27.0), (-6.6, 23.0), (-5.0, 21.4), (-3.2, 21.8), (-1.4, 24.0), (1.0, 24.4),
-                    (3.2, 23.0), (5.0, 22.0), (6.4, 23.6), (7.2, 27.4), (7.6, 32.0), (7.8, 37.0), (7.4, 42.0), (5.4, 46.6), (1.2, 48.6), (-3.2, 48.2)]
-            side_l = [(-7.0, 41.5), (-5.2, 41.0), (-5.0, 36.0), (-5.3, 32.5), (-5.8, 29.6), (-6.6, 29.4), (-7.2, 32.0), (-7.4, 36.5)]
-            side_r = [(6.4, 42.0), (7.8, 41.0), (8.0, 36.0), (7.6, 32.0), (6.9, 29.8), (6.2, 31.0), (6.6, 35.5), (6.2, 39.5)]
-            p = self.new("hair_back")
-            p.smooth(self.hs(back), hair, shade=0.8, light=0.0)
-            p.line(self.hs([(-6.6, 38.0), (-6.8, 30.0), (-5.8, 24.0)]), MATERIALS[hair][1], 0.5)
-            p.line(self.hs([(6.6, 36.0), (6.6, 28.0), (5.6, 24.4)]), MATERIALS[hair][1], 0.5)
-            self.add(p, "hair_back", 5, 1.0, self.hair_pivots({"hair_root": (0.4, 46.0), "hair_back_1": (0.0, 42.0), "hair_back_2": (0.0, 35.0), "hair_back_3": (0.0, 28.0), "hair_back_tip": (0.0, 22.0)}))
-            p = self.new("hair_side_r")
-            p.smooth(self.hs(side_r), hair, shade=0.6, light=0.0)
-            self.add(p, "hair_side_r", 45, 1.0, self.hair_pivots({"hair_side_r_1": (7.1, 41.0), "hair_side_r_2": (7.3, 36.0), "hair_side_r_3": (7.1, 32.0), "hair_side_r_tip": (6.6, 30.0)}))
-            p = self.new("hair_front")
-            p.smooth(self.hs(front), hair, shade=0.8, light=0.4)
-            p.line(self.hs([(-3.6, 46.8), (-0.4, 48.2), (2.8, 47.8)]), light, 0.5)
-            self.add(p, "hair_front", 60, 1.0, self.hair_pivots({"hair_root": (0.4, 46.0), "bangs": (2.5, 42.0)}))
-            p = self.new("hair_side_l")
-            p.smooth(self.hs(side_l), hair, shade=0.6, light=0.4)
-            self.add(p, "hair_side_l", 62, 1.0, self.hair_pivots({"hair_side_l_1": (-6.2, 41.0), "hair_side_l_2": (-6.2, 36.0), "hair_side_l_3": (-6.3, 32.0), "hair_side_l_tip": (-6.2, 29.6)}))
+            for style in ("long", "bob", "ponytail"):
+                self.build_hair_female(style)
+
+    def build_hair_short(self):
+        front = [(-6.4, 37.4), (-7.0, 41.0), (-6.8, 44.6), (-7.3, 46.6), (-5.6, 47.4), (-5.0, 49.3), (-3.0, 48.9), (-1.6, 50.6), (0.2, 49.6),
+                 (1.3, 51.7), (2.2, 49.6), (4.4, 49.4), (6.2, 47.8), (7.2, 45.2), (7.4, 42.4), (7.0, 39.8), (6.5, 41.4), (5.8, 40.4), (5.0, 41.9),
+                 (3.9, 40.3), (3.0, 42.1), (1.8, 40.5), (0.7, 42.3), (-0.6, 40.7), (-1.8, 41.9), (-2.6, 39.6), (-3.6, 37.6), (-4.8, 36.8), (-5.8, 36.6)]
+        back = [(-6.6, 36.0), (-7.4, 40.0), (-7.0, 44.6), (-4.6, 47.6), (-1.0, 48.4), (-1.0, 40.0), (-3.0, 35.0)]
+        self.hair_piece("short", "back", back, 5, {"hair_root": (0.4, 46.0)})
+        self.hair_piece("short", "front", front, 60, {"hair_root": (0.4, 46.0), "bangs": (2.5, 42.0)}, light=0.4,
+                        streaks=[([(-3.6, 47.4), (-0.6, 48.6), (2.6, 48.4)], 3), ([(-5.6, 44.0), (-4.4, 41.6)], 1)])
+
+    def build_hair_female(self, style):
+        front = [(-6.6, 37.0), (-7.1, 41.0), (-6.7, 44.6), (-4.8, 47.5), (-1.6, 49.1), (1.6, 49.3), (4.6, 48.1), (6.6, 45.7), (7.4, 42.6),
+                 (7.3, 39.2), (6.8, 37.6), (6.3, 39.6), (5.8, 41.6), (4.9, 40.2), (3.9, 42.0), (2.7, 40.1), (1.5, 41.9), (0.3, 40.3),
+                 (-0.9, 41.9), (-2.1, 39.9), (-3.0, 37.6), (-4.2, 36.0), (-5.4, 35.6)]
+        crown = {"hair_root": (0.4, 46.0), "bangs": (2.5, 42.0)}
+        streak = [([(-3.6, 46.9), (-0.4, 48.3), (2.8, 47.9)], 3), ([(-5.8, 43.6), (-4.6, 40.6)], 1)]
+        if style == "long":
+            back = [(-5.0, 46.6), (-7.0, 44.0), (-7.8, 39.0), (-7.9, 33.0), (-7.6, 27.5), (-7.0, 23.6), (-5.8, 21.2), (-4.2, 20.6), (-2.8, 21.6),
+                    (-1.6, 24.0), (-0.6, 28.0), (1.0, 31.0), (3.5, 32.0), (6.2, 33.0), (7.3, 36.0), (7.4, 41.0), (6.0, 45.6), (2.0, 48.4), (-2.0, 48.6)]
+            self.hair_piece(style, "back", back, 5, {"hair_root": (0.4, 46.0), "hair_back_1": (-4.6, 42.0), "hair_back_2": (-5.6, 35.0),
+                                                     "hair_back_3": (-5.4, 28.0), "hair_back_tip": (-4.6, 21.2)},
+                            streaks=[([(-6.6, 38.0), (-6.6, 30.0), (-5.6, 23.4)], 1)])
+            lock = [(-6.4, 40.5), (-4.8, 40.0), (-4.6, 36.0), (-4.9, 32.6), (-5.5, 30.6), (-6.2, 31.0), (-6.6, 34.6), (-6.9, 38.0)]
+        elif style == "bob":
+            back = [(-5.0, 46.8), (-7.2, 44.2), (-8.0, 39.0), (-7.9, 34.0), (-7.4, 31.4), (-6.2, 30.2), (-4.6, 30.4), (-3.4, 31.6), (-1.0, 32.6),
+                    (2.0, 32.6), (4.6, 31.8), (6.2, 31.2), (7.4, 32.4), (7.8, 36.0), (7.6, 40.4), (6.4, 45.4), (2.2, 48.4), (-2.0, 48.6)]
+            self.hair_piece(style, "back", back, 5, {"hair_root": (0.4, 46.0), "hair_back_1": (-5.6, 40.0), "hair_back_tip": (-5.6, 30.6)},
+                            streaks=[([(-6.8, 39.0), (-6.4, 32.4)], 1)])
+            lock = [(-6.4, 40.5), (-4.8, 40.0), (-4.6, 36.4), (-5.0, 33.2), (-5.8, 32.4), (-6.5, 33.6), (-6.9, 37.4)]
+        else:
+            back = [(-5.0, 46.6), (-7.0, 44.0), (-7.4, 39.5), (-6.8, 36.4), (-5.2, 35.2), (-2.0, 35.6), (-1.0, 47.0)]
+            self.hair_piece(style, "back", back, 5, {"hair_root": (0.4, 46.0)})
+            tail = [(-6.6, 44.6), (-8.6, 44.8), (-10.4, 43.0), (-11.2, 39.6), (-11.0, 35.4), (-10.4, 31.6), (-9.6, 28.6), (-8.7, 27.6), (-8.2, 29.4),
+                    (-8.6, 32.6), (-8.8, 36.2), (-8.4, 39.6), (-7.2, 42.2)]
+            self.hair_piece(style, "tail", tail, 4, {"hair_tail_1": (-7.8, 43.6), "hair_tail_2": (-9.8, 39.6), "hair_tail_3": (-9.8, 34.0),
+                                                     "hair_tail_tip": (-9.0, 28.2)}, streaks=[([(-10.0, 41.6), (-10.0, 33.6), (-9.2, 29.6)], 1)])
+            tie = self.new(f"hair_{style}_tie")
+            tie.smooth(self.hs(ellipse((-7.4, 43.6), 0.8, 1.0)), "gold", shade=0.4, light=0.3)
+            self.add(tie, "hair_tie", 6, 1.0, self.hair_pivots({"hair_tail_1": (-7.8, 43.6)}))
+            lock = [(-6.4, 40.5), (-4.8, 40.0), (-4.7, 37.0), (-5.2, 35.0), (-6.0, 34.8), (-6.6, 36.6)]
+        self.hair_piece(style, "front", front, 60, crown, light=0.4, streaks=streak)
+        self.hair_piece(style, "side_l", lock, 62, {"hair_side_l_1": (-5.8, 40.0), "hair_side_l_tip": (-5.6, 31.0)}, shade=0.6, light=0.3)
 
     def build_under(self):
         mat = "under"

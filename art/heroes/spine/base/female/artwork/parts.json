@@ -1328,19 +1328,19 @@
    }
   },
   {
-   "name": "hair_back",
+   "name": "hair_long_back",
    "slot": "hair_back",
    "layer": 5,
    "tint": 1.0,
    "bbox": [
     -11,
-    18,
+    17,
     11,
     53
    ],
    "size": [
     88,
-    140
+    144
    ],
    "pivots": {
     "hair_root": [
@@ -1348,71 +1348,37 @@
      47.55
     ],
     "hair_back_1": [
-     -0.04,
+     -5.1,
      43.15
     ],
     "hair_back_2": [
-     -0.04,
+     -6.2,
      35.45
     ],
     "hair_back_3": [
-     -0.04,
+     -5.98,
      27.75
     ],
     "hair_back_tip": [
-     -0.04,
-     21.15
+     -5.1,
+     20.27
     ]
    }
   },
   {
-   "name": "hair_side_r",
-   "slot": "hair_side_r",
-   "layer": 45,
-   "tint": 1.0,
-   "bbox": [
-    4,
-    27,
-    11,
-    46
-   ],
-   "size": [
-    28,
-    76
-   ],
-   "pivots": {
-    "hair_side_r_1": [
-     7.77,
-     42.05
-    ],
-    "hair_side_r_2": [
-     7.99,
-     36.55
-    ],
-    "hair_side_r_3": [
-     7.77,
-     32.15
-    ],
-    "hair_side_r_tip": [
-     7.22,
-     29.95
-    ]
-   }
-  },
-  {
-   "name": "hair_front",
+   "name": "hair_long_front",
    "slot": "hair_front",
    "layer": 60,
    "tint": 1.0,
    "bbox": [
     -10,
-    32,
+    34,
     11,
     54
    ],
    "size": [
     84,
-    88
+    80
    ],
    "pivots": {
     "hair_root": [
@@ -1426,36 +1392,240 @@
    }
   },
   {
-   "name": "hair_side_l",
+   "name": "hair_long_side_l",
    "slot": "hair_side_l",
    "layer": 62,
    "tint": 1.0,
    "bbox": [
-    -11,
-    27,
+    -10,
+    28,
     -3,
-    45
+    44
    ],
    "size": [
-    32,
-    72
+    28,
+    64
    ],
    "pivots": {
     "hair_side_l_1": [
-     -6.86,
-     42.05
-    ],
-    "hair_side_l_2": [
-     -6.86,
-     36.55
-    ],
-    "hair_side_l_3": [
-     -6.97,
-     32.15
+     -6.42,
+     40.95
     ],
     "hair_side_l_tip": [
-     -6.86,
-     29.51
+     -6.2,
+     31.05
+    ]
+   }
+  },
+  {
+   "name": "hair_bob_back",
+   "slot": "hair_back",
+   "layer": 5,
+   "tint": 1.0,
+   "bbox": [
+    -11,
+    28,
+    11,
+    53
+   ],
+   "size": [
+    88,
+    100
+   ],
+   "pivots": {
+    "hair_root": [
+     0.4,
+     47.55
+    ],
+    "hair_back_1": [
+     -6.2,
+     40.95
+    ],
+    "hair_back_tip": [
+     -6.2,
+     30.61
+    ]
+   }
+  },
+  {
+   "name": "hair_bob_front",
+   "slot": "hair_front",
+   "layer": 60,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    34,
+    11,
+    54
+   ],
+   "size": [
+    84,
+    80
+   ],
+   "pivots": {
+    "hair_root": [
+     0.4,
+     47.55
+    ],
+    "bangs": [
+     2.71,
+     43.15
+    ]
+   }
+  },
+  {
+   "name": "hair_bob_side_l",
+   "slot": "hair_side_l",
+   "layer": 62,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    30,
+    -3,
+    44
+   ],
+   "size": [
+    28,
+    56
+   ],
+   "pivots": {
+    "hair_side_l_1": [
+     -6.42,
+     40.95
+    ],
+    "hair_side_l_tip": [
+     -6.2,
+     31.05
+    ]
+   }
+  },
+  {
+   "name": "hair_ponytail_back",
+   "slot": "hair_back",
+   "layer": 5,
+   "tint": 1.0,
+   "bbox": [
+    -11,
+    33,
+    1,
+    51
+   ],
+   "size": [
+    48,
+    72
+   ],
+   "pivots": {
+    "hair_root": [
+     0.4,
+     47.55
+    ]
+   }
+  },
+  {
+   "name": "hair_ponytail_tail",
+   "slot": "hair_tail",
+   "layer": 4,
+   "tint": 1.0,
+   "bbox": [
+    -15,
+    25,
+    -5,
+    49
+   ],
+   "size": [
+    40,
+    96
+   ],
+   "pivots": {
+    "hair_tail_1": [
+     -8.62,
+     44.91
+    ],
+    "hair_tail_2": [
+     -10.82,
+     40.51
+    ],
+    "hair_tail_3": [
+     -10.82,
+     34.35
+    ],
+    "hair_tail_tip": [
+     -9.94,
+     27.97
+    ]
+   }
+  },
+  {
+   "name": "hair_ponytail_tie",
+   "slot": "hair_tie",
+   "layer": 6,
+   "tint": 1.0,
+   "bbox": [
+    -12,
+    41,
+    -5,
+    49
+   ],
+   "size": [
+    28,
+    32
+   ],
+   "pivots": {
+    "hair_tail_1": [
+     -8.62,
+     44.91
+    ]
+   }
+  },
+  {
+   "name": "hair_ponytail_front",
+   "slot": "hair_front",
+   "layer": 60,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    34,
+    11,
+    54
+   ],
+   "size": [
+    84,
+    80
+   ],
+   "pivots": {
+    "hair_root": [
+     0.4,
+     47.55
+    ],
+    "bangs": [
+     2.71,
+     43.15
+    ]
+   }
+  },
+  {
+   "name": "hair_ponytail_side_l",
+   "slot": "hair_side_l",
+   "layer": 62,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    33,
+    -3,
+    44
+   ],
+   "size": [
+    28,
+    44
+   ],
+   "pivots": {
+    "hair_side_l_1": [
+     -6.42,
+     40.95
+    ],
+    "hair_side_l_tip": [
+     -6.2,
+     31.05
     ]
    }
   },

@@ -9,13 +9,14 @@ from PIL import Image
 
 from body import Body
 from svgkit import UNIT
+from palette import OUTLINE
 
 ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
 PROFILES = os.path.join(ROOT, "shared", "body_profiles.json")
 PREVIEW_DEFAULTS = ("hand_r_relaxed", "hand_l_relaxed", "eye_r_open", "eye_l_open")
 PREVIEW_SKIP = ("hand_", "finger_", "eye_", "mouth_", "nose", "brow_")
 OUTFIT = ("tunic", "belt", "sleeve_", "bracer_", "pants_", "boot_")
-WORLD = (-10, -1, 10, 57)
+WORLD = (-14, -1, 11, 57)
 
 
 def quantize(img, colors):
@@ -37,7 +38,9 @@ def render_part(part):
     return svg, bb, img
 
 
-def visible(name, outfit):
+def visible(name, outfit, hair):
+    if name.startswith("hair_"):
+        return name.startswith(f"hair_{hair}_")
     if name in PREVIEW_DEFAULTS:
         return True
     if name.startswith(PREVIEW_SKIP):
@@ -47,11 +50,31 @@ def visible(name, outfit):
     return True
 
 
-def compose(entries, outfit):
+def silhouette(img, radius):
+    a = np.asarray(img).copy()
+    mask = a[..., 3] > 0
+    grown = mask.copy()
+    for dy in range(-radius, radius + 1):
+        for dx in range(-radius, radius + 1):
+            if dx * dx + dy * dy > radius * radius + (0 if radius > 1 else -1):
+                continue
+            shifted = np.zeros_like(mask)
+            ys = slice(max(dy, 0), mask.shape[0] + min(dy, 0))
+            yd = slice(max(-dy, 0), mask.shape[0] + min(-dy, 0))
+            xs = slice(max(dx, 0), mask.shape[1] + min(dx, 0))
+            xd = slice(max(-dx, 0), mask.shape[1] + min(-dx, 0))
+            shifted[ys, xs] = mask[yd, xd]
+            grown |= shifted
+    ring = grown & ~mask
+    a[ring] = OUTLINE + (255,)
+    return Image.fromarray(a, "RGBA")
+
+
+def compose(entries, outfit, hair):
     x0, y0, x1, y1 = WORLD
     canvas = Image.new("RGBA", ((x1 - x0) * UNIT, (y1 - y0) * UNIT), (0, 0, 0, 0))
     for e in sorted(entries, key=lambda e: e["layer"]):
-        if not visible(e["name"], outfit):
+        if not visible(e["name"], outfit, hair):
             continue
         img = e["image"]
         if e["tint"] != 1.0:
@@ -100,12 +123,13 @@ def main():
     out = os.path.join(ROOT, "base", "preview")
     os.makedirs(out, exist_ok=True)
     hd, px = [], []
+    looks = {"male": [(False, "short"), (True, "short")], "female": [(False, "long"), (True, "long"), (True, "bob"), (True, "ponytail")]}
     for sex in ("male", "female"):
         entries = build(sex, profiles[sex])
-        for outfit in (False, True):
-            img = compose(entries, outfit)
-            hd.append(img)
-            px.append(pixelate(img))
+        for outfit, hair in looks[sex]:
+            img = compose(entries, outfit, hair)
+            hd.append(silhouette(img, UNIT))
+            px.append(silhouette(pixelate(img), 1))
     gap = 8
     w = sum(i.width for i in hd) + gap * (len(hd) + 1)
     sheet = Image.new("RGBA", (w, hd[0].height + 2 * gap), (38, 32, 52, 255))
