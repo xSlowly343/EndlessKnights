@@ -83,3 +83,12 @@ art/heroes/spine/probe/probe.png
 art/heroes/spine/probe/probe.atlas
 art/heroes/spine/probe/probe.json
 art/heroes/spine/probe/package-lock.json
+art/heroes/spine/probe/check/
+art/heroes/spine/probe/export
+art/heroes/spine/probe/parts_8x
+art/heroes/spine/probe/check.html
+art/heroes/spine/probe/check_shot.js
+art/heroes/spine/probe/hero.html
+art/heroes/spine/probe/hero_shot.js
+art/heroes/spine/base/doll8/
+__pycache__/

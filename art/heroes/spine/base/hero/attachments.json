@@ -1,0 +1,1401 @@
+{
+ "source": "art/heroes/doll/src (front.py, body.py, pal.py, looks.json)",
+ "scale": 8,
+ "outline": [
+  92,
+  48,
+  28
+ ],
+ "attachments": {
+  "body/male/head": {
+   "size": [
+    16,
+    18
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "body/male/blush": {
+   "size": [
+    16,
+    18
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "hair/short_a/hair_front": {
+   "size": [
+    16,
+    18
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "hair/short_a/hair_fly": {
+   "size": [
+    9,
+    5
+   ],
+   "pivot": [
+    8,
+    1
+   ]
+  },
+  "hair/short_b/hair_front": {
+   "size": [
+    16,
+    18
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "hair/short_b/hair_fly": {
+   "size": [
+    9,
+    5
+   ],
+   "pivot": [
+    8,
+    1
+   ]
+  },
+  "hair/short_c/hair_front": {
+   "size": [
+    16,
+    18
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "hair/short_c/hair_fly": {
+   "size": [
+    9,
+    5
+   ],
+   "pivot": [
+    8,
+    1
+   ]
+  },
+  "hair/short_d/hair_front": {
+   "size": [
+    16,
+    18
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "hair/short_d/hair_fly": {
+   "size": [
+    9,
+    5
+   ],
+   "pivot": [
+    8,
+    1
+   ]
+  },
+  "eyes/a_male/eye_near_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/a_male/eye_near_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/a_male/eye_near_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/a_male/eye_near_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/a_male/eye_far_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/a_male/eye_far_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/a_male/eye_far_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/a_male/eye_far_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/b_male/eye_near_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/b_male/eye_near_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/b_male/eye_near_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/b_male/eye_near_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/b_male/eye_far_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/b_male/eye_far_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/b_male/eye_far_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/b_male/eye_far_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/c_male/eye_near_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/c_male/eye_near_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/c_male/eye_near_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/c_male/eye_near_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/c_male/eye_far_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/c_male/eye_far_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/c_male/eye_far_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/c_male/eye_far_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/d_male/eye_near_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/d_male/eye_near_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/d_male/eye_near_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/d_male/eye_near_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/d_male/eye_far_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/d_male/eye_far_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/d_male/eye_far_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/d_male/eye_far_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "body/female/head": {
+   "size": [
+    16,
+    22
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "body/female/blush": {
+   "size": [
+    16,
+    22
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "hair/long_a/hair_front": {
+   "size": [
+    16,
+    22
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "hair/long_a/hair_fly": {
+   "size": [
+    15,
+    8
+   ],
+   "pivot": [
+    14,
+    1
+   ]
+  },
+  "hair/long_b/hair_front": {
+   "size": [
+    16,
+    22
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "hair/long_b/hair_fly": {
+   "size": [
+    15,
+    8
+   ],
+   "pivot": [
+    14,
+    1
+   ]
+  },
+  "hair/long_c/hair_front": {
+   "size": [
+    16,
+    22
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "hair/long_c/hair_fly": {
+   "size": [
+    15,
+    8
+   ],
+   "pivot": [
+    14,
+    1
+   ]
+  },
+  "hair/long_d/hair_front": {
+   "size": [
+    16,
+    22
+   ],
+   "pivot": [
+    9,
+    17
+   ]
+  },
+  "hair/long_d/hair_fly": {
+   "size": [
+    15,
+    8
+   ],
+   "pivot": [
+    14,
+    1
+   ]
+  },
+  "eyes/a_female/eye_near_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/a_female/eye_near_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/a_female/eye_near_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/a_female/eye_near_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/a_female/eye_far_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/a_female/eye_far_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/a_female/eye_far_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/a_female/eye_far_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/b_female/eye_near_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/b_female/eye_near_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/b_female/eye_near_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/b_female/eye_near_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/b_female/eye_far_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/b_female/eye_far_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/b_female/eye_far_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/b_female/eye_far_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/c_female/eye_near_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/c_female/eye_near_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/c_female/eye_near_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/c_female/eye_near_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/c_female/eye_far_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/c_female/eye_far_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/c_female/eye_far_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/c_female/eye_far_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/d_female/eye_near_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/d_female/eye_near_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/d_female/eye_near_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/d_female/eye_near_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    2,
+    7
+   ]
+  },
+  "eyes/d_female/eye_far_open": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/d_female/eye_far_half": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/d_female/eye_far_closed": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "eyes/d_female/eye_far_squint": {
+   "size": [
+    2,
+    3
+   ],
+   "pivot": [
+    -3,
+    7
+   ]
+  },
+  "outfit/a/torso": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/a/torso_side": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/a/torso_back": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/a/pelvis": {
+   "size": [
+    10,
+    3
+   ],
+   "pivot": [
+    5,
+    0
+   ]
+  },
+  "outfit/a/upper_arm": {
+   "size": [
+    3,
+    8
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/a/upper_arm_short": {
+   "size": [
+    3,
+    5
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/a/elbow_cap": {
+   "size": [
+    2,
+    2
+   ],
+   "pivot": [
+    0.5,
+    0.5
+   ]
+  },
+  "outfit/a/forearm": {
+   "size": [
+    3,
+    6
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/a/hand": {
+   "size": [
+    3,
+    4
+   ],
+   "pivot": [
+    1,
+    1
+   ]
+  },
+  "outfit/a/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/a/shin": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/a/foot": {
+   "size": [
+    6,
+    3
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/a/coat_tail": {
+   "size": [
+    7,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/b/torso": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/b/torso_side": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/b/torso_back": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/b/pelvis": {
+   "size": [
+    10,
+    3
+   ],
+   "pivot": [
+    5,
+    0
+   ]
+  },
+  "outfit/b/upper_arm": {
+   "size": [
+    3,
+    8
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/b/upper_arm_short": {
+   "size": [
+    3,
+    5
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/b/elbow_cap": {
+   "size": [
+    2,
+    2
+   ],
+   "pivot": [
+    0.5,
+    0.5
+   ]
+  },
+  "outfit/b/forearm": {
+   "size": [
+    3,
+    6
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/b/hand": {
+   "size": [
+    3,
+    4
+   ],
+   "pivot": [
+    1,
+    1
+   ]
+  },
+  "outfit/b/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/b/shin": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/b/foot": {
+   "size": [
+    6,
+    3
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/b/coat_tail": {
+   "size": [
+    7,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/c/torso": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/c/torso_side": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/c/torso_back": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/c/pelvis": {
+   "size": [
+    10,
+    3
+   ],
+   "pivot": [
+    5,
+    0
+   ]
+  },
+  "outfit/c/upper_arm": {
+   "size": [
+    3,
+    8
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/c/upper_arm_short": {
+   "size": [
+    3,
+    5
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/c/elbow_cap": {
+   "size": [
+    2,
+    2
+   ],
+   "pivot": [
+    0.5,
+    0.5
+   ]
+  },
+  "outfit/c/forearm": {
+   "size": [
+    3,
+    6
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/c/hand": {
+   "size": [
+    3,
+    4
+   ],
+   "pivot": [
+    1,
+    1
+   ]
+  },
+  "outfit/c/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/c/shin": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/c/foot": {
+   "size": [
+    6,
+    3
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/c/coat_tail": {
+   "size": [
+    7,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/d/torso": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/d/torso_side": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/d/torso_back": {
+   "size": [
+    11,
+    14
+   ],
+   "pivot": [
+    5,
+    13
+   ]
+  },
+  "outfit/d/pelvis": {
+   "size": [
+    10,
+    3
+   ],
+   "pivot": [
+    5,
+    0
+   ]
+  },
+  "outfit/d/upper_arm": {
+   "size": [
+    3,
+    8
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/d/upper_arm_short": {
+   "size": [
+    3,
+    5
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/d/elbow_cap": {
+   "size": [
+    2,
+    2
+   ],
+   "pivot": [
+    0.5,
+    0.5
+   ]
+  },
+  "outfit/d/forearm": {
+   "size": [
+    3,
+    6
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/d/hand": {
+   "size": [
+    3,
+    4
+   ],
+   "pivot": [
+    1,
+    1
+   ]
+  },
+  "outfit/d/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/d/shin": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "outfit/d/foot": {
+   "size": [
+    6,
+    3
+   ],
+   "pivot": [
+    1,
+    0
+   ]
+  },
+  "outfit/d/coat_tail": {
+   "size": [
+    7,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "weapon/sword/weapon": {
+   "size": [
+    9,
+    24
+   ],
+   "pivot": [
+    4,
+    20
+   ]
+  },
+  "weapon/axe/weapon": {
+   "size": [
+    11,
+    19
+   ],
+   "pivot": [
+    6,
+    15
+   ]
+  },
+  "weapon/staff/weapon": {
+   "size": [
+    9,
+    26
+   ],
+   "pivot": [
+    4,
+    11
+   ]
+  }
+ }
+}

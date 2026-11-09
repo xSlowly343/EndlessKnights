@@ -1,0 +1,37 @@
+{
+ "layers": {
+  "back": [
+   0,
+   8
+  ],
+  "body": [
+   9,
+   18
+  ],
+  "front": [
+   19,
+   23
+  ]
+ },
+ "outline": [
+  92,
+  48,
+  28
+ ],
+ "presets": {
+  "male": [
+   "body/male",
+   "hair/short_a",
+   "eyes/a_male",
+   "outfit/a",
+   "weapon/sword"
+  ],
+  "female": [
+   "body/female",
+   "hair/long_b",
+   "eyes/b_female",
+   "outfit/b",
+   "weapon/axe"
+  ]
+ }
+}
