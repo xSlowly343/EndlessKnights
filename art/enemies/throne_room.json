@@ -10,32 +10,22 @@
     "rift_king": {
       "strips": {
         "idle": {
-          "file": "craftpix/vampire_sprites/Converted_Vampire/Idle.png",
-          "width": 128
+          "file": "far20106/strips/throne_idle.png",
+          "width": 168
         },
         "walk": {
-          "file": "craftpix/vampire_sprites/Converted_Vampire/Walk.png",
-          "width": 128
+          "file": "far20106/strips/throne_idle.png",
+          "width": 168
         },
         "attack": {
-          "file": "craftpix/vampire_sprites/Converted_Vampire/Attack_1.png",
-          "width": 128
-        },
-        "hit": {
-          "file": "craftpix/vampire_sprites/Converted_Vampire/Hurt.png",
-          "width": 128
-        },
-        "death": {
-          "file": "craftpix/vampire_sprites/Converted_Vampire/Dead.png",
-          "width": 128
-        },
-        "guard": {
-          "file": "craftpix/vampire_sprites/Converted_Vampire/Protect.png",
-          "width": 128
+          "file": "far20106/strips/throne_green_attack.png",
+          "width": 168
         }
       },
       "mirror": true,
-      "scale": 2,
+      "scale": 1,
+      "flash_hit": true,
+      "dissolve": 8,
       "boss": true,
       "master": true
     }

@@ -7,135 +7,135 @@
     "walk"
   ],
   "enemies": {
-    "ghoul_man": {
+    "lost_eye": {
       "strips": {
         "idle": {
-          "file": "craftpix/zombie_sprites/Zombie Man/Idle.png",
-          "width": 96
+          "file": "luizmelo/mcf/Flying eye/Flight.png",
+          "width": 150
         },
         "walk": {
-          "file": "craftpix/zombie_sprites/Zombie Man/Walk.png",
-          "width": 96
+          "file": "luizmelo/mcf/Flying eye/Flight.png",
+          "width": 150
         },
         "attack": {
-          "file": "craftpix/zombie_sprites/Zombie Man/Attack_1.png",
-          "width": 96
+          "file": "luizmelo/mcf/Flying eye/Attack.png",
+          "width": 150
         },
         "hit": {
-          "file": "craftpix/zombie_sprites/Zombie Man/Hurt.png",
-          "width": 96
+          "file": "luizmelo/mcf/Flying eye/Take Hit.png",
+          "width": 150
         },
         "death": {
-          "file": "craftpix/zombie_sprites/Zombie Man/Dead.png",
-          "width": 96
+          "file": "luizmelo/mcf/Flying eye/Death.png",
+          "width": 150
         }
       },
       "mirror": true,
-      "scale": 2
+      "scale": 2,
+      "trim": true
     },
-    "ghoul_woman": {
+    "rot_mushroom": {
       "strips": {
         "idle": {
-          "file": "craftpix/zombie_sprites/Zombie Woman/Idle.png",
-          "width": 96
+          "file": "monopixelart/forest/Mushroom/Mushroom without VFX/Mushroom-Idle.png",
+          "width": 80
         },
         "walk": {
-          "file": "craftpix/zombie_sprites/Zombie Woman/Walk.png",
-          "width": 96
+          "file": "monopixelart/forest/Mushroom/Mushroom without VFX/Mushroom-Run.png",
+          "width": 80
         },
         "attack": {
-          "file": "craftpix/zombie_sprites/Zombie Woman/Attack_1.png",
-          "width": 96
+          "file": "monopixelart/forest/Mushroom/Mushroom without VFX/Mushroom-Attack.png",
+          "width": 80
         },
         "hit": {
-          "file": "craftpix/zombie_sprites/Zombie Woman/Hurt.png",
-          "width": 96
+          "file": "monopixelart/forest/Mushroom/Mushroom without VFX/Mushroom-Hit.png",
+          "width": 80
         },
         "death": {
-          "file": "craftpix/zombie_sprites/Zombie Woman/Dead.png",
-          "width": 96
-        }
-      },
-      "mirror": true,
-      "scale": 2
-    },
-    "crawler": {
-      "strips": {
-        "idle": {
-          "file": "craftpix/zombie_sprites/Wild Zombie/Idle.png",
-          "width": 96
-        },
-        "walk": {
-          "file": "craftpix/zombie_sprites/Wild Zombie/Walk.png",
-          "width": 96
-        },
-        "attack": {
-          "file": "craftpix/zombie_sprites/Wild Zombie/Attack_1.png",
-          "width": 96
-        },
-        "hit": {
-          "file": "craftpix/zombie_sprites/Wild Zombie/Hurt.png",
-          "width": 96
-        },
-        "death": {
-          "file": "craftpix/zombie_sprites/Wild Zombie/Dead.png",
-          "width": 96
-        }
-      },
-      "mirror": true,
-      "scale": 2
-    },
-    "grave_vulture": {
-      "strips": {
-        "idle": {
-          "file": "craftpix/desert_enemies/vulture/Vulture_idle.png",
-          "width": 48
-        },
-        "walk": {
-          "file": "craftpix/desert_enemies/vulture/Vulture_walk.png",
-          "width": 48
-        },
-        "attack": {
-          "file": "craftpix/desert_enemies/vulture/Vulture_attack.png",
-          "width": 48
-        },
-        "hit": {
-          "file": "craftpix/desert_enemies/vulture/Vulture_hurt.png",
-          "width": 48
-        },
-        "death": {
-          "file": "craftpix/desert_enemies/vulture/Vulture_death.png",
-          "width": 48
+          "file": "monopixelart/forest/Mushroom/Mushroom without VFX/Mushroom-Die.png",
+          "width": 80
         }
       },
       "mirror": false,
-      "scale": 3
+      "scale": 2
     },
-    "grave_zombie": {
+    "grave_skeleton": {
       "strips": {
         "idle": {
-          "file": "craftpix/halloween/2/Idle.png",
-          "width": 48
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_White/Skeleton_Without_VFX/Skeleton_01_White_Idle.png",
+          "width": 96
         },
         "walk": {
-          "file": "craftpix/halloween/2/Walk.png",
-          "width": 48
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_White/Skeleton_Without_VFX/Skeleton_01_White_Walk.png",
+          "width": 96
         },
         "attack": {
-          "file": "craftpix/halloween/2/Attack.png",
-          "width": 48
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_White/Skeleton_Without_VFX/Skeleton_01_White_Attack1.png",
+          "width": 96
         },
         "hit": {
-          "file": "craftpix/halloween/2/Hurt.png",
-          "width": 48
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_White/Skeleton_Without_VFX/Skeleton_01_White_Hurt.png",
+          "width": 96
         },
         "death": {
-          "file": "craftpix/halloween/2/Death.png",
-          "width": 48
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_White/Skeleton_Without_VFX/Skeleton_01_White_Die.png",
+          "width": 96
         }
       },
       "mirror": true,
-      "scale": 3
+      "scale": 2
+    },
+    "goblin_looter": {
+      "strips": {
+        "idle": {
+          "file": "luizmelo/mcf/Goblin/Idle.png",
+          "width": 150
+        },
+        "walk": {
+          "file": "luizmelo/mcf/Goblin/Run.png",
+          "width": 150
+        },
+        "attack": {
+          "file": "luizmelo/mcf/Goblin/Attack.png",
+          "width": 150
+        },
+        "hit": {
+          "file": "luizmelo/mcf/Goblin/Take Hit.png",
+          "width": 150
+        },
+        "death": {
+          "file": "luizmelo/mcf/Goblin/Death.png",
+          "width": 150
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "trim": true
+    },
+    "hallokin": {
+      "strips": {
+        "idle": {
+          "file": "escape_pixel/hallokin/png (free)/idle.png",
+          "width": 192
+        },
+        "walk": {
+          "file": "escape_pixel/hallokin/png (free)/run.png",
+          "width": 192
+        },
+        "attack": {
+          "file": "escape_pixel/hallokin/png (free)/attack-2.png",
+          "width": 192
+        },
+        "hit": {
+          "file": "escape_pixel/hallokin/png (free)/hit.png",
+          "width": 192
+        }
+      },
+      "mirror": true,
+      "scale": 3,
+      "dissolve": 8,
+      "trim": true
     },
     "red_werewolf": {
       "strips": {
@@ -164,59 +164,51 @@
       "scale": 2,
       "boss": true
     },
-    "pumpkin_jester": {
+    "death_bringer": {
       "strips": {
         "idle": {
-          "file": "craftpix/halloween/3/Idle.png",
-          "width": 96
+          "file": "clembod/bringer/strips/idle.png",
+          "width": 140
         },
         "walk": {
-          "file": "craftpix/halloween/3/Walk.png",
-          "width": 96
+          "file": "clembod/bringer/strips/walk.png",
+          "width": 140
         },
         "attack": {
-          "file": "craftpix/halloween/3/Attack1.png",
-          "width": 96
+          "file": "clembod/bringer/strips/attack.png",
+          "width": 140
         },
         "hit": {
-          "file": "craftpix/halloween/3/Hurt.png",
-          "width": 96
+          "file": "clembod/bringer/strips/hurt.png",
+          "width": 140
         },
         "death": {
-          "file": "craftpix/halloween/3/Death.png",
-          "width": 96
+          "file": "clembod/bringer/strips/death.png",
+          "width": 140
         }
       },
-      "mirror": true,
+      "mirror": false,
       "scale": 2,
-      "boss": true
+      "boss": true,
+      "trim": true
     },
-    "fence_skeleton": {
-      "strips": {
-        "idle": {
-          "file": "luizmelo/mcf/Skeleton/Idle.png",
-          "width": 150
-        },
-        "walk": {
-          "file": "luizmelo/mcf/Skeleton/Walk.png",
-          "width": 150
-        },
-        "attack": {
-          "file": "luizmelo/mcf/Skeleton/Attack.png",
-          "width": 150
-        },
-        "hit": {
-          "file": "luizmelo/mcf/Skeleton/Take Hit.png",
-          "width": 150
-        },
-        "death": {
-          "file": "luizmelo/mcf/Skeleton/Death.png",
-          "width": 150
-        }
+    "blood_necromancer": {
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 5,
+        "death": 6
       },
+      "cell": [
+        160,
+        128
+      ],
+      "source": "creativekind/necromancer.png",
       "mirror": true,
       "scale": 2,
-      "boss": true
+      "boss": true,
+      "trim": true
     },
     "pack_leader": {
       "strips": {

@@ -7,80 +7,73 @@
     "walk"
   ],
   "enemies": {
-    "castle_maid": {
+    "castle_bat": {
       "strips": {
         "idle": {
-          "file": "craftpix/halloween/1/Idle.png",
-          "width": 48
-        },
-        "walk": {
-          "file": "craftpix/halloween/1/Walk.png",
-          "width": 48
-        },
-        "attack": {
-          "file": "craftpix/halloween/1/Attack.png",
-          "width": 48
-        },
-        "hit": {
-          "file": "craftpix/halloween/1/Hurt.png",
-          "width": 48
-        },
-        "death": {
-          "file": "craftpix/halloween/1/Death.png",
-          "width": 48
-        }
-      },
-      "mirror": true,
-      "scale": 3
-    },
-    "flying_skull": {
-      "strips": {
-        "idle": {
-          "file": "admurin/enemy_galore/Skull/Bones_SingleSkull_Idle.png",
+          "file": "monopixelart/dark_fantasy/Bat/Bat without VFX/Bat-IdleFly.png",
           "width": 64
         },
         "walk": {
-          "file": "admurin/enemy_galore/Skull/Bones_SingleSkull_Fly.png",
+          "file": "monopixelart/dark_fantasy/Bat/Bat without VFX/Bat-Run.png",
           "width": 64
         },
         "attack": {
-          "file": "admurin/enemy_galore/Skull/Bones_SingleSkull_Fly.png",
+          "file": "monopixelart/dark_fantasy/Bat/Bat without VFX/Bat-Attack1.png",
           "width": 64
         },
         "hit": {
-          "file": "admurin/enemy_galore/Skull/Bones_SingleSkull_Hit.png",
+          "file": "monopixelart/dark_fantasy/Bat/Bat without VFX/Bat-Hurt.png",
           "width": 64
         },
         "death": {
-          "file": "admurin/enemy_galore/Skull/Bones_SingleSkull_Death.png",
+          "file": "monopixelart/dark_fantasy/Bat/Bat without VFX/Bat-Die.png",
           "width": 64
         }
       },
-      "mirror": true,
-      "scale": 5
+      "mirror": false,
+      "scale": 2
     },
-    "armored_golem": {
+    "castle_guard": {
       "strips": {
         "idle": {
-          "file": "admurin/enemy_galore/Golem/Armored/Golem_Armor_Idle.png",
-          "width": 64
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_Yellow/Skeleton_Without_VFX/Skeleton_01_Yellow_Idle.png",
+          "width": 96
         },
         "walk": {
-          "file": "admurin/enemy_galore/Golem/Armored/Golem_Armor_Run.png",
-          "width": 64
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_Yellow/Skeleton_Without_VFX/Skeleton_01_Yellow_Walk.png",
+          "width": 96
         },
         "attack": {
-          "file": "admurin/enemy_galore/Golem/Armored/Golem_Armor_AttackA.png",
-          "width": 64
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_Yellow/Skeleton_Without_VFX/Skeleton_01_Yellow_Attack2.png",
+          "width": 96
         },
         "hit": {
-          "file": "admurin/enemy_galore/Golem/Armored/Golem_Armor_Hit.png",
-          "width": 64
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_Yellow/Skeleton_Without_VFX/Skeleton_01_Yellow_Hurt.png",
+          "width": 96
+        },
+        "death": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_Yellow/Skeleton_Without_VFX/Skeleton_01_Yellow_Die.png",
+          "width": 96
         }
       },
       "mirror": true,
-      "scale": 4,
-      "dissolve": 8
+      "scale": 2
+    },
+    "nightborne": {
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 3,
+        "death": 4
+      },
+      "cell": [
+        80,
+        80
+      ],
+      "source": "creativekind/nightborne.png",
+      "mirror": true,
+      "scale": 2
     },
     "cellar_rat": {
       "strips": {
@@ -108,32 +101,22 @@
       "mirror": true,
       "scale": 2
     },
-    "vampire_girl": {
-      "strips": {
-        "idle": {
-          "file": "craftpix/vampire_sprites/Vampire_Girl/Idle.png",
-          "width": 128
-        },
-        "walk": {
-          "file": "craftpix/vampire_sprites/Vampire_Girl/Walk.png",
-          "width": 128
-        },
-        "attack": {
-          "file": "craftpix/vampire_sprites/Vampire_Girl/Attack_1.png",
-          "width": 128
-        },
-        "hit": {
-          "file": "craftpix/vampire_sprites/Vampire_Girl/Hurt.png",
-          "width": 128
-        },
-        "death": {
-          "file": "craftpix/vampire_sprites/Vampire_Girl/Dead.png",
-          "width": 128
-        }
+    "stone_golem": {
+      "rows": {
+        "idle": 0,
+        "walk": 0,
+        "attack": 4
       },
+      "cell": [
+        100,
+        100
+      ],
+      "source": "darkpixel/mecha_golem/PNG sheet/Character_sheet.png",
       "mirror": true,
       "scale": 2,
-      "boss": true
+      "boss": true,
+      "flash_hit": true,
+      "dissolve": 8
     },
     "treasure_mimic": {
       "strips": {
@@ -158,62 +141,70 @@
           "width": 146
         }
       },
+      "mirror": true,
+      "scale": 2,
+      "boss": true
+    },
+    "bone_wizard": {
+      "strips": {
+        "idle": {
+          "file": "oliveiramiro2/SkeletonBoss/Sheets/Idle/Maw-All-Idle-Sheet.png",
+          "width": 128
+        },
+        "walk": {
+          "file": "oliveiramiro2/SkeletonBoss/Sheets/Floating/Maw-All-Floating-Sheet.png",
+          "width": 128
+        },
+        "attack": {
+          "file": "oliveiramiro2/SkeletonBoss/Sheets/HandAttack/Maw-All-HandAttack-Sheet.png",
+          "width": 128
+        },
+        "death": {
+          "file": "oliveiramiro2/SkeletonBoss/Sheets/Death/Maw-All-Death-Sheet.png",
+          "width": 128
+        }
+      },
       "mirror": false,
-      "scale": 2,
+      "scale": 1,
+      "trim": true,
+      "flash_hit": true,
       "boss": true
     },
-    "white_werewolf": {
+    "demon_warden": {
       "strips": {
         "idle": {
-          "file": "craftpix/werewolf/White_Werewolf/Idle.png",
-          "width": 128
+          "file": "chierit/demon_slime/spritesheets/demon_slime_FREE_v1.0_288x160_spritesheet.png",
+          "width": 288,
+          "height": 160,
+          "row": 0
         },
         "walk": {
-          "file": "craftpix/werewolf/White_Werewolf/Walk.png",
-          "width": 128
+          "file": "chierit/demon_slime/spritesheets/demon_slime_FREE_v1.0_288x160_spritesheet.png",
+          "width": 288,
+          "height": 160,
+          "row": 1
         },
         "attack": {
-          "file": "craftpix/werewolf/White_Werewolf/Attack_3.png",
-          "width": 128
+          "file": "chierit/demon_slime/spritesheets/demon_slime_FREE_v1.0_288x160_spritesheet.png",
+          "width": 288,
+          "height": 160,
+          "row": 2
         },
         "hit": {
-          "file": "craftpix/werewolf/White_Werewolf/Hurt.png",
-          "width": 128
+          "file": "chierit/demon_slime/spritesheets/demon_slime_FREE_v1.0_288x160_spritesheet.png",
+          "width": 288,
+          "height": 160,
+          "row": 3
         },
         "death": {
-          "file": "craftpix/werewolf/White_Werewolf/Dead.png",
-          "width": 128
+          "file": "chierit/demon_slime/spritesheets/demon_slime_FREE_v1.0_288x160_spritesheet.png",
+          "width": 288,
+          "height": 160,
+          "row": 4
         }
       },
-      "mirror": true,
-      "scale": 2,
-      "boss": true
-    },
-    "countess": {
-      "strips": {
-        "idle": {
-          "file": "craftpix/vampire_sprites/Countess_Vampire/Idle.png",
-          "width": 128
-        },
-        "walk": {
-          "file": "craftpix/vampire_sprites/Countess_Vampire/Walk.png",
-          "width": 128
-        },
-        "attack": {
-          "file": "craftpix/vampire_sprites/Countess_Vampire/Attack_1.png",
-          "width": 128
-        },
-        "hit": {
-          "file": "craftpix/vampire_sprites/Countess_Vampire/Hurt.png",
-          "width": 128
-        },
-        "death": {
-          "file": "craftpix/vampire_sprites/Countess_Vampire/Dead.png",
-          "width": 128
-        }
-      },
-      "mirror": true,
-      "scale": 2,
+      "mirror": false,
+      "scale": 1,
       "boss": true,
       "master": true
     }

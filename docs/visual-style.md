@@ -220,10 +220,10 @@
     - Хозяин: жаба Frogger (Admurin) ×2, своей смерти у листа нет, она растворяется (`dissolve`). Сама жаба около 60 px, при ×3 не влезает в полоску. Запасной вариант — Wild Frog Boss (oliveiramiro2) ×2 со своей смертью.
     - Mimic Elthen не взяли: у него нет анимации смерти. Gollux и Frogger (Admurin) тоже без смерти.
 19. Последний биом (с этапа 20 000) вместо Сердца Разлома — три локации за Разломом (решение Сергея 09.11.2026): Умерший лес (`dead_forest`), Замок (`rift_castle`), Тронный зал (`throne_room`, только Предел 50 000). Слои прислал Сергей, исходники 3840×2160 уменьшены до 480×270 (`scale` 0.125), палитра 48, окно с верхней строки: в полоску попадают небо, ограда и полоса мостовой, на которой стоят враги. Слои отдельно обрезаны, их места на холсте найдены сравнением с готовой картинкой, поэтому у некоторых записей в конфиге есть `x` и `y`. Терновник и химеры переднего плана подняты, чтобы их верх попадал в низ полоски.
-20. Составы За Разломом предложены 09.11.2026, ждут утверждения. В основном это бесплатные наборы CraftPix (вампиры, зомби, оборотни, хэллоуин, стервятник), к ним добавлены Admurin (череп, бронеголем) и LuizMelo (скелет, крыса, мимик). Подходящих по теме листов Elthen среди бесплатных не нашлось. Люди и оборотни нарисованы крупно (64–76 px), поэтому стоят в ×2. Мелкие враги — ×3–×5.
-    - Умерший лес: мобы Zombie Man, Zombie Woman, Wild Zombie, Vulture, Halloween Zombie; мини-боссы Red Werewolf, тыквенный шут, Skeleton; хозяин Black Werewolf.
-    - Замок: мобы Halloween-горничная, Skull, Armored Golem (`dissolve`), Rat; мини-боссы Vampire Girl, Mimic, White Werewolf; хозяйка Countess Vampire.
-    - Тронный зал: Король Изнанки — Converted Vampire, у него есть анимация защиты (`guard`).
+20. Составы За Разломом. Первый вариант 09.11.2026 (CraftPix: вампиры, зомби, оборотни, хэллоуин) Сергей отклонил как слишком реалистичный и оставил из него только Вожака, Рыжего оборотня, подвальную крысу и мимика (мимика отзеркалить). Второй вариант того же дня собран из мультяшных бесплатных наборов, ждёт утверждения:
+    - Умерший лес: мобы Flying Eye и Goblin (LuizMelo), Mushroom и белый Skeleton (MonoPixelArt), Hallokin (Escape Pixel, `dissolve`); мини-боссы Red Werewolf, Bringer of Death (Clembod), Necromancer (CreativeKind); хозяин Black Werewolf.
+    - Замок: мобы Bat и жёлтый Skeleton (MonoPixelArt), NightBorne (CreativeKind), Rat; мини-боссы Mecha-stone Golem (Darkpixel Kronovi, `flash_hit` и `dissolve`), Mimic, Necromancer Skeleton Boss (oliveiramiro2, `flash_hit`); хозяин Demon Slime (Chierit) ×1.
+    - Тронный зал: Король Изнанки — Skeleton King (far20106) ×1, сидит на своём троне, ходьба равна покою, урон `flash_hit`, смерть `dissolve`. Запасные варианты: Demon Slime и Necromancer Skeleton Boss.
 
 ## Источники
 - [TouchArcade: Tap Titans 2](https://toucharcade.com/games/tap-titans-2-hero-legends) — 14 миров, ручная отрисовка, броня титанов

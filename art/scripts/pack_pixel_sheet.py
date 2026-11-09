@@ -137,16 +137,39 @@ def dissolved(frame, steps, seed):
     return frames
 
 
+def flashed(frame):
+    white = Image.new("RGB", frame.size, (255, 255, 255))
+    lit = Image.blend(frame.convert("RGB"), white, 0.6).convert("RGBA")
+    lit.putalpha(frame.getchannel("A"))
+    return lit
+
+
+def with_flash_hit(anims):
+    rest = anims["idle"][0]
+    anims["hit"] = [flashed(rest), rest, flashed(rest), rest]
+    return anims
+
+
 def with_dissolve_death(anims, steps, seed):
     hit = anims["hit"]
     anims["death"] = hit + dissolved(hit[-1], steps, seed)
     return anims
 
 
+def trimmed_sides(anims):
+    boxes = [frame.getbbox() for frames in anims.values() for frame in frames if frame.getbbox()]
+    left, right = min(box[0] for box in boxes), max(box[2] for box in boxes)
+    return {name: [frame.crop((left, 0, right, frame.height)) for frame in frames] for name, frames in anims.items()}
+
+
 def load_anims(spec, packs):
     anims = source_anims(spec, packs)
+    if spec.get("flash_hit"):
+        anims = with_flash_hit(anims)
     if "dissolve" in spec:
         anims = with_dissolve_death(anims, spec["dissolve"], spec.get("seed", 7))
+    if spec.get("trim"):
+        anims = trimmed_sides(anims)
     if "resample" in spec:
         anims = {name: [resampled(frame, spec["resample"]) for frame in frames] for name, frames in anims.items()}
     if "hue_shift" in spec:
