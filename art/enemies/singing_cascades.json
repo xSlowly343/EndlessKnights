@@ -197,28 +197,25 @@
     "cascade_singer": {
       "strips": {
         "idle": {
-          "file": "wild_frog_boss/SpriteSheets/WildFrog-Idle.png",
+          "file": "admurin/Frogger/frogger_idle.png",
           "width": 128
         },
         "walk": {
-          "file": "wild_frog_boss/SpriteSheets/ImpulseJump/WildFrog-Impulse.png",
-          "width": 128
+          "file": "admurin/Frogger/frogger_move.png",
+          "width": 384
         },
         "attack": {
-          "file": "wild_frog_boss/SpriteSheets/LickAttack/WildFrog-LickAttack.png",
-          "width": 128
+          "file": "admurin/Frogger/frogger_tongue.png",
+          "width": 384
         },
         "hit": {
-          "file": "wild_frog_boss/SpriteSheets/WildFrog-Idle.png",
-          "width": 128
-        },
-        "death": {
-          "file": "wild_frog_boss/SpriteSheets/Death/WildFrog-Death.png",
-          "width": 128
+          "file": "admurin/Frogger/frogger_hurt.png",
+          "width": 384
         }
       },
       "mirror": true,
       "scale": 2,
+      "dissolve": 8,
       "boss": true,
       "master": true
     }

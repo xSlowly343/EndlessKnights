@@ -1,5 +1,6 @@
 import argparse
 import json
+import random
 from pathlib import Path
 
 from PIL import Image
@@ -124,8 +125,28 @@ def source_anims(spec, packs):
     return {name: grid_frames(sheet, tuple(spec["cell"]), row) for name, row in spec["rows"].items()}
 
 
+def dissolved(frame, steps, seed):
+    pixels = [(x, y) for y in range(frame.height) for x in range(frame.width) if frame.getpixel((x, y))[3]]
+    random.Random(seed).shuffle(pixels)
+    frames, current = [], frame.copy()
+    for step in range(1, steps + 1):
+        current = current.copy()
+        for x, y in pixels[(step - 1) * len(pixels) // steps:step * len(pixels) // steps]:
+            current.putpixel((x, y), (0, 0, 0, 0))
+        frames.append(current)
+    return frames
+
+
+def with_dissolve_death(anims, steps, seed):
+    hit = anims["hit"]
+    anims["death"] = hit + dissolved(hit[-1], steps, seed)
+    return anims
+
+
 def load_anims(spec, packs):
     anims = source_anims(spec, packs)
+    if "dissolve" in spec:
+        anims = with_dissolve_death(anims, spec["dissolve"], spec.get("seed", 7))
     if "resample" in spec:
         anims = {name: [resampled(frame, spec["resample"]) for frame in frames] for name, frames in anims.items()}
     if "hue_shift" in spec:
