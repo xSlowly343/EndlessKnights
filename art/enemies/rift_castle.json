@@ -1,0 +1,221 @@
+{
+  "biome": "rift_castle",
+  "scale": 2,
+  "fps": 10,
+  "loop": [
+    "idle",
+    "walk"
+  ],
+  "enemies": {
+    "castle_maid": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/halloween/1/Idle.png",
+          "width": 48
+        },
+        "walk": {
+          "file": "craftpix/halloween/1/Walk.png",
+          "width": 48
+        },
+        "attack": {
+          "file": "craftpix/halloween/1/Attack.png",
+          "width": 48
+        },
+        "hit": {
+          "file": "craftpix/halloween/1/Hurt.png",
+          "width": 48
+        },
+        "death": {
+          "file": "craftpix/halloween/1/Death.png",
+          "width": 48
+        }
+      },
+      "mirror": true,
+      "scale": 3
+    },
+    "flying_skull": {
+      "strips": {
+        "idle": {
+          "file": "admurin/enemy_galore/Skull/Bones_SingleSkull_Idle.png",
+          "width": 64
+        },
+        "walk": {
+          "file": "admurin/enemy_galore/Skull/Bones_SingleSkull_Fly.png",
+          "width": 64
+        },
+        "attack": {
+          "file": "admurin/enemy_galore/Skull/Bones_SingleSkull_Fly.png",
+          "width": 64
+        },
+        "hit": {
+          "file": "admurin/enemy_galore/Skull/Bones_SingleSkull_Hit.png",
+          "width": 64
+        },
+        "death": {
+          "file": "admurin/enemy_galore/Skull/Bones_SingleSkull_Death.png",
+          "width": 64
+        }
+      },
+      "mirror": true,
+      "scale": 5
+    },
+    "armored_golem": {
+      "strips": {
+        "idle": {
+          "file": "admurin/enemy_galore/Golem/Armored/Golem_Armor_Idle.png",
+          "width": 64
+        },
+        "walk": {
+          "file": "admurin/enemy_galore/Golem/Armored/Golem_Armor_Run.png",
+          "width": 64
+        },
+        "attack": {
+          "file": "admurin/enemy_galore/Golem/Armored/Golem_Armor_AttackA.png",
+          "width": 64
+        },
+        "hit": {
+          "file": "admurin/enemy_galore/Golem/Armored/Golem_Armor_Hit.png",
+          "width": 64
+        }
+      },
+      "mirror": true,
+      "scale": 4,
+      "dissolve": 8
+    },
+    "cellar_rat": {
+      "strips": {
+        "idle": {
+          "file": "luizmelo/mcf2/Rat/idle.png",
+          "width": 70
+        },
+        "walk": {
+          "file": "luizmelo/mcf2/Rat/run.png",
+          "width": 70
+        },
+        "attack": {
+          "file": "luizmelo/mcf2/Rat/attack_bite.png",
+          "width": 70
+        },
+        "hit": {
+          "file": "luizmelo/mcf2/Rat/hurt.png",
+          "width": 70
+        },
+        "death": {
+          "file": "luizmelo/mcf2/Rat/rat-death.png",
+          "width": 70
+        }
+      },
+      "mirror": true,
+      "scale": 2
+    },
+    "vampire_girl": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/vampire_sprites/Vampire_Girl/Idle.png",
+          "width": 128
+        },
+        "walk": {
+          "file": "craftpix/vampire_sprites/Vampire_Girl/Walk.png",
+          "width": 128
+        },
+        "attack": {
+          "file": "craftpix/vampire_sprites/Vampire_Girl/Attack_1.png",
+          "width": 128
+        },
+        "hit": {
+          "file": "craftpix/vampire_sprites/Vampire_Girl/Hurt.png",
+          "width": 128
+        },
+        "death": {
+          "file": "craftpix/vampire_sprites/Vampire_Girl/Dead.png",
+          "width": 128
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true
+    },
+    "treasure_mimic": {
+      "strips": {
+        "idle": {
+          "file": "luizmelo/mcf2/Mimic/idle_transformed.png",
+          "width": 146
+        },
+        "walk": {
+          "file": "luizmelo/mcf2/Mimic/walk.png",
+          "width": 146
+        },
+        "attack": {
+          "file": "luizmelo/mcf2/Mimic/attack_1.png",
+          "width": 146
+        },
+        "hit": {
+          "file": "luizmelo/mcf2/Mimic/hurt.png",
+          "width": 146
+        },
+        "death": {
+          "file": "luizmelo/mcf2/Mimic/death.png",
+          "width": 146
+        }
+      },
+      "mirror": false,
+      "scale": 2,
+      "boss": true
+    },
+    "white_werewolf": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/werewolf/White_Werewolf/Idle.png",
+          "width": 128
+        },
+        "walk": {
+          "file": "craftpix/werewolf/White_Werewolf/Walk.png",
+          "width": 128
+        },
+        "attack": {
+          "file": "craftpix/werewolf/White_Werewolf/Attack_3.png",
+          "width": 128
+        },
+        "hit": {
+          "file": "craftpix/werewolf/White_Werewolf/Hurt.png",
+          "width": 128
+        },
+        "death": {
+          "file": "craftpix/werewolf/White_Werewolf/Dead.png",
+          "width": 128
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true
+    },
+    "countess": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/vampire_sprites/Countess_Vampire/Idle.png",
+          "width": 128
+        },
+        "walk": {
+          "file": "craftpix/vampire_sprites/Countess_Vampire/Walk.png",
+          "width": 128
+        },
+        "attack": {
+          "file": "craftpix/vampire_sprites/Countess_Vampire/Attack_1.png",
+          "width": 128
+        },
+        "hit": {
+          "file": "craftpix/vampire_sprites/Countess_Vampire/Hurt.png",
+          "width": 128
+        },
+        "death": {
+          "file": "craftpix/vampire_sprites/Countess_Vampire/Dead.png",
+          "width": 128
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true,
+      "master": true
+    }
+  }
+}

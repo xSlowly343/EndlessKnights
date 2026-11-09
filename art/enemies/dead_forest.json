@@ -1,0 +1,250 @@
+{
+  "biome": "dead_forest",
+  "scale": 2,
+  "fps": 10,
+  "loop": [
+    "idle",
+    "walk"
+  ],
+  "enemies": {
+    "ghoul_man": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/zombie_sprites/Zombie Man/Idle.png",
+          "width": 96
+        },
+        "walk": {
+          "file": "craftpix/zombie_sprites/Zombie Man/Walk.png",
+          "width": 96
+        },
+        "attack": {
+          "file": "craftpix/zombie_sprites/Zombie Man/Attack_1.png",
+          "width": 96
+        },
+        "hit": {
+          "file": "craftpix/zombie_sprites/Zombie Man/Hurt.png",
+          "width": 96
+        },
+        "death": {
+          "file": "craftpix/zombie_sprites/Zombie Man/Dead.png",
+          "width": 96
+        }
+      },
+      "mirror": true,
+      "scale": 2
+    },
+    "ghoul_woman": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/zombie_sprites/Zombie Woman/Idle.png",
+          "width": 96
+        },
+        "walk": {
+          "file": "craftpix/zombie_sprites/Zombie Woman/Walk.png",
+          "width": 96
+        },
+        "attack": {
+          "file": "craftpix/zombie_sprites/Zombie Woman/Attack_1.png",
+          "width": 96
+        },
+        "hit": {
+          "file": "craftpix/zombie_sprites/Zombie Woman/Hurt.png",
+          "width": 96
+        },
+        "death": {
+          "file": "craftpix/zombie_sprites/Zombie Woman/Dead.png",
+          "width": 96
+        }
+      },
+      "mirror": true,
+      "scale": 2
+    },
+    "crawler": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/zombie_sprites/Wild Zombie/Idle.png",
+          "width": 96
+        },
+        "walk": {
+          "file": "craftpix/zombie_sprites/Wild Zombie/Walk.png",
+          "width": 96
+        },
+        "attack": {
+          "file": "craftpix/zombie_sprites/Wild Zombie/Attack_1.png",
+          "width": 96
+        },
+        "hit": {
+          "file": "craftpix/zombie_sprites/Wild Zombie/Hurt.png",
+          "width": 96
+        },
+        "death": {
+          "file": "craftpix/zombie_sprites/Wild Zombie/Dead.png",
+          "width": 96
+        }
+      },
+      "mirror": true,
+      "scale": 2
+    },
+    "grave_vulture": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/desert_enemies/vulture/Vulture_idle.png",
+          "width": 48
+        },
+        "walk": {
+          "file": "craftpix/desert_enemies/vulture/Vulture_walk.png",
+          "width": 48
+        },
+        "attack": {
+          "file": "craftpix/desert_enemies/vulture/Vulture_attack.png",
+          "width": 48
+        },
+        "hit": {
+          "file": "craftpix/desert_enemies/vulture/Vulture_hurt.png",
+          "width": 48
+        },
+        "death": {
+          "file": "craftpix/desert_enemies/vulture/Vulture_death.png",
+          "width": 48
+        }
+      },
+      "mirror": false,
+      "scale": 3
+    },
+    "grave_zombie": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/halloween/2/Idle.png",
+          "width": 48
+        },
+        "walk": {
+          "file": "craftpix/halloween/2/Walk.png",
+          "width": 48
+        },
+        "attack": {
+          "file": "craftpix/halloween/2/Attack.png",
+          "width": 48
+        },
+        "hit": {
+          "file": "craftpix/halloween/2/Hurt.png",
+          "width": 48
+        },
+        "death": {
+          "file": "craftpix/halloween/2/Death.png",
+          "width": 48
+        }
+      },
+      "mirror": true,
+      "scale": 3
+    },
+    "red_werewolf": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/werewolf/Red_Werewolf/Idle.png",
+          "width": 128
+        },
+        "walk": {
+          "file": "craftpix/werewolf/Red_Werewolf/Walk.png",
+          "width": 128
+        },
+        "attack": {
+          "file": "craftpix/werewolf/Red_Werewolf/Attack_1.png",
+          "width": 128
+        },
+        "hit": {
+          "file": "craftpix/werewolf/Red_Werewolf/Hurt.png",
+          "width": 128
+        },
+        "death": {
+          "file": "craftpix/werewolf/Red_Werewolf/Dead.png",
+          "width": 128
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true
+    },
+    "pumpkin_jester": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/halloween/3/Idle.png",
+          "width": 96
+        },
+        "walk": {
+          "file": "craftpix/halloween/3/Walk.png",
+          "width": 96
+        },
+        "attack": {
+          "file": "craftpix/halloween/3/Attack1.png",
+          "width": 96
+        },
+        "hit": {
+          "file": "craftpix/halloween/3/Hurt.png",
+          "width": 96
+        },
+        "death": {
+          "file": "craftpix/halloween/3/Death.png",
+          "width": 96
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true
+    },
+    "fence_skeleton": {
+      "strips": {
+        "idle": {
+          "file": "luizmelo/mcf/Skeleton/Idle.png",
+          "width": 150
+        },
+        "walk": {
+          "file": "luizmelo/mcf/Skeleton/Walk.png",
+          "width": 150
+        },
+        "attack": {
+          "file": "luizmelo/mcf/Skeleton/Attack.png",
+          "width": 150
+        },
+        "hit": {
+          "file": "luizmelo/mcf/Skeleton/Take Hit.png",
+          "width": 150
+        },
+        "death": {
+          "file": "luizmelo/mcf/Skeleton/Death.png",
+          "width": 150
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true
+    },
+    "pack_leader": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/werewolf/Black_Werewolf/Idle.png",
+          "width": 128
+        },
+        "walk": {
+          "file": "craftpix/werewolf/Black_Werewolf/walk.png",
+          "width": 128
+        },
+        "attack": {
+          "file": "craftpix/werewolf/Black_Werewolf/Attack_2.png",
+          "width": 128
+        },
+        "hit": {
+          "file": "craftpix/werewolf/Black_Werewolf/Hurt.png",
+          "width": 128
+        },
+        "death": {
+          "file": "craftpix/werewolf/Black_Werewolf/Dead.png",
+          "width": 128
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true,
+      "master": true
+    }
+  }
+}
