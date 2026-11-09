@@ -223,7 +223,7 @@
 20. Составы За Разломом. Первый вариант 09.11.2026 (CraftPix: вампиры, зомби, оборотни, хэллоуин) Сергей отклонил как слишком реалистичный и оставил из него только Вожака, Рыжего оборотня, подвальную крысу и мимика (мимика отзеркалить). Второй вариант того же дня собран из мультяшных бесплатных наборов, ждёт утверждения:
     - Умерший лес: мобы Flying Eye и Goblin (LuizMelo), Mushroom и белый Skeleton (MonoPixelArt), Hallokin (Escape Pixel, `dissolve`); мини-боссы Red Werewolf, Bringer of Death (Clembod), Necromancer (CreativeKind); хозяин Black Werewolf.
     - Замок: мобы Bat и жёлтый Skeleton (MonoPixelArt), NightBorne (CreativeKind), Rat; мини-боссы Mecha-stone Golem (Darkpixel Kronovi, `flash_hit` и `dissolve`), Mimic, Necromancer Skeleton Boss (oliveiramiro2, `flash_hit`); хозяин Demon Slime (Chierit) ×1.
-    - Тронный зал: Король Изнанки — Skeleton King (far20106) ×1, сидит на своём троне, ходьба равна покою, урон `flash_hit`, смерть `dissolve`. Запасные варианты: Demon Slime и Necromancer Skeleton Boss.
+    - Тронный зал: Король Изнанки — Skeleton King (far20106) ×1, сидит на своём троне, ходьба равна покою, урон `flash_hit`, смерть `dissolve` (вариант A, выбран Сергеем 09.11.2026; отклонены Demon Slime и Necromancer Skeleton Boss).
 
 ## Источники
 - [TouchArcade: Tap Titans 2](https://toucharcade.com/games/tap-titans-2-hero-legends) — 14 миров, ручная отрисовка, броня титанов
