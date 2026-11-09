@@ -138,6 +138,14 @@ TT
 """
 
 
+KNEE_CAP = """
+.pp.
+Pppu
+Pppu
+.pu.
+"""
+
+
 def outfit_parts():
     return {
         "torso": (FR.TORSO, [5, 13]),
@@ -150,6 +158,7 @@ def outfit_parts():
         "forearm": (FR.FARM, [1, 0]),
         "hand": (FR.HAND, [1, 1]),
         "thigh": (FR.THIGH, [2, 0]),
+        "knee_cap": (KNEE_CAP, [1.5, 1.5]),
         "shin": (FR.SHIN, [2, 0]),
         "foot": (FR.FOOT, [1, 0]),
         "coat_tail": (FR.COAT_TAIL, [2, 0]),

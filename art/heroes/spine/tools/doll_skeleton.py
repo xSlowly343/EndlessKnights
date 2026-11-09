@@ -22,6 +22,7 @@ LIMB, UPRIGHT, LEVEL = -90.0, 90.0, 0.0
 
 SLOTS = [
     ("back", "thigh_far", "thigh_far", "thigh", LIMB),
+    ("back", "knee_far", "shin_far", "knee_cap", LIMB),
     ("back", "shin_far", "shin_far", "shin", LIMB),
     ("back", "foot_far", "foot_far", "foot", LEVEL),
     ("back", "upper_arm_far", "upper_arm_far", "upper_arm", LIMB),
@@ -32,6 +33,7 @@ SLOTS = [
     ("back", "hair_fly", "hair_fly", "hair_fly", LIMB),
     ("body", "pelvis", "pelvis", "pelvis", LEVEL),
     ("body", "thigh_near", "thigh_near", "thigh", LIMB),
+    ("body", "knee_near", "shin_near", "knee_cap", LIMB),
     ("body", "shin_near", "shin_near", "shin", LIMB),
     ("body", "foot_near", "foot_near", "foot", LEVEL),
     ("body", "torso", "torso", "torso", UPRIGHT),
@@ -46,6 +48,9 @@ SLOTS = [
     ("front", "forearm_near", "forearm_near", "forearm", LIMB),
     ("front", "hand_near", "hand_near", "hand", LIMB),
 ]
+
+
+SHOULDERS_SETUP = {side: -(DB.SHOULDERS["torso"][i] - 5) for i, side in enumerate(("near", "far"))}
 
 
 def to_spine(p):

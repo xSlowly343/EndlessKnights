@@ -178,6 +178,12 @@
    "color": "e6e6e6ff"
   },
   {
+   "name": "knee_far",
+   "bone": "shin_far",
+   "attachment": "knee_cap",
+   "color": "e6e6e6ff"
+  },
+  {
    "name": "shin_far",
    "bone": "shin_far",
    "attachment": "shin",
@@ -233,6 +239,11 @@
    "name": "thigh_near",
    "bone": "thigh_near",
    "attachment": "thigh"
+  },
+  {
+   "name": "knee_near",
+   "bone": "shin_near",
+   "attachment": "knee_cap"
   },
   {
    "name": "shin_near",
@@ -1199,6 +1210,16 @@
       "height": 9
      }
     },
+    "knee_far": {
+     "knee_cap": {
+      "path": "outfit/a/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "shin_far": {
      "shin": {
       "path": "outfit/a/shin",
@@ -1287,6 +1308,16 @@
       "rotation": 90.0,
       "width": 4,
       "height": 9
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "outfit/a/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 4
      }
     },
     "shin_near": {
@@ -1398,6 +1429,16 @@
       "height": 9
      }
     },
+    "knee_far": {
+     "knee_cap": {
+      "path": "outfit/b/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "shin_far": {
      "shin": {
       "path": "outfit/b/shin",
@@ -1486,6 +1527,16 @@
       "rotation": 90.0,
       "width": 4,
       "height": 9
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "outfit/b/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 4
      }
     },
     "shin_near": {
@@ -1597,6 +1648,16 @@
       "height": 9
      }
     },
+    "knee_far": {
+     "knee_cap": {
+      "path": "outfit/c/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "shin_far": {
      "shin": {
       "path": "outfit/c/shin",
@@ -1685,6 +1746,16 @@
       "rotation": 90.0,
       "width": 4,
       "height": 9
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "outfit/c/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 4
      }
     },
     "shin_near": {
@@ -1796,6 +1867,16 @@
       "height": 9
      }
     },
+    "knee_far": {
+     "knee_cap": {
+      "path": "outfit/d/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "shin_far": {
      "shin": {
       "path": "outfit/d/shin",
@@ -1884,6 +1965,16 @@
       "rotation": 90.0,
       "width": 4,
       "height": 9
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "outfit/d/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 4
      }
     },
     "shin_near": {

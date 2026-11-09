@@ -947,6 +947,16 @@
     0
    ]
   },
+  "outfit/a/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "outfit/a/shin": {
    "size": [
     4,
@@ -1075,6 +1085,16 @@
    "pivot": [
     2,
     0
+   ]
+  },
+  "outfit/b/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "outfit/b/shin": {
@@ -1207,6 +1227,16 @@
     0
    ]
   },
+  "outfit/c/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "outfit/c/shin": {
    "size": [
     4,
@@ -1335,6 +1365,16 @@
    "pivot": [
     2,
     0
+   ]
+  },
+  "outfit/d/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "outfit/d/shin": {
