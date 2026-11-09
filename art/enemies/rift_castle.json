@@ -1,0 +1,212 @@
+{
+  "biome": "rift_castle",
+  "scale": 2,
+  "fps": 10,
+  "loop": [
+    "idle",
+    "walk"
+  ],
+  "enemies": {
+    "castle_bat": {
+      "strips": {
+        "idle": {
+          "file": "monopixelart/dark_fantasy/Bat/Bat without VFX/Bat-IdleFly.png",
+          "width": 64
+        },
+        "walk": {
+          "file": "monopixelart/dark_fantasy/Bat/Bat without VFX/Bat-Run.png",
+          "width": 64
+        },
+        "attack": {
+          "file": "monopixelart/dark_fantasy/Bat/Bat without VFX/Bat-Attack1.png",
+          "width": 64
+        },
+        "hit": {
+          "file": "monopixelart/dark_fantasy/Bat/Bat without VFX/Bat-Hurt.png",
+          "width": 64
+        },
+        "death": {
+          "file": "monopixelart/dark_fantasy/Bat/Bat without VFX/Bat-Die.png",
+          "width": 64
+        }
+      },
+      "mirror": false,
+      "scale": 2
+    },
+    "castle_guard": {
+      "strips": {
+        "idle": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_Yellow/Skeleton_Without_VFX/Skeleton_01_Yellow_Idle.png",
+          "width": 96
+        },
+        "walk": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_Yellow/Skeleton_Without_VFX/Skeleton_01_Yellow_Walk.png",
+          "width": 96
+        },
+        "attack": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_Yellow/Skeleton_Without_VFX/Skeleton_01_Yellow_Attack2.png",
+          "width": 96
+        },
+        "hit": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_Yellow/Skeleton_Without_VFX/Skeleton_01_Yellow_Hurt.png",
+          "width": 96
+        },
+        "death": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_Yellow/Skeleton_Without_VFX/Skeleton_01_Yellow_Die.png",
+          "width": 96
+        }
+      },
+      "mirror": true,
+      "scale": 2
+    },
+    "nightborne": {
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 3,
+        "death": 4
+      },
+      "cell": [
+        80,
+        80
+      ],
+      "source": "creativekind/nightborne.png",
+      "mirror": true,
+      "scale": 2
+    },
+    "cellar_rat": {
+      "strips": {
+        "idle": {
+          "file": "luizmelo/mcf2/Rat/idle.png",
+          "width": 70
+        },
+        "walk": {
+          "file": "luizmelo/mcf2/Rat/run.png",
+          "width": 70
+        },
+        "attack": {
+          "file": "luizmelo/mcf2/Rat/attack_bite.png",
+          "width": 70
+        },
+        "hit": {
+          "file": "luizmelo/mcf2/Rat/hurt.png",
+          "width": 70
+        },
+        "death": {
+          "file": "luizmelo/mcf2/Rat/rat-death.png",
+          "width": 70
+        }
+      },
+      "mirror": true,
+      "scale": 2
+    },
+    "stone_golem": {
+      "rows": {
+        "idle": 0,
+        "walk": 0,
+        "attack": 4
+      },
+      "cell": [
+        100,
+        100
+      ],
+      "source": "darkpixel/mecha_golem/PNG sheet/Character_sheet.png",
+      "mirror": true,
+      "scale": 2,
+      "boss": true,
+      "flash_hit": true,
+      "dissolve": 8
+    },
+    "treasure_mimic": {
+      "strips": {
+        "idle": {
+          "file": "luizmelo/mcf2/Mimic/idle_transformed.png",
+          "width": 146
+        },
+        "walk": {
+          "file": "luizmelo/mcf2/Mimic/walk.png",
+          "width": 146
+        },
+        "attack": {
+          "file": "luizmelo/mcf2/Mimic/attack_1.png",
+          "width": 146
+        },
+        "hit": {
+          "file": "luizmelo/mcf2/Mimic/hurt.png",
+          "width": 146
+        },
+        "death": {
+          "file": "luizmelo/mcf2/Mimic/death.png",
+          "width": 146
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true
+    },
+    "bone_wizard": {
+      "strips": {
+        "idle": {
+          "file": "oliveiramiro2/SkeletonBoss/Sheets/Idle/Maw-All-Idle-Sheet.png",
+          "width": 128
+        },
+        "walk": {
+          "file": "oliveiramiro2/SkeletonBoss/Sheets/Floating/Maw-All-Floating-Sheet.png",
+          "width": 128
+        },
+        "attack": {
+          "file": "oliveiramiro2/SkeletonBoss/Sheets/HandAttack/Maw-All-HandAttack-Sheet.png",
+          "width": 128
+        },
+        "death": {
+          "file": "oliveiramiro2/SkeletonBoss/Sheets/Death/Maw-All-Death-Sheet.png",
+          "width": 128
+        }
+      },
+      "mirror": true,
+      "scale": 1,
+      "trim": true,
+      "flash_hit": true,
+      "boss": true
+    },
+    "demon_warden": {
+      "strips": {
+        "idle": {
+          "file": "chierit/demon_slime/spritesheets/demon_slime_FREE_v1.0_288x160_spritesheet.png",
+          "width": 288,
+          "height": 160,
+          "row": 0
+        },
+        "walk": {
+          "file": "chierit/demon_slime/spritesheets/demon_slime_FREE_v1.0_288x160_spritesheet.png",
+          "width": 288,
+          "height": 160,
+          "row": 1
+        },
+        "attack": {
+          "file": "chierit/demon_slime/spritesheets/demon_slime_FREE_v1.0_288x160_spritesheet.png",
+          "width": 288,
+          "height": 160,
+          "row": 2
+        },
+        "hit": {
+          "file": "chierit/demon_slime/spritesheets/demon_slime_FREE_v1.0_288x160_spritesheet.png",
+          "width": 288,
+          "height": 160,
+          "row": 3
+        },
+        "death": {
+          "file": "chierit/demon_slime/spritesheets/demon_slime_FREE_v1.0_288x160_spritesheet.png",
+          "width": 288,
+          "height": 160,
+          "row": 4
+        }
+      },
+      "mirror": false,
+      "scale": 1,
+      "boss": true,
+      "master": true
+    }
+  }
+}

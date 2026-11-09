@@ -1,0 +1,12 @@
+{
+  "id": "green_hills",
+  "source": "craftpix/nature_landscapes/nature_2",
+  "window": { "top": 110, "height": 180 },
+  "layers": {
+    "back": ["1.png", "2.png"],
+    "mid": ["3.png"],
+    "ground": ["4.png"]
+  },
+  "floor": { "height": 24, "top": "#6EAA46", "dirt": "#765638", "seed": 5 },
+  "dim": { "color": 0.9, "brightness": 0.95 }
+}

@@ -3,7 +3,7 @@ import json
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 SUPERSAMPLE = 4
 PREVIEW_CELL = 88
@@ -12,6 +12,10 @@ PREVIEW_LABEL = 22
 PREVIEW_BACKGROUND = "#1B2236"
 PREVIEW_TEXT = "#E6E9F0"
 GEMS_PATH = "Assets/StreamingAssets/Data/skills.json"
+PACK_PREFIX = "packs/"
+PAINTED_CORNER = 0.18
+GLOW_STYLE = "glow"
+GLOW_BACKGROUND = (10, 11, 18)
 
 
 def hex_rgba(value, alpha=255):
@@ -50,6 +54,69 @@ def render_icon(source, size, padding, outline):
     image.paste(Image.new("RGBA", image.size, hex_rgba(outline["color"])), mask=border)
     image.paste(Image.new("RGBA", image.size, (255, 255, 255, 255)), mask=glyph)
     return image.resize((size, size), Image.LANCZOS)
+
+
+def render_painted(source, size, outline):
+    canvas = size * SUPERSAMPLE
+    picture = Image.open(source).convert("RGBA").resize((canvas, canvas), Image.LANCZOS)
+    return frame_picture(picture, size, outline)
+
+
+def mix(first, second, amount):
+    return tuple(round(first[i] * (1 - amount) + second[i] * amount) for i in range(3))
+
+
+def vertical_gradient(canvas, top, bottom):
+    gradient = Image.new("RGB", (1, canvas))
+    for y in range(canvas):
+        gradient.putpixel((0, y), mix(top, bottom, y / canvas))
+    return gradient.resize((canvas, canvas))
+
+
+def glow_backdrop(canvas, color):
+    backdrop = Image.new("RGB", (canvas, canvas), mix(GLOW_BACKGROUND, color, 0.06))
+    light = Image.new("L", (canvas, canvas), 0)
+    ImageDraw.Draw(light).ellipse((canvas * 0.12, canvas * 0.12, canvas * 0.88, canvas * 0.88), fill=150)
+    light = light.filter(ImageFilter.GaussianBlur(canvas * 0.16))
+    backdrop.paste(Image.new("RGB", backdrop.size, mix(color, (0, 0, 0), 0.35)), mask=light)
+    return backdrop
+
+
+def render_glow(source, size, padding, outline, color_hex):
+    canvas = size * SUPERSAMPLE
+    color = hex_rgba(color_hex)[:3]
+    glyph = fit_mask(load_mask(source), canvas, padding)
+    picture = glow_backdrop(canvas, color)
+    halo = glyph.filter(ImageFilter.GaussianBlur(canvas * 0.05)).point(lambda value: min(255, value * 2))
+    picture.paste(Image.new("RGB", picture.size, color), mask=halo)
+    picture.paste(vertical_gradient(canvas, mix(color, (255, 255, 255), 0.85), mix(color, (255, 255, 255), 0.25)), mask=glyph)
+    rim = ImageChops.subtract(glyph, glyph.filter(ImageFilter.MinFilter(5))).point(lambda value: value // 2)
+    picture.paste(Image.new("RGB", picture.size, mix(color, (0, 0, 0), 0.45)), mask=rim)
+    return frame_picture(picture.convert("RGBA"), size, outline)
+
+
+def frame_picture(picture, size, outline):
+    canvas = picture.width
+    radius = round(canvas * PAINTED_CORNER)
+    border = max(1, round(canvas * outline["widthFraction"] / 2))
+    shape = Image.new("L", (canvas, canvas), 0)
+    ImageDraw.Draw(shape).rounded_rectangle((0, 0, canvas - 1, canvas - 1), radius=radius, fill=255)
+    inner = Image.new("L", (canvas, canvas), 0)
+    ImageDraw.Draw(inner).rounded_rectangle((border, border, canvas - 1 - border, canvas - 1 - border), radius=max(1, radius - border), fill=255)
+    image = Image.new("RGBA", (canvas, canvas), hex_rgba(outline["color"], 0))
+    image.paste(Image.new("RGBA", image.size, hex_rgba(outline["color"])), mask=shape)
+    image.paste(picture, mask=inner)
+    return image.resize((size, size), Image.LANCZOS)
+
+
+def is_painted(icon):
+    return icon["source"].startswith(PACK_PREFIX)
+
+
+def source_path(root, manifest, icon):
+    if is_painted(icon):
+        return root / manifest["packs"] / f"{icon['source'][len(PACK_PREFIX):]}.png"
+    return root / manifest["sources"] / f"{icon['source']}.png"
 
 
 def gem_colors(root):
@@ -114,16 +181,20 @@ def build(root, manifest_path, preview_only):
     colors = gem_colors(root)
     problems = [f"no icon for gem {gem}" for gem in check_gems(manifest, colors)]
     problems += [f"duplicate icon {key}" for key in check_duplicates(manifest)]
-    sources = root / manifest["sources"]
     output = root / manifest["output"]
     entries = []
     for icon in manifest["icons"]:
         group = manifest["groups"][icon["group"]]
-        source = sources / f"{icon['source']}.png"
+        source = source_path(root, manifest, icon)
         if not source.exists():
             problems.append(f"missing source {icon['source']}")
             continue
-        image = render_icon(source, group["size"], group["padding"], manifest["outline"])
+        if is_painted(icon):
+            image = render_painted(source, group["size"], manifest["outline"])
+        elif group.get("style") == GLOW_STYLE:
+            image = render_glow(source, group["size"], group["padding"], manifest["outline"], icon.get("color") or group["color"])
+        else:
+            image = render_icon(source, group["size"], group["padding"], manifest["outline"])
         if not preview_only:
             target = output / icon["group"] / f"{icon['id']}.png"
             target.parent.mkdir(parents=True, exist_ok=True)

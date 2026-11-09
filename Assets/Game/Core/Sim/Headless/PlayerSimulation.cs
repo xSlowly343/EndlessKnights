@@ -36,10 +36,14 @@ namespace Game.Core.Sim.Headless
 
         public bool Gear { get; set; }
 
+        public double DamageMultiplier { get; set; } = 1;
+
         public IReadOnlyList<DayRecord> Run(int days, double activeHoursPerDay)
         {
             var state = new GameState(_seed) { Class = _heroClass };
             var hero = new StatSheet();
+            if (DamageMultiplier != 1)
+                hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, DamageMultiplier - 1));
             var loop = new GameLoop(_data, new BotInput(_profile, _seed ^ 0x5EEDUL), state, hero);
             var bot = new PlayerBot(_data, loop, _stuckMinutes, branchTrial: new BranchTrial(_data, _profile), path: _path, gear: Gear);
             var offline = new OfflineCalculator(_data, hero);

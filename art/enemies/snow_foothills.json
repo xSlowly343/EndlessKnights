@@ -1,0 +1,35 @@
+{
+  "biome": "snow_foothills",
+  "scale": 3,
+  "fps": 10,
+  "loop": ["idle", "walk"],
+  "enemies": {
+    "frost_wisp": {"source": "elthen/Fire Elemental Sprite Sheet.png", "cell": [32, 32], "mirror": true, "hue_shift": 175,
+      "rows": {"idle": 1, "walk": 0, "attack": 2, "hit": 3, "death": 4}},
+    "snow_cobra": {"source": "elthen/Cobra Sprite Sheet.png", "cell": [32, 32], "mirror": true,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
+    "frost_imp": {"source": "elthen/Imp Sprite Sheet.png", "cell": [32, 32], "mirror": true, "hue_shift": -150,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
+    "snowball": {"source": "elthen/Ice Elemental Sprite Sheet.png", "cell": [32, 32], "mirror": true,
+      "rows": {"idle": 0, "walk": 3, "attack": 4, "hit": 5, "death": 6}},
+    "ratfolk_mage": {"source": "elthen/Ratfolk Mage Sprite Sheet.png", "cell": [32, 32], "mirror": true,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 4, "death": 5}},
+    "armadillo": {"source": "elthen/Armadillo Sprite Sheet.png", "cell": [32, 32], "mirror": true,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
+    "dwarf": {"source": "elthen/Dwarf Sprite Sheet.png", "cell": [32, 32], "mirror": true, "scale": 4, "boss": true,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
+    "mole_monarch": {"source": "elthen/Brain Mole Monarch Sprite Sheet.png", "cell": [32, 32], "mirror": true, "scale": 4, "boss": true,
+      "rows": {"idle": 0, "walk": 0, "attack": 1, "hit": 2, "death": 3}},
+    "blizzard_bird": {"source": "elthen/Phoenixling Sprite Sheet.png", "cell": [64, 64], "mirror": true, "hue_shift": 180, "boss": true,
+      "rows": {"idle": 0, "walk": 1, "attack": 2, "hit": 3, "death": 4}},
+    "yeti": {"strips": {
+        "idle": {"file": "pixelraza/Yeti-Idle-192x192.png", "width": 192},
+        "walk": {"file": "pixelraza/Yeti-walk-278x192.png", "width": 278},
+        "attack": {"file": "pixelraza/Yeti-attack-1-256x192.png", "width": 256},
+        "attack2": {"file": "pixelraza/Yeti-attack-2-240x192.png", "width": 240},
+        "attack3": {"file": "pixelraza/Yeti-attack-3-240x192.png", "width": 240},
+        "hit": {"file": "pixelraza/Yeti-damage-192x192.png", "width": 192},
+        "death": {"file": "pixelraza/Yeti-dead-192x192.png", "width": 192}},
+      "mirror": false, "resample": 0.4, "boss": true, "master": true}
+  }
+}

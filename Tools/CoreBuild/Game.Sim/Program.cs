@@ -75,7 +75,7 @@ namespace Game.Sim
         private static int RunPlayer(GameData data, BotProfile profile, SimOptions options)
         {
             var watch = System.Diagnostics.Stopwatch.StartNew();
-            var simulation = new PlayerSimulation(data, profile, options.HeroClass, options.Seed, options.StuckMinutes, options.Path) { Gear = options.Gear };
+            var simulation = new PlayerSimulation(data, profile, options.HeroClass, options.Seed, options.StuckMinutes, options.Path) { Gear = options.Gear, DamageMultiplier = options.DamageMultiplier };
             var days = simulation.Run(options.Days, options.ActiveHours);
             watch.Stop();
 

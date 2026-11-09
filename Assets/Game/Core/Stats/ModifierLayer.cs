@@ -6,11 +6,15 @@ namespace Game.Core.Stats
     {
         private readonly StatSheet _sheet;
         private readonly List<Modifier> _applied = new List<Modifier>();
+        private readonly ModifierPool _pool;
 
-        public ModifierLayer(StatSheet sheet)
+        public ModifierLayer(StatSheet sheet, ModifierPool pool = ModifierPool.General)
         {
             _sheet = sheet;
+            _pool = pool;
         }
+
+        public ModifierPool Pool => _pool;
 
         public IReadOnlyList<Modifier> Applied => _applied;
 
@@ -19,8 +23,9 @@ namespace Game.Core.Stats
             foreach (var modifier in _applied)
                 _sheet.Remove(modifier);
             _applied.Clear();
-            _applied.AddRange(modifiers);
-            _sheet.AddRange(modifiers);
+            for (var i = 0; i < modifiers.Count; i++)
+                _applied.Add(_pool == ModifierPool.General ? modifiers[i] : modifiers[i].InPool(_pool));
+            _sheet.AddRange(_applied);
         }
     }
 }

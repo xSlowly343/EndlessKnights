@@ -30,7 +30,7 @@ namespace Game.Core.Sim
             _state = state;
             _alchemy = alchemy;
             _events = events;
-            _layer = new ModifierLayer(hero);
+            _layer = new ModifierLayer(hero, ModifierPool.World);
             ApplyBonus();
         }
 

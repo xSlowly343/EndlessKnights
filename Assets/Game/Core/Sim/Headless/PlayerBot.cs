@@ -21,6 +21,7 @@ namespace Game.Core.Sim.Headless
         private readonly BranchTrial? _branchTrial;
         private readonly string? _path;
         private readonly BotGear? _gear;
+        private readonly BotMeta _meta;
         private double _stuckSeconds;
         private double _stageSeconds;
         private long _stage;
@@ -36,6 +37,7 @@ namespace Game.Core.Sim.Headless
             var heroClass = loop.State.Class;
             _heroClass = heroClass;
             _score = new NodeScore(PlayedTags(heroClass), data.ClassTreeOf(HeroClassNames.Of(heroClass))?.Attribute ?? ClassAttributeDef.None, inParty);
+            _meta = new BotMeta(loop, _score);
             if (gear)
                 _gear = new BotGear(loop, _score, branchTrial);
         }
@@ -50,6 +52,7 @@ namespace Game.Core.Sim.Headless
             SpendTreePoints();
             ChoosePathAndForks();
             _gear?.Act();
+            _meta.Act();
             if (_gear != null)
                 EnterDungeon();
             if (!_loop.Dungeons.Inside)
@@ -406,7 +409,7 @@ namespace Game.Core.Sim.Headless
             }
             var bossFailed = state.BossFailsInARow >= BossFailsBeforePrestige;
             var slowStage = _stageSeconds > SlowStageSeconds;
-            if (!bossFailed && !slowStage && _stuckSeconds < _stuckSecondsBeforePrestige)
+            if (!bossFailed && !slowStage && !EchoWorthIt() && _stuckSeconds < _stuckSecondsBeforePrestige)
                 return;
             if (!_loop.Prestige.Available || _loop.Prestige.EchoGain.Sign <= 0)
                 return;
@@ -417,6 +420,12 @@ namespace Game.Core.Sim.Headless
             }
         }
 
+        private bool EchoWorthIt()
+        {
+            var state = _loop.State;
+            return state.EchoEarned.Sign > 0 && state.HighestStage >= state.RecordStage && _loop.Prestige.Highlighted;
+        }
+
         private void SpendEcho()
         {
             var artifacts = _loop.Artifacts;
@@ -424,11 +433,24 @@ namespace Game.Core.Sim.Headless
             {
                 var cheapest = CheapestLevel(out var levelCost);
                 var canUnlock = !artifacts.AllUnlocked && !artifacts.WaitsForGroup && artifacts.Currency >= artifacts.UnlockCost;
+                if (_meta.BuyCheapestEchoUpgrade(ArtifactBudget(cheapest, levelCost, canUnlock)))
+                    continue;
                 if (canUnlock && (cheapest == null || artifacts.UnlockCost <= levelCost) && artifacts.TryUnlock() != null)
                     continue;
                 if (cheapest == null || !artifacts.TryLevelUp(cheapest))
                     return;
             }
+        }
+
+        private BigNumber ArtifactBudget(string? cheapest, BigNumber levelCost, bool canUnlock)
+        {
+            var artifacts = _loop.Artifacts;
+            var budget = _loop.State.Echo;
+            if (cheapest != null && levelCost < budget)
+                budget = levelCost;
+            if (canUnlock && artifacts.UnlockCost < budget)
+                budget = artifacts.UnlockCost;
+            return budget;
         }
 
         private string? CheapestLevel(out BigNumber cost)

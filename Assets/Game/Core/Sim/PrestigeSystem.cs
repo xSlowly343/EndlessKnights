@@ -31,7 +31,7 @@ namespace Game.Core.Sim
         {
             get
             {
-                var echo = _rules.EchoFor(_state.RunGoldEarned);
+                var echo = _rules.ByStage ? _rules.EchoForStage(_state.HighestStage) : _rules.EchoFor(_state.RunGoldEarned);
                 var bonus = System.Math.Max(0, _hero.Value(CombatStats.EchoGain, 1));
                 if (bonus == 1 || echo.Sign <= 0)
                     return echo;

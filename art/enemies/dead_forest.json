@@ -1,0 +1,242 @@
+{
+  "biome": "dead_forest",
+  "scale": 2,
+  "fps": 10,
+  "loop": [
+    "idle",
+    "walk"
+  ],
+  "enemies": {
+    "lost_eye": {
+      "strips": {
+        "idle": {
+          "file": "luizmelo/mcf/Flying eye/Flight.png",
+          "width": 150
+        },
+        "walk": {
+          "file": "luizmelo/mcf/Flying eye/Flight.png",
+          "width": 150
+        },
+        "attack": {
+          "file": "luizmelo/mcf/Flying eye/Attack.png",
+          "width": 150
+        },
+        "hit": {
+          "file": "luizmelo/mcf/Flying eye/Take Hit.png",
+          "width": 150
+        },
+        "death": {
+          "file": "luizmelo/mcf/Flying eye/Death.png",
+          "width": 150
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "trim": true
+    },
+    "rot_mushroom": {
+      "strips": {
+        "idle": {
+          "file": "monopixelart/forest/Mushroom/Mushroom without VFX/Mushroom-Idle.png",
+          "width": 80
+        },
+        "walk": {
+          "file": "monopixelart/forest/Mushroom/Mushroom without VFX/Mushroom-Run.png",
+          "width": 80
+        },
+        "attack": {
+          "file": "monopixelart/forest/Mushroom/Mushroom without VFX/Mushroom-Attack.png",
+          "width": 80
+        },
+        "hit": {
+          "file": "monopixelart/forest/Mushroom/Mushroom without VFX/Mushroom-Hit.png",
+          "width": 80
+        },
+        "death": {
+          "file": "monopixelart/forest/Mushroom/Mushroom without VFX/Mushroom-Die.png",
+          "width": 80
+        }
+      },
+      "mirror": false,
+      "scale": 2
+    },
+    "grave_skeleton": {
+      "strips": {
+        "idle": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_White/Skeleton_Without_VFX/Skeleton_01_White_Idle.png",
+          "width": 96
+        },
+        "walk": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_White/Skeleton_Without_VFX/Skeleton_01_White_Walk.png",
+          "width": 96
+        },
+        "attack": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_White/Skeleton_Without_VFX/Skeleton_01_White_Attack1.png",
+          "width": 96
+        },
+        "hit": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_White/Skeleton_Without_VFX/Skeleton_01_White_Hurt.png",
+          "width": 96
+        },
+        "death": {
+          "file": "monopixelart/skeletons/Skeleton_Sword/Skeleton_White/Skeleton_Without_VFX/Skeleton_01_White_Die.png",
+          "width": 96
+        }
+      },
+      "mirror": true,
+      "scale": 2
+    },
+    "goblin_looter": {
+      "strips": {
+        "idle": {
+          "file": "luizmelo/mcf/Goblin/Idle.png",
+          "width": 150
+        },
+        "walk": {
+          "file": "luizmelo/mcf/Goblin/Run.png",
+          "width": 150
+        },
+        "attack": {
+          "file": "luizmelo/mcf/Goblin/Attack.png",
+          "width": 150
+        },
+        "hit": {
+          "file": "luizmelo/mcf/Goblin/Take Hit.png",
+          "width": 150
+        },
+        "death": {
+          "file": "luizmelo/mcf/Goblin/Death.png",
+          "width": 150
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "trim": true
+    },
+    "hallokin": {
+      "strips": {
+        "idle": {
+          "file": "escape_pixel/hallokin/png (free)/idle.png",
+          "width": 192
+        },
+        "walk": {
+          "file": "escape_pixel/hallokin/png (free)/run.png",
+          "width": 192
+        },
+        "attack": {
+          "file": "escape_pixel/hallokin/png (free)/attack-2.png",
+          "width": 192
+        },
+        "hit": {
+          "file": "escape_pixel/hallokin/png (free)/hit.png",
+          "width": 192
+        }
+      },
+      "mirror": true,
+      "scale": 3,
+      "dissolve": 8,
+      "trim": true
+    },
+    "red_werewolf": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/werewolf/Red_Werewolf/Idle.png",
+          "width": 128
+        },
+        "walk": {
+          "file": "craftpix/werewolf/Red_Werewolf/Walk.png",
+          "width": 128
+        },
+        "attack": {
+          "file": "craftpix/werewolf/Red_Werewolf/Attack_1.png",
+          "width": 128
+        },
+        "hit": {
+          "file": "craftpix/werewolf/Red_Werewolf/Hurt.png",
+          "width": 128
+        },
+        "death": {
+          "file": "craftpix/werewolf/Red_Werewolf/Dead.png",
+          "width": 128
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true
+    },
+    "death_bringer": {
+      "strips": {
+        "idle": {
+          "file": "clembod/bringer/strips/idle.png",
+          "width": 140
+        },
+        "walk": {
+          "file": "clembod/bringer/strips/walk.png",
+          "width": 140
+        },
+        "attack": {
+          "file": "clembod/bringer/strips/attack.png",
+          "width": 140
+        },
+        "hit": {
+          "file": "clembod/bringer/strips/hurt.png",
+          "width": 140
+        },
+        "death": {
+          "file": "clembod/bringer/strips/death.png",
+          "width": 140
+        }
+      },
+      "mirror": false,
+      "scale": 2,
+      "boss": true,
+      "trim": true
+    },
+    "blood_necromancer": {
+      "rows": {
+        "idle": 0,
+        "walk": 1,
+        "attack": 2,
+        "hit": 5,
+        "death": 6
+      },
+      "cell": [
+        160,
+        128
+      ],
+      "source": "creativekind/necromancer.png",
+      "mirror": true,
+      "scale": 2,
+      "boss": true,
+      "trim": true
+    },
+    "pack_leader": {
+      "strips": {
+        "idle": {
+          "file": "craftpix/werewolf/Black_Werewolf/Idle.png",
+          "width": 128
+        },
+        "walk": {
+          "file": "craftpix/werewolf/Black_Werewolf/walk.png",
+          "width": 128
+        },
+        "attack": {
+          "file": "craftpix/werewolf/Black_Werewolf/Attack_2.png",
+          "width": 128
+        },
+        "hit": {
+          "file": "craftpix/werewolf/Black_Werewolf/Hurt.png",
+          "width": 128
+        },
+        "death": {
+          "file": "craftpix/werewolf/Black_Werewolf/Dead.png",
+          "width": 128
+        }
+      },
+      "mirror": true,
+      "scale": 2,
+      "boss": true,
+      "master": true
+    }
+  }
+}

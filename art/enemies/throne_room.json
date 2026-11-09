@@ -1,0 +1,33 @@
+{
+  "biome": "throne_room",
+  "scale": 2,
+  "fps": 10,
+  "loop": [
+    "idle",
+    "walk"
+  ],
+  "enemies": {
+    "rift_king": {
+      "strips": {
+        "idle": {
+          "file": "far20106/strips/throne_idle.png",
+          "width": 168
+        },
+        "walk": {
+          "file": "far20106/strips/throne_idle.png",
+          "width": 168
+        },
+        "attack": {
+          "file": "far20106/strips/throne_green_attack.png",
+          "width": 168
+        }
+      },
+      "mirror": true,
+      "scale": 1,
+      "flash_hit": true,
+      "dissolve": 8,
+      "boss": true,
+      "master": true
+    }
+  }
+}

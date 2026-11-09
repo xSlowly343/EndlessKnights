@@ -1,0 +1,39 @@
+{
+  "id": "singing_cascades",
+  "source": "craftpix/fairy_tale/1",
+  "scale": 0.25,
+  "canvas": [
+    1920,
+    1080
+  ],
+  "window": {
+    "top": 40,
+    "height": 180
+  },
+  "palette": 48,
+  "layers": {
+    "back": [
+      "7.png",
+      "6.png",
+      "5.png"
+    ],
+    "mid": [
+      "4.png",
+      "3.png"
+    ],
+    "ground": [
+      "2.png"
+    ],
+    "front": [
+      {
+        "file": "1.png",
+        "y": -139
+      }
+    ]
+  },
+  "dim": {
+    "color": 1.0,
+    "brightness": 1.0
+  },
+  "mirror_tile": true
+}

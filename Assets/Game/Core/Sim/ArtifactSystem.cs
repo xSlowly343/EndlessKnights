@@ -32,7 +32,7 @@ namespace Game.Core.Sim
             _rift = rift;
             _state = state;
             _hero = hero;
-            _layer = new ModifierLayer(hero);
+            _layer = new ModifierLayer(hero, ModifierPool.Artifact);
             Rebuild();
         }
 
@@ -257,11 +257,12 @@ namespace Game.Core.Sim
                 if (!owned.TryGetValue(artifact.Id, out var saved))
                     continue;
                 var level = artifact.EffectiveLevel(saved);
-                var scale = (artifact.Type == ArtifactType.Meta ? 1 : 1 + boosts[(int)artifact.Type]) * AwakenedScale(artifact.Id);
+                var awakened = AwakenedScale(artifact.Id);
+                var scale = (artifact.Type == ArtifactType.Meta ? 1 : 1 + boosts[(int)artifact.Type]) * awakened;
                 if (artifact.Class == null || _state.Is(artifact.Class.Value))
                 {
                     foreach (var modifier in artifact.PerLevel)
-                        modifiers.Add(modifier.WithValue(modifier.Value * level * scale));
+                        modifiers.Add(modifier.Kind == ModifierKind.More ? Compounded(modifier, level, awakened) : modifier.WithValue(modifier.Value * level * scale));
                     foreach (var modifier in artifact.PerArtifact)
                         modifiers.Add(modifier.WithValue(modifier.Value * level * owned.Count * scale));
                 }
@@ -270,6 +271,11 @@ namespace Game.Core.Sim
             _layer.Set(modifiers);
             Rebuilt?.Invoke();
         }
+
+        public const double MaxCompoundedMultiplier = 1e100;
+
+        private static Modifier Compounded(Modifier modifier, int level, double awakened) =>
+            modifier.WithValue(System.Math.Min(MaxCompoundedMultiplier, System.Math.Pow(1 + modifier.Value * awakened, level)) - 1);
 
         private Modifier General(int level, double boost)
         {

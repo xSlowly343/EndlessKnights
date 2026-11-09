@@ -12,7 +12,7 @@ namespace Game.Core.Tests.Sim
         {
             var catalog = TestWorld.Real.Artifacts;
             var stats = new[] { "pierceShare", "splashShare", "stageSkipChance", "bossPierce" };
-            for (var group = 1; group <= 4; group++)
+            foreach (var group in new[] { 1, 3, 4, 5 })
             {
                 var pierce = catalog.All.Where(a => a.Group == group && a.PerLevel.Any(m => stats.Contains(m.Stat.Name))).ToList();
                 Assert.That(pierce.Count, Is.EqualTo(1), "group " + group);
