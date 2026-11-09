@@ -18,11 +18,11 @@
       "class": "runedancer",
       "partyMode": "together",
       "name": {"ru": "Танец рун", "en": "Rune Dance"},
-      "blurb": {"ru": "Каждый удар выжигает на враге следующую руну из пяти: Пламя, Иней, Гром, Тень, Свет. Пять рун складываются в Слово: вспышка ×10 удара. В паузе руны тлеют 10 с. Скилл Пути «Написать Слово» дописывает недостающие руны", "en": "Every hit burns the next of five runes into the enemy: Flame, Frost, Thunder, Shadow, Light. Five runes form a Word: a flash of ×10 a hit. In a pause the runes smoulder for 10 s. The path skill “Write the Word” adds the missing runes"},
+      "blurb": {"ru": "Каждый удар выжигает на враге следующую руну из пяти: Пламя, Иней, Гром, Тень, Свет. Пять рун складываются в Слово: вспышка ×10 удара. В паузе руны тлеют 10 с. Скилл Пути «Написать Слово» дописывает недостающие руны. Стихия класса становится: Огонь", "en": "Every hit burns the next of five runes into the enemy: Flame, Frost, Thunder, Shadow, Light. Five runes form a Word: a flash of ×10 a hit. In a pause the runes smoulder for 10 s. The path skill “Write the Word” adds the missing runes. The class element becomes fire"},
       "trait": {
         "partyText": {"ru": "Пока на враге печать Слова, враг получает больше урона от всех; на 5 уровне отряд ещё и чаще критует", "en": "While the Word seal is on the enemy, it takes more damage from everyone; at level 5 the party also crits more often"},
         "levels": [
-          {"modifiers": [{"stat": "runeWord", "kind": "flat", "value": 10}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.1, "while": "runeSeal"}]},
+          {"modifiers": [{"stat": "fireShift", "kind": "flat", "value": 1}, {"stat": "runeWord", "kind": "flat", "value": 10}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.1, "while": "runeSeal"}]},
           {"modifiers": [{"stat": "runeWord", "kind": "flat", "value": 2}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.015, "while": "runeSeal"}]},
           {"modifiers": [{"stat": "runeWord", "kind": "flat", "value": 2}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.015, "while": "runeSeal"}]},
           {"modifiers": [{"stat": "runeWord", "kind": "flat", "value": 2}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.01, "while": "runeSeal"}]},
@@ -84,11 +84,11 @@
       "class": "duelist",
       "partyMode": "together",
       "name": {"ru": "Сияющая брешь", "en": "Shining Breach"},
-      "blurb": {"ru": "Раз в 4 с на враге загорается брешь на 1 с, её видно на полоске. Удары в брешь — Выпады: ×2 и +1,5 Чести. Скилл Пути «Вызов» зажигает брешь сразу", "en": "Every 4 s an opening lights up on the enemy for 1 s, visible on the strip. Hits into the opening are Lunges: ×2 and +1.5 Honor. The path skill “Challenge” lights the opening at once"},
+      "blurb": {"ru": "Раз в 4 с на враге загорается брешь на 1 с, её видно на полоске. Удары в брешь — Выпады: ×2 и +1,5 Чести. Скилл Пути «Вызов» зажигает брешь сразу. Стихия класса становится: Молния", "en": "Every 4 s an opening lights up on the enemy for 1 s, visible on the strip. Hits into the opening are Lunges: ×2 and +1.5 Honor. The path skill “Challenge” lights the opening at once. The class element becomes lightning"},
       "trait": {
         "partyText": {"ru": "Пока брешь открыта, отряд бьёт сильнее и крепче критует; на 5 уровне каждый Выпад добавляет отряду шанс крита", "en": "While the breach is open, the party hits harder and crits harder; at level 5 every Lunge adds critical chance to the party"},
         "levels": [
-          {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 1}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.12, "while": "breachOpen"}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.05, "while": "breachOpen"}]},
+          {"modifiers": [{"stat": "lightningShift", "kind": "flat", "value": 1}, {"stat": "breachLunge", "kind": "flat", "value": 1}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.12, "while": "breachOpen"}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.05, "while": "breachOpen"}]},
           {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "while": "breachOpen"}]},
           {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "while": "breachOpen"}]},
           {"modifiers": [{"stat": "breachLunge", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "while": "breachOpen"}]},
@@ -172,11 +172,11 @@
       "class": "windshot",
       "partyMode": "together",
       "name": {"ru": "Штиль", "en": "Calm"},
-      "blurb": {"ru": "Если шага не было 4 с, ветер стихает: удары критуют всегда, но урон крита −30%. Любой шаг снимает штиль. Скилл Пути «Выстрел в тишине» даёт штиль сразу", "en": "With no step for 4 s the wind dies down: hits always crit, but crit damage is −30%. Any step breaks the calm. The path skill “Shot in the Silence” brings the calm at once"},
+      "blurb": {"ru": "Если шага не было 4 с, ветер стихает: удары критуют всегда, но урон крита −30%. Любой шаг снимает штиль. Скилл Пути «Выстрел в тишине» даёт штиль сразу. Стихия класса становится: Влага", "en": "With no step for 4 s the wind dies down: hits always crit, but crit damage is −30%. Any step breaks the calm. The path skill “Shot in the Silence” brings the calm at once. The class element becomes water"},
       "trait": {
         "partyText": {"ru": "В штиль отряд крепче критует и быстрее копит Фокус; на 5 уровне криты в штиль добавляют отряду шанс крита", "en": "In a calm the party crits harder and gains Focus faster; at level 5 crits in a calm add critical chance to the party"},
         "levels": [
-          {"modifiers": [{"stat": "calmPower", "kind": "flat", "value": 1}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.1, "while": "calm"}, {"to": "party", "stat": "focusGain", "kind": "increased", "value": 0.1, "while": "calm"}]},
+          {"modifiers": [{"stat": "waterShift", "kind": "flat", "value": 1}, {"stat": "calmPower", "kind": "flat", "value": 1}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.1, "while": "calm"}, {"to": "party", "stat": "focusGain", "kind": "increased", "value": 0.1, "while": "calm"}]},
           {"modifiers": [{"stat": "calmPenalty", "kind": "flat", "value": -0.05}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.02, "while": "calm"}]},
           {"modifiers": [{"stat": "calmPenalty", "kind": "flat", "value": -0.05}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.02, "while": "calm"}]},
           {"modifiers": [{"stat": "calmPenalty", "kind": "flat", "value": -0.05}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.02, "while": "calm"}]},
@@ -260,11 +260,11 @@
       "class": "shardcaller",
       "partyMode": "together",
       "name": {"ru": "Стеклянный панцирь", "en": "Glass Shell"},
-      "blurb": {"ru": "Враг закован в кристалл: весь урон Shardcaller по нему на 20% слабее. Раз в 5 с панцирь трескается на 1 с, и весь урон Shardcaller в эту секунду ×4. Скилл Пути «Звон стекла» трескает панцирь сразу", "en": "The enemy is locked in crystal: all Shardcaller damage to it is 20% weaker. Every 5 s the shell cracks for 1 s, and all Shardcaller damage in that second is ×4. The path skill “Ring of Glass” cracks the shell at once"},
+      "blurb": {"ru": "Враг закован в кристалл: весь урон Shardcaller по нему на 20% слабее. Раз в 5 с панцирь трескается на 1 с, и весь урон Shardcaller в эту секунду ×4. Скилл Пути «Звон стекла» трескает панцирь сразу. Стихия класса становится: Земля", "en": "The enemy is locked in crystal: all Shardcaller damage to it is 20% weaker. Every 5 s the shell cracks for 1 s, and all Shardcaller damage in that second is ×4. The path skill “Ring of Glass” cracks the shell at once. The class element becomes earth"},
       "trait": {
         "partyText": {"ru": "Пока панцирь треснул, отряд бьёт сильнее и чаще критует; на 5 уровне каждая трещина ненадолго ускоряет откаты отряда", "en": "While the shell is cracked, the party hits harder and crits more often; at level 5 every crack briefly speeds up the party's cooldowns"},
         "levels": [
-          {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 4}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.3, "while": "shellCracked"}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.05, "while": "shellCracked"}]},
+          {"modifiers": [{"stat": "earthShift", "kind": "flat", "value": 1}, {"stat": "shellPower", "kind": "flat", "value": 4}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.3, "while": "shellCracked"}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.05, "while": "shellCracked"}]},
           {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "shellPower", "kind": "flat", "value": 0.25}]},
@@ -282,11 +282,11 @@
       "class": "alchemist",
       "partyMode": "together",
       "name": {"ru": "Смесь", "en": "Mixture"},
-      "blurb": {"ru": "Удары по кругу меняют реактив: алый, лазурный, золотой. Каждые 8 ударов и каждый крит текущий реактив падает в колбу; три реактива — смесь, у каждой из 10 своё действие (взрыв, разъедание, пена, кристаллизация, золотая смесь и др.). В паузе колба ждёт. Скилл Пути «Колба» бросает колбу сразу, добирая реактивы, и смесь на 50% сильнее", "en": "Hits cycle the reagent: crimson, azure, golden. Every 8 hits and every crit the current reagent drops into the flask; three reagents make a mix, each of the 10 mixes with its own effect (blast, corrosion, foam, crystallization, golden mix and more). In a pause the flask waits. The path skill “Flask” throws the flask at once, topping up the reagents, and the mix is 50% stronger"},
+      "blurb": {"ru": "Удары по кругу меняют реактив: алый, лазурный, золотой. Каждые 8 ударов и каждый крит текущий реактив падает в колбу; три реактива — смесь, у каждой из 10 своё действие (взрыв, разъедание, пена, кристаллизация, золотая смесь и др.). В паузе колба ждёт. Скилл Пути «Колба» бросает колбу сразу, добирая реактивы, и смесь на 50% сильнее. Стихия класса становится: Огонь", "en": "Hits cycle the reagent: crimson, azure, golden. Every 8 hits and every crit the current reagent drops into the flask; three reagents make a mix, each of the 10 mixes with its own effect (blast, corrosion, foam, crystallization, golden mix and more). In a pause the flask waits. The path skill “Flask” throws the flask at once, topping up the reagents, and the mix is 50% stronger. The class element becomes fire"},
       "trait": {
         "partyText": {"ru": "Смесь в колбе: отряд чаще критует и получает больше золота; после каждой смеси 6 с созвездия отряда сильнее", "en": "The mix in the flask: the party crits more often and gets more gold; for 6 s after each mix the party's constellations are stronger"},
         "levels": [
-          {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.8}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "roleBuffEffect", "kind": "increased", "value": 0.1, "after": {"signal": "mix", "seconds": 6, "stacks": 1}}]},
+          {"modifiers": [{"stat": "fireShift", "kind": "flat", "value": 1}, {"stat": "mixPower", "kind": "flat", "value": 0.8}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritChance", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "roleBuffEffect", "kind": "increased", "value": 0.1, "after": {"signal": "mix", "seconds": 6, "stacks": 1}}]},
           {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
           {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
           {"modifiers": [{"stat": "mixPower", "kind": "flat", "value": 0.12}]},
@@ -392,11 +392,11 @@
       "class": "minstrel",
       "partyMode": "together",
       "name": {"ru": "Колыбельная", "en": "Lullaby"},
-      "blurb": {"ru": "Каждый 20-й удар — нота, на 7 нотах враг засыпает на 4 с. Урон по спящему не наносится, а копится во сне ×1,8. Кошмар будит врага, и всё накопленное падает разом. В паузе сон идёт сам, а ноты ждут. Скилл Пути «Тихая нота» добавляет 3 ноты", "en": "Every 20th hit is a note; at 7 notes the enemy falls asleep for 4 s. Damage to a sleeper is not dealt but stored in the dream ×1.8. A nightmare wakes the enemy and everything stored lands at once. In a pause the sleep goes on by itself while the notes wait. The path skill “Quiet Note” adds 3 notes"},
+      "blurb": {"ru": "Каждый 20-й удар — нота, на 7 нотах враг засыпает на 4 с. Урон по спящему не наносится, а копится во сне ×1,8. Кошмар будит врага, и всё накопленное падает разом. В паузе сон идёт сам, а ноты ждут. Скилл Пути «Тихая нота» добавляет 3 ноты. Стихия класса становится: Влага", "en": "Every 20th hit is a note; at 7 notes the enemy falls asleep for 4 s. Damage to a sleeper is not dealt but stored in the dream ×1.8. A nightmare wakes the enemy and everything stored lands at once. In a pause the sleep goes on by itself while the notes wait. The path skill “Quiet Note” adds 3 notes. The class element becomes water"},
       "trait": {
         "partyText": {"ru": "Пока враг спит, он получает больше урона от всего отряда; на 5 уровне отряд ещё и крепче критует по спящему", "en": "While the enemy sleeps, it takes more damage from the whole party; at level 5 the party also crits harder against the sleeper"},
         "levels": [
-          {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 1.8}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.001, "per": {"signal": "sleepShare", "step": 0.001, "cap": 5000}}]},
+          {"modifiers": [{"stat": "waterShift", "kind": "flat", "value": 1}, {"stat": "sleepPower", "kind": "flat", "value": 1.8}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.001, "per": {"signal": "sleepShare", "step": 0.001, "cap": 5000}}]},
           {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "sleepPower", "kind": "flat", "value": 0.1}]},
@@ -414,11 +414,11 @@
       "class": "lanternbearer",
       "partyMode": "together",
       "name": {"ru": "Тени и свет", "en": "Light and Shadow"},
-      "blurb": {"ru": "Каждый удар освещает врага на 1%. Полностью освещённый враг получает +35% урона от всех. Каждые 10 с тень возвращается и гасит 25% света. В паузе фонарь тлеет: новый свет не копится, а тень гасит старый. Скилл Пути «Яркий луч» освещает врага на 25%", "en": "Every hit lights the enemy by 1%. A fully lit enemy takes +35% damage from everyone. Every 10 s the shadow returns and puts out 25% of the light. In a pause the lantern smoulders: no new light builds and the shadow eats the old. The path skill “Bright Beam” lights the enemy by 25%"},
+      "blurb": {"ru": "Каждый удар освещает врага на 1%. Полностью освещённый враг получает +35% урона от всех. Каждые 10 с тень возвращается и гасит 25% света. В паузе фонарь тлеет: новый свет не копится, а тень гасит старый. Скилл Пути «Яркий луч» освещает врага на 25%. Стихия класса становится: Молния", "en": "Every hit lights the enemy by 1%. A fully lit enemy takes +35% damage from everyone. Every 10 s the shadow returns and puts out 25% of the light. In a pause the lantern smoulders: no new light builds and the shadow eats the old. The path skill “Bright Beam” lights the enemy by 25%. The class element becomes lightning"},
       "trait": {
         "partyText": {"ru": "Полностью освещённый враг получает больше урона от всех; пока он освещён, отряд ещё и чаще критует", "en": "A fully lit enemy takes more damage from everyone; while it is lit, the party also crits more often"},
         "levels": [
-          {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.35}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.03, "while": "litFull"}]},
+          {"modifiers": [{"stat": "lightningShift", "kind": "flat", "value": 1}, {"stat": "lightPower", "kind": "flat", "value": 0.35}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.03, "while": "litFull"}]},
           {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "lightPower", "kind": "flat", "value": 0.05}]},
@@ -524,11 +524,11 @@
       "class": "whisperer",
       "partyMode": "support",
       "name": {"ru": "Обет молчания", "en": "Vow of Silence"},
-      "blurb": {"ru": "Её удары не наносят урона совсем. Взамен все её проклятия втрое сильнее, а Шёпот копится вдвое быстрее. Каждые 6 немых ударов — немой шёпот: следующий удар проклят и бьёт ×(12 × (1 + сила проклятий)), а проклятие держится на 1 с дольше. В соло шёпот достаётся ей самой. В паузе проклятия не спадают. Скилл Пути «Немой укор» даёт 3 шёпота сразу", "en": "Her hits deal no damage at all. In return all her curses are three times stronger and the Whisper builds twice as fast. Every 6 silent hits is a silent whisper: the next hit is cursed and strikes ×(12 × (1 + curse power)), and the curse lasts 1 s longer. In solo the whisper goes to her. In a pause the curses hold. The path skill “Silent Reproach” gives 3 whispers at once"},
+      "blurb": {"ru": "Её удары не наносят урона совсем. Взамен все её проклятия втрое сильнее, а Шёпот копится вдвое быстрее. Каждые 6 немых ударов — немой шёпот: следующий удар проклят и бьёт ×(12 × (1 + сила проклятий)), а проклятие держится на 1 с дольше. В соло шёпот достаётся ей самой. В паузе проклятия не спадают. Скилл Пути «Немой укор» даёт 3 шёпота сразу. Стихия класса становится: Воздух", "en": "Her hits deal no damage at all. In return all her curses are three times stronger and the Whisper builds twice as fast. Every 6 silent hits is a silent whisper: the next hit is cursed and strikes ×(12 × (1 + curse power)), and the curse lasts 1 s longer. In solo the whisper goes to her. In a pause the curses hold. The path skill “Silent Reproach” gives 3 whispers at once. The class element becomes air"},
       "trait": {
         "partyText": {"ru": "Каждый немой шёпот на 4 с усиливает урон отряда со временем и удары, а враг получает +3% урона, до 5 стаков", "en": "Each silent whisper empowers the party's damage over time and hits for 4 s, and the enemy takes 3% more damage, up to 5 stacks"},
         "levels": [
-          {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 24}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.05, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.02, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.03, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}]},
+          {"modifiers": [{"stat": "airShift", "kind": "flat", "value": 1}, {"stat": "vowPower", "kind": "flat", "value": 24}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.001, "per": {"signal": "shareCritMultiplier", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.05, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.02, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.03, "after": {"signal": "hush", "seconds": 4, "stacks": 5}}]},
           {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 3}]},
           {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 3}]},
           {"modifiers": [{"stat": "vowPower", "kind": "flat", "value": 3}]},
@@ -590,11 +590,11 @@
       "class": "cartomancer",
       "partyMode": "support",
       "name": {"ru": "Перевёрнутая карта", "en": "Reversed Card"},
-      "blurb": {"ru": "Карты ложатся рубашкой вверх: вместо пользы каждые 10 ударов карта ложится на врага и проклинает его по масти: Мечи — враг получает больше урона, Кубки — рана жжёт врага, Монеты — с врага падает больше золота, Жезлы — таймер босса медленнее. На враге до 7 карт, со сменой врага они спадают. Каждые 40 ударов одна карта вскрывается: её проклятие на 5 с вдвое сильнее. Скилл Пути «Перевернуть колоду» кладёт три карты и вскрывает старшую масть", "en": "The cards fall face down: instead of helping, every 10 hits a card lands on the enemy and curses it by suit: Swords — the enemy takes more damage, Cups — a wound burns the enemy, Coins — the enemy drops more gold, Wands — the boss timer runs slower. Up to 7 cards on an enemy, they fall off when it changes. Every 40 hits one card is revealed: its curse is twice as strong for 5 s. The path skill “Turn the Deck” lays three cards and reveals the highest suit"},
+      "blurb": {"ru": "Карты ложатся рубашкой вверх: вместо пользы каждые 10 ударов карта ложится на врага и проклинает его по масти: Мечи — враг получает больше урона, Кубки — рана жжёт врага, Монеты — с врага падает больше золота, Жезлы — таймер босса медленнее. На враге до 7 карт, со сменой врага они спадают. Каждые 40 ударов одна карта вскрывается: её проклятие на 5 с вдвое сильнее. Скилл Пути «Перевернуть колоду» кладёт три карты и вскрывает старшую масть. Стихия класса становится: Коррозия", "en": "The cards fall face down: instead of helping, every 10 hits a card lands on the enemy and curses it by suit: Swords — the enemy takes more damage, Cups — a wound burns the enemy, Coins — the enemy drops more gold, Wands — the boss timer runs slower. Up to 7 cards on an enemy, they fall off when it changes. Every 40 hits one card is revealed: its curse is twice as strong for 5 s. The path skill “Turn the Deck” lays three cards and reveals the highest suit. The class element becomes corrosion"},
       "trait": {
         "partyText": {"ru": "Карты лежат на враге и видны всем; за каждую карту отряд крепче критует", "en": "The cards lie on the enemy for everyone to see; each card makes the party crit harder"},
         "levels": [
-          {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.04}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.02, "per": {"signal": "laid", "step": 1, "cap": 10}}]},
+          {"modifiers": [{"stat": "corrosionShift", "kind": "flat", "value": 1}, {"stat": "reversedPower", "kind": "flat", "value": 0.04}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.02, "per": {"signal": "laid", "step": 1, "cap": 10}}]},
           {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.006}]},
           {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.006}]},
           {"modifiers": [{"stat": "reversedPower", "kind": "flat", "value": 0.006}]},
@@ -634,11 +634,11 @@
       "class": "herbwitch",
       "partyMode": "together",
       "name": {"ru": "Грибница", "en": "Mycelium"},
-      "blurb": {"ru": "Каждый удар добавляет врагу стак яда грибницы, до 50; каждый стак жалит раз в секунду. Яд не пропадает со смертью врага: половина перетекает на следующего. В паузе яд продолжает жалить. Скилл Пути «Споровый выброс» добавляет 15 стаков", "en": "Every hit adds a stack of mycelium poison to the enemy, up to 50; each stack stings once a second. The poison does not vanish when the enemy dies: half flows to the next one. In a pause the poison keeps stinging. The path skill “Spore Burst” adds 15 stacks"},
+      "blurb": {"ru": "Каждый удар добавляет врагу стак яда грибницы, до 50; каждый стак жалит раз в секунду. Яд не пропадает со смертью врага: половина перетекает на следующего. В паузе яд продолжает жалить. Скилл Пути «Споровый выброс» добавляет 15 стаков. Стихия класса становится: Коррозия", "en": "Every hit adds a stack of mycelium poison to the enemy, up to 50; each stack stings once a second. The poison does not vanish when the enemy dies: half flows to the next one. In a pause the poison keeps stinging. The path skill “Spore Burst” adds 15 stacks. The class element becomes corrosion"},
       "trait": {
         "partyText": {"ru": "За каждые 5 стаков яда грибницы урон отряда со временем сильнее", "en": "Every 5 stacks of mycelium poison empower the party's damage over time"},
         "levels": [
-          {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.025}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.02, "per": {"signal": "venom", "step": 5, "cap": 10}}]},
+          {"modifiers": [{"stat": "corrosionShift", "kind": "flat", "value": 1}, {"stat": "myceliumPower", "kind": "flat", "value": 0.025}, {"to": "party", "stat": "dotDamage", "kind": "increased", "value": 0.02, "per": {"signal": "venom", "step": 5, "cap": 10}}]},
           {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.004}]},
           {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.004}]},
           {"modifiers": [{"stat": "myceliumPower", "kind": "flat", "value": 0.004}]},
@@ -722,11 +722,11 @@
       "class": "mothcaller",
       "partyMode": "solo",
       "name": {"ru": "Ночная бабочка", "en": "Night Moth"},
-      "blurb": {"ru": "Жёсткий обмен: вместо роя мотыльки сливаются в одну огромную бабочку. Она не копится от ударов, а оживает раз в 30 с на 8 с и каждую секунду бьёт как весь рой. В паузе бабочка просыпается так же. Скилл Пути «Пробуждение бабочки» будит её сразу", "en": "A hard trade: instead of a swarm the moths merge into one huge butterfly. It does not build from hits but wakes every 30 s for 8 s and strikes every second like the whole swarm. In a pause the butterfly wakes all the same. The path skill “Butterfly’s Waking” wakes it at once"},
+      "blurb": {"ru": "Жёсткий обмен: вместо роя мотыльки сливаются в одну огромную бабочку. Она не копится от ударов, а оживает раз в 30 с на 8 с и каждую секунду бьёт как весь рой. В паузе бабочка просыпается так же. Скилл Пути «Пробуждение бабочки» будит её сразу. Стихия класса становится: Огонь", "en": "A hard trade: instead of a swarm the moths merge into one huge butterfly. It does not build from hits but wakes every 30 s for 8 s and strikes every second like the whole swarm. In a pause the butterfly wakes all the same. The path skill “Butterfly’s Waking” wakes it at once. The class element becomes fire"},
       "trait": {
         "partyText": {"ru": "Пока бабочка летает, отряд бьёт сильнее", "en": "While the moth flies, the party hits harder"},
         "levels": [
-          {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.1, "while": "mothAwake"}]},
+          {"modifiers": [{"stat": "fireShift", "kind": "flat", "value": 1}, {"stat": "mothPower", "kind": "flat", "value": 5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.1, "while": "mothAwake"}]},
           {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
           {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
           {"modifiers": [{"stat": "mothPower", "kind": "flat", "value": 0.6}]},
@@ -766,11 +766,11 @@
       "class": "soulbinder",
       "partyMode": "together",
       "name": {"ru": "Последний вздох", "en": "Last Breath"},
-      "blurb": {"ru": "Духи не бьют вовсе. Когда сфера полна и приходит новая душа, самая старая уходит с последним вздохом — бьёт текущего врага на 4% HP того врага, от которого пришла, и оставляет на нём холод на 5 с: враг получает на 15% больше. Урон приходит только из убийств. В паузе сфера ждёт. Скилл Пути «Последний вздох» выпускает старшую душу сразу", "en": "The spirits do not strike at all. When the orb is full and a new soul comes, the oldest leaves with a last breath — it strikes the current enemy for 4% of the HP of the enemy it came from and leaves a chill on it for 5 s: the enemy takes 15% more. Damage comes only from kills. In a pause the orb waits. The path skill “Last Breath” releases the oldest soul at once"},
+      "blurb": {"ru": "Духи не бьют вовсе. Когда сфера полна и приходит новая душа, самая старая уходит с последним вздохом — бьёт текущего врага на 4% HP того врага, от которого пришла, и оставляет на нём холод на 5 с: враг получает на 15% больше. Урон приходит только из убийств. В паузе сфера ждёт. Скилл Пути «Последний вздох» выпускает старшую душу сразу. Стихия класса становится: Воздух", "en": "The spirits do not strike at all. When the orb is full and a new soul comes, the oldest leaves with a last breath — it strikes the current enemy for 4% of the HP of the enemy it came from and leaves a chill on it for 5 s: the enemy takes 15% more. Damage comes only from kills. In a pause the orb waits. The path skill “Last Breath” releases the oldest soul at once. The class element becomes air"},
       "trait": {
         "partyText": {"ru": "Холод вздоха висит на враге; после вздоха 4 с отряд крепче критует", "en": "The cold of a breath hangs on the enemy; for 4 s after a breath the party crits harder"},
         "levels": [
-          {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.04}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.1, "after": {"signal": "breath", "seconds": 4, "stacks": 1}}]},
+          {"modifiers": [{"stat": "airShift", "kind": "flat", "value": 1}, {"stat": "breathPower", "kind": "flat", "value": 0.04}, {"to": "party", "stat": "critMultiplier", "kind": "flat", "value": 0.1, "after": {"signal": "breath", "seconds": 4, "stacks": 1}}]},
           {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.007}]},
           {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.007}]},
           {"modifiers": [{"stat": "breathPower", "kind": "flat", "value": 0.007}]},
@@ -832,11 +832,11 @@
       "class": "ghostcaptain",
       "partyMode": "solo",
       "name": {"ru": "Призрачная команда", "en": "Ghost Crew"},
-      "blurb": {"ru": "Каждый побеждённый враг вступает в команду матросом (страж — двое, босс — трое), все матросы бьют раз в секунду. Потолка нет, но через 2 минуты после первого матроса наступает рассвет, и вся команда уходит; старший матрос остаётся боцманом и до следующего рассвета стреляет при каждом её скилле. В паузе команда бьёт сама. Скилл Пути «Свистать всех наверх» зовёт трёх матросов и бьёт всей командой", "en": "Every defeated enemy joins the crew as a sailor (a guardian as two, a boss as three), and all sailors strike once a second. There is no cap, but 2 minutes after the first sailor dawn comes and the whole crew leaves; the eldest stays on as boatswain and fires with each of her skills until the next dawn. In a pause the crew strikes on its own. The path skill “All Hands on Deck” calls three sailors and strikes with the whole crew"},
+      "blurb": {"ru": "Каждый побеждённый враг вступает в команду матросом (страж — двое, босс — трое), все матросы бьют раз в секунду. Потолка нет, но через 2 минуты после первого матроса наступает рассвет, и вся команда уходит; старший матрос остаётся боцманом и до следующего рассвета стреляет при каждом её скилле. В паузе команда бьёт сама. Скилл Пути «Свистать всех наверх» зовёт трёх матросов и бьёт всей командой. Стихия класса становится: Влага", "en": "Every defeated enemy joins the crew as a sailor (a guardian as two, a boss as three), and all sailors strike once a second. There is no cap, but 2 minutes after the first sailor dawn comes and the whole crew leaves; the eldest stays on as boatswain and fires with each of her skills until the next dawn. In a pause the crew strikes on its own. The path skill “All Hands on Deck” calls three sailors and strikes with the whole crew. The class element becomes water"},
       "trait": {
         "partyText": {"ru": "За каждые 5 матросов команды отряд бьёт сильнее", "en": "Every 5 sailors of the crew make the party hit harder"},
         "levels": [
-          {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.03}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "per": {"signal": "sailors", "step": 5, "cap": 20}}]},
+          {"modifiers": [{"stat": "waterShift", "kind": "flat", "value": 1}, {"stat": "crewPower", "kind": "flat", "value": 0.03}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "per": {"signal": "sailors", "step": 5, "cap": 20}}]},
           {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
           {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
           {"modifiers": [{"stat": "crewPower", "kind": "flat", "value": 0.005}]},
@@ -920,11 +920,11 @@
       "class": "golemancer",
       "partyMode": "support",
       "name": {"ru": "Малые печати", "en": "Small Seals"},
-      "blurb": {"ru": "Вместо большого голема каждые 20 ударов — маленький големчик на 15 с, до 4 сразу; каждый бьёт раз в секунду. В паузе големчики бьют, новые не появляются. Скилл Пути «Россыпь печатей» лепит трёх големчиков", "en": "Instead of a great golem, every 20 hits a little golem appears for 15 s, up to 4 at once; each strikes once a second. In a pause the little golems strike, but no new ones appear. The path skill “Scatter of Seals” moulds three little golems"},
+      "blurb": {"ru": "Вместо большого голема каждые 20 ударов — маленький големчик на 15 с, до 4 сразу; каждый бьёт раз в секунду. В паузе големчики бьют, новые не появляются. Скилл Пути «Россыпь печатей» лепит трёх големчиков. Стихия класса становится: Огонь", "en": "Instead of a great golem, every 20 hits a little golem appears for 15 s, up to 4 at once; each strikes once a second. In a pause the little golems strike, but no new ones appear. The path skill “Scatter of Seals” moulds three little golems. The class element becomes fire"},
       "trait": {
         "partyText": {"ru": "За каждого големчика спутники и слуги отряда быстрее и сильнее", "en": "Each golemling makes the party's companions and minions faster and stronger"},
         "levels": [
-          {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.35}, {"to": "party", "stat": "minionSpeed", "kind": "increased", "value": 0.05, "per": {"signal": "minors", "step": 1, "cap": 4}}, {"to": "party", "stat": "companionMultiplier", "kind": "increased", "value": 0.05, "per": {"signal": "minors", "step": 1, "cap": 4}}]},
+          {"modifiers": [{"stat": "fireShift", "kind": "flat", "value": 1}, {"stat": "minorPower", "kind": "flat", "value": 0.35}, {"to": "party", "stat": "minionSpeed", "kind": "increased", "value": 0.05, "per": {"signal": "minors", "step": 1, "cap": 4}}, {"to": "party", "stat": "companionMultiplier", "kind": "increased", "value": 0.05, "per": {"signal": "minors", "step": 1, "cap": 4}}]},
           {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.05}]},
           {"modifiers": [{"stat": "minorPower", "kind": "flat", "value": 0.05}]},
@@ -942,11 +942,11 @@
       "class": "clockwright",
       "partyMode": "together",
       "name": {"ru": "Завод пружины", "en": "Wound Spring"},
-      "blurb": {"ru": "Завод копится от ударов и сам медленно кончается. Пока Завод больше половины, таймер босса идёт на 30% медленнее, ниже половины — на 10%. На нуле часы встают, и таймер идёт на 10% быстрее. В паузе часы стоят: Завод не тратится. Скилл Пути «Завести пружину» даёт 50 Завода сразу", "en": "The Spring winds up from hits and slowly runs down by itself. While the Spring is above half, the boss timer runs 30% slower, below half — 10%. At zero the clock stops and the timer runs 10% faster. In a pause the clock stands still: the Spring is not spent. The path skill “Wind the Spring” gives 50 Spring at once"},
+      "blurb": {"ru": "Завод копится от ударов и сам медленно кончается. Пока Завод больше половины, таймер босса идёт на 30% медленнее, ниже половины — на 10%. На нуле часы встают, и таймер идёт на 10% быстрее. В паузе часы стоят: Завод не тратится. Скилл Пути «Завести пружину» даёт 50 Завода сразу. Стихия класса становится: Молния", "en": "The Spring winds up from hits and slowly runs down by itself. While the Spring is above half, the boss timer runs 30% slower, below half — 10%. At zero the clock stops and the timer runs 10% faster. In a pause the clock stands still: the Spring is not spent. The path skill “Wind the Spring” gives 50 Spring at once. The class element becomes lightning"},
       "trait": {
         "partyText": {"ru": "Пока Завод держит таймер, таймер босса медленнее для всего отряда", "en": "While the Spring holds the timer, the boss timer is slower for the whole party"},
         "levels": [
-          {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.9}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.001, "when": "inParty", "per": {"signal": "springSlow", "step": 0.001, "cap": 1000}}]},
+          {"modifiers": [{"stat": "lightningShift", "kind": "flat", "value": 1}, {"stat": "springPower", "kind": "flat", "value": 0.9}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.001, "when": "inParty", "per": {"signal": "springSlow", "step": 0.001, "cap": 1000}}]},
           {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.09}]},
           {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.09}]},
           {"modifiers": [{"stat": "springPower", "kind": "flat", "value": 0.09}]},
@@ -1052,11 +1052,11 @@
       "class": "sandwalker",
       "partyMode": "together",
       "name": {"ru": "Мираж", "en": "Mirage"},
-      "blurb": {"ru": "Шаг раскаляет воздух: каждые 2000 px шага встаёт мираж — двойник кого-то из отряда, до 5, живёт 20 с. Каждый мираж бьёт раз в секунду ×1,6, а в бою с боссом даёт +2 с к таймеру. Сам Sandwalker бьёт на 40% слабее. Скилл Пути «Мираж-двойник» зовёт мираж сразу", "en": "Steps heat the air: every 2000 px of steps a mirage rises — a double of someone in the party, up to 5, lasting 20 s. Each mirage strikes once a second ×1.6 and in a boss fight adds +2 s to the timer. The Sandwalker himself hits 40% weaker. The path skill “Mirage Double” calls a mirage at once"},
+      "blurb": {"ru": "Шаг раскаляет воздух: каждые 2000 px шага встаёт мираж — двойник кого-то из отряда, до 5, живёт 20 с. Каждый мираж бьёт раз в секунду ×1,6, а в бою с боссом даёт +2 с к таймеру. Сам Sandwalker бьёт на 40% слабее. Скилл Пути «Мираж-двойник» зовёт мираж сразу. Стихия класса становится: Огонь", "en": "Steps heat the air: every 2000 px of steps a mirage rises — a double of someone in the party, up to 5, lasting 20 s. Each mirage strikes once a second ×1.6 and in a boss fight adds +2 s to the timer. The Sandwalker himself hits 40% weaker. The path skill “Mirage Double” calls a mirage at once. The class element becomes fire"},
       "trait": {
         "partyText": {"ru": "Босс бьёт по миражам: каждый мираж замедляет таймер босса для отряда и добавляет отряду урон; на 5 уровне миражи усиливают спутников отряда", "en": "The boss strikes the mirages: each mirage slows the boss timer for the party and adds party damage; at level 5 the mirages strengthen the party's companions"},
         "levels": [
-          {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 3.2}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.06, "per": {"signal": "mirages", "step": 1, "cap": 7}}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "per": {"signal": "mirages", "step": 1, "cap": 7}}]},
+          {"modifiers": [{"stat": "fireShift", "kind": "flat", "value": 1}, {"stat": "miragePower", "kind": "flat", "value": 3.2}, {"to": "enemy", "stat": "bossTimerSlow", "kind": "flat", "value": 0.06, "per": {"signal": "mirages", "step": 1, "cap": 7}}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.01, "per": {"signal": "mirages", "step": 1, "cap": 7}}]},
           {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.4}]},
           {"modifiers": [{"stat": "miragePower", "kind": "flat", "value": 0.4}]},
@@ -1074,11 +1074,11 @@
       "class": "dowser",
       "partyMode": "together",
       "name": {"ru": "Жила", "en": "Vein"},
-      "blurb": {"ru": "В каждом обычном враге скрытая золотая жила — случайный удар из первых 50. Лоза светится тем ярче, чем ближе жила. Попал — враг отдаст в 2,5 раза больше золота. В паузе лоза дремлет. Скилл Пути «Вскрыть жилу» вскрывает её сразу", "en": "Every ordinary enemy hides a gold vein — a random hit among the first 50. The rod glows brighter the closer the vein is. Hit it — and the enemy gives 2.5 times the gold. In a pause the rod dozes. The path skill “Open the Vein” opens it at once"},
+      "blurb": {"ru": "В каждом обычном враге скрытая золотая жила — случайный удар из первых 50. Лоза светится тем ярче, чем ближе жила. Попал — враг отдаст в 2,5 раза больше золота. В паузе лоза дремлет. Скилл Пути «Вскрыть жилу» вскрывает её сразу. Стихия класса становится: Земля", "en": "Every ordinary enemy hides a gold vein — a random hit among the first 50. The rod glows brighter the closer the vein is. Hit it — and the enemy gives 2.5 times the gold. In a pause the rod dozes. The path skill “Open the Vein” opens it at once. The class element becomes earth"},
       "trait": {
         "partyText": {"ru": "Найденная жила 10 с даёт союзникам больше золота", "en": "A struck vein gives allies more gold for 10 s"},
         "levels": [
-          {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 1.5}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "allies", "stat": "gold", "kind": "increased", "value": 0.25, "after": {"signal": "vein", "seconds": 10, "stacks": 1}}]},
+          {"modifiers": [{"stat": "earthShift", "kind": "flat", "value": 1}, {"stat": "veinPower", "kind": "flat", "value": 1.5}, {"to": "party", "stat": "gold", "kind": "increased", "value": 0.001, "per": {"signal": "shareGold", "step": 0.001, "cap": 100000}}, {"to": "allies", "stat": "gold", "kind": "increased", "value": 0.25, "after": {"signal": "vein", "seconds": 10, "stacks": 1}}]},
           {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 0.25}]},
           {"modifiers": [{"stat": "veinPower", "kind": "flat", "value": 0.25}]},
@@ -1140,11 +1140,11 @@
       "class": "dreamcatcher",
       "partyMode": "together",
       "name": {"ru": "Сети снов", "en": "Dream Nets"},
-      "blurb": {"ru": "Шаг плетёт сети поперёк очереди: сеть на каждые 2000 px шага, до 3. Враг, вышедший из очереди в сеть, 3 с беспомощен: урон по нему +50%, а если он умер за это время — шанс 20% на трофей (опыт гемов). В паузе сети висят, новые не плетутся. Скилл Пути «Сплести сеть» плетёт 2 сети сразу", "en": "Steps weave nets across the queue: a net for every 2000 px of steps, up to 3. An enemy that steps out of the queue into a net is helpless for 3 s: damage to it +50%, and if it dies in that time — a 20% chance of a trophy (gem experience). In a pause the nets hang and no new ones are woven. The path skill “Weave a Net” weaves 2 nets at once"},
+      "blurb": {"ru": "Шаг плетёт сети поперёк очереди: сеть на каждые 2000 px шага, до 3. Враг, вышедший из очереди в сеть, 3 с беспомощен: урон по нему +50%, а если он умер за это время — шанс 20% на трофей (опыт гемов). В паузе сети висят, новые не плетутся. Скилл Пути «Сплести сеть» плетёт 2 сети сразу. Стихия класса становится: Воздух", "en": "Steps weave nets across the queue: a net for every 2000 px of steps, up to 3. An enemy that steps out of the queue into a net is helpless for 3 s: damage to it +50%, and if it dies in that time — a 20% chance of a trophy (gem experience). In a pause the nets hang and no new ones are woven. The path skill “Weave a Net” weaves 2 nets at once. The class element becomes air"},
       "trait": {
         "partyText": {"ru": "Сеть висит на пойманном враге; пока он в сети, отряд чаще критует", "en": "The net hangs on the caught enemy; while it is netted, the party crits more often"},
         "levels": [
-          {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.05, "while": "caught"}]},
+          {"modifiers": [{"stat": "airShift", "kind": "flat", "value": 1}, {"stat": "netPower", "kind": "flat", "value": 0.5}, {"to": "party", "stat": "attackPower", "kind": "increased", "value": 0.001, "per": {"signal": "shareDamage", "step": 0.001, "cap": 100000}}, {"to": "party", "stat": "critChance", "kind": "flat", "value": 0.05, "while": "caught"}]},
           {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},
           {"modifiers": [{"stat": "netPower", "kind": "flat", "value": 0.1}]},

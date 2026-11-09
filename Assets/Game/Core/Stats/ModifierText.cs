@@ -9,7 +9,7 @@ namespace Game.Core.Stats
     {
         private static readonly HashSet<string> FlatPercent = new HashSet<string>
         {
-            "critChance", "critMultiplier", "overcritMultiplier", "additionalDamage", "fractureChance", "fractureEffect", "cohesion", "receptivity", "pillar", "armorPen", "defenseShred", "tempoDamage", "restCharge", "fireConversion", "firePen", "airConversion", "airPen", "earthConversion", "earthPen", "lightningConversion", "lightningPen", "waterConversion", "waterPen", "corrosionConversion", "corrosionPen", "peacefulSpeed", "peacefulYield", "peacefulLuck", "peacefulMastery", "partyPeaceful", "crushCleave", "crushMultiplier", "damagePerSector",
+            "critChance", "critMultiplier", "overcritMultiplier", "additionalDamage", "fractureChance", "fractureEffect", "cohesion", "receptivity", "pillar", "armorPen", "defenseShred", "tempoDamage", "restCharge", "classElementConversion", "classElementPen", "classElementDamage", "fireConversion", "firePen", "airConversion", "airPen", "earthConversion", "earthPen", "lightningConversion", "lightningPen", "waterConversion", "waterPen", "corrosionConversion", "corrosionPen", "peacefulSpeed", "peacefulYield", "peacefulLuck", "peacefulMastery", "partyPeaceful", "crushCleave", "crushMultiplier", "damagePerSector",
             "doomedCritChance", "doomedCritMultiplier", "dotSpread", "doubleStrike", "doubleHitChance", "damageTaken", "flareMultiplier", "flareSplash",
             "focusMax", "partyContribution", "partyCritChance", "partyCritMultiplier", "pierceShare", "volleySplash",
             "windupKeptAfterCrush", "frozenFirstHit", "overloadKeep", "keyHitQueueAll", "damagePerInputKind", "damagePerTenPoison", "damagePerKill", "idleKillPenalty", "critDamageBuff", "firstHitsBonus",

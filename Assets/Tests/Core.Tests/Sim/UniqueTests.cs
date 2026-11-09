@@ -38,10 +38,10 @@ namespace Game.Core.Tests.Sim
             DropRules.Load(TestData.ReadGameDataFile(DropRules.FileName).Replace("\"uniques\": { \"guardian\": 0.03 }", "\"uniques\": { \"guardian\": 1 }"));
 
         [Test]
-        public void SixteenArmourAndJewelleryUniques()
+        public void TwentyTwoArmourAndJewelleryUniques()
         {
-            Assert.That(Items.Uniques.Count, Is.EqualTo(16));
-            Assert.That(Items.Uniques.Select(u => u.Id).Distinct().Count(), Is.EqualTo(16));
+            Assert.That(Items.Uniques.Count, Is.EqualTo(22));
+            Assert.That(Items.Uniques.Select(u => u.Id).Distinct().Count(), Is.EqualTo(22));
             Assert.That(Items.Uniques.Select(u => u.Slot).Distinct().Count(), Is.EqualTo(6));
             foreach (var unique in Items.Uniques)
             {

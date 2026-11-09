@@ -498,8 +498,28 @@ namespace Game.Core.Sim
 
         public ClassAttributeDef ClassAttributeDef => ClassTreeDef?.Attribute ?? ClassAttributeDef.None;
 
+        public int ClassElement
+        {
+            get
+            {
+                var element = ClassTreeDef?.Element ?? ElementRules.None;
+                var strongest = 0.0;
+                for (var i = 0; i < ElementRules.Count; i++)
+                {
+                    var shift = Hero.Value(ElementRules.Shift[i], 0);
+                    if (shift > strongest)
+                    {
+                        strongest = shift;
+                        element = i;
+                    }
+                }
+                return element;
+            }
+        }
+
         public void RefreshClassAttribute()
         {
+            _combat.ClassElement = ClassElement;
             _classAttribute.Refresh(ClassAttributeDef);
             _combat.RefreshAttack(ClassAttribute);
         }
@@ -538,7 +558,7 @@ namespace Game.Core.Sim
             return CommonTreeResult.Chosen;
         }
 
-        private (ClassTree Tree, ClassTreeAllocation Allocation)? TreeOfNode(string nodeId)
+        public (ClassTree Tree, ClassTreeAllocation Allocation)? TreeOfNode(string nodeId)
         {
             if (ClassTreeDef is { } classTree && classTree.TryGet(nodeId, out _))
                 return (classTree, State.ClassTree);

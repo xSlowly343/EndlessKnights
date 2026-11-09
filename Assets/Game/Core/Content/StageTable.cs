@@ -201,9 +201,49 @@ namespace Game.Core.Content
                 RotationMinutes = RotationMinutes,
                 BossSlotStages = BossSlotStages,
                 _allBiomes = _allBiomes,
-                _opensAt = _opensAt
+                _opensAt = _opensAt,
+                _defenseHome = this
             };
 
+        private StageTable? _defenseHome;
+        private long _defenseAsked = -1;
+        private long _defenseAnswer;
+
+        public long DefenseStage(long stage)
+        {
+            if (_defenseHome == null)
+                return stage;
+            if (stage == _defenseAsked)
+                return _defenseAnswer;
+            _defenseAsked = stage;
+            _defenseAnswer = _defenseHome.StageWithHp(EnemyHp(stage).Log10(), stage);
+            return _defenseAnswer;
+        }
+
+        private long StageWithHp(double log10, long from)
+        {
+            const long Limit = long.MaxValue / 4;
+            var low = from;
+            if (EnemyHp(low).Log10() >= log10)
+                return low;
+            var step = 1L;
+            var high = low + step;
+            while (EnemyHp(high).Log10() < log10 && high < Limit)
+            {
+                low = high;
+                step *= 2;
+                high = System.Math.Min(Limit, low + step);
+            }
+            while (high - low > 1)
+            {
+                var middle = low + (high - low) / 2;
+                if (EnemyHp(middle).Log10() < log10)
+                    low = middle;
+                else
+                    high = middle;
+            }
+            return high;
+        }
 
         public StageTable ForDungeon(double hpMultiplier, double bossHpMultiplier, double bossTimerSeconds) =>
             new StageTable(_enemyHp.Scaled(hpMultiplier), _gold, _wallPeriod, 0, _wallRate, _waves, _bossHpMultiplier * bossHpMultiplier,

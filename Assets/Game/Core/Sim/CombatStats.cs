@@ -27,6 +27,9 @@ namespace Game.Core.Sim
         public static readonly StatId DefenseShred = new StatId("defenseShred");
         public static readonly StatId TempoDamage = new StatId("tempoDamage");
         public static readonly StatId RestCharge = new StatId("restCharge");
+        public static readonly StatId ClassElementConversion = new StatId("classElementConversion");
+        public static readonly StatId ClassElementDamage = new StatId("classElementDamage");
+        public static readonly StatId ClassElementPen = new StatId("classElementPen");
         public static readonly StatId Gold = new StatId("gold");
         public static readonly StatId FocusGain = new StatId("focusGain");
         public static readonly StatId FocusMultiplier = new StatId("focusMultiplier");

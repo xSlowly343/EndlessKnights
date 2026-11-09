@@ -63,6 +63,39 @@ namespace Game.Core.Tests.Sim.Rift
         }
 
         [Test]
+        public void RiftDefenseFollowsTheHomeStageWithTheSameHp()
+        {
+            var loop = HomeAt(40);
+            loop.Rift.Enter(Inside);
+            var rift = loop.Stages.Table;
+            var home = TestWorld.Data.Stages;
+
+            foreach (var stage in new long[] { 1, 300, 2000, 9000 })
+            {
+                var equal = rift.DefenseStage(stage);
+                Assert.That(equal, Is.GreaterThan(stage));
+                Assert.That(home.EnemyHp(equal).Log10(), Is.GreaterThanOrEqualTo(rift.EnemyHp(stage).Log10()));
+                Assert.That(home.EnemyHp(equal - 1).Log10(), Is.LessThan(rift.EnemyHp(stage).Log10()));
+            }
+            Assert.That(home.DefenseStage(700), Is.EqualTo(700));
+        }
+
+        [Test]
+        public void ARiftEnemyGetsTheDefenseOfItsHomeEquivalent()
+        {
+            var loop = HomeAt(40);
+            loop.Rift.Enter(Inside);
+            loop.State.Stage = 600;
+            loop.State.HighestStage = 600;
+            loop.State.SpawnEnemy(null, EnemyType.Normal, BigNumber.Zero);
+            loop.Stages.EnsureEnemy();
+
+            var defense = TestWorld.Data.Combat.Defense;
+            Assert.That(loop.State.EnemyDefense, Is.EqualTo(defense.Defense(loop.Stages.Table.DefenseStage(600), false)));
+            Assert.That(loop.State.EnemyDefense, Is.GreaterThan(defense.Defense(600, false)));
+        }
+
+        [Test]
         public void SoftWallsComeEveryTwentyFiveStages()
         {
             var loop = HomeAt(1);
