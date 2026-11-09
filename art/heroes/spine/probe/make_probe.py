@@ -26,15 +26,15 @@ tris=[]
 for y in range(100,20,-10):
     a,b,c,dd=idx[(-8,y)],idx[(8,y)],idx[(-8,y-10)],idx[(8,y-10)]
     tris += [a,c,b, b,c,dd]
-sk={"skeleton":{"spine":"4.3.00","width":100,"height":120},
+sk={"skeleton":{"spine":"4.2.00","width":100,"height":120},
  "bones":[{"name":"root"},{"name":"hip","parent":"root","y":100},
   {"name":"thigh","parent":"hip","rotation":-90,"length":40},
   {"name":"shin","parent":"thigh","x":40,"length":40},
   {"name":"foot_ik","parent":"root","y":22},
   {"name":"hair","parent":"hip","x":-10,"rotation":-90,"length":21}],
  "slots":[{"name":"hair","bone":"hair","attachment":"hair"},{"name":"leg","bone":"thigh","attachment":"leg"}],
- "constraints":[{"type":"ik","name":"leg_ik","bones":["thigh","shin"],"target":"foot_ik","bendPositive":False},
-  {"type":"physics","name":"hair_phys","bone":"hair","rotate":1,"inertia":0.6,"strength":60,"damping":0.8,"gravity":0}],
+ "ik":[{"name":"leg_ik","order":0,"bones":["thigh","shin"],"target":"foot_ik","bendPositive":False}],
+ "physics":[{"name":"hair_phys","order":1,"bone":"hair","rotate":1,"inertia":0.6,"strength":60,"damping":0.8,"gravity":0}],
  "skins":[{"name":"default","attachments":{
    "leg":{"leg":{"type":"mesh","uvs":uvs,"triangles":tris,"vertices":verts,"hull":n,"width":16,"height":80}},
    "hair":{"hair":{"x":10,"rotation":90,"width":8,"height":21}}}}],

@@ -19,9 +19,9 @@ times.forEach((t,i)=>{
   sk.x=60+i*125-0; sk.y=0;
   const dt=1/60; for(let k=0;k<Math.round(t/dt);k++){st.update(dt);st.apply(sk);sk.update(dt);sk.updateWorldTransform(spine.Physics.update);}
   st.apply(sk); sk.updateWorldTransform(spine.Physics.update);
-  r.drawSkeleton(sk); if(i==4)r.drawSkeletonDebug(sk);
+  r.drawSkeleton(sk,true); if(i==4)r.drawSkeletonDebug(sk);
 });
 r.end();
-document.title='ok '+data.bones.length+' bones, '+data.constraints.length+' constraints';
+document.title='ok '+data.bones.length+' bones, '+(data.ikConstraints.length+data.physicsConstraints.length)+' constraints';
 }catch(e){document.title='ERR '+e.message;}})();
 </script></body></html>

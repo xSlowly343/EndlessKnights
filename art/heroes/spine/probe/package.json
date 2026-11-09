@@ -2,6 +2,6 @@
   "name": "spine-probe",
   "private": true,
   "dependencies": {
-    "@esotericsoftware/spine-webgl": "4.3.13"
+    "@esotericsoftware/spine-webgl": "4.2.120"
   }
 }
