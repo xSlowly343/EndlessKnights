@@ -111,7 +111,7 @@ namespace Game.Core.Sim
             for (var i = 0; i < rotation.Count; i++)
             {
                 if (rotation[i] == biome)
-                    return _state.RecordStage > (long)(i + 1) * _stages.BiomeLength;
+                    return _state.RecordStage >= _stages.OpensAt(i) + _stages.BiomeLength;
             }
             return false;
         }

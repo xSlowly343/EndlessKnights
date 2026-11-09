@@ -66,7 +66,7 @@ namespace Game.Core.Tests.Sim
             loop.Companions.Learn("camp_dog", "light_step");
             loop.Companions.Learn("camp_dog", "full_bags");
             loop.Expeditions.Send("camp_dog", "sand_ruins", 4);
-            loop.State.RecordStage = 60;
+            loop.State.RecordStage = 100;
             loop.Expeditions.Send("camp_dog", "sand_ruins", 4);
             loop.Expeditions.Advance(4 * Hour);
             var report = loop.State.Expeditions.Reports[0];

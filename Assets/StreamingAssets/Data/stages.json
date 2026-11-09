@@ -9,7 +9,13 @@
   "gates": [{ "stage": 50000, "hpMultiplier": 50, "timerSeconds": 120, "name": { "ru": "Хранитель Предела", "en": "Keeper of the Limit" },
       "firstKill": { "unique": true, "modifiers": [{ "stat": "attackPower", "kind": "more", "value": 1 }, { "stat": "gold", "kind": "increased", "value": 0.5, "tags": ["Gold"] }, { "stat": "echoGain", "kind": "increased", "value": 0.1 }] } }],
   "biomeLength": 50,
-  "biomes": ["green_hills", "sand_ruins", "ice_peak", "volcanic_forge", "sky_islands"],
+  "biomes": [
+    { "id": "green_hills", "fromStage": 1 },
+    { "id": "sand_ruins", "fromStage": 100 },
+    { "id": "ice_peak", "fromStage": 250 },
+    { "id": "volcanic_forge", "fromStage": 500 },
+    { "id": "sky_islands", "fromStage": 1000 }
+  ],
   "heart": { "biome": "rift_heart", "fromStage": 20000 },
   "rotation": { "minutes": 5 }
 }

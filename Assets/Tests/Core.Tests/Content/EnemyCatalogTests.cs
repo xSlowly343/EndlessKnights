@@ -41,7 +41,7 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void TheBossOfAStageComesFromItsSlotAndTheHeartStartsAtStageTwentyThousand()
+        public void TheBossOfAStageComesFromItsSlotAndTheHeartJoinsAtStageTwentyThousand()
         {
             var stages = StageTable.Load(TestData.ReadGameDataFile(StageTable.FileName));
             var catalog = EnemyCatalog.Load(TestData.ReadGameDataFile(EnemyCatalog.FileName), stages.Biomes);
@@ -52,11 +52,12 @@ namespace Game.Core.Tests.Content
             Assert.That(stages.BossSlot(60), Is.EqualTo(1));
             Assert.That(catalog.BossAt(stages.Biome(10), stages.BossSlot(10))!.Id, Is.EqualTo("gryzlo"));
             Assert.That(catalog.BossAt(stages.Biome(5), stages.BossSlot(5))!.Id, Is.EqualTo("boar_king"));
-            Assert.That(catalog.BossAt(stages.Biome(55), stages.BossSlot(55))!.Id, Is.EqualTo("jackal_treasurer"), "no slot 0 falls back to the first boss");
-            Assert.That(catalog.BossAt(stages.Biome(80), stages.BossSlot(80))!.Id, Is.EqualTo("pincer"));
+            Assert.That(catalog.BossAt(stages.Biome(155), stages.BossSlot(155))!.Id, Is.EqualTo("jackal_treasurer"), "no slot 0 falls back to the first boss");
+            Assert.That(catalog.BossAt(stages.Biome(180), stages.BossSlot(180))!.Id, Is.EqualTo("pincer"));
             Assert.That(stages.Biome(19_999), Is.Not.EqualTo("rift_heart"));
-            Assert.That(stages.Biome(20_000), Is.EqualTo("rift_heart"));
-            Assert.That(stages.Biome(123_456), Is.EqualTo("rift_heart"));
+            Assert.That(stages.Pool, Does.Contain("rift_heart"));
+            Assert.That(stages.OpensAt(stages.Pool.Count - 1), Is.EqualTo(20_000));
+            Assert.That(stages.Biome(20_051), Is.EqualTo("rift_heart"));
             Assert.That(catalog.Guardian("rift_heart")!.Id, Is.EqualTo("quiet_storm_dragon"));
         }
 

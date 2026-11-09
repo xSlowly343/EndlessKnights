@@ -13,7 +13,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(new FakeInputSource(), new GameState(1));
             loop.Tick();
             loop.SetLocalDay(100);
-            loop.State.RecordStage = 60;
+            loop.State.RecordStage = 100;
             var companions = loop.Companions;
             companions.Progress("camp_dog").Stage = TestWorld.Data.Companions.Stages.Count - 1;
             return loop;

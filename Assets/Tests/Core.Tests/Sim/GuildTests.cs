@@ -73,7 +73,9 @@ namespace Game.Core.Tests.Sim
 
             loop.State.RecordStage = length + 1;
             Assert.That(GuildView.Districts(guilds).FindAll(line => line.Open).Count, Is.EqualTo(2));
-            loop.State.RecordStage = 5 * length + 1;
+            loop.State.RecordStage = TestWorld.Real.Stages.OpensAt(4) + length - 1;
+            Assert.That(guilds.ObservatoryOpen, Is.False);
+            loop.State.RecordStage = TestWorld.Real.Stages.OpensAt(4) + length;
             Assert.That(guilds.ObservatoryOpen, Is.True);
             Assert.That(GuildView.Districts(guilds).Find(line => line.Id == "rift_crack")!.Open, Is.False);
             loop.State.RecordStage = TestWorld.Real.Stages.HeartFromStage;

@@ -73,7 +73,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AFullLapStartsTheRoadAgainAndTheSandwalkerGoesFarther()
         {
-            var loop = Road(300);
+            var loop = Road(1000);
             Mouse(loop, Rules.LapMeters + 10);
             Assert.That(loop.State.Caravan.Laps, Is.EqualTo(1));
             Assert.That(loop.State.Caravan.Arrivals, Is.EqualTo(Rules.Stops.Count));
@@ -82,7 +82,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Camp.Count("seed_moonmoss"), Is.EqualTo(2));
 
             Assert.That(TestWorld.Real.Talents.Of(HeroClass.Sandwalker)!.Works, Is.True);
-            var walker = Road(300);
+            var walker = Road(1000);
             walker.State.TalentPerks[(int)MuseumPerk.LongerRoad] = 0.5;
             Mouse(walker, 1000);
             Assert.That(walker.State.Caravan.Traveled, Is.EqualTo(1500).Within(1e-6));

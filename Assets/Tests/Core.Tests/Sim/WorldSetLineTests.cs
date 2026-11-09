@@ -74,7 +74,7 @@ namespace Game.Core.Tests.Sim
             var stages = TestWorld.Data.Stages;
             for (var seed = 1UL; seed < 30; seed++)
             {
-                var state = new GameState(seed) { Biome = "green_hills", Tick = 10_000 };
+                var state = new GameState(seed) { Stage = 1000, Biome = "green_hills", Tick = 10_000 };
                 state.BiomeLeftTicks[1] = 500;
                 state.BiomeLeftTicks[2] = 50;
                 state.BiomeLeftTicks[3] = 900;
