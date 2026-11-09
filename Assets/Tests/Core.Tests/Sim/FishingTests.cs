@@ -18,7 +18,7 @@ namespace Game.Core.Tests.Sim
         {
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input, new GameState(seed));
-            loop.State.RecordStage = 51;
+            loop.State.RecordStage = 100;
             loop.Tick();
             loop.Camp.SetGuilds(new[] { "fishers" });
             loop.Peaceful.SetMode(PeacefulMode.Camp);
@@ -54,7 +54,7 @@ namespace Game.Core.Tests.Sim
         {
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input);
-            loop.State.RecordStage = 51;
+            loop.State.RecordStage = 100;
             loop.Tick();
             Assert.That(loop.Fishing.Open, Is.False, "no fishers guild in the town yet");
             loop.Camp.SetGuilds(new[] { "fishers" });

@@ -56,7 +56,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = Camp();
             Assert.That(loop.Decor.SetTheme("ice_peak"), Is.EqualTo(DecorResult.BiomeClosed));
-            loop.State.RecordStage = 120;
+            loop.State.RecordStage = 250;
             Assert.That(loop.Decor.SetTheme("ice_peak"), Is.EqualTo(DecorResult.Done));
             Assert.That(loop.State.Decor.Theme, Is.EqualTo("ice_peak"));
         }

@@ -66,7 +66,7 @@ namespace Game.Core.Tests.Content
         public void EnemyBiomesAreCheckedAgainstStages()
         {
             var files = RealFiles();
-            files[StageTable.FileName] = files[StageTable.FileName].Replace("\"green_hills\", ", string.Empty);
+            files[StageTable.FileName] = files[StageTable.FileName].Replace("\"id\": \"green_hills\"", "\"id\": \"no_hills\"");
 
             var error = Assert.Throws<ContentException>(() => GameData.Load(name => files[name]))!;
 

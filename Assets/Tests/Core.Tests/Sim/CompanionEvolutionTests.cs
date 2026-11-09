@@ -117,8 +117,8 @@ namespace Game.Core.Tests.Sim
         {
             var home = Camp(5);
             var away = Camp(5);
-            away.State.RecordStage = 60;
-            home.State.RecordStage = 60;
+            away.State.RecordStage = 100;
+            home.State.RecordStage = 100;
             home.Expeditions.Send("camp_crow", "sand_ruins", 8);
             away.Expeditions.Send("camp_dog", "sand_ruins", 8);
             Assert.That(home.Companions.BiomeBonus("camp_crow", "sand_ruins"), Is.EqualTo(0.25));

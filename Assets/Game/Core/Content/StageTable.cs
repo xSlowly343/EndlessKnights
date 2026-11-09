@@ -53,9 +53,11 @@ namespace Game.Core.Content
         public long HeartFromStage { get; private set; }
         public int BossSlotStages { get; private set; } = 10;
         public double RotationMinutes { get; private set; }
-        public bool Rotates => RotationMinutes > 0 && _biomes.Length > 2;
+        public bool Rotates => RotationMinutes > 0 && _allBiomes.Length > 2;
         public System.Collections.Generic.IReadOnlyList<string> Rotation => _biomes;
+        public System.Collections.Generic.IReadOnlyList<string> Pool => _allBiomes;
         private string[] _allBiomes = System.Array.Empty<string>();
+        private long[] _opensAt = System.Array.Empty<long>();
         public StageGate[] Gates { get; private set; } = System.Array.Empty<StageGate>();
 
         public StageGate? GateAt(long stage)
@@ -104,8 +106,17 @@ namespace Game.Core.Content
             if (timerMaxSeconds < timerSeconds)
                 throw boss.Field("timerMaxSeconds").Error($"must not be lower than timerSeconds ({timerSeconds})");
             var biomes = new List<string>();
+            var opensAt = new List<long>();
             foreach (var biome in root.Field("biomes").Items())
-                biomes.Add(biome.AsString());
+            {
+                var from = biome.HasField("fromStage") ? biome.Field("fromStage").AsLong(1) : 1;
+                if (opensAt.Count > 0 && from < opensAt[opensAt.Count - 1])
+                    throw biome.Field("fromStage").Error("biomes must open in stage order");
+                biomes.Add(biome.HasField("id") ? biome.Field("id").AsString() : biome.AsString());
+                opensAt.Add(from);
+            }
+            if (opensAt.Count > 0 && opensAt[0] != 1)
+                throw root.Field("biomes").Error("the first biome must open at stage 1");
             if (biomes.Count == 0)
                 throw root.Field("biomes").Error("at least one biome is required");
             var heart = string.Empty;
@@ -119,7 +130,10 @@ namespace Game.Core.Content
             }
             var allBiomes = new List<string>(biomes);
             if (heart.Length > 0)
+            {
                 allBiomes.Add(heart);
+                opensAt.Add(heartFrom);
+            }
 
             var gates = new List<StageGate>();
             if (root.HasField("gates"))
@@ -155,7 +169,8 @@ namespace Game.Core.Content
                 HeartFromStage = heartFrom,
                 RotationMinutes = root.HasField("rotation") ? root.Field("rotation").Field("minutes").AsNumber(0.1, 1440) : 0,
                 BossSlotStages = boss.HasField("slotStages") ? boss.Field("slotStages").AsInt(1, 1000) : 10,
-                _allBiomes = allBiomes.ToArray()
+                _allBiomes = allBiomes.ToArray(),
+                _opensAt = opensAt.ToArray()
             };
         }
 
@@ -186,6 +201,7 @@ namespace Game.Core.Content
                 RotationMinutes = RotationMinutes,
                 BossSlotStages = BossSlotStages,
                 _allBiomes = _allBiomes,
+                _opensAt = _opensAt,
                 _defenseHome = this
             };
 
@@ -239,7 +255,8 @@ namespace Game.Core.Content
                 HeartFromStage = HeartFromStage,
                 RotationMinutes = RotationMinutes,
                 BossSlotStages = BossSlotStages,
-                _allBiomes = _allBiomes
+                _allBiomes = _allBiomes,
+                _opensAt = _opensAt
             };
 
         public int WaveSize(long stage, int wave) => _waves.Size(stage, wave);
@@ -335,9 +352,41 @@ namespace Game.Core.Content
             return position == 0 || position > _wallPeriod - _wallZoneLength;
         }
 
-        public string Biome(long stage) => Heart.Length > 0 && stage >= HeartFromStage ? Heart : _biomes[(int)((stage - 1) / BiomeLength % _biomes.Length)];
+        public string Biome(long stage)
+        {
+            var block = (System.Math.Max(1, stage) - 1) / BiomeLength;
+            var blockStart = block * BiomeLength + 1;
+            return _allBiomes[OpenIndex(blockStart, (int)(block % OpenCount(blockStart)))];
+        }
 
-        public bool InHeart(long stage) => Heart.Length > 0 && stage >= HeartFromStage;
+        public long OpensAt(int poolIndex) => _opensAt[poolIndex];
+
+        public bool IsOpen(int poolIndex, long stage) => stage >= _opensAt[poolIndex];
+
+        public int OpenCount(long stage)
+        {
+            var count = 0;
+            for (var i = 0; i < _opensAt.Length; i++)
+            {
+                if (stage >= _opensAt[i])
+                    count++;
+            }
+            return System.Math.Max(1, count);
+        }
+
+        public bool RotatesAt(long stage) => RotationMinutes > 0 && OpenCount(stage) > 2;
+
+        private int OpenIndex(long stage, int nth)
+        {
+            for (var i = 0; i < _opensAt.Length; i++)
+            {
+                if (stage < _opensAt[i])
+                    continue;
+                if (nth-- == 0)
+                    return i;
+            }
+            return 0;
+        }
 
         public int BossSlot(long stage) => (int)(((stage - 1) % BiomeLength + 1) / BossSlotStages);
 

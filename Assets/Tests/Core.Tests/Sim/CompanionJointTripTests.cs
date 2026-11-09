@@ -16,7 +16,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(new FakeInputSource(), new GameState(seed));
             loop.Tick();
             loop.SetLocalDay(100);
-            loop.State.RecordStage = 60;
+            loop.State.RecordStage = 100;
             return loop;
         }
 
