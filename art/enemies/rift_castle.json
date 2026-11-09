@@ -164,7 +164,7 @@
           "width": 128
         }
       },
-      "mirror": false,
+      "mirror": true,
       "scale": 1,
       "trim": true,
       "flash_hit": true,
