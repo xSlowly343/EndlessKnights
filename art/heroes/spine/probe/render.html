@@ -1,0 +1,27 @@
+<!doctype html><html><body style="margin:0;background:#222">
+<script src="node_modules/@esotericsoftware/spine-webgl/dist/iife/spine-webgl.js"></script>
+<canvas id="c" width="640" height="200"></canvas>
+<script>
+(async()=>{try{
+const canvas=document.getElementById('c');
+const ctx=new spine.ManagedWebGLRenderingContext(canvas,{preserveDrawingBuffer:true,alpha:false});
+const am=new spine.AssetManager(ctx);
+am.loadTextureAtlas('probe.atlas'); am.loadJson('probe.json'); await am.loadAll();
+const data=new spine.SkeletonJson(new spine.AtlasAttachmentLoader(am.require('probe.atlas'))).readSkeletonData(am.require('probe.json'));
+const r=new spine.SceneRenderer(canvas,ctx,true);
+r.camera.position.x=320; r.camera.position.y=100; r.camera.setViewport(640,200);
+ctx.gl.clearColor(0.13,0.13,0.15,1); ctx.gl.clear(ctx.gl.COLOR_BUFFER_BIT);
+const times=[0,0.15,0.3,0.5,0.75];
+r.begin();
+times.forEach((t,i)=>{
+  const sk=new spine.Skeleton(data); const st=new spine.AnimationState(new spine.AnimationStateData(data));
+  st.setAnimation(0,'kick',true);
+  sk.x=60+i*125-0; sk.y=0;
+  const dt=1/60; for(let k=0;k<Math.round(t/dt);k++){st.update(dt);st.apply(sk);sk.update(dt);sk.updateWorldTransform(spine.Physics.update);}
+  st.apply(sk); sk.updateWorldTransform(spine.Physics.update);
+  r.drawSkeleton(sk); if(i==4)r.drawSkeletonDebug(sk);
+});
+r.end();
+document.title='ok '+data.bones.length+' bones, '+data.constraints.length+' constraints';
+}catch(e){document.title='ERR '+e.message;}})();
+</script></body></html>

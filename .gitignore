@@ -77,3 +77,9 @@ art/out/tmp/
 __pycache__/
 art/out/preview/roster_*.gif
 art/out/preview/sheet_*.png
+
+art/heroes/spine/probe/node_modules/
+art/heroes/spine/probe/probe.png
+art/heroes/spine/probe/probe.atlas
+art/heroes/spine/probe/probe.json
+art/heroes/spine/probe/package-lock.json
