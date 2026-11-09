@@ -1,0 +1,1549 @@
+{
+ "sex": "male",
+ "unit": 4,
+ "joints": {
+  "hip_r": [
+   -2.3,
+   18.5
+  ],
+  "knee_r": [
+   -2.4,
+   10.6
+  ],
+  "ankle_r": [
+   -2.5,
+   3.1
+  ],
+  "hip_l": [
+   2.3,
+   18.5
+  ],
+  "knee_l": [
+   2.4,
+   10.6
+  ],
+  "ankle_l": [
+   2.3,
+   3.1
+  ],
+  "pelvis": [
+   0,
+   19.5
+  ],
+  "spine_lower": [
+   0,
+   21.5
+  ],
+  "spine_mid": [
+   0,
+   24.0
+  ],
+  "chest": [
+   0,
+   27.0
+  ],
+  "neck": [
+   0.2,
+   31.0
+  ],
+  "head": [
+   0.6,
+   33.6
+  ],
+  "shoulder_r": [
+   -4.9,
+   30.0
+  ],
+  "elbow_r": [
+   -5.9,
+   23.8
+  ],
+  "wrist_r": [
+   -6.5,
+   18.4
+  ],
+  "shoulder_l": [
+   4.9,
+   30.0
+  ],
+  "elbow_l": [
+   5.9,
+   23.8
+  ],
+  "wrist_l": [
+   6.5,
+   18.4
+  ]
+ },
+ "parts": [
+  {
+   "name": "leg_l",
+   "slot": "leg_l",
+   "layer": 20,
+   "tint": 0.82,
+   "bbox": [
+    -3,
+    -1,
+    7,
+    23
+   ],
+   "size": [
+    40,
+    96
+   ],
+   "pivots": {
+    "hip": [
+     2.3,
+     18.5
+    ],
+    "knee": [
+     2.4,
+     10.6
+    ],
+    "ankle": [
+     2.3,
+     3.1
+    ]
+   }
+  },
+  {
+   "name": "foot_l",
+   "slot": "foot_l",
+   "layer": 21,
+   "tint": 0.82,
+   "bbox": [
+    -2,
+    -3,
+    8,
+    6
+   ],
+   "size": [
+    40,
+    36
+   ],
+   "pivots": {
+    "ankle": [
+     2.3,
+     3.1
+    ],
+    "toe": [
+     4.47,
+     0.6
+    ]
+   }
+  },
+  {
+   "name": "leg_r",
+   "slot": "leg_r",
+   "layer": 22,
+   "tint": 1.0,
+   "bbox": [
+    -8,
+    -1,
+    2,
+    23
+   ],
+   "size": [
+    40,
+    96
+   ],
+   "pivots": {
+    "hip": [
+     -2.3,
+     18.5
+    ],
+    "knee": [
+     -2.4,
+     10.6
+    ],
+    "ankle": [
+     -2.5,
+     3.1
+    ]
+   }
+  },
+  {
+   "name": "foot_r",
+   "slot": "foot_r",
+   "layer": 23,
+   "tint": 1.0,
+   "bbox": [
+    -7,
+    -3,
+    4,
+    6
+   ],
+   "size": [
+    44,
+    36
+   ],
+   "pivots": {
+    "ankle": [
+     -2.5,
+     3.1
+    ],
+    "toe": [
+     -0.33,
+     0.6
+    ]
+   }
+  },
+  {
+   "name": "arm_l",
+   "slot": "arm_l",
+   "layer": 10,
+   "tint": 0.82,
+   "bbox": [
+    1,
+    15,
+    10,
+    34
+   ],
+   "size": [
+    36,
+    76
+   ],
+   "pivots": {
+    "shoulder": [
+     4.9,
+     30.0
+    ],
+    "elbow": [
+     5.9,
+     23.8
+    ],
+    "wrist": [
+     6.5,
+     18.4
+    ]
+   }
+  },
+  {
+   "name": "hand_l_relaxed",
+   "slot": "hand_l",
+   "layer": 11,
+   "tint": 0.82,
+   "bbox": [
+    3,
+    13,
+    11,
+    21
+   ],
+   "size": [
+    32,
+    32
+   ],
+   "pivots": {
+    "wrist": [
+     6.5,
+     18.4
+    ]
+   }
+  },
+  {
+   "name": "hand_l_fist",
+   "slot": "hand_l",
+   "layer": 11,
+   "tint": 0.82,
+   "bbox": [
+    3,
+    13,
+    11,
+    21
+   ],
+   "size": [
+    32,
+    32
+   ],
+   "pivots": {
+    "wrist": [
+     6.5,
+     18.4
+    ]
+   }
+  },
+  {
+   "name": "hand_l_grip_back",
+   "slot": "hand_l",
+   "layer": 11,
+   "tint": 0.82,
+   "bbox": [
+    3,
+    13,
+    10,
+    21
+   ],
+   "size": [
+    28,
+    32
+   ],
+   "pivots": {
+    "wrist": [
+     6.5,
+     18.4
+    ],
+    "grip": [
+     6.677,
+     16.81
+    ]
+   }
+  },
+  {
+   "name": "hand_l_grip_front",
+   "slot": "hand_l_front",
+   "layer": 13,
+   "tint": 0.82,
+   "bbox": [
+    4,
+    13,
+    11,
+    20
+   ],
+   "size": [
+    28,
+    28
+   ],
+   "pivots": {
+    "wrist": [
+     6.5,
+     18.4
+    ],
+    "grip": [
+     6.677,
+     16.81
+    ]
+   }
+  },
+  {
+   "name": "hand_l_open",
+   "slot": "hand_l",
+   "layer": 11,
+   "tint": 0.82,
+   "bbox": [
+    3,
+    14,
+    10,
+    21
+   ],
+   "size": [
+    28,
+    28
+   ],
+   "pivots": {
+    "wrist": [
+     6.5,
+     18.4
+    ]
+   }
+  },
+  {
+   "name": "finger_l_index",
+   "slot": "finger_l_index",
+   "layer": 12,
+   "tint": 0.82,
+   "bbox": [
+    5,
+    12,
+    10,
+    19
+   ],
+   "size": [
+    20,
+    28
+   ],
+   "pivots": {
+    "index_1": [
+     7.577,
+     16.407
+    ],
+    "index_2": [
+     7.683,
+     15.832
+    ],
+    "index_3": [
+     7.79,
+     15.257
+    ],
+    "index_tip": [
+     7.897,
+     14.681
+    ]
+   }
+  },
+  {
+   "name": "finger_l_middle",
+   "slot": "finger_l_middle",
+   "layer": 12,
+   "tint": 0.82,
+   "bbox": [
+    5,
+    12,
+    10,
+    19
+   ],
+   "size": [
+    20,
+    28
+   ],
+   "pivots": {
+    "middle_1": [
+     7.01,
+     16.344
+    ],
+    "middle_2": [
+     7.096,
+     15.699
+    ],
+    "middle_3": [
+     7.182,
+     15.055
+    ],
+    "middle_tip": [
+     7.267,
+     14.41
+    ]
+   }
+  },
+  {
+   "name": "finger_l_ring",
+   "slot": "finger_l_ring",
+   "layer": 10,
+   "tint": 0.82,
+   "bbox": [
+    4,
+    12,
+    9,
+    19
+   ],
+   "size": [
+    20,
+    28
+   ],
+   "pivots": {
+    "ring_1": [
+     6.454,
+     16.282
+    ],
+    "ring_2": [
+     6.506,
+     15.684
+    ],
+    "ring_3": [
+     6.558,
+     15.086
+    ],
+    "ring_tip": [
+     6.611,
+     14.488
+    ]
+   }
+  },
+  {
+   "name": "finger_l_pinky",
+   "slot": "finger_l_pinky",
+   "layer": 10,
+   "tint": 0.82,
+   "bbox": [
+    4,
+    12,
+    8,
+    19
+   ],
+   "size": [
+    16,
+    28
+   ],
+   "pivots": {
+    "pinky_1": [
+     5.917,
+     16.222
+    ],
+    "pinky_2": [
+     5.93,
+     15.737
+    ],
+    "pinky_3": [
+     5.942,
+     15.252
+    ],
+    "pinky_tip": [
+     5.955,
+     14.768
+    ]
+   }
+  },
+  {
+   "name": "finger_l_thumb",
+   "slot": "finger_l_thumb",
+   "layer": 12,
+   "tint": 0.82,
+   "bbox": [
+    5,
+    14,
+    11,
+    20
+   ],
+   "size": [
+    24,
+    24
+   ],
+   "pivots": {
+    "thumb_1": [
+     7.422,
+     17.798
+    ],
+    "thumb_2": [
+     7.847,
+     17.443
+    ],
+    "thumb_3": [
+     8.272,
+     17.088
+    ],
+    "thumb_tip": [
+     8.698,
+     16.732
+    ]
+   }
+  },
+  {
+   "name": "arm_r",
+   "slot": "arm_r",
+   "layer": 80,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    15,
+    -1,
+    34
+   ],
+   "size": [
+    36,
+    76
+   ],
+   "pivots": {
+    "shoulder": [
+     -4.9,
+     30.0
+    ],
+    "elbow": [
+     -5.9,
+     23.8
+    ],
+    "wrist": [
+     -6.5,
+     18.4
+    ]
+   }
+  },
+  {
+   "name": "hand_r_relaxed",
+   "slot": "hand_r",
+   "layer": 81,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    13,
+    -2,
+    21
+   ],
+   "size": [
+    32,
+    32
+   ],
+   "pivots": {
+    "wrist": [
+     -6.5,
+     18.4
+    ]
+   }
+  },
+  {
+   "name": "hand_r_fist",
+   "slot": "hand_r",
+   "layer": 81,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    13,
+    -3,
+    21
+   ],
+   "size": [
+    28,
+    32
+   ],
+   "pivots": {
+    "wrist": [
+     -6.5,
+     18.4
+    ]
+   }
+  },
+  {
+   "name": "hand_r_grip_back",
+   "slot": "hand_r",
+   "layer": 81,
+   "tint": 1.0,
+   "bbox": [
+    -11,
+    13,
+    -3,
+    21
+   ],
+   "size": [
+    32,
+    32
+   ],
+   "pivots": {
+    "wrist": [
+     -6.5,
+     18.4
+    ],
+    "grip": [
+     -6.677,
+     16.81
+    ]
+   }
+  },
+  {
+   "name": "hand_r_grip_front",
+   "slot": "hand_r_front",
+   "layer": 83,
+   "tint": 1.0,
+   "bbox": [
+    -9,
+    13,
+    -3,
+    20
+   ],
+   "size": [
+    24,
+    28
+   ],
+   "pivots": {
+    "wrist": [
+     -6.5,
+     18.4
+    ],
+    "grip": [
+     -6.677,
+     16.81
+    ]
+   }
+  },
+  {
+   "name": "hand_r_open",
+   "slot": "hand_r",
+   "layer": 81,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    14,
+    -3,
+    21
+   ],
+   "size": [
+    28,
+    28
+   ],
+   "pivots": {
+    "wrist": [
+     -6.5,
+     18.4
+    ]
+   }
+  },
+  {
+   "name": "finger_r_index",
+   "slot": "finger_r_index",
+   "layer": 82,
+   "tint": 1.0,
+   "bbox": [
+    -8,
+    12,
+    -3,
+    19
+   ],
+   "size": [
+    20,
+    28
+   ],
+   "pivots": {
+    "index_1": [
+     -5.887,
+     16.219
+    ],
+    "index_2": [
+     -5.909,
+     15.635
+    ],
+    "index_3": [
+     -5.931,
+     15.05
+    ],
+    "index_tip": [
+     -5.954,
+     14.466
+    ]
+   }
+  },
+  {
+   "name": "finger_r_middle",
+   "slot": "finger_r_middle",
+   "layer": 82,
+   "tint": 1.0,
+   "bbox": [
+    -9,
+    12,
+    -4,
+    19
+   ],
+   "size": [
+    20,
+    28
+   ],
+   "pivots": {
+    "middle_1": [
+     -6.454,
+     16.282
+    ],
+    "middle_2": [
+     -6.511,
+     15.634
+    ],
+    "middle_3": [
+     -6.569,
+     14.987
+    ],
+    "middle_tip": [
+     -6.627,
+     14.339
+    ]
+   }
+  },
+  {
+   "name": "finger_r_ring",
+   "slot": "finger_r_ring",
+   "layer": 80,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    12,
+    -5,
+    19
+   ],
+   "size": [
+    20,
+    28
+   ],
+   "pivots": {
+    "ring_1": [
+     -7.01,
+     16.344
+    ],
+    "ring_2": [
+     -7.09,
+     15.749
+    ],
+    "ring_3": [
+     -7.171,
+     15.154
+    ],
+    "ring_tip": [
+     -7.251,
+     14.559
+    ]
+   }
+  },
+  {
+   "name": "finger_r_pinky",
+   "slot": "finger_r_pinky",
+   "layer": 80,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    13,
+    -5,
+    19
+   ],
+   "size": [
+    20,
+    24
+   ],
+   "pivots": {
+    "pinky_1": [
+     -7.547,
+     16.403
+    ],
+    "pinky_2": [
+     -7.641,
+     15.928
+    ],
+    "pinky_3": [
+     -7.735,
+     15.452
+    ],
+    "pinky_tip": [
+     -7.829,
+     14.976
+    ]
+   }
+  },
+  {
+   "name": "finger_r_thumb",
+   "slot": "finger_r_thumb",
+   "layer": 82,
+   "tint": 1.0,
+   "bbox": [
+    -8,
+    14,
+    -2,
+    20
+   ],
+   "size": [
+    24,
+    24
+   ],
+   "pivots": {
+    "thumb_1": [
+     -5.733,
+     17.61
+    ],
+    "thumb_2": [
+     -5.396,
+     17.171
+    ],
+    "thumb_3": [
+     -5.059,
+     16.731
+    ],
+    "thumb_tip": [
+     -4.722,
+     16.291
+    ]
+   }
+  },
+  {
+   "name": "torso",
+   "slot": "torso",
+   "layer": 30,
+   "tint": 1.0,
+   "bbox": [
+    -8,
+    14,
+    8,
+    34
+   ],
+   "size": [
+    64,
+    80
+   ],
+   "pivots": {
+    "pelvis": [
+     0,
+     19.5
+    ],
+    "spine_lower": [
+     0,
+     21.5
+    ],
+    "spine_mid": [
+     0,
+     24.0
+    ],
+    "chest": [
+     0,
+     27.0
+    ],
+    "neck": [
+     0.2,
+     31.0
+    ]
+   }
+  },
+  {
+   "name": "neck",
+   "slot": "neck",
+   "layer": 28,
+   "tint": 1.0,
+   "bbox": [
+    -4,
+    27,
+    4,
+    38
+   ],
+   "size": [
+    32,
+    44
+   ],
+   "pivots": {
+    "neck": [
+     0.2,
+     31.0
+    ],
+    "head": [
+     0.6,
+     33.6
+    ]
+   }
+  },
+  {
+   "name": "head",
+   "slot": "head",
+   "layer": 50,
+   "tint": 1.0,
+   "bbox": [
+    -8,
+    31,
+    9,
+    51
+   ],
+   "size": [
+    68,
+    80
+   ],
+   "pivots": {
+    "head": [
+     0.6,
+     33.6
+    ],
+    "jaw": [
+     1.8,
+     35.8
+    ]
+   }
+  },
+  {
+   "name": "ear",
+   "slot": "ear",
+   "layer": 51,
+   "tint": 1.0,
+   "bbox": [
+    -6,
+    36,
+    1,
+    44
+   ],
+   "size": [
+    28,
+    32
+   ],
+   "pivots": {
+    "ear": [
+     -2.7,
+     39.6
+    ]
+   }
+  },
+  {
+   "name": "eye_r_open",
+   "slot": "eye_r",
+   "layer": 56,
+   "tint": 1.0,
+   "bbox": [
+    -1,
+    37,
+    5,
+    43
+   ],
+   "size": [
+    24,
+    24
+   ],
+   "pivots": {
+    "eye": [
+     1.9,
+     39.7
+    ]
+   }
+  },
+  {
+   "name": "eye_r_half",
+   "slot": "eye_r",
+   "layer": 56,
+   "tint": 1.0,
+   "bbox": [
+    -1,
+    37,
+    5,
+    41
+   ],
+   "size": [
+    24,
+    16
+   ],
+   "pivots": {
+    "eye": [
+     1.9,
+     39.7
+    ]
+   }
+  },
+  {
+   "name": "eye_r_closed",
+   "slot": "eye_r",
+   "layer": 56,
+   "tint": 1.0,
+   "bbox": [
+    -1,
+    38,
+    5,
+    41
+   ],
+   "size": [
+    24,
+    12
+   ],
+   "pivots": {
+    "eye": [
+     1.9,
+     39.7
+    ]
+   }
+  },
+  {
+   "name": "eye_r_squint",
+   "slot": "eye_r",
+   "layer": 56,
+   "tint": 1.0,
+   "bbox": [
+    -1,
+    37,
+    5,
+    41
+   ],
+   "size": [
+    24,
+    16
+   ],
+   "pivots": {
+    "eye": [
+     1.9,
+     39.7
+    ]
+   }
+  },
+  {
+   "name": "brow_r",
+   "slot": "brow_r",
+   "layer": 58,
+   "tint": 1.0,
+   "bbox": [
+    -1,
+    41,
+    5,
+    44
+   ],
+   "size": [
+    24,
+    12
+   ],
+   "pivots": {
+    "brow": [
+     1.9,
+     42.5
+    ]
+   }
+  },
+  {
+   "name": "eye_l_open",
+   "slot": "eye_l",
+   "layer": 56,
+   "tint": 1.0,
+   "bbox": [
+    3,
+    37,
+    8,
+    43
+   ],
+   "size": [
+    20,
+    24
+   ],
+   "pivots": {
+    "eye": [
+     5.15,
+     39.8
+    ]
+   }
+  },
+  {
+   "name": "eye_l_half",
+   "slot": "eye_l",
+   "layer": 56,
+   "tint": 1.0,
+   "bbox": [
+    3,
+    37,
+    8,
+    42
+   ],
+   "size": [
+    20,
+    20
+   ],
+   "pivots": {
+    "eye": [
+     5.15,
+     39.8
+    ]
+   }
+  },
+  {
+   "name": "eye_l_closed",
+   "slot": "eye_l",
+   "layer": 56,
+   "tint": 1.0,
+   "bbox": [
+    3,
+    38,
+    8,
+    41
+   ],
+   "size": [
+    20,
+    12
+   ],
+   "pivots": {
+    "eye": [
+     5.15,
+     39.8
+    ]
+   }
+  },
+  {
+   "name": "eye_l_squint",
+   "slot": "eye_l",
+   "layer": 56,
+   "tint": 1.0,
+   "bbox": [
+    3,
+    37,
+    8,
+    41
+   ],
+   "size": [
+    20,
+    16
+   ],
+   "pivots": {
+    "eye": [
+     5.15,
+     39.8
+    ]
+   }
+  },
+  {
+   "name": "brow_l",
+   "slot": "brow_l",
+   "layer": 58,
+   "tint": 1.0,
+   "bbox": [
+    3,
+    41,
+    8,
+    44
+   ],
+   "size": [
+    20,
+    12
+   ],
+   "pivots": {
+    "brow": [
+     5.15,
+     42.5
+    ]
+   }
+  },
+  {
+   "name": "mouth_neutral",
+   "slot": "mouth",
+   "layer": 57,
+   "tint": 1.0,
+   "bbox": [
+    2,
+    34,
+    6,
+    37
+   ],
+   "size": [
+    16,
+    12
+   ],
+   "pivots": {
+    "mouth": [
+     4.1,
+     35.7
+    ]
+   }
+  },
+  {
+   "name": "mouth_smile",
+   "slot": "mouth",
+   "layer": 57,
+   "tint": 1.0,
+   "bbox": [
+    2,
+    34,
+    6,
+    38
+   ],
+   "size": [
+    16,
+    16
+   ],
+   "pivots": {
+    "mouth": [
+     4.1,
+     35.7
+    ]
+   }
+  },
+  {
+   "name": "mouth_frown",
+   "slot": "mouth",
+   "layer": 57,
+   "tint": 1.0,
+   "bbox": [
+    2,
+    34,
+    6,
+    37
+   ],
+   "size": [
+    16,
+    12
+   ],
+   "pivots": {
+    "mouth": [
+     4.1,
+     35.7
+    ]
+   }
+  },
+  {
+   "name": "mouth_open",
+   "slot": "mouth",
+   "layer": 57,
+   "tint": 1.0,
+   "bbox": [
+    2,
+    33,
+    6,
+    38
+   ],
+   "size": [
+    16,
+    20
+   ],
+   "pivots": {
+    "mouth": [
+     4.1,
+     35.7
+    ]
+   }
+  },
+  {
+   "name": "mouth_o",
+   "slot": "mouth",
+   "layer": 57,
+   "tint": 1.0,
+   "bbox": [
+    2,
+    34,
+    6,
+    38
+   ],
+   "size": [
+    16,
+    16
+   ],
+   "pivots": {
+    "mouth": [
+     4.1,
+     35.7
+    ]
+   }
+  },
+  {
+   "name": "mouth_grit",
+   "slot": "mouth",
+   "layer": 57,
+   "tint": 1.0,
+   "bbox": [
+    2,
+    34,
+    6,
+    38
+   ],
+   "size": [
+    16,
+    16
+   ],
+   "pivots": {
+    "mouth": [
+     4.1,
+     35.7
+    ]
+   }
+  },
+  {
+   "name": "nose",
+   "slot": "nose",
+   "layer": 55,
+   "tint": 1.0,
+   "bbox": [
+    4,
+    36,
+    8,
+    40
+   ],
+   "size": [
+    16,
+    16
+   ],
+   "pivots": {
+    "nose": [
+     6.15,
+     38.0
+    ]
+   }
+  },
+  {
+   "name": "hair_back",
+   "slot": "hair_back",
+   "layer": 5,
+   "tint": 1.0,
+   "bbox": [
+    -9,
+    34,
+    1,
+    51
+   ],
+   "size": [
+    40,
+    68
+   ],
+   "pivots": {
+    "hair_root": [
+     0.4,
+     46.0
+    ]
+   }
+  },
+  {
+   "name": "hair_front",
+   "slot": "hair_front",
+   "layer": 60,
+   "tint": 1.0,
+   "bbox": [
+    -9,
+    36,
+    10,
+    54
+   ],
+   "size": [
+    76,
+    72
+   ],
+   "pivots": {
+    "hair_root": [
+     0.4,
+     46.0
+    ],
+    "bangs": [
+     2.5,
+     43.0
+    ]
+   }
+  },
+  {
+   "name": "under_bottom",
+   "slot": "under_bottom",
+   "layer": 32,
+   "tint": 1.0,
+   "bbox": [
+    -7,
+    13,
+    7,
+    24
+   ],
+   "size": [
+    56,
+    44
+   ],
+   "pivots": {}
+  },
+  {
+   "name": "tunic",
+   "slot": "torso_cloth",
+   "layer": 34,
+   "tint": 1.0,
+   "bbox": [
+    -8,
+    13,
+    8,
+    35
+   ],
+   "size": [
+    64,
+    88
+   ],
+   "pivots": {}
+  },
+  {
+   "name": "belt",
+   "slot": "belt",
+   "layer": 36,
+   "tint": 1.0,
+   "bbox": [
+    -8,
+    16,
+    8,
+    25
+   ],
+   "size": [
+    64,
+    36
+   ],
+   "pivots": {}
+  },
+  {
+   "name": "sleeve_l",
+   "slot": "sleeve_l",
+   "layer": 10.5,
+   "tint": 0.82,
+   "bbox": [
+    0,
+    23,
+    10,
+    34
+   ],
+   "size": [
+    40,
+    44
+   ],
+   "pivots": {}
+  },
+  {
+   "name": "bracer_l",
+   "slot": "bracer_l",
+   "layer": 10.6,
+   "tint": 0.82,
+   "bbox": [
+    2,
+    15,
+    10,
+    26
+   ],
+   "size": [
+    32,
+    44
+   ],
+   "pivots": {}
+  },
+  {
+   "name": "pants_l",
+   "slot": "pants_l",
+   "layer": 20.5,
+   "tint": 0.82,
+   "bbox": [
+    -3,
+    -1,
+    7,
+    24
+   ],
+   "size": [
+    40,
+    100
+   ],
+   "pivots": {}
+  },
+  {
+   "name": "boot_l",
+   "slot": "boot_l",
+   "layer": 21.5,
+   "tint": 0.82,
+   "bbox": [
+    -2,
+    -3,
+    9,
+    12
+   ],
+   "size": [
+    44,
+    60
+   ],
+   "pivots": {}
+  },
+  {
+   "name": "sleeve_r",
+   "slot": "sleeve_r",
+   "layer": 80.5,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    23,
+    0,
+    34
+   ],
+   "size": [
+    40,
+    44
+   ],
+   "pivots": {}
+  },
+  {
+   "name": "bracer_r",
+   "slot": "bracer_r",
+   "layer": 80.6,
+   "tint": 1.0,
+   "bbox": [
+    -10,
+    15,
+    -2,
+    26
+   ],
+   "size": [
+    32,
+    44
+   ],
+   "pivots": {}
+  },
+  {
+   "name": "pants_r",
+   "slot": "pants_r",
+   "layer": 22.5,
+   "tint": 1.0,
+   "bbox": [
+    -8,
+    -1,
+    3,
+    24
+   ],
+   "size": [
+    44,
+    100
+   ],
+   "pivots": {}
+  },
+  {
+   "name": "boot_r",
+   "slot": "boot_r",
+   "layer": 23.5,
+   "tint": 1.0,
+   "bbox": [
+    -7,
+    -3,
+    4,
+    12
+   ],
+   "size": [
+    44,
+    60
+   ],
+   "pivots": {}
+  }
+ ]
+}
