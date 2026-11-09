@@ -12,10 +12,10 @@ from svgkit import UNIT
 
 ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), ".."))
 PROFILES = os.path.join(ROOT, "shared", "body_profiles.json")
-PREVIEW_DEFAULTS = ("hand_r_relaxed", "hand_l_relaxed", "eye_r_open", "eye_l_open", "mouth_neutral")
-PREVIEW_SKIP = ("hand_", "finger_", "eye_", "mouth_")
+PREVIEW_DEFAULTS = ("hand_r_relaxed", "hand_l_relaxed", "eye_r_open", "eye_l_open")
+PREVIEW_SKIP = ("hand_", "finger_", "eye_", "mouth_", "nose", "brow_")
 OUTFIT = ("tunic", "belt", "sleeve_", "bracer_", "pants_", "boot_")
-WORLD = (-10, -1, 10, 53)
+WORLD = (-10, -1, 10, 57)
 
 
 def quantize(img, colors):

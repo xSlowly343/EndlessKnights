@@ -42,11 +42,24 @@ def inflate(pts, amount):
 
 
 class Body:
+    def hs(self, pts):
+        k = self.hk
+        return [((x - 0.4) * k + 0.4 + self.ho[0], (y - 40.5) * k + 40.5 + self.ho[1]) for x, y in pts]
+
     def __init__(self, sex, prof):
         self.sex = sex
         self.p = prof
         self.j = {k: tuple(v_) for k, v_ in prof["joints"].items()}
         self.r = prof["radius"]
+        self.ho = tuple(prof.get("head_offset", [0, 0]))
+        self.hk = prof.get("head_scale", 1.0)
+        self.p = dict(prof)
+        self.p["head"] = self.hs([tuple(x) for x in prof["head"]])
+        face = dict(prof["face"])
+        for key in ("eye_r", "eye_l", "nose", "mouth", "ear"):
+            face[key] = self.hs([tuple(face[key])])[0]
+        face["brow_y"] = (face["brow_y"] - 40.5) * self.hk + 40.5 + self.ho[1]
+        self.p["face"] = face
         self.parts = []
 
     def new(self, name, ow=1.0):
@@ -181,7 +194,7 @@ class Body:
     def build_torso(self):
         t = self.new("torso")
         pts = [tuple(x) for x in self.p["torso"]]
-        t.smooth(pts, self.p["skin"], shade=1.0, light=0.55)
+        t.smooth(pts, self.p["skin"], shade=0.8, light=0.4)
         ny = pts[0][1]
         t.line([(-0.6, ny - 0.9), (-2.4, ny - 0.5)], SKIN_LINE, 0.5)
         t.line([(0.8, ny - 0.9), (2.6, ny - 0.5)], SKIN_LINE, 0.5)
@@ -204,7 +217,7 @@ class Body:
     def build_head(self):
         f = self.p["face"]
         h = self.new("head")
-        h.smooth([tuple(x) for x in self.p["head"]], self.p["skin"], shade=1.0, light=0.5)
+        h.smooth(self.p["head"], self.p["skin"], shade=0.7, light=0.35)
         self.add(h, "head", 50, 1.0, {"head": self.j["head"], "jaw": (self.j["head"][0] + 1.2, self.j["head"][1] + 2.2)})
         e = self.new("ear")
         ex, ey = f["ear"]
@@ -213,9 +226,9 @@ class Body:
         self.add(e, "ear", 51, 1.0, {"ear": (ex, ey)})
         if f["blush"]:
             b = self.new("blush", ow=0)
-            b.flat(ellipse((f["eye_r"][0] - 0.2, f["eye_r"][1] - 2.4), 1.0, 0.45), BLUSH)
-            b.flat(ellipse((f["eye_l"][0] + 0.5, f["eye_l"][1] - 2.4), 0.7, 0.42), BLUSH)
-            self.add(b, "blush", 52)
+            b.flat(ellipse((f["eye_r"][0] - 0.9, f["eye_r"][1] - 2.6), 0.9, 0.45), BLUSH)
+            b.flat(ellipse((f["eye_l"][0] + 0.7, f["eye_l"][1] - 2.6), 0.6, 0.42), BLUSH)
+            self.add(b, "blush", 57)
         self.build_eyes()
         self.build_mouth()
         nx, ny = f["nose"]
@@ -275,45 +288,47 @@ class Body:
             draw(p)
             self.add(p, "mouth", 57, 1.0, {"mouth": (mx, my)})
 
+    def hair_pivots(self, pivots):
+        return {k: self.hs([v_])[0] for k, v_ in pivots.items()}
+
     def build_hair(self):
         hair = self.p["hair"]
         light = MATERIALS[hair][3]
         if self.sex == "male":
-            front = [(-6.0, 40.2), (-6.6, 43.6), (-6.3, 46.4), (-7.0, 48.1), (-5.0, 48.5), (-4.7, 50.1), (-2.8, 49.7), (-1.5, 51.3), (0.4, 50.4),
-                     (2.4, 50.8), (4.0, 49.6), (5.9, 48.4), (7.0, 46.4), (7.6, 43.6), (7.2, 41.2), (6.4, 42.6), (5.6, 40.5), (4.6, 43.0), (3.2, 40.7),
-                     (2.2, 43.3), (0.8, 41.2), (-0.4, 43.6), (-1.8, 41.7), (-2.8, 42.6), (-3.8, 40.0), (-4.6, 38.4), (-5.4, 38.2)]
-            back = [(-6.4, 37.2), (-7.0, 40.8), (-6.6, 44.8), (-4.4, 47.6), (-1.0, 48.6), (-1.0, 40.0), (-3.0, 36.0)]
+            front = [(-6.4, 37.4), (-7.0, 41.0), (-6.8, 44.6), (-7.3, 46.6), (-5.6, 47.4), (-5.0, 49.3), (-3.0, 48.9), (-1.6, 50.6), (0.2, 49.6),
+                     (1.3, 51.7), (2.2, 49.6), (4.4, 49.4), (6.2, 47.8), (7.2, 45.2), (7.4, 42.4), (7.0, 39.8), (6.5, 41.4), (5.8, 40.4), (5.0, 41.9),
+                     (3.9, 40.3), (3.0, 42.1), (1.8, 40.5), (0.7, 42.3), (-0.6, 40.7), (-1.8, 41.9), (-2.6, 39.6), (-3.6, 37.6), (-4.8, 36.8), (-5.8, 36.6)]
+            back = [(-6.6, 36.0), (-7.4, 40.0), (-7.0, 44.6), (-4.6, 47.6), (-1.0, 48.4), (-1.0, 40.0), (-3.0, 35.0)]
             p = self.new("hair_back")
-            p.smooth(back, hair, shade=0.8, light=0.0)
-            self.add(p, "hair_back", 5, 1.0, {"hair_root": (0.4, 46.0)})
+            p.smooth(self.hs(back), hair, shade=0.8, light=0.0)
+            self.add(p, "hair_back", 5, 1.0, self.hair_pivots({"hair_root": (0.4, 46.0)}))
             p = self.new("hair_front")
-            p.smooth(front, hair, shade=0.9, light=0.6)
-            p.line([(-3.5, 47.6), (-0.6, 49.0), (2.6, 48.8)], light, 0.55)
-            p.line([(3.6, 47.2), (5.6, 45.6)], light, 0.5)
-            self.add(p, "hair_front", 60, 1.0, {"hair_root": (0.4, 46.0), "bangs": (2.5, 43.0)})
+            p.smooth(self.hs(front), hair, shade=0.8, light=0.4)
+            p.line(self.hs([(-3.6, 47.4), (-0.6, 48.6), (2.6, 48.4)]), light, 0.5)
+            self.add(p, "hair_front", 60, 1.0, self.hair_pivots({"hair_root": (0.4, 46.0), "bangs": (2.5, 42.0)}))
         else:
-            front = [(-6.0, 39.0), (-6.4, 43.0), (-5.2, 46.4), (-2.4, 48.6), (1.2, 49.3), (4.4, 48.4), (6.6, 46.2), (7.2, 43.4), (6.9, 40.2),
-                     (6.4, 38.6), (5.9, 41.6), (5.0, 43.2), (4.2, 40.4), (3.0, 43.6), (1.6, 40.9), (0.4, 43.4), (-1.2, 40.8), (-2.4, 42.6),
-                     (-3.8, 39.2), (-4.8, 37.2), (-5.4, 36.6)]
-            back = [(-6.2, 45.6), (-7.4, 41.0), (-7.8, 35.0), (-7.6, 29.0), (-7.0, 24.4), (-5.6, 21.6), (-3.6, 21.0), (-1.6, 22.4), (0.4, 24.0),
-                    (2.6, 23.4), (4.6, 22.0), (6.0, 23.0), (6.8, 26.8), (7.0, 31.0), (7.2, 36.0), (7.0, 41.0), (5.0, 46.2), (1.0, 48.4), (-3.0, 48.0)]
-            side_l = [(-6.2, 42.5), (-4.2, 42.0), (-3.9, 37.0), (-4.2, 33.0), (-4.8, 29.6), (-5.7, 29.2), (-6.4, 32.0), (-6.7, 37.0)]
-            side_r = [(6.0, 43.0), (7.3, 42.0), (7.7, 37.0), (7.4, 32.2), (6.7, 30.0), (5.9, 31.2), (6.2, 36.0), (5.7, 40.0)]
+            front = [(-6.4, 35.2), (-7.0, 40.0), (-6.6, 44.4), (-4.8, 47.4), (-1.6, 49.0), (1.6, 49.2), (4.6, 48.0), (6.6, 45.6), (7.4, 42.4),
+                     (7.4, 38.6), (7.0, 35.6), (6.4, 37.4), (6.2, 40.0), (5.6, 41.8), (4.8, 40.2), (3.8, 42.0), (2.6, 40.0), (1.4, 41.8), (0.2, 40.2),
+                     (-1.0, 41.8), (-2.2, 39.8), (-3.2, 37.0), (-4.4, 35.0), (-5.4, 34.2)]
+            back = [(-6.6, 44.0), (-7.6, 39.0), (-7.8, 33.0), (-7.4, 27.0), (-6.6, 23.0), (-5.0, 21.4), (-3.2, 21.8), (-1.4, 24.0), (1.0, 24.4),
+                    (3.2, 23.0), (5.0, 22.0), (6.4, 23.6), (7.2, 27.4), (7.6, 32.0), (7.8, 37.0), (7.4, 42.0), (5.4, 46.6), (1.2, 48.6), (-3.2, 48.2)]
+            side_l = [(-7.0, 41.5), (-5.2, 41.0), (-5.0, 36.0), (-5.3, 32.5), (-5.8, 29.6), (-6.6, 29.4), (-7.2, 32.0), (-7.4, 36.5)]
+            side_r = [(6.4, 42.0), (7.8, 41.0), (8.0, 36.0), (7.6, 32.0), (6.9, 29.8), (6.2, 31.0), (6.6, 35.5), (6.2, 39.5)]
             p = self.new("hair_back")
-            p.smooth(back, hair, shade=0.9, light=0.0)
-            p.line([(-6.4, 38.0), (-6.6, 30.0), (-5.6, 24.0)], MATERIALS[hair][1], 0.5)
-            p.line([(6.0, 36.0), (6.0, 28.0), (5.2, 24.4)], MATERIALS[hair][1], 0.5)
-            self.add(p, "hair_back", 5, 1.0, {"hair_root": (0.4, 45.0), "hair_back_1": (0.0, 42.0), "hair_back_2": (0.0, 35.0), "hair_back_3": (0.0, 28.0), "hair_back_tip": (0.0, 21.5)})
+            p.smooth(self.hs(back), hair, shade=0.8, light=0.0)
+            p.line(self.hs([(-6.6, 38.0), (-6.8, 30.0), (-5.8, 24.0)]), MATERIALS[hair][1], 0.5)
+            p.line(self.hs([(6.6, 36.0), (6.6, 28.0), (5.6, 24.4)]), MATERIALS[hair][1], 0.5)
+            self.add(p, "hair_back", 5, 1.0, self.hair_pivots({"hair_root": (0.4, 46.0), "hair_back_1": (0.0, 42.0), "hair_back_2": (0.0, 35.0), "hair_back_3": (0.0, 28.0), "hair_back_tip": (0.0, 22.0)}))
             p = self.new("hair_side_r")
-            p.smooth(side_r, hair, shade=0.7, light=0.0)
-            self.add(p, "hair_side_r", 45, 1.0, {"hair_side_r_1": (6.6, 42.0), "hair_side_r_2": (7.0, 37.0), "hair_side_r_3": (6.9, 33.0), "hair_side_r_tip": (6.3, 30.2)})
+            p.smooth(self.hs(side_r), hair, shade=0.6, light=0.0)
+            self.add(p, "hair_side_r", 45, 1.0, self.hair_pivots({"hair_side_r_1": (7.1, 41.0), "hair_side_r_2": (7.3, 36.0), "hair_side_r_3": (7.1, 32.0), "hair_side_r_tip": (6.6, 30.0)}))
             p = self.new("hair_front")
-            p.smooth(front, hair, shade=0.9, light=0.6)
-            p.line([(-3.6, 46.8), (-0.4, 48.2), (2.8, 47.8)], light, 0.55)
-            self.add(p, "hair_front", 60, 1.0, {"hair_root": (0.4, 45.0), "bangs": (2.5, 42.0)})
+            p.smooth(self.hs(front), hair, shade=0.8, light=0.4)
+            p.line(self.hs([(-3.6, 46.8), (-0.4, 48.2), (2.8, 47.8)]), light, 0.5)
+            self.add(p, "hair_front", 60, 1.0, self.hair_pivots({"hair_root": (0.4, 46.0), "bangs": (2.5, 42.0)}))
             p = self.new("hair_side_l")
-            p.smooth(side_l, hair, shade=0.8, light=0.5)
-            self.add(p, "hair_side_l", 62, 1.0, {"hair_side_l_1": (-5.2, 41.5), "hair_side_l_2": (-5.2, 37.0), "hair_side_l_3": (-5.4, 33.0), "hair_side_l_tip": (-5.3, 29.5)})
+            p.smooth(self.hs(side_l), hair, shade=0.6, light=0.4)
+            self.add(p, "hair_side_l", 62, 1.0, self.hair_pivots({"hair_side_l_1": (-6.2, 41.0), "hair_side_l_2": (-6.2, 36.0), "hair_side_l_3": (-6.3, 32.0), "hair_side_l_tip": (-6.2, 29.6)}))
 
     def build_under(self):
         mat = "under"
@@ -336,9 +351,9 @@ class Body:
         tp = [tuple(x) for x in self.p["torso"]]
         top = tp[0][1]
         hem = 15.0 if male else 14.6
-        sh = abs(tp[3][0]) + 0.3
-        waist = 4.6 if male else 3.6
-        flare = 5.5 if male else 6.4
+        sh = max(abs(x) for x, y in tp if y > top - 3.0)
+        waist = 4.3 if male else 3.5
+        flare = 5.0 if male else 5.7
         pts = [(-1.6, top + 0.2), (0.1, top - 3.4), (1.8, top + 0.2), (sh - 1.2, top - 0.4), (sh + 0.2, top - 1.5), (sh, top - 3.9), (waist + 0.5, 24.2),
                (waist + 0.3, 22.4), (waist + 0.9, 19.8), (flare - 0.4, 17.4), (flare, hem + 0.6), (2.8, hem), (0.2, hem + 0.4), (-2.6, hem), (-flare, hem + 0.6),
                (-flare + 0.4, 17.4), (-waist - 0.9, 19.8), (-waist - 0.3, 22.4), (-waist - 0.5, 24.2), (-sh, top - 3.9), (-sh - 0.2, top - 1.5), (-sh + 1.2, top - 0.4)]
