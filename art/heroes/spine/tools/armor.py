@@ -923,7 +923,17 @@ PIVOTS = {"torso": [5, 13], "torso_side": [5, 13], "torso_back": [5, 13], "upper
 HEAD_PIVOT = (9, 17)
 
 
+NATIVE_SLOT = {"thigh": "chest", "shin": "chest", "knee_cap": "chest", "boot_top": "boots", "foot": "boots"}
+
+
 def pieces(base, slot):
+    if base in NATIVE:
+        own = []
+        for leaf in NATIVE[base]:
+            home = NATIVE_SLOT.get(leaf) or next(k for k, v in SLOT_PIECES.items() if leaf in v)
+            if home == slot:
+                own.append(leaf)
+        return own
     return [p for p in SLOT_PIECES[slot] if p in SETS[base]]
 
 

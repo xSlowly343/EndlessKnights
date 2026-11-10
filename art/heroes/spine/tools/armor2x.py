@@ -5,7 +5,8 @@ GOLD = ("V", "Y", "y")
 CLOTH = ("D", "T", "t")
 BODY_PIVOT = {"torso": (10.5, 26.5), "torso_side": (10.5, 26.5), "torso_back": (10.5, 26.5), "helmet": (18.5, 34.5),
               "upper_arm": (2.5, 0.5), "upper_arm_short": (2.5, 0.5), "forearm": (2.5, 0.5), "elbow_cap": (0.5, 0.5),
-              "hand": (2.5, 2.5), "bracer": (2.5, 0.5), "shin": (4.5, 0.5), "foot": (2.5, 0.5), "coat_tail": (4.5, 0.5)}
+              "hand": (2.5, 2.5), "bracer": (2.5, 0.5), "shin": (4.5, 0.5), "foot": (2.5, 0.5), "coat_tail": (4.5, 0.5),
+              "thigh": (4.5, 0.5), "boot_top": (4.5, 0.5)}
 
 
 def piece(c, part, dx, dy):
@@ -197,6 +198,23 @@ def knight_culet():
     return piece(c, "coat_tail", -1, 0)
 
 
+def knight_legs():
+    from forge2x import leg_pieces, boot_pieces, rivets as _r
+    def metal(c, m):
+        c.shade(m, METAL, spec="W", edge="#")
+    out = leg_pieces(metal, metal, knee_fill=metal, knee_r=6,
+                     thigh_extra=lambda c, m: [c.put(x, 2, "Y") for x in range(2, 9)],
+                     shin_extra=lambda c, m: [c.put(7, y, "W") for y in range(3, 16)])
+    knee = Canvas(12, 12)
+    km = knee.mask_ellipse(6, 6, 6, 6)
+    metal(knee, km)
+    knee.put(6, 6, "G")
+    knee.put(5, 6, "c")
+    out["knee_cap"] = (knee.text(), (5.5, 5.5))
+    out.update(boot_pieces(4, metal, metal, foot_w=16))
+    return out
+
+
 def plate_late():
     return {
         "helmet": knight_helmet(),
@@ -209,7 +227,6 @@ def plate_late():
         "elbow_cap": knight_couter(),
         "hand": knight_gauntlet(),
         "bracer": knight_cuff(),
-        "shin": knight_greave(),
-        "foot": knight_sabaton(),
         "coat_tail": knight_culet(),
+        **knight_legs(),
     }

@@ -29,9 +29,9 @@ def slot_range(*names):
 
 
 GROUPS = {
-    "leg_far": slot_range("thigh_far", "knee_far", "shin_far", "foot_far"),
+    "leg_far": slot_range("thigh_far", "knee_far", "shin_far", "boot_top_far", "foot_far"),
     "arm_far": slot_range("upper_arm_far", "elbow_far", "forearm_far", "bracer_far", "hand_far"),
-    "leg_near": slot_range("thigh_near", "knee_near", "shin_near", "foot_near"),
+    "leg_near": slot_range("thigh_near", "knee_near", "shin_near", "boot_top_near", "foot_near"),
     "core": slot_range("pelvis", "torso", "head", "blush", "eye_far", "eye_near", "hair_front", "helmet"),
     "arm_near": slot_range("weapon", "upper_arm_near", "elbow_near", "forearm_near", "bracer_near", "hand_near"),
 }

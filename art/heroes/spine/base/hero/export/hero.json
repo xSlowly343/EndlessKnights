@@ -229,15 +229,21 @@
    "color": "e6e6e6ff"
   },
   {
+   "name": "shin_far",
+   "bone": "shin_far",
+   "attachment": "shin",
+   "color": "e6e6e6ff"
+  },
+  {
    "name": "knee_far",
    "bone": "shin_far",
    "attachment": "knee_cap",
    "color": "e6e6e6ff"
   },
   {
-   "name": "shin_far",
+   "name": "boot_top_far",
    "bone": "shin_far",
-   "attachment": "shin",
+   "attachment": "boot_top",
    "color": "e6e6e6ff"
   },
   {
@@ -304,14 +310,19 @@
    "attachment": "thigh"
   },
   {
+   "name": "shin_near",
+   "bone": "shin_near",
+   "attachment": "shin"
+  },
+  {
    "name": "knee_near",
    "bone": "shin_near",
    "attachment": "knee_cap"
   },
   {
-   "name": "shin_near",
+   "name": "boot_top_near",
    "bone": "shin_near",
-   "attachment": "shin"
+   "attachment": "boot_top"
   },
   {
    "name": "foot_near",
@@ -557,16 +568,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r1/shin",
@@ -575,6 +576,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -597,16 +608,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r1/shin",
@@ -615,6 +616,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -642,16 +653,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r10/shin",
@@ -660,6 +661,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -682,16 +693,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r10/shin",
@@ -700,6 +701,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -727,16 +738,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r11/shin",
@@ -745,6 +746,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -767,16 +778,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r11/shin",
@@ -785,6 +786,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -812,16 +823,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r2/shin",
@@ -830,6 +831,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -852,16 +863,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r2/shin",
@@ -870,6 +871,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -897,16 +908,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r3/shin",
@@ -915,6 +916,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -937,16 +948,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r3/shin",
@@ -955,6 +956,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -982,16 +993,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r4/shin",
@@ -1000,6 +1001,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1022,16 +1033,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r4/shin",
@@ -1040,6 +1041,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1067,16 +1078,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r5/shin",
@@ -1085,6 +1086,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1107,16 +1118,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r5/shin",
@@ -1125,6 +1126,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1152,16 +1163,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r6/shin",
@@ -1170,6 +1171,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1192,16 +1203,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r6/shin",
@@ -1210,6 +1211,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1237,16 +1248,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r7/shin",
@@ -1255,6 +1256,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1277,16 +1288,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r7/shin",
@@ -1295,6 +1296,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1322,16 +1333,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r8/shin",
@@ -1340,6 +1341,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1362,16 +1373,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r8/shin",
@@ -1380,6 +1381,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1407,16 +1418,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_early_r9/shin",
@@ -1425,6 +1426,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1447,16 +1458,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_early_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_early_r9/shin",
@@ -1465,6 +1466,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_early_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1492,16 +1503,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r1/shin",
@@ -1510,6 +1511,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1532,16 +1543,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r1/shin",
@@ -1550,6 +1551,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1577,16 +1588,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r10/shin",
@@ -1595,6 +1596,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1617,16 +1628,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r10/shin",
@@ -1635,6 +1636,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1662,16 +1673,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r11/shin",
@@ -1680,6 +1681,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1702,16 +1713,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r11/shin",
@@ -1720,6 +1721,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1747,16 +1758,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r2/shin",
@@ -1765,6 +1766,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1787,16 +1798,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r2/shin",
@@ -1805,6 +1806,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1832,16 +1843,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r3/shin",
@@ -1850,6 +1851,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1872,16 +1883,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r3/shin",
@@ -1890,6 +1891,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -1917,16 +1928,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r4/shin",
@@ -1935,6 +1936,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -1957,16 +1968,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r4/shin",
@@ -1975,6 +1976,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2002,16 +2013,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r5/shin",
@@ -2020,6 +2021,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2042,16 +2053,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r5/shin",
@@ -2060,6 +2061,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2087,16 +2098,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r6/shin",
@@ -2105,6 +2106,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2127,16 +2138,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r6/shin",
@@ -2145,6 +2146,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2172,16 +2183,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r7/shin",
@@ -2190,6 +2191,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2212,16 +2223,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r7/shin",
@@ -2230,6 +2231,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2257,16 +2268,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r8/shin",
@@ -2275,6 +2276,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2297,16 +2308,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r8/shin",
@@ -2315,6 +2316,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2342,16 +2353,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/cloth_late_r9/shin",
@@ -2360,6 +2361,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2382,16 +2393,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/cloth_late_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/cloth_late_r9/shin",
@@ -2400,6 +2401,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/cloth_late_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2417,43 +2428,43 @@
   {
    "name": "boots/colossus_anvil",
    "attachments": {
-    "shin_far": {
-     "shin": {
-      "path": "boots/colossus_anvil/shin",
-      "x": 4.0,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/colossus_anvil/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/colossus_anvil/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "shin_near": {
-     "shin": {
-      "path": "boots/colossus_anvil/shin",
-      "x": 4.0,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/colossus_anvil/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/colossus_anvil/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -2462,43 +2473,43 @@
   {
    "name": "boots/jarl_forge",
    "attachments": {
-    "shin_far": {
-     "shin": {
-      "path": "boots/jarl_forge/shin",
-      "x": 4.0,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/jarl_forge/boot_top",
+      "x": 7.0,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 3.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/jarl_forge/foot",
-      "x": 1.5,
+      "x": 1.75,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.0,
+      "width": 7.5,
       "height": 4.0
      }
     },
-    "shin_near": {
-     "shin": {
-      "path": "boots/jarl_forge/shin",
-      "x": 4.0,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/jarl_forge/boot_top",
+      "x": 7.0,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 3.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/jarl_forge/foot",
-      "x": 1.5,
+      "x": 1.75,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.0,
+      "width": 7.5,
       "height": 4.0
      }
     }
@@ -2517,16 +2528,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r1/shin",
@@ -2535,6 +2536,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2557,16 +2568,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r1/shin",
@@ -2575,6 +2576,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2602,16 +2613,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r10/shin",
@@ -2620,6 +2621,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2642,16 +2653,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r10/shin",
@@ -2660,6 +2661,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2687,16 +2698,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r11/shin",
@@ -2705,6 +2706,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2727,16 +2738,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r11/shin",
@@ -2745,6 +2746,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2772,16 +2783,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r2/shin",
@@ -2790,6 +2791,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2812,16 +2823,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r2/shin",
@@ -2830,6 +2831,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2857,16 +2868,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r3/shin",
@@ -2875,6 +2876,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2897,16 +2908,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r3/shin",
@@ -2915,6 +2916,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -2942,16 +2953,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r4/shin",
@@ -2960,6 +2961,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -2982,16 +2993,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r4/shin",
@@ -3000,6 +3001,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3027,16 +3038,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r5/shin",
@@ -3045,6 +3046,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3067,16 +3078,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r5/shin",
@@ -3085,6 +3086,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3112,16 +3123,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r6/shin",
@@ -3130,6 +3131,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3152,16 +3163,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r6/shin",
@@ -3170,6 +3171,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3197,16 +3208,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r7/shin",
@@ -3215,6 +3216,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3237,16 +3248,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r7/shin",
@@ -3255,6 +3256,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3282,16 +3293,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r8/shin",
@@ -3300,6 +3301,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3322,16 +3333,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r8/shin",
@@ -3340,6 +3341,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3367,16 +3378,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_early_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_early_r9/shin",
@@ -3385,6 +3386,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_early_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3407,16 +3418,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_early_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_early_r9/shin",
@@ -3425,6 +3426,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_early_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3452,16 +3463,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r1/shin",
@@ -3470,6 +3471,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3492,16 +3503,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r1/shin",
@@ -3510,6 +3511,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3537,16 +3548,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r10/shin",
@@ -3555,6 +3556,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3577,16 +3588,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r10/shin",
@@ -3595,6 +3596,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3622,16 +3633,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r11/shin",
@@ -3640,6 +3641,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3662,16 +3673,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r11/shin",
@@ -3680,6 +3681,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3707,16 +3718,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r2/shin",
@@ -3725,6 +3726,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3747,16 +3758,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r2/shin",
@@ -3765,6 +3766,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3792,16 +3803,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r3/shin",
@@ -3810,6 +3811,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3832,16 +3843,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r3/shin",
@@ -3850,6 +3851,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3877,16 +3888,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r4/shin",
@@ -3895,6 +3896,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -3917,16 +3928,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r4/shin",
@@ -3935,6 +3936,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -3962,16 +3973,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r5/shin",
@@ -3980,6 +3981,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4002,16 +4013,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r5/shin",
@@ -4020,6 +4021,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4047,16 +4058,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r6/shin",
@@ -4065,6 +4066,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4087,16 +4098,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r6/shin",
@@ -4105,6 +4106,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4132,16 +4143,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r7/shin",
@@ -4150,6 +4151,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4172,16 +4183,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r7/shin",
@@ -4190,6 +4191,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4217,16 +4228,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r8/shin",
@@ -4235,6 +4236,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4257,16 +4268,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r8/shin",
@@ -4275,6 +4276,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4302,16 +4313,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/leather_late_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/leather_late_r9/shin",
@@ -4320,6 +4321,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/leather_late_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4342,16 +4353,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/leather_late_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/leather_late_r9/shin",
@@ -4360,6 +4361,16 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/leather_late_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4377,43 +4388,43 @@
   {
    "name": "boots/mountain_hammer",
    "attachments": {
-    "shin_far": {
-     "shin": {
-      "path": "boots/mountain_hammer/shin",
-      "x": 4.0,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/mountain_hammer/boot_top",
+      "x": 6.25,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 4.5
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/mountain_hammer/foot",
-      "x": 1.75,
+      "x": 2.0,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.5,
+      "width": 8.0,
       "height": 4.0
      }
     },
-    "shin_near": {
-     "shin": {
-      "path": "boots/mountain_hammer/shin",
-      "x": 4.0,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/mountain_hammer/boot_top",
+      "x": 6.25,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 4.5
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/mountain_hammer/foot",
-      "x": 1.75,
+      "x": 2.0,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.5,
+      "width": 8.0,
       "height": 4.0
      }
     }
@@ -4422,43 +4433,43 @@
   {
    "name": "boots/northern_forge",
    "attachments": {
-    "shin_far": {
-     "shin": {
-      "path": "boots/northern_forge/shin",
-      "x": 4.0,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/northern_forge/boot_top",
+      "x": 6.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 4.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/northern_forge/foot",
-      "x": 1.5,
+      "x": 1.75,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.0,
+      "width": 7.5,
       "height": 4.0
      }
     },
-    "shin_near": {
-     "shin": {
-      "path": "boots/northern_forge/shin",
-      "x": 4.0,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/northern_forge/boot_top",
+      "x": 6.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 4.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/northern_forge/foot",
-      "x": 1.5,
+      "x": 1.75,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.0,
+      "width": 7.5,
       "height": 4.0
      }
     }
@@ -4477,16 +4488,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r1/shin",
@@ -4495,6 +4496,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4517,16 +4528,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r1/shin",
@@ -4535,6 +4536,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4562,16 +4573,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r10/shin",
@@ -4580,6 +4581,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4602,16 +4613,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r10/shin",
@@ -4620,6 +4621,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4647,16 +4658,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r11/shin",
@@ -4665,6 +4666,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4687,16 +4698,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r11/shin",
@@ -4705,6 +4706,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4732,16 +4743,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r2/shin",
@@ -4750,6 +4751,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4772,16 +4783,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r2/shin",
@@ -4790,6 +4791,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4817,16 +4828,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r3/shin",
@@ -4835,6 +4836,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4857,16 +4868,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r3/shin",
@@ -4875,6 +4876,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4902,16 +4913,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r4/shin",
@@ -4920,6 +4921,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -4942,16 +4953,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r4/shin",
@@ -4960,6 +4961,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -4987,16 +4998,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r5/shin",
@@ -5005,6 +5006,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -5027,16 +5038,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r5/shin",
@@ -5045,6 +5046,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -5072,16 +5083,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r6/shin",
@@ -5090,6 +5091,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -5112,16 +5123,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r6/shin",
@@ -5130,6 +5131,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -5157,16 +5168,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r7/shin",
@@ -5175,6 +5176,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -5197,16 +5208,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r7/shin",
@@ -5215,6 +5216,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -5242,16 +5253,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r8/shin",
@@ -5260,6 +5261,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -5282,16 +5293,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r8/shin",
@@ -5300,6 +5301,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -5327,16 +5338,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_early_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "boots/plate_early_r9/shin",
@@ -5345,6 +5346,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "boots/plate_early_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -5367,16 +5378,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_early_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "boots/plate_early_r9/shin",
@@ -5385,6 +5386,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "boots/plate_early_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -5402,83 +5413,43 @@
   {
    "name": "boots/plate_late_r1",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r1/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r1/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r1/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r1/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r1/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r1/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r1/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r1/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r1/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -5487,83 +5458,43 @@
   {
    "name": "boots/plate_late_r10",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r10/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r10/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r10/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r10/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r10/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r10/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r10/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r10/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r10/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -5572,83 +5503,43 @@
   {
    "name": "boots/plate_late_r11",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r11/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r11/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r11/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r11/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r11/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r11/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r11/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r11/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r11/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -5657,83 +5548,43 @@
   {
    "name": "boots/plate_late_r2",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r2/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r2/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r2/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r2/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r2/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r2/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r2/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r2/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r2/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -5742,83 +5593,43 @@
   {
    "name": "boots/plate_late_r3",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r3/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r3/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r3/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r3/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r3/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r3/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r3/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r3/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r3/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -5827,83 +5638,43 @@
   {
    "name": "boots/plate_late_r4",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r4/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r4/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r4/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r4/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r4/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r4/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r4/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r4/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r4/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -5912,83 +5683,43 @@
   {
    "name": "boots/plate_late_r5",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r5/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r5/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r5/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r5/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r5/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r5/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r5/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r5/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r5/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -5997,83 +5728,43 @@
   {
    "name": "boots/plate_late_r6",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r6/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r6/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r6/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r6/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r6/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r6/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r6/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r6/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r6/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -6082,83 +5773,43 @@
   {
    "name": "boots/plate_late_r7",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r7/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r7/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r7/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r7/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r7/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r7/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r7/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r7/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r7/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -6167,83 +5818,43 @@
   {
    "name": "boots/plate_late_r8",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r8/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r8/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r8/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r8/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r8/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r8/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r8/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r8/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r8/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -6252,83 +5863,43 @@
   {
    "name": "boots/plate_late_r9",
    "attachments": {
-    "thigh_far": {
-     "thigh": {
-      "path": "boots/plate_late_r9/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_far": {
-     "knee_cap": {
-      "path": "boots/plate_late_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_far": {
-     "shin": {
-      "path": "boots/plate_late_r9/shin",
-      "x": 3.5,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/plate_late_r9/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r9/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     },
-    "thigh_near": {
-     "thigh": {
-      "path": "boots/plate_late_r9/thigh",
-      "x": 4.0,
-      "y": -0.5,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 9.0
-     }
-    },
-    "knee_near": {
-     "knee_cap": {
-      "path": "boots/plate_late_r9/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
-    "shin_near": {
-     "shin": {
-      "path": "boots/plate_late_r9/shin",
-      "x": 3.5,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/plate_late_r9/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r9/foot",
-      "x": 2.0,
+      "x": 2.25,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 8.5,
       "height": 4.0
      }
     }
@@ -6337,43 +5908,43 @@
   {
    "name": "boots/smith_line",
    "attachments": {
-    "shin_far": {
-     "shin": {
-      "path": "boots/smith_line/shin",
-      "x": 4.0,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/smith_line/boot_top",
+      "x": 7.75,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 1.5
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/smith_line/foot",
-      "x": 2.0,
+      "x": 3.0,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 10.0,
       "height": 4.0
      }
     },
-    "shin_near": {
-     "shin": {
-      "path": "boots/smith_line/shin",
-      "x": 4.0,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/smith_line/boot_top",
+      "x": 7.75,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 1.5
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/smith_line/foot",
-      "x": 2.0,
+      "x": 3.0,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 10.0,
       "height": 4.0
      }
     }
@@ -6382,43 +5953,43 @@
   {
    "name": "boots/underside_forge",
    "attachments": {
-    "shin_far": {
-     "shin": {
-      "path": "boots/underside_forge/shin",
-      "x": 4.0,
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/underside_forge/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/underside_forge/foot",
-      "x": 2.0,
+      "x": 1.75,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 7.5,
       "height": 4.0
      }
     },
-    "shin_near": {
-     "shin": {
-      "path": "boots/underside_forge/shin",
-      "x": 4.0,
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/underside_forge/boot_top",
+      "x": 7.5,
       "y": -0.5,
       "rotation": 90.0,
       "width": 6.0,
-      "height": 10.0
+      "height": 2.0
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/underside_forge/foot",
-      "x": 2.0,
+      "x": 1.75,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 7.5,
       "height": 4.0
      }
     }
@@ -9435,6 +9006,36 @@
   {
    "name": "chest/colossus_anvil",
    "attachments": {
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/colossus_anvil/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/colossus_anvil/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/colossus_anvil/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/colossus_anvil/upper_arm",
@@ -9473,6 +9074,36 @@
       "rotation": 90.0,
       "width": 6.0,
       "height": 7.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/colossus_anvil/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/colossus_anvil/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/colossus_anvil/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
      }
     },
     "torso": {
@@ -9554,6 +9185,36 @@
   {
    "name": "chest/jarl_forge",
    "attachments": {
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/jarl_forge/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/jarl_forge/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/jarl_forge/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/jarl_forge/upper_arm",
@@ -9592,6 +9253,36 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 8.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/jarl_forge/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/jarl_forge/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/jarl_forge/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "torso": {
@@ -12641,6 +12332,36 @@
   {
    "name": "chest/mountain_hammer",
    "attachments": {
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/mountain_hammer/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/mountain_hammer/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/mountain_hammer/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/mountain_hammer/upper_arm",
@@ -12679,6 +12400,36 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 8.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/mountain_hammer/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/mountain_hammer/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/mountain_hammer/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
      }
     },
     "torso": {
@@ -12770,6 +12521,36 @@
       "height": 27.0
      }
     },
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/northern_forge/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/northern_forge/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/northern_forge/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/northern_forge/upper_arm",
@@ -12808,6 +12589,36 @@
       "rotation": 90.0,
       "width": 5.0,
       "height": 8.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/northern_forge/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/northern_forge/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/northern_forge/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "torso": {
@@ -14318,14 +14129,34 @@
   {
    "name": "chest/plate_late_r1",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r1/cape",
-      "x": 13.0,
-      "y": -0.0,
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r1/thigh",
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r1/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -14363,6 +14194,36 @@
       "path": "chest/plate_late_r1/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r1/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r1/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r1/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -14437,16 +14298,6 @@
   {
    "name": "chest/plate_late_r10",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r10/cape",
-      "x": 13.0,
-      "y": -0.0,
-      "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
-     }
-    },
     "back_item": {
      "back_item": {
       "path": "chest/plate_late_r10/back_item",
@@ -14455,6 +14306,36 @@
       "rotation": -90.0,
       "width": 16.0,
       "height": 17.0
+     }
+    },
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r10/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r10/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -14502,6 +14383,36 @@
       "path": "chest/plate_late_r10/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r10/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r10/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r10/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -14596,16 +14507,6 @@
   {
    "name": "chest/plate_late_r11",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r11/cape",
-      "x": 13.0,
-      "y": -0.0,
-      "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
-     }
-    },
     "back_item": {
      "back_item": {
       "path": "chest/plate_late_r11/back_item",
@@ -14614,6 +14515,36 @@
       "rotation": -90.0,
       "width": 16.0,
       "height": 17.0
+     }
+    },
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r11/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r11/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -14661,6 +14592,36 @@
       "path": "chest/plate_late_r11/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r11/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r11/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r11/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -14755,14 +14716,34 @@
   {
    "name": "chest/plate_late_r2",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r2/cape",
-      "x": 13.0,
-      "y": -0.0,
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r2/thigh",
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r2/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -14800,6 +14781,36 @@
       "path": "chest/plate_late_r2/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r2/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r2/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r2/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -14874,14 +14885,34 @@
   {
    "name": "chest/plate_late_r3",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r3/cape",
-      "x": 13.0,
-      "y": -0.0,
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r3/thigh",
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r3/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -14919,6 +14950,36 @@
       "path": "chest/plate_late_r3/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r3/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r3/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r3/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -14993,14 +15054,34 @@
   {
    "name": "chest/plate_late_r4",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r4/cape",
-      "x": 13.0,
-      "y": -0.0,
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r4/thigh",
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r4/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -15038,6 +15119,36 @@
       "path": "chest/plate_late_r4/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r4/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r4/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r4/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -15122,14 +15233,34 @@
   {
    "name": "chest/plate_late_r5",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r5/cape",
-      "x": 13.0,
-      "y": -0.0,
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r5/thigh",
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r5/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -15167,6 +15298,36 @@
       "path": "chest/plate_late_r5/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r5/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r5/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r5/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -15251,14 +15412,34 @@
   {
    "name": "chest/plate_late_r6",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r6/cape",
-      "x": 13.0,
-      "y": -0.0,
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r6/thigh",
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r6/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -15306,6 +15487,36 @@
       "path": "chest/plate_late_r6/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r6/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r6/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r6/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -15400,14 +15611,34 @@
   {
    "name": "chest/plate_late_r7",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r7/cape",
-      "x": 13.0,
-      "y": -0.0,
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r7/thigh",
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r7/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -15455,6 +15686,36 @@
       "path": "chest/plate_late_r7/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r7/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r7/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r7/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -15549,16 +15810,6 @@
   {
    "name": "chest/plate_late_r8",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r8/cape",
-      "x": 13.0,
-      "y": -0.0,
-      "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
-     }
-    },
     "back_item": {
      "back_item": {
       "path": "chest/plate_late_r8/back_item",
@@ -15567,6 +15818,36 @@
       "rotation": -90.0,
       "width": 12.0,
       "height": 33.0
+     }
+    },
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r8/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r8/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -15614,6 +15895,36 @@
       "path": "chest/plate_late_r8/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r8/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r8/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r8/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -15708,16 +16019,6 @@
   {
    "name": "chest/plate_late_r9",
    "attachments": {
-    "cape": {
-     "cape": {
-      "path": "chest/plate_late_r9/cape",
-      "x": 13.0,
-      "y": -0.0,
-      "rotation": 90.0,
-      "width": 19.0,
-      "height": 27.0
-     }
-    },
     "back_item": {
      "back_item": {
       "path": "chest/plate_late_r9/back_item",
@@ -15726,6 +16027,36 @@
       "rotation": -90.0,
       "width": 12.0,
       "height": 33.0
+     }
+    },
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/plate_late_r9/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/plate_late_r9/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/plate_late_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
      }
     },
     "upper_arm_far": {
@@ -15773,6 +16104,36 @@
       "path": "chest/plate_late_r9/coat_tail",
       "x": 2.5,
       "y": -0.0,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/plate_late_r9/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/plate_late_r9/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/plate_late_r9/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
       "rotation": 90.0,
       "width": 6.0,
       "height": 6.0
@@ -15877,6 +16238,36 @@
       "height": 28.0
      }
     },
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/smith_line/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/smith_line/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/smith_line/knee_cap",
+      "x": -0.5,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 6.0
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/smith_line/upper_arm",
@@ -15915,6 +16306,36 @@
       "rotation": 90.0,
       "width": 6.0,
       "height": 9.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/smith_line/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/smith_line/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/smith_line/knee_cap",
+      "x": -0.5,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 6.0
      }
     },
     "torso": {
@@ -15996,6 +16417,36 @@
       "height": 8.0
      }
     },
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/underside_forge/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/underside_forge/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/underside_forge/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/underside_forge/upper_arm",
@@ -16034,6 +16485,36 @@
       "rotation": 90.0,
       "width": 6.0,
       "height": 7.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/underside_forge/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/underside_forge/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/underside_forge/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
      }
     },
     "torso": {
@@ -23241,16 +23722,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "outfit/a/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "outfit/a/shin",
@@ -23259,6 +23730,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "outfit/a/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -23341,16 +23822,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "outfit/a/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "outfit/a/shin",
@@ -23359,6 +23830,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "outfit/a/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -23460,16 +23941,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "outfit/b/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "outfit/b/shin",
@@ -23478,6 +23949,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "outfit/b/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -23560,16 +24041,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "outfit/b/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "outfit/b/shin",
@@ -23578,6 +24049,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "outfit/b/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -23679,16 +24160,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "outfit/c/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "outfit/c/shin",
@@ -23697,6 +24168,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "outfit/c/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -23779,16 +24260,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "outfit/c/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "outfit/c/shin",
@@ -23797,6 +24268,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "outfit/c/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {
@@ -23898,16 +24379,6 @@
       "height": 9.0
      }
     },
-    "knee_far": {
-     "knee_cap": {
-      "path": "outfit/d/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_far": {
      "shin": {
       "path": "outfit/d/shin",
@@ -23916,6 +24387,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "outfit/d/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_far": {
@@ -23998,16 +24479,6 @@
       "height": 9.0
      }
     },
-    "knee_near": {
-     "knee_cap": {
-      "path": "outfit/d/knee_cap",
-      "x": 0.0,
-      "y": 0.0,
-      "rotation": 90.0,
-      "width": 4.0,
-      "height": 4.0
-     }
-    },
     "shin_near": {
      "shin": {
       "path": "outfit/d/shin",
@@ -24016,6 +24487,16 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 9.0
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "outfit/d/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
      }
     },
     "foot_near": {

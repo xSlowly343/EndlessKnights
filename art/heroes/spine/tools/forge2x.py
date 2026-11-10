@@ -77,6 +77,56 @@ def arm_tube(c, x0, x1, y0, y1, fill):
     return m
 
 
+def leg_pieces(thigh_fill, shin_fill, knee_fill=None, thigh_extra=None, shin_extra=None, knee_r=4):
+    out = {}
+    c = Canvas(10, 20)
+    m = c.mask_poly([(1, 0), (9, 0), (9, 16), (8, 20), (2, 20), (1, 16)])
+    thigh_fill(c, m)
+    if thigh_extra:
+        thigh_extra(c, m)
+    out["thigh"] = piece(c, "thigh", -1, -1)
+    c = Canvas(10, 19)
+    m = c.mask_poly([(1, 0), (9, 0), (9, 11), (8, 19), (2, 19), (1, 11)])
+    shin_fill(c, m)
+    if shin_extra:
+        shin_extra(c, m)
+    out["shin"] = piece(c, "shin", -1, 0)
+    c = Canvas(2 * knee_r, 2 * knee_r)
+    m = c.mask_ellipse(knee_r, knee_r, knee_r, knee_r)
+    (knee_fill or shin_fill)(c, m)
+    out["knee_cap"] = (c.text(), (knee_r - 0.5, knee_r - 0.5))
+    return out
+
+
+def boot_pieces(h, top_fill, foot_fill, cuff_fill=None, cuff=3, foot_w=14, toe="round", top_extra=None):
+    out = {}
+    c = Canvas(12, h)
+    m = c.mask_poly([(1, 0), (11, 0), (11, h), (1, h)])
+    top_fill(c, m)
+    if cuff_fill and cuff:
+        cm = c.mask_rect(0, 0, 12, min(cuff, h))
+        cuff_fill(c, cm)
+    if top_extra:
+        top_extra(c, m)
+    out["boot_top"] = piece(c, "boot_top", -2, 18 - h)
+    w = foot_w + (5 if toe == "point" else 0)
+    c = Canvas(w + 1, 8)
+    if toe == "point":
+        pts = [(1, 0), (8, 0), (11, 3), (w - 4, 5), (w, 6), (w, 7), (w - 4, 8), (0, 8)]
+    elif toe == "claw":
+        pts = [(1, 0), (8, 0), (10, 3), (w - 1, 4), (w, 8), (0, 8)]
+    else:
+        pts = [(1, 0), (8, 0), (10, 3), (w - 1, 5), (w, 8), (0, 8)]
+    m = c.mask_poly(pts)
+    foot_fill(c, m)
+    if toe == "claw":
+        for x in range(w - 6, w + 1, 3):
+            c.put(x, 7, "W")
+            c.put(x + 1, 6, "W")
+    out["foot"] = piece(c, "foot", -1, -1)
+    return out
+
+
 def standard_limbs(fore_fill, hand_fill, cuff_fill, shin_fill, foot_fill, fore_extra=None, hand_extra=None, shin_extra=None, foot_w=14):
     out = {}
     c = Canvas(8, 12)
@@ -94,16 +144,6 @@ def standard_limbs(fore_fill, hand_fill, cuff_fill, shin_fill, foot_fill, fore_e
     m = c.mask_poly([(1, 0), (9, 0), (10, 6), (0, 6)])
     cuff_fill(c, m)
     out["bracer"] = piece(c, "bracer", -2, 6)
-    c = Canvas(12, 20)
-    m = c.mask_poly([(2, 0), (10, 0), (10, 15), (9, 20), (3, 20), (2, 15)])
-    shin_fill(c, m)
-    if shin_extra:
-        shin_extra(c, m)
-    out["shin"] = piece(c, "shin", -2, -1)
-    c = Canvas(foot_w, 8)
-    m = c.mask_poly([(1, 0), (8, 0), (10, 3), (foot_w - 1, 5), (foot_w, 8), (0, 8)])
-    foot_fill(c, m)
-    out["foot"] = piece(c, "foot", -1, -1)
     return out
 
 
@@ -160,7 +200,8 @@ def jarl_forge():
            "N": (54, 32, 22), "B": (96, 60, 38), "b": (132, 88, 56), "n": (168, 120, 80),
            "J": (70, 58, 48), "K": (120, 104, 86), "k": (166, 150, 128), "j": (206, 194, 172),
            "V": (100, 62, 26), "Y": (176, 116, 48), "y": (214, 160, 80), "v": (240, 200, 130),
-           "u": (214, 202, 176), "i": (244, 238, 222), "U": (150, 138, 116), "z": (30, 24, 26)}
+           "u": (214, 202, 176), "i": (244, 238, 222), "U": (150, 138, 116), "z": (30, 24, 26),
+           "D": (52, 46, 40), "T": (84, 74, 60), "t": (116, 104, 84), "g": (150, 136, 110)}
     P = {}
     c = helm_canvas()
     cap = c.mask_poly([(5, 20), (6, 13), (10, 7), (16, 3), (21, 3), (27, 7), (31, 13), (32, 20)])
@@ -228,6 +269,9 @@ def jarl_forge():
     hh = tools.mask_rect(5, 3, 7, 10)
     leather(tools, hh)
     acc = {"belt_front": (tools.text(), (-6.5, -0.5))}
+    P.update(leg_pieces(cloth, cloth, knee_fill=cloth,
+                        shin_extra=lambda c, m: [c.line(1, y, 9, y + 4, "N", m) for y in range(0, 16, 4)] + [c.line(9, y, 1, y + 4, "B", m) for y in range(2, 16, 4)]))
+    P.update(boot_pieces(6, leather, leather, cuff_fill=fur, cuff=3))
     return {"palette": pal, "pieces": P, "accessories": acc}
 
 
@@ -235,7 +279,8 @@ def mountain_hammer():
     pal = {"#": (30, 34, 40), "M": (70, 78, 90), "m": (104, 114, 128), "w": (146, 156, 170), "W": (196, 204, 214),
            "N": (50, 32, 22), "B": (92, 60, 36), "b": (128, 88, 54), "n": (162, 120, 76),
            "V": (112, 78, 28), "Y": (196, 150, 56), "y": (232, 196, 100), "v": (250, 230, 160),
-           "E": (255, 214, 96), "L": (255, 250, 210), "z": (26, 22, 24), "Q": (168, 172, 184), "X": (90, 94, 106)}
+           "E": (255, 214, 96), "L": (255, 250, 210), "z": (26, 22, 24), "Q": (168, 172, 184), "X": (90, 94, 106),
+           "D": (70, 58, 40), "T": (112, 96, 66), "t": (150, 132, 92), "g": (186, 168, 124)}
     P = {}
     c = helm_canvas()
     cap = c.mask_poly([(4, 21), (6, 12), (11, 6), (18, 4), (25, 6), (30, 12), (32, 21)])
@@ -312,6 +357,10 @@ def mountain_hammer():
         rope.put(x, y, ".")
     acc = {"belt_hang": (rope.text(), (4, -1)), "belt_front": (Canvas(1, 1).text(), (0, 0))}
     acc.pop("belt_front")
+    P.update(leg_pieces(cloth, cloth, knee_fill=leather, knee_r=5,
+                        thigh_extra=lambda c, m: [c.put(x, 8, "D") for x in range(2, 9)]))
+    P.update(boot_pieces(9, leather, metal, cuff_fill=leather, cuff=2, foot_w=15,
+                         top_extra=lambda c, m: [rivets(c, [(9, 4), (10, 4), (9, 7), (10, 7)])]))
     return {"palette": pal, "pieces": P, "accessories": acc}
 
 
@@ -392,6 +441,10 @@ def colossus_anvil():
     wt = chain.mask_rect(0, 10, 5, 14)
     metal(chain, wt)
     acc = {"belt_hang": (chain.text(), (2, -1))}
+    P.update(leg_pieces(metal, metal, knee_fill=metal, knee_r=5,
+                        thigh_extra=lambda c, m: crack(c, [(4, 3), (6, 9), (4, 15)]),
+                        shin_extra=lambda c, m: crack(c, [(6, 3), (4, 9), (6, 15)])))
+    P.update(boot_pieces(4, metal, metal, foot_w=16))
     return {"palette": pal, "pieces": P, "accessories": acc}
 
 
@@ -476,6 +529,10 @@ def northern_forge():
             if (x, y) in cm and (x + y) % 3 == 0:
                 cape.put(x, y, "j")
     acc = {"cape": (cape.text(), (17.5, 0.5))}
+    P.update(leg_pieces(cloth, cloth, knee_fill=metal,
+                        thigh_extra=lambda c, m: [c.put(x, y, "D") for x, y in m if (x + y) % 4 == 0],
+                        shin_extra=lambda c, m: [c.put(x, y, "D") for x, y in m if (x + y) % 4 == 0]))
+    P.update(boot_pieces(8, metal, metal, cuff_fill=fur, cuff=4))
     return {"palette": pal, "pieces": P, "accessories": acc}
 
 
@@ -554,6 +611,17 @@ def smith_line():
     for i in range(len(rows) - 6, len(rows)):
         rows[i] = "".join("." if (j + i) % 5 == 0 and ch not in ".o" else ch for j, ch in enumerate(rows[i]))
     acc = {"cape": ("\n".join(rows), (10, 0)), "_cape_native": False}
+    P.update(leg_pieces(metal, metal, knee_fill=metal, knee_r=5,
+                        thigh_extra=lambda c, m: fluting(c, m, [4]),
+                        shin_extra=lambda c, m: fluting(c, m, [5])))
+    knee_txt, knee_piv = P["knee_cap"]
+    kc = Canvas(10, 12)
+    km = kc.mask_ellipse(5, 7, 5, 5)
+    metal(kc, km)
+    spike = kc.mask_poly([(6, 4), (9, 4), (10, 0)])
+    kc.shade(spike, ("w", "w", "W"), edge="#")
+    P["knee_cap"] = (kc.text(), (4.5, 6.5))
+    P.update(boot_pieces(3, metal, metal, foot_w=14, toe="point"))
     return {"palette": pal, "pieces": P, "accessories": acc}
 
 
@@ -626,16 +694,21 @@ def underside_forge():
         m = shards.mask_poly([(cx, cy - h), (cx + 2, cy), (cx, cy + h), (cx - 2, cy)])
         shards.shade(m, ("Y", "E", "L"), edge="#")
     acc = {"back_item": (shards.text(), (2, 15))}
+    P.update(leg_pieces(metal, metal, knee_fill=metal, knee_r=5,
+                        thigh_extra=lambda c, m: crack(c, [(5, 2), (3, 9), (6, 16)]),
+                        shin_extra=lambda c, m: crack(c, [(4, 2), (6, 9), (4, 15)])))
+    P.update(boot_pieces(4, metal, metal, foot_w=14, toe="claw"))
     return {"palette": pal, "pieces": P, "accessories": acc}
 
 
 LINE = {"jarl_forge": jarl_forge, "mountain_hammer": mountain_hammer, "colossus_anvil": colossus_anvil,
         "northern_forge": northern_forge, "smith_line": smith_line, "underside_forge": underside_forge}
 HIDES_HAIR = {"colossus_anvil", "smith_line", "underside_forge"}
+SLOT_OF_LEGS = {"thigh": "chest", "shin": "chest", "knee_cap": "chest", "boot_top": "boots", "foot": "boots"}
 SLOT_OF = {"helmet": "helmet", "crest": "helmet", "hair_front": "helmet", "hair_fly": "helmet", "head": "helmet", "blush": "helmet", "torso": "chest", "torso_side": "chest", "torso_back": "chest",
            "upper_arm": "chest", "upper_arm_short": "chest", "forearm": "chest", "elbow_cap": "chest", "coat_tail": "chest",
            "cape": "chest", "back_item": "chest", "belt_front": "chest", "belt_hang": "chest", "pauldron_deco": "chest",
-           "hand": "gloves", "bracer": "gloves", "shin": "boots", "foot": "boots"}
+           "hand": "gloves", "bracer": "gloves", "thigh": "chest", "shin": "chest", "knee_cap": "chest", "boot_top": "boots", "foot": "boots"}
 
 
 def build():

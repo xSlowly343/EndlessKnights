@@ -3378,14 +3378,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r1/cape": {
+  "chest/plate_late_r1/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r1/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r1/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r1/hand": {
@@ -3408,39 +3428,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r1/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r1/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r1/shin": {
+  "boots/plate_late_r1/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r1/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -3538,14 +3538,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r2/cape": {
+  "chest/plate_late_r2/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r2/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r2/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r2/hand": {
@@ -3568,39 +3588,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r2/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r2/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r2/shin": {
+  "boots/plate_late_r2/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r2/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -3698,14 +3698,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r3/cape": {
+  "chest/plate_late_r3/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r3/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r3/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r3/hand": {
@@ -3728,39 +3748,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r3/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r3/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r3/shin": {
+  "boots/plate_late_r3/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r3/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -3858,14 +3858,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r4/cape": {
+  "chest/plate_late_r4/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r4/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r4/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r4/hand": {
@@ -3888,39 +3908,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r4/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r4/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r4/shin": {
+  "boots/plate_late_r4/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r4/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -4028,14 +4028,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r5/cape": {
+  "chest/plate_late_r5/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r5/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r5/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r5/hand": {
@@ -4058,39 +4078,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r5/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r5/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r5/shin": {
+  "boots/plate_late_r5/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r5/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -4198,14 +4198,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r6/cape": {
+  "chest/plate_late_r6/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r6/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r6/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r6/hand": {
@@ -4228,39 +4248,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r6/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r6/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r6/shin": {
+  "boots/plate_late_r6/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r6/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -4388,14 +4388,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r7/cape": {
+  "chest/plate_late_r7/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r7/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r7/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r7/hand": {
@@ -4418,39 +4438,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r7/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r7/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r7/shin": {
+  "boots/plate_late_r7/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r7/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -4578,14 +4578,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r8/cape": {
+  "chest/plate_late_r8/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r8/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r8/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r8/hand": {
@@ -4608,39 +4628,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r8/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r8/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r8/shin": {
+  "boots/plate_late_r8/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r8/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -4778,14 +4778,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r9/cape": {
+  "chest/plate_late_r9/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r9/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r9/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r9/hand": {
@@ -4808,39 +4828,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r9/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r9/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r9/shin": {
+  "boots/plate_late_r9/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r9/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -4978,14 +4978,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r10/cape": {
+  "chest/plate_late_r10/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r10/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r10/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r10/hand": {
@@ -5008,39 +5028,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r10/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r10/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r10/shin": {
+  "boots/plate_late_r10/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r10/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -5178,14 +5178,34 @@
     0.5
    ]
   },
-  "chest/plate_late_r11/cape": {
+  "chest/plate_late_r11/thigh": {
    "size": [
-    38,
-    54
+    10,
+    20
    ],
    "pivot": [
-    18.5,
+    5.5,
+    1.5
+   ]
+  },
+  "chest/plate_late_r11/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
     0.5
+   ]
+  },
+  "chest/plate_late_r11/knee_cap": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    5.5,
+    5.5
    ]
   },
   "gloves/plate_late_r11/hand": {
@@ -5208,39 +5228,19 @@
     -5.5
    ]
   },
-  "boots/plate_late_r11/thigh": {
-   "size": [
-    8,
-    18
-   ],
-   "pivot": [
-    4.5,
-    0.5
-   ]
-  },
-  "boots/plate_late_r11/knee_cap": {
-   "size": [
-    8,
-    8
-   ],
-   "pivot": [
-    3.5,
-    3.5
-   ]
-  },
-  "boots/plate_late_r11/shin": {
+  "boots/plate_late_r11/boot_top": {
    "size": [
     12,
-    20
+    4
    ],
    "pivot": [
     6.5,
-    2.5
+    -13.5
    ]
   },
   "boots/plate_late_r11/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -13098,19 +13098,49 @@
     -5.5
    ]
   },
-  "boots/jarl_forge/shin": {
+  "chest/jarl_forge/thigh": {
    "size": [
-    12,
+    10,
     20
    ],
    "pivot": [
-    6.5,
+    5.5,
     1.5
+   ]
+  },
+  "chest/jarl_forge/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
+    0.5
+   ]
+  },
+  "chest/jarl_forge/knee_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "boots/jarl_forge/boot_top": {
+   "size": [
+    12,
+    6
+   ],
+   "pivot": [
+    6.5,
+    -11.5
    ]
   },
   "boots/jarl_forge/foot": {
    "size": [
-    14,
+    15,
     8
    ],
    "pivot": [
@@ -13238,19 +13268,49 @@
     -5.5
    ]
   },
-  "boots/mountain_hammer/shin": {
+  "chest/mountain_hammer/thigh": {
    "size": [
-    12,
+    10,
     20
    ],
    "pivot": [
-    6.5,
+    5.5,
     1.5
+   ]
+  },
+  "chest/mountain_hammer/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
+    0.5
+   ]
+  },
+  "chest/mountain_hammer/knee_cap": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    4.5
+   ]
+  },
+  "boots/mountain_hammer/boot_top": {
+   "size": [
+    12,
+    9
+   ],
+   "pivot": [
+    6.5,
+    -8.5
    ]
   },
   "boots/mountain_hammer/foot": {
    "size": [
-    15,
+    16,
     8
    ],
    "pivot": [
@@ -13378,19 +13438,49 @@
     -5.5
    ]
   },
-  "boots/colossus_anvil/shin": {
+  "chest/colossus_anvil/thigh": {
    "size": [
-    12,
+    10,
     20
    ],
    "pivot": [
-    6.5,
+    5.5,
     1.5
+   ]
+  },
+  "chest/colossus_anvil/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
+    0.5
+   ]
+  },
+  "chest/colossus_anvil/knee_cap": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    4.5
+   ]
+  },
+  "boots/colossus_anvil/boot_top": {
+   "size": [
+    12,
+    4
+   ],
+   "pivot": [
+    6.5,
+    -13.5
    ]
   },
   "boots/colossus_anvil/foot": {
    "size": [
-    16,
+    17,
     8
    ],
    "pivot": [
@@ -13638,19 +13728,49 @@
     -5.5
    ]
   },
-  "boots/northern_forge/shin": {
+  "chest/northern_forge/thigh": {
    "size": [
-    12,
+    10,
     20
    ],
    "pivot": [
-    6.5,
+    5.5,
     1.5
+   ]
+  },
+  "chest/northern_forge/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
+    0.5
+   ]
+  },
+  "chest/northern_forge/knee_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "boots/northern_forge/boot_top": {
+   "size": [
+    12,
+    8
+   ],
+   "pivot": [
+    6.5,
+    -9.5
    ]
   },
   "boots/northern_forge/foot": {
    "size": [
-    14,
+    15,
     8
    ],
    "pivot": [
@@ -13778,19 +13898,49 @@
     -5.5
    ]
   },
-  "boots/smith_line/shin": {
+  "chest/smith_line/thigh": {
    "size": [
-    12,
+    10,
     20
    ],
    "pivot": [
-    6.5,
+    5.5,
     1.5
+   ]
+  },
+  "chest/smith_line/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
+    0.5
+   ]
+  },
+  "chest/smith_line/knee_cap": {
+   "size": [
+    10,
+    12
+   ],
+   "pivot": [
+    4.5,
+    6.5
+   ]
+  },
+  "boots/smith_line/boot_top": {
+   "size": [
+    12,
+    3
+   ],
+   "pivot": [
+    6.5,
+    -14.5
    ]
   },
   "boots/smith_line/foot": {
    "size": [
-    16,
+    20,
     8
    ],
    "pivot": [
@@ -14038,19 +14188,49 @@
     -5.5
    ]
   },
-  "boots/underside_forge/shin": {
+  "chest/underside_forge/thigh": {
    "size": [
-    12,
+    10,
     20
    ],
    "pivot": [
-    6.5,
+    5.5,
     1.5
+   ]
+  },
+  "chest/underside_forge/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
+    0.5
+   ]
+  },
+  "chest/underside_forge/knee_cap": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    4.5
+   ]
+  },
+  "boots/underside_forge/boot_top": {
+   "size": [
+    12,
+    4
+   ],
+   "pivot": [
+    6.5,
+    -13.5
    ]
   },
   "boots/underside_forge/foot": {
    "size": [
-    16,
+    15,
     8
    ],
    "pivot": [
