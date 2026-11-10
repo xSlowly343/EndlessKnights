@@ -14368,6 +14368,1156 @@
     0
    ]
   },
+  "helmet/huntress_trail/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/huntress_trail/torso": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/huntress_trail/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/huntress_trail/torso_back": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/huntress_trail/upper_arm": {
+   "size": [
+    14,
+    22
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "chest/huntress_trail/upper_arm_short": {
+   "size": [
+    14,
+    18
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "chest/huntress_trail/elbow_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "chest/huntress_trail/coat_tail": {
+   "size": [
+    10,
+    16
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/huntress_trail/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/huntress_trail/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/huntress_trail/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "chest/huntress_trail/thigh": {
+   "size": [
+    10,
+    20
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "chest/huntress_trail/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
+    0.5
+   ]
+  },
+  "chest/huntress_trail/knee_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "boots/huntress_trail/boot_top": {
+   "size": [
+    12,
+    8
+   ],
+   "pivot": [
+    6.5,
+    -9.5
+   ]
+  },
+  "boots/huntress_trail/foot": {
+   "size": [
+    18,
+    8
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "chest/huntress_trail/cape": {
+   "size": [
+    28,
+    40
+   ],
+   "pivot": [
+    13.5,
+    0.5
+   ]
+  },
+  "helmet/jungle_wind/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/jungle_wind/torso": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/jungle_wind/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/jungle_wind/torso_back": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/jungle_wind/upper_arm": {
+   "size": [
+    18,
+    22
+   ],
+   "pivot": [
+    8.5,
+    1.5
+   ]
+  },
+  "chest/jungle_wind/upper_arm_short": {
+   "size": [
+    18,
+    18
+   ],
+   "pivot": [
+    8.5,
+    1.5
+   ]
+  },
+  "chest/jungle_wind/elbow_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "chest/jungle_wind/coat_tail": {
+   "size": [
+    10,
+    16
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/jungle_wind/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/jungle_wind/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/jungle_wind/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "chest/jungle_wind/thigh": {
+   "size": [
+    10,
+    20
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "chest/jungle_wind/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
+    0.5
+   ]
+  },
+  "chest/jungle_wind/knee_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "boots/jungle_wind/boot_top": {
+   "size": [
+    12,
+    4
+   ],
+   "pivot": [
+    6.5,
+    -13.5
+   ]
+  },
+  "boots/jungle_wind/foot": {
+   "size": [
+    18,
+    8
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "chest/jungle_wind/belt_front": {
+   "size": [
+    10,
+    8
+   ],
+   "pivot": [
+    -3,
+    -1
+   ]
+  },
+  "helmet/sand_track/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/sand_track/torso": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/sand_track/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/sand_track/torso_back": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/sand_track/upper_arm": {
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    9.5,
+    2.5
+   ]
+  },
+  "chest/sand_track/upper_arm_short": {
+   "size": [
+    20,
+    18
+   ],
+   "pivot": [
+    9.5,
+    2.5
+   ]
+  },
+  "chest/sand_track/elbow_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "chest/sand_track/coat_tail": {
+   "size": [
+    12,
+    18
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/sand_track/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/sand_track/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/sand_track/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "chest/sand_track/thigh": {
+   "size": [
+    12,
+    20
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "chest/sand_track/shin": {
+   "size": [
+    12,
+    19
+   ],
+   "pivot": [
+    6.5,
+    0.5
+   ]
+  },
+  "chest/sand_track/knee_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "boots/sand_track/boot_top": {
+   "size": [
+    12,
+    5
+   ],
+   "pivot": [
+    6.5,
+    -12.5
+   ]
+  },
+  "boots/sand_track/foot": {
+   "size": [
+    23,
+    8
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "chest/sand_track/cape": {
+   "size": [
+    32,
+    44
+   ],
+   "pivot": [
+    15.5,
+    0.5
+   ]
+  },
+  "helmet/falcon_wing/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/falcon_wing/torso": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/falcon_wing/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/falcon_wing/torso_back": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/falcon_wing/upper_arm": {
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    9.5,
+    2.5
+   ]
+  },
+  "chest/falcon_wing/upper_arm_short": {
+   "size": [
+    20,
+    18
+   ],
+   "pivot": [
+    9.5,
+    2.5
+   ]
+  },
+  "chest/falcon_wing/elbow_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "chest/falcon_wing/coat_tail": {
+   "size": [
+    10,
+    16
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/falcon_wing/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/falcon_wing/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/falcon_wing/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "chest/falcon_wing/thigh": {
+   "size": [
+    10,
+    20
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "chest/falcon_wing/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
+    0.5
+   ]
+  },
+  "chest/falcon_wing/knee_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "boots/falcon_wing/boot_top": {
+   "size": [
+    12,
+    8
+   ],
+   "pivot": [
+    6.5,
+    -9.5
+   ]
+  },
+  "boots/falcon_wing/foot": {
+   "size": [
+    18,
+    8
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "chest/falcon_wing/pauldron_deco": {
+   "size": [
+    12,
+    12
+   ],
+   "pivot": [
+    -1,
+    7
+   ]
+  },
+  "helmet/thousand_roads/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/thousand_roads/torso": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/thousand_roads/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/thousand_roads/torso_back": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/thousand_roads/upper_arm": {
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    9.5,
+    1.5
+   ]
+  },
+  "chest/thousand_roads/upper_arm_short": {
+   "size": [
+    20,
+    18
+   ],
+   "pivot": [
+    9.5,
+    1.5
+   ]
+  },
+  "chest/thousand_roads/elbow_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "chest/thousand_roads/coat_tail": {
+   "size": [
+    12,
+    18
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/thousand_roads/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/thousand_roads/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/thousand_roads/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "chest/thousand_roads/thigh": {
+   "size": [
+    14,
+    20
+   ],
+   "pivot": [
+    7.5,
+    1.5
+   ]
+  },
+  "chest/thousand_roads/shin": {
+   "size": [
+    14,
+    19
+   ],
+   "pivot": [
+    7.5,
+    0.5
+   ]
+  },
+  "chest/thousand_roads/knee_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "boots/thousand_roads/boot_top": {
+   "size": [
+    12,
+    5
+   ],
+   "pivot": [
+    6.5,
+    -12.5
+   ]
+  },
+  "boots/thousand_roads/foot": {
+   "size": [
+    18,
+    8
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "chest/thousand_roads/belt_front": {
+   "size": [
+    8,
+    10
+   ],
+   "pivot": [
+    -5,
+    -1
+   ]
+  },
+  "helmet/rift_wind/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/rift_wind/torso": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/rift_wind/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/rift_wind/torso_back": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/rift_wind/upper_arm": {
+   "size": [
+    16,
+    22
+   ],
+   "pivot": [
+    7.5,
+    1.5
+   ]
+  },
+  "chest/rift_wind/upper_arm_short": {
+   "size": [
+    16,
+    18
+   ],
+   "pivot": [
+    7.5,
+    1.5
+   ]
+  },
+  "chest/rift_wind/elbow_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "chest/rift_wind/coat_tail": {
+   "size": [
+    10,
+    16
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/rift_wind/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/rift_wind/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/rift_wind/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "chest/rift_wind/thigh": {
+   "size": [
+    10,
+    20
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "chest/rift_wind/shin": {
+   "size": [
+    10,
+    19
+   ],
+   "pivot": [
+    5.5,
+    0.5
+   ]
+  },
+  "chest/rift_wind/knee_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "boots/rift_wind/boot_top": {
+   "size": [
+    12,
+    6
+   ],
+   "pivot": [
+    6.5,
+    -11.5
+   ]
+  },
+  "boots/rift_wind/foot": {
+   "size": [
+    23,
+    8
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "chest/rift_wind/back_item": {
+   "size": [
+    18,
+    22
+   ],
+   "pivot": [
+    4,
+    21
+   ]
+  },
+  "chest/rift_wind/cape": {
+   "size": [
+    24,
+    46
+   ],
+   "pivot": [
+    11.5,
+    0.5
+   ]
+  },
+  "helmet/rift_wind/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/rift_wind/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
   "helmet/plate_late_r1/hair_front": {
    "size": [
     1,

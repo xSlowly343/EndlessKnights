@@ -16,6 +16,7 @@ from pal import MAT, LETTER, OUTLINE
 import armor as AR
 import armor_acc as ACC
 import forge2x as FORGE
+import hunter2x as HUNTER
 
 OUT = os.path.join(ROOT, "base", "hero")
 K = 2
@@ -256,7 +257,8 @@ def export():
                 txt, pivot = ACC.sprite(base, slot, name)
                 put(f"{item_slot}/{base}_r{rarity}/{slot}", grid(txt), pal, pivot, direct=True)
     missing = {}
-    for set_id, data in FORGE.build().items():
+    lines = [(set_id, data, mod) for mod in (FORGE, HUNTER) for set_id, data in mod.build().items()]
+    for set_id, data, mod in lines:
         pal = data["palette"]
         acc = dict(data["accessories"])
         cape_native = acc.pop("_cape_native", True)
@@ -267,7 +269,7 @@ def export():
                 missing.setdefault(set_id, set()).update(used)
             native = not (leaf == "cape" and not cape_native)
             put(f"{FORGE.SLOT_OF[leaf]}/{set_id}/{leaf}", rows, pal, pivot, direct=True, native=native)
-        if set_id in FORGE.HIDES_HAIR:
+        if set_id in mod.HIDES_HAIR:
             for leaf in CLOSED_HELM_HIDES:
                 put(f"helmet/{set_id}/{leaf}", ["."], pal, (0, 0), direct=True, native=True)
     for rarity in range(1, 12):

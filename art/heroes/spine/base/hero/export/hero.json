@@ -2471,6 +2471,96 @@
    }
   },
   {
+   "name": "boots/falcon_wing",
+   "attachments": {
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/falcon_wing/boot_top",
+      "x": 6.5,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 4.0
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/falcon_wing/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 9.0,
+      "height": 4.0
+     }
+    },
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/falcon_wing/boot_top",
+      "x": 6.5,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 4.0
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/falcon_wing/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 9.0,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/huntress_trail",
+   "attachments": {
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/huntress_trail/boot_top",
+      "x": 6.5,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 4.0
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/huntress_trail/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 9.0,
+      "height": 4.0
+     }
+    },
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/huntress_trail/boot_top",
+      "x": 6.5,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 4.0
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/huntress_trail/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 9.0,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
    "name": "boots/jarl_forge",
    "attachments": {
     "boot_top_far": {
@@ -2506,6 +2596,51 @@
     "foot_near": {
      "foot": {
       "path": "boots/jarl_forge/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 9.0,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/jungle_wind",
+   "attachments": {
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/jungle_wind/boot_top",
+      "x": 7.5,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 2.0
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/jungle_wind/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 9.0,
+      "height": 4.0
+     }
+    },
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/jungle_wind/boot_top",
+      "x": 7.5,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 2.0
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/jungle_wind/foot",
       "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
@@ -5906,6 +6041,96 @@
    }
   },
   {
+   "name": "boots/rift_wind",
+   "attachments": {
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/rift_wind/boot_top",
+      "x": 7.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 3.0
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/rift_wind/foot",
+      "x": 2.75,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 11.5,
+      "height": 4.0
+     }
+    },
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/rift_wind/boot_top",
+      "x": 7.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 3.0
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/rift_wind/foot",
+      "x": 2.75,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 11.5,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/sand_track",
+   "attachments": {
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/sand_track/boot_top",
+      "x": 7.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 2.5
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/sand_track/foot",
+      "x": 2.75,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 11.5,
+      "height": 4.0
+     }
+    },
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/sand_track/boot_top",
+      "x": 7.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 2.5
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/sand_track/foot",
+      "x": 2.75,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 11.5,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
    "name": "boots/smith_line",
    "attachments": {
     "boot_top_far": {
@@ -5945,6 +6170,51 @@
       "y": -1.55,
       "rotation": -0.0,
       "width": 11.5,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/thousand_roads",
+   "attachments": {
+    "boot_top_far": {
+     "boot_top": {
+      "path": "boots/thousand_roads/boot_top",
+      "x": 7.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 2.5
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/thousand_roads/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 9.0,
+      "height": 4.0
+     }
+    },
+    "boot_top_near": {
+     "boot_top": {
+      "path": "boots/thousand_roads/boot_top",
+      "x": 7.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 2.5
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/thousand_roads/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -9183,6 +9453,374 @@
    }
   },
   {
+   "name": "chest/falcon_wing",
+   "attachments": {
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/falcon_wing/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/falcon_wing/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/falcon_wing/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/falcon_wing/upper_arm",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/falcon_wing/pauldron_deco",
+      "x": -0.75,
+      "y": 3.25,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/falcon_wing/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/falcon_wing/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/falcon_wing/coat_tail",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 8.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/falcon_wing/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/falcon_wing/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/falcon_wing/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/falcon_wing/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/falcon_wing/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/falcon_wing/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/falcon_wing/upper_arm",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     },
+     "upper_arm_short": {
+      "path": "chest/falcon_wing/upper_arm_short",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 9.0
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/falcon_wing/pauldron_deco",
+      "x": -0.75,
+      "y": 3.25,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 6.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/falcon_wing/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/falcon_wing/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/huntress_trail",
+   "attachments": {
+    "cape": {
+     "cape": {
+      "path": "chest/huntress_trail/cape",
+      "x": 9.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 14.0,
+      "height": 20.0
+     }
+    },
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/huntress_trail/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/huntress_trail/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/huntress_trail/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/huntress_trail/upper_arm",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 7.0,
+      "height": 11.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/huntress_trail/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/huntress_trail/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/huntress_trail/coat_tail",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 8.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/huntress_trail/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/huntress_trail/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/huntress_trail/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/huntress_trail/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/huntress_trail/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/huntress_trail/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/huntress_trail/upper_arm",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 7.0,
+      "height": 11.0
+     },
+     "upper_arm_short": {
+      "path": "chest/huntress_trail/upper_arm_short",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 7.0,
+      "height": 9.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/huntress_trail/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/huntress_trail/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
    "name": "chest/jarl_forge",
    "attachments": {
     "thigh_far": {
@@ -9352,6 +9990,185 @@
     "forearm_near": {
      "forearm": {
       "path": "chest/jarl_forge/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/jungle_wind",
+   "attachments": {
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/jungle_wind/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/jungle_wind/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/jungle_wind/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/jungle_wind/upper_arm",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 9.0,
+      "height": 11.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/jungle_wind/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/jungle_wind/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/jungle_wind/coat_tail",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 8.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/jungle_wind/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/jungle_wind/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/jungle_wind/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/jungle_wind/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/jungle_wind/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/jungle_wind/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     }
+    },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/jungle_wind/belt_front",
+      "x": -2.25,
+      "y": -3.75,
+      "rotation": -90.0,
+      "width": 5.0,
+      "height": 4.0
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/jungle_wind/upper_arm",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 9.0,
+      "height": 11.0
+     },
+     "upper_arm_short": {
+      "path": "chest/jungle_wind/upper_arm_short",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 9.0,
+      "height": 9.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/jungle_wind/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/jungle_wind/forearm",
       "x": 2.5,
       "y": -0.0,
       "rotation": 90.0,
@@ -16226,6 +17043,374 @@
    }
   },
   {
+   "name": "chest/rift_wind",
+   "attachments": {
+    "cape": {
+     "cape": {
+      "path": "chest/rift_wind/cape",
+      "x": 11.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 12.0,
+      "height": 23.0
+     }
+    },
+    "back_item": {
+     "back_item": {
+      "path": "chest/rift_wind/back_item",
+      "x": 5.25,
+      "y": -2.25,
+      "rotation": -90.0,
+      "width": 9.0,
+      "height": 11.0
+     }
+    },
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/rift_wind/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/rift_wind/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/rift_wind/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/rift_wind/upper_arm",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 8.0,
+      "height": 11.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/rift_wind/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/rift_wind/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/rift_wind/coat_tail",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 8.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/rift_wind/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/rift_wind/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/rift_wind/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/rift_wind/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/rift_wind/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/rift_wind/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/rift_wind/upper_arm",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 8.0,
+      "height": 11.0
+     },
+     "upper_arm_short": {
+      "path": "chest/rift_wind/upper_arm_short",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 8.0,
+      "height": 9.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/rift_wind/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/rift_wind/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/sand_track",
+   "attachments": {
+    "cape": {
+     "cape": {
+      "path": "chest/sand_track/cape",
+      "x": 10.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 16.0,
+      "height": 22.0
+     }
+    },
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/sand_track/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/sand_track/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/sand_track/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/sand_track/upper_arm",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/sand_track/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/sand_track/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/sand_track/coat_tail",
+      "x": 4.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 9.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/sand_track/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/sand_track/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/sand_track/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/sand_track/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/sand_track/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/sand_track/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/sand_track/upper_arm",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     },
+     "upper_arm_short": {
+      "path": "chest/sand_track/upper_arm_short",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 9.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/sand_track/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/sand_track/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
    "name": "chest/smith_line",
    "attachments": {
     "cape": {
@@ -16395,6 +17580,185 @@
     "forearm_near": {
      "forearm": {
       "path": "chest/smith_line/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/thousand_roads",
+   "attachments": {
+    "thigh_far": {
+     "thigh": {
+      "path": "chest/thousand_roads/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 7.0,
+      "height": 10.0
+     }
+    },
+    "shin_far": {
+     "shin": {
+      "path": "chest/thousand_roads/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 7.0,
+      "height": 9.5
+     }
+    },
+    "knee_far": {
+     "knee_cap": {
+      "path": "chest/thousand_roads/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/thousand_roads/upper_arm",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/thousand_roads/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/thousand_roads/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/thousand_roads/coat_tail",
+      "x": 4.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 9.0
+     }
+    },
+    "thigh_near": {
+     "thigh": {
+      "path": "chest/thousand_roads/thigh",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 7.0,
+      "height": 10.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "chest/thousand_roads/shin",
+      "x": 4.25,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 7.0,
+      "height": 9.5
+     }
+    },
+    "knee_near": {
+     "knee_cap": {
+      "path": "chest/thousand_roads/knee_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/thousand_roads/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/thousand_roads/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/thousand_roads/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     }
+    },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/thousand_roads/belt_front",
+      "x": -2.75,
+      "y": -4.25,
+      "rotation": -90.0,
+      "width": 4.0,
+      "height": 5.0
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/thousand_roads/upper_arm",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     },
+     "upper_arm_short": {
+      "path": "chest/thousand_roads/upper_arm_short",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 9.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/thousand_roads/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/thousand_roads/forearm",
       "x": 2.5,
       "y": -0.0,
       "rotation": 90.0,
@@ -18203,6 +19567,96 @@
    }
   },
   {
+   "name": "gloves/falcon_wing",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/falcon_wing/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/falcon_wing/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/falcon_wing/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/falcon_wing/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/huntress_trail",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/huntress_trail/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/huntress_trail/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/huntress_trail/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/huntress_trail/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
    "name": "gloves/jarl_forge",
    "attachments": {
     "bracer_far": {
@@ -18238,6 +19692,51 @@
     "hand_near": {
      "hand": {
       "path": "gloves/jarl_forge/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/jungle_wind",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/jungle_wind/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/jungle_wind/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/jungle_wind/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/jungle_wind/hand",
       "x": 0.5,
       "y": -0.0,
       "rotation": 90.0,
@@ -20318,6 +21817,96 @@
    }
   },
   {
+   "name": "gloves/rift_wind",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/rift_wind/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/rift_wind/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/rift_wind/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/rift_wind/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/sand_track",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/sand_track/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/sand_track/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/sand_track/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/sand_track/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
    "name": "gloves/smith_line",
    "attachments": {
     "bracer_far": {
@@ -20353,6 +21942,51 @@
     "hand_near": {
      "hand": {
       "path": "gloves/smith_line/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/thousand_roads",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/thousand_roads/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/thousand_roads/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/thousand_roads/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/thousand_roads/hand",
       "x": 0.5,
       "y": -0.0,
       "rotation": 90.0,
@@ -21121,11 +22755,56 @@
    }
   },
   {
+   "name": "helmet/falcon_wing",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/falcon_wing/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/huntress_trail",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/huntress_trail/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
    "name": "helmet/jarl_forge",
    "attachments": {
     "helmet": {
      "helmet": {
       "path": "helmet/jarl_forge/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/jungle_wind",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/jungle_wind/helmet",
       "x": 9.5,
       "y": 1.5,
       "rotation": -90.0,
@@ -23134,6 +24813,144 @@
    }
   },
   {
+   "name": "helmet/rift_wind",
+   "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/rift_wind/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/rift_wind/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/rift_wind/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/rift_wind/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/rift_wind/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/rift_wind/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/rift_wind/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/rift_wind/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/rift_wind/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/rift_wind/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/rift_wind/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/rift_wind/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "helmet": {
+     "helmet": {
+      "path": "helmet/rift_wind/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/sand_track",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/sand_track/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
    "name": "helmet/smith_line",
    "attachments": {
     "hair_fly": {
@@ -23247,6 +25064,21 @@
     "helmet": {
      "helmet": {
       "path": "helmet/smith_line/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/thousand_roads",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/thousand_roads/helmet",
       "x": 9.5,
       "y": 1.5,
       "rotation": -90.0,

@@ -5,6 +5,8 @@ import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
+LINE_ARG = sys.argv[1] if len(sys.argv) > 1 else "forge"
+
 import doll_diag as DG
 import doll_render as DR
 from doll_render import compose
@@ -82,5 +84,5 @@ def main(line, ids):
 
 
 if __name__ == "__main__":
-    import forge2x
-    main("forge", list(forge2x.LINE))
+    import importlib
+    main(LINE_ARG, list(importlib.import_module(f"{LINE_ARG}2x").LINE))
