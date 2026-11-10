@@ -1,0 +1,92 @@
+{
+ "unitsPerPixel": 1,
+ "variants": [
+  "flame",
+  "frost",
+  "thunder",
+  "shadow",
+  "light"
+ ],
+ "effects": {
+  "rune_slash": {
+   "sheet": "rune_slash_{variant}.png",
+   "source": "melee/sword-slash",
+   "fps": 30,
+   "frames": 24,
+   "columns": 5,
+   "frameSize": [
+    136,
+    104
+   ],
+   "pivot": [
+    44,
+    92
+   ],
+   "anchor": [
+    14,
+    2
+   ],
+   "layer": "front"
+  },
+  "rune_rise": {
+   "sheet": "rune_rise_{variant}.png",
+   "source": "melee/sword-slash",
+   "fps": 30,
+   "frames": 24,
+   "columns": 5,
+   "frameSize": [
+    136,
+    104
+   ],
+   "pivot": [
+    44,
+    11
+   ],
+   "anchor": [
+    18,
+    54
+   ],
+   "layer": "front"
+  },
+  "rune_spin": {
+   "sheet": "rune_spin_{variant}.png",
+   "source": "melee/spin-slash",
+   "fps": 30,
+   "frames": 25,
+   "columns": 4,
+   "frameSize": [
+    208,
+    104
+   ],
+   "pivot": [
+    104,
+    84
+   ],
+   "anchor": [
+    13,
+    6
+   ],
+   "layer": "front"
+  },
+  "rune_word": {
+   "sheet": "rune_word_{variant}.png",
+   "source": "runes/rune-word",
+   "fps": 30,
+   "frames": 28,
+   "columns": 6,
+   "frameSize": [
+    96,
+    96
+   ],
+   "pivot": [
+    48,
+    52
+   ],
+   "anchor": [
+    52,
+    30
+   ],
+   "layer": "front"
+  }
+ }
+}

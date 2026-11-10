@@ -16838,6 +16838,286 @@
     0
    ]
   },
+  "eyes/runedancer/eye_near_open": {
+   "size": [
+    4,
+    6
+   ],
+   "pivot": [
+    4.5,
+    14.5
+   ]
+  },
+  "eyes/runedancer/eye_near_half": {
+   "size": [
+    4,
+    6
+   ],
+   "pivot": [
+    4.5,
+    14.5
+   ]
+  },
+  "eyes/runedancer/eye_near_closed": {
+   "size": [
+    4,
+    6
+   ],
+   "pivot": [
+    4.5,
+    14.5
+   ]
+  },
+  "eyes/runedancer/eye_near_squint": {
+   "size": [
+    4,
+    6
+   ],
+   "pivot": [
+    4.5,
+    14.5
+   ]
+  },
+  "eyes/runedancer/eye_far_open": {
+   "size": [
+    4,
+    6
+   ],
+   "pivot": [
+    -5.5,
+    14.5
+   ]
+  },
+  "eyes/runedancer/eye_far_half": {
+   "size": [
+    4,
+    6
+   ],
+   "pivot": [
+    -5.5,
+    14.5
+   ]
+  },
+  "eyes/runedancer/eye_far_closed": {
+   "size": [
+    4,
+    6
+   ],
+   "pivot": [
+    -5.5,
+    14.5
+   ]
+  },
+  "eyes/runedancer/eye_far_squint": {
+   "size": [
+    4,
+    6
+   ],
+   "pivot": [
+    -5.5,
+    14.5
+   ]
+  },
+  "hair/runedancer/hair_front": {
+   "size": [
+    42,
+    46
+   ],
+   "pivot": [
+    26.5,
+    42.5
+   ]
+  },
+  "hair/runedancer/hair_fly": {
+   "size": [
+    60,
+    27
+   ],
+   "pivot": [
+    39.5,
+    24.5
+   ]
+  },
+  "outfit/runedancer/torso": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "outfit/runedancer/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "outfit/runedancer/torso_back": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "outfit/runedancer/pelvis": {
+   "size": [
+    20,
+    7
+   ],
+   "pivot": [
+    10.5,
+    0.5
+   ]
+  },
+  "outfit/runedancer/upper_arm": {
+   "size": [
+    14,
+    22
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "outfit/runedancer/upper_arm_short": {
+   "size": [
+    14,
+    18
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "outfit/runedancer/elbow_cap": {
+   "size": [
+    6,
+    6
+   ],
+   "pivot": [
+    2.5,
+    2.5
+   ]
+  },
+  "outfit/runedancer/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "outfit/runedancer/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "outfit/runedancer/bracer": {
+   "size": [
+    10,
+    4
+   ],
+   "pivot": [
+    4.5,
+    -1.5
+   ]
+  },
+  "outfit/runedancer/thigh": {
+   "size": [
+    12,
+    20
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "outfit/runedancer/knee_cap": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    4.5
+   ]
+  },
+  "outfit/runedancer/shin": {
+   "size": [
+    12,
+    19
+   ],
+   "pivot": [
+    6.5,
+    0.5
+   ]
+  },
+  "outfit/runedancer/foot": {
+   "size": [
+    20,
+    8
+   ],
+   "pivot": [
+    5.5,
+    1.5
+   ]
+  },
+  "outfit/runedancer/coat_tail": {
+   "size": [
+    10,
+    26
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "outfit/runedancer/cape": {
+   "size": [
+    14,
+    44
+   ],
+   "pivot": [
+    15.5,
+    0.5
+   ]
+  },
+  "weapon/rune_daggers/weapon": {
+   "size": [
+    12,
+    38
+   ],
+   "pivot": [
+    5.5,
+    29.5
+   ]
+  },
+  "weapon/rune_daggers/weapon_far": {
+   "size": [
+    12,
+    38
+   ],
+   "pivot": [
+    5.5,
+    29.5
+   ]
+  },
   "offhand/heater_r1/offhand": {
    "size": [
     16,

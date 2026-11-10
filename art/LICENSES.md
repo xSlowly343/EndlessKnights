@@ -105,3 +105,9 @@ Rubik и Lilita One — `Assets/Game/Art/Fonts`, лицензии лежат р�
 | [Female Adventurer](https://elthen.itch.io/2d-pixel-art-female-adventurer-sprites) | Elthen | «Feel free to use the sprites in commercial/non-commercial projects» | искательница приключений |
 | [Universal Base Characters](https://quaternius.itch.io/universal-base-characters), [Modular Character Outfits – Fantasy](https://quaternius.itch.io/modular-character-outfits-fantasy), [Universal Animation Library](https://quaternius.itch.io/universal-animation-library) (бесплатные части) | Quaternius | CC0 (License.txt в архивах) | 3D-тела, одежда и анимации, отрендеренные в пиксели (`hero-look.md` §12) |
 | [Luneblade Series – Little Axion](https://jesshiyoo.itch.io/little-axion) (бесплатная версия) | Jesshiyoo | коммерция и правки разрешены, автора указывать не обязательно; нельзя перепродавать и распространять файлы, нельзя для NFT и обучения ИИ | готовый персонаж с топором (`hero-look.md` §16) |
+
+## Эффекты героев (10.11.2026)
+
+| Набор | Автор | Лицензия | Что взято |
+| --- | --- | --- | --- |
+| [pixelfx](https://github.com/patch-gg/pixelfx) | Patch, Hugo Duprez | MIT (в титрах указать авторов и лицензию) | листы эффектов Runedancer в `art/heroes/spine/fx/runedancer/`: `melee/sword-slash` и `melee/spin-slash` с палитрами рун; свой эффект `art/heroes/spine/fx/src/rune-word.js` написан агентом на ядре pixelfx |

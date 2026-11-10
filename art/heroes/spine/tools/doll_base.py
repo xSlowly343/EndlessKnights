@@ -17,6 +17,7 @@ import armor as AR
 import armor_acc as ACC
 import forge2x as FORGE
 import hunter2x as HUNTER
+import runedancer2x as RUNEDANCER
 
 OUT = os.path.join(ROOT, "base", "hero")
 K = 2
@@ -212,6 +213,14 @@ def save(path, rows, pal, direct=False, native=False):
     return list(im.size)
 
 
+CLASSES = {"runedancer": RUNEDANCER}
+
+
+def class_data(cid):
+    mod = CLASSES[cid]
+    return mod.build(head_split(mod.SEX)[2])
+
+
 CLOSED_HELM_HIDES = ["hair_front", "hair_fly", "head", "blush"] + [f"eye_{side}_{state}" for side in ("near", "far") for state in ("open", "half", "closed", "squint")]
 
 
@@ -275,6 +284,22 @@ def export():
     for rarity in range(1, 12):
         for leaf in CLOSED_HELM_HIDES:
             put(f"helmet/plate_late_r{rarity}/{leaf}", ["."], {}, (0, 0), direct=True, native=True)
+    for cid in CLASSES:
+        data = class_data(cid)
+        pal = data["palette"]
+        eye_pal = dict(palette(), eye=data["eye"])
+        eyes = head_split(data["sex"])[3]
+        for side, box in zip(("near", "far"), eye_boxes(eyes)):
+            states, origin = eye_states(eyes, box)
+            for state, g in states.items():
+                put(f"eyes/{cid}/eye_{side}_{state}", g, eye_pal, [HEAD_PIVOT[0] - origin[0], HEAD_PIVOT[1] - origin[1]])
+        for skin, leaves in data["skins"].items():
+            for leaf, (txt, pivot) in leaves.items():
+                rows = grid(txt)
+                used = {ch for r in rows for ch in r} - {".", "o"} - set(pal)
+                if used:
+                    missing.setdefault(cid, set()).update(used)
+                put(f"{skin}/{leaf}", rows, pal, pivot, direct=True, native=True)
     if missing:
         print("missing palette letters:", {k: sorted(v) for k, v in missing.items()})
     for name, (txt, pivot) in AR.SHIELDS.items():

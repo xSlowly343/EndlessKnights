@@ -6,6 +6,7 @@ import sys
 from PIL import Image
 
 import doll_base as DB
+import runedancer_anim
 from doll_spine_check import capture
 
 sys.argv = sys.argv[:1] + [DB.DOLL_SRC]
@@ -19,6 +20,9 @@ HIP_X = 30
 SIDES = {"near": "F", "far": "B"}
 FAR_TINT = "e6e6e6ff"
 LIMB, UPRIGHT, LEVEL = -90.0, 90.0, 0.0
+FAR_WEAPON_REST = -140
+CLASS_ANIMS = {"runedancer": runedancer_anim}
+EVENTS = ("hit", "fx")
 
 SLOTS = [
     ("back", "cape", "cape", "cape", LIMB),
@@ -28,6 +32,7 @@ SLOTS = [
     ("back", "knee_far", "shin_far", "knee_cap", LIMB),
     ("back", "boot_top_far", "shin_far", "boot_top", LIMB),
     ("back", "foot_far", "foot_far", "foot", LEVEL),
+    ("back", "weapon_far", "weapon_far", "weapon_far", UPRIGHT),
     ("back", "upper_arm_far", "upper_arm_far", "upper_arm", LIMB),
     ("back", "pauldron_deco_far", "upper_arm_far", "pauldron_deco", LIMB),
     ("back", "elbow_far", "forearm_far", "elbow_cap", LIMB),
@@ -92,6 +97,8 @@ def pose_values(doll, pose):
         v[f"shin_{side}"] = k["sh" + s][1] - k["th" + s][1]
         if s == "F":
             v["weapon"] = 180 + k["w"][1] - a2
+        else:
+            v["weapon_far"] = 180 + pose.get("swB", FAR_WEAPON_REST) - a2
     v["coat_tail"] = -180 + k["coat"][1] - T
     v["hair_fly"] = k["hairfly"][1] - 180 - Hh
     return v
@@ -128,6 +135,7 @@ def bones(setup):
             b.append({"name": "weapon", "parent": "hand_near", "rotation": setup["weapon"], "length": 10})
         else:
             b.append({"name": "offhand", "parent": "hand_far", "inherit": "noRotationOrReflection"})
+            b.append({"name": "weapon_far", "parent": "hand_far", "rotation": setup["weapon_far"], "length": 10})
         hx, hy = hip_off[side]
         ix, iy = setup[f"ik_foot_{side}"]
         b += [{"name": f"thigh_{side}", "parent": "hip", "x": hx, "y": hy, "rotation": setup[f"thigh_{side}"], "length": 8},
@@ -193,7 +201,7 @@ POS_BONES = ["hip", "ik_foot_near", "ik_foot_far"]
 STEP_BONES = ["shoulder_near", "shoulder_far"]
 
 
-def animation(frames, setup, loop):
+def animation(frames, setup, loop, far_weapon=False, events=()):
     times, t = [], 0.0
     for _, ms in frames:
         times.append(round(t, 4))
@@ -206,7 +214,7 @@ def animation(frames, setup, loop):
         vals = vals + [vals[-1]]
     times = times + [end]
     bones_tl = {}
-    for b in ROT_BONES:
+    for b in ROT_BONES + (["weapon_far"] if far_weapon else []):
         prev, keys = None, []
         for tt, v in zip(times, vals):
             val = unwrap(prev, v[b] - setup[b])
@@ -220,7 +228,10 @@ def animation(frames, setup, loop):
     bones_tl.setdefault("forearm_near", {})["translate"] = [{"time": tt, "x": round(v["forearm_near_x"] - setup["forearm_near_x"], 3), "curve": "stepped"} for tt, v in zip(times, vals)]
     slots_tl = {"torso": {"attachment": [{"time": tt, "name": v["view"]} for tt, v in zip(times, vals)]},
                 "upper_arm_near": {"attachment": [{"time": tt, "name": "upper_arm_short" if v["short"] else "upper_arm"} for tt, v in zip(times, vals)]}}
-    return {"bones": bones_tl, "slots": slots_tl}
+    out = {"bones": bones_tl, "slots": slots_tl}
+    if events:
+        out["events"] = [{"time": times[i], "name": name, "string": value} for i, name, value in events]
+    return out
 
 
 def v8_sequences(doll):
@@ -277,19 +288,25 @@ def build():
             {"name": "cape_physics", "order": 4, "bone": "cape", "rotate": 1, "inertia": 0.7, "strength": 70, "damping": 0.85, "mass": 1.4, "limit": 600},
         ],
         "skins": [{"name": "default", "attachments": {}}] + skins(manifest),
+        "events": {name: {} for name in EVENTS},
         "animations": {},
     }
     for name, (frames, loop) in v8_sequences(doll).items():
         vals = [(pose_values(doll, P), ms) for P, ms in frames]
         skel["animations"][name] = animation(vals, setup, loop)
+    for cid, mod in CLASS_ANIMS.items():
+        for name, seq in mod.sequences().items():
+            vals = [(pose_values(doll, P), ms) for P, ms in seq["frames"]]
+            skel["animations"][f"{cid}/{name}"] = animation(vals, setup, seq.get("loop", False), True, seq.get("events", ()))
     with open(os.path.join(EXPORT, "hero.json"), "w") as f:
         json.dump(skel, f, indent=1)
     pack_atlas(manifest, "hero")
     layers = {}
     for i, (layer, slot, *_rest) in enumerate(SLOTS):
         layers.setdefault(layer, [i, i])[1] = i
-    presets = {"male": ["body/male", "hair/short_a", "eyes/a_male", "outfit/a", "weapon/sword"],
-               "female": ["body/female", "hair/long_b", "eyes/b_female", "outfit/b", "weapon/axe"]}
+    presets = {cid: DB.class_data(cid)["preset"] for cid in DB.CLASSES}
+    presets.update({"male": ["body/male", "hair/short_a", "eyes/a_male", "outfit/a", "weapon/sword"],
+               "female": ["body/female", "hair/long_b", "eyes/b_female", "outfit/b", "weapon/axe"]})
     json.dump({"layers": layers, "outline": manifest["outline"], "presets": presets}, open(os.path.join(EXPORT, "hero.meta.json"), "w"), indent=1)
     print("bones", len(skel["bones"]), "slots", len(slots), "skins", len(skel["skins"]), "animations", list(skel["animations"]))
 

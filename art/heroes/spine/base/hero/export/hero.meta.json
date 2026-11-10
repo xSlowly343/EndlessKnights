@@ -2,15 +2,15 @@
  "layers": {
   "back": [
    0,
-   14
+   15
   ],
   "body": [
-   15,
-   30
+   16,
+   31
   ],
   "front": [
-   31,
-   38
+   32,
+   39
   ]
  },
  "outline": [
@@ -19,6 +19,13 @@
   28
  ],
  "presets": {
+  "runedancer": [
+   "body/female",
+   "hair/runedancer",
+   "eyes/runedancer",
+   "outfit/runedancer",
+   "weapon/rune_daggers"
+  ],
   "male": [
    "body/male",
    "hair/short_a",
