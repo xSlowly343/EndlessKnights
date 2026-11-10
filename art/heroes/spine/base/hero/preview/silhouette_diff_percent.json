@@ -1,0 +1,18 @@
+{
+ "male_Idle": 8.1,
+ "male_Enter": 10.9,
+ "male_Hit1": 13.1,
+ "male_Hit2": 14.1,
+ "male_Hit3": 12.4,
+ "male_Exit1": 9.5,
+ "male_Exit2": 9.5,
+ "male_Exit3": 10.1,
+ "female_Idle": 7.7,
+ "female_Enter": 11.1,
+ "female_Hit1": 13.2,
+ "female_Hit2": 13.6,
+ "female_Hit3": 12.2,
+ "female_Exit1": 9.1,
+ "female_Exit2": 9.1,
+ "female_Exit3": 9.6
+}
