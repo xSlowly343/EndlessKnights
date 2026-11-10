@@ -214,6 +214,12 @@
    "color": "e6e6e6ff"
   },
   {
+   "name": "bracer_far",
+   "bone": "forearm_far",
+   "attachment": "bracer",
+   "color": "e6e6e6ff"
+  },
+  {
    "name": "hand_far",
    "bone": "hand_far",
    "attachment": "hand",
@@ -287,6 +293,11 @@
    "attachment": "hair_front"
   },
   {
+   "name": "helmet",
+   "bone": "head",
+   "attachment": "helmet"
+  },
+  {
    "name": "weapon",
    "bone": "weapon",
    "attachment": "weapon"
@@ -305,6 +316,11 @@
    "name": "forearm_near",
    "bone": "forearm_near",
    "attachment": "forearm"
+  },
+  {
+   "name": "bracer_near",
+   "bone": "forearm_near",
+   "attachment": "bracer"
   },
   {
    "name": "hand_near",
@@ -409,6 +425,5088 @@
       "rotation": -90.0,
       "width": 16,
       "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r1",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r1/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r1/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r1/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r1/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r10",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r10/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r10/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r10/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r10/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r11",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r11/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r11/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r11/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r11/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r2",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r2/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r2/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r2/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r2/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r3",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r3/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r3/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r3/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r3/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r4",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r4/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r4/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r4/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r4/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r5",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r5/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r5/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r5/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r5/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r6",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r6/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r6/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r6/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r6/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r7",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r7/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r7/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r7/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r7/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r8",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r8/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r8/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r8/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r8/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/cloth_r9",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/cloth_r9/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/cloth_r9/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/cloth_r9/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/cloth_r9/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r1",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r1/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r1/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r1/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r1/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r10",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r10/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r10/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r10/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r10/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r11",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r11/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r11/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r11/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r11/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r2",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r2/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r2/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r2/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r2/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r3",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r3/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r3/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r3/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r3/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r4",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r4/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r4/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r4/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r4/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r5",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r5/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r5/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r5/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r5/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r6",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r6/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r6/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r6/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r6/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r7",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r7/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r7/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r7/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r7/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r8",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r8/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r8/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r8/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r8/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/leather_r9",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/leather_r9/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/leather_r9/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/leather_r9/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/leather_r9/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r1",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r1/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r1/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r1/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r1/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r10",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r10/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r10/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r10/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r10/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r11",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r11/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r11/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r11/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r11/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r2",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r2/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r2/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r2/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r2/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r3",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r3/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r3/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r3/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r3/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r4",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r4/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r4/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r4/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r4/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r5",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r5/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r5/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r5/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r5/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r6",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r6/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r6/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r6/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r6/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r7",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r7/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r7/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r7/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r7/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r8",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r8/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r8/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r8/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r8/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/plate_r9",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/plate_r9/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/plate_r9/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/plate_r9/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 4,
+      "height": 9
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/plate_r9/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 6,
+      "height": 3
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r1",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r1/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r1/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r1/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r1/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r1/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r1/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r1/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r1/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r1/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r1/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r1/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r10",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r10/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r10/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r10/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r10/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r10/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r10/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r10/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r10/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r10/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r10/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r10/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r11",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r11/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r11/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r11/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r11/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r11/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r11/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r11/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r11/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r11/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r11/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r11/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r2",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r2/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r2/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r2/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r2/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r2/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r2/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r2/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r2/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r2/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r2/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r2/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r3",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r3/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r3/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r3/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r3/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r3/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r3/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r3/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r3/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r3/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r3/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r3/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r4",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r4/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r4/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r4/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r4/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r4/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r4/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r4/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r4/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r4/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r4/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r4/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r5",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r5/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r5/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r5/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r5/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r5/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r5/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r5/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r5/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r5/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r5/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r5/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r6",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r6/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r6/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r6/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r6/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r6/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r6/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r6/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r6/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r6/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r6/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r6/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r7",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r7/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r7/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r7/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r7/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r7/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r7/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r7/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r7/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r7/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r7/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r7/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r8",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r8/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r8/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r8/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r8/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r8/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r8/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r8/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r8/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r8/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r8/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r8/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/cloth_r9",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/cloth_r9/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/cloth_r9/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/cloth_r9/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/cloth_r9/coat_tail",
+      "x": 4.5,
+      "y": 1.5,
+      "rotation": 90.0,
+      "width": 8,
+      "height": 10
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/cloth_r9/torso",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_side": {
+      "path": "chest/cloth_r9/torso_side",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     },
+     "torso_back": {
+      "path": "chest/cloth_r9/torso_back",
+      "x": 4.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 18
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/cloth_r9/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/cloth_r9/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/cloth_r9/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/cloth_r9/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r1",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r1/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r1/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r1/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r1/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r1/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r1/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r1/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r1/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r1/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r1/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r1/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r10",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r10/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r10/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r10/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r10/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r10/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r10/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r10/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r10/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r10/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r10/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r10/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r11",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r11/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r11/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r11/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r11/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r11/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r11/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r11/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r11/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r11/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r11/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r11/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r2",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r2/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r2/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r2/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r2/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r2/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r2/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r2/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r2/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r2/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r2/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r2/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r3",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r3/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r3/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r3/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r3/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r3/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r3/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r3/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r3/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r3/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r3/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r3/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r4",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r4/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r4/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r4/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r4/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r4/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r4/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r4/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r4/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r4/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r4/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r4/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r5",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r5/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r5/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r5/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r5/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r5/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r5/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r5/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r5/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r5/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r5/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r5/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r6",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r6/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r6/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r6/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r6/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r6/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r6/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r6/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r6/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r6/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r6/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r6/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r7",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r7/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r7/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r7/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r7/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r7/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r7/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r7/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r7/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r7/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r7/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r7/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r8",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r8/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r8/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r8/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r8/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r8/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r8/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r8/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r8/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r8/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r8/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r8/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/leather_r9",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/leather_r9/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/leather_r9/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/leather_r9/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/leather_r9/coat_tail",
+      "x": 3.5,
+      "y": 1.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 8
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/leather_r9/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/leather_r9/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/leather_r9/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_r9/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/leather_r9/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/leather_r9/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/leather_r9/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r1",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r1/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r1/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r1/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r1/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r1/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r1/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r1/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r1/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r1/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r1/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r1/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r10",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r10/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r10/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r10/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r10/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r10/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r10/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r10/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r10/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r10/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r10/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r10/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r11",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r11/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r11/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r11/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r11/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r11/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r11/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r11/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r11/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r11/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r11/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r11/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r2",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r2/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r2/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r2/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r2/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r2/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r2/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r2/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r2/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r2/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r2/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r2/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r3",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r3/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r3/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r3/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r3/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r3/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r3/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r3/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r3/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r3/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r3/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r3/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r4",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r4/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r4/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r4/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r4/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r4/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r4/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r4/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r4/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r4/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r4/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r4/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r5",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r5/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r5/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r5/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r5/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r5/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r5/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r5/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r5/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r5/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r5/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r5/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r6",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r6/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r6/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r6/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r6/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r6/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r6/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r6/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r6/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r6/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r6/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r6/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r7",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r7/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r7/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r7/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r7/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r7/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r7/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r7/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r7/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r7/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r7/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r7/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r8",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r8/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r8/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r8/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r8/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r8/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r8/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r8/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r8/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r8/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r8/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r8/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/plate_r9",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/plate_r9/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/plate_r9/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/plate_r9/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/plate_r9/coat_tail",
+      "x": 2.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 5
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/plate_r9/torso",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_side": {
+      "path": "chest/plate_r9/torso_side",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     },
+     "torso_back": {
+      "path": "chest/plate_r9/torso_back",
+      "x": 6.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11,
+      "height": 14
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/plate_r9/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 8
+     },
+     "upper_arm_short": {
+      "path": "chest/plate_r9/upper_arm_short",
+      "x": 2.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 5
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/plate_r9/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 2,
+      "height": 2
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/plate_r9/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
      }
     }
    }
@@ -998,6 +6096,1491 @@
    }
   },
   {
+   "name": "gloves/cloth_r1",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r1/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r1/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r1/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r1/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/cloth_r10",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r10/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r10/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r10/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r10/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/cloth_r11",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r11/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r11/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r11/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r11/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/cloth_r2",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r2/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r2/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r2/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r2/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/cloth_r3",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r3/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r3/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r3/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r3/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/cloth_r4",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r4/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r4/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r4/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r4/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/cloth_r5",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r5/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r5/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r5/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r5/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/cloth_r6",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r6/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r6/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r6/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r6/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/cloth_r7",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r7/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r7/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r7/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r7/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/cloth_r8",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r8/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r8/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r8/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r8/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/cloth_r9",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/cloth_r9/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/cloth_r9/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/cloth_r9/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/cloth_r9/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r1",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r1/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r1/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r1/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r1/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r10",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r10/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r10/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r10/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r10/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r11",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r11/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r11/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r11/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r11/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r2",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r2/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r2/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r2/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r2/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r3",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r3/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r3/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r3/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r3/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r4",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r4/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r4/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r4/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r4/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r5",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r5/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r5/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r5/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r5/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r6",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r6/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r6/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r6/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r6/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r7",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r7/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r7/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r7/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r7/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r8",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r8/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r8/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r8/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r8/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/leather_r9",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/leather_r9/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/leather_r9/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/leather_r9/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/leather_r9/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r1",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r1/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r1/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r1/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r1/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r10",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r10/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r10/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r10/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r10/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r11",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r11/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r11/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r11/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r11/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r2",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r2/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r2/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r2/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r2/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r3",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r3/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r3/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r3/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r3/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r4",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r4/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r4/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r4/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r4/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r5",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r5/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r5/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r5/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r5/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r6",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r6/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r6/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r6/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r6/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r7",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r7/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r7/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r7/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r7/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r8",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r8/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r8/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r8/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r8/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/plate_r9",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/plate_r9/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/plate_r9/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/plate_r9/bracer",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/plate_r9/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    }
+   }
+  },
+  {
    "name": "hair/long_a",
    "attachments": {
     "hair_fly": {
@@ -1188,6 +7771,501 @@
     "hair_front": {
      "hair_front": {
       "path": "hair/short_d/hair_front",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r1",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r1/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r10",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r10/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r11",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r11/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r2",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r2/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r3",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r3/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r4",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r4/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r5",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r5/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r6",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r6/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r7",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r7/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r8",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r8/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/cloth_r9",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/cloth_r9/helmet",
+      "x": 11.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18,
+      "height": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r1",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r1/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r10",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r10/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r11",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r11/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r2",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r2/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r3",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r3/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r4",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r4/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r5",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r5/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r6",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r6/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r7",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r7/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r8",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r8/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/leather_r9",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/leather_r9/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r1",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r1/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r10",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r10/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r11",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r11/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r2",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r2/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r3",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r3/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r4",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r4/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r5",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r5/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r6",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r6/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r7",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r7/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r8",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r8/helmet",
+      "x": 8.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 18
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/plate_r9",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/plate_r9/helmet",
       "x": 8.5,
       "y": 1.5,
       "rotation": -90.0,

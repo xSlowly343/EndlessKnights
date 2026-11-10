@@ -30,10 +30,10 @@ def slot_range(*names):
 
 GROUPS = {
     "leg_far": slot_range("thigh_far", "knee_far", "shin_far", "foot_far"),
-    "arm_far": slot_range("upper_arm_far", "elbow_far", "forearm_far", "hand_far"),
+    "arm_far": slot_range("upper_arm_far", "elbow_far", "forearm_far", "bracer_far", "hand_far"),
     "leg_near": slot_range("thigh_near", "knee_near", "shin_near", "foot_near"),
-    "core": slot_range("pelvis", "torso", "head", "blush", "eye_far", "eye_near", "hair_front"),
-    "arm_near": slot_range("weapon", "upper_arm_near", "elbow_near", "forearm_near", "hand_near"),
+    "core": slot_range("pelvis", "torso", "head", "blush", "eye_far", "eye_near", "hair_front", "helmet"),
+    "arm_near": slot_range("weapon", "upper_arm_near", "elbow_near", "forearm_near", "bracer_near", "hand_near"),
 }
 
 
@@ -174,20 +174,35 @@ def zoom_sheet(key, entries, names, scale=4, cols=6, box=(8, 0, 72, 64)):
     sheet.save(os.path.join(OUT, f"zoom_{key}.png"))
 
 
-def main():
-    os.makedirs(OUT, exist_ok=True)
+def render(jobs, poses):
     link_export()
     meta = json.load(open(os.path.join(DS.EXPORT, "hero.meta.json")))
     layers = [meta["layers"][k] for k in ("back", "body", "front")]
-    jobs = [{"key": sex, "skins": meta["presets"][sex]} for sex in ("male", "female")]
-    for weapon in ("axe", "staff"):
-        jobs.append({"key": f"male_{weapon}", "skins": meta["presets"]["male"][:-1] + [f"weapon/{weapon}"]})
-    cfg = {"layers": layers, "groups": GROUPS, "poses": POSES, "jobs": jobs}
+    cfg = {"layers": layers, "groups": GROUPS, "poses": poses, "jobs": jobs}
     open(os.path.join(PROBE, "diag.html"), "w").write(PAGE.replace("CFG", json.dumps(cfg)))
     open(os.path.join(PROBE, "diag_shot.js"), "w").write(SHOT)
     res_path = os.path.join(PROBE, "check", "diag_result.json")
+    os.makedirs(os.path.dirname(res_path), exist_ok=True)
     subprocess.run(["node", "diag_shot.js", res_path], cwd=PROBE, check=True)
-    res = json.load(open(res_path))
+    return json.load(open(res_path)), meta
+
+
+def faults_of(entry):
+    faults = {}
+    for g, url in entry["groups"].items():
+        p = pieces(decode(url))
+        if len(p) > 1:
+            faults[g] = p[1:]
+    return faults
+
+
+def main():
+    os.makedirs(OUT, exist_ok=True)
+    meta = json.load(open(os.path.join(DS.EXPORT, "hero.meta.json")))
+    jobs = [{"key": sex, "skins": meta["presets"][sex]} for sex in ("male", "female")]
+    for weapon in ("axe", "staff"):
+        jobs.append({"key": f"male_{weapon}", "skins": meta["presets"]["male"][:-1] + [f"weapon/{weapon}"]})
+    res, meta = render(jobs, POSES)
     report = {}
     for job in jobs:
         key = job["key"]
@@ -200,11 +215,7 @@ def main():
         for i, name in enumerate(names):
             entry = res[key][name]
             img = compose(entry["layers"])
-            faults = {}
-            for g, url in entry["groups"].items():
-                p = pieces(decode(url))
-                if len(p) > 1:
-                    faults[g] = p[1:]
+            faults = faults_of(entry)
             if faults:
                 report.setdefault(key, {})[name] = faults
             x, y = (i % cols) * cell[0], (i // cols) * cell[1]

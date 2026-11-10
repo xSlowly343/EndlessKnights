@@ -13,6 +13,7 @@ sys.path.insert(0, DOLL_SRC)
 import front as FR
 import body as BD
 from pal import MAT, LETTER, OUTLINE
+import armor as AR
 
 OUT = os.path.join(ROOT, "base", "hero")
 SCALE = 8
@@ -181,8 +182,18 @@ def hair_fly(sex):
     return grid(FR.HAIR_F_FLY if sex == "female" else FR.HAIR_M_FLY)
 
 
-def save(path, rows, pal):
-    im = image(rows, pal)
+def image_direct(rows, colors):
+    im = Image.new("RGBA", (len(rows[0]), len(rows)))
+    for y, r in enumerate(rows):
+        for x, ch in enumerate(r):
+            c = OUTLINE if ch == "o" else colors.get(ch)
+            if c:
+                im.putpixel((x, y), tuple(c) + (255,))
+    return im
+
+
+def save(path, rows, pal, direct=False):
+    im = image_direct(rows, pal) if direct else image(rows, pal)
     for folder, out in (("parts_1x", im), (f"parts_{SCALE}x", upscale(im))):
         full = os.path.join(OUT, folder, path + ".png")
         os.makedirs(os.path.dirname(full), exist_ok=True)
@@ -194,8 +205,8 @@ def export():
     manifest = {"source": "art/heroes/doll/src (front.py, body.py, pal.py, looks.json)", "scale": SCALE, "outline": list(OUTLINE), "attachments": {}}
     att = manifest["attachments"]
 
-    def put(path, rows, pal, pivot, **extra):
-        att[path] = dict({"size": save(path, rows, pal), "pivot": pivot}, **extra)
+    def put(path, rows, pal, pivot, direct=False, **extra):
+        att[path] = dict({"size": save(path, rows, pal, direct), "pivot": pivot}, **extra)
 
     hair_shape = {"male": "short", "female": "long"}
     for sex in ("male", "female"):
@@ -221,6 +232,13 @@ def export():
             put(f"outfit/{look}/{name}", grid(txt), pal, pivot)
     for name, (txt, grip) in WEAPONS.items():
         put(f"weapon/{name}/weapon", grid(txt), palette(), grip)
+    for material in AR.SETS:
+        for rarity in range(1, 12):
+            pal = AR.palette(material, rarity, palette())
+            for slot, pieces in AR.SLOT_PIECES.items():
+                for leaf in pieces:
+                    txt, pivot = AR.piece(material, leaf)
+                    put(f"{slot}/{material}_r{rarity}/{leaf}", grid(txt), pal, pivot, direct=True)
     with open(os.path.join(OUT, "attachments.json"), "w") as f:
         json.dump(manifest, f, indent=1)
     return manifest

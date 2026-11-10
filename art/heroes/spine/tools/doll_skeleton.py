@@ -28,6 +28,7 @@ SLOTS = [
     ("back", "upper_arm_far", "upper_arm_far", "upper_arm", LIMB),
     ("back", "elbow_far", "forearm_far", "elbow_cap", LIMB),
     ("back", "forearm_far", "forearm_far", "forearm", LIMB),
+    ("back", "bracer_far", "forearm_far", "bracer", LIMB),
     ("back", "hand_far", "hand_far", "hand", LIMB),
     ("back", "coat_tail", "coat_tail", "coat_tail", LIMB),
     ("back", "hair_fly", "hair_fly", "hair_fly", LIMB),
@@ -42,10 +43,12 @@ SLOTS = [
     ("body", "eye_far", "head", "eye_open", UPRIGHT),
     ("body", "eye_near", "head", "eye_open", UPRIGHT),
     ("body", "hair_front", "head", "hair_front", UPRIGHT),
+    ("body", "helmet", "head", "helmet", UPRIGHT),
     ("front", "weapon", "weapon", "weapon", UPRIGHT),
     ("front", "upper_arm_near", "upper_arm_near", "upper_arm", LIMB),
     ("front", "elbow_near", "forearm_near", "elbow_cap", LIMB),
     ("front", "forearm_near", "forearm_near", "forearm", LIMB),
+    ("front", "bracer_near", "forearm_near", "bracer", LIMB),
     ("front", "hand_near", "hand_near", "hand", LIMB),
 ]
 
@@ -212,7 +215,7 @@ def v8_sequences(doll):
 def pack_atlas(manifest, name):
     paths = sorted(manifest["attachments"])
     ims = {p: Image.open(os.path.join(DB.OUT, f"parts_{DB.SCALE}x", p + ".png")) for p in paths}
-    W, x, y, row, pad = 1024, 0, 0, 0, 2
+    W, x, y, row, pad = 2048, 0, 0, 0, 2
     pos = {}
     for p, im in sorted(ims.items(), key=lambda kv: (-kv[1].height, kv[0])):
         if x + im.width > W:
