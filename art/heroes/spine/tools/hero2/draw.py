@@ -10,6 +10,7 @@ MATERIALS = {
     "trim": [(120, 70, 20), (190, 120, 30), (240, 180, 50), (255, 230, 130)],
     "scarf": [(96, 16, 36), (160, 28, 48), (216, 52, 60), (250, 110, 90)],
     "cloth": [(22, 18, 36), (40, 34, 62), (62, 54, 92), (90, 82, 130)],
+    "pants": [(44, 36, 70), (78, 68, 116), (112, 100, 156), (150, 140, 196)],
     "boot": [(60, 30, 24), (104, 56, 36), (150, 88, 52), (196, 130, 80)],
     "steel": [(50, 58, 84), (120, 134, 164), (190, 204, 224), (245, 250, 255)],
     "eye": [(40, 24, 40), (24, 110, 120), (60, 190, 180), (255, 255, 255)],
@@ -136,26 +137,33 @@ def limb(length, r0, r1, material, pad=2):
 
 
 def thigh():
-    p = limb(15, 5, 4, "cloth")
-    return p.shade((0, -1), 2).outline()
+    p = limb(17, 6, 5, "pants")
+    x0, cy = p.pivot
+    p.shade((0, -1), 2)
+    p.line([(x0 + 2, cy + 2), (x0 + 13, cy + 2)], "pants", 1)
+    p.ell((x0 + 14, cy - 4, x0 + 19, cy + 1), "pants", 3)
+    return p.outline()
 
 
 def shin():
-    p = limb(15, 4, 4, "cloth")
-    x0 = p.pivot[0]
-    p.capsule(x0 + 5, x0 + 15, p.pivot[1], 4, 4, "boot")
-    p.rect((x0 + 4, p.pivot[1] - 5, x0 + 6, p.pivot[1] + 5), "boot", 3)
+    p = limb(17, 5, 5, "pants", pad=3)
+    x0, cy = p.pivot
+    p.capsule(x0 + 6, x0 + 17, cy, 5, 5, "boot")
+    p.poly([(x0 + 3, cy - 7), (x0 + 8, cy - 6), (x0 + 8, cy + 6), (x0 + 3, cy + 7)], "boot")
     p.shade((0, -1), 2)
-    p.rect((x0 + 4, p.pivot[1] - 5, x0 + 5, p.pivot[1] + 5), "trim", 2)
+    p.rect((x0 + 3, cy - 7, x0 + 4, cy + 7), "trim", 2)
+    p.line([(x0 + 9, cy - 2), (x0 + 16, cy - 2)], "boot", 3)
     return p.outline()
 
 
 def foot():
-    p = Part(15, 9, (4, 3))
-    p.poly([(1, 1), (7, 1), (9, 3), (13, 5), (13, 7), (1, 7)], "boot")
+    p = Part(19, 11, (6, 4))
+    p.poly([(1, 1), (10, 1), (12, 4), (16, 5), (17, 7), (17, 9), (1, 9)], "boot")
+    p.ell((11, 4, 17, 9), "boot")
     p.shade((1, -1), 1)
-    p.rect((1, 7, 13, 7), "boot", 0)
-    p.dot(11, 4, "boot", 3).dot(10, 4, "boot", 3)
+    p.rect((1, 9, 17, 9), "boot", 0)
+    p.rect((1, 8, 4, 9), "boot", 0)
+    p.line([(13, 5), (15, 6)], "boot", 3)
     return p.outline()
 
 
@@ -187,7 +195,7 @@ def hand():
 
 def pelvis():
     p = Part(22, 14, (11, 4))
-    p.poly([(4, 2), (17, 2), (19, 8), (14, 12), (11, 9), (8, 12), (2, 8)], "cloth")
+    p.poly([(4, 2), (17, 2), (19, 8), (14, 12), (11, 9), (8, 12), (2, 8)], "pants")
     p.shade((1, -1), 2)
     p.rect((4, 2, 17, 3), "coat", 1)
     return p.outline()

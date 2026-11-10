@@ -29,8 +29,8 @@ TRANSLATE = {"cog": ("cog_x", "cog_y"), "ik_foot_n": ("fn_x", "fn_y"), "ik_foot_
 SCALE = {"cog": ("sq_x", "sq_y"), "weapon": ("wsx", None), "shadow": ("sh", "sh")}
 
 STANCE = {
-    "cog_x": -2, "cog_y": -6, "spine": -8, "chest": -5, "neck": 3, "head": 9,
-    "fn_x": -9, "ff_x": 10,
+    "cog_x": -2, "cog_y": -8, "spine": -8, "chest": -5, "neck": 3, "head": 9,
+    "fn_x": -13, "ff_x": 13,
     "ua_n": -38, "fa_n": 28, "sw": -152,
     "ua_f": 30, "fa_f": 62, "hd_f": 10,
     "pony": 6, "pony_c": -6, "scarf": 4, "scarf_c": -5, "skb": -4, "skf": 4,
@@ -74,7 +74,7 @@ def bake(name, duration, keys, loop=False, layer=None, slots=None, fx=None, even
             layer(t, p)
         get = lambda n: p.get(n, DEFAULTS.get(n, 0.0))
         p["wp"] = get("sw") - sum(get(n) for n in ("cog_r", "spine", "chest", "ua_n", "fa_n", "hd_n"))
-        p["sh"] = max(0.45, 1 - max(0.0, get("cog_y") + 6) / 50)
+        p["sh"] = max(0.45, 1 - max(0.0, get("cog_y") + 8) / 50)
         frames.append((round(t, 4), p))
     bones = {}
 
@@ -176,10 +176,10 @@ def hit1():
     keys = [
         (0, "lin", STANCE),
         (0.09, "out", {"cog_x": -6, "cog_y": -11, "spine": -18, "chest": -12, "head": 18, "ua_n": -62, "fa_n": 14, "sw": -176,
-                       "ua_f": 8, "fa_f": 80, "sq_y": 0.95, "sq_x": 1.04, "fn_x": -10, "pony": 20, "scarf": 14}),
+                       "ua_f": 8, "fa_f": 80, "sq_y": 0.95, "sq_x": 1.04, "fn_x": -14, "pony": 20, "scarf": 14}),
         (0.12, "in", {"cog_x": 2, "cog_y": -8, "spine": -8, "chest": 0, "ua_n": 20, "fa_n": 6, "sw": -70, "wsx": 1.3, "sq_y": 1.0, "sq_x": 1.0}),
         (0.15, "lin", {"cog_x": 15, "cog_y": -8, "spine": 4, "chest": 14, "head": -6, "ua_n": 118, "fa_n": 12, "sw": 72, "wsx": 1.15,
-                       "ff_x": 25, "fn_x": -5, "fn_y": 2, "fn_r": -32, "ua_f": -40, "fa_f": 30, "sq_y": 1.05, "sq_x": 0.97,
+                       "ff_x": 27, "fn_x": -10, "fn_y": 2, "fn_r": -32, "ua_f": -40, "fa_f": 30, "sq_y": 1.05, "sq_x": 0.97,
                        "pony": -28, "pony_c": -12, "scarf": -24, "scarf_c": -10, "skb": -18, "skf": -14}),
         (0.21, "out", {"cog_x": 17, "cog_y": -6, "spine": 9, "chest": 15, "ua_n": 140, "sw": 108, "wsx": 1.0, "sq_y": 1.02, "sq_x": 1.0}),
         (0.30, "io", {"cog_x": 14, "cog_y": -7, "ua_n": 132, "sw": 100}),
@@ -196,7 +196,7 @@ def hit2():
                        "ua_f": 70, "fa_f": 20, "sq_y": 1.04, "sq_x": 0.97, "fn_x": -8, "ff_x": 8, "ff_y": 3, "pony": -14, "scarf": -10}),
         (0.12, "in", {"cog_x": 4, "cog_y": -7, "spine": -8, "chest": -2, "ua_n": 128, "fa_n": 14, "sw": 58, "wsx": 1.3, "ff_x": 14, "ff_y": 2}),
         (0.15, "lin", {"cog_x": 16, "cog_y": -14, "spine": -28, "chest": -14, "head": 24, "ua_n": 58, "fa_n": 4, "sw": -38, "wsx": 1.15,
-                       "ff_x": 26, "ff_y": 0, "fn_x": -8, "fn_y": 2, "fn_r": -34, "ua_f": -50, "fa_f": 40, "sq_y": 0.95, "sq_x": 1.04,
+                       "ff_x": 28, "ff_y": 0, "fn_x": -12, "fn_y": 2, "fn_r": -34, "ua_f": -50, "fa_f": 40, "sq_y": 0.95, "sq_x": 1.04,
                        "pony": 30, "pony_c": 12, "scarf": 26, "scarf_c": 10, "skb": 16, "skf": 10}),
         (0.21, "out", {"cog_y": -15, "spine": -32, "ua_n": 44, "sw": -62, "wsx": 1.0, "sq_y": 0.97, "sq_x": 1.02}),
         (0.30, "io", {"cog_y": -13, "spine": -28, "sw": -56, "sq_y": 1.0, "sq_x": 1.0}),
@@ -220,7 +220,7 @@ def hit3():
         (0.34, "in", {"cog_x": 11, "cog_y": 6, "spine": -6, "chest": 0, "ua_n": 130, "fa_n": 16, "sw": 50, "wsx": 1.35,
                       "fn_y": 10, "ff_y": 10, "ff_x": 18, "fn_x": -10, "sq_y": 1.1, "sq_x": 0.93}),
         (0.37, "lin", {"cog_x": 15, "cog_y": -18, "spine": -36, "chest": -18, "head": 34, "ua_n": 52, "fa_n": 2, "sw": -64, "wsx": 1.2,
-                       "fn_x": -9, "fn_y": 0, "fn_r": 0, "ff_x": 26, "ff_y": 0, "ff_r": 0, "ua_f": -60, "fa_f": 50,
+                       "fn_x": -13, "fn_y": 0, "fn_r": 0, "ff_x": 27, "ff_y": 0, "ff_r": 0, "ua_f": -60, "fa_f": 50,
                        "sq_y": 0.86, "sq_x": 1.12, "pony": 44, "pony_c": 16, "scarf": 36, "scarf_c": 14, "skb": 24, "skf": 16}),
         (0.45, "back", {"cog_y": -15, "sq_y": 1.0, "sq_x": 1.0, "wsx": 1.0, "sw": -60}),
         (0.60, "io", {"cog_y": -14, "spine": -32}),
@@ -248,10 +248,11 @@ def run():
         ph = 2 * math.pi * t / period
         for side, off in (("fn", 0.0), ("ff", math.pi)):
             a = ph + off
-            p[side + "_x"] = 13 * math.cos(a) + 1
-            p[side + "_y"] = max(0.0, 10 * math.sin(a)) + (3 if math.sin(a) > 0 else 0)
-            p[side + "_r"] = -30 * math.sin(a) if math.sin(a) > 0 else 8 * math.cos(a)
-        p["cog_y"] = -7 + 2.2 * abs(math.sin(ph))
+            lift = max(0.0, math.sin(a))
+            p[side + "_x"] = -17 * math.cos(a) + 2
+            p[side + "_y"] = 14 * lift ** 0.8
+            p[side + "_r"] = -55 * lift * max(0.0, math.cos(a)) + 22 * lift * max(0.0, -math.cos(a)) - 30 * lift
+        p["cog_y"] = -9 + 3.0 * abs(math.cos(ph))
         p["sq_y"] = 1 + 0.03 * math.sin(2 * ph)
         p["chest"] = -8 + 5 * math.sin(ph)
         p["ua_f"] = 20 + 40 * math.cos(ph)
