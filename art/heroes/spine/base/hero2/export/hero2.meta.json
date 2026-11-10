@@ -1,0 +1,58 @@
+{
+ "unitsPerPixel": 1,
+ "textureScale": 4,
+ "preset": [
+  "hero/warden",
+  "weapon/sword"
+ ],
+ "layers": {
+  "under": [
+   0,
+   1
+  ],
+  "body": [
+   2,
+   31
+  ],
+  "over": [
+   32,
+   32
+  ]
+ },
+ "animations": {
+  "Idle": {
+   "duration": 2.4,
+   "loop": true
+  },
+  "Hit1": {
+   "duration": 0.52,
+   "loop": false
+  },
+  "Hit2": {
+   "duration": 0.52,
+   "loop": false
+  },
+  "Hit3": {
+   "duration": 0.84,
+   "loop": false
+  },
+  "Flourish": {
+   "duration": 0.7,
+   "loop": false
+  },
+  "Run": {
+   "duration": 0.84,
+   "loop": true
+  },
+  "Cast": {
+   "duration": 0.72,
+   "loop": false
+  },
+  "Hurt": {
+   "duration": 0.4,
+   "loop": false
+  }
+ },
+ "bones": 34,
+ "slots": 33
+}
