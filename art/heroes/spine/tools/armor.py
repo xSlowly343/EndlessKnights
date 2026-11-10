@@ -7,6 +7,7 @@ FIXED = {"B": ("leather", 1), "b": ("leather", 2), "n": ("leather", 3), "N": ("l
          "P": ("shirt", 1), "p": ("shirt", 2), "q": ("shirt", 3),
          "S": ("skin", 1), "s": ("skin", 2), "x": ("skin", 0)}
 SHADOW = (40, 30, 42)
+from armor_acc import EXTRA
 FUR_TONES = [(132, 112, 96), (190, 174, 150), (224, 212, 192), (246, 240, 228)]
 
 RARITY_HEX = ["9AA3B5", "E6E9F0", "4FC277", "5B9BFF", "B07CFF", "FF9A3C", "FF5A5A", "3FE0D0", None, "1E2370", "FFF4D6"]
@@ -70,6 +71,7 @@ def palette(base, r, mat):
         pal[ch] = trim[i] if material != "cloth" else trim[min(3, i + 1) if r < 9 else i]
     for ch, (m, i) in FIXED.items():
         pal[ch] = mat[m][i]
+    pal.update(EXTRA)
     return pal
 
 
@@ -751,6 +753,57 @@ oTgo.......
 oVvo.......
 .oo........
 """, (9, 0))
+
+PLATE_LATE["upper_arm"] = ("..VYyyv..\n.VMmwwWv.\nVMMmmwwWv\n#MMmmmwwM\n.#MMmwwM.\n..VYyYv..\n...Mmw...\n...Mmw...\n...VYv...", (4, 1))
+PLATE_LATE["upper_arm_short"] = ("..VYyyv..\n.VMmwwWv.\nVMMmmwwWv\n#MMmmmwwM\n.#MMmwwM.\n..VYyYv..\n...VYv...", (4, 1))
+PLATE_LATE["hand"] = ("VYyyv\nMmmwW\nMmmwW\n#MmmM\n.oMo.", (2, 1))
+PLATE_LATE["bracer"] = ("VYyyv\nMmmwW\n.Mmw.\n.Mmw.", (2, -2))
+PLATE_LATE["shin"] = (".VWwv.\nVMmwWv\n.#Mmw.\n.#MmW.\n.VYyv.\n.#Mmw.\n.#MmW.\n.#Mmw.\n.VYyv.", (3, 0))
+PLATE_LATE["foot"] = ("o#MMmwo.\no#MmmwWo\noooooooo", (1, 0))
+PLATE_LATE["torso"] = ("\n".join("." + r + "." for r in PLATE_LATE["torso"].strip("\n").split("\n")[:10]) + """
+oWMMDTTTtMmwo
+o#MMDTTTtMmwo
+oVYYDTTTtYYvo
+o#MMDTTTtMmwo
+oVYvDTTTtVYvo
+ooo.DTTTg.ooo
+....VYYYv....
+""", (6, 13))
+LEATHER_LATE["upper_arm"] = (".VYyv.\n#MmmwW\n.#MmwW\n..VYv.\n..Mmw.\n..Mmw.\n..Mmw.\n..Mmw.\n..VYv.", (3, 0))
+LEATHER_LATE["upper_arm_short"] = (".VYyv.\n#MmmwW\n.#MmwW\n..VYv.\n..Mmw.\n..VYv.", (3, 0))
+LEATHER_LATE["hand"] = ("Mmww\nNnnN\nSss.\noSo.", (1, 1))
+LEATHER_LATE["shin"] = ("DTTgg\n#MmwW\nNnnNN\n#Mmw.\nNnnN.\n#Mmw.\nNnnN.\n#Mmw.\n#Mmw.", (2, 0))
+CLOTH_LATE["upper_arm"] = (".DTTg.\nDTTTTg\nDTTTtg\n.VYYv.\n..Mmw.\n..Mmw.\n..MCw.\n..Mmw.\n..VYv.", (3, 0))
+CLOTH_LATE["upper_arm_short"] = (".DTTg.\nDTTTTg\nDTTTtg\n.VYYv.\n..VYv.", (3, 0))
+PLATE_EARLY["upper_arm"] = (".mMm.\nmMmMw\n.mMw.\n.Mmw.\n.mMw.\n.Mmw.\n.mMw.\n.VYv.", (2, 0))
+PLATE_EARLY["upper_arm_short"] = (".mMm.\nmMmMw\n.mMw.\n.Mmw.\n.VYv.", (2, 0))
+LEATHER_EARLY["upper_arm"] = (".KkJ.\nKkkjJ\n.Mmw.\n.Mmw.\n.Mmw.\n.Mmw.\n.Mmw.\n.VYv.", (2, 0))
+LEATHER_EARLY["upper_arm_short"] = (".KkJ.\nKkkjJ\n.Mmw.\n.Mmw.\n.VYv.", (2, 0))
+
+SHIELDS = {
+    "heater": ("""
+oooooooo
+oWDTTTgo
+oMTTYTgo
+oMTYYYgo
+oMTTYTgo
+oMTTYTgo
+.oMTTgo.
+.oMTtgo.
+..oMgo..
+...oo...
+""", (4, 4)),
+    "round": ("""
+..oooo..
+.oBbbno.
+oBbYYbno
+oBYMwYbo
+oBYMMYbo
+oBbYYbno
+.oBbbno.
+..oooo..
+""", (4, 4)),
+}
 
 SETS = {"plate_early": PLATE_EARLY, "plate_late": PLATE_LATE, "leather_early": LEATHER_EARLY,
         "leather_late": LEATHER_LATE, "cloth_early": CLOTH_EARLY, "cloth_late": CLOTH_LATE}

@@ -22,11 +22,13 @@ LIMB, UPRIGHT, LEVEL = -90.0, 90.0, 0.0
 
 SLOTS = [
     ("back", "cape", "cape", "cape", LIMB),
+    ("back", "back_item", "back_item", "back_item", UPRIGHT),
     ("back", "thigh_far", "thigh_far", "thigh", LIMB),
     ("back", "knee_far", "shin_far", "knee_cap", LIMB),
     ("back", "shin_far", "shin_far", "shin", LIMB),
     ("back", "foot_far", "foot_far", "foot", LEVEL),
     ("back", "upper_arm_far", "upper_arm_far", "upper_arm", LIMB),
+    ("back", "pauldron_deco_far", "upper_arm_far", "pauldron_deco", LIMB),
     ("back", "elbow_far", "forearm_far", "elbow_cap", LIMB),
     ("back", "forearm_far", "forearm_far", "forearm", LIMB),
     ("back", "bracer_far", "forearm_far", "bracer", LIMB),
@@ -39,14 +41,19 @@ SLOTS = [
     ("body", "shin_near", "shin_near", "shin", LIMB),
     ("body", "foot_near", "foot_near", "foot", LEVEL),
     ("body", "torso", "torso", "torso", UPRIGHT),
+    ("body", "belt_front", "belt", "belt_front", UPRIGHT),
+    ("body", "belt_hang", "belt_hang", "belt_hang", LIMB),
     ("body", "head", "head", "head", UPRIGHT),
     ("body", "blush", "head", "blush", UPRIGHT),
     ("body", "eye_far", "head", "eye_open", UPRIGHT),
     ("body", "eye_near", "head", "eye_open", UPRIGHT),
     ("body", "hair_front", "head", "hair_front", UPRIGHT),
     ("body", "helmet", "head", "helmet", UPRIGHT),
+    ("body", "crest", "crest", "crest", UPRIGHT),
+    ("front", "offhand", "offhand", "offhand", LEVEL),
     ("front", "weapon", "weapon", "weapon", UPRIGHT),
     ("front", "upper_arm_near", "upper_arm_near", "upper_arm", LIMB),
+    ("front", "pauldron_deco_near", "upper_arm_near", "pauldron_deco", LIMB),
     ("front", "elbow_near", "forearm_near", "elbow_cap", LIMB),
     ("front", "forearm_near", "forearm_near", "forearm", LIMB),
     ("front", "bracer_near", "forearm_near", "bracer", LIMB),
@@ -104,6 +111,10 @@ def bones(setup):
          {"name": "coat_tail", "parent": "torso", "x": 3.0, "y": 4.5, "rotation": setup["coat_tail"], "length": 8},
          {"name": "cape", "parent": "torso", "x": 12.0, "y": 0.5, "rotation": 174, "length": 26},
          {"name": "head", "parent": "torso", "x": 13, "rotation": setup["head"], "length": 12},
+         {"name": "crest", "parent": "head", "x": 16.0, "y": 0.0},
+         {"name": "back_item", "parent": "torso", "x": 9.0, "y": 6.5, "rotation": 6},
+         {"name": "belt", "parent": "torso", "x": 4.0, "y": 0.0},
+         {"name": "belt_hang", "parent": "torso", "x": 3.5, "y": 2.5, "rotation": 180, "length": 6},
          {"name": "hair_fly", "parent": "head", "x": 8.0, "y": 6.0, "rotation": setup["hair_fly"], "length": 8}]
     for side in ("far", "near"):
         sx, sy = setup[f"shoulder_{side}"]
@@ -113,6 +124,8 @@ def bones(setup):
               {"name": f"hand_{side}", "parent": f"forearm_{side}", "x": 4, "length": 2}]
         if side == "near":
             b.append({"name": "weapon", "parent": "hand_near", "rotation": setup["weapon"], "length": 10})
+        else:
+            b.append({"name": "offhand", "parent": "hand_far", "inherit": "noRotationOrReflection"})
         hx, hy = hip_off[side]
         ix, iy = setup[f"ik_foot_{side}"]
         b += [{"name": f"thigh_{side}", "parent": "hip", "x": hx, "y": hy, "rotation": setup[f"thigh_{side}"], "length": 8},
@@ -256,6 +269,8 @@ def build():
         "physics": [
             {"name": "hair_fly_physics", "order": 2, "bone": "hair_fly", "rotate": 1, "inertia": 0.5, "strength": 90, "damping": 0.75, "mass": 1, "limit": 600},
             {"name": "coat_tail_physics", "order": 3, "bone": "coat_tail", "rotate": 1, "inertia": 0.6, "strength": 110, "damping": 0.8, "mass": 1, "limit": 600},
+            {"name": "back_item_physics", "order": 5, "bone": "back_item", "rotate": 1, "inertia": 0.5, "strength": 140, "damping": 0.8, "mass": 1, "limit": 600},
+            {"name": "belt_hang_physics", "order": 6, "bone": "belt_hang", "rotate": 1, "inertia": 0.8, "strength": 60, "damping": 0.7, "mass": 1, "limit": 600},
             {"name": "cape_physics", "order": 4, "bone": "cape", "rotate": 1, "inertia": 0.7, "strength": 70, "damping": 0.85, "mass": 1.4, "limit": 600},
         ],
         "skins": [{"name": "default", "attachments": {}}] + skins(manifest),

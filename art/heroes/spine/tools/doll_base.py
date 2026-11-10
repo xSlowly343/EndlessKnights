@@ -14,6 +14,7 @@ import front as FR
 import body as BD
 from pal import MAT, LETTER, OUTLINE
 import armor as AR
+import armor_acc as ACC
 
 OUT = os.path.join(ROOT, "base", "hero")
 SCALE = 8
@@ -239,6 +240,12 @@ def export():
                 for leaf in AR.pieces(base, slot):
                     txt, pivot = AR.piece(base, leaf)
                     put(f"{slot}/{base}_r{rarity}/{leaf}", grid(txt), pal, pivot, direct=True)
+            for (item_slot, slot), name in ACC.accessories(base, rarity).items():
+                txt, pivot = ACC.sprite(base, slot, name)
+                put(f"{item_slot}/{base}_r{rarity}/{slot}", grid(txt), pal, pivot, direct=True)
+    for name, (txt, pivot) in AR.SHIELDS.items():
+        for rarity in range(1, 12):
+            put(f"offhand/{name}_r{rarity}/offhand", grid(txt), AR.palette("plate_late", rarity, palette()), list(pivot), direct=True)
     with open(os.path.join(OUT, "attachments.json"), "w") as f:
         json.dump(manifest, f, indent=1)
     return manifest

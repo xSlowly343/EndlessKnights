@@ -60,6 +60,33 @@
    "length": 12
   },
   {
+   "name": "crest",
+   "parent": "head",
+   "x": 16.0,
+   "y": 0.0
+  },
+  {
+   "name": "back_item",
+   "parent": "torso",
+   "x": 9.0,
+   "y": 6.5,
+   "rotation": 6
+  },
+  {
+   "name": "belt",
+   "parent": "torso",
+   "x": 4.0,
+   "y": 0.0
+  },
+  {
+   "name": "belt_hang",
+   "parent": "torso",
+   "x": 3.5,
+   "y": 2.5,
+   "rotation": 180,
+   "length": 6
+  },
+  {
    "name": "hair_fly",
    "parent": "head",
    "x": 8.0,
@@ -91,6 +118,11 @@
    "parent": "forearm_far",
    "x": 4,
    "length": 2
+  },
+  {
+   "name": "offhand",
+   "parent": "hand_far",
+   "inherit": "noRotationOrReflection"
   },
   {
    "name": "thigh_far",
@@ -186,6 +218,11 @@
    "color": "e6e6e6ff"
   },
   {
+   "name": "back_item",
+   "bone": "back_item",
+   "attachment": "back_item"
+  },
+  {
    "name": "thigh_far",
    "bone": "thigh_far",
    "attachment": "thigh",
@@ -213,6 +250,12 @@
    "name": "upper_arm_far",
    "bone": "upper_arm_far",
    "attachment": "upper_arm",
+   "color": "e6e6e6ff"
+  },
+  {
+   "name": "pauldron_deco_far",
+   "bone": "upper_arm_far",
+   "attachment": "pauldron_deco",
    "color": "e6e6e6ff"
   },
   {
@@ -281,6 +324,16 @@
    "attachment": "torso"
   },
   {
+   "name": "belt_front",
+   "bone": "belt",
+   "attachment": "belt_front"
+  },
+  {
+   "name": "belt_hang",
+   "bone": "belt_hang",
+   "attachment": "belt_hang"
+  },
+  {
    "name": "head",
    "bone": "head",
    "attachment": "head"
@@ -312,6 +365,16 @@
    "attachment": "helmet"
   },
   {
+   "name": "crest",
+   "bone": "crest",
+   "attachment": "crest"
+  },
+  {
+   "name": "offhand",
+   "bone": "offhand",
+   "attachment": "offhand"
+  },
+  {
    "name": "weapon",
    "bone": "weapon",
    "attachment": "weapon"
@@ -320,6 +383,11 @@
    "name": "upper_arm_near",
    "bone": "upper_arm_near",
    "attachment": "upper_arm"
+  },
+  {
+   "name": "pauldron_deco_near",
+   "bone": "upper_arm_near",
+   "attachment": "pauldron_deco"
   },
   {
    "name": "elbow_near",
@@ -384,6 +452,28 @@
    "inertia": 0.6,
    "strength": 110,
    "damping": 0.8,
+   "mass": 1,
+   "limit": 600
+  },
+  {
+   "name": "back_item_physics",
+   "order": 5,
+   "bone": "back_item",
+   "rotate": 1,
+   "inertia": 0.5,
+   "strength": 140,
+   "damping": 0.8,
+   "mass": 1,
+   "limit": 600
+  },
+  {
+   "name": "belt_hang_physics",
+   "order": 6,
+   "bone": "belt_hang",
+   "rotate": 1,
+   "inertia": 0.8,
+   "strength": 60,
+   "damping": 0.7,
    "mass": 1,
    "limit": 600
   },
@@ -1946,9 +2036,9 @@
      "shin": {
       "path": "boots/leather_late_r1/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -1966,9 +2056,9 @@
      "shin": {
       "path": "boots/leather_late_r1/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -1991,9 +2081,9 @@
      "shin": {
       "path": "boots/leather_late_r10/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2011,9 +2101,9 @@
      "shin": {
       "path": "boots/leather_late_r10/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2036,9 +2126,9 @@
      "shin": {
       "path": "boots/leather_late_r11/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2056,9 +2146,9 @@
      "shin": {
       "path": "boots/leather_late_r11/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2081,9 +2171,9 @@
      "shin": {
       "path": "boots/leather_late_r2/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2101,9 +2191,9 @@
      "shin": {
       "path": "boots/leather_late_r2/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2126,9 +2216,9 @@
      "shin": {
       "path": "boots/leather_late_r3/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2146,9 +2236,9 @@
      "shin": {
       "path": "boots/leather_late_r3/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2171,9 +2261,9 @@
      "shin": {
       "path": "boots/leather_late_r4/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2191,9 +2281,9 @@
      "shin": {
       "path": "boots/leather_late_r4/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2216,9 +2306,9 @@
      "shin": {
       "path": "boots/leather_late_r5/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2236,9 +2326,9 @@
      "shin": {
       "path": "boots/leather_late_r5/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2261,9 +2351,9 @@
      "shin": {
       "path": "boots/leather_late_r6/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2281,9 +2371,9 @@
      "shin": {
       "path": "boots/leather_late_r6/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2306,9 +2396,9 @@
      "shin": {
       "path": "boots/leather_late_r7/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2326,9 +2416,9 @@
      "shin": {
       "path": "boots/leather_late_r7/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2351,9 +2441,9 @@
      "shin": {
       "path": "boots/leather_late_r8/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2371,9 +2461,9 @@
      "shin": {
       "path": "boots/leather_late_r8/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2396,9 +2486,9 @@
      "shin": {
       "path": "boots/leather_late_r9/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2416,9 +2506,9 @@
      "shin": {
       "path": "boots/leather_late_r9/shin",
       "x": 4.0,
-      "y": -0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 9
      }
     },
@@ -2938,17 +3028,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r1/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -2958,17 +3048,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r1/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -2983,17 +3073,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r10/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -3003,17 +3093,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r10/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -3028,17 +3118,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r11/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -3048,17 +3138,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r11/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -3073,17 +3163,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r2/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -3093,17 +3183,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r2/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -3118,17 +3208,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r3/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -3138,17 +3228,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r3/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -3163,17 +3253,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r4/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -3183,17 +3273,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r4/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -3208,17 +3298,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r5/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -3228,17 +3318,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r5/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -3253,17 +3343,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r6/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -3273,17 +3363,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r6/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -3298,17 +3388,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r7/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -3318,17 +3408,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r7/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -3343,17 +3433,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r8/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -3363,17 +3453,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r8/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -3388,17 +3478,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r9/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     },
@@ -3408,17 +3498,17 @@
       "x": 4.0,
       "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 9
      }
     },
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r9/foot",
-      "x": 2.0,
+      "x": 2.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7,
+      "width": 8,
       "height": 3
      }
     }
@@ -3546,6 +3636,16 @@
       "height": 8
      }
     },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/cloth_early_r10/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
+     }
+    },
     "elbow_far": {
      "elbow_cap": {
       "path": "chest/cloth_early_r10/elbow_cap",
@@ -3602,6 +3702,26 @@
       "height": 18
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_early_r10/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_early_r10/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_early_r10/upper_arm",
@@ -3618,6 +3738,16 @@
       "rotation": 90.0,
       "width": 3,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/cloth_early_r10/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -3653,6 +3783,16 @@
       "rotation": 90.0,
       "width": 3,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/cloth_early_r11/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -3711,6 +3851,26 @@
       "height": 18
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_early_r11/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_early_r11/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_early_r11/upper_arm",
@@ -3727,6 +3887,16 @@
       "rotation": 90.0,
       "width": 3,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/cloth_early_r11/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -4038,6 +4208,16 @@
       "height": 18
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_early_r4/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_early_r4/upper_arm",
@@ -4145,6 +4325,16 @@
       "rotation": -90.0,
       "width": 11,
       "height": 18
+     }
+    },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_early_r5/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
      }
     },
     "upper_arm_near": {
@@ -4256,6 +4446,26 @@
       "height": 18
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_early_r6/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_early_r6/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_early_r6/upper_arm",
@@ -4365,6 +4575,26 @@
       "height": 18
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_early_r7/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_early_r7/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_early_r7/upper_arm",
@@ -4416,6 +4646,16 @@
       "rotation": 90.0,
       "width": 3,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/cloth_early_r8/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -4474,6 +4714,26 @@
       "height": 18
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_early_r8/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_early_r8/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_early_r8/upper_arm",
@@ -4490,6 +4750,16 @@
       "rotation": 90.0,
       "width": 3,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/cloth_early_r8/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -4525,6 +4795,16 @@
       "rotation": 90.0,
       "width": 3,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/cloth_early_r9/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -4583,6 +4863,26 @@
       "height": 18
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_early_r9/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_early_r9/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_early_r9/upper_arm",
@@ -4599,6 +4899,16 @@
       "rotation": 90.0,
       "width": 3,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/cloth_early_r9/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -4639,11 +4949,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r1/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -4705,18 +5015,18 @@
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r1/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r1/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
      }
     },
@@ -4755,14 +5065,34 @@
       "height": 27
      }
     },
+    "back_item": {
+     "back_item": {
+      "path": "chest/cloth_late_r10/back_item",
+      "x": 4.0,
+      "y": 5.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 17
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r10/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r10/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -4821,22 +5151,52 @@
       "height": 19
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_late_r10/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_late_r10/belt_hang",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r10/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r10/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r10/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -4874,14 +5234,34 @@
       "height": 27
      }
     },
+    "back_item": {
+     "back_item": {
+      "path": "chest/cloth_late_r11/back_item",
+      "x": 4.0,
+      "y": 5.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 17
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r11/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r11/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -4940,22 +5320,52 @@
       "height": 19
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_late_r11/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_late_r11/belt_hang",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r11/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r11/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r11/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -4996,11 +5406,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r2/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -5062,18 +5472,18 @@
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r2/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r2/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
      }
     },
@@ -5115,11 +5525,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r3/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -5181,18 +5591,18 @@
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r3/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r3/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
      }
     },
@@ -5234,11 +5644,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r4/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -5297,21 +5707,31 @@
       "height": 19
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_late_r4/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r4/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r4/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
      }
     },
@@ -5353,11 +5773,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r5/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -5416,21 +5836,31 @@
       "height": 19
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_late_r5/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r5/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r5/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
      }
     },
@@ -5472,11 +5902,21 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r6/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r6/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -5535,22 +5975,52 @@
       "height": 19
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_late_r6/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_late_r6/belt_hang",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r6/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r6/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r6/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -5591,11 +6061,21 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r7/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r7/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -5654,22 +6134,52 @@
       "height": 19
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_late_r7/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_late_r7/belt_hang",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r7/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r7/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r7/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -5710,11 +6220,21 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r8/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r8/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -5773,22 +6293,52 @@
       "height": 19
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_late_r8/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_late_r8/belt_hang",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r8/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r8/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r8/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -5829,11 +6379,21 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/cloth_late_r9/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r9/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -5892,22 +6452,52 @@
       "height": 19
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/cloth_late_r9/belt_front",
+      "x": -2.0,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/cloth_late_r9/belt_hang",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 5
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/cloth_late_r9/upper_arm",
-      "x": 3.5,
-      "y": 0.5,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/cloth_late_r9/upper_arm_short",
       "x": 2.0,
-      "y": 0.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 4,
+      "width": 6,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/cloth_late_r9/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -5941,7 +6531,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -6007,7 +6597,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -6015,7 +6605,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -6050,8 +6640,18 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/leather_early_r10/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -6110,13 +6710,33 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_early_r10/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_early_r10/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_early_r10/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -6124,8 +6744,18 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/leather_early_r10/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -6159,8 +6789,18 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/leather_early_r11/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -6219,13 +6859,33 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_early_r11/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_early_r11/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_early_r11/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -6233,8 +6893,18 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/leather_early_r11/pauldron_deco",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -6268,7 +6938,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -6334,7 +7004,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -6342,7 +7012,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -6377,7 +7047,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -6443,7 +7113,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -6451,7 +7121,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -6486,7 +7156,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -6546,13 +7216,23 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_early_r4/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_early_r4/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -6560,7 +7240,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -6595,7 +7275,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -6655,13 +7335,23 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_early_r5/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_early_r5/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -6669,7 +7359,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -6704,7 +7394,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -6764,13 +7454,33 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_early_r6/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_early_r6/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_early_r6/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -6778,7 +7488,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -6813,7 +7523,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -6873,13 +7583,33 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_early_r7/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_early_r7/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_early_r7/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -6887,7 +7617,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -6922,8 +7652,18 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/leather_early_r8/pauldron_deco",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -6982,13 +7722,33 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_early_r8/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_early_r8/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_early_r8/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -6996,8 +7756,18 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/leather_early_r8/pauldron_deco",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -7031,8 +7801,18 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/leather_early_r9/pauldron_deco",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 4
      }
     },
     "elbow_far": {
@@ -7091,13 +7871,33 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_early_r9/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_early_r9/belt_hang",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_early_r9/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -7105,8 +7905,18 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/leather_early_r9/pauldron_deco",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 7,
+      "height": 4
      }
     },
     "elbow_near": {
@@ -7147,11 +7957,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r1/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -7213,19 +8023,19 @@
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_late_r1/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r1/upper_arm_short",
-      "x": 2.0,
-      "y": -0.0,
+      "x": 2.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 5
+      "width": 6,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -7263,14 +8073,34 @@
       "height": 18
      }
     },
+    "back_item": {
+     "back_item": {
+      "path": "chest/leather_late_r10/back_item",
+      "x": 4.0,
+      "y": 5.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 17
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r10/upper_arm",
-      "x": 3.5,
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/leather_late_r10/pauldron_deco",
+      "x": 0.5,
       "y": -0.0,
       "rotation": 90.0,
       "width": 5,
-      "height": 8
+      "height": 4
      }
     },
     "elbow_far": {
@@ -7329,22 +8159,52 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_late_r10/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_late_r10/belt_hang",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 7
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_late_r10/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r10/upper_arm_short",
-      "x": 2.0,
+      "x": 2.5,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 6
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/leather_late_r10/pauldron_deco",
+      "x": 0.5,
       "y": -0.0,
       "rotation": 90.0,
       "width": 5,
-      "height": 5
+      "height": 4
      }
     },
     "elbow_near": {
@@ -7382,14 +8242,34 @@
       "height": 18
      }
     },
+    "back_item": {
+     "back_item": {
+      "path": "chest/leather_late_r11/back_item",
+      "x": 4.0,
+      "y": 5.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 17
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r11/upper_arm",
-      "x": 3.5,
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/leather_late_r11/pauldron_deco",
+      "x": 0.5,
       "y": -0.0,
       "rotation": 90.0,
       "width": 5,
-      "height": 8
+      "height": 4
      }
     },
     "elbow_far": {
@@ -7448,22 +8328,52 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_late_r11/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_late_r11/belt_hang",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 7
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_late_r11/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r11/upper_arm_short",
-      "x": 2.0,
+      "x": 2.5,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 6
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/leather_late_r11/pauldron_deco",
+      "x": 0.5,
       "y": -0.0,
       "rotation": 90.0,
       "width": 5,
-      "height": 5
+      "height": 4
      }
     },
     "elbow_near": {
@@ -7504,11 +8414,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r2/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -7570,19 +8480,19 @@
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_late_r2/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r2/upper_arm_short",
-      "x": 2.0,
-      "y": -0.0,
+      "x": 2.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 5
+      "width": 6,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -7623,11 +8533,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r3/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -7689,19 +8599,19 @@
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_late_r3/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r3/upper_arm_short",
-      "x": 2.0,
-      "y": -0.0,
+      "x": 2.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 5
+      "width": 6,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -7742,11 +8652,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r4/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -7805,22 +8715,32 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_late_r4/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_late_r4/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r4/upper_arm_short",
-      "x": 2.0,
-      "y": -0.0,
+      "x": 2.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 5
+      "width": 6,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -7861,11 +8781,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r5/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -7924,22 +8844,32 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_late_r5/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_late_r5/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r5/upper_arm_short",
-      "x": 2.0,
-      "y": -0.0,
+      "x": 2.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 5
+      "width": 6,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -7980,11 +8910,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r6/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -8043,22 +8973,42 @@
       "height": 14
      }
     },
-    "upper_arm_near": {
-     "upper_arm": {
-      "path": "chest/leather_late_r6/upper_arm",
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_late_r6/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_late_r6/belt_hang",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 3,
+      "height": 6
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_late_r6/upper_arm",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r6/upper_arm_short",
-      "x": 2.0,
-      "y": -0.0,
+      "x": 2.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 5
+      "width": 6,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -8099,11 +9049,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r7/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -8162,22 +9112,42 @@
       "height": 14
      }
     },
-    "upper_arm_near": {
-     "upper_arm": {
-      "path": "chest/leather_late_r7/upper_arm",
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_late_r7/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_late_r7/belt_hang",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 3,
+      "height": 6
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/leather_late_r7/upper_arm",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r7/upper_arm_short",
-      "x": 2.0,
-      "y": -0.0,
+      "x": 2.5,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 5
+      "width": 6,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -8218,11 +9188,21 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r8/upper_arm",
-      "x": 3.5,
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/leather_late_r8/pauldron_deco",
+      "x": 0.5,
       "y": -0.0,
       "rotation": 90.0,
       "width": 5,
-      "height": 8
+      "height": 4
      }
     },
     "elbow_far": {
@@ -8281,22 +9261,52 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_late_r8/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_late_r8/belt_hang",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 7
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_late_r8/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r8/upper_arm_short",
-      "x": 2.0,
+      "x": 2.5,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 6
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/leather_late_r8/pauldron_deco",
+      "x": 0.5,
       "y": -0.0,
       "rotation": 90.0,
       "width": 5,
-      "height": 5
+      "height": 4
      }
     },
     "elbow_near": {
@@ -8337,11 +9347,21 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/leather_late_r9/upper_arm",
-      "x": 3.5,
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/leather_late_r9/pauldron_deco",
+      "x": 0.5,
       "y": -0.0,
       "rotation": 90.0,
       "width": 5,
-      "height": 8
+      "height": 4
      }
     },
     "elbow_far": {
@@ -8400,22 +9420,52 @@
       "height": 14
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/leather_late_r9/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/leather_late_r9/belt_hang",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 7
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/leather_late_r9/upper_arm",
-      "x": 3.5,
-      "y": -0.0,
+      "x": 4.0,
+      "y": -0.5,
       "rotation": 90.0,
-      "width": 5,
-      "height": 8
+      "width": 6,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/leather_late_r9/upper_arm_short",
-      "x": 2.0,
+      "x": 2.5,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6,
+      "height": 6
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/leather_late_r9/pauldron_deco",
+      "x": 0.5,
       "y": -0.0,
       "rotation": 90.0,
       "width": 5,
-      "height": 5
+      "height": 4
      }
     },
     "elbow_near": {
@@ -8449,7 +9499,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -8515,7 +9565,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -8523,7 +9573,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -8558,8 +9608,18 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r10/pauldron_deco",
+      "x": -2.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 3
      }
     },
     "elbow_far": {
@@ -8618,13 +9678,33 @@
       "height": 15
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_early_r10/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/plate_early_r10/belt_hang",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 7
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_early_r10/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -8632,8 +9712,18 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r10/pauldron_deco",
+      "x": -2.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 3
      }
     },
     "elbow_near": {
@@ -8667,8 +9757,18 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r11/pauldron_deco",
+      "x": -2.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 3
      }
     },
     "elbow_far": {
@@ -8727,13 +9827,33 @@
       "height": 15
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_early_r11/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/plate_early_r11/belt_hang",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 7
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_early_r11/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -8741,8 +9861,18 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r11/pauldron_deco",
+      "x": -2.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 3
      }
     },
     "elbow_near": {
@@ -8776,7 +9906,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -8842,7 +9972,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -8850,7 +9980,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -8885,7 +10015,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -8951,7 +10081,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -8959,7 +10089,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -8994,7 +10124,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -9054,13 +10184,23 @@
       "height": 15
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_early_r4/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_early_r4/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -9068,7 +10208,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -9103,7 +10243,7 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      }
     },
@@ -9163,13 +10303,23 @@
       "height": 15
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_early_r5/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_early_r5/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -9177,7 +10327,7 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
      }
     },
@@ -9212,8 +10362,18 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r6/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_far": {
@@ -9272,13 +10432,23 @@
       "height": 15
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_early_r6/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_early_r6/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -9286,8 +10456,18 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r6/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -9321,8 +10501,18 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r7/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_far": {
@@ -9381,13 +10571,23 @@
       "height": 15
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_early_r7/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_early_r7/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -9395,8 +10595,18 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r7/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -9430,8 +10640,18 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r8/pauldron_deco",
+      "x": -2.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 3
      }
     },
     "elbow_far": {
@@ -9490,13 +10710,33 @@
       "height": 15
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_early_r8/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/plate_early_r8/belt_hang",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 7
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_early_r8/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -9504,8 +10744,18 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r8/pauldron_deco",
+      "x": -2.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 3
      }
     },
     "elbow_near": {
@@ -9539,8 +10789,18 @@
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r9/pauldron_deco",
+      "x": -2.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 3
      }
     },
     "elbow_far": {
@@ -9599,13 +10859,33 @@
       "height": 15
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_early_r9/belt_front",
+      "x": -1.5,
+      "y": -3.5,
+      "rotation": -90.0,
+      "width": 4,
+      "height": 4
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/plate_early_r9/belt_hang",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 3,
+      "height": 7
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_early_r9/upper_arm",
       "x": 3.5,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 8
      },
      "upper_arm_short": {
@@ -9613,8 +10893,18 @@
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 3,
+      "width": 5,
       "height": 5
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_early_r9/pauldron_deco",
+      "x": -2.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 3
      }
     },
     "elbow_near": {
@@ -9655,11 +10945,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r1/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -9698,7 +10988,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -9721,19 +11011,19 @@
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r1/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r1/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
      }
     },
     "elbow_near": {
@@ -9771,14 +11061,34 @@
       "height": 27
      }
     },
+    "back_item": {
+     "back_item": {
+      "path": "chest/plate_late_r10/back_item",
+      "x": 4.0,
+      "y": 5.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 17
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r10/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r10/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_far": {
@@ -9817,7 +11127,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -9837,22 +11147,42 @@
       "height": 17
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_late_r10/belt_front",
+      "x": -2.5,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 5,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r10/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r10/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r10/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -9890,14 +11220,34 @@
       "height": 27
      }
     },
+    "back_item": {
+     "back_item": {
+      "path": "chest/plate_late_r11/back_item",
+      "x": 4.0,
+      "y": 5.5,
+      "rotation": -90.0,
+      "width": 16,
+      "height": 17
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r11/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r11/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_far": {
@@ -9936,7 +11286,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -9956,22 +11306,42 @@
       "height": 17
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_late_r11/belt_front",
+      "x": -2.5,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 5,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r11/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r11/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r11/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -10012,11 +11382,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r2/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -10055,7 +11425,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -10078,19 +11448,19 @@
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r2/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r2/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
      }
     },
     "elbow_near": {
@@ -10131,11 +11501,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r3/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -10174,7 +11544,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -10197,19 +11567,19 @@
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r3/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r3/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
      }
     },
     "elbow_near": {
@@ -10250,11 +11620,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r4/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -10293,7 +11663,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -10313,22 +11683,32 @@
       "height": 17
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_late_r4/belt_front",
+      "x": -2.5,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 5,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r4/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r4/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
      }
     },
     "elbow_near": {
@@ -10369,11 +11749,11 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r5/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      }
     },
     "elbow_far": {
@@ -10412,7 +11792,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -10432,22 +11812,32 @@
       "height": 17
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_late_r5/belt_front",
+      "x": -2.5,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 5,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r5/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r5/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
      }
     },
     "elbow_near": {
@@ -10488,11 +11878,21 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r6/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r6/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_far": {
@@ -10531,7 +11931,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -10551,22 +11951,42 @@
       "height": 17
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_late_r6/belt_front",
+      "x": -2.5,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 5,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r6/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r6/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r6/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -10607,11 +12027,21 @@
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r7/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r7/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_far": {
@@ -10650,7 +12080,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -10670,22 +12100,42 @@
       "height": 17
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_late_r7/belt_front",
+      "x": -2.5,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 5,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r7/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r7/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r7/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -10723,14 +12173,34 @@
       "height": 27
      }
     },
+    "back_item": {
+     "back_item": {
+      "path": "chest/plate_late_r8/back_item",
+      "x": 16.0,
+      "y": 4.5,
+      "rotation": -90.0,
+      "width": 12,
+      "height": 33
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r8/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r8/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_far": {
@@ -10769,7 +12239,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -10789,22 +12259,42 @@
       "height": 17
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_late_r8/belt_front",
+      "x": -2.5,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 5,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r8/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r8/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r8/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -10842,14 +12332,34 @@
       "height": 27
      }
     },
+    "back_item": {
+     "back_item": {
+      "path": "chest/plate_late_r9/back_item",
+      "x": 16.0,
+      "y": 4.5,
+      "rotation": -90.0,
+      "width": 12,
+      "height": 33
+     }
+    },
     "upper_arm_far": {
      "upper_arm": {
       "path": "chest/plate_late_r9/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
+     }
+    },
+    "pauldron_deco_far": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r9/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_far": {
@@ -10888,7 +12398,7 @@
       "x": 5.0,
       "y": 0.0,
       "rotation": -90.0,
-      "width": 11,
+      "width": 13,
       "height": 17
      },
      "torso_side": {
@@ -10908,22 +12418,42 @@
       "height": 17
      }
     },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/plate_late_r9/belt_front",
+      "x": -2.5,
+      "y": -3.0,
+      "rotation": -90.0,
+      "width": 5,
+      "height": 6
+     }
+    },
     "upper_arm_near": {
      "upper_arm": {
       "path": "chest/plate_late_r9/upper_arm",
-      "x": 3.5,
+      "x": 3.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 8
+      "width": 9,
+      "height": 9
      },
      "upper_arm_short": {
       "path": "chest/plate_late_r9/upper_arm_short",
       "x": 2.0,
       "y": -0.0,
       "rotation": 90.0,
-      "width": 7,
-      "height": 5
+      "width": 9,
+      "height": 7
+     }
+    },
+    "pauldron_deco_near": {
+     "pauldron_deco": {
+      "path": "chest/plate_late_r9/pauldron_deco",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5,
+      "height": 6
      }
     },
     "elbow_near": {
@@ -13034,9 +14564,9 @@
      "hand": {
       "path": "gloves/leather_late_r1/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13054,9 +14584,9 @@
      "hand": {
       "path": "gloves/leather_late_r1/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -13079,9 +14609,9 @@
      "hand": {
       "path": "gloves/leather_late_r10/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13099,9 +14629,9 @@
      "hand": {
       "path": "gloves/leather_late_r10/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -13124,9 +14654,9 @@
      "hand": {
       "path": "gloves/leather_late_r11/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13144,9 +14674,9 @@
      "hand": {
       "path": "gloves/leather_late_r11/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -13169,9 +14699,9 @@
      "hand": {
       "path": "gloves/leather_late_r2/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13189,9 +14719,9 @@
      "hand": {
       "path": "gloves/leather_late_r2/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -13214,9 +14744,9 @@
      "hand": {
       "path": "gloves/leather_late_r3/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13234,9 +14764,9 @@
      "hand": {
       "path": "gloves/leather_late_r3/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -13259,9 +14789,9 @@
      "hand": {
       "path": "gloves/leather_late_r4/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13279,9 +14809,9 @@
      "hand": {
       "path": "gloves/leather_late_r4/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -13304,9 +14834,9 @@
      "hand": {
       "path": "gloves/leather_late_r5/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13324,9 +14854,9 @@
      "hand": {
       "path": "gloves/leather_late_r5/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -13349,9 +14879,9 @@
      "hand": {
       "path": "gloves/leather_late_r6/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13369,9 +14899,9 @@
      "hand": {
       "path": "gloves/leather_late_r6/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -13394,9 +14924,9 @@
      "hand": {
       "path": "gloves/leather_late_r7/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13414,9 +14944,9 @@
      "hand": {
       "path": "gloves/leather_late_r7/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -13439,9 +14969,9 @@
      "hand": {
       "path": "gloves/leather_late_r8/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13459,9 +14989,9 @@
      "hand": {
       "path": "gloves/leather_late_r8/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -13484,9 +15014,9 @@
      "hand": {
       "path": "gloves/leather_late_r9/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     },
@@ -13504,9 +15034,9 @@
      "hand": {
       "path": "gloves/leather_late_r9/hand",
       "x": 0.5,
-      "y": -0.0,
+      "y": 0.5,
       "rotation": 90.0,
-      "width": 3,
+      "width": 4,
       "height": 4
      }
     }
@@ -14014,9 +15544,9 @@
      "bracer": {
       "path": "gloves/plate_late_r1/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14024,9 +15554,9 @@
      "hand": {
       "path": "gloves/plate_late_r1/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14034,9 +15564,9 @@
      "bracer": {
       "path": "gloves/plate_late_r1/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14044,9 +15574,9 @@
      "hand": {
       "path": "gloves/plate_late_r1/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14059,9 +15589,9 @@
      "bracer": {
       "path": "gloves/plate_late_r10/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14069,9 +15599,9 @@
      "hand": {
       "path": "gloves/plate_late_r10/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14079,9 +15609,9 @@
      "bracer": {
       "path": "gloves/plate_late_r10/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14089,9 +15619,9 @@
      "hand": {
       "path": "gloves/plate_late_r10/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14104,9 +15634,9 @@
      "bracer": {
       "path": "gloves/plate_late_r11/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14114,9 +15644,9 @@
      "hand": {
       "path": "gloves/plate_late_r11/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14124,9 +15654,9 @@
      "bracer": {
       "path": "gloves/plate_late_r11/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14134,9 +15664,9 @@
      "hand": {
       "path": "gloves/plate_late_r11/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14149,9 +15679,9 @@
      "bracer": {
       "path": "gloves/plate_late_r2/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14159,9 +15689,9 @@
      "hand": {
       "path": "gloves/plate_late_r2/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14169,9 +15699,9 @@
      "bracer": {
       "path": "gloves/plate_late_r2/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14179,9 +15709,9 @@
      "hand": {
       "path": "gloves/plate_late_r2/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14194,9 +15724,9 @@
      "bracer": {
       "path": "gloves/plate_late_r3/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14204,9 +15734,9 @@
      "hand": {
       "path": "gloves/plate_late_r3/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14214,9 +15744,9 @@
      "bracer": {
       "path": "gloves/plate_late_r3/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14224,9 +15754,9 @@
      "hand": {
       "path": "gloves/plate_late_r3/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14239,9 +15769,9 @@
      "bracer": {
       "path": "gloves/plate_late_r4/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14249,9 +15779,9 @@
      "hand": {
       "path": "gloves/plate_late_r4/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14259,9 +15789,9 @@
      "bracer": {
       "path": "gloves/plate_late_r4/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14269,9 +15799,9 @@
      "hand": {
       "path": "gloves/plate_late_r4/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14284,9 +15814,9 @@
      "bracer": {
       "path": "gloves/plate_late_r5/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14294,9 +15824,9 @@
      "hand": {
       "path": "gloves/plate_late_r5/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14304,9 +15834,9 @@
      "bracer": {
       "path": "gloves/plate_late_r5/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14314,9 +15844,9 @@
      "hand": {
       "path": "gloves/plate_late_r5/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14329,9 +15859,9 @@
      "bracer": {
       "path": "gloves/plate_late_r6/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14339,9 +15869,9 @@
      "hand": {
       "path": "gloves/plate_late_r6/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14349,9 +15879,9 @@
      "bracer": {
       "path": "gloves/plate_late_r6/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14359,9 +15889,9 @@
      "hand": {
       "path": "gloves/plate_late_r6/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14374,9 +15904,9 @@
      "bracer": {
       "path": "gloves/plate_late_r7/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14384,9 +15914,9 @@
      "hand": {
       "path": "gloves/plate_late_r7/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14394,9 +15924,9 @@
      "bracer": {
       "path": "gloves/plate_late_r7/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14404,9 +15934,9 @@
      "hand": {
       "path": "gloves/plate_late_r7/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14419,9 +15949,9 @@
      "bracer": {
       "path": "gloves/plate_late_r8/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14429,9 +15959,9 @@
      "hand": {
       "path": "gloves/plate_late_r8/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14439,9 +15969,9 @@
      "bracer": {
       "path": "gloves/plate_late_r8/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14449,9 +15979,9 @@
      "hand": {
       "path": "gloves/plate_late_r8/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14464,9 +15994,9 @@
      "bracer": {
       "path": "gloves/plate_late_r9/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14474,9 +16004,9 @@
      "hand": {
       "path": "gloves/plate_late_r9/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     },
@@ -14484,9 +16014,9 @@
      "bracer": {
       "path": "gloves/plate_late_r9/bracer",
       "x": 3.5,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 4
      }
     },
@@ -14494,9 +16024,9 @@
      "hand": {
       "path": "gloves/plate_late_r9/hand",
       "x": 1.0,
-      "y": 0.5,
+      "y": -0.0,
       "rotation": 90.0,
-      "width": 4,
+      "width": 5,
       "height": 5
      }
     }
@@ -14729,6 +16259,16 @@
       "width": 18,
       "height": 12
      }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/cloth_early_r10/crest",
+      "x": 11.0,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 9,
+      "height": 3
+     }
     }
    }
   },
@@ -14743,6 +16283,16 @@
       "rotation": -90.0,
       "width": 18,
       "height": 12
+     }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/cloth_early_r11/crest",
+      "x": 11.0,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 9,
+      "height": 3
      }
     }
    }
@@ -14894,6 +16444,16 @@
       "width": 16,
       "height": 18
      }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/cloth_late_r10/crest",
+      "x": 6.0,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 9,
+      "height": 3
+     }
     }
    }
   },
@@ -14908,6 +16468,16 @@
       "rotation": -90.0,
       "width": 16,
       "height": 18
+     }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/cloth_late_r11/crest",
+      "x": 6.0,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 9,
+      "height": 3
      }
     }
    }
@@ -15014,6 +16584,16 @@
       "width": 16,
       "height": 18
      }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/cloth_late_r8/crest",
+      "x": 6.0,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 9,
+      "height": 3
+     }
     }
    }
   },
@@ -15028,6 +16608,16 @@
       "rotation": -90.0,
       "width": 16,
       "height": 18
+     }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/cloth_late_r9/crest",
+      "x": 6.0,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 9,
+      "height": 3
      }
     }
    }
@@ -15059,6 +16649,16 @@
       "width": 16,
       "height": 18
      }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/leather_early_r10/crest",
+      "x": 2.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13,
+      "height": 6
+     }
     }
    }
   },
@@ -15073,6 +16673,16 @@
       "rotation": -90.0,
       "width": 16,
       "height": 18
+     }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/leather_early_r11/crest",
+      "x": 2.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13,
+      "height": 6
      }
     }
    }
@@ -15179,6 +16789,16 @@
       "width": 16,
       "height": 18
      }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/leather_early_r8/crest",
+      "x": 2.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13,
+      "height": 6
+     }
     }
    }
   },
@@ -15193,6 +16813,16 @@
       "rotation": -90.0,
       "width": 16,
       "height": 18
+     }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/leather_early_r9/crest",
+      "x": 2.5,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13,
+      "height": 6
      }
     }
    }
@@ -15389,6 +17019,16 @@
       "width": 16,
       "height": 18
      }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/plate_early_r10/crest",
+      "x": 5.0,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 9,
+      "height": 3
+     }
     }
    }
   },
@@ -15403,6 +17043,16 @@
       "rotation": -90.0,
       "width": 16,
       "height": 18
+     }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/plate_early_r11/crest",
+      "x": 5.0,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 9,
+      "height": 3
      }
     }
    }
@@ -15554,6 +17204,16 @@
       "width": 20,
       "height": 20
      }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/plate_late_r10/crest",
+      "x": 8.0,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 9,
+      "height": 3
+     }
     }
    }
   },
@@ -15568,6 +17228,16 @@
       "rotation": -90.0,
       "width": 20,
       "height": 20
+     }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/plate_late_r11/crest",
+      "x": 8.0,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 9,
+      "height": 3
      }
     }
    }
@@ -15644,6 +17314,16 @@
       "width": 20,
       "height": 20
      }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/plate_late_r6/crest",
+      "x": 5.0,
+      "y": -1.5,
+      "rotation": -90.0,
+      "width": 8,
+      "height": 7
+     }
     }
    }
   },
@@ -15658,6 +17338,16 @@
       "rotation": -90.0,
       "width": 20,
       "height": 20
+     }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/plate_late_r7/crest",
+      "x": 5.0,
+      "y": -1.5,
+      "rotation": -90.0,
+      "width": 8,
+      "height": 7
      }
     }
    }
@@ -15674,6 +17364,16 @@
       "width": 20,
       "height": 20
      }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/plate_late_r8/crest",
+      "x": 5.0,
+      "y": -1.5,
+      "rotation": -90.0,
+      "width": 8,
+      "height": 7
+     }
     }
    }
   },
@@ -15688,6 +17388,346 @@
       "rotation": -90.0,
       "width": 20,
       "height": 20
+     }
+    },
+    "crest": {
+     "crest": {
+      "path": "helmet/plate_late_r9/crest",
+      "x": 5.0,
+      "y": -1.5,
+      "rotation": -90.0,
+      "width": 8,
+      "height": 7
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r1",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r1/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r10",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r10/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r11",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r11/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r2",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r2/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r3",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r3/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r4",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r4/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r5",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r5/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r6",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r6/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r7",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r7/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r8",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r8/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/heater_r9",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/heater_r9/offhand",
+      "x": -0.5,
+      "y": -0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 10
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r1",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r1/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r10",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r10/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r11",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r11/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r2",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r2/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r3",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r3/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r4",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r4/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r5",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r5/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r6",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r6/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r7",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r7/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r8",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r8/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
+     }
+    }
+   }
+  },
+  {
+   "name": "offhand/round_r9",
+   "attachments": {
+    "offhand": {
+     "offhand": {
+      "path": "offhand/round_r9/offhand",
+      "x": -0.5,
+      "y": 0.5,
+      "rotation": -0.0,
+      "width": 8,
+      "height": 8
      }
     }
    }

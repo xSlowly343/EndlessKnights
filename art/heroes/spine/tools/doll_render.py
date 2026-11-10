@@ -65,7 +65,7 @@ def decode(url):
 
 
 def compose(layers):
-    c = Image.new("RGBA", SIZE)
+    c = Image.new("RGBA", decode(layers[0]).size)
     for url in layers:
         c = over(c, decode(url))
     return c

@@ -16,7 +16,7 @@ def armor(material, rarity, slots=SLOTS):
     return [f"{s}/{material}_r{rarity}" for s in slots]
 
 
-def sheet(rows, res, path, scale=3, box=(8, 0, 72, 64)):
+def sheet(rows, res, path, scale=3, box=(0, 0, 72, 80)):
     w, h = (box[2] - box[0]) * scale, (box[3] - box[1]) * scale
     cols = max(len(r[1]) for r in rows)
     out = Image.new("RGBA", (cols * w, len(rows) * (h + 14)), (38, 32, 52, 255))
@@ -45,8 +45,10 @@ def main():
             items.append((f"{m} r4", job(f"{sex}_{m}", base[sex] + armor(m, 4)), "setup"))
         mixed = base[sex] + ["helmet/leather_late_r6", "chest/plate_late_r6", "gloves/cloth_late_r6", "boots/plate_early_r6"]
         items.append(("mixed r6", job(f"{sex}_mixed", mixed), "setup"))
+        items.append(("shield r6", job(f"{sex}_shield", base[sex] + armor("plate_late", 6) + ["offhand/heater_r6"]), "setup"))
+        items.append(("round shield", job(f"{sex}_round", base[sex] + armor("leather_early", 5) + ["offhand/round_r5"]), "setup"))
         rows.append((sex, items))
-    for m, sex in (("plate_late", "male"), ("leather_late", "female"), ("cloth_late", "female")):
+    for m, sex in (("plate_early", "male"), ("plate_late", "male"), ("leather_early", "female"), ("leather_late", "female"), ("cloth_early", "male"), ("cloth_late", "female")):
         rows.append((f"{m} rarities", [(f"r{r}", job(f"{sex}_{m}_r{r}", base[sex] + armor(m, r)), "setup") for r in range(1, 12)]))
     poses = {p: DG.POSES[p] for p in CHECK_POSES}
     res, _ = DG.render(jobs, poses)
@@ -61,7 +63,7 @@ def main():
     pose_rows = []
     for m in MATERIALS:
         pose_rows.append((f"male {m}", [(p, f"male_{m}", p) for p in CHECK_POSES]))
-    sheet(pose_rows, res, os.path.join(OUT, "armor_poses.png"), scale=2)
+    sheet(pose_rows, res, os.path.join(OUT, "armor_poses.png"), scale=2, box=(0, 8, 80, 80))
     json.dump(faults, open(os.path.join(OUT, "armor_defects.json"), "w"), indent=1)
     print("defects:", json.dumps(faults) if faults else "none")
 
