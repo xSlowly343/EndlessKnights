@@ -448,3 +448,62 @@ Cainos платный, поэтому основа — **LPC на двух те�
 - `preview/` — кадры по порядку и наборы цветов слэшей.
 
 Превью в полоске сюда не вошли: на них фоны и враги из покупных наборов, а их нельзя выкладывать в репозиторий. Эти превью лежат в файлах проекта (`art/heroes/doll8-*`). Посох пока остаётся на старом цикле, его листы — в файлах проекта (`doll5-sheets`).
+
+## 19. Восемнадцать уникальных персонажей из готовых наборов (поиск 10.11.2026)
+
+Новая постановка Сергея 10.11.2026: работаем от состояния PR 292; нужны **18 разных персонажей**, каждый уникальный (не перекраска одной куклы); меняется у них только оружие; обязательны две анимации — **стойка (idle) и атака**. Приложенное ТЗ «Rift Warden — система 2D-персонажей на Spine» пока только изучено, по нему ничего не делали.
+
+Состав взят из `classes-v2.md` §2: у каждого класса свой житель Кромки, пол и оружие.
+
+### 19.1. Какие наборы проверены
+
+| Автор | Сколько подходящих героев | Цена | Лицензия | Стиль | Вывод |
+| --- | --- | --- | --- | --- | --- |
+| [Elthen](https://elthen.itch.io) | **около 60 людей и полулюдей** (воины, маги, лучники, плут, жрица, пират, чумной доктор, безумный профессор, шут, оруженосец, пиромант, некромант…) | 1–5 $ за персонажа, несколько бесплатных | как у бесплатных врагов Elthen: коммерция разрешена, перепродавать нельзя | вид сбоку, 32–64 px, **тот же автор, что у большинства наших врагов** | **единственный автор, у которого набираются все 18 в одном стиле** |
+| [chierit](https://chierit.itch.io), серия Elementals | 10 героев (Fire Knight, Water Priestess, Wind Hashashin, Leaf Ranger, Ground Monk, Metal Bladekeeper, Crystal Mauler, Lightning Ronin, Light Valkyrie, Shadow Stalker) + Brawler и Elementalist | бандл 50 $ (в распродажу бывал 12,50 $) | CC BY 4.0, указать автора, не перепродавать | вид сбоку, реалистичные пропорции, очень богатые удары и эффекты, есть файлы Aseprite | красивее всех, но **только 12 героев**: до 18 не хватает, а смешивать авторов Сергей не хотел |
+| [LuizMelo](https://luizmelo.itch.io) | около 17 бесплатных (Huntress 1–2, Wizard, Fantasy Warrior, Medieval Warrior 1–3, Medieval King 1–2, Hero Knight 1–2, Martial Hero 1–3, Evil Wizard 1–3) | бесплатно | CC0 | вид сбоку, крупные | почти все — мужчины с мечами и злые маги; под жителей Кромки (гончар, звонарь, ткачиха, вдова-винокур) не подходят |
+| [Tiny RPG Character Asset Pack](https://zerie.itch.io/tiny-rpg-character-asset-pack) (zerie) | 20, но половина — орки и скелеты | 2,50 $ | см. страницу | мелкие, около 32 px | героев мало |
+| [Heroes & Classes](https://gegx.itch.io/heroes-classes) (gegx) | 16, из них 8 — один маг в 8 цветах | 6,99 € | коммерция разрешена | вид сверху, помечено «AI Assisted» | не подходит |
+
+### 19.2. Предлагаемый состав на Elthen
+
+Всё у одного автора, рядом с врагами Elthen смотрится как одна игра. Стойка и атака есть у всех наборов Elthen (по описаниям: покой, атака, урон, смерть, ходьба). Цены со страниц на 10.11.2026.
+
+| Класс (житель) | Оружие по `classes-v2.md` | Набор Elthen | Цена | Совпадение |
+| --- | --- | --- | --- | --- |
+| Huscarl (Эйнар) | топор и щит | [Barbarian](https://elthen.itch.io/2d-pixel-art-barbarian-sprites) | 4 $ | хорошее |
+| Wandering Blade (Сэйдзи) | катана | [Novice Ninja](https://elthen.itch.io/2d-pixel-art-novice-ninja-sprites) или [Elite Swordsman](https://elthen.itch.io/2d-pixel-art-elite-swordsman-sprites) | 1 $ / 5 $ | самурая у Elthen нет, ниндзя ближе |
+| Huntress (Йара) | короткий лук | [Elven Archeress](https://elthen.itch.io/2d-pixel-art-elven-archeress) | 5 $ | отличное |
+| Stormcaller (старик Грохот) | жезл бури | [Royal Mage](https://elthen.itch.io/2d-pixel-art-royal-mage-sprites) | 4 $ | хорошее, перекрасить под грозу |
+| Wayfarer (Рашид) | ятаган | [Human Rogue](https://elthen.itch.io/2d-pixel-art-human-rogue-sprites) | 3 $ | хорошее (лицо закрыто платком) |
+| Skald (Ян Гвоздь) | электрогитара | [Medieval Jester](https://elthen.itch.io/2d-pixel-art-medieval-jester-sprites) | 4 $ | среднее: панка нет, шут ближе всего по духу |
+| Seer (Мирра) | святая сфера | [Priestess](https://elthen.itch.io/2d-pixel-art-priestess-sprites) | 3 $ | отличное |
+| Herald (Тибо) | знамя | [Squire](https://elthen.itch.io/2d-pixel-art-squire-sprites) | 4 $ | отличное: оруженосец без рыцаря |
+| Spinner (Ниточка) | веретено | [Female Adventurer](https://elthen.itch.io/2d-pixel-art-female-adventurer-sprites) | бесплатно | хорошее, но мелкая |
+| Whisperer (Мама Зола) | кукла вуду | [Witch](https://elthen.itch.io/2d-pixel-art-witch-sprites) или [Warlock](https://elthen.itch.io/2d-pixel-art-warlock-sprites) | бесплатно / 3 $ | ведьма уже стоит врагом, см. вопрос 3 |
+| Chronist (мастер Эммерих) | маятник | [Mad Professor](https://elthen.itch.io/2d-pixel-art-mad-professor-sprites) | 5 $ | отличное |
+| Rimecaller (Морана) | ледяной посох | [Elite Mage](https://elthen.itch.io/2d-pixel-art-elite-mage-sprites) или [Mage Sprite Pack](https://elthen.itch.io/2d-pixel-art-mage) | 5 $ / 3 $ | среднее, перекрасить в лёд; женского мага нет |
+| Venomist (Себастьян Рох) | трость со шприцем | [Plague Doctor](https://elthen.itch.io/2d-pixel-art-plague-doctor) | 3 $ | отличное |
+| Firebrand (вдова Агния) | аппарат-горелка | [Pyromancer](https://elthen.itch.io/2d-pixel-art-pyromancer-sprites) | 4 $ | по огню да, по полу нет (мужчина) |
+| Thornmaiden (Розалия) | терновый хлыст | [Elven Assassin](https://elthen.itch.io/2d-pixel-art-elven-assassin-sprites) | 5 $ | среднее, перекрасить в шипы |
+| Undertaker (Осип) | лопата | [Medieval Executioner](https://elthen.itch.io/2d-pixel-art-medieval-executioner) или [Necromancer](https://elthen.itch.io/2d-pixel-art) | 4 $ / 3 $ | хорошее |
+| Sea Wolf (капитан Бэр) | пистоль | [Pirate](https://elthen.itch.io/2d-pixel-art-pirate-sprites) или [Pirate Muscle](https://elthen.itch.io/2d-pixel-art-pirate-muscle-sprites) | 3 $ / 5 $ | отличное |
+| Clayshaper (Гордей) | гончарный молот | [Alchemist](https://elthen.itch.io/2d-pixel-art-alchemist-sprites) или [Dwarf Berserker](https://elthen.itch.io/2d-pixel-art-dwarf-berserker-sprites) | 3 $ / 5 $ | среднее |
+
+Итого около **65–75 $** за 17 платных персонажей (один бесплатный). Покупает только Сергей; исходники в репозиторий не кладём, как и у врагов.
+
+### 19.3. Что учесть
+
+- **Оружие нарисовано в кадрах.** «Меняется только оружие» значит перерисовку оружия в кадрах стойки и атаки: у Elthen это 6–12 кадров по 32–64 px, правка в Aseprite. Для оружия из `classes-v2.md` (гитара, маятник, веретено, кукла, горелка, шприц, лопата, молот) это нужно в любом случае: таких предметов нет ни в одном наборе.
+- **Размер.** Старые наборы Elthen (Priestess, Pirate, Alchemist, Plague Doctor, Female Adventurer) мельче новых (Barbarian, Mad Professor, Jester, Elite и Royal). В полоске мелких придётся увеличивать ×4, крупных ×2–3, и пиксель будет разный.
+- **Пол не везде совпадает с историей:** у Elthen почти нет женщин-магов (Морана, Агния, Розалия).
+- **Повторы с врагами.** Ведьма, некромант-бандит, кобольд-жрец и крыс-маг Elthen уже стоят врагами; героем их брать нельзя без замены врага.
+
+### 19.4. Вопросы Сергею
+
+1. Берём Elthen (один стиль с врагами, около 70 $) или chierit (красивее, но только 12 героев за 50 $ — тогда сокращать состав или добирать у других авторов)?
+2. Можно ли менять пол и облик жителей под найденный спрайт (Агния → пиромант, Морана → маг), или истории остаются, а спрайт подгоняем перекраской?
+3. Ведьма Elthen уже враг. Убрать её из врагов и отдать Маме Золе или взять Warlock?
+4. Оружие: рисовать своё в кадрах готовых листов (§19.3) или оставить оружие из набора и менять только его цвет по редкости?
+
+Обложки всех проверенных наборов собраны в листы для просмотра в рабочей папке агента; в репозиторий они не кладутся, это чужие картинки.
