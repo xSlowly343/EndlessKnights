@@ -12988,6 +12988,2526 @@
     24.5
    ]
   },
+  "helmet/jarl_forge/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/jarl_forge/torso": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/jarl_forge/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/jarl_forge/torso_back": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/jarl_forge/upper_arm": {
+   "size": [
+    16,
+    22
+   ],
+   "pivot": [
+    7.5,
+    2.5
+   ]
+  },
+  "chest/jarl_forge/upper_arm_short": {
+   "size": [
+    16,
+    18
+   ],
+   "pivot": [
+    7.5,
+    2.5
+   ]
+  },
+  "chest/jarl_forge/elbow_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "chest/jarl_forge/coat_tail": {
+   "size": [
+    10,
+    16
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/jarl_forge/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/jarl_forge/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/jarl_forge/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "boots/jarl_forge/shin": {
+   "size": [
+    12,
+    20
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "boots/jarl_forge/foot": {
+   "size": [
+    14,
+    8
+   ],
+   "pivot": [
+    3.5,
+    1.5
+   ]
+  },
+  "chest/jarl_forge/belt_front": {
+   "size": [
+    8,
+    11
+   ],
+   "pivot": [
+    -6.5,
+    -0.5
+   ]
+  },
+  "helmet/mountain_hammer/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/mountain_hammer/torso": {
+   "size": [
+    28,
+    37
+   ],
+   "pivot": [
+    13.5,
+    26.5
+   ]
+  },
+  "chest/mountain_hammer/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/mountain_hammer/torso_back": {
+   "size": [
+    28,
+    37
+   ],
+   "pivot": [
+    13.5,
+    26.5
+   ]
+  },
+  "chest/mountain_hammer/upper_arm": {
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    9.5,
+    3.5
+   ]
+  },
+  "chest/mountain_hammer/upper_arm_short": {
+   "size": [
+    20,
+    18
+   ],
+   "pivot": [
+    9.5,
+    3.5
+   ]
+  },
+  "chest/mountain_hammer/elbow_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "chest/mountain_hammer/coat_tail": {
+   "size": [
+    10,
+    16
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/mountain_hammer/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/mountain_hammer/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/mountain_hammer/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "boots/mountain_hammer/shin": {
+   "size": [
+    12,
+    20
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "boots/mountain_hammer/foot": {
+   "size": [
+    15,
+    8
+   ],
+   "pivot": [
+    3.5,
+    1.5
+   ]
+  },
+  "chest/mountain_hammer/belt_hang": {
+   "size": [
+    9,
+    9
+   ],
+   "pivot": [
+    4,
+    -1
+   ]
+  },
+  "helmet/colossus_anvil/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/colossus_anvil/torso": {
+   "size": [
+    30,
+    37
+   ],
+   "pivot": [
+    14.5,
+    26.5
+   ]
+  },
+  "chest/colossus_anvil/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/colossus_anvil/torso_back": {
+   "size": [
+    30,
+    37
+   ],
+   "pivot": [
+    14.5,
+    26.5
+   ]
+  },
+  "chest/colossus_anvil/upper_arm": {
+   "size": [
+    24,
+    26
+   ],
+   "pivot": [
+    11.5,
+    3.5
+   ]
+  },
+  "chest/colossus_anvil/upper_arm_short": {
+   "size": [
+    24,
+    20
+   ],
+   "pivot": [
+    11.5,
+    3.5
+   ]
+  },
+  "chest/colossus_anvil/elbow_cap": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    4.5
+   ]
+  },
+  "chest/colossus_anvil/coat_tail": {
+   "size": [
+    12,
+    14
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/colossus_anvil/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/colossus_anvil/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/colossus_anvil/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "boots/colossus_anvil/shin": {
+   "size": [
+    12,
+    20
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "boots/colossus_anvil/foot": {
+   "size": [
+    16,
+    8
+   ],
+   "pivot": [
+    3.5,
+    1.5
+   ]
+  },
+  "chest/colossus_anvil/belt_hang": {
+   "size": [
+    5,
+    14
+   ],
+   "pivot": [
+    2,
+    -1
+   ]
+  },
+  "helmet/colossus_anvil/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/colossus_anvil/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/northern_forge/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/northern_forge/torso": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/northern_forge/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/northern_forge/torso_back": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/northern_forge/upper_arm": {
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    9.5,
+    3.5
+   ]
+  },
+  "chest/northern_forge/upper_arm_short": {
+   "size": [
+    20,
+    18
+   ],
+   "pivot": [
+    9.5,
+    3.5
+   ]
+  },
+  "chest/northern_forge/elbow_cap": {
+   "size": [
+    8,
+    8
+   ],
+   "pivot": [
+    3.5,
+    3.5
+   ]
+  },
+  "chest/northern_forge/coat_tail": {
+   "size": [
+    10,
+    16
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/northern_forge/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/northern_forge/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/northern_forge/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "boots/northern_forge/shin": {
+   "size": [
+    12,
+    20
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "boots/northern_forge/foot": {
+   "size": [
+    14,
+    8
+   ],
+   "pivot": [
+    3.5,
+    1.5
+   ]
+  },
+  "chest/northern_forge/cape": {
+   "size": [
+    36,
+    54
+   ],
+   "pivot": [
+    17.5,
+    0.5
+   ]
+  },
+  "helmet/smith_line/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/smith_line/torso": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/smith_line/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/smith_line/torso_back": {
+   "size": [
+    26,
+    37
+   ],
+   "pivot": [
+    12.5,
+    26.5
+   ]
+  },
+  "chest/smith_line/upper_arm": {
+   "size": [
+    20,
+    26
+   ],
+   "pivot": [
+    9.5,
+    7.5
+   ]
+  },
+  "chest/smith_line/upper_arm_short": {
+   "size": [
+    20,
+    22
+   ],
+   "pivot": [
+    9.5,
+    7.5
+   ]
+  },
+  "chest/smith_line/elbow_cap": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    4.5
+   ]
+  },
+  "chest/smith_line/coat_tail": {
+   "size": [
+    12,
+    18
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/smith_line/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/smith_line/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/smith_line/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "boots/smith_line/shin": {
+   "size": [
+    12,
+    20
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "boots/smith_line/foot": {
+   "size": [
+    16,
+    8
+   ],
+   "pivot": [
+    3.5,
+    1.5
+   ]
+  },
+  "chest/smith_line/cape": {
+   "size": [
+    42,
+    56
+   ],
+   "pivot": [
+    20.5,
+    0.5
+   ]
+  },
+  "helmet/smith_line/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/smith_line/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/helmet": {
+   "size": [
+    36,
+    40
+   ],
+   "pivot": [
+    20.5,
+    38.5
+   ]
+  },
+  "chest/underside_forge/torso": {
+   "size": [
+    28,
+    37
+   ],
+   "pivot": [
+    13.5,
+    26.5
+   ]
+  },
+  "chest/underside_forge/torso_side": {
+   "size": [
+    22,
+    37
+   ],
+   "pivot": [
+    10.5,
+    26.5
+   ]
+  },
+  "chest/underside_forge/torso_back": {
+   "size": [
+    28,
+    37
+   ],
+   "pivot": [
+    13.5,
+    26.5
+   ]
+  },
+  "chest/underside_forge/upper_arm": {
+   "size": [
+    22,
+    24
+   ],
+   "pivot": [
+    10.5,
+    3.5
+   ]
+  },
+  "chest/underside_forge/upper_arm_short": {
+   "size": [
+    22,
+    20
+   ],
+   "pivot": [
+    10.5,
+    3.5
+   ]
+  },
+  "chest/underside_forge/elbow_cap": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    4.5
+   ]
+  },
+  "chest/underside_forge/coat_tail": {
+   "size": [
+    12,
+    14
+   ],
+   "pivot": [
+    4.5,
+    0.5
+   ]
+  },
+  "chest/underside_forge/forearm": {
+   "size": [
+    8,
+    12
+   ],
+   "pivot": [
+    3.5,
+    0.5
+   ]
+  },
+  "gloves/underside_forge/hand": {
+   "size": [
+    10,
+    10
+   ],
+   "pivot": [
+    4.5,
+    3.5
+   ]
+  },
+  "gloves/underside_forge/bracer": {
+   "size": [
+    10,
+    6
+   ],
+   "pivot": [
+    4.5,
+    -5.5
+   ]
+  },
+  "boots/underside_forge/shin": {
+   "size": [
+    12,
+    20
+   ],
+   "pivot": [
+    6.5,
+    1.5
+   ]
+  },
+  "boots/underside_forge/foot": {
+   "size": [
+    16,
+    8
+   ],
+   "pivot": [
+    3.5,
+    1.5
+   ]
+  },
+  "chest/underside_forge/back_item": {
+   "size": [
+    14,
+    16
+   ],
+   "pivot": [
+    2,
+    15
+   ]
+  },
+  "helmet/underside_forge/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/underside_forge/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r1/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r2/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r3/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r4/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r5/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r6/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r7/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r8/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r9/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r10/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/hair_front": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/hair_fly": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/head": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/blush": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/eye_near_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/eye_near_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/eye_near_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/eye_near_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/eye_far_open": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/eye_far_half": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/eye_far_closed": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
+  "helmet/plate_late_r11/eye_far_squint": {
+   "size": [
+    1,
+    1
+   ],
+   "pivot": [
+    0,
+    0
+   ]
+  },
   "offhand/heater_r1/offhand": {
    "size": [
     16,

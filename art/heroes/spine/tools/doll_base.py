@@ -15,6 +15,7 @@ import body as BD
 from pal import MAT, LETTER, OUTLINE
 import armor as AR
 import armor_acc as ACC
+import forge2x as FORGE
 
 OUT = os.path.join(ROOT, "base", "hero")
 K = 2
@@ -210,6 +211,9 @@ def save(path, rows, pal, direct=False, native=False):
     return list(im.size)
 
 
+CLOSED_HELM_HIDES = ["hair_front", "hair_fly", "head", "blush"] + [f"eye_{side}_{state}" for side in ("near", "far") for state in ("open", "half", "closed", "squint")]
+
+
 def export():
     manifest = {"source": "art/heroes/doll/src (front.py, body.py, pal.py, looks.json)", "scale": SCALE, "native": K, "outline": list(OUTLINE), "attachments": {}}
     att = manifest["attachments"]
@@ -251,6 +255,26 @@ def export():
             for (item_slot, slot), name in ACC.accessories(base, rarity).items():
                 txt, pivot = ACC.sprite(base, slot, name)
                 put(f"{item_slot}/{base}_r{rarity}/{slot}", grid(txt), pal, pivot, direct=True)
+    missing = {}
+    for set_id, data in FORGE.build().items():
+        pal = data["palette"]
+        acc = dict(data["accessories"])
+        cape_native = acc.pop("_cape_native", True)
+        for leaf, (txt, pivot) in list(data["pieces"].items()) + list(acc.items()):
+            rows = grid(txt)
+            used = {ch for r in rows for ch in r} - {".", "o"} - set(pal)
+            if used:
+                missing.setdefault(set_id, set()).update(used)
+            native = not (leaf == "cape" and not cape_native)
+            put(f"{FORGE.SLOT_OF[leaf]}/{set_id}/{leaf}", rows, pal, pivot, direct=True, native=native)
+        if set_id in FORGE.HIDES_HAIR:
+            for leaf in CLOSED_HELM_HIDES:
+                put(f"helmet/{set_id}/{leaf}", ["."], pal, (0, 0), direct=True, native=True)
+    for rarity in range(1, 12):
+        for leaf in CLOSED_HELM_HIDES:
+            put(f"helmet/plate_late_r{rarity}/{leaf}", ["."], {}, (0, 0), direct=True, native=True)
+    if missing:
+        print("missing palette letters:", {k: sorted(v) for k, v in missing.items()})
     for name, (txt, pivot) in AR.SHIELDS.items():
         for rarity in range(1, 12):
             put(f"offhand/{name}_r{rarity}/offhand", grid(txt), AR.palette("plate_late", rarity, palette()), list(pivot), direct=True)

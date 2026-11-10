@@ -2415,6 +2415,96 @@
    }
   },
   {
+   "name": "boots/colossus_anvil",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/colossus_anvil/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/colossus_anvil/foot",
+      "x": 2.0,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 8.0,
+      "height": 4.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/colossus_anvil/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/colossus_anvil/foot",
+      "x": 2.0,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 8.0,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/jarl_forge",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/jarl_forge/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/jarl_forge/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 7.0,
+      "height": 4.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/jarl_forge/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/jarl_forge/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 7.0,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
    "name": "boots/leather_early_r1",
    "attachments": {
     "thigh_far": {
@@ -4285,6 +4375,96 @@
    }
   },
   {
+   "name": "boots/mountain_hammer",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/mountain_hammer/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/mountain_hammer/foot",
+      "x": 1.75,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 7.5,
+      "height": 4.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/mountain_hammer/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/mountain_hammer/foot",
+      "x": 1.75,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 7.5,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/northern_forge",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/northern_forge/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/northern_forge/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 7.0,
+      "height": 4.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/northern_forge/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/northern_forge/foot",
+      "x": 1.5,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 7.0,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
    "name": "boots/plate_early_r1",
    "attachments": {
     "thigh_far": {
@@ -6145,6 +6325,96 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r9/foot",
+      "x": 2.0,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 8.0,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/smith_line",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/smith_line/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/smith_line/foot",
+      "x": 2.0,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 8.0,
+      "height": 4.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/smith_line/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/smith_line/foot",
+      "x": 2.0,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 8.0,
+      "height": 4.0
+     }
+    }
+   }
+  },
+  {
+   "name": "boots/underside_forge",
+   "attachments": {
+    "shin_far": {
+     "shin": {
+      "path": "boots/underside_forge/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_far": {
+     "foot": {
+      "path": "boots/underside_forge/foot",
+      "x": 2.0,
+      "y": -1.55,
+      "rotation": -0.0,
+      "width": 8.0,
+      "height": 4.0
+     }
+    },
+    "shin_near": {
+     "shin": {
+      "path": "boots/underside_forge/shin",
+      "x": 4.0,
+      "y": -0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 10.0
+     }
+    },
+    "foot_near": {
+     "foot": {
+      "path": "boots/underside_forge/foot",
       "x": 2.0,
       "y": -1.55,
       "rotation": -0.0,
@@ -9163,6 +9433,244 @@
    }
   },
   {
+   "name": "chest/colossus_anvil",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/colossus_anvil/upper_arm",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 12.0,
+      "height": 13.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/colossus_anvil/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/colossus_anvil/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/colossus_anvil/coat_tail",
+      "x": 3.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 7.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/colossus_anvil/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 15.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/colossus_anvil/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/colossus_anvil/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 15.0,
+      "height": 18.5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/colossus_anvil/belt_hang",
+      "x": 3.75,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 2.5,
+      "height": 7.0
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/colossus_anvil/upper_arm",
+      "x": 4.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 12.0,
+      "height": 13.0
+     },
+     "upper_arm_short": {
+      "path": "chest/colossus_anvil/upper_arm_short",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 12.0,
+      "height": 10.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/colossus_anvil/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/colossus_anvil/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/jarl_forge",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/jarl_forge/upper_arm",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 8.0,
+      "height": 11.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/jarl_forge/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/jarl_forge/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/jarl_forge/coat_tail",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 8.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/jarl_forge/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/jarl_forge/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/jarl_forge/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     }
+    },
+    "belt_front": {
+     "belt_front": {
+      "path": "chest/jarl_forge/belt_front",
+      "x": -2.75,
+      "y": -5.0,
+      "rotation": -90.0,
+      "width": 4.0,
+      "height": 5.5
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/jarl_forge/upper_arm",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 8.0,
+      "height": 11.0
+     },
+     "upper_arm_short": {
+      "path": "chest/jarl_forge/upper_arm_short",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 8.0,
+      "height": 9.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/jarl_forge/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/jarl_forge/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
    "name": "chest/leather_early_r1",
    "attachments": {
     "upper_arm_far": {
@@ -12125,6 +12633,244 @@
       "y": -0.0,
       "rotation": 90.0,
       "width": 3.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/mountain_hammer",
+   "attachments": {
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/mountain_hammer/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/mountain_hammer/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/mountain_hammer/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/mountain_hammer/coat_tail",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 8.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/mountain_hammer/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 14.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/mountain_hammer/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/mountain_hammer/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 14.0,
+      "height": 18.5
+     }
+    },
+    "belt_hang": {
+     "belt_hang": {
+      "path": "chest/mountain_hammer/belt_hang",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.5,
+      "height": 4.5
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/mountain_hammer/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     },
+     "upper_arm_short": {
+      "path": "chest/mountain_hammer/upper_arm_short",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 9.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/mountain_hammer/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/mountain_hammer/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/northern_forge",
+   "attachments": {
+    "cape": {
+     "cape": {
+      "path": "chest/northern_forge/cape",
+      "x": 13.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 18.0,
+      "height": 27.0
+     }
+    },
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/northern_forge/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/northern_forge/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/northern_forge/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/northern_forge/coat_tail",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 8.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/northern_forge/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/northern_forge/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/northern_forge/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/northern_forge/upper_arm",
+      "x": 3.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     },
+     "upper_arm_short": {
+      "path": "chest/northern_forge/upper_arm_short",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 9.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/northern_forge/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 4.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/northern_forge/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
       "height": 6.0
      }
     }
@@ -15119,6 +15865,244 @@
    }
   },
   {
+   "name": "chest/smith_line",
+   "attachments": {
+    "cape": {
+     "cape": {
+      "path": "chest/smith_line/cape",
+      "x": 13.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 21.0,
+      "height": 28.0
+     }
+    },
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/smith_line/upper_arm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 13.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/smith_line/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/smith_line/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/smith_line/coat_tail",
+      "x": 4.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 9.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/smith_line/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/smith_line/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/smith_line/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 13.0,
+      "height": 18.5
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/smith_line/upper_arm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 13.0
+     },
+     "upper_arm_short": {
+      "path": "chest/smith_line/upper_arm_short",
+      "x": 1.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 10.0,
+      "height": 11.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/smith_line/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/smith_line/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
+   "name": "chest/underside_forge",
+   "attachments": {
+    "back_item": {
+     "back_item": {
+      "path": "chest/underside_forge/back_item",
+      "x": 3.75,
+      "y": -2.25,
+      "rotation": -90.0,
+      "width": 7.0,
+      "height": 8.0
+     }
+    },
+    "upper_arm_far": {
+     "upper_arm": {
+      "path": "chest/underside_forge/upper_arm",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 11.0,
+      "height": 12.0
+     }
+    },
+    "elbow_far": {
+     "elbow_cap": {
+      "path": "chest/underside_forge/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "forearm_far": {
+     "forearm": {
+      "path": "chest/underside_forge/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    },
+    "coat_tail": {
+     "coat_tail": {
+      "path": "chest/underside_forge/coat_tail",
+      "x": 3.0,
+      "y": 0.5,
+      "rotation": 90.0,
+      "width": 6.0,
+      "height": 7.0
+     }
+    },
+    "torso": {
+     "torso": {
+      "path": "chest/underside_forge/torso",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 14.0,
+      "height": 18.5
+     },
+     "torso_side": {
+      "path": "chest/underside_forge/torso_side",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 11.0,
+      "height": 18.5
+     },
+     "torso_back": {
+      "path": "chest/underside_forge/torso_back",
+      "x": 4.25,
+      "y": 0.0,
+      "rotation": -90.0,
+      "width": 14.0,
+      "height": 18.5
+     }
+    },
+    "upper_arm_near": {
+     "upper_arm": {
+      "path": "chest/underside_forge/upper_arm",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 11.0,
+      "height": 12.0
+     },
+     "upper_arm_short": {
+      "path": "chest/underside_forge/upper_arm_short",
+      "x": 3.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 11.0,
+      "height": 10.0
+     }
+    },
+    "elbow_near": {
+     "elbow_cap": {
+      "path": "chest/underside_forge/elbow_cap",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "forearm_near": {
+     "forearm": {
+      "path": "chest/underside_forge/forearm",
+      "x": 2.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 4.0,
+      "height": 6.0
+     }
+    }
+   }
+  },
+  {
    "name": "eyes/a_female",
    "attachments": {
     "eye_far": {
@@ -16693,6 +17677,96 @@
    }
   },
   {
+   "name": "gloves/colossus_anvil",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/colossus_anvil/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/colossus_anvil/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/colossus_anvil/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/colossus_anvil/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/jarl_forge",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/jarl_forge/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/jarl_forge/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/jarl_forge/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/jarl_forge/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
    "name": "gloves/leather_early_r1",
    "attachments": {
     "bracer_far": {
@@ -17678,6 +18752,96 @@
       "rotation": 90.0,
       "width": 4.0,
       "height": 4.0
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/mountain_hammer",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/mountain_hammer/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/mountain_hammer/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/mountain_hammer/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/mountain_hammer/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/northern_forge",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/northern_forge/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/northern_forge/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/northern_forge/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/northern_forge/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
      }
     }
    }
@@ -18673,6 +19837,96 @@
    }
   },
   {
+   "name": "gloves/smith_line",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/smith_line/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/smith_line/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/smith_line/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/smith_line/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
+   "name": "gloves/underside_forge",
+   "attachments": {
+    "bracer_far": {
+     "bracer": {
+      "path": "gloves/underside_forge/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_far": {
+     "hand": {
+      "path": "gloves/underside_forge/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    },
+    "bracer_near": {
+     "bracer": {
+      "path": "gloves/underside_forge/bracer",
+      "x": 4.0,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 3.0
+     }
+    },
+    "hand_near": {
+     "hand": {
+      "path": "gloves/underside_forge/hand",
+      "x": 0.5,
+      "y": -0.0,
+      "rotation": 90.0,
+      "width": 5.0,
+      "height": 5.0
+     }
+    }
+   }
+  },
+  {
    "name": "hair/long_a",
    "attachments": {
     "hair_fly": {
@@ -19263,6 +20517,144 @@
    }
   },
   {
+   "name": "helmet/colossus_anvil",
+   "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/colossus_anvil/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/colossus_anvil/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/colossus_anvil/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/colossus_anvil/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/colossus_anvil/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/colossus_anvil/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/colossus_anvil/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/colossus_anvil/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/colossus_anvil/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/colossus_anvil/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/colossus_anvil/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/colossus_anvil/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "helmet": {
+     "helmet": {
+      "path": "helmet/colossus_anvil/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/jarl_forge",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/jarl_forge/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
    "name": "helmet/leather_early_r1",
    "attachments": {
     "helmet": {
@@ -19633,6 +21025,36 @@
    }
   },
   {
+   "name": "helmet/mountain_hammer",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/mountain_hammer/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/northern_forge",
+   "attachments": {
+    "helmet": {
+     "helmet": {
+      "path": "helmet/northern_forge/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
    "name": "helmet/plate_early_r1",
    "attachments": {
     "helmet": {
@@ -19820,6 +21242,114 @@
   {
    "name": "helmet/plate_late_r1",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r1/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r1/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r1/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r1/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r1/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r1/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r1/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r1/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r1/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r1/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r1/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r1/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r1/helmet",
@@ -19835,6 +21365,114 @@
   {
    "name": "helmet/plate_late_r10",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r10/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r10/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r10/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r10/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r10/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r10/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r10/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r10/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r10/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r10/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r10/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r10/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r10/helmet",
@@ -19860,6 +21498,114 @@
   {
    "name": "helmet/plate_late_r11",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r11/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r11/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r11/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r11/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r11/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r11/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r11/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r11/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r11/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r11/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r11/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r11/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r11/helmet",
@@ -19885,6 +21631,114 @@
   {
    "name": "helmet/plate_late_r2",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r2/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r2/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r2/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r2/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r2/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r2/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r2/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r2/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r2/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r2/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r2/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r2/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r2/helmet",
@@ -19900,6 +21754,114 @@
   {
    "name": "helmet/plate_late_r3",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r3/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r3/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r3/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r3/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r3/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r3/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r3/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r3/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r3/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r3/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r3/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r3/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r3/helmet",
@@ -19915,6 +21877,114 @@
   {
    "name": "helmet/plate_late_r4",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r4/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r4/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r4/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r4/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r4/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r4/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r4/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r4/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r4/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r4/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r4/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r4/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r4/helmet",
@@ -19930,6 +22000,114 @@
   {
    "name": "helmet/plate_late_r5",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r5/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r5/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r5/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r5/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r5/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r5/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r5/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r5/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r5/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r5/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r5/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r5/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r5/helmet",
@@ -19945,6 +22123,114 @@
   {
    "name": "helmet/plate_late_r6",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r6/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r6/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r6/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r6/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r6/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r6/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r6/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r6/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r6/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r6/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r6/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r6/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r6/helmet",
@@ -19970,6 +22256,114 @@
   {
    "name": "helmet/plate_late_r7",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r7/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r7/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r7/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r7/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r7/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r7/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r7/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r7/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r7/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r7/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r7/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r7/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r7/helmet",
@@ -19995,6 +22389,114 @@
   {
    "name": "helmet/plate_late_r8",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r8/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r8/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r8/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r8/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r8/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r8/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r8/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r8/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r8/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r8/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r8/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r8/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r8/helmet",
@@ -20020,6 +22522,114 @@
   {
    "name": "helmet/plate_late_r9",
    "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/plate_late_r9/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/plate_late_r9/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/plate_late_r9/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/plate_late_r9/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r9/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r9/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r9/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/plate_late_r9/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/plate_late_r9/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/plate_late_r9/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/plate_late_r9/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/plate_late_r9/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
     "helmet": {
      "helmet": {
       "path": "helmet/plate_late_r9/helmet",
@@ -20038,6 +22648,252 @@
       "rotation": -90.0,
       "width": 8.0,
       "height": 7.0
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/smith_line",
+   "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/smith_line/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/smith_line/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/smith_line/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/smith_line/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/smith_line/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/smith_line/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/smith_line/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/smith_line/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/smith_line/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/smith_line/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/smith_line/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/smith_line/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "helmet": {
+     "helmet": {
+      "path": "helmet/smith_line/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
+     }
+    }
+   }
+  },
+  {
+   "name": "helmet/underside_forge",
+   "attachments": {
+    "hair_fly": {
+     "hair_fly": {
+      "path": "helmet/underside_forge/hair_fly",
+      "x": 0.0,
+      "y": 0.0,
+      "rotation": 90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "head": {
+     "head": {
+      "path": "helmet/underside_forge/head",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "blush": {
+     "blush": {
+      "path": "helmet/underside_forge/blush",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_far": {
+     "eye_open": {
+      "path": "helmet/underside_forge/eye_far_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/underside_forge/eye_far_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/underside_forge/eye_far_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/underside_forge/eye_far_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "eye_near": {
+     "eye_open": {
+      "path": "helmet/underside_forge/eye_near_open",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_half": {
+      "path": "helmet/underside_forge/eye_near_half",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_closed": {
+      "path": "helmet/underside_forge/eye_near_closed",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     },
+     "eye_squint": {
+      "path": "helmet/underside_forge/eye_near_squint",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "hair_front": {
+     "hair_front": {
+      "path": "helmet/underside_forge/hair_front",
+      "x": 0.0,
+      "y": -0.0,
+      "rotation": -90.0,
+      "width": 0.5,
+      "height": 0.5
+     }
+    },
+    "helmet": {
+     "helmet": {
+      "path": "helmet/underside_forge/helmet",
+      "x": 9.5,
+      "y": 1.5,
+      "rotation": -90.0,
+      "width": 18.0,
+      "height": 20.0
      }
     }
    }
