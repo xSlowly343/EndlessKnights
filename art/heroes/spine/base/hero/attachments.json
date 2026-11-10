@@ -3440,11 +3440,11 @@
   },
   "boots/plate_late_r1/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -3600,11 +3600,11 @@
   },
   "boots/plate_late_r2/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -3760,11 +3760,11 @@
   },
   "boots/plate_late_r3/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -3920,11 +3920,11 @@
   },
   "boots/plate_late_r4/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -4090,11 +4090,11 @@
   },
   "boots/plate_late_r5/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -4260,11 +4260,11 @@
   },
   "boots/plate_late_r6/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -4450,11 +4450,11 @@
   },
   "boots/plate_late_r7/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -4640,11 +4640,11 @@
   },
   "boots/plate_late_r8/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -4840,11 +4840,11 @@
   },
   "boots/plate_late_r9/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -5040,11 +5040,11 @@
   },
   "boots/plate_late_r10/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -5240,11 +5240,11 @@
   },
   "boots/plate_late_r11/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -13140,11 +13140,11 @@
   },
   "boots/jarl_forge/foot": {
    "size": [
-    15,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -13310,11 +13310,11 @@
   },
   "boots/mountain_hammer/foot": {
    "size": [
-    16,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -13480,11 +13480,11 @@
   },
   "boots/colossus_anvil/foot": {
    "size": [
-    17,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -13770,11 +13770,11 @@
   },
   "boots/northern_forge/foot": {
    "size": [
-    15,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -13940,11 +13940,11 @@
   },
   "boots/smith_line/foot": {
    "size": [
-    20,
+    23,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },
@@ -14230,11 +14230,11 @@
   },
   "boots/underside_forge/foot": {
    "size": [
-    15,
+    18,
     8
    ],
    "pivot": [
-    3.5,
+    5.5,
     1.5
    ]
   },

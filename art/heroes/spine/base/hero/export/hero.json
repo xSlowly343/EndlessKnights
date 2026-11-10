@@ -2441,10 +2441,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/colossus_anvil/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -2461,10 +2461,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/colossus_anvil/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -2486,10 +2486,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/jarl_forge/foot",
-      "x": 1.75,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -2506,10 +2506,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/jarl_forge/foot",
-      "x": 1.75,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -4401,10 +4401,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/mountain_hammer/foot",
-      "x": 2.0,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -4421,10 +4421,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/mountain_hammer/foot",
-      "x": 2.0,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.0,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -4446,10 +4446,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/northern_forge/foot",
-      "x": 1.75,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -4466,10 +4466,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/northern_forge/foot",
-      "x": 1.75,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5426,10 +5426,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r1/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5446,10 +5446,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r1/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5471,10 +5471,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r10/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5491,10 +5491,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r10/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5516,10 +5516,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r11/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5536,10 +5536,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r11/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5561,10 +5561,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r2/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5581,10 +5581,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r2/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5606,10 +5606,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r3/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5626,10 +5626,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r3/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5651,10 +5651,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r4/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5671,10 +5671,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r4/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5696,10 +5696,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r5/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5716,10 +5716,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r5/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5741,10 +5741,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r6/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5761,10 +5761,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r6/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5786,10 +5786,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r7/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5806,10 +5806,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r7/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5831,10 +5831,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r8/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5851,10 +5851,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r8/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5876,10 +5876,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/plate_late_r9/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5896,10 +5896,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/plate_late_r9/foot",
-      "x": 2.25,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 8.5,
+      "width": 9.0,
       "height": 4.0
      }
     }
@@ -5921,10 +5921,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/smith_line/foot",
-      "x": 3.0,
+      "x": 2.75,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 10.0,
+      "width": 11.5,
       "height": 4.0
      }
     },
@@ -5941,10 +5941,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/smith_line/foot",
-      "x": 3.0,
+      "x": 2.75,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 10.0,
+      "width": 11.5,
       "height": 4.0
      }
     }
@@ -5966,10 +5966,10 @@
     "foot_far": {
      "foot": {
       "path": "boots/underside_forge/foot",
-      "x": 1.75,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.5,
+      "width": 9.0,
       "height": 4.0
      }
     },
@@ -5986,10 +5986,10 @@
     "foot_near": {
      "foot": {
       "path": "boots/underside_forge/foot",
-      "x": 1.75,
+      "x": 1.5,
       "y": -1.55,
       "rotation": -0.0,
-      "width": 7.5,
+      "width": 9.0,
       "height": 4.0
      }
     }

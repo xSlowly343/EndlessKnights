@@ -109,21 +109,32 @@ def boot_pieces(h, top_fill, foot_fill, cuff_fill=None, cuff=3, foot_w=14, toe="
     if top_extra:
         top_extra(c, m)
     out["boot_top"] = piece(c, "boot_top", -2, 18 - h)
-    w = foot_w + (5 if toe == "point" else 0)
-    c = Canvas(w + 1, 8)
+    w = 18 + (5 if toe == "point" else 0)
+    c = Canvas(w, 8)
     if toe == "point":
-        pts = [(1, 0), (8, 0), (11, 3), (w - 4, 5), (w, 6), (w, 7), (w - 4, 8), (0, 8)]
+        pts = [(0, 0), (11, 0), (14, 2), (w - 6, 4), (w, 5), (w, 6.5), (w - 4, 8), (0, 8)]
     elif toe == "claw":
-        pts = [(1, 0), (8, 0), (10, 3), (w - 1, 4), (w, 8), (0, 8)]
+        pts = [(0, 0), (11, 0), (14, 2), (w - 2, 3.5), (w, 6), (w, 8), (0, 8)]
     else:
-        pts = [(1, 0), (8, 0), (10, 3), (w - 1, 5), (w, 8), (0, 8)]
+        pts = [(0, 0), (11, 0), (14, 2), (w - 2, 3.5), (w, 5.5), (w, 8), (0, 8)]
     m = c.mask_poly(pts)
     foot_fill(c, m)
+    edge = c.get(0, 4)
+    for x in range(0, w):
+        if (x, 7) in m:
+            c.put(x, 7, edge if edge != "." else "#")
+    if toe != "point":
+        for x in (6, 7, 8):
+            c.put(x, 7, ".")
+        c.put(5, 6, edge)
+        c.put(9, 6, edge)
+    tip = max(x for x, y in m if y == 5)
+    c.put(tip - 2, 4, "W")
     if toe == "claw":
-        for x in range(w - 6, w + 1, 3):
+        for x in range(w - 7, w, 3):
             c.put(x, 7, "W")
             c.put(x + 1, 6, "W")
-    out["foot"] = piece(c, "foot", -1, -1)
+    out["foot"] = piece(c, "foot", -3, -1)
     return out
 
 
