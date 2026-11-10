@@ -17,7 +17,10 @@ def armor(material, rarity, slots=SLOTS):
 
 
 def sheet(rows, res, path, scale=3, box=(0, 0, 72, 80)):
-    w, h = (box[2] - box[0]) * scale, (box[3] - box[1]) * scale
+    k = DG.DB.K
+    box = tuple(v * k for v in box)
+    scale = scale / k
+    w, h = int((box[2] - box[0]) * scale), int((box[3] - box[1]) * scale)
     cols = max(len(r[1]) for r in rows)
     out = Image.new("RGBA", (cols * w, len(rows) * (h + 14)), (38, 32, 52, 255))
     d = ImageDraw.Draw(out)
@@ -25,7 +28,7 @@ def sheet(rows, res, path, scale=3, box=(0, 0, 72, 80)):
         for ci, (label, key, pose) in enumerate(items):
             img = compose(res[key][pose]["layers"]).crop(box)
             x, y = ci * w, ri * (h + 14)
-            out.alpha_composite(img.resize((img.width * scale, img.height * scale), Image.NEAREST), (x, y + 14))
+            out.alpha_composite(img.resize((int(img.width * scale), int(img.height * scale)), Image.NEAREST), (x, y + 14))
             d.text((x + 3, y + 1), label, fill=(210, 210, 220))
     out.save(path)
 
@@ -81,7 +84,7 @@ def playback():
             "female_leather_late_r7": meta["presets"]["female"] + armor("leather_late", 7)}
     play = [{"key": k, "skins": v, "queue": ["Idle", "Enter", "Hit1", "Hit2", "Hit3", "Exit3", "Idle"], "steps": 170} for k, v in sets.items()]
     cfg = {"layers": layers, "compare": [], "play": play}
-    open(os.path.join(DR.PROBE, "hero.html"), "w").write(DR.PAGE.replace("CFG", json.dumps(cfg)))
+    open(os.path.join(DR.PROBE, "hero.html"), "w").write(DR.PAGE.replace("CFG", json.dumps(cfg)).replace("RES", str(DG.DB.K)))
     open(os.path.join(DR.PROBE, "hero_shot.js"), "w").write(DR.SHOT)
     path = os.path.join(DR.PROBE, "check", "armor_play.json")
     subprocess.run(["node", "hero_shot.js", path], cwd=DR.PROBE, check=True)
@@ -89,9 +92,10 @@ def playback():
     for key in sets:
         frames = []
         for f in res[key]:
-            bg = Image.new("RGBA", DR.SIZE, (38, 32, 52, 255))
-            bg.alpha_composite(DR.compose(f))
-            frames.append(bg.resize((DR.SIZE[0] * 4, DR.SIZE[1] * 4), Image.NEAREST).convert("P", palette=Image.ADAPTIVE))
+            img = DR.compose(f)
+            bg = Image.new("RGBA", img.size, (38, 32, 52, 255))
+            bg.alpha_composite(img)
+            frames.append(bg.resize((img.width * 2, img.height * 2), Image.NEAREST).convert("P", palette=Image.ADAPTIVE))
         frames[0].save(os.path.join(OUT, f"armor_play_{key}.gif"), save_all=True, append_images=frames[1:], duration=33, loop=0, disposal=2)
 
 

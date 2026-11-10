@@ -26,7 +26,7 @@ PAGE = """<!doctype html><html><body>
 <script>
 (async()=>{try{
 const cfg=CFG; const out={};
-const canvas=document.createElement('canvas'); canvas.width=96; canvas.height=64; document.body.appendChild(canvas);
+const canvas=document.createElement('canvas'); canvas.width=96*RES; canvas.height=64*RES; document.body.appendChild(canvas);
 const ctx=new spine.ManagedWebGLRenderingContext(canvas,{preserveDrawingBuffer:true,alpha:true,premultipliedAlpha:false,antialias:false});
 const am=new spine.AssetManager(ctx,'export/');
 am.loadTextureAtlas('hero.atlas'); am.loadJson('hero.json'); await am.loadAll();
@@ -75,9 +75,9 @@ def link_export():
     link = os.path.join(PROBE, "export")
     if not os.path.exists(link):
         os.symlink(DS.EXPORT, link)
-    parts = os.path.join(PROBE, "parts_8x")
+    parts = os.path.join(PROBE, "parts_tex")
     if not os.path.exists(parts):
-        os.symlink(os.path.join(DB.OUT, "parts_8x"), parts)
+        os.symlink(os.path.join(DB.OUT, "parts_tex"), parts)
 
 
 def main():
@@ -95,10 +95,10 @@ def main():
                 t += ms / 1000
             key = f"{sex}_{anim}"
             compare.append({"key": key, "skins": meta["presets"][sex], "anim": anim, "times": times})
-            refs[key] = [doll.frame(dict(P), size=SIZE) for P, _ in frames]
+            refs[key] = [doll.frame(dict(P), size=SIZE).resize((SIZE[0] * DB.K, SIZE[1] * DB.K), Image.NEAREST) for P, _ in frames]
         play.append({"key": f"{sex}_play", "skins": meta["presets"][sex], "queue": ["Idle", "Idle", "Enter", "Hit1", "Hit2", "Hit3", "Exit3", "Idle"], "steps": 200})
     cfg = {"layers": layers, "compare": compare, "play": play}
-    open(os.path.join(PROBE, "hero.html"), "w").write(PAGE.replace("CFG", json.dumps(cfg)))
+    open(os.path.join(PROBE, "hero.html"), "w").write(PAGE.replace("CFG", json.dumps(cfg)).replace("RES", str(DB.K)))
     open(os.path.join(PROBE, "hero_shot.js"), "w").write(SHOT)
     res_path = os.path.join(PROBE, "check", "hero_result.json")
     os.makedirs(os.path.dirname(res_path), exist_ok=True)
@@ -117,18 +117,19 @@ def main():
             report[job["key"]] = round(100 * sum(sil) / max(1, sum(fig)), 1)
             rows.append((ref, mine))
         width = max(len(r[0]) for r in rows)
-        sheet = Image.new("RGBA", (SIZE[0] * width, SIZE[1] * 2 * len(rows)), (38, 32, 52, 255))
+        cw, chh = SIZE[0] * DB.K, SIZE[1] * DB.K
+        sheet = Image.new("RGBA", (cw * width, chh * 2 * len(rows)), (38, 32, 52, 255))
         for ri, (ref, mine) in enumerate(rows):
             for fi, (a, b) in enumerate(zip(ref, mine)):
-                sheet.alpha_composite(a, (fi * SIZE[0], ri * 2 * SIZE[1]))
-                sheet.alpha_composite(b, (fi * SIZE[0], (ri * 2 + 1) * SIZE[1]))
-        sheet.resize((sheet.width * 2, sheet.height * 2), Image.NEAREST).save(os.path.join(PREVIEW, f"v8_vs_spine_{sex}.png"))
+                sheet.alpha_composite(a, (fi * cw, ri * 2 * chh))
+                sheet.alpha_composite(b, (fi * cw, (ri * 2 + 1) * chh))
+        sheet.save(os.path.join(PREVIEW, f"v8_vs_spine_{sex}.png"))
         frames = [compose(f) for f in res[f"{sex}_play"]]
         gif = []
         for f in frames:
-            bg = Image.new("RGBA", SIZE, (38, 32, 52, 255))
+            bg = Image.new("RGBA", f.size, (38, 32, 52, 255))
             bg.alpha_composite(f)
-            gif.append(bg.resize((SIZE[0] * 4, SIZE[1] * 4), Image.NEAREST).convert("P", palette=Image.ADAPTIVE))
+            gif.append(bg.resize((f.width * 2, f.height * 2), Image.NEAREST).convert("P", palette=Image.ADAPTIVE))
         gif[0].save(os.path.join(PREVIEW, f"spine_play_{sex}.gif"), save_all=True, append_images=gif[1:], duration=33, loop=0, disposal=2)
     json.dump(report, open(os.path.join(PREVIEW, "silhouette_diff_percent.json"), "w"), indent=1)
     print(report)

@@ -105,7 +105,7 @@ PAGE = """<!doctype html><html><body>
 <script>
 (async()=>{try{
 const cfg=CFG; const out={};
-const canvas=document.createElement('canvas'); canvas.width=96; canvas.height=80; document.body.appendChild(canvas);
+const canvas=document.createElement('canvas'); canvas.width=96*RES; canvas.height=80*RES; document.body.appendChild(canvas);
 const ctx=new spine.ManagedWebGLRenderingContext(canvas,{preserveDrawingBuffer:true,alpha:true,premultipliedAlpha:false,antialias:false});
 const am=new spine.AssetManager(ctx,'export/');
 am.loadTextureAtlas('hero.atlas'); am.loadJson('hero.json'); await am.loadAll();
@@ -161,7 +161,8 @@ def pieces(img):
     return sorted(sizes, reverse=True)
 
 
-def zoom_sheet(key, entries, names, scale=4, cols=6, box=(8, 16, 72, 80)):
+def zoom_sheet(key, entries, names, scale=2, cols=6, box=(8, 16, 72, 80)):
+    box = tuple(v * DB.K for v in box)
     w, h = (box[2] - box[0]) * scale, (box[3] - box[1]) * scale + 14
     rows = (len(names) + cols - 1) // cols
     sheet = Image.new("RGBA", (cols * w, rows * h), (38, 32, 52, 255))
@@ -179,7 +180,7 @@ def render(jobs, poses):
     meta = json.load(open(os.path.join(DS.EXPORT, "hero.meta.json")))
     layers = [meta["layers"][k] for k in ("back", "body", "front")]
     cfg = {"layers": layers, "groups": GROUPS, "poses": poses, "jobs": jobs}
-    open(os.path.join(PROBE, "diag.html"), "w").write(PAGE.replace("CFG", json.dumps(cfg)))
+    open(os.path.join(PROBE, "diag.html"), "w").write(PAGE.replace("CFG", json.dumps(cfg)).replace("RES", str(DB.K)))
     open(os.path.join(PROBE, "diag_shot.js"), "w").write(SHOT)
     res_path = os.path.join(PROBE, "check", "diag_result.json")
     os.makedirs(os.path.dirname(res_path), exist_ok=True)
@@ -219,7 +220,7 @@ def main():
             if faults:
                 report.setdefault(key, {})[name] = faults
             x, y = (i % cols) * cell[0], (i // cols) * cell[1]
-            sheet.alpha_composite(img.crop((0, 16, 96, 80)).resize((SIZE[0] * 2, SIZE[1] * 2), Image.NEAREST), (x, y + 12))
+            sheet.alpha_composite(img.crop((0, 16 * DB.K, 96 * DB.K, 80 * DB.K)).resize((SIZE[0] * 2, SIZE[1] * 2), Image.NEAREST), (x, y + 12))
             d.text((x + 3, y + 1), name, fill=(255, 120, 120) if faults else (210, 210, 220))
         sheet.save(os.path.join(OUT, f"poses_{key}.png"))
         zoom_sheet(key, res[key], names)

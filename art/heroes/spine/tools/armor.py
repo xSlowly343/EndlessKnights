@@ -928,6 +928,8 @@ def pieces(base, slot):
 
 
 def piece(base, name):
+    if is_native(base, name):
+        return NATIVE[base][name]
     entry = SETS[base][name]
     if name == "helmet":
         txt, (dx, dy) = entry
@@ -936,3 +938,12 @@ def piece(base, name):
         txt, pivot = entry
         return txt, list(pivot)
     return entry, PIVOTS[name]
+
+
+import armor2x as A2
+
+NATIVE = {"plate_late": A2.plate_late()}
+
+
+def is_native(base, leaf):
+    return leaf in NATIVE.get(base, {})

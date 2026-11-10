@@ -17,7 +17,9 @@ import armor as AR
 import armor_acc as ACC
 
 OUT = os.path.join(ROOT, "base", "hero")
-SCALE = 8
+K = 2
+TEX = 4
+SCALE = TEX
 HAIR = set("HhlX")
 EYE = set("qeiE")
 BLUSH = set("A")
@@ -127,11 +129,15 @@ def scale2x(a):
     return o
 
 
-def upscale(im):
+def upscale(im, factor=TEX):
     a = np.array(im)
-    for _ in range(int(math.log2(SCALE))):
+    for _ in range(int(math.log2(factor))):
         a = scale2x(a)
     return Image.fromarray(a)
+
+
+def native_pivot(pivot):
+    return [round(K * p + (K - 1) / 2, 3) for p in pivot]
 
 
 ELBOW_CAP = """
@@ -193,9 +199,11 @@ def image_direct(rows, colors):
     return im
 
 
-def save(path, rows, pal, direct=False):
+def save(path, rows, pal, direct=False, native=False):
     im = image_direct(rows, pal) if direct else image(rows, pal)
-    for folder, out in (("parts_1x", im), (f"parts_{SCALE}x", upscale(im))):
+    if not native:
+        im = upscale(im, K)
+    for folder, out in (("parts_native", im), ("parts_tex", upscale(im))):
         full = os.path.join(OUT, folder, path + ".png")
         os.makedirs(os.path.dirname(full), exist_ok=True)
         out.save(full)
@@ -203,11 +211,11 @@ def save(path, rows, pal, direct=False):
 
 
 def export():
-    manifest = {"source": "art/heroes/doll/src (front.py, body.py, pal.py, looks.json)", "scale": SCALE, "outline": list(OUTLINE), "attachments": {}}
+    manifest = {"source": "art/heroes/doll/src (front.py, body.py, pal.py, looks.json)", "scale": SCALE, "native": K, "outline": list(OUTLINE), "attachments": {}}
     att = manifest["attachments"]
 
-    def put(path, rows, pal, pivot, direct=False, **extra):
-        att[path] = dict({"size": save(path, rows, pal, direct), "pivot": pivot}, **extra)
+    def put(path, rows, pal, pivot, direct=False, native=False, **extra):
+        att[path] = dict({"size": save(path, rows, pal, direct, native), "pivot": list(pivot) if native else native_pivot(pivot)}, **extra)
 
     hair_shape = {"male": "short", "female": "long"}
     for sex in ("male", "female"):
@@ -239,7 +247,7 @@ def export():
             for slot in AR.SLOT_PIECES:
                 for leaf in AR.pieces(base, slot):
                     txt, pivot = AR.piece(base, leaf)
-                    put(f"{slot}/{base}_r{rarity}/{leaf}", grid(txt), pal, pivot, direct=True)
+                    put(f"{slot}/{base}_r{rarity}/{leaf}", grid(txt), pal, pivot, direct=True, native=AR.is_native(base, leaf))
             for (item_slot, slot), name in ACC.accessories(base, rarity).items():
                 txt, pivot = ACC.sprite(base, slot, name)
                 put(f"{item_slot}/{base}_r{rarity}/{slot}", grid(txt), pal, pivot, direct=True)

@@ -139,11 +139,12 @@ FOOT_DROP = 0.55
 
 
 def region(path, meta, base_rot, drop=0.0):
+    k = DB.K
     w, h = meta["size"]
     px, py = meta["pivot"]
-    vx, vy = w / 2 - (px + 0.5), -(h / 2 - (py + 0.5)) - drop
+    vx, vy = (w / 2 - (px + 0.5)) / k, -(h / 2 - (py + 0.5)) / k - drop
     lx, ly = rotate((vx, vy), -base_rot)
-    return {"path": path, "x": round(lx, 4), "y": round(ly, 4), "rotation": -base_rot, "width": w, "height": h}
+    return {"path": path, "x": round(lx, 4), "y": round(ly, 4), "rotation": -base_rot, "width": w / k, "height": h / k}
 
 
 def skins(manifest):
@@ -229,7 +230,7 @@ def v8_sequences(doll):
 
 def pack_atlas(manifest, name):
     paths = sorted(manifest["attachments"])
-    ims = {p: Image.open(os.path.join(DB.OUT, f"parts_{DB.SCALE}x", p + ".png")) for p in paths}
+    ims = {p: Image.open(os.path.join(DB.OUT, "parts_tex", p + ".png")) for p in paths}
     W, x, y, row, pad = 2048, 0, 0, 0, 2
     pos = {}
     for p, im in sorted(ims.items(), key=lambda kv: (-kv[1].height, kv[0])):
@@ -261,7 +262,7 @@ def build():
             e["color"] = FAR_TINT
         slots.append(e)
     skel = {
-        "skeleton": {"spine": "4.2.00", "fps": 60, "images": "../parts_8x/"},
+        "skeleton": {"spine": "4.2.00", "fps": 60, "images": "../parts_tex/"},
         "bones": bones(setup),
         "slots": slots,
         "ik": [{"name": f"leg_{side}_ik", "order": i, "bones": [f"thigh_{side}", f"shin_{side}"], "target": f"ik_foot_{side}", "bendPositive": False}
