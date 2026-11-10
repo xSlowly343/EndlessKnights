@@ -45,13 +45,13 @@ export function draw(p, t, o) {
   const A = o.actor, C = fit(o.palette, 7), R = o.release, k = power(t, R);
   helix(p, t, o, false);
   if (k > 0.02) {
-    p.outline(A.mask, A.x, A.y, t > R && t < R + 0.1 ? WHITE : C[4], Math.min(1, k * 1.2));
+    p.outline(A.mask, A.x, A.y, t >= R && t < R + 0.034 ? WHITE : C[4], Math.min(1, k * 1.2));
     p.glow(A.x + A.w / 2, A.y + A.h * 0.45, A.h * 0.7, C[3], 0.25 * k);
   }
-  if (t > R && t < R + 0.12) p.mask(A.mask, A.x, A.y, WHITE, 0.55);
+  if (t >= R && t < R + 0.034) p.mask(A.mask, A.x, A.y, WHITE, 0.55);
   if (k > 0.1) cycle(t, 0.6, 14, o.seed, 0.6, (age, L, r) => {
     const u = age / L, x = A.x + r.next() * A.w, y = -u * (A.h + 14);
     p.dot(x, y, u < 0.5 ? C[5] : C[4], k * (1 - u));
   });
-  if (t > R - 0.05 && t < R + 0.15) sparkle(p, A.x + A.w / 2, A.y + A.h * 0.4, 10 * (1 - Math.abs(t - R) / 0.15), C[5], WHITE);
+  if (t >= R && t < R + 0.1) sparkle(p, A.x + A.w / 2, A.y + A.h * 0.4, 10 * (1 - (t - R) / 0.1), C[5], WHITE);
 }
