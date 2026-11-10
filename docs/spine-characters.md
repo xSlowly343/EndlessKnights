@@ -535,3 +535,20 @@ Unity в облаке нет, а UnityMCP сейчас недоступен. П�
   - стоит взять у TT2 тематические полные наборы и эффект-ауру по редкости, у Terraria — отдельный косметический облик поверх статов.
 
 Доска референсов брони (32 стиля: 18 исторических, 14 фэнтезийных) собрана из открытых изображений через Openverse. Картинки лежат только в рабочей папке сессии и в репозиторий не кладутся: лицензии разные, часть некоммерческие. Авторы и ссылки — в файле к доске.
+
+### 13.3. Референсы брони из игр и магазинов (10.11.2026, на выбор Сергею)
+
+Сергей: «Найди разную броню для референсов из игр… глянь, как броня выглядит в TT2, TBH и других подобных… поищи на itch.io, CraftPix». Картинки собраны в доски и отправлены в чат, в репозиторий не кладутся: это чужие работы, только для выбора.
+
+| Источник | Что там | Чем полезно |
+| --- | --- | --- |
+| [Tap Titans 2, вики](https://tap-titans-2.fandom.com) | ≈ 140 иконок брони, костюмов и шлемов | крупные простые силуэты, у каждого комплекта своя идея: драконьи латы, кристальный капюшон, короны, рогатые шлемы, маски, костюмы-кролики, огненный шлем |
+| [TBH: Task Bar Hero, Steam](https://store.steampowered.com/app/3678970/) | бой в полоске, выбор класса | наш жанр: пиксельные герои ≈ 30–40 px в полоске; рыцарь, жрец, следопыт, чародей и другие |
+| [Terraria, вики](https://terraria.fandom.com) | ≈ 80 комплектов брони на спрайте ≈ 40 px | **ближе всего к нам по размеру**: у каждого комплекта своя тема (пчела, лава, мороз, ниндзя, чародей, дракон, солнечная вспышка, рыцарь Вальгаллы, паук, черепаха, кости) |
+| [Battle Brothers, вики](https://battlebrothers.fandom.com) | шлемы с гербами, кольчуги, бригантины, ламеляр | реалистичные исторические доспехи и геральдика на маленьких фигурах |
+| [Shovel Knight, вики](https://shovelknight.fandom.com) | рыцари-боссы | шлем-«тема» на каждого: король, призрак, чумной доктор, полярник, кротовый, жестянщик |
+| Steam: Soda Dungeon 2, Legends of Idleon, Rogue Legacy 2, Blasphemous 2, Darkest Dungeon II, Elden Ring, Dark Souls III, Nioh 2, Ghost of Tsushima, For Honor, Kingdom Come II, Lost Ark, Torchlight Infinite, Darktide, Hades II, Dungeon Fighter Online | скриншоты | стили: японский, готический, исторический, «силовая» броня, яркая аниме-фэнтези |
+| itch.io: [Various Armor Sets (misnina)](https://misnina.itch.io/various-armor-sets), [Pixel Armor Pack 2: Fantasy](https://emblemadept.itch.io/pixel-armor-pack-2-fantasy), [Pixel Armor Pack 3: Greece & Rome](https://emblemadept.itch.io/pixel-armor-pack-3-greece-rome), [Idylwild's Armory](https://idylwild.itch.io/idylwilds-armory), [Armor Set (nizychuu)](https://nizychuu.itch.io/armor-set), [cyangmou 24×24](https://cyangmou.itch.io/pixel-art-fantasy-rpg-armorset-2424), [cyangmou 16×16](https://cyangmou.itch.io/pixel-fantasy-rpg-icons-equipment-16x16), [Plate Armor Body (skiddeus)](https://skiddeus.itch.io/platearmor), [Shield Guardian (Elthen)](https://elthen.itch.io/2d-pixel-art-shield-guardian-sprites), [2D Pixel Quest: The Knight](https://barely-games.itch.io/2d-pixel-quest-vol4-the-knight), [120 Pixel Art Armor Icons](https://medievalmore.itch.io/100-pixel-art-armor-icons) | наборы брони и иконок | готовые идеи комплектов и деталей |
+| CraftPix: [Knight Armor 32×32](https://craftpix.net/product/pixel-art-knight-armor-32x32-icons/), [100 RPG Armor Icons](https://craftpix.net/product/100-rpg-armor-icons-pixel-art/), [Helmet Icons](https://craftpix.net/product/helmet-pixel-art-game-icons/), [Cloak and Belt](https://craftpix.net/product/cloak-and-belt-pixel-art-32x32-icon-pack/), [Free Knight Character Sprites](https://craftpix.net/freebies/free-knight-character-sprites-pixel-art/) | иконки брони, шлемов, плащей, поясов; рыцарь | много вариантов шлемов и нагрудников |
+
+Ждём выбор Сергея: какие доски, номера или вещи взять за образец.
