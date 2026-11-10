@@ -232,13 +232,13 @@ def export():
             put(f"outfit/{look}/{name}", grid(txt), pal, pivot)
     for name, (txt, grip) in WEAPONS.items():
         put(f"weapon/{name}/weapon", grid(txt), palette(), grip)
-    for material in AR.SETS:
+    for base in AR.SETS:
         for rarity in range(1, 12):
-            pal = AR.palette(material, rarity, palette())
-            for slot, pieces in AR.SLOT_PIECES.items():
-                for leaf in pieces:
-                    txt, pivot = AR.piece(material, leaf)
-                    put(f"{slot}/{material}_r{rarity}/{leaf}", grid(txt), pal, pivot, direct=True)
+            pal = AR.palette(base, rarity, palette())
+            for slot in AR.SLOT_PIECES:
+                for leaf in AR.pieces(base, slot):
+                    txt, pivot = AR.piece(base, leaf)
+                    put(f"{slot}/{base}_r{rarity}/{leaf}", grid(txt), pal, pivot, direct=True)
     with open(os.path.join(OUT, "attachments.json"), "w") as f:
         json.dump(manifest, f, indent=1)
     return manifest

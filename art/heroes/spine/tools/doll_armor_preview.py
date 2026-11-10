@@ -7,7 +7,7 @@ import doll_diag as DG
 from doll_render import compose
 
 OUT = os.path.join(DG.DB.ROOT, "base", "hero", "preview")
-MATERIALS = ("plate", "leather", "cloth")
+MATERIALS = ("plate_early", "plate_late", "leather_early", "leather_late", "cloth_early", "cloth_late")
 SLOTS = ("helmet", "chest", "gloves", "boots")
 CHECK_POSES = ("setup", "arm_up", "elbow_150", "lunge", "kick", "deep_crouch", "twist_side", "twist_back", "fk_legs_split", "combo_extreme")
 
@@ -43,11 +43,10 @@ def main():
         items = [("no armor", job(f"{sex}_none", base[sex]), "setup")]
         for m in MATERIALS:
             items.append((f"{m} r4", job(f"{sex}_{m}", base[sex] + armor(m, 4)), "setup"))
-        mixed = base[sex] + ["helmet/leather_r5", "chest/plate_r5", "gloves/cloth_r5", "boots/plate_r5"]
-        items.append(("mixed r5", job(f"{sex}_mixed", mixed), "setup"))
-        items.append(("helmet only", job(f"{sex}_helm", base[sex] + ["helmet/plate_r3"]), "setup"))
+        mixed = base[sex] + ["helmet/leather_late_r6", "chest/plate_late_r6", "gloves/cloth_late_r6", "boots/plate_early_r6"]
+        items.append(("mixed r6", job(f"{sex}_mixed", mixed), "setup"))
         rows.append((sex, items))
-    for m, sex in (("plate", "male"), ("leather", "female"), ("cloth", "female")):
+    for m, sex in (("plate_late", "male"), ("leather_late", "female"), ("cloth_late", "female")):
         rows.append((f"{m} rarities", [(f"r{r}", job(f"{sex}_{m}_r{r}", base[sex] + armor(m, r)), "setup") for r in range(1, 12)]))
     poses = {p: DG.POSES[p] for p in CHECK_POSES}
     res, _ = DG.render(jobs, poses)
@@ -60,9 +59,8 @@ def main():
     sheet(rows[:2], res, os.path.join(OUT, "armor_sets.png"))
     sheet(rows[2:], res, os.path.join(OUT, "armor_rarities.png"), scale=2)
     pose_rows = []
-    for sex in ("male", "female"):
-        for m in MATERIALS:
-            pose_rows.append((f"{sex} {m}", [(p, f"{sex}_{m}", p) for p in CHECK_POSES]))
+    for m in MATERIALS:
+        pose_rows.append((f"male {m}", [(p, f"male_{m}", p) for p in CHECK_POSES]))
     sheet(pose_rows, res, os.path.join(OUT, "armor_poses.png"), scale=2)
     json.dump(faults, open(os.path.join(OUT, "armor_defects.json"), "w"), indent=1)
     print("defects:", json.dumps(faults) if faults else "none")
@@ -77,7 +75,8 @@ def playback():
     import doll_render as DR
     meta = json.load(open(os.path.join(DG.DS.EXPORT, "hero.meta.json")))
     layers = [meta["layers"][k] for k in ("back", "body", "front")]
-    sets = {"male_plate_r6": meta["presets"]["male"] + armor("plate", 6), "female_cloth_r5": meta["presets"]["female"] + armor("cloth", 5)}
+    sets = {"male_plate_late_r6": meta["presets"]["male"] + armor("plate_late", 6), "female_cloth_late_r5": meta["presets"]["female"] + armor("cloth_late", 5),
+            "female_leather_late_r7": meta["presets"]["female"] + armor("leather_late", 7)}
     play = [{"key": k, "skins": v, "queue": ["Idle", "Enter", "Hit1", "Hit2", "Hit3", "Exit3", "Idle"], "steps": 170} for k, v in sets.items()]
     cfg = {"layers": layers, "compare": [], "play": play}
     open(os.path.join(DR.PROBE, "hero.html"), "w").write(DR.PAGE.replace("CFG", json.dumps(cfg)))

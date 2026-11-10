@@ -21,6 +21,7 @@ FAR_TINT = "e6e6e6ff"
 LIMB, UPRIGHT, LEVEL = -90.0, 90.0, 0.0
 
 SLOTS = [
+    ("back", "cape", "cape", "cape", LIMB),
     ("back", "thigh_far", "thigh_far", "thigh", LIMB),
     ("back", "knee_far", "shin_far", "knee_cap", LIMB),
     ("back", "shin_far", "shin_far", "shin", LIMB),
@@ -101,6 +102,7 @@ def bones(setup):
          {"name": "torso", "parent": "hip", "rotation": setup["torso"], "length": 13},
          {"name": "anchor_back", "parent": "torso", "x": 7.0, "y": 0.0},
          {"name": "coat_tail", "parent": "torso", "x": 3.0, "y": 4.5, "rotation": setup["coat_tail"], "length": 8},
+         {"name": "cape", "parent": "torso", "x": 12.0, "y": 0.5, "rotation": 174, "length": 26},
          {"name": "head", "parent": "torso", "x": 13, "rotation": setup["head"], "length": 12},
          {"name": "hair_fly", "parent": "head", "x": 8.0, "y": 6.0, "rotation": setup["hair_fly"], "length": 8}]
     for side in ("far", "near"):
@@ -242,7 +244,7 @@ def build():
     slots = []
     for layer, slot, bone, placeholder, base_rot in SLOTS:
         e = {"name": slot, "bone": bone, "attachment": placeholder}
-        if slot.endswith("_far") or slot == "coat_tail":
+        if slot.endswith("_far") or slot in ("coat_tail", "cape"):
             e["color"] = FAR_TINT
         slots.append(e)
     skel = {
@@ -254,6 +256,7 @@ def build():
         "physics": [
             {"name": "hair_fly_physics", "order": 2, "bone": "hair_fly", "rotate": 1, "inertia": 0.5, "strength": 90, "damping": 0.75, "mass": 1, "limit": 600},
             {"name": "coat_tail_physics", "order": 3, "bone": "coat_tail", "rotate": 1, "inertia": 0.6, "strength": 110, "damping": 0.8, "mass": 1, "limit": 600},
+            {"name": "cape_physics", "order": 4, "bone": "cape", "rotate": 1, "inertia": 0.7, "strength": 70, "damping": 0.85, "mass": 1.4, "limit": 600},
         ],
         "skins": [{"name": "default", "attachments": {}}] + skins(manifest),
         "animations": {},
