@@ -22,7 +22,7 @@ export function create(o) {
   const spread = [-6, 0, 5];
   return chain([
     { fx: muzzle, t: 0, height: o.height },
-    ...spread.map((d, i) => ({ fx: tracer, t: i * 0.015, until: FLY + i * 0.015, x: (t) => 8 + clampT((t - i * 0.015) / FLY) * (o.tx - 8), y: (t) => -(o.height + (o.ty + d * 0.5 - o.height) * clampT((t - i * 0.015) / FLY)) })),
+    ...spread.map((d, i) => ({ fx: tracer, length: 36, t: i * 0.015, until: FLY + i * 0.015, x: (t) => 8 + clampT((t - i * 0.015) / FLY) * (o.tx - 8), y: (t) => -(o.height + (o.ty + d * 0.5 - o.height) * clampT((t - i * 0.015) / FLY)) })),
     ...spread.map((d, i) => ({ fx: impact, t: FLY + i * 0.04, x: o.tx, height: o.ty + d * 0.5 })),
   ])(o);
 }
