@@ -1439,11 +1439,11 @@
   },
   "helmet/plate_early_r1/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -1547,6 +1547,26 @@
     -2
    ]
   },
+  "boots/plate_early_r1/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r1/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r1/shin": {
    "size": [
     4,
@@ -1569,11 +1589,11 @@
   },
   "helmet/plate_early_r2/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -1677,6 +1697,26 @@
     -2
    ]
   },
+  "boots/plate_early_r2/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r2/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r2/shin": {
    "size": [
     4,
@@ -1699,11 +1739,11 @@
   },
   "helmet/plate_early_r3/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -1807,6 +1847,26 @@
     -2
    ]
   },
+  "boots/plate_early_r3/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r3/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r3/shin": {
    "size": [
     4,
@@ -1829,11 +1889,11 @@
   },
   "helmet/plate_early_r4/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -1937,6 +1997,26 @@
     -2
    ]
   },
+  "boots/plate_early_r4/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r4/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r4/shin": {
    "size": [
     4,
@@ -1969,11 +2049,11 @@
   },
   "helmet/plate_early_r5/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -2077,6 +2157,26 @@
     -2
    ]
   },
+  "boots/plate_early_r5/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r5/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r5/shin": {
    "size": [
     4,
@@ -2109,11 +2209,11 @@
   },
   "helmet/plate_early_r6/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -2217,6 +2317,26 @@
     -2
    ]
   },
+  "boots/plate_early_r6/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r6/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r6/shin": {
    "size": [
     4,
@@ -2259,11 +2379,11 @@
   },
   "helmet/plate_early_r7/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -2367,6 +2487,26 @@
     -2
    ]
   },
+  "boots/plate_early_r7/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r7/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r7/shin": {
    "size": [
     4,
@@ -2409,11 +2549,11 @@
   },
   "helmet/plate_early_r8/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -2517,6 +2657,26 @@
     -2
    ]
   },
+  "boots/plate_early_r8/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r8/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r8/shin": {
    "size": [
     4,
@@ -2569,11 +2729,11 @@
   },
   "helmet/plate_early_r9/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -2677,6 +2837,26 @@
     -2
    ]
   },
+  "boots/plate_early_r9/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r9/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r9/shin": {
    "size": [
     4,
@@ -2729,11 +2909,11 @@
   },
   "helmet/plate_early_r10/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -2837,6 +3017,26 @@
     -2
    ]
   },
+  "boots/plate_early_r10/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r10/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r10/shin": {
    "size": [
     4,
@@ -2899,11 +3099,11 @@
   },
   "helmet/plate_early_r11/helmet": {
    "size": [
-    16,
-    18
+    22,
+    17
    ],
    "pivot": [
-    9,
+    12,
     17
    ]
   },
@@ -3007,6 +3207,26 @@
     -2
    ]
   },
+  "boots/plate_early_r11/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_early_r11/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_early_r11/shin": {
    "size": [
     4,
@@ -3069,12 +3289,12 @@
   },
   "helmet/plate_late_r1/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r1/torso": {
@@ -3187,6 +3407,26 @@
     -2
    ]
   },
+  "boots/plate_late_r1/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r1/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r1/shin": {
    "size": [
     6,
@@ -3209,12 +3449,12 @@
   },
   "helmet/plate_late_r2/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r2/torso": {
@@ -3327,6 +3567,26 @@
     -2
    ]
   },
+  "boots/plate_late_r2/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r2/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r2/shin": {
    "size": [
     6,
@@ -3349,12 +3609,12 @@
   },
   "helmet/plate_late_r3/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r3/torso": {
@@ -3467,6 +3727,26 @@
     -2
    ]
   },
+  "boots/plate_late_r3/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r3/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r3/shin": {
    "size": [
     6,
@@ -3489,12 +3769,12 @@
   },
   "helmet/plate_late_r4/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r4/torso": {
@@ -3607,6 +3887,26 @@
     -2
    ]
   },
+  "boots/plate_late_r4/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r4/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r4/shin": {
    "size": [
     6,
@@ -3639,12 +3939,12 @@
   },
   "helmet/plate_late_r5/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r5/torso": {
@@ -3757,6 +4057,26 @@
     -2
    ]
   },
+  "boots/plate_late_r5/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r5/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r5/shin": {
    "size": [
     6,
@@ -3789,12 +4109,12 @@
   },
   "helmet/plate_late_r6/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r6/torso": {
@@ -3907,6 +4227,26 @@
     -2
    ]
   },
+  "boots/plate_late_r6/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r6/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r6/shin": {
    "size": [
     6,
@@ -3959,12 +4299,12 @@
   },
   "helmet/plate_late_r7/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r7/torso": {
@@ -4077,6 +4417,26 @@
     -2
    ]
   },
+  "boots/plate_late_r7/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r7/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r7/shin": {
    "size": [
     6,
@@ -4129,12 +4489,12 @@
   },
   "helmet/plate_late_r8/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r8/torso": {
@@ -4247,6 +4607,26 @@
     -2
    ]
   },
+  "boots/plate_late_r8/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r8/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r8/shin": {
    "size": [
     6,
@@ -4309,12 +4689,12 @@
   },
   "helmet/plate_late_r9/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r9/torso": {
@@ -4427,6 +4807,26 @@
     -2
    ]
   },
+  "boots/plate_late_r9/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r9/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r9/shin": {
    "size": [
     6,
@@ -4489,12 +4889,12 @@
   },
   "helmet/plate_late_r10/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r10/torso": {
@@ -4607,6 +5007,26 @@
     -2
    ]
   },
+  "boots/plate_late_r10/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r10/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r10/shin": {
    "size": [
     6,
@@ -4669,12 +5089,12 @@
   },
   "helmet/plate_late_r11/helmet": {
    "size": [
-    20,
+    18,
     20
    ],
    "pivot": [
-    11,
-    19
+    10,
+    21
    ]
   },
   "chest/plate_late_r11/torso": {
@@ -4787,6 +5207,26 @@
     -2
    ]
   },
+  "boots/plate_late_r11/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/plate_late_r11/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/plate_late_r11/shin": {
    "size": [
     6,
@@ -4849,12 +5289,12 @@
   },
   "helmet/leather_early_r1/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r1/torso": {
@@ -4957,6 +5397,26 @@
     -2
    ]
   },
+  "boots/leather_early_r1/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r1/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_early_r1/shin": {
    "size": [
     4,
@@ -4979,12 +5439,12 @@
   },
   "helmet/leather_early_r2/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r2/torso": {
@@ -5087,6 +5547,26 @@
     -2
    ]
   },
+  "boots/leather_early_r2/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r2/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_early_r2/shin": {
    "size": [
     4,
@@ -5109,12 +5589,12 @@
   },
   "helmet/leather_early_r3/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r3/torso": {
@@ -5217,6 +5697,26 @@
     -2
    ]
   },
+  "boots/leather_early_r3/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r3/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_early_r3/shin": {
    "size": [
     4,
@@ -5239,12 +5739,12 @@
   },
   "helmet/leather_early_r4/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r4/torso": {
@@ -5347,6 +5847,26 @@
     -2
    ]
   },
+  "boots/leather_early_r4/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r4/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_early_r4/shin": {
    "size": [
     4,
@@ -5379,12 +5899,12 @@
   },
   "helmet/leather_early_r5/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r5/torso": {
@@ -5487,6 +6007,26 @@
     -2
    ]
   },
+  "boots/leather_early_r5/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r5/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_early_r5/shin": {
    "size": [
     4,
@@ -5519,12 +6059,12 @@
   },
   "helmet/leather_early_r6/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r6/torso": {
@@ -5627,6 +6167,26 @@
     -2
    ]
   },
+  "boots/leather_early_r6/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r6/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_early_r6/shin": {
    "size": [
     4,
@@ -5669,12 +6229,12 @@
   },
   "helmet/leather_early_r7/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r7/torso": {
@@ -5777,6 +6337,26 @@
     -2
    ]
   },
+  "boots/leather_early_r7/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r7/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_early_r7/shin": {
    "size": [
     4,
@@ -5819,12 +6399,12 @@
   },
   "helmet/leather_early_r8/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r8/torso": {
@@ -5927,6 +6507,26 @@
     -2
    ]
   },
+  "boots/leather_early_r8/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r8/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_early_r8/shin": {
    "size": [
     4,
@@ -5989,12 +6589,12 @@
   },
   "helmet/leather_early_r9/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r9/torso": {
@@ -6097,6 +6697,26 @@
     -2
    ]
   },
+  "boots/leather_early_r9/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r9/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_early_r9/shin": {
    "size": [
     4,
@@ -6159,12 +6779,12 @@
   },
   "helmet/leather_early_r10/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r10/torso": {
@@ -6267,6 +6887,26 @@
     -2
    ]
   },
+  "boots/leather_early_r10/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r10/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_early_r10/shin": {
    "size": [
     4,
@@ -6329,12 +6969,12 @@
   },
   "helmet/leather_early_r11/helmet": {
    "size": [
-    16,
-    18
+    20,
+    14
    ],
    "pivot": [
-    9,
-    17
+    11,
+    23
    ]
   },
   "chest/leather_early_r11/torso": {
@@ -6435,6 +7075,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/leather_early_r11/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_early_r11/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/leather_early_r11/shin": {
@@ -6617,6 +7277,26 @@
     -2
    ]
   },
+  "boots/leather_late_r1/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r1/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_late_r1/shin": {
    "size": [
     5,
@@ -6755,6 +7435,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/leather_late_r2/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r2/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/leather_late_r2/shin": {
@@ -6897,6 +7597,26 @@
     -2
    ]
   },
+  "boots/leather_late_r3/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r3/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_late_r3/shin": {
    "size": [
     5,
@@ -7035,6 +7755,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/leather_late_r4/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r4/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/leather_late_r4/shin": {
@@ -7187,6 +7927,26 @@
     -2
    ]
   },
+  "boots/leather_late_r5/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r5/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_late_r5/shin": {
    "size": [
     5,
@@ -7335,6 +8095,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/leather_late_r6/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r6/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/leather_late_r6/shin": {
@@ -7497,6 +8277,26 @@
     -2
    ]
   },
+  "boots/leather_late_r7/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r7/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_late_r7/shin": {
    "size": [
     5,
@@ -7655,6 +8455,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/leather_late_r8/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r8/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/leather_late_r8/shin": {
@@ -7827,6 +8647,26 @@
     -2
    ]
   },
+  "boots/leather_late_r9/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r9/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_late_r9/shin": {
    "size": [
     5,
@@ -7995,6 +8835,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/leather_late_r10/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r10/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/leather_late_r10/shin": {
@@ -8177,6 +9037,26 @@
     -2
    ]
   },
+  "boots/leather_late_r11/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/leather_late_r11/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/leather_late_r11/shin": {
    "size": [
     5,
@@ -8347,6 +9227,26 @@
     -2
    ]
   },
+  "boots/cloth_early_r1/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r1/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/cloth_early_r1/shin": {
    "size": [
     4,
@@ -8475,6 +9375,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_early_r2/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r2/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_early_r2/shin": {
@@ -8607,6 +9527,26 @@
     -2
    ]
   },
+  "boots/cloth_early_r3/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r3/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/cloth_early_r3/shin": {
    "size": [
     4,
@@ -8735,6 +9675,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_early_r4/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r4/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_early_r4/shin": {
@@ -8877,6 +9837,26 @@
     -2
    ]
   },
+  "boots/cloth_early_r5/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r5/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/cloth_early_r5/shin": {
    "size": [
     4,
@@ -9015,6 +9995,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_early_r6/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r6/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_early_r6/shin": {
@@ -9167,6 +10167,26 @@
     -2
    ]
   },
+  "boots/cloth_early_r7/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r7/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/cloth_early_r7/shin": {
    "size": [
     4,
@@ -9315,6 +10335,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_early_r8/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r8/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_early_r8/shin": {
@@ -9477,6 +10517,26 @@
     -2
    ]
   },
+  "boots/cloth_early_r9/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r9/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/cloth_early_r9/shin": {
    "size": [
     4,
@@ -9635,6 +10695,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_early_r10/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r10/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_early_r10/shin": {
@@ -9805,6 +10885,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_early_r11/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_early_r11/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_early_r11/shin": {
@@ -9987,6 +11087,26 @@
     -2
    ]
   },
+  "boots/cloth_late_r1/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r1/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/cloth_late_r1/shin": {
    "size": [
     4,
@@ -10125,6 +11245,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_late_r2/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r2/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_late_r2/shin": {
@@ -10267,6 +11407,26 @@
     -2
    ]
   },
+  "boots/cloth_late_r3/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r3/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/cloth_late_r3/shin": {
    "size": [
     4,
@@ -10405,6 +11565,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_late_r4/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r4/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_late_r4/shin": {
@@ -10557,6 +11737,26 @@
     -2
    ]
   },
+  "boots/cloth_late_r5/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r5/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/cloth_late_r5/shin": {
    "size": [
     4,
@@ -10705,6 +11905,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_late_r6/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r6/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_late_r6/shin": {
@@ -10877,6 +12097,26 @@
     -2
    ]
   },
+  "boots/cloth_late_r7/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r7/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/cloth_late_r7/shin": {
    "size": [
     4,
@@ -11045,6 +12285,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_late_r8/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r8/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_late_r8/shin": {
@@ -11227,6 +12487,26 @@
     -2
    ]
   },
+  "boots/cloth_late_r9/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r9/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
+   ]
+  },
   "boots/cloth_late_r9/shin": {
    "size": [
     4,
@@ -11405,6 +12685,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_late_r10/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r10/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_late_r10/shin": {
@@ -11595,6 +12895,26 @@
    "pivot": [
     1,
     -2
+   ]
+  },
+  "boots/cloth_late_r11/thigh": {
+   "size": [
+    4,
+    9
+   ],
+   "pivot": [
+    2,
+    0
+   ]
+  },
+  "boots/cloth_late_r11/knee_cap": {
+   "size": [
+    4,
+    4
+   ],
+   "pivot": [
+    1.5,
+    1.5
    ]
   },
   "boots/cloth_late_r11/shin": {

@@ -780,6 +780,105 @@ PLATE_EARLY["upper_arm_short"] = (".mMm.\nmMmMw\n.mMw.\n.Mmw.\n.VYv.", (2, 0))
 LEATHER_EARLY["upper_arm"] = (".KkJ.\nKkkjJ\n.Mmw.\n.Mmw.\n.Mmw.\n.Mmw.\n.Mmw.\n.VYv.", (2, 0))
 LEATHER_EARLY["upper_arm_short"] = (".KkJ.\nKkkjJ\n.Mmw.\n.Mmw.\n.VYv.", (2, 0))
 
+PLATE_EARLY["helmet"] = ("""
+........oooooo........
+......oo#MMmwwoo......
+.....o#MMmmmwwWwo.....
+....o#MMmmmmmwwWwo....
+....oVYyyyGyyyyyvo....
+...o#MMmmmmmmmmmwwo...
+oooVYYyyyyyyyyyyyyvooo
+o#MMMmmmmmmmmmmmmmwwWo
+.ooooooozzzzzzzzzooooo
+.....o#mMmo...........
+.....o#MmMo...........
+.....o#mMmo...........
+.....o#MmMo...........
+.....o#mMmo...........
+......o#MmMo..........
+.......o#mMo..........
+........ooo...........
+""", (3, 0))
+PLATE_LATE["helmet"] = ("""
+.......oo.........
+......oYYo........
+.....oYyyYo.......
+....oYyvvyYo......
+....oVYyyYVo......
+...oo#MMmwwoo.....
+..o#MMmmmmwwWo....
+.o#MMmmmmmmwwWo...
+o#MMmmmmmmmmwwWo..
+o#MMmmmmmmmmmwwo..
+o#MMmmmmmmmmmmwo..
+o#MMmmmmmmmmmmwo..
+o#MMmmmzEzzzEzzo..
+o#MMmmmzzzzzzzzo..
+o#MMmmmmmmmMmmwo..
+o#MMmmmm#m#m#mwo..
+o#MMmmmmmmmmmmwo..
+.o#MMmmmmmmmmmo...
+..o#MMmVYGyvo.....
+...oooooooooo.....
+""", (1, 4))
+LEATHER_EARLY["helmet"] = ("""
+..................oo
+.................oYo
+................oYyo
+...............oYyo.
+..............oYyo..
+.............oYyo...
+...oooooo...oYyo....
+..o#MMMMMooYyoo.....
+.o#MMMMmmmmmmwwoo...
+o#MMMmmmmmmmmmmwwo..
+o#MMmmmmmmmmmmmmwwo.
+.o#MMmmmmmmmmmmmmwwo
+..oVYyyyyyGyyyyyyvo.
+...oooooooooooooooo.
+""", (2, 6))
+CLOTH_LATE["helmet"] = ("""
+......oo........
+....oo#Moooo....
+..oo#MMmmmmwoo..
+.o#MMmmmmmmmwwo.
+o#MMmmmmmmmmmmwo
+o#MmmmmmmmmmmmMo
+o#MmVYYyGyyyyvMo
+o#MmMzzzzzzzzzMo
+o#MmMzzzzzzzzzMo
+o#MmMzzzzzzzzzMo
+o#MmMzzzzzzzzzMo
+o#MmMzzEEzzzEEMo
+o#MmMzzEEzzzEEMo
+o#MMmzzzzzzzzoMo
+o#MMmozzzzzzzoo.
+.o#MMmozzzzzo...
+..oo#Moooooo....
+....oo..........
+""", (0, 0))
+
+THIGHS = {
+    "plate_early": "VYyv\nmMmw\nMmMw\nmMmw\nMmMw\nmMmw\nMmMw\nmMmw\noMwo",
+    "plate_late": "VYyv\n#MmW\n#Mmw\n#MmW\n#Mmw\nVYyv\n#Mmw\n#MmW\noMwo",
+    "leather_early": "NBbn\n#Mmw\n#Mmw\nNnnN\n#Mmw\n#Mmw\nNnnN\n#Mmw\noMwo",
+    "leather_late": "DTTg\n#Mmw\nDTTg\n#Mmw\n#Mmw\nNnnN\n#Mmw\n#Mmw\noMwo",
+    "cloth_early": "#Mmw\n#Mmw\n#MCw\n#Mmw\n#Mmw\n#Mmw\n#Mmw\nVYyv\noMwo",
+    "cloth_late": "DTTg\nDTTg\n#Mmw\n#Mmw\n#MCw\n#Mmw\n#Mmw\n#Mmw\noMwo",
+}
+KNEES = {
+    "plate_early": ".mM.\nmMmw\nMmMw\n.Mw.",
+    "plate_late": ".WM.\nWmmM\n#mGM\n.#M.",
+    "leather_early": ".Mw.\nMmwW\n#Mmw\n.#M.",
+    "leather_late": ".Tg.\nDTTg\nDTTg\n.Dg.",
+    "cloth_early": ".Mw.\nMmmw\n#Mmw\n.#M.",
+    "cloth_late": ".Tg.\nDTTg\nDTCg\n.Dg.",
+}
+for _base, _set in (("plate_early", PLATE_EARLY), ("plate_late", PLATE_LATE), ("leather_early", LEATHER_EARLY),
+                    ("leather_late", LEATHER_LATE), ("cloth_early", CLOTH_EARLY), ("cloth_late", CLOTH_LATE)):
+    _set["thigh"] = THIGHS[_base]
+    _set["knee_cap"] = KNEES[_base]
+
 SHIELDS = {
     "heater": ("""
 oooooooo
@@ -817,10 +916,10 @@ BASE_NAMES = {
 }
 SLOT_PIECES = {"helmet": ["helmet"],
                "chest": ["torso", "torso_side", "torso_back", "upper_arm", "upper_arm_short", "forearm", "elbow_cap", "coat_tail", "cape"],
-               "gloves": ["hand", "bracer"], "boots": ["shin", "foot"]}
+               "gloves": ["hand", "bracer"], "boots": ["thigh", "knee_cap", "shin", "foot"]}
 PIVOTS = {"torso": [5, 13], "torso_side": [5, 13], "torso_back": [5, 13], "upper_arm": [1, 0], "upper_arm_short": [1, 0],
           "forearm": [1, 0], "elbow_cap": [0.5, 0.5], "coat_tail": [2, 0], "cape": [6, 0],
-          "hand": [1, 1], "bracer": [1, -2], "shin": [2, 0], "foot": [1, 0]}
+          "hand": [1, 1], "bracer": [1, -2], "shin": [2, 0], "foot": [1, 0], "thigh": [2, 0], "knee_cap": [1.5, 1.5]}
 HEAD_PIVOT = (9, 17)
 
 
