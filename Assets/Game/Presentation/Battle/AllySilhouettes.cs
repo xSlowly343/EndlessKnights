@@ -10,8 +10,9 @@ namespace Game.Presentation.Battle
 {
     public sealed class AllySilhouettes
     {
-        private const float BodyWidthPx = 20f;
-        private const float BodyHeightPx = 32f;
+        private const float BodyScale = 2f;
+        private const float BodyHeightPx = 48f;
+        private const float TintStrength = 0.35f;
         private const float GroundPx = 150f;
         private const float MarkPx = 12f;
         private const float MarkGapPx = 4f;
@@ -20,9 +21,7 @@ namespace Game.Presentation.Battle
         private const float BubbleLowestPx = 74f;
         private const float BubbleStepPx = 17f;
         private const float EdgePx = 4f;
-        private const float SwingSeconds = 0.14f;
         private const float SwingPeriodSeconds = 0.75f;
-        private const float SwingDegrees = 18f;
         private const float FadedAlpha = 0.45f;
         private const int BodySortingOrder = 9;
 
@@ -47,7 +46,7 @@ namespace Game.Presentation.Battle
         {
             for (var i = 0; i < StripAllies.MaxShown; i++)
             {
-                _bodies[i] = ShapeSprites.Create("Ally " + i, ShapeSprites.Square, PartyColors.Of(i + 1), BodyPosition(i), BodySize, BodySortingOrder, scene);
+                _bodies[i] = HeroModel.Create("Ally " + i, BodyFeet(i), BodyScale, BodySortingOrder, scene);
                 _bodies[i].gameObject.SetActive(false);
                 _marks[i] = UiElements.Dot("Ally mark " + i, canvas, FightingMark);
                 StripCanvas.Place(_marks[i].rectTransform, CentresPx[i], GroundPx - BodyHeightPx - MarkGapPx - MarkPx / 2f, Vector2.one * MarkPx, new Vector2(0.5f, 0.5f));
@@ -87,7 +86,7 @@ namespace Game.Presentation.Battle
                 }
                 var ally = allies[i];
                 _shown[i] = ally;
-                var color = PartyColors.Of(ally.ColorIndex);
+                var color = Color.Lerp(Color.white, PartyColors.Of(ally.ColorIndex), TintStrength);
                 color.a = ally.Faded ? FadedAlpha : 1f;
                 _bodies[i].color = color;
                 _marks[i].color = MarkColor(ally.Presence);
@@ -106,16 +105,14 @@ namespace Game.Presentation.Battle
             for (var i = 0; i < _count; i++)
             {
                 var into = Mathf.Repeat(time + _phase[i], SwingPeriodSeconds);
-                var swing = _shown[i].Swings && into < SwingSeconds ? Mathf.Sin(into / SwingSeconds * Mathf.PI) : 0f;
-                var body = _bodies[i].transform;
-                body.rotation = Quaternion.Euler(0f, 0f, -SwingDegrees * swing);
-                body.position = BodyPosition(i) + new Vector2(0.35f * swing, 0f);
+                var attacking = _shown[i].Swings && into < HeroModel.Attack.Duration;
+                var sprite = attacking ? HeroModel.Attack.SpriteAt(into) : HeroModel.Idle.SpriteAt(time + _phase[i]);
+                if (_bodies[i].sprite != sprite)
+                    _bodies[i].sprite = sprite;
             }
         }
 
-        private static Vector2 BodySize => new Vector2(StripSpace.Units(BodyWidthPx), StripSpace.Units(BodyHeightPx));
-
-        private static Vector2 BodyPosition(int index) => StripSpace.AtPx(CentresPx[index], GroundPx - BodyHeightPx / 2f);
+        private static Vector2 BodyFeet(int index) => StripSpace.AtPx(CentresPx[index], GroundPx);
 
         private static Color MarkColor(PartyPresence presence) => presence switch
         {

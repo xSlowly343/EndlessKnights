@@ -12,7 +12,6 @@ namespace Game.Presentation.Battle
         private const float PopSeconds = 0.12f;
         private const float DeathSeconds = 0.2f;
         private const float FlashSeconds = 0.05f;
-        private const float SwingSeconds = 0.12f;
         private const float ShakeUnits = 0.18f;
         private const float CritShakeSeconds = 0.12f;
         private const float CritShakeUnits = 0.25f;
@@ -56,8 +55,9 @@ namespace Game.Presentation.Battle
         private const float CoinPx = 14f;
         private const float GoldWidthPx = 90f;
 
-        private static readonly Vector2 HeroPosition = StripSpace.AtPx(85f, 117f);
-        private static readonly Vector2 HeroSize = new Vector2(StripSpace.Units(50f), StripSpace.Units(66f));
+        private const float HeroScale = 3f;
+
+        private static readonly Vector2 HeroFeet = StripSpace.AtPx(85f, 150f);
         private static readonly float EnemyX = StripSpace.Units(416f);
         private static readonly float GroundY = StripSpace.AtPx(0f, 150f).y;
         private static readonly float EnemySize = 6f;
@@ -69,7 +69,6 @@ namespace Game.Presentation.Battle
         private static readonly float NumbersSpreadX = StripSpace.Units(14f);
         private static readonly float NumbersSpreadY = StripSpace.Units(3f);
         private static readonly Vector2 AllyNumbersShift = new Vector2(StripSpace.Units(-30f), StripSpace.Units(-34f));
-        private static readonly Color HeroColor = new Color(0.25f, 0.55f, 1f);
         private static readonly Color EnemyColor = new Color(0.85f, 0.25f, 0.2f);
         private static readonly Color BossColor = new Color(0.6f, 0.1f, 0.6f);
         private static readonly Color GuardianColor = new Color(0.2f, 0.6f, 0.25f);
@@ -125,7 +124,8 @@ namespace Game.Presentation.Battle
         private float _popAge = PopSeconds;
         private float _deathAge = DeathSeconds;
         private float _flashAge = FlashSeconds;
-        private float _swingAge = SwingSeconds;
+        private float _idleAge;
+        private float _attackAge = float.MaxValue;
         private float _critShakeAge = CritShakeSeconds;
         private float _goldBumpAge = GoldBumpSeconds;
         private float _retreatAge = RetreatSeconds;
@@ -213,7 +213,8 @@ namespace Game.Presentation.Battle
         public void Hit(BigNumber amount, bool crit)
         {
             _flashAge = 0f;
-            _swingAge = 0f;
+            if (!Attacking || HeroModel.Attack.FrameAt(_attackAge) >= HeroModel.AttackCancelFrame)
+                _attackAge = 0f;
             if (crit)
                 _critShakeAge = 0f;
             var origin = _enemyScale > EnemySize ? BossNumbersOrigin : NumbersOrigin;
@@ -274,7 +275,7 @@ namespace Game.Presentation.Battle
             _theme = UiTheme.Load();
             _scene = new GameObject("Scene").transform;
             _scene.SetParent(transform, false);
-            _hero = ShapeSprites.Create("Hero", ShapeSprites.Square, HeroColor, HeroPosition, HeroSize, 10, _scene);
+            _hero = HeroModel.Create("Hero", HeroFeet, HeroScale, 10, _scene);
             _enemy = ShapeSprites.Create("Enemy", ShapeSprites.Circle, EnemyColor, EnemyCentre, Vector2.one * EnemySize, 10, _scene);
             _enemy.gameObject.AddComponent<CircleCollider2D>();
             _hero.gameObject.AddComponent<BoxCollider2D>();
@@ -479,11 +480,15 @@ namespace Game.Presentation.Battle
 
         private void AnimateHero(float delta)
         {
-            _swingAge += delta;
-            var swing = _swingAge < SwingSeconds ? Mathf.Sin(_swingAge / SwingSeconds * Mathf.PI) : 0f;
-            _hero.transform.rotation = Quaternion.Euler(0f, 0f, -25f * swing);
-            _hero.transform.position = HeroPosition + new Vector2(0.6f * swing, 0f);
+            _idleAge = Mathf.Repeat(_idleAge + delta, HeroModel.Idle.Duration);
+            if (_attackAge < float.MaxValue)
+                _attackAge += delta;
+            var sprite = Attacking ? HeroModel.Attack.SpriteAt(_attackAge) : HeroModel.Idle.SpriteAt(_idleAge);
+            if (_hero.sprite != sprite)
+                _hero.sprite = sprite;
         }
+
+        private bool Attacking => _attackAge < HeroModel.Attack.Duration;
 
         private void AnimateEffects(float delta)
         {
