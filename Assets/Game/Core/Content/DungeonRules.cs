@@ -57,7 +57,8 @@ namespace Game.Core.Content
         private readonly Dictionary<string, DungeonModifier> _byId;
 
         private DungeonRules(int stages, double bossTimerSeconds, int maxModifiers, long keysFromStage, double bossKeyChance, double specialBossKeyChance,
-            double guardianKeyChance, int keyBag, List<DungeonTier> tiers, List<DungeonModifier> modifiers)
+            double guardianKeyChance, int keyBag, int keyAttempts, int keyPity, int mergeCount, double salvageShare, double retreatSeconds, double depthEnemyHp,
+            List<DungeonTier> tiers, List<DungeonModifier> modifiers)
         {
             Stages = stages;
             BossTimerSeconds = bossTimerSeconds;
@@ -67,6 +68,12 @@ namespace Game.Core.Content
             SpecialBossKeyChance = specialBossKeyChance;
             GuardianKeyChance = guardianKeyChance;
             KeyBag = keyBag;
+            KeyAttempts = keyAttempts;
+            KeyPity = keyPity;
+            MergeCount = mergeCount;
+            SalvageShare = salvageShare;
+            RetreatSeconds = retreatSeconds;
+            DepthEnemyHp = depthEnemyHp;
             Tiers = tiers;
             Modifiers = modifiers;
             _byId = new Dictionary<string, DungeonModifier>(StringComparer.Ordinal);
@@ -82,12 +89,20 @@ namespace Game.Core.Content
         public double SpecialBossKeyChance { get; }
         public double GuardianKeyChance { get; }
         public int KeyBag { get; }
+        public int KeyAttempts { get; }
+        public int KeyPity { get; }
+        public int MergeCount { get; }
+        public double SalvageShare { get; }
+        public double RetreatSeconds { get; }
+        public double DepthEnemyHp { get; }
         public IReadOnlyList<DungeonTier> Tiers { get; }
         public IReadOnlyList<DungeonModifier> Modifiers { get; }
 
         public bool TryGetModifier(string id, out DungeonModifier modifier) => _byId.TryGetValue(id, out modifier!);
 
         public DungeonTier? TierAt(int tier) => tier >= 1 && tier <= Tiers.Count ? Tiers[tier - 1] : null;
+
+        public long SalvageShards(int tier) => (long)System.Math.Round((TierAt(tier)?.Shards ?? 0) * SalvageShare);
 
         public int HighestTierFor(long stage, bool limitCleared)
         {
@@ -132,7 +147,8 @@ namespace Game.Core.Content
             var keys = root.Field("keys");
             return new DungeonRules(root.Field("stages").AsInt(1, 100), root.Field("bossTimerSeconds").AsNumber(1, 3600), root.Field("maxModifiers").AsInt(0, 10),
                 keys.Field("fromStage").AsLong(1), keys.Field("boss").AsNumber(0, 1), keys.Field("specialBoss").AsNumber(0, 1), keys.Field("guardian").AsNumber(0, 1),
-                keys.Field("bag").AsInt(1, 10000), tiers, modifiers);
+                keys.Field("bag").AsInt(1, 10000), keys.Field("attempts").AsInt(1, 100), keys.Field("pity").AsInt(0, 100000), keys.Field("merge").AsInt(2, 100),
+                keys.Field("salvage").AsNumber(0, 100), keys.Field("retreatSeconds").AsNumber(0, 1e9), root.Field("depth").Field("enemyHp").AsNumber(0.01, 1000), tiers, modifiers);
         }
     }
 }

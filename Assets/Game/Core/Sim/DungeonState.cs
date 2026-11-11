@@ -12,6 +12,11 @@ namespace Game.Core.Sim
         public long Completed { get; set; }
         public long Failed { get; set; }
         public int BestTier { get; set; }
+        public long Salvaged { get; set; }
+        public long Merged { get; set; }
+        public int BossesWithoutKey { get; set; }
+        public bool Auto { get; set; }
+        public int AutoMinTier { get; set; } = 1;
         public bool Inside => Active != null;
     }
 }

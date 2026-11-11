@@ -74,6 +74,8 @@ namespace Game.Core.Sim
         CrowdThinned,
         WispAppeared,
         WispCaught,
-        WispEscaped
+        WispEscaped,
+        DungeonKeySalvaged,
+        DungeonKeysMerged
     }
 }

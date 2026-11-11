@@ -246,7 +246,18 @@ namespace Game.Core.Content
         }
 
         public StageTable ForDungeon(double hpMultiplier, double bossHpMultiplier, double bossTimerSeconds) =>
-            new StageTable(_enemyHp.Scaled(hpMultiplier), _gold, _wallPeriod, 0, _wallRate, _waves, _bossHpMultiplier * bossHpMultiplier,
+            Scripted(hpMultiplier, bossHpMultiplier, bossTimerSeconds, 0);
+
+        public StageTable ForDepth(double hpMultiplier, double bossHpMultiplier, double bossTimerSeconds)
+        {
+            var table = Scripted(hpMultiplier, bossHpMultiplier, bossTimerSeconds, _wallZoneLength);
+            table._wallsOnTop = _wallsOnTop;
+            table.ItemLevelRate = ItemLevelRate;
+            return table;
+        }
+
+        private StageTable Scripted(double hpMultiplier, double bossHpMultiplier, double bossTimerSeconds, int wallZoneLength) =>
+            new StageTable(_enemyHp.Scaled(hpMultiplier), _gold, _wallPeriod, wallZoneLength, _wallRate, _waves, _bossHpMultiplier * bossHpMultiplier,
                 bossTimerSeconds, bossTimerSeconds, _bossGoldMultiplier, BossRetryAfterKills, BiomeLength, _biomes, BossHint)
             {
                 _hpSteps = _hpSteps,

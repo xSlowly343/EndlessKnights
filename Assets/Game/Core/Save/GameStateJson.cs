@@ -1716,7 +1716,12 @@ namespace Game.Core.Save
                 ("home", dungeons.Home == null ? JsonValue.Null() : WriteProgress(dungeons.Home)),
                 ("completed", JsonValue.Of(dungeons.Completed)),
                 ("failed", JsonValue.Of(dungeons.Failed)),
-                ("bestTier", JsonValue.Of(dungeons.BestTier)));
+                ("bestTier", JsonValue.Of(dungeons.BestTier)),
+                ("salvaged", JsonValue.Of(dungeons.Salvaged)),
+                ("merged", JsonValue.Of(dungeons.Merged)),
+                ("bossesWithoutKey", JsonValue.Of(dungeons.BossesWithoutKey)),
+                ("auto", JsonValue.Of(dungeons.Auto)),
+                ("autoMinTier", JsonValue.Of(dungeons.AutoMinTier)));
         }
 
         private static JsonValue WriteKey(DungeonKey key)
@@ -1724,7 +1729,7 @@ namespace Game.Core.Save
             var modifiers = new JsonValue[key.Modifiers.Count];
             for (var i = 0; i < modifiers.Length; i++)
                 modifiers[i] = JsonValue.Of(key.Modifiers[i]);
-            return Object(("tier", JsonValue.Of(key.Tier)), ("modifiers", JsonValue.Array(modifiers)));
+            return Object(("tier", JsonValue.Of(key.Tier)), ("stage", JsonValue.Of(key.Stage)), ("attempts", JsonValue.Of(key.Attempts)), ("modifiers", JsonValue.Array(modifiers)));
         }
 
         private static void ReadDungeons(ContentNode node, DungeonState dungeons)
@@ -1742,6 +1747,13 @@ namespace Game.Core.Save
             dungeons.Completed = node.Field("completed").AsLong(0);
             dungeons.Failed = node.Field("failed").AsLong(0);
             dungeons.BestTier = node.Field("bestTier").AsInt(0);
+            if (!node.HasField("auto"))
+                return;
+            dungeons.Salvaged = node.Field("salvaged").AsLong(0);
+            dungeons.Merged = node.Field("merged").AsLong(0);
+            dungeons.BossesWithoutKey = node.Field("bossesWithoutKey").AsInt(0);
+            dungeons.Auto = node.Field("auto").AsBool();
+            dungeons.AutoMinTier = node.Field("autoMinTier").AsInt(1);
         }
 
         private static DungeonKey ReadKey(ContentNode node)
@@ -1749,7 +1761,8 @@ namespace Game.Core.Save
             var modifiers = new List<string>();
             foreach (var item in node.Field("modifiers").Items())
                 modifiers.Add(item.AsString());
-            return new DungeonKey(node.Field("tier").AsInt(1), modifiers);
+            return new DungeonKey(node.Field("tier").AsInt(1), modifiers, node.HasField("stage") ? node.Field("stage").AsLong(0) : 0,
+                node.HasField("attempts") ? node.Field("attempts").AsInt(1) : 0);
         }
 
         private static JsonValue WriteStages(HashSet<long> stages)
