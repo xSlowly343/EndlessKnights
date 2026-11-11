@@ -5,7 +5,11 @@ namespace Game.Core.Ui
 {
     public static class PartyCardText
     {
-        public static string Title(string titleId) => Texts.Get("party.title." + titleId);
+        public static bool IsOwnTitle(string titleId) => titleId.StartsWith(SocialRules.OwnTitleMark, System.StringComparison.Ordinal);
+
+        public static string Title(string titleId) => IsOwnTitle(titleId) ? titleId.Substring(SocialRules.OwnTitleMark.Length) : Texts.Get("party.title." + titleId);
+
+        public static string Title(string titleId, string ownName) => ownName.Length > 0 ? ownName : Title(titleId);
 
         public static string Role(string roleId) => Texts.Get("party.role." + roleId);
 

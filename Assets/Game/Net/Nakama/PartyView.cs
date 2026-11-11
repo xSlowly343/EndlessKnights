@@ -11,6 +11,8 @@ namespace Game.Net.Nakama
             Code = NakamaJson.Text(json, "code");
             Access = NakamaJson.Text(json, "access");
             Title = NakamaJson.Text(json, "title");
+            Name = NakamaJson.Text(json, "name");
+            RenameFree = NakamaJson.Flag(json, "renameFree");
             Language = NakamaJson.Text(json, "language");
             Wanted = NakamaJson.Text(json, "wanted");
             Leader = NakamaJson.Text(json, "leader");
@@ -30,6 +32,8 @@ namespace Game.Net.Nakama
         public string Code { get; }
         public string Access { get; }
         public string Title { get; }
+        public string Name { get; }
+        public bool RenameFree { get; }
         public string Language { get; }
         public string Wanted { get; }
         public string Leader { get; }

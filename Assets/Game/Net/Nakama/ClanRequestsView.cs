@@ -45,6 +45,7 @@ namespace Game.Net.Nakama
             ClanId = NakamaJson.Text(json, "clanId");
             Adjective = NakamaJson.Text(json, "adjective");
             Noun = NakamaJson.Text(json, "noun");
+            Name = NakamaJson.Text(json, "name");
             Members = (int)NakamaJson.Number(json, "members");
             UntilUnixMs = (long)NakamaJson.Number(json, "until");
         }
@@ -52,6 +53,7 @@ namespace Game.Net.Nakama
         public string ClanId { get; }
         public string Adjective { get; }
         public string Noun { get; }
+        public string Name { get; }
         public int Members { get; }
         public long UntilUnixMs { get; }
     }

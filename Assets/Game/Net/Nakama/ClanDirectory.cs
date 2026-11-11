@@ -101,6 +101,19 @@ namespace Game.Net.Nakama
 
         private static ClanView View(JsonValue json) => ClanView.From(json) ?? throw new NakamaException(0, "the server sent no clan");
 
+        public async Task<ClanView> RenameAsync(string name, CancellationToken cancel = default) =>
+            View(await Call("clan_update", NakamaJson.Object(("name", NakamaJson.Quote(name))), cancel).ConfigureAwait(false));
+
+        public async Task<ClanView> CreateNamedAsync(string? access, string name, string? language, CancellationToken cancel = default)
+        {
+            var fields = new List<(string, string)> { ("name", NakamaJson.Quote(name)) };
+            if (access != null)
+                fields.Add(("access", NakamaJson.Quote(access)));
+            if (language != null)
+                fields.Add(("language", NakamaJson.Quote(language)));
+            return View(await Call("clan_create", NakamaJson.Object(fields.ToArray()), cancel).ConfigureAwait(false));
+        }
+
         private static string Card(string? access, string? adjective, string? noun, string? language)
         {
             var fields = new List<(string, string)>();

@@ -280,6 +280,35 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ChatLinesTicketsAndOwnNamesAreReadFromTheServer()
+        {
+            Assert.That(ChatReply.SendPayload("world", "ru", "hi \"all\"", 7), Is.EqualTo("{\"channel\":\"world\",\"language\":\"ru\",\"text\":\"hi \\\"all\\\"\",\"after\":7}"));
+            Assert.That(ChatReply.ReadPayload("party", "en", 0), Is.EqualTo("{\"channel\":\"party\",\"language\":\"en\",\"after\":0}"));
+            Assert.That(ChatReply.ReportPayload("clan", "ru", 3, "spam"), Is.EqualTo("{\"channel\":\"clan\",\"language\":\"ru\",\"seq\":3,\"reason\":\"spam\"}"));
+            Assert.That(ChatReply.MutePayload("eve", 1.5, "world"), Is.EqualTo("{\"userId\":\"eve\",\"hours\":1.5,\"scope\":\"world\"}"));
+            Assert.That(TicketReply.BuyPayload("clan_rename"), Is.EqualTo("{\"id\":\"clan_rename\"}"));
+            var reply = ChatReply.From(NakamaJson.Parse("{\"channel\":\"world\",\"room\":\"world-ru\",\"seq\":9,\"role\":\"moderator\",\"canModerate\":true,\"mutedUntil\":0,\"removed\":[4],"
+                + "\"messages\":[{\"seq\":8,\"from\":\"d\",\"name\":\"Dev\",\"role\":\"developer\",\"text\":\"patch\",\"at\":1789},{\"seq\":9,\"from\":\"a\",\"name\":\"Ann\",\"role\":\"\",\"text\":\"hi\",\"at\":1790}]}"));
+            Assert.That(reply.Lines.Select(line => line.Role), Is.EqualTo(new[] { "developer", string.Empty }));
+            Assert.That(reply.Removed, Is.EqualTo(new long[] { 4 }));
+            var log = new Game.Core.Party.ChatLog("world", 50);
+            reply.ApplyTo(log);
+            Assert.That(log.Room, Is.EqualTo("world-ru"));
+            Assert.That(log.LastSeq, Is.EqualTo(9));
+            Assert.That(log.CanModerate, Is.True);
+            var tickets = TicketReply.From(NakamaJson.Parse("{\"tickets\":[{\"id\":\"party_rename\",\"price\":300,\"owned\":2},{\"id\":\"clan_rename\",\"price\":1000,\"owned\":0}]}"));
+            Assert.That(tickets.Owned("party_rename"), Is.EqualTo(2));
+            Assert.That(tickets.Price("clan_rename"), Is.EqualTo(1000));
+            Assert.That(tickets.Owned("unknown"), Is.EqualTo(0));
+            var party = PartyView.From(NakamaJson.Parse("{\"id\":\"p\",\"title\":\"night_shift\",\"name\":\"Owls\",\"renameFree\":false,\"members\":[]}"))!;
+            Assert.That(party.Name, Is.EqualTo("Owls"));
+            Assert.That(party.RenameFree, Is.False);
+            var clan = ClanView.From(NakamaJson.Parse("{\"id\":\"c\",\"adjective\":\"lilac\",\"noun\":\"lanterns\",\"name\":\"Order\",\"renameFree\":true,\"members\":[]}"))!;
+            Assert.That(clan.Name, Is.EqualTo("Order"));
+            Assert.That(clan.RenameFree, Is.True);
+        }
+
+        [Test]
         public void TheTownGatesAreReadFromTheServer()
         {
             Assert.That(TownReply.GiftPayload("bob", "herb_windwort", 3), Is.EqualTo("{\"to\":\"bob\",\"item\":\"herb_windwort\",\"amount\":3}"));

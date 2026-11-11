@@ -21,7 +21,7 @@ namespace Game.Net.Nakama
             PartyView.From(NakamaJson.Field(await Call("party_mine", "{}", cancel).ConfigureAwait(false), "party"));
 
         public async Task<PartyView> CreateAsync(string access, string? title, string? language, string? wanted, CancellationToken cancel = default) =>
-            View(await Call("party_create", Card(access, title, language, wanted), cancel).ConfigureAwait(false));
+            View(await Call("party_create", NakamaJson.Object(Card(access, title, language, wanted).ToArray()), cancel).ConfigureAwait(false));
 
         public async Task<PartyView> JoinByCodeAsync(string code, CancellationToken cancel = default) =>
             View(await Call("party_join", NakamaJson.Object(("code", NakamaJson.Quote(code))), cancel).ConfigureAwait(false));
@@ -38,7 +38,7 @@ namespace Game.Net.Nakama
             View(await Call("party_promote", NakamaJson.Object(("userId", NakamaJson.Quote(userId))), cancel).ConfigureAwait(false));
 
         public async Task<PartyView> UpdateAsync(string? access, string? title, string? language, string? wanted, CancellationToken cancel = default) =>
-            View(await Call("party_update", Card(access, title, language, wanted), cancel).ConfigureAwait(false));
+            View(await Call("party_update", NakamaJson.Object(Card(access, title, language, wanted).ToArray()), cancel).ConfigureAwait(false));
 
         public async Task<string> ConnectAsync(CancellationToken cancel = default) =>
             NakamaJson.Text(await Call("party_connect", "{}", cancel).ConfigureAwait(false), "matchId");
@@ -109,7 +109,19 @@ namespace Game.Net.Nakama
 
         private static string Number(int value) => value.ToString(CultureInfo.InvariantCulture);
 
-        private static string Card(string? access, string? title, string? language, string? wanted)
+        public async Task<PartyView> RenameAsync(string name, CancellationToken cancel = default) =>
+            View(await Call("party_update", NakamaJson.Object(("name", NakamaJson.Quote(name))), cancel).ConfigureAwait(false));
+
+        public async Task<PartyView> CreateNamedAsync(string access, string name, string? language, string? wanted, CancellationToken cancel = default) =>
+            View(await Call("party_create", NakamaJson.Object(Named(Card(access, null, language, wanted), name)), cancel).ConfigureAwait(false));
+
+        private static (string, string)[] Named(List<(string, string)> fields, string name)
+        {
+            fields.Add(("name", NakamaJson.Quote(name)));
+            return fields.ToArray();
+        }
+
+        private static List<(string, string)> Card(string? access, string? title, string? language, string? wanted)
         {
             var fields = new List<(string, string)>();
             if (access != null)
@@ -120,7 +132,7 @@ namespace Game.Net.Nakama
                 fields.Add(("language", NakamaJson.Quote(language)));
             if (wanted != null)
                 fields.Add(("wanted", NakamaJson.Quote(wanted)));
-            return NakamaJson.Object(fields.ToArray());
+            return fields;
         }
     }
 }
