@@ -219,44 +219,87 @@ namespace Game.Core.Sim
             if (rules == null || stage < rules.KeysFromStage || Unlocks?.IsOpen(Feature.Dungeons) == false)
                 return;
             var chance = type == EnemyType.Guardian ? rules.GuardianKeyChance : _rules.IsSpecialBoss(stage) ? rules.SpecialBossKeyChance : rules.BossKeyChance;
+            if (chance <= 0)
+                return;
+            var divisor = rules.PartyDivisor(_state.PartyAllies);
+            var dungeons = _state.Dungeons;
+            dungeons.BossesWithoutKey++;
+            var guaranteed = rules.KeyPity > 0 && dungeons.BossesWithoutKey >= rules.KeyPity * divisor;
+            if (!_state.Drops.Rng.Chance(chance / divisor) && !guaranteed)
+                return;
+            dungeons.BossesWithoutKey = 0;
+            Push(PendingDrop.Key(stage));
+        }
+
+        private void RollRiftKey(long stage, EnemyType type)
+        {
+            var rules = Dungeons;
+            if (rules == null || !_state.Rift.Inside || _state.Dungeons.Inside || _state.Events.FightInside || stage < rules.Rift.FromStage
+                || Unlocks?.IsOpen(Feature.Dungeons) == false)
+                return;
+            var chance = (type == EnemyType.Guardian ? rules.Rift.GuardianKeyChance : rules.Rift.BossKeyChance) / rules.PartyDivisor(_state.PartyAllies);
             if (chance > 0 && _state.Drops.Rng.Chance(chance))
-                Push(PendingDrop.Key(stage));
+                Push(PendingDrop.RiftKey(stage));
         }
 
         private void DeliverKey(PendingDrop drop)
         {
             var rules = Dungeons!;
-            var keys = _state.Dungeons.Keys;
-            if (keys.Count >= rules.KeyBag)
+            if (drop.IsRiftKey)
+            {
+                if (_state.Rift.WindowId == 0)
+                    return;
+                var riftTier = rules.Rift.TierAt(drop.Stage);
+                _state.Dungeons.Keys.Add(MakeKey(riftTier, drop.Stage, _state.Rift.WindowId));
+                _events.Add(GameEvent.ForStage(GameEventKind.DungeonKeyDropped, _state.Tick, riftTier));
                 return;
-            var rng = _state.Drops.Rng;
+            }
             var highest = rules.HighestTierFor(drop.Stage, _state.GatesCleared.Count > 0);
             if (highest < 1)
                 return;
-            var tier = System.Math.Max(1, highest - rng.NextInt(0, 2));
-            var count = rng.NextInt(0, rules.MaxModifiers + 1);
-            var chosen = new List<string>();
-            for (var i = 0; i < count && chosen.Count < rules.Modifiers.Count; i++)
-            {
-                var modifier = rules.Modifiers[rng.NextInt(0, rules.Modifiers.Count)];
-                if (!chosen.Contains(modifier.Id))
-                    chosen.Add(modifier.Id);
-            }
-            keys.Add(new DungeonKey(tier, chosen));
+            var tier = System.Math.Max(1, highest - _state.Drops.Rng.NextInt(0, 2));
+            _state.Dungeons.Keys.Add(MakeKey(tier, drop.Stage));
             _events.Add(GameEvent.ForStage(GameEventKind.DungeonKeyDropped, _state.Tick, tier));
         }
 
-        public void GiveDungeonLoot(DungeonTier tier, double bonus)
+        public DungeonKey MakeKey(int tier, long stage, long rift = 0)
+        {
+            var rules = Dungeons!;
+            var rng = _state.Drops.Rng;
+            var pool = new List<DungeonModifier>(rules.Modifiers);
+            var count = System.Math.Min(pool.Count, rules.MaxModifiers < 1 ? 0 : rng.NextInt(1, rules.MaxModifiers + 1));
+            var chosen = new List<string>(count);
+            for (var i = 0; i < count; i++)
+            {
+                var index = rng.NextInt(0, pool.Count);
+                chosen.Add(pool[index].Id);
+                pool.RemoveAt(index);
+            }
+            return new DungeonKey(tier, chosen, stage, rules.KeyAttempts, rift);
+        }
+
+        public void SalvageKey(DungeonKey key)
+        {
+            var tier = key.Tier;
+            if (key.ForRift)
+                _state.Rift.Shards += BigNumber.FromDouble(Dungeons!.Rift.Shards(tier) * Dungeons.SalvageShare);
+            else
+                _state.Drops.Shards += Dungeons!.SalvageShards(tier);
+            _state.Dungeons.Salvaged++;
+            _events.Add(GameEvent.ForStage(GameEventKind.DungeonKeySalvaged, _state.Tick, tier));
+        }
+
+        public void GiveDungeonLoot(DungeonTier tier, long stage, double bonus)
         {
             var rng = _state.Drops.Rng;
             var scale = 1 + System.Math.Max(0, bonus);
             var amount = tier.Loot.Items * scale;
             var items = (int)System.Math.Floor(amount) + (rng.NextDouble() < amount - System.Math.Floor(amount) ? 1 : 0);
             for (var i = 0; i < items; i++)
-                Push(Rolled(tier.Loot, tier.Stage, DropSource.Dungeon));
+                Push(Rolled(tier.Loot, stage, DropSource.Dungeon));
             Flush();
             if (tier.UniqueChance > 0 && rng.NextDouble() < System.Math.Min(1, tier.UniqueChance * scale))
-                GiveUnique(tier.Stage, DropSource.Dungeon);
+                GiveUnique(stage, DropSource.Dungeon);
             _state.Drops.Shards += (long)System.Math.Round(tier.Shards * scale);
             Slates?.OnDungeon();
         }
@@ -338,7 +381,10 @@ namespace Game.Core.Sim
         public void OnBossDefeated(long stage, EnemyType type, long recordBefore, bool raisesRecord)
         {
             if (!raisesRecord)
+            {
+                RollRiftKey(stage, type);
                 return;
+            }
             if (type == EnemyType.Guardian)
                 GuardianKilled?.Invoke(stage, stage >= recordBefore);
             GiveShards(stage, type, recordBefore);

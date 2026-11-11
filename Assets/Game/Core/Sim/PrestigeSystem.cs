@@ -25,7 +25,7 @@ namespace Game.Core.Sim
 
         public void UseRules(PrestigeRules rules) => _rules = rules;
 
-        public bool Available => !_state.Rift.Inside && _state.HighestStage >= _rules.MinStage;
+        public bool Available => !_state.Rift.Inside && !_state.Dungeons.Inside && !_state.Events.FightInside && _state.HighestStage >= _rules.MinStage;
 
         public BigNumber EchoGain
         {

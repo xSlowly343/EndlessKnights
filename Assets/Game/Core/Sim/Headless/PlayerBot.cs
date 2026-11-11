@@ -16,6 +16,7 @@ namespace Game.Core.Sim.Headless
         private readonly BotLoadout _loadout;
         private readonly double _stuckSecondsBeforePrestige;
         private const int BossFailsBeforePrestige = 1;
+        private const int RetryDungeonAfterStages = 50;
         private const double SlowStageSeconds = 60;
         private readonly HeroClass _heroClass;
         private readonly BranchTrial? _branchTrial;
@@ -378,20 +379,24 @@ namespace Game.Core.Sim.Headless
         public void EnterDungeon()
         {
             var state = _loop.State;
-            if (_loop.Dungeons.Inside || state.Rift.Inside || state.FightingBoss)
+            var dungeons = _loop.Dungeons;
+            if (!state.Dungeons.Auto)
+                dungeons.SetAuto(true, 1);
+            if (!state.Dungeons.AutoMerge)
+                dungeons.SetAutoMerge(true);
+            if (dungeons.Inside || state.Rift.Inside || state.FightingBoss)
                 return;
-            var rules = _loop.Dungeons.Rules;
+            var rules = dungeons.Rules;
             DungeonKey? best = null;
-            foreach (var key in _loop.Dungeons.Keys)
+            foreach (var key in dungeons.Keys)
             {
-                var tier = rules.TierAt(key.Tier);
-                if (tier == null || tier.Stage + rules.Stages > state.Stage)
+                if (key.Attempts >= rules.KeyAttempts || dungeons.StartStage(key) + RetryDungeonAfterStages > state.Stage)
                     continue;
-                if (best == null || key.Tier > best.Tier || (key.Tier == best.Tier && key.Modifiers.Count < best.Modifiers.Count))
+                if (best == null || key.Tier > best.Tier)
                     best = key;
             }
             if (best != null)
-                _loop.Dungeons.Enter(best);
+                dungeons.Enter(best);
         }
 
         private void PrestigeWhenStuck(double seconds)

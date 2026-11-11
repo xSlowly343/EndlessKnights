@@ -118,9 +118,9 @@ namespace Game.Sim
                 }
             }
             var held = state.Weapons.Held == null ? "-" : state.Weapons.Held.Rarity.ToString();
-            return string.Format(CultureInfo.InvariantCulture, "weapon {0}; {1}; supports {2}; dust {3:0}; salvaged {4}; dungeons {5} done, {6} failed, best tier {7}, keys {8}",
+            return string.Format(CultureInfo.InvariantCulture, "weapon {0}; {1}; supports {2}; dust {3:0}; salvaged {4}; dungeons {5} done, {6} failed, best tier {7}, keys {8}, keys salvaged {9}",
                 held, worn.Count == 0 ? "no armor" : string.Join(", ", worn), supports, state.Drops.Dust, state.Drops.SalvagedItems,
-                state.Dungeons.Completed, state.Dungeons.Failed, state.Dungeons.BestTier, state.Dungeons.Keys.Count);
+                state.Dungeons.Completed, state.Dungeons.Failed, state.Dungeons.BestTier, state.Dungeons.Keys.Count, state.Dungeons.Salvaged);
         }
 
         private static string PathLine(GameState state)
