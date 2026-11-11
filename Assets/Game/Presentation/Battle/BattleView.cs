@@ -480,7 +480,7 @@ namespace Game.Presentation.Battle
 
         private void AnimateHero(float delta)
         {
-            _idleAge += delta;
+            _idleAge = Mathf.Repeat(_idleAge + delta, HeroModel.Idle.Duration);
             if (_attackAge < float.MaxValue)
                 _attackAge += delta;
             var sprite = Attacking ? HeroModel.Attack.SpriteAt(_attackAge) : HeroModel.Idle.SpriteAt(_idleAge);
