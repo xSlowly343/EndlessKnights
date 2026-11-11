@@ -608,6 +608,62 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AnEnemyFallsOnTheScreenBeforeTheHostSaysSoAndIsPaidOnce()
+        {
+            var rig = new Rig(5, 40);
+
+            rig.Run(60);
+
+            Assert.That(rig.Host.Kills, Is.GreaterThan(15));
+            foreach (var player in rig.Players)
+            {
+                Assert.That(player.Client.EarlyKills, Is.GreaterThan(0), "the next enemy comes out without waiting for the host");
+                Assert.That(player.Client.PartyRewards, Is.InRange(rig.Host.Kills - 3, rig.Host.Kills), "an early kill is paid when the host confirms it, once");
+                Assert.That(player.AllKills, Is.InRange(rig.Host.Kills - 3, rig.Host.Kills + 1), "one enemy at most is ahead of the host");
+            }
+        }
+
+        [Test]
+        public void ABossNeverFallsBeforeTheHostSaysSo()
+        {
+            var rig = new Rig(5, 5);
+            var early = 0L;
+            var bossTicks = 0;
+
+            for (var tick = 0; tick < 1200; tick++)
+            {
+                rig.Run(0.1);
+                foreach (var player in rig.Players)
+                {
+                    if (!player.Loop.State.FightingBoss)
+                        continue;
+                    bossTicks++;
+                    Assert.That(player.Client.RunningAhead, Is.False, "the boss comes and goes on the host's word");
+                }
+                early = rig.Players[0].Client.EarlyKills;
+            }
+
+            Assert.That(bossTicks, Is.GreaterThan(0));
+            Assert.That(early, Is.GreaterThan(0));
+        }
+
+        [Test]
+        public void TheHitsOfAlliesArriveAsACount()
+        {
+            var rig = new Rig(5, 40);
+            rig.Run(5);
+            var watcher = rig.Players[0].Client;
+            var ally = rig.Players[1].Client.OwnSlot;
+            watcher.TakeAllyHits(ally);
+
+            rig.Run(5);
+
+            Assert.That(watcher.TakeAllyHits(ally), Is.GreaterThan(0));
+            Assert.That(watcher.TakeAllyHits(ally), Is.Zero, "taking resets the count");
+            Assert.That(watcher.TakeAllyHits(watcher.OwnSlot), Is.Zero);
+        }
+
+        [Test]
         public void TheDamageOfAlliesArrivesInYourOwnNumbers()
         {
             var rig = new Rig(5, 40);

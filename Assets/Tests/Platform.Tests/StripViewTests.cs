@@ -56,6 +56,44 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void AnAllySwingsForTheirRealHitsAndTheNumberLandsWithTheCrescent()
+        {
+            var allies = new[]
+            {
+                new Game.Core.Ui.StripAlly(0, 1, Game.Core.Party.PartyPresence.Fighting, string.Empty),
+                default(Game.Core.Ui.StripAlly),
+                default(Game.Core.Ui.StripAlly),
+            };
+            _battle.Allies.Show(allies, 1);
+            var landed = 0;
+            var sum = BigNumber.Zero;
+            _battle.Allies.StrikeLanded += (amount, color) =>
+            {
+                landed++;
+                sum += amount;
+            };
+
+            _battle.Allies.Animate(0f, 1f, _battle.StrikeTarget);
+
+            Assert.That(_battle.Allies.Strike(0).Flying, Is.Zero, "an ally who does not hit stands still");
+
+            _battle.Allies.Hit(0, 1, BigNumber.FromDouble(100));
+            _battle.Allies.Animate(0f, 0.02f, _battle.StrikeTarget);
+
+            Assert.That(_battle.Allies.Strike(0).Flying, Is.EqualTo(1));
+            Assert.That(landed, Is.Zero, "the number waits for the crescent");
+
+            _battle.Allies.Animate(0f, HeroStrike.FlightSeconds, _battle.StrikeTarget);
+
+            Assert.That(landed, Is.EqualTo(1));
+            Assert.That(sum.ToDouble(), Is.EqualTo(100).Within(1e-6));
+
+            _battle.Allies.Hit(0, 0, BigNumber.FromDouble(7));
+
+            Assert.That(landed, Is.EqualTo(2), "damage without a hit shows at once");
+        }
+
+        [Test]
         public void EnemyEffectsAndBossSharesAppearOverTheFight()
         {
             var badges = new[]

@@ -1,3 +1,4 @@
+using Game.Core.Math;
 using Game.Core.Party;
 using Game.Core.Ui;
 using Game.Presentation.Strip;
@@ -21,7 +22,9 @@ namespace Game.Presentation.Battle
         private const float BubbleLowestPx = 74f;
         private const float BubbleStepPx = 17f;
         private const float EdgePx = 4f;
-        private const float SwingPeriodSeconds = 0.75f;
+        private const float SwingGapSeconds = 0.34f;
+        private const float RestingSwingAge = 100f;
+        private const int MaxQueuedSwings = 2;
         private const float FadedAlpha = 0.45f;
         private const int BodySortingOrder = 9;
         private const float StrikeDepth = 0.5f;
@@ -38,6 +41,9 @@ namespace Game.Presentation.Battle
         private readonly SpriteRenderer[] _bodies = new SpriteRenderer[StripAllies.MaxShown];
         private readonly HeroStrike[] _strikes = new HeroStrike[StripAllies.MaxShown];
         private readonly float[] _swingAge = new float[StripAllies.MaxShown];
+        private readonly int[] _queuedSwings = new int[StripAllies.MaxShown];
+        private readonly BigNumber[] _queuedDamage = new BigNumber[StripAllies.MaxShown];
+        private readonly BigNumber[] _flyingDamage = new BigNumber[StripAllies.MaxShown];
         private readonly Image[] _marks = new Image[StripAllies.MaxShown];
         private readonly TextMeshProUGUI[] _markTexts = new TextMeshProUGUI[StripAllies.MaxShown];
         private readonly Image[] _bubbles = new Image[StripAllies.MaxShown];
@@ -54,7 +60,7 @@ namespace Game.Presentation.Battle
                 _bodies[i].gameObject.SetActive(false);
                 _strikes[i] = new HeroStrike("Ally strike " + i, BodyFeet(i), BodyScale, flightSortingOrder, burstSortingOrder, StrikeDepth, scene);
                 _strikes[i].UseOpacity(DefaultStrikeOpacity);
-                _swingAge[i] = float.MaxValue;
+                Rest(i);
                 _marks[i] = UiElements.Dot("Ally mark " + i, canvas, FightingMark);
                 StripCanvas.Place(_marks[i].rectTransform, CentresPx[i], GroundPx - BodyHeightPx - MarkGapPx - MarkPx / 2f, Vector2.one * MarkPx, new Vector2(0.5f, 0.5f));
                 _markTexts[i] = UiElements.Label("Text", _marks[i].rectTransform, theme.BoldFont, 9f, Color.white, TextAlignmentOptions.Center);
@@ -75,7 +81,23 @@ namespace Game.Presentation.Battle
         public static AllySilhouettes Create(Transform scene, RectTransform canvas, UiTheme theme, int flightSortingOrder, int burstSortingOrder) =>
             new AllySilhouettes(scene, canvas, theme, flightSortingOrder, burstSortingOrder);
 
+        public event System.Action<BigNumber, Color>? StrikeLanded;
+
         public int Shown => _count;
+
+        public void Hit(int index, int hits, BigNumber damage)
+        {
+            if (index < 0 || index >= _count)
+                return;
+            if (hits > 0)
+                _queuedSwings[index] = Mathf.Min(MaxQueuedSwings, _queuedSwings[index] + hits);
+            if (_queuedSwings[index] > 0)
+                _queuedDamage[index] += damage;
+            else if (_strikes[index].Flying > 0)
+                _flyingDamage[index] += damage;
+            else
+                Land(index, damage);
+        }
 
         public HeroStrike Strike(int index) => _strikes[index];
 
@@ -98,6 +120,7 @@ namespace Game.Presentation.Battle
                 if (!shown)
                 {
                     SetActive(_bubbles[i].gameObject, false);
+                    Rest(i);
                     continue;
                 }
                 var ally = allies[i];
@@ -121,22 +144,50 @@ namespace Game.Presentation.Battle
         {
             for (var i = 0; i < StripAllies.MaxShown; i++)
             {
-                var swinging = i < _count && _shown[i].Swings;
-                var into = swinging ? Mathf.Repeat(time + _phase[i], SwingPeriodSeconds) : float.MaxValue;
-                var attacking = into < HeroModel.Attack.Duration;
+                if (_swingAge[i] < RestingSwingAge)
+                    _swingAge[i] += delta;
+                if (_queuedSwings[i] > 0 && _swingAge[i] >= SwingGapSeconds)
+                    Swing(i);
                 if (i < _count)
                 {
-                    var sprite = attacking ? HeroModel.Attack.SpriteAt(into) : HeroModel.Idle.SpriteAt(time + _phase[i]);
+                    var sprite = _swingAge[i] < HeroModel.Attack.Duration ? HeroModel.Attack.SpriteAt(_swingAge[i]) : HeroModel.Idle.SpriteAt(time + _phase[i]);
                     if (_bodies[i].sprite != sprite)
                         _bodies[i].sprite = sprite;
                 }
-                var strikes = attacking && into >= HeroModel.StrikeSeconds && (_swingAge[i] < HeroModel.StrikeSeconds || _swingAge[i] > into);
-                if (strikes)
-                    _strikes[i].Launch();
-                _swingAge[i] = into;
-                _strikes[i].ShowSlash(into);
+                _strikes[i].ShowSlash(_swingAge[i]);
+                var flying = _strikes[i].Flying;
                 _strikes[i].Animate(delta, target);
+                var landed = flying - _strikes[i].Flying;
+                if (landed <= 0)
+                    continue;
+                var amount = landed >= flying ? _flyingDamage[i] : _flyingDamage[i] * (landed / (double)flying);
+                _flyingDamage[i] -= amount;
+                Land(i, amount);
             }
+        }
+
+        private void Swing(int index)
+        {
+            var amount = _queuedSwings[index] == 1 ? _queuedDamage[index] : _queuedDamage[index] * (1.0 / _queuedSwings[index]);
+            _queuedSwings[index]--;
+            _queuedDamage[index] -= amount;
+            _flyingDamage[index] += amount;
+            _swingAge[index] = HeroModel.StrikeSeconds;
+            _strikes[index].Launch();
+        }
+
+        private void Land(int index, BigNumber amount)
+        {
+            if (amount.Sign > 0)
+                StrikeLanded?.Invoke(amount, PartyColors.Of(_shown[index].ColorIndex));
+        }
+
+        private void Rest(int index)
+        {
+            _swingAge[index] = RestingSwingAge;
+            _queuedSwings[index] = 0;
+            _queuedDamage[index] = BigNumber.Zero;
+            _flyingDamage[index] = BigNumber.Zero;
         }
 
         private static Vector2 BodyFeet(int index) => StripSpace.AtPx(CentresPx[index], GroundPx);

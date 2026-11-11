@@ -248,8 +248,9 @@ namespace Game.Bootstrap
             for (var i = 0; i < count; i++)
             {
                 var damage = party.TakeAllyDamage(_allies[i].Slot);
-                if (damage.Sign > 0)
-                    _battle.ShowAllyHit(damage, PartyColors.Of(_allies[i].ColorIndex));
+                var hits = party.TakeAllyHits(_allies[i].Slot);
+                if (damage.Sign > 0 || hits > 0)
+                    _battle.Allies.Hit(i, hits, damage);
             }
             _battle.PartyMarks.ShowBadges(_badges, PartyStripMarks.FillBadges(party, _data.Gems, _badges));
             if (party.BossKillsSeen == _bossKillsSeen)

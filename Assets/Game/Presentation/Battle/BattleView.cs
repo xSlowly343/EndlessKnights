@@ -312,6 +312,7 @@ namespace Game.Presentation.Battle
             StripCanvas.Place(_noticeText.rectTransform, notice.x, StripSpace.BaseHeightPx - notice.y, new Vector2(320f, 20f), new Vector2(0.5f, 0.5f));
             _noticeText.gameObject.SetActive(false);
             _allies = AllySilhouettes.Create(_scene, texts, _theme, FighterSortingOrder, StrikeSortingOrder);
+            _allies.StrikeLanded += ShowAllyHit;
             _numbers = DamageNumbers.Create();
             _numbers.transform.SetParent(transform, false);
             _coins = CoinBurst.Create(CoinTarget);
