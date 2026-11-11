@@ -52,7 +52,7 @@ namespace Game.Core.Sim
             var place = _companions.Rules.BiomeOf(biome);
             if (place == null)
                 return GearResult.UnknownBiome;
-            var shards = (long)System.Math.Ceiling((rules.ShardsPerRarity * rarity + (set.Length > 0 ? rules.SetShards : 0)) * System.Math.Max(0, 1 - _companions.HomeOwn(OwnEffectKind.GearPrice)) - 1e-9);
+            var shards = (long)System.Math.Ceiling((rules.ShardsPerRarity * rarity + (set.Length > 0 ? rules.SetShards : 0)) * System.Math.Max(0, 1 - _companions.HomeOwn(OwnEffectKind.GearPrice) - _companions.TreeStat(MenagerieStat.GearCost)) - 1e-9);
             var bones = rules.BonesPerRarity * rarity;
             if (_state.Drops.Shards < shards)
                 return GearResult.NoShards;

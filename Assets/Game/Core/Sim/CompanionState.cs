@@ -81,6 +81,8 @@ namespace Game.Core.Sim
         public long RewindDay { get; set; } = -1;
         public double SoulHours { get; set; }
         public long SoulHostDay { get; set; } = -1;
+        public long SoulTrialWeek { get; set; } = -1;
+        public long SoulTreeWeek { get; set; } = -1;
         public long Essence { get; set; }
         public double QuickBiteSeconds { get; set; }
         public double QuickBiteFactor { get; set; } = 1;

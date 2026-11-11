@@ -105,6 +105,51 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void TheUndersideWhisperGivesSoulsOnceAWeek()
+        {
+            var loop = Camp();
+            GivePoints(loop, 40);
+            for (var i = 0; i < 5; i++)
+                loop.Menagerie.Learn(9);
+            Assert.That(loop.Menagerie.Stat(MenagerieStat.WeeklySouls), Is.EqualTo(5));
+
+            loop.SetLocalDay(102);
+            Assert.That(loop.State.Companions.Souls, Is.EqualTo(5));
+            loop.SetLocalDay(103);
+            Assert.That(loop.State.Companions.Souls, Is.EqualTo(5), "the same week");
+            loop.SetLocalDay(109);
+            Assert.That(loop.State.Companions.Souls, Is.EqualTo(10));
+        }
+
+        [Test]
+        public void TheTreeAddsAPetADayAndCheapensFormsAndTraits()
+        {
+            var loop = Camp();
+            GivePoints(loop, 60);
+            var pets = TestWorld.Data.Companions.Bond.PetsPerDay;
+            var form = loop.Companions.FormChangeSouls;
+            for (var i = 0; i < 3; i++)
+                loop.Menagerie.Learn(7);
+            for (var node = 1; node <= 3; node++)
+                for (var i = 0; i < 5; i++)
+                    loop.Menagerie.Learn(node);
+            loop.Menagerie.Learn(9);
+            loop.Menagerie.Learn(19);
+            Assert.That(loop.Menagerie.Learn(27), Is.EqualTo(TreeResult.Done));
+
+            Assert.That(loop.Menagerie.Stat(MenagerieStat.PetsPerDay), Is.EqualTo(1));
+            Assert.That(loop.Menagerie.Stat(MenagerieStat.FormCost), Is.EqualTo(0.05).Within(1e-9));
+            Assert.That(loop.Companions.FormChangeSouls, Is.EqualTo((long)System.Math.Ceiling(form * 0.95 - 1e-9)));
+            var done = 0;
+            for (var i = 0; i < pets + 3; i++)
+            {
+                loop.State.Tick += TestWorld.Data.Companions.Bond.PetEveryTicks;
+                done += loop.Companions.Pet("camp_dog") == CompanionResult.Done ? 1 : 0;
+            }
+            Assert.That(done, Is.EqualTo(pets + 1));
+        }
+
+        [Test]
         public void TheBarGivesPassivesAndMajorTalentsSwapFreely()
         {
             var loop = Camp();

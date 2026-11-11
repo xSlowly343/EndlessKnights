@@ -33,6 +33,18 @@ namespace Game.Core.Content
         TalentPoints,
         TemperPower,
         TemperMinus,
+        CoalWarm,
+        EarlyHatch,
+        WeeklySouls,
+        ChoiceSparks,
+        FriendWarm,
+        FormCost,
+        TraitCost,
+        GearCost,
+        PetsPerDay,
+        LastHeartSouls,
+        CircleCost,
+        FreeStar,
         Count
     }
 
@@ -190,7 +202,19 @@ namespace Game.Core.Content
             ["tripFish"] = MenagerieStat.TripFish,
             ["talentPoints"] = MenagerieStat.TalentPoints,
             ["temperPower"] = MenagerieStat.TemperPower,
-            ["temperMinus"] = MenagerieStat.TemperMinus
+            ["temperMinus"] = MenagerieStat.TemperMinus,
+            ["coalWarm"] = MenagerieStat.CoalWarm,
+            ["earlyHatch"] = MenagerieStat.EarlyHatch,
+            ["weeklySouls"] = MenagerieStat.WeeklySouls,
+            ["choiceSparks"] = MenagerieStat.ChoiceSparks,
+            ["friendWarm"] = MenagerieStat.FriendWarm,
+            ["formCost"] = MenagerieStat.FormCost,
+            ["traitCost"] = MenagerieStat.TraitCost,
+            ["gearCost"] = MenagerieStat.GearCost,
+            ["petsPerDay"] = MenagerieStat.PetsPerDay,
+            ["lastHeartSouls"] = MenagerieStat.LastHeartSouls,
+            ["circleCost"] = MenagerieStat.CircleCost,
+            ["freeStar"] = MenagerieStat.FreeStar
         };
 
         private static readonly Dictionary<string, MenagerieTheme> Themes = new Dictionary<string, MenagerieTheme>(StringComparer.Ordinal)

@@ -24,6 +24,7 @@ namespace Game.Core.Content
         public int SoulsPerHost { get; private set; }
         public int SoulsPerTripHours { get; private set; }
         public int SoulsPerPartyTrip { get; private set; }
+        public int SoulsPerWeeklyTrial { get; private set; }
 
         public int MaxStars => Costs.Count;
         public int StartOf(string rarity) => StartStars.TryGetValue(rarity, out var stars) ? stars : 0;
@@ -50,7 +51,8 @@ namespace Game.Core.Content
                 StartStars = start,
                 SoulsPerHost = souls.Field("perHostDaily").AsInt(0, 1000),
                 SoulsPerTripHours = souls.Field("tripHoursPerSoul").AsInt(1, 100_000),
-                SoulsPerPartyTrip = souls.Field("perPartyTrip").AsInt(0, 1000)
+                SoulsPerPartyTrip = souls.Field("perPartyTrip").AsInt(0, 1000),
+                SoulsPerWeeklyTrial = souls.Field("perWeeklyTrial").AsInt(0, 1000)
             };
         }
 

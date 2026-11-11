@@ -82,6 +82,7 @@ namespace Game.Core.Sim
         }
 
         public Unlocks? Unlocks { get; set; }
+        public CompanionSystem? Companions { get; set; }
 
         public TrialResult Start(string id)
         {
@@ -144,7 +145,10 @@ namespace Game.Core.Sim
                 if (!chronicle.WeeklyUnsent.Contains(trial.Id))
                     chronicle.WeeklyUnsent.Add(trial.Id);
             }
-            if (_state.HighestStage < trial.GoalStage || chronicle.Completed.Contains(trial.Id))
+            if (_state.HighestStage < trial.GoalStage)
+                return;
+            Companions?.NoteWeeklyTrial(chronicle.Week);
+            if (chronicle.Completed.Contains(trial.Id))
                 return;
             chronicle.Completed.Add(trial.Id);
             Rebuild();

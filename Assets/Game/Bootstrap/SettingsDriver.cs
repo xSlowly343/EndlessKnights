@@ -123,10 +123,6 @@ namespace Game.Bootstrap
                 case SettingId.WhatsNew:
                     ShowWhatsNew();
                     return;
-                case SettingId.PrivacyPolicy:
-                case SettingId.Eula:
-                    _panelMode?.OpenReport(PrivacyTexts.Title(id), PrivacyTexts.Lines(id), PrivacyTexts.GotIt);
-                    return;
                 case SettingId.ResetPosition:
                     _dock?.UseOffset((int)Settings.StripOffset);
                     break;

@@ -113,7 +113,7 @@
 | 62 | Echo | Атлас; Резонансы; Духи; Летопись | `AtlasTexts`, `ResonanceTexts`, `SpiritTexts`, `ChronicleTexts` | — (14е.10) |
 | 70 | Journal | задания; достижения; бестиарий; статистика | `QuestsView`, `AchievementsView`, `BestiaryView`, `InputStatsView` | ◐ только статистика |
 | 71 | Shop | сундуки; косметика; сезонный пропуск; ивент | `ChestShopView`, `CosmeticsView`, `SeasonPassView`, `EventView` | — заглушка |
-| 72 | System | почта; настройки: игра, звук, приватность | `MailText`, `SettingsScreen`, `PrivacyTexts` | ✅ |
+| 72 | System | почта; настройки: игра, звук, облик (вкладка «Приватность» убрана 11.11.2026) | `MailText`, `SettingsScreen` | ✅ |
 
 ### Мирный мир
 

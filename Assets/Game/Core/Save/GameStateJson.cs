@@ -872,7 +872,7 @@ namespace Game.Core.Save
                 eggs[i] = Object(("biome", JsonValue.Of(companions.Eggs[i].Biome)), ("secondsLeft", JsonValue.Of(companions.Eggs[i].SecondsLeft)));
             return Object(("day", JsonValue.Of(companions.Day)), ("home", WriteIdList(companions.Home)), ("owned", WriteIdList(owned)),
                 ("eggs", JsonValue.Array(eggs)), ("eggCooldown", JsonValue.Of(companions.EggCooldown)), ("sparks", JsonValue.Of(companions.Sparks)),
-                ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)), ("essence", JsonValue.Of(companions.Essence)), ("quickBiteSeconds", JsonValue.Of(companions.QuickBiteSeconds)), ("quickBiteFactor", JsonValue.Of(companions.QuickBiteFactor)), ("sureForge", JsonValue.Of(companions.SureForge)), ("xpBoostSeconds", JsonValue.Of(companions.XpBoostSeconds)), ("xpBoost", JsonValue.Of(companions.XpBoost)), ("hostEssenceDays", WriteNumberMap(companions.HostEssenceDays)),
+                ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)), ("soulTrialWeek", JsonValue.Of(companions.SoulTrialWeek)), ("soulTreeWeek", JsonValue.Of(companions.SoulTreeWeek)), ("essence", JsonValue.Of(companions.Essence)), ("quickBiteSeconds", JsonValue.Of(companions.QuickBiteSeconds)), ("quickBiteFactor", JsonValue.Of(companions.QuickBiteFactor)), ("sureForge", JsonValue.Of(companions.SureForge)), ("xpBoostSeconds", JsonValue.Of(companions.XpBoostSeconds)), ("xpBoost", JsonValue.Of(companions.XpBoost)), ("hostEssenceDays", WriteNumberMap(companions.HostEssenceDays)),
                 ("gear", WriteCompanionGear(companions.Gear)), ("nextGearId", JsonValue.Of(companions.NextGearId)),
                 ("boardDay", JsonValue.Of(companions.BoardDay)), ("board", WriteIdList(companions.Board)), ("boardDone", WriteIdList(companions.BoardDone)), ("rerolls", JsonValue.Of(companions.Rerolls)),
                 ("helper", OptionalText(companions.Helper)), ("helpGuild", OptionalText(companions.HelpGuild)), ("helpSeconds", JsonValue.Of(companions.HelpSeconds)), ("burrowWeek", JsonValue.Of(companions.BurrowWeek)),
@@ -1002,6 +1002,8 @@ namespace Game.Core.Save
             companions.Souls = node.HasField("souls") ? node.Field("souls").AsLong(0) : 0;
             companions.SoulHours = node.HasField("soulHours") ? node.Field("soulHours").AsNumber(0, 1e9) : 0;
             companions.SoulHostDay = node.HasField("soulHostDay") ? node.Field("soulHostDay").AsLong() : -1;
+            companions.SoulTrialWeek = node.HasField("soulTrialWeek") ? node.Field("soulTrialWeek").AsLong() : -1;
+            companions.SoulTreeWeek = node.HasField("soulTreeWeek") ? node.Field("soulTreeWeek").AsLong() : -1;
             companions.Essence = node.HasField("essence") ? node.Field("essence").AsLong(0) : 0;
             companions.QuickBiteSeconds = node.HasField("quickBiteSeconds") ? node.Field("quickBiteSeconds").AsNumber(0, 1e9) : 0;
             companions.QuickBiteFactor = node.HasField("quickBiteFactor") ? node.Field("quickBiteFactor").AsNumber(1, 100) : 1;

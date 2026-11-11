@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using Game.Core.Settings;
-using Game.Core.Text;
-using Game.Core.Ui;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Settings
@@ -62,20 +60,6 @@ namespace Game.Core.Tests.Settings
 
             Assert.That(loaded.ErrorReportConsentGiven, Is.False);
             Assert.That(problems.Count, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void PrivacyTabTogglesErrorReports()
-        {
-            Texts.UseLanguage("ru");
-            var settings = new GameSettings();
-
-            Assert.That(SettingsScreen.Rows(2), Does.Contain(SettingId.ErrorReports));
-            Assert.That(SettingsScreen.Value(SettingId.ErrorReports, settings), Is.EqualTo("Выкл"));
-            Assert.That(SettingsScreen.Change(SettingId.ErrorReports, settings, 1), Is.True);
-            Assert.That(settings.ErrorReportConsentGiven, Is.True);
-            Assert.That(SettingsScreen.Label(SettingId.ErrorReports), Is.EqualTo("Отправлять отчёты об ошибках"));
-            Assert.That(PanelSections.SubTabs(PanelSection.Settings)[2], Is.EqualTo("Приватность"));
         }
     }
 }

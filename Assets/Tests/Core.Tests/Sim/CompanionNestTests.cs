@@ -73,6 +73,48 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void EggsWaitingInTheQueueWarmAsSoonAsASlotIsFree()
+        {
+            var loop = Camp();
+            Assert.That(loop.Nest.Slots, Is.EqualTo(1));
+            loop.Nest.Lay("ice_peak");
+            loop.Nest.Lay("sky_islands");
+            loop.Nest.Lay("green_hills");
+
+            loop.Nest.Advance(Rules.HatchSeconds * 2 + 6 * Hour);
+
+            Assert.That(loop.State.Companions.Hatched, Is.EqualTo(2));
+            Assert.That(loop.State.Companions.Eggs.Count, Is.EqualTo(1));
+            Assert.That(loop.State.Companions.Eggs[0].SecondsLeft, Is.EqualTo(Rules.HatchSeconds - 6 * Hour).Within(1e-6));
+        }
+
+        [Test]
+        public void TheMenagerieTreeWarmsTheNestAndCheapensTheChoiceEgg()
+        {
+            var loop = Camp();
+            loop.State.Companions.MenagerieLevel = 60;
+            for (var i = 0; i < 3; i++)
+                loop.Menagerie.Learn(6);
+            for (var node = 1; node <= 2; node++)
+                for (var i = 0; i < 5; i++)
+                    loop.Menagerie.Learn(node);
+            for (var i = 0; i < 5; i++)
+                Assert.That(loop.Menagerie.Learn(17), Is.EqualTo(TreeResult.Done));
+            loop.Nest.Lay("green_hills");
+            var before = loop.State.Companions.Eggs[0].SecondsLeft;
+            loop.Camp.Add("ember_coal", 1);
+
+            Assert.That(loop.Nest.AddCoal(0), Is.EqualTo(NestResult.Done));
+
+            Assert.That(before - loop.State.Companions.Eggs[0].SecondsLeft, Is.EqualTo(Rules.CoalSeconds * 1.2).Within(1e-6));
+            Assert.That(loop.State.Companions.CoalToday, Is.EqualTo(Rules.CoalSeconds).Within(1e-6), "the daily limit counts plain coal hours");
+            Assert.That(loop.Nest.ChoiceSparks, Is.EqualTo(Rules.SparksForChoice - 1));
+            loop.State.Companions.Sparks = Rules.SparksForChoice - 1;
+            Assert.That(loop.Nest.ChoiceEgg("ice_peak"), Is.EqualTo(NestResult.Done));
+            Assert.That(loop.State.Companions.Sparks, Is.Zero);
+        }
+
+        [Test]
         public void CoalWarmsUpToSixHoursADay()
         {
             var loop = Camp();
