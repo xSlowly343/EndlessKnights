@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "void-crescent 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "void-crescent 1",
+   "frame": {
+    "x": 112,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "void-crescent 2",
+   "frame": {
+    "x": 224,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "void-crescent 3",
+   "frame": {
+    "x": 0,
+    "y": 64,
+    "w": 112,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "void-crescent 4",
+   "frame": {
+    "x": 112,
+    "y": 64,
+    "w": 112,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "void-crescent 5",
+   "frame": {
+    "x": 224,
+    "y": 64,
+    "w": 112,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "void-crescent 6",
+   "frame": {
+    "x": 0,
+    "y": 128,
+    "w": 112,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "void-crescent 7",
+   "frame": {
+    "x": 112,
+    "y": 128,
+    "w": 112,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 64
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "void-crescent.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 336,
+   "h": 192
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "void-crescent",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/void-crescent",
+   "name": "Void crescent",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    112,
+    64
+   ],
+   "pivot": [
+    84,
+    32
+   ],
+   "columns": 3
+  }
+ }
+}

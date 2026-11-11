@@ -24,6 +24,21 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
+        public void StrikeVisibilityIsSetApartForTheHeroAndTheParty()
+        {
+            Texts.UseLanguage("ru");
+            var settings = new GameSettings();
+
+            Assert.That(SettingsScreen.Rows(0), Does.Contain(SettingId.HeroStrikeOpacity).And.Contain(SettingId.AllyStrikeOpacity));
+            Assert.That(SettingsScreen.Value(SettingId.HeroStrikeOpacity, settings), Is.EqualTo("100%"));
+            Assert.That(SettingsScreen.Value(SettingId.AllyStrikeOpacity, settings), Is.EqualTo("50%"));
+            Assert.That(SettingsScreen.Change(SettingId.HeroStrikeOpacity, settings, 1), Is.False);
+            Assert.That(SettingsScreen.Change(SettingId.AllyStrikeOpacity, settings, -1), Is.True);
+            Assert.That(settings.AllyStrikeOpacity, Is.EqualTo(0.4).Within(1e-9));
+            Assert.That(settings.HeroStrikeOpacity, Is.EqualTo(1.0).Within(1e-9));
+        }
+
+        [Test]
         public void TogglesFlipAndShowOnOff()
         {
             Texts.UseLanguage("ru");

@@ -131,7 +131,7 @@ namespace Game.Core.Sim
             _state.KillStreak++;
             _state.TicksSinceKill = 0;
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
-            Reward();
+            Reward(_state.EnemyType, _state.Enemy, _state.EnemyGoldBonus);
             KillTimeListener?.OnKillTimed(_state.EnemyType, _state.EnemyLifeSeconds, false);
             if (oddity == OddityKind.SplitterPart)
             {
@@ -233,12 +233,12 @@ namespace Game.Core.Sim
             return hp;
         }
 
-        private void Reward()
+        private void Reward(EnemyType type, EnemyDef? enemy, double goldBonus)
         {
             var multiplier = _state.NextKillReward;
             _state.NextKillReward = 1;
-            _loot.OnKill(_state.Stage, _state.EnemyType, _state.Enemy, multiplier * (1 + _state.EnemyGoldBonus) * OddityGold());
-            _levels.OnKill(_state.EnemyType, multiplier);
+            _loot.OnKill(_state.Stage, type, enemy, multiplier * (1 + goldBonus) * OddityGold());
+            _levels.OnKill(type, multiplier);
             RewardListener?.OnKillRewarded();
             if (multiplier > 1 && _state.NextKillShardChance > 0 && _state.Rng.NextDouble() < _state.NextKillShardChance)
                 _state.Rift.Shards += BigNumber.FromDouble(_state.NextKillShards);
@@ -254,6 +254,10 @@ namespace Game.Core.Sim
 
         public bool LinkedGateBoss { get; set; }
 
+        private EnemyDef? _owedEnemy;
+        private EnemyType _owedType;
+        private double _owedGoldBonus;
+
         private bool HeldAtGate => !LinkedGateBoss && _stages.GateAt(_state.Stage) != null && !_state.GatesCleared.Contains(_state.Stage);
 
         public void ConfirmLinkedKill()
@@ -261,7 +265,7 @@ namespace Game.Core.Sim
             _state.Kills++;
             NoteWeakenedKill();
             _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
-            Reward();
+            Reward(_state.EnemyType, _state.Enemy, _state.EnemyGoldBonus);
             KillTimeListener?.OnKillTimed(_state.EnemyType, _state.EnemyLifeSeconds, true);
             if (_state.FightingBoss && HeldAtGate)
                 _events.Add(GameEvent.ForStage(GameEventKind.GateNeedsLimitFight, _state.Tick, _state.Stage));
@@ -271,6 +275,38 @@ namespace Game.Core.Sim
         }
 
         public void SkipLinkedKill() => _state.EnemyHp = BigNumber.Zero;
+
+        public bool OwesLinkedKill { get; private set; }
+
+        public void EndLinkedEnemyOwed()
+        {
+            _state.Kills++;
+            NoteWeakenedKill();
+            _events.Add(GameEvent.ForEnemy(GameEventKind.EnemyKilled, _state.Tick, _state.Stage, _state.Enemy));
+            KillTimeListener?.OnKillTimed(_state.EnemyType, _state.EnemyLifeSeconds, true);
+            OwesLinkedKill = true;
+            _owedEnemy = _state.Enemy;
+            _owedType = _state.EnemyType;
+            _owedGoldBonus = _state.EnemyGoldBonus;
+            _state.EnemyHp = BigNumber.Zero;
+        }
+
+        public void SettleOwedLinkedKill(bool paid)
+        {
+            if (!OwesLinkedKill)
+                return;
+            OwesLinkedKill = false;
+            var enemy = _owedEnemy;
+            _owedEnemy = null;
+            if (paid)
+                Reward(_owedType, enemy, _owedGoldBonus);
+        }
+
+        public void MarkLinkedWeakened(bool weakened, double goldBonus)
+        {
+            _state.EnemyWeakened = weakened;
+            _state.EnemyGoldBonus = weakened ? goldBonus : 0;
+        }
 
         public void ConfirmLinkedBossFailed()
         {

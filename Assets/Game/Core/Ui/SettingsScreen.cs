@@ -17,7 +17,7 @@ namespace Game.Core.Ui
 
         private static readonly SettingId[][] Tabs =
         {
-            new[] { SettingId.Language, SettingId.AlwaysOnTop, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.CompanionStrip, SettingId.InputConsent, SettingId.WhatsNew },
+            new[] { SettingId.Language, SettingId.AlwaysOnTop, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.HeroStrikeOpacity, SettingId.AllyStrikeOpacity, SettingId.CompanionStrip, SettingId.InputConsent, SettingId.WhatsNew },
             new[] { SettingId.MasterVolume, SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume },
             new[] { SettingId.Telemetry, SettingId.ErrorReports, SettingId.PrivacyPolicy, SettingId.Eula },
         };
@@ -184,6 +184,8 @@ namespace Game.Core.Ui
                 case SettingId.SkillVolume: settings.SkillVolume = after; break;
                 case SettingId.InterfaceVolume: settings.InterfaceVolume = after; break;
                 case SettingId.NotificationVolume: settings.NotificationVolume = after; break;
+                case SettingId.HeroStrikeOpacity: settings.HeroStrikeOpacity = after; break;
+                case SettingId.AllyStrikeOpacity: settings.AllyStrikeOpacity = after; break;
                 default: return false;
             }
             return true;
@@ -197,6 +199,8 @@ namespace Game.Core.Ui
             SettingId.SkillVolume => settings.SkillVolume,
             SettingId.InterfaceVolume => settings.InterfaceVolume,
             SettingId.NotificationVolume => settings.NotificationVolume,
+            SettingId.HeroStrikeOpacity => settings.HeroStrikeOpacity,
+            SettingId.AllyStrikeOpacity => settings.AllyStrikeOpacity,
             _ => 0
         };
 

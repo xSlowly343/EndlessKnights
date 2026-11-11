@@ -35,6 +35,8 @@ namespace Game.Presentation.Battle
             return _ends.Length - 1;
         }
 
+        public float StartOf(int frame) => frame <= 0 ? 0f : _ends[frame - 1];
+
         public Sprite SpriteAt(float time) => _frames[FrameAt(time)];
 
         public Sprite Frame(int index) => _frames[index];

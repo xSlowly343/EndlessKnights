@@ -47,6 +47,7 @@ namespace Game.Bootstrap
             _dock = dock;
             _tray = tray;
             _battle = battle;
+            ApplyStrikeOpacity();
             ApplyText(Settings);
             panels.Settings.Use(Settings);
             panels.Settings.UseVersion(Application.version);
@@ -103,6 +104,10 @@ namespace Game.Bootstrap
                 case SettingId.CountClicks:
                 case SettingId.CountWheel:
                     ApplyPermissions();
+                    break;
+                case SettingId.HeroStrikeOpacity:
+                case SettingId.AllyStrikeOpacity:
+                    ApplyStrikeOpacity();
                     break;
                 case SettingId.InputConsent:
                     _panelMode?.OpenConsent();
@@ -172,6 +177,8 @@ namespace Game.Bootstrap
                 _loop.Strip.Mode = SettingsScreen.StripModeOf(Settings);
             }
         }
+
+        private void ApplyStrikeOpacity() => _battle?.UseStrikeOpacity((float)Settings.HeroStrikeOpacity, (float)Settings.AllyStrikeOpacity);
 
         private static void ApplyText(GameSettings settings)
         {

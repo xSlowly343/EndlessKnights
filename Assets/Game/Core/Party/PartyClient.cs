@@ -25,6 +25,11 @@ namespace Game.Core.Party
         private long _joinStartTick;
         private bool _inRoster;
         private uint _localEnemyId;
+        private uint _batchEnemyId;
+        private uint _aheadOf;
+        private uint _farmFirstId;
+        private bool _guessed;
+        private ulong _guessedSeed;
         private bool _killFlushed;
         private long _localStage;
         private BigNumber _unit;
@@ -43,6 +48,7 @@ namespace Game.Core.Party
         private readonly long[] _reactionTick = new long[PartyRules.MaxSlots];
         private readonly int[] _reactionSerial = new int[PartyRules.MaxSlots];
         private readonly double[] _allyShares = new double[PartyRules.MaxSlots];
+        private readonly int[] _allyHits = new int[PartyRules.MaxSlots];
         private long _lastSentReactionTick = PartyEncounter.Never;
         private int _contributionKills;
         private int _ownSlot = PartyEncounter.NoSlot;
@@ -59,6 +65,8 @@ namespace Game.Core.Party
 
         public const int NoReaction = -1;
         private const double MaxAllyShares = 1000;
+        private const int MaxAllyHits = 1000;
+        private const double AllyRateBlend = 0.5;
         private const int TraitTimerResendTicks = 10;
         private const double TraitTimerSeconds = 1.5;
         public static readonly int TraitTimerEffect = GemDef.NetIdOf("trait_boss_timer");
@@ -82,6 +90,8 @@ namespace Game.Core.Party
         public uint EnemyId => _state.EnemyId;
         public double BarFull => _state.BarFull;
         public double PredictedBarLeft => InParty ? Predicted() : 0;
+        public bool RunningAhead => InParty && _guessed;
+        public long EarlyKills { get; private set; }
         public RosterMessage Roster { get; private set; }
         public EnemyKilledMessage LastBossKill { get; private set; }
         public int BossKillsSeen { get; private set; }
@@ -125,6 +135,15 @@ namespace Game.Core.Party
             var share = _allyShares[slot];
             _allyShares[slot] = 0;
             return share > 0 && _unit.Sign > 0 ? _unit * share : BigNumber.Zero;
+        }
+
+        public int TakeAllyHits(int slot)
+        {
+            if (slot < 0 || slot >= PartyRules.MaxSlots)
+                return 0;
+            var hits = _allyHits[slot];
+            _allyHits[slot] = 0;
+            return hits;
         }
 
         public ShownEffect EnemyEffect(int index)
@@ -222,7 +241,7 @@ namespace Game.Core.Party
             Unlink();
             _state = default;
             _stateArrivalTick = _tick;
-            _localEnemyId = 0;
+            ForgetLocalEnemy();
             _rewardedUpTo = 0;
             _countedUpTo = 0;
             _contributionKills = 0;
@@ -231,6 +250,7 @@ namespace Game.Core.Party
             {
                 _reaction[slot] = NoReaction;
                 _allyShares[slot] = 0;
+                _allyHits[slot] = 0;
             }
             LastBossKill = default;
             _total = 0;
@@ -401,20 +421,47 @@ namespace Game.Core.Party
                 AbandonLocalEnemy();
             if (state.EnemyKind == PartyEnemyKind.Boss)
                 _loop.Stages.LinkedGateBoss = state.GateBoss;
+            NoteFarming(state);
             if (InParty)
                 SettleHistory(state);
             var elapsed = System.Math.Max(1, _tick - _stateArrivalTick);
-            _allyRatePerTick = AllyRecent(state) / elapsed;
+            _allyRatePerTick += (AllyRecent(state) / elapsed - _allyRatePerTick) * AllyRateBlend;
             if (InParty && state.EnemyId > _localEnemyId && _localEnemyId != 0)
                 EndLocalEnemy(_loop.State.FightingBoss && state.Farming);
             _state = state;
             _stateArrivalTick = _tick;
             _sharesSinceState = 0;
+            if (_guessed && state.EnemyId >= _localEnemyId)
+                MeetGuess();
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
             {
-                if (slot != _ownSlot && InParty)
-                    _allyShares[slot] = System.Math.Min(_allyShares[slot] + state.Recent(slot), MaxAllyShares);
+                if (slot == _ownSlot || !InParty)
+                    continue;
+                _allyShares[slot] = System.Math.Min(_allyShares[slot] + state.Recent(slot), MaxAllyShares);
+                _allyHits[slot] = System.Math.Min(_allyHits[slot] + state.Hits(slot), MaxAllyHits);
             }
+        }
+
+        private void NoteFarming(in EncounterStateMessage state)
+        {
+            if (!state.Farming)
+                _farmFirstId = 0;
+            else if (!_state.Farming)
+                _farmFirstId = InParty && _state.EnemyKind == PartyEnemyKind.Boss ? _state.EnemyId + 1 : 0;
+        }
+
+        private void MeetGuess()
+        {
+            _guessed = false;
+            if (_state.EnemyId != _localEnemyId || _localEnemyId <= _rewardedUpTo)
+                return;
+            if (_state.EnemyKind != PartyEnemyKind.Normal || _state.EnemySeed != _guessedSeed)
+            {
+                SpawnLocal(_state.EnemyId, _state.EnemyKind == PartyEnemyKind.Boss, _state.EnemySeed, _state.BarFull, _state.KillsOnStage, _state.Farming, _state.BossTicksLeft);
+                return;
+            }
+            Relabel(_localEnemyId);
+            _loop.Stages.MarkLinkedWeakened(_state.Weakened, _state.WeakenedGold);
         }
 
         private double AllyRecent(in EncounterStateMessage state)
@@ -439,6 +486,11 @@ namespace Game.Core.Party
         {
             var killed = history.KilledAt(age);
             var boss = history.BossAt(age);
+            if (enemyId == _aheadOf)
+            {
+                SettleAhead(killed && history.RewardedFor(age, _ownSlot), killed);
+                return;
+            }
             if (enemyId != _localEnemyId)
             {
                 if (!killed)
@@ -470,10 +522,19 @@ namespace Game.Core.Party
                 _rewardedUpTo = _localEnemyId;
             if (_localEnemyId > _settledUpTo)
                 _settledUpTo = _localEnemyId;
+            _loop.Stages.SettleOwedLinkedKill(false);
+            ForgetLocalEnemy();
+            _hitsInBatch = 0;
+        }
+
+        private void ForgetLocalEnemy()
+        {
             _localEnemyId = 0;
+            _batchEnemyId = 0;
+            _aheadOf = 0;
+            _guessed = false;
             _total = 0;
             _sentTotal = 0;
-            _hitsInBatch = 0;
         }
 
         private void FollowWorld()
@@ -501,6 +562,11 @@ namespace Game.Core.Party
                 LastBossKill = killed;
                 BossKillsSeen++;
             }
+            if (killed.EnemyId == _aheadOf)
+            {
+                SettleAhead(killed.RewardedFor(_ownSlot), true);
+                return;
+            }
             if (killed.EnemyId != _rewardedUpTo + 1)
                 return;
             if (killed.EnemyId != _localEnemyId)
@@ -524,6 +590,9 @@ namespace Game.Core.Party
         {
             if (_localEnemyId <= _rewardedUpTo)
                 return;
+            if (_aheadOf != 0)
+                SettleAhead(true, true);
+            _guessed = false;
             _rewardedUpTo = _localEnemyId;
             Settle(_localEnemyId);
             if (IsGuest)
@@ -545,6 +614,23 @@ namespace Game.Core.Party
             }
             _loop.Stages.ConfirmLinkedKill();
             PartyRewards++;
+        }
+
+        private void SettleAhead(bool paid, bool killed)
+        {
+            var enemyId = _aheadOf;
+            _aheadOf = 0;
+            if (enemyId > _rewardedUpTo)
+                _rewardedUpTo = enemyId;
+            Settle(enemyId);
+            _loop.Stages.SettleOwedLinkedKill(paid);
+            if (!killed)
+                return;
+            LastKillPaid = paid;
+            if (paid)
+                PartyRewards++;
+            else
+                UnpaidKills++;
         }
 
         private void Settle(uint enemyId)
@@ -577,7 +663,8 @@ namespace Game.Core.Party
             if (_state.EnemyId > 0 && _state.EnemyId - 1 > _rewardedUpTo)
                 _rewardedUpTo = _state.EnemyId - 1;
             _settledUpTo = _rewardedUpTo;
-            _localEnemyId = 0;
+            ForgetLocalEnemy();
+            _farmFirstId = 0;
             _lastHeardTick = _tick;
             _countedUpTo = _state.EnemyId > 0 ? _state.EnemyId - 1 : 0;
             _contributionKills = 0;
@@ -594,6 +681,7 @@ namespace Game.Core.Party
             _loop.State.PartyAllies = 0;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 _loop.Gear.SetAllyEcho(slot, 0);
+            _loop.Stages.SettleOwedLinkedKill(true);
             _loop.Stages.Unlink();
             _loop.Skills.ShareEnemy(false);
             _loop.PartyBuffs.ClearAllies();
@@ -605,16 +693,14 @@ namespace Game.Core.Party
             Unlink();
             Status = PartyLink.Solo;
             _lostAtTick = _tick;
-            _localEnemyId = 0;
-            _total = 0;
-            _sentTotal = 0;
+            ForgetLocalEnemy();
         }
 
         private void SyncEnemy()
         {
             var gameState = _loop.State;
             var fresh = _state.EnemyId > _rewardedUpTo;
-            if (fresh && (_localEnemyId != _state.EnemyId || gameState.Stage != _localStage || !gameState.EnemyAlive))
+            if (fresh && !_guessed && (_localEnemyId != _state.EnemyId || gameState.Stage != _localStage || !gameState.EnemyAlive))
             {
                 var newEnemy = _localEnemyId != _state.EnemyId;
                 SpawnLocal(_state.EnemyId, _state.EnemyKind == PartyEnemyKind.Boss, _state.EnemySeed, _state.BarFull, _state.KillsOnStage, _state.Farming, _state.BossTicksLeft);
@@ -635,17 +721,50 @@ namespace Game.Core.Party
         private void SpawnLocal(uint enemyId, bool boss, ulong seed, double barFull, int killsOnStage, bool farming, int bossTicksLeft)
         {
             if (_localEnemyId != enemyId)
-            {
-                FlushBatch();
-                _total = 0;
-                _sentTotal = 0;
                 _killFlushed = false;
-            }
+            Relabel(enemyId);
+            _guessed = false;
             _localEnemyId = enemyId;
             _localStage = _loop.State.Stage;
             var weakened = _state.EnemyId == enemyId && _state.Weakened;
             _unit = _loop.Stages.SpawnLinked(boss, seed, barFull, killsOnStage, farming, bossTicksLeft, weakened, weakened ? _state.WeakenedGold : 0, _state.WaveStage);
         }
+
+        private void Relabel(uint enemyId)
+        {
+            if (_batchEnemyId == enemyId)
+                return;
+            FlushBatch();
+            _batchEnemyId = enemyId;
+            _total = 0;
+            _sentTotal = 0;
+        }
+
+        private bool CanRunAhead =>
+            !IsGuest && !_guessed && _aheadOf == 0 && _localEnemyId != 0 && _localEnemyId == _state.EnemyId && _localEnemyId > _rewardedUpTo
+            && _state.EnemyKind == PartyEnemyKind.Normal && !_state.Switching && !_loop.State.FightingBoss && _loop.State.Stage == _localStage
+            && NextIsNormal && LocallyPaid();
+
+        private bool NextIsNormal => _state.Farming
+            ? _farmFirstId != 0 && _state.EnemyId >= _farmFirstId && _state.EnemyId - _farmFirstId + 1 < _loop.Data.Stages.BossRetryAfterKills
+            : _state.KillsOnStage < byte.MaxValue && _state.KillsOnStage + 1 < _state.EnemiesOnStage;
+
+        private void RunAhead()
+        {
+            FlushBatch();
+            _aheadOf = _localEnemyId;
+            _guessed = true;
+            _guessedSeed = SplitMix.After(_state.EnemySeed);
+            _killFlushed = false;
+            EarlyKills++;
+            _loop.Stages.EndLinkedEnemyOwed();
+            _localEnemyId++;
+            var killsOnStage = _state.Farming ? _state.KillsOnStage : _state.KillsOnStage + 1;
+            _unit = _loop.Stages.SpawnLinked(false, _guessedSeed, _state.BarFull, killsOnStage, _state.Farming, 0, _state.Weakened, _state.Weakened ? _state.WeakenedGold : 0, _state.WaveStage);
+            HitWithChain();
+        }
+
+        private double BarLeftAtHost() => _state.BarLeft - _sharesSinceState - _allyRatePerTick * (_tick - _stateArrivalTick);
 
         private void HitWithChain()
         {
@@ -662,7 +781,9 @@ namespace Game.Core.Party
 
         private double Predicted()
         {
-            var predicted = _state.BarLeft - _sharesSinceState - _allyRatePerTick * (_tick - _stateArrivalTick);
+            var predicted = BarLeftAtHost();
+            if (_guessed && _localEnemyId > _state.EnemyId)
+                predicted += _state.BarFull;
             return System.Math.Min(_state.BarFull, System.Math.Max(0, predicted));
         }
 
@@ -682,7 +803,11 @@ namespace Game.Core.Party
                 _hitsInBatch++;
                 _lastOwnInputTick = _tick;
             }
-            if (!_killFlushed && InParty && share > 0 && Predicted() <= 0)
+            if (CanRunAhead && BarLeftAtHost() <= 0)
+            {
+                RunAhead();
+            }
+            else if (!_killFlushed && InParty && share > 0 && Predicted() <= 0)
             {
                 _killFlushed = true;
                 FlushBatch();
@@ -896,12 +1021,12 @@ namespace Game.Core.Party
 
         private void FlushBatch()
         {
-            if (_localEnemyId == 0 || (_total <= _sentTotal && _hitsInBatch == 0))
+            if (_batchEnemyId == 0 || (_total <= _sentTotal && _hitsInBatch == 0))
                 return;
             SendToHost(PartyCodec.Encode(_out, new DamageBatchMessage
             {
                 Sequence = ++_sequence,
-                EnemyId = _localEnemyId,
+                EnemyId = _batchEnemyId,
                 Keys = _total,
                 Hits = _hitsInBatch
             }));
