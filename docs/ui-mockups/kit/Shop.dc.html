@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Магазин</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./rw.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}.pr{display:grid;grid-template-columns:34px 1fr 1fr;gap:4px;align-items:center}.pc{min-height:34px;border-radius:4px;background:var(--card);padding:4px 8px;font-size:11px;display:flex;align-items:center;gap:6px}.pc.got{box-shadow:inset 0 0 0 2px var(--ok)}.pc.lk{opacity:.45}.pc.no{background:transparent}
+.cos{height:54px;border-radius:4px;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}</style>
+</helmet>
+<div class="rw bd" style="width:2104px;height:692px">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="th" viewBox="0 0 24 24"><path d="M5 20v-8a7 7 0 0 1 14 0v8M9 20v-6h6v6"/></symbol><symbol id="tb" viewBox="0 0 24 24"><path d="M4 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-5a2 2 0 0 0-2 2"/></symbol><symbol id="tt" viewBox="0 0 24 24"><path d="M12 5v5m0 0-6 6m6-6 6 6M12 4h.01M6 17h.01M18 17h.01"/></symbol><symbol id="ti" viewBox="0 0 24 24"><path d="M6 9h12l1 11H5zM9 9V7a3 3 0 0 1 6 0v2"/></symbol><symbol id="tp" viewBox="0 0 24 24"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 20a6 6 0 0 1 12 0M16 11a3 3 0 1 0 0-6M22 20a6 6 0 0 0-4-5.7"/></symbol><symbol id="tm" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></symbol><symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="pin" viewBox="0 0 24 24"><path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4z"/></symbol><symbol id="cr" viewBox="0 0 24 24"><path d="M6 4h12l4 6-10 11L2 10zM2 10h20"/></symbol><symbol id="box" viewBox="0 0 24 24"><path d="M4 8h16v12H4zM4 8l2-4h12l2 4M10 12h4"/></symbol><symbol id="cnd" viewBox="0 0 24 24"><path d="M9 8h6v12H9zM12 8V4M11 2h2"/></symbol><symbol id="ok" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol><symbol id="lock" viewBox="0 0 24 24"><path d="M6 11h12v9H6zM8 11V8a4 4 0 0 1 8 0v3"/></symbol></svg>
+
+<div class="col"><div class="cap"><b>A</b>Сундуки: содержимое известно заранее</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Магазин</div><div class="f1"></div><div class="cur"><svg class="i" style="color:#5B9BFF"><use href="#cr"/></svg>1 250</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl on">Сундуки</button><button class="pl">Косметика</button><button class="pl">Пропуск</button><button class="pl">Ивент</button></div>
+<div class="ct" style="gap:6px">
+<div class="li"><svg class="i i28" style="color:#FF9A3C"><use href="#box"/></svg><div class="c f1"><span class="m b">Малый сундук кузнеца</span><span class="x dim">Слитки Разлома ×40 · осталось на неделе: 2 из 3</span></div><button class="bt sm g">200<svg class="i i12"><use href="#cr"/></svg></button></div>
+<div class="li"><svg class="i i28" style="color:#FF9A3C"><use href="#box"/></svg><div class="c f1"><span class="m b">Сундук кузнеца</span><span class="x dim">Слитки Разлома ×110 · осталось на неделе: 2 из 2</span></div><button class="bt sm g">500<svg class="i i12"><use href="#cr"/></svg></button></div>
+<div class="li"><svg class="i i28" style="color:#FF9A3C"><use href="#box"/></svg><div class="c f1"><span class="m b">Большой сундук кузнеца</span><span class="x dim">Слитки Разлома ×240 · осталось на неделе: 1 из 1</span></div><button class="bt sm g">1 000<svg class="i i12"><use href="#cr"/></svg></button></div>
+<div class="li"><svg class="i i28" style="color:#3FE0D0"><use href="#box"/></svg><div class="c f1"><span class="m b">Ларец ювелира</span><span class="x dim">Эссенция Разлома ×110 · осталось на неделе: 0 из 2</span></div><button class="bt sm d" disabled>До понедельника</button></div>
+<div class="li"><svg class="i i28" style="color:#3FE0D0"><use href="#box"/></svg><div class="c f1"><span class="m b">Большой ларец ювелира</span><span class="x dim">Эссенция Разлома ×240 · осталось на неделе: 1 из 1</span></div><div class="c ae"><button class="bt sm d" disabled>1 000<svg class="i i12"><use href="#cr"/></svg></button></div></div>
+<span class="x bad rt">Не хватает Кристаллов — после покупки двух сундуков выше</span>
+<div class="li dk ma"><svg class="i dim" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v6M12 7h.01"/></svg><span class="x dim f1">Содержимое всегда одно и то же. Сундук приходит письмом в «Почту». Покупка за Кристаллы подтверждается окном.</span></div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево</button><button class="tab"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab on"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>B</b>Косметика: 11 слотов, примерка</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Магазин</div><div class="f1"></div><div class="cur"><svg class="i" style="color:#5B9BFF"><use href="#cr"/></svg>1 250</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl">Сундуки</button><button class="pl on">Косметика</button><button class="pl">Пропуск</button><button class="pl">Ивент</button></div>
+<div class="ct" style="gap:6px">
+<div class="r g4 wr"><button class="pl sm on">Облик героя</button><button class="pl sm">Оружие</button><button class="pl sm">Тема полоски</button><button class="pl sm">Рамка</button><button class="pl sm">Эффект скилла</button><button class="pl sm">Шрифт урона</button><button class="pl sm">Звук удара</button><button class="pl sm">Спутник</button><button class="pl sm">Аватар</button><button class="pl sm">Клан</button></div>
+<div class="gr3">
+<button class="cd c g4 sel"><div class="cos" style="--a:#3FE0D0;--b:#7A52C8"></div><span class="x b">Танец северного сияния</span><span class="x gold">1 000 Кристаллов</span></button>
+<button class="cd c g4"><div class="cos" style="--a:#C9D2EA;--b:#3F6FD1"></div><span class="x b">Лунный дуэлянт</span><span class="x dim">для Duelist</span></button>
+<button class="cd c g4"><div class="cos" style="--a:#FF9A3C;--b:#B02A2A"></div><span class="x b">Фонарь праздника</span><span class="ch gn">надето</span></button>
+<button class="cd c g4"><div class="cos" style="--a:#B07CFF;--b:#2A2040"></div><span class="x b">Аметистовый призыв</span><span class="x dim">куплено</span></button>
+<button class="cd c g4"><div class="cos" style="--a:#F0E04C;--b:#B58A4A"></div><span class="x b">Путник миража</span><span class="x gold">1 000</span></button>
+<button class="cd dk c g4"><div class="cos" style="--a:#39435F;--b:#1D2540"></div><span class="x b dim">Сезон первых углей</span><span class="x dim">из пропуска · ур. 25</span></button>
+</div>
+<div class="sh"><div class="r jb"><span class="h">Танец северного сияния</span><span class="x dim">Облик героя · Runedancer</span></div><span class="x dim">Только внешний вид. Скидка недели и набором считаются до подтверждения.</span><div class="r g8 je"><button class="bt">Примерить в полоске</button><button class="bt g">Купить · 1 000<svg class="i i14"><use href="#cr"/></svg></button></div></div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево</button><button class="tab"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab on"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>C</b>Сезонный пропуск: 40 уровней, две дорожки</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Магазин</div><div class="f1"></div><div class="cur"><svg class="i" style="color:#5B9BFF"><use href="#cr"/></svg>1 250</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl">Сундуки</button><button class="pl">Косметика</button><button class="pl on">Пропуск<i class="rd"></i></button><button class="pl">Ивент</button></div>
+<div class="ct" style="gap:6px">
+<div class="cd rf c g4"><div class="r jb"><span class="h">Сезон первых углей</span><span class="x dim">ещё 5 нед. 2 д</span></div><div class="r g6 m"><span class="n h gold">Ур. 11</span><div class="pg f1"><i style="width:35%"></i></div><span class="n">140 / 400</span></div><span class="x dim">Очки: 1 за активную минуту, до 450 в день · сегодня 212 · задания дают ещё</span></div>
+<div class="pr x dim"><span></span><span class="ctr b">Бесплатно</span><span class="ctr b gold">Премиум</span></div>
+<div class="pr"><span class="n ctr">1</span><div class="pc no"></div><div class="pc lk"><svg class="i i14"><use href="#lock"/></svg>Эффект скилла</div></div>
+<div class="pr"><span class="n ctr">5</span><div class="pc got"><svg class="i i14 ok"><use href="#ok"/></svg>Рамка полоски</div><div class="pc no"></div></div>
+<div class="pr"><span class="n ctr gold">10</span><div class="pc" style="box-shadow:inset 0 0 0 2px var(--gold)"><svg class="i i14" style="color:#5B9BFF"><use href="#cr"/></svg>50 Кристаллов<button class="bt sm g ml" style="height:22px">Забрать</button></div><div class="pc lk"><svg class="i i14"><use href="#lock"/></svg>Золотой аватар</div></div>
+<div class="pr"><span class="n ctr dim">15</span><div class="pc lk">Шрифт урона</div><div class="pc no"></div></div>
+<div class="pr"><span class="n ctr dim">20</span><div class="pc lk"><svg class="i i14" style="color:#5B9BFF"><use href="#cr"/></svg>50 Кристаллов</div><div class="pc lk"><svg class="i i14"><use href="#lock"/></svg>…</div></div>
+<div class="pr"><span class="n ctr dim">25</span><div class="pc lk">Аватар</div><div class="pc no"></div></div>
+<div class="r g8 ma"><span class="x dim f1">Премиум открывает правую дорожку сразу за все пройденные уровни. Только косметика и Кристаллы.</span><button class="bt g">Премиум · 1 000<svg class="i i14"><use href="#cr"/></svg></button></div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево</button><button class="tab"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab on"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё<i class="dot"></i></button></div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>D</b>Сезонный ивент: цели и лавка за знаки</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Магазин</div><div class="f1"></div><div class="cur"><svg class="i" style="color:#FF9A3C"><use href="#cnd"/></svg>840</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl">Сундуки</button><button class="pl">Косметика</button><button class="pl">Пропуск</button><button class="pl on">Ивент</button></div>
+<div class="ct" style="gap:6px">
+<div class="cd c g2" style="background:linear-gradient(135deg,#4A2A12,#26304A);box-shadow:inset 0 0 0 1px #FF9A3C"><div class="r jb"><span class="h" style="color:#FF9A3C">Ночь Тыкв</span><span class="x dim">ещё 4 д · лавка открыта ещё 3 д после</span></div><span class="x dim">Гости ивента приходят в Зелёные холмы и роняют Свечки. Сегодня: 310 из дневного предела.</span></div>
+<div class="sec">Цели · все шесть дают Кристаллы</div>
+<div class="gr2">
+<div class="cd c g2"><span class="x b">Победить гостей: 300</span><div class="pg th"><i style="width:100%;--c:var(--ok)"></i></div><span class="x ok">готово</span></div>
+<div class="cd c g2"><span class="x b">Бои с Королём Тыкв: 5</span><div class="pg th"><i style="width:60%"></i></div><span class="x dim">3 из 5</span></div>
+<div class="cd c g2"><span class="x b">Победы над Королём: 3</span><div class="pg th"><i style="width:33%"></i></div><span class="x dim">1 из 3</span></div>
+<div class="cd c g2"><span class="x b">Собрать Свечки: 2 000</span><div class="pg th"><i style="width:42%"></i></div><span class="x dim">840 из 2 000</span></div>
+</div>
+<div class="sec">Лавка ивента</div>
+<div class="li" style="min-height:38px"><div class="cos" style="width:44px;height:26px;--a:#FF9A3C;--b:#4A2A12"></div><span class="m f1">Тема полоски «Тыквы»</span><button class="bt sm g">600<svg class="i i12"><use href="#cnd"/></svg></button></div>
+<div class="li" style="min-height:38px"><div class="cos" style="width:44px;height:26px;--a:#F0E04C;--b:#4A2A12"></div><span class="m f1">Спутник «Тыквёнок»</span><button class="bt sm d" disabled>1 000<svg class="i i12"><use href="#cnd"/></svg></button></div>
+<div class="li off" style="min-height:38px"><div class="cos" style="width:44px;height:26px;--a:#B07CFF;--b:#4A2A12"></div><span class="m f1">Аватар ивента</span><span class="ch gn">куплено</span></div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево</button><button class="tab"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab on"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":2104,"height":692}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

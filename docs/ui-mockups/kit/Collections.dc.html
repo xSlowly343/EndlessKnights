@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Сеты, артефакты, разбор</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./rw.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}
+.smx{display:grid;grid-template-columns:96px repeat(6,1fr);gap:4px;align-items:center}
+.sc{height:36px;border-radius:4px;background:#1D2540;border:2px solid var(--q);display:grid;place-items:center;font:12px 'Lilita One',Rubik;color:var(--q)}
+.sc.no{border-style:dashed;opacity:.45}.sc.full{background:color-mix(in srgb,var(--q) 30%,#1D2540);color:#fff}.sc.sel{outline:2px solid var(--gold);outline-offset:1px}
+.sg6{display:grid;grid-template-columns:repeat(6,54px);gap:8px 22px;justify-content:center}</style>
+</helmet>
+<div class="rw bd" style="width:1584px;height:692px">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="th" viewBox="0 0 24 24"><path d="M5 20v-8a7 7 0 0 1 14 0v8M9 20v-6h6v6"/></symbol><symbol id="tb" viewBox="0 0 24 24"><path d="M4 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-5a2 2 0 0 0-2 2"/></symbol><symbol id="tt" viewBox="0 0 24 24"><path d="M12 5v5m0 0-6 6m6-6 6 6M12 4h.01M6 17h.01M18 17h.01"/></symbol><symbol id="ti" viewBox="0 0 24 24"><path d="M6 9h12l1 11H5zM9 9V7a3 3 0 0 1 6 0v2"/></symbol><symbol id="tp" viewBox="0 0 24 24"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 20a6 6 0 0 1 12 0M16 11a3 3 0 1 0 0-6M22 20a6 6 0 0 0-4-5.7"/></symbol><symbol id="tm" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></symbol><symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="pin" viewBox="0 0 24 24"><path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4z"/></symbol><symbol id="sw" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></symbol><symbol id="ar" viewBox="0 0 24 24"><path d="M6 4l3 2h6l3-2 3 4-3 3v9H6v-9L3 8z"/></symbol><symbol id="gl" viewBox="0 0 24 24"><path d="M7 11V5h3v5M10 10V4h3v6M13 10V5h3v8l-2 7H8l-3-6 2-2z"/></symbol><symbol id="bo" viewBox="0 0 24 24"><path d="M7 4h5v10l6 3v3H7z"/></symbol><symbol id="dust" viewBox="0 0 24 24"><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/></symbol><symbol id="echo" viewBox="0 0 24 24"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></symbol><symbol id="ing" viewBox="0 0 24 24"><path d="M4 17l3-9h10l3 9zM7 8l2 9M17 8l-2 9"/></symbol><symbol id="lock" viewBox="0 0 24 24"><path d="M6 11h12v9H6zM8 11V8a4 4 0 0 1 8 0v3"/></symbol><symbol id="ok" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol><symbol id="star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17l-5.4 2.8 1.1-6.1L3.2 9.4l6.1-.8z"/></symbol></svg>
+
+<div class="col"><div class="cap"><b>A</b>Сеты: коллекция по линейкам и редкостям, крафт за Слитки</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Предметы</div><div class="f1"></div><div class="cur"><svg class="i" style="color:#FF9A3C"><use href="#ing"/></svg>24</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl">Сумка</button><button class="pl on">Сеты</button><button class="pl">Артефакты</button><button class="pl">Разбор</button></div>
+<div class="ct" style="gap:6px">
+<div class="r g4"><button class="pl sm on">Броня и оружие</button><button class="pl sm">Бижутерия</button><button class="pl sm">Мирные</button><div class="f1"></div><span class="x dim">собрано 2 · вещей 11</span></div>
+<div class="smx x dim"><span></span><span class="ctr" style="color:#5B9BFF">Редк.</span><span class="ctr" style="color:#B07CFF">Эпич.</span><span class="ctr" style="color:#FF9A3C">Леген.</span><span class="ctr" style="color:#FF5A5A">Миф.</span><span class="ctr" style="color:#3FE0D0">Древ.</span><span class="ctr" style="color:#D9B8FF">Разл.</span></div>
+<div class="smx"><span class="m b" style="color:var(--aR)">Кузнечная</span><button class="sc q3 full sel">6/6</button><button class="sc q4">3/6</button><button class="sc q5">1/6</button><div class="sc q6 no">0/6</div><div class="sc q7 no">0/6</div><div class="sc q8 no">0/6</div></div>
+<div class="smx"><span class="m b" style="color:var(--aG)">Охотничья</span><button class="sc q3">2/6</button><div class="sc q4 no">0/6</div><div class="sc q5 no">0/6</div><div class="sc q6 no">0/6</div><div class="sc q7 no">0/6</div><div class="sc q8 no">0/6</div></div>
+<div class="smx"><span class="m b" style="color:var(--aB)">Звёздная</span><button class="sc q3 full">6/6</button><button class="sc q4">1/6</button><div class="sc q5 no">0/6</div><div class="sc q6 no">0/6</div><div class="sc q7 no">0/6</div><div class="sc q8 no">0/6</div></div>
+<div class="smx"><span class="m b">Натиск</span><div class="sc q3 no">0/6</div><div class="sc q4 no">0/6</div><div class="sc q5 no">0/6</div><div class="sc q6 no">0/6</div><div class="sc q7 no">0/6</div><div class="sc q8 no">0/6</div></div>
+<div class="smx"><span class="m b">Опора</span><button class="sc q3">1/6</button><div class="sc q4 no">0/6</div><div class="sc q5 no">0/6</div><div class="sc q6 no">0/6</div><div class="sc q7 no">0/6</div><div class="sc q8 no">0/6</div></div>
+<span class="x dim">Ещё 9 линеек ниже · прокрутка. Клетка: сколько вещей сета найдено.</span>
+<div class="sh">
+<div class="r jb"><span class="h" style="color:#5B9BFF">Кузня ярла</span><span class="ch gn">собран · бонус активен</span></div>
+<div class="r g6"><div class="sl s36 q3"><svg class="i"><use href="#sw"/></svg></div><div class="sl s36 q3"><svg class="i"><use href="#th"/></svg></div><div class="sl s36 q3"><svg class="i"><use href="#ar"/></svg></div><div class="sl s36 q3"><svg class="i"><use href="#gl"/></svg></div><div class="sl s36 q3"><svg class="i"><use href="#bo"/></svg></div><div class="c f1 m" style="margin-left:6px"><span>Бонус сета: +8% сила атаки ударов</span><span class="dim">За каждый собранный набор: +1 к мастерству крафта</span></div></div>
+<div class="r g8"><svg class="i dim"><use href="#lock"/></svg><span class="x dim f1">Крафт недостающих вещей откроется на этапе 10 000</span><button class="bt d sm" disabled>Скрафтить · 15<svg class="i i12"><use href="#ing"/></svg></button></div>
+</div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево</button><button class="tab on"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>B</b>Артефакты Разлома: печати, открытие за Эхо</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Предметы</div><div class="f1"></div><div class="cur"><svg class="i rift"><use href="#echo"/></svg>118</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl">Сумка</button><button class="pl">Сеты</button><button class="pl on">Артефакты</button><button class="pl">Разбор</button></div>
+<div class="ct" style="gap:6px">
+<div class="cd rf r g8"><div class="c f1"><span class="b">Группа 1 · открыто 9 из 30</span><span class="x dim">случайный артефакт из группы; следующая группа — с этапа 5 000</span></div><button class="bt vi">Открыть · 28<svg class="i i14"><use href="#echo"/></svg></button></div>
+<div class="r g4"><button class="pl sm on">Все</button><button class="pl sm">Урон</button><button class="pl sm">Экономика</button><button class="pl sm">Темп</button><button class="pl sm">Мета</button><button class="pl sm">Класс</button></div>
+<div class="sg6">
+<button class="sl rnd sel" style="--q:#E0574A" aria-label="Печатная машинка, уровень 4"><span class="n h">4</span></button><button class="sl rnd" style="--q:#E0574A"><span class="n h">2</span></button><button class="sl rnd" style="--q:#E0574A"><span class="n h">1</span></button><div class="sl rnd e"><span class="n h">?</span></div><button class="sl rnd" style="--q:#F0B43C"><span class="n h">3</span></button><button class="sl rnd" style="--q:#F0B43C"><span class="n h">1</span></button>
+<div class="sl rnd e"><span class="n h">?</span></div><button class="sl rnd" style="--q:#4FC277"><span class="n h">30</span><span class="mk br gold" style="width:auto;padding:0 2px;font-size:8px;font-weight:700">макс</span></button><button class="sl rnd" style="--q:#4FC277"><span class="n h">2</span></button><button class="sl rnd" style="--q:#5B9BFF"><span class="n h">1</span></button><div class="sl rnd e"><span class="n h">?</span></div><div class="sl rnd e"><span class="n h">?</span></div>
+<button class="sl rnd" style="--q:#B07CFF"><span class="n h">1</span></button><div class="sl rnd e"><span class="n h">?</span></div><div class="sl rnd e"><span class="n h">?</span></div><div class="sl rnd e"><span class="n h">?</span></div><div class="sl rnd e"><span class="n h">?</span></div><div class="sl rnd e"><span class="n h">?</span></div>
+</div>
+<div class="r g12 x dim jc"><span class="r g4"><i style="width:8px;height:8px;border-radius:50%;background:#E0574A;display:block"></i>урон</span><span class="r g4"><i style="width:8px;height:8px;border-radius:50%;background:#F0B43C;display:block"></i>экономика</span><span class="r g4"><i style="width:8px;height:8px;border-radius:50%;background:#4FC277;display:block"></i>темп</span><span class="r g4"><i style="width:8px;height:8px;border-radius:50%;background:#5B9BFF;display:block"></i>мета</span><span class="r g4"><i style="width:8px;height:8px;border-radius:50%;background:#B07CFF;display:block"></i>класс</span></div>
+<div class="sh">
+<div class="r g8"><div class="sl s44 rnd" style="--q:#E0574A"><span class="n h">4</span></div><div class="c f1"><span class="h">Печатная машинка</span><span class="x dim">урон · уровень 4 · без потолка</span></div></div>
+<div class="c m"><div class="r jb"><span>+40% сила атаки ударов</span><span class="ok">→ +50%</span></div><div class="r jb"><span class="dim">Все артефакты вместе: +2% урона за уровень</span><span class="n">+30%</span></div></div>
+<div class="r je"><button class="bt g">Улучшить · 12<svg class="i i14"><use href="#echo"/></svg></button></div>
+</div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево</button><button class="tab on"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>C</b>Разбор: порог авторазбора и выборка</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Предметы</div><div class="f1"></div><div class="cur"><svg class="i" style="color:#C9D2EA"><use href="#dust"/></svg>52</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl">Сумка</button><button class="pl">Сеты</button><button class="pl">Артефакты</button><button class="pl on">Разбор</button></div>
+<div class="ct">
+<div class="cd c g6"><div class="r jb"><span class="b">Авторазбор при выпадении</span><span class="x dim">вещи ниже порога сразу становятся Пылью</span></div><div class="sg" style="align-self:stretch"><span class="f1 jc">Выкл</span><span class="f1 jc on">до Добротной</span><span class="f1 jc">до Необычной</span><span class="f1 jc">до Редкой</span></div><div class="r g8"><div class="tg on"></div><span class="m f1">Не трогать сетовые и уникальные</span></div></div>
+<div class="r g4"><span class="sec f1">Выбери вещи</span><button class="bt sm">Все ниже Редкой</button><button class="bt sm o">Снять выбор</button></div>
+<div class="r wr g8">
+<button class="sl q0 sel"><svg class="i"><use href="#th"/></svg><span class="mk tr gold" style="background:var(--gold);color:#1B2236"><svg class="i" style="stroke-width:4"><use href="#ok"/></svg></span></button>
+<button class="sl q0 sel"><svg class="i"><use href="#bo"/></svg><span class="mk tr" style="background:var(--gold);color:#1B2236"><svg class="i" style="stroke-width:4"><use href="#ok"/></svg></span></button>
+<button class="sl q1 sel"><svg class="i"><use href="#gl"/></svg><span class="mk tr" style="background:var(--gold);color:#1B2236"><svg class="i" style="stroke-width:4"><use href="#ok"/></svg></span></button>
+<button class="sl q1 sel"><svg class="i"><use href="#sw"/></svg><span class="mk tr" style="background:var(--gold);color:#1B2236"><svg class="i" style="stroke-width:4"><use href="#ok"/></svg></span></button>
+<button class="sl q2"><svg class="i"><use href="#ar"/></svg></button><button class="sl q2"><svg class="i"><use href="#th"/></svg></button><button class="sl q3"><svg class="i"><use href="#sw"/></svg></button>
+<div class="sl q5 uq" style="opacity:.45"><svg class="i"><use href="#sw"/></svg><span class="mk tl gold"><svg class="i f"><use href="#star"/></svg></span></div><div class="sl q3" style="opacity:.45"><svg class="i"><use href="#ar"/></svg><span class="mk br dim"><svg class="i"><use href="#lock"/></svg></span></div>
+</div>
+<span class="x dim">Избранное и защищённое погашено и не выбирается. Пыль: Простая 1 · Добротная 2 · Необычная 4 · Редкая 10 · Эпическая 25.</span>
+<div class="sh"><div class="r g8"><div class="c f1"><span class="h">Выбрано 4 вещи</span><span class="x dim">сумка после разбора: 13 / 60</span></div><span class="cur"><svg class="i"><use href="#dust"/></svg>+6</span><button class="bt rd">Разобрать</button></div></div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево</button><button class="tab on"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1584,"height":692}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Подтверждения, ошибки, меню трея</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./rw.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}.mn{display:flex;align-items:center;gap:8px;height:30px;padding:0 12px;font-size:13px;color:#EDEDED}.mn.hv{background:#3A3F4B}</style>
+</helmet>
+<div class="rw bd" style="width:1064px;height:692px">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="echo" viewBox="0 0 24 24"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></symbol><symbol id="warn" viewBox="0 0 24 24"><path d="M12 3l10 18H2zM12 10v5M12 18h.01"/></symbol><symbol id="ok" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol><symbol id="dust" viewBox="0 0 24 24"><path d="M12 3v6M12 15v6M3 12h6M15 12h6"/></symbol></svg>
+
+<div class="col" style="width:480px"><div class="cap"><b>A</b>Подтверждение важного действия</div>
+<div class="dg gold" style="width:480px"><div>
+<div class="r g8"><svg class="i i24 rift"><use href="#echo"/></svg><span class="hh f1">Сделать престиж?</span><span class="n hh rift">+96 Эха</span></div>
+<div class="gr2 m"><div class="cd dk c g2"><span class="x bad b">Сбросится</span><span>этап 412 → 1, золото, уровень удара</span></div><div class="cd dk c g2"><span class="x ok b">Останется</span><span>вещи, гемы, дерево, артефакты, рекорд 430</span></div></div>
+<div class="r g8 je"><button class="bt o">Отмена <span class="kb">Esc</span></button><button class="bt vi lg">Престиж</button></div>
+</div></div>
+<div class="cap" style="margin-top:8px"><b>B</b>Опасное: необратимо или задевает других</div>
+<div class="dg warn" style="width:480px"><div>
+<div class="r g8"><svg class="i i24 bad"><use href="#warn"/></svg><span class="hh">Покинуть отряд «Ночные совы»?</span></div>
+<span class="m dim">Общий враг и ауры отряда пропадут. Вклад в Пристанище останется за отрядом, вернуться можно по коду.</span>
+<div class="r g8 je"><button class="bt o">Остаться</button><button class="bt rd">Покинуть</button></div>
+</div></div>
+<div class="cap" style="margin-top:8px"><b>C</b>Выдача со склада Пристанища</div>
+<div class="dg" style="width:480px"><div>
+<div class="r g8"><div class="sl s44 q2"><svg class="i" viewBox="0 0 24 24"><path d="M5 19C5 9 11 4 20 4c0 9-5 15-15 15zM5 19l8-8"/></svg><span class="lv">×6</span></div><div class="c f1"><span class="h">Выдать Стукоцвет ×6 игроку Mira?</span><span class="m dim">Запись попадёт в журнал склада. Сегодня взято 8 из 20.</span></div></div>
+<div class="r g8 je"><button class="bt o">Отмена</button><button class="bt g">Выдать</button></div>
+</div></div>
+</div>
+
+<div class="col" style="width:480px"><div class="cap"><b>D</b>Массовое действие: итог до нажатия</div>
+<div class="dg" style="width:480px"><div>
+<div class="r g8"><span class="hh f1">Разобрать 14 вещей?</span><span class="cur"><svg class="i"><use href="#dust"/></svg>+120</span></div>
+<div class="li dk" style="min-height:36px"><svg class="i bad"><use href="#warn"/></svg><span class="m f1">Среди них 1 <b style="color:#B07CFF">Эпическая</b> и 1 вещь из сета</span><button class="bt sm">Показать</button></div>
+<div class="r g8"><div class="cb"></div><span class="m dim f1">Не спрашивать для вещей ниже Редкой</span><button class="bt o">Отмена</button><button class="bt rd">Разобрать</button></div>
+</div></div>
+<div class="cap" style="margin-top:8px"><b>E</b>Недоступное действие: причина на месте, без окна</div>
+<div class="c g6">
+<div class="li"><span class="f1 m">Кнопка серая, причина под ней или в подсказке</span><div class="c ae g2"><button class="bt d sm" disabled>Перероллить · 40<svg class="i i12"><use href="#dust"/></svg></button><span class="x bad">Нужно 40 Пыли, есть 12</span></div></div>
+<div class="li"><svg class="i bad"><use href="#warn"/></svg><span class="f1 m">Ответ ядра — строкой в нижнем листе на 3 с: «В слот ауры встаёт только аура»</span></div>
+<div class="li"><svg class="i ok"><use href="#ok"/></svg><span class="f1 m">Успех — строкой там же и короткой вспышкой цели: «Готово»</span></div>
+</div>
+<div class="cap" style="margin-top:8px"><b>F</b>Меню в трее Windows · «Что нового»</div>
+<div class="r g12 as">
+<div style="width:190px;background:#2B2F38;border:1px solid #4A4F5C;border-radius:6px;padding:4px 0;box-shadow:0 8px 24px rgba(0,0,0,.5)"><div class="mn"><span style="width:16px"></span>Панель</div><div class="mn hv"><span style="width:16px"></span>Пауза</div><div class="mn"><svg class="i"><use href="#ok"/></svg>Клики насквозь</div><div class="mn"><svg class="i"><use href="#ok"/></svg>Поверх всех окон</div><div style="height:1px;background:#4A4F5C;margin:4px 0"></div><div class="mn"><span style="width:16px"></span>Выход</div></div>
+<div class="dg f1" style="width:auto"><div style="padding:10px;gap:6px"><span class="h">Что нового в 0.83.0</span><span class="m dim">Подземелья отряда: общий список ключей, запускает лидер.</span><span class="m dim">Отряд: без простоя между врагами.</span><div class="r je"><button class="bt sm g">Понятно</button></div></div></div>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1064,"height":692}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

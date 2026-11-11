@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Первый запуск и выбор персонажа</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./rw.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}.hc{display:flex;align-items:center;gap:6px;padding:5px 6px;min-height:56px;background:var(--card);border-radius:4px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.22)}.hc.sel{box-shadow:inset 0 0 0 2px var(--gold)}.hc b{font-size:12px;display:block}.hc span{font-size:11px;color:var(--dim)}</style>
+</helmet>
+<div class="rw bd" style="width:1584px;height:692px">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="hero" viewBox="0 0 16 24"><path fill="#7A52C8" d="M5 1h6v5H5z"/><path fill="#F2C9A0" d="M6 3h4v3H6z"/><path fill="#1B2236" d="M9 4h1v1H9z"/><path fill="#E0574A" d="M4 6h8v1H4z"/><path fill="#4A3570" d="M5 7h6v7H5zM3 7h2v5H3zM11 7h2v5h-2z"/><path fill="#F0B43C" d="M5 11h6v1H5z"/><path fill="#CFE3FF" d="M13 4h1v4h-1zM2 12h1v3H2z"/><path fill="#2A2040" d="M5 14h2v7H5zM9 14h2v7H9z"/><path fill="#1B1430" d="M5 21h3v2H5zM9 21h3v2H9z"/></symbol><symbol id="sw" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></symbol><symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="ok" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></symbol><symbol id="back" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol></svg>
+
+<div class="col"><div class="cap"><b>A</b>Первый запуск: согласие на подсчёт ввода</div>
+<div class="pn"><div class="pi">
+<div class="hd"><div class="plate">Rift Warden</div><div class="f1"></div><span class="x dim">шаг 1 из 2</span></div>
+<div class="ct" style="padding:12px;gap:10px">
+<div class="hh">Что игра считает и что нет</div>
+<div class="cd c g6"><div class="r g6 b ok"><svg class="i"><use href="#ok"/></svg>Считаем</div>
+<div class="m">Сколько раз нажаты клавиши, без того, какие именно</div><div class="m">Отдельно только Enter, Backspace и пробел</div><div class="m">Путь мыши в пикселях, взмахи и круги</div><div class="m">Клики левой, правой и средней кнопкой и щелчки колёсика</div><div class="m">Имя активной программы, только чтобы сверить с чёрным списком, без сохранения</div></div>
+<div class="cd c g6"><div class="r g6 b bad"><svg class="i"><use href="#x"/></svg>Не считаем</div>
+<div class="m">Коды клавиш и набранный текст: игра их не видит и не хранит</div><div class="m">Заголовки окон, адреса сайтов и содержимое экрана</div><div class="m">Ввод в приложениях из чёрного списка и при паузе</div></div>
+<p class="m dim">На диск и в сеть уходят только счётчики. Что именно считать, можно выбрать в настройках.</p>
+<div class="ma c g8"><p class="x dim">Нажимая «Понятно, начать», ты принимаешь <a href="#" style="color:var(--res)">Политику приватности</a> и <a href="#" style="color:var(--res)">Соглашение</a> (версия 1).</p>
+<div class="r g8"><button class="bt o lg f1">Не сейчас</button><button class="bt g lg" style="flex:2">Понятно, начать</button></div></div>
+</div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>B</b>Выбор персонажа: 18 классов, фильтр по роли</div>
+<div class="pn"><div class="pi">
+<div class="hd"><div class="plate">Выбери персонажа</div><div class="f1"></div><span class="x dim">шаг 2 из 2</span></div>
+<div class="st"><button class="pl sm on">Все</button><button class="pl sm">Мобы</button><button class="pl sm">Босс</button><button class="pl sm">Отряд</button><button class="pl sm">АоЕ</button><div class="f1"></div><span class="x dim">класс можно сменить позже</span></div>
+<div class="ct" style="gap:6px">
+<div class="gr3">
+<button class="hc sel"><div class="av" style="--c:var(--aR)"><svg class="i"><use href="#sw"/></svg></div><div><b>Runedancer</b><span>боец</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aG)"><svg class="i"><use href="#sw"/></svg></div><div><b>Duelist</b><span>боец</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aG)"><svg class="i"><use href="#sw"/></svg></div><div><b>Windshot</b><span>боец</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aB)"><svg class="i"><use href="#sw"/></svg></div><div><b>Shardcaller</b><span>сокрушитель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aB)"><svg class="i"><use href="#sw"/></svg></div><div><b>Alchemist</b><span>сокрушитель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aR)"><svg class="i"><use href="#sw"/></svg></div><div><b>Minstrel</b><span>вдохновитель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aR)"><svg class="i"><use href="#sw"/></svg></div><div><b>Lanternbearer</b><span>вдохновитель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aB)"><svg class="i"><use href="#sw"/></svg></div><div><b>Whisperer</b><span>заклинатель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aB)"><svg class="i"><use href="#sw"/></svg></div><div><b>Cartomancer</b><span>заклинатель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aG)"><svg class="i"><use href="#sw"/></svg></div><div><b>Herbwitch</b><span>губитель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aG)"><svg class="i"><use href="#sw"/></svg></div><div><b>Mothcaller</b><span>губитель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aR)"><svg class="i"><use href="#sw"/></svg></div><div><b>Soulbinder</b><span>призыватель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aR)"><svg class="i"><use href="#sw"/></svg></div><div><b>Ghostcaptain</b><span>призыватель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aR)"><svg class="i"><use href="#sw"/></svg></div><div><b>Golemancer</b><span>призыватель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aB)"><svg class="i"><use href="#sw"/></svg></div><div><b>Clockwright</b><span>часовой</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aG)"><svg class="i"><use href="#sw"/></svg></div><div><b>Sandwalker</b><span>часовой</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aR)"><svg class="i"><use href="#sw"/></svg></div><div><b>Dowser</b><span>искатель</span></div></button>
+<button class="hc"><div class="av" style="--c:var(--aB)"><svg class="i"><use href="#sw"/></svg></div><div><b>Dreamcatcher</b><span>искатель</span></div></button>
+</div>
+<div class="sh" style="flex-direction:row;align-items:center;gap:10px"><div class="c f1"><span class="h">Runedancer</span><span class="x dim">Сила · Рунные кинжалы · пары: Minstrel, Whisperer</span></div><button class="bt g lg">Подробнее</button></div>
+</div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>C</b>Карточка персонажа: оси, Пути, подтверждение</div>
+<div class="pn"><div class="pi">
+<div class="hd"><button class="ib" aria-label="Назад к списку"><svg class="i"><use href="#back"/></svg></button><div class="plate">Runedancer</div><span class="ch rd">Сила</span><span class="ch">боец</span><div class="f1"></div></div>
+<div class="ct">
+<div class="r g12 as">
+<svg class="fn" style="width:84px;height:126px;shape-rendering:crispEdges"><use href="#hero"/></svg>
+<p class="m f1">Весёлая воровка-магичка с двумя рунными кинжалами: украла рунный алфавит у спящего Колосса и пишет им по Колоссам. Пять разных рун подряд складываются в Слово.</p>
+<div class="c ac fn"><svg width="132" height="124" viewBox="-6 -2 132 124" role="img" aria-label="Оси: мобы 4, босс 4, отряд 3, АоЕ 3"><path d="M60 10l50 50-50 50-50-50z" fill="#1D2540" stroke="#3A4870"/><path d="M60 35l25 25-25 25-25-25z" fill="none" stroke="#3A4870"/><path d="M60 10v100M10 60h100" stroke="#3A4870"/><path d="M60 10l40 50-40 20-30-20z" fill="none" stroke="#9AA6C8" stroke-dasharray="3 3"/><path d="M60 20l40 40-40 30-30-30z" fill="rgba(240,180,60,.35)" stroke="#F0B43C" stroke-width="2"/><text x="60" y="6" fill="#9AA6C8" font-size="9" text-anchor="middle">мобы</text><text x="114" y="50" fill="#9AA6C8" font-size="9" text-anchor="end">босс</text><text x="60" y="120" fill="#9AA6C8" font-size="9" text-anchor="middle">отряд</text><text x="4" y="50" fill="#9AA6C8" font-size="9">АоЕ</text></svg><span class="x dim">пунктир — класс, заливка — с Путём</span></div>
+</div>
+<div class="sec">Три Пути · выбирается позже, с первым очком Пути</div>
+<div class="gr3">
+<button class="cd sel c g2"><span class="b m">Танец рун</span><span class="ch bl">Плечом к плечу</span></button>
+<button class="cd c g2"><span class="b m">Зеркальные клинки</span><span class="ch">Свой бой</span></button>
+<button class="cd c g2"><span class="b m">Вихрь</span><span class="ch">Свой бой</span></button>
+</div>
+<div class="cd dk c g4"><span class="m">Каждый удар выжигает на враге следующую руну из пяти. Пять рун складываются в Слово: вспышка ×10 удара. В паузе руны тлеют 10 с.</span>
+<div class="r g6 m ok"><svg class="i i14"><use href="#ok"/></svg>Слово — мощная вспышка</div><div class="r g6 m ok"><svg class="i i14"><use href="#ok"/></svg>печать усиливает весь отряд</div><div class="r g6 m bad"><svg class="i i14"><use href="#x"/></svg>в паузе руны гаснут</div></div>
+<div class="sh" style="flex-direction:row;align-items:center;gap:10px"><span class="m dim f1">Первое очко дерева закрепит класс. Сменить можно позже за Знаки дружбы, очки перенесутся.</span><button class="bt g lg">Играть за Runedancer</button></div>
+</div>
+</div></div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1584,"height":692}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
