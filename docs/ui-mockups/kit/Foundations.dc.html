@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Основа: цвет, шрифт, сетка</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./rw.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}
+.sw{display:flex;flex-direction:column;gap:2px;width:92px}.sw>i{display:block;height:34px;border-radius:3px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.sw>b{font-size:11px}.sw>span{font-size:11px;color:var(--dim)}
+.blk{display:flex;flex-direction:column;gap:8px}</style>
+</helmet>
+<div class="rw" style="width:1100px;height:940px;padding:28px;background:#0A0E18;display:grid;grid-template-columns:520px 1fr;gap:24px 28px;align-content:start">
+
+<div class="blk"><div class="sec">Поверхности · «Ночной сапфир»</div>
+<div class="r g6 wr"><div class="sw"><i style="background:#0E1424"></i><b>Колодец</b><span>#0E1424 deep</span></div><div class="sw"><i style="background:#141A2B"></i><b>Содержимое</b><span>#141A2B well</span></div><div class="sw"><i style="background:#1B2236"></i><b>Панель</b><span>#1B2236 bg</span></div><div class="sw"><i style="background:#26304A"></i><b>Карточка</b><span>#26304A card</span></div><div class="sw"><i style="background:#2E3A58"></i><b>Поднятая</b><span>#2E3A58 card2</span></div><div class="sw"><i style="background:#3A4870"></i><b>Линия</b><span>#3A4870 line</span></div><div class="sw"><i style="background:#55689C"></i><b>Блик рамки</b><span>#55689C hi</span></div><div class="sw"><i style="background:#0B0F1A"></i><b>Контур</b><span>#0B0F1A ink</span></div><div class="sw"><i style="background:#EEF2FF"></i><b>Текст</b><span>#EEF2FF 14:1</span></div><div class="sw"><i style="background:#9AA6C8"></i><b>Вторичный</b><span>#9AA6C8 6.5:1</span></div></div></div>
+
+<div class="blk"><div class="sec">Акценты и смысл</div>
+<div class="r g6 wr"><div class="sw"><i style="background:#F0B43C"></i><b>Золото</b><span>главное действие</span></div><div class="sw"><i style="background:#B02A2A"></i><b>Плашка</b><span>заголовок раздела</span></div><div class="sw"><i style="background:#3F6FD1"></i><b>Синий</b><span>вторичное действие</span></div><div class="sw"><i style="background:#C2383D"></i><b>Опасно</b><span>сброс, выход</span></div><div class="sw"><i style="background:#E5484D"></i><b>Сигнал</b><span>красная точка</span></div><div class="sw"><i style="background:#5FD07A"></i><b>Успех</b><span>лучше, готово</span></div><div class="sw"><i style="background:#B07CFF"></i><b>Разлом</b><span>Эхо, Путь, Разлом</span></div><div class="sw"><i style="background:#8FD3FF"></i><b>Ресурс</b><span>фокус клавиатуры</span></div></div>
+<div class="sec">Атрибуты (цвет = смысл во всей игре)</div>
+<div class="r g6 wr"><div class="sw"><i style="background:#E0574A"></i><b>Сила</b><span>#E0574A</span></div><div class="sw"><i style="background:#4FC277"></i><b>Ловкость</b><span>#4FC277</span></div><div class="sw"><i style="background:#3F6FD1"></i><b>Интеллект</b><span>#3F6FD1</span></div><div class="sw"><i style="background:#7F89A0"></i><b>Любой</b><span>#7F89A0</span></div></div>
+<div class="sec">Игроки отряда (полоска вклада, силуэты)</div>
+<div class="r g6"><div class="sw"><i style="background:#3F6FD1"></i><b>1</b></div><div class="sw"><i style="background:#4FC277"></i><b>2</b></div><div class="sw"><i style="background:#B07CFF"></i><b>3</b></div><div class="sw"><i style="background:#FF9A3C"></i><b>4</b></div></div></div>
+
+<div class="blk"><div class="sec">11 редкостей: цвет рамки + признак формы</div>
+<div class="r g8 wr">
+<div class="c ac g4" style="width:78px"><div class="sl q0"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Простая</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q1"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Добротная</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q2"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Необычная</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q3"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Редкая</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q4"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Эпическая</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q5"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Легендарная</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q6"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Мифическая</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q7"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Древняя</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q8"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Разломная</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q9"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Астральная</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q10"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr">Первозданная</span></div>
+<div class="c ac g4" style="width:78px"><div class="sl q5 uq"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg></div><span class="x ctr gold">Уникальная</span></div>
+</div>
+<p class="dim m">Цвет никогда не единственный признак: с Легендарной — внутреннее свечение, Разломная — радужная рамка, Астральная — звёзды на тёмно-синем, Первозданная — белое пламя с золотым ореолом, уникальная — косой золотой узор. В карточке редкость всегда написана словом.</p>
+<div class="sec">Метки ячейки</div>
+<div class="r g16"><div class="r g8"><div class="sl q3 s44"><svg class="i" viewBox="0 0 24 24"><path d="M5 20v-8a7 7 0 0 1 14 0v8M9 20v-6h6v6"/></svg><i class="mk new"></i></div><span class="m dim">новая</span></div><div class="r g8"><div class="sl q4 s44"><svg class="i" viewBox="0 0 24 24"><path d="M5 20v-8a7 7 0 0 1 14 0v8M9 20v-6h6v6"/></svg><span class="mk br ok"><svg class="i" viewBox="0 0 24 24" style="stroke-width:3"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span></div><span class="m dim">лучше надетой</span></div><div class="r g8"><div class="sl q5 s44"><svg class="i" viewBox="0 0 24 24"><path d="M5 20v-8a7 7 0 0 1 14 0v8M9 20v-6h6v6"/></svg><span class="mk tl gold"><svg class="i f" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17l-5.4 2.8 1.1-6.1L3.2 9.4l6.1-.8z"/></svg></span></div><span class="m dim">избранное</span></div><div class="r g8"><div class="sl q3 s44"><svg class="i" viewBox="0 0 24 24"><path d="M5 20v-8a7 7 0 0 1 14 0v8M9 20v-6h6v6"/></svg><span class="mk bl rift"><svg class="i" viewBox="0 0 24 24" style="stroke-width:3"><path d="M9 12h6M10 7H7a5 5 0 0 0 0 10h3M14 7h3a5 5 0 0 1 0 10h-3"/></svg></span></div><span class="m dim">сетовая</span></div></div></div>
+
+<div class="blk"><div class="sec">Шрифты · TextMeshPro SDF</div>
+<div class="cd c g6">
+<div class="r g12"><span class="n" style="font-size:27px;color:#FF9A3C">193K</span><span class="n xl">48.2K</span><span class="n hh">1.31M</span><span class="n h">×2.4</span><span class="dim m ml">Lilita One — только цифры, K/M и ×</span></div>
+<div class="hr"></div>
+<div class="r jb"><span class="hh">Заголовок листа 18 / 700</span><span class="x dim">Rubik Bold</span></div>
+<div class="r jb"><span class="h">Заголовок раздела, имя 15 / 700</span><span class="x dim">плашка, карточка</span></div>
+<div class="r jb"><span class="t">Основной текст 13 / 400–500</span><span class="x dim">строки, описания</span></div>
+<div class="r jb"><span class="m dim">Вторичный 12 / 400</span><span class="x dim">пояснения</span></div>
+<div class="r jb"><span class="x dim">Подпись 11 / 500 — нижняя граница размера</span><span class="x dim">метки, единицы</span></div>
+</div>
+<div class="sec">Сетка и размеры (px при 100% DPI)</div>
+<div class="gr3 m"><div class="cd c"><span class="n h gold">8</span><span class="dim">шаг сетки; внутри 4 и 2</span></div><div class="cd c"><span class="n h gold">54 · 44 · 36</span><span class="dim">ячейка предмета, малая, значок</span></div><div class="cd c"><span class="n h gold">32 · 26 · 36</span><span class="dim">кнопка, малая, главная</span></div><div class="cd c"><span class="n h gold">46 · 40 · 60</span><span class="dim">заголовок, подвкладки, нижний ряд</span></div><div class="cd c"><span class="n h gold">44</span><span class="dim">минимальная строка списка</span></div><div class="cd c"><span class="n h gold">280</span><span class="dim">ширина подсказки, максимум</span></div></div>
+<div class="sec">Форма: «ступенчатый кованый край»</div>
+<div class="r g12 as"><div class="dg" style="width:150px"><div style="padding:10px"><span class="m">Панель, лист, диалог: ступенька 3+3 px, рамка-градиент сверху светлее</span></div></div><div class="c g8 f1"><div class="r g8"><div class="plate">Плашка</div><span class="m dim">скошенный край, золотая нить снизу</span></div><div class="r g8"><button class="bt g">Кнопка</button><span class="m dim">радиус 4, нижняя грань 3 px — «нажимается»</span></div><div class="r g8"><div class="cd" style="width:86px"><span class="m">Карточка</span></div><span class="m dim">радиус 4, блик сверху, тень-грань снизу</span></div></div></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1100,"height":940}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

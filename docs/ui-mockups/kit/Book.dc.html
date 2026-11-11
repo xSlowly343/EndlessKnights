@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Книга и окно скилла</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./rw.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}
+.plc{display:flex;align-items:center;gap:6px;padding:6px;min-height:50px;background:var(--card);border-radius:4px;box-shadow:inset 0 -2px 0 rgba(0,0,0,.22);position:relative}
+.plc.tg2{box-shadow:inset 0 0 0 2px var(--ok)}.plc.no{opacity:.4}.plc.sel{box-shadow:inset 0 0 0 2px var(--gold)}
+.rl{font-size:10px;font-weight:700;color:var(--dim);letter-spacing:.05em;text-transform:uppercase}
+.bg{width:44px;height:44px;border-radius:4px;background:#1D2540;display:grid;place-items:center;position:relative;flex:none}
+.bg.lk{opacity:.45}.bg.sel{outline:2px solid var(--gold)}
+.sk8{position:absolute;width:36px;height:36px}</style>
+</helmet>
+<div class="rw bd" style="width:1584px;height:692px">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="th" viewBox="0 0 24 24"><path d="M5 20v-8a7 7 0 0 1 14 0v8M9 20v-6h6v6"/></symbol><symbol id="tb" viewBox="0 0 24 24"><path d="M4 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-5a2 2 0 0 0-2 2"/></symbol><symbol id="tt" viewBox="0 0 24 24"><path d="M12 5v5m0 0-6 6m6-6 6 6M12 4h.01M6 17h.01M18 17h.01"/></symbol><symbol id="ti" viewBox="0 0 24 24"><path d="M6 9h12l1 11H5zM9 9V7a3 3 0 0 1 6 0v2"/></symbol><symbol id="tp" viewBox="0 0 24 24"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 20a6 6 0 0 1 12 0M16 11a3 3 0 1 0 0-6M22 20a6 6 0 0 0-4-5.7"/></symbol><symbol id="tm" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></symbol><symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="pin" viewBox="0 0 24 24"><path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4z"/></symbol><symbol id="coin" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8v8"/></symbol><symbol id="lock" viewBox="0 0 24 24"><path d="M6 11h12v9H6zM8 11V8a4 4 0 0 1 8 0v3"/></symbol><symbol id="back" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol><symbol id="warn" viewBox="0 0 24 24"><path d="M12 3l10 18H2zM12 10v5M12 18h.01"/></symbol><symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol></svg>
+
+<div class="col"><div class="cap"><b>A</b>Скиллы: 9 мест и сумка</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Книга</div><div class="f1"></div><div class="cur"><svg class="i gold"><use href="#coin"/></svg>12.4K</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl on">Скиллы</button><button class="pl">Цвета поддержек</button></div>
+<div class="ct" style="gap:6px">
+<div class="gr2">
+<button class="plc sel"><div class="gm"></div><div class="c f1"><span class="rl">ЛКМ</span><span class="b m">Надрез · 12</span><div class="pip" style="--c:var(--aR)"><i class="on"></i><i class="on"></i><i></i></div></div><span class="kb">Л</span></button>
+<button class="plc"><div class="gm"></div><div class="c f1"><span class="rl">ПКМ</span><span class="b m">Двойной росчерк · 9</span><div class="pip" style="--c:var(--aR)"><i class="on"></i><i></i><i></i></div></div><span class="kb">П</span></button>
+<button class="plc"><div class="gm"></div><div class="c f1"><span class="rl">Авто · сам</span><span class="b m">Рунный бросок · 7</span><div class="pip" style="--c:var(--aR)"><i></i><i></i><i></i></div></div></button>
+<button class="plc"><div class="so e"><svg class="i i12"><use href="#plus"/></svg></div><div class="c f1"><span class="rl">Авто · сам</span><span class="m dim">пусто</span></div></button>
+</div>
+<div class="r g6"><span class="rl" style="width:40px">Ауры</span>
+<button class="plc f1" style="min-height:44px"><div class="hx" style="--c:#C24A40"></div><span class="b x">Частый Ход</span></button>
+<button class="plc f1" style="min-height:44px"><div class="hx" style="--c:#3F6FD1"></div><span class="b x">Метка</span></button>
+<div class="plc no fn" style="min-height:44px"><svg class="i"><use href="#lock"/></svg><span class="x">ур. 50</span></div><div class="plc no fn" style="min-height:44px"><svg class="i"><use href="#lock"/></svg><span class="x">ур. 75</span></div><div class="plc no fn" style="min-height:44px"><svg class="i"><use href="#lock"/></svg><span class="x">от вещи</span></div></div>
+<div class="r g4"><span class="sec f1">Сумка</span><button class="pl sm on">Все</button><button class="pl sm">Скиллы</button><button class="pl sm">Поддержки</button></div>
+<div class="r wr g6">
+<button class="bg sel" aria-label="Надрез"><div class="gm"></div></button><button class="bg" aria-label="Двойной росчерк"><div class="gm"></div></button><button class="bg" aria-label="Огненная буква"><div class="gm"></div></button><button class="bg" aria-label="Рунный бросок"><div class="gm"></div></button><button class="bg" aria-label="Цепочка знаков"><div class="gm"></div></button><button class="bg" aria-label="Веер кинжалов"><div class="gm"></div></button><button class="bg" aria-label="Теневой шаг"><div class="gm"></div></button><button class="bg" aria-label="Рунный страж"><div class="gm" style="--c:#5B9BFF"></div></button><button class="bg" aria-label="Алфавит"><div class="gm" style="--c:#B07CFF"></div></button>
+<button class="bg" aria-label="Отскок"><div class="so fl" style="--c:#C9D2EA"></div></button><button class="bg" aria-label="Цепь"><div class="so fl" style="--c:var(--aG)"></div></button><button class="bg" aria-label="Казнящий"><div class="so fl" style="--c:var(--aB)"></div></button><button class="bg" aria-label="Голод клинка"><div class="so fl" style="--c:var(--aR)"></div></button><button class="bg" aria-label="Разгон"><div class="so fl" style="--c:var(--aR)"></div></button><button class="bg" aria-label="Тихий час"><div class="hx" style="--c:#7F89A0"></div></button>
+<div class="bg lk"><div class="gm" style="--c:#FF9A3C"></div><span class="lv">ур. 50</span></div><div class="bg lk"><div class="so fl" style="--c:var(--aR)"></div><span class="lv">ур. 41</span></div><div class="bg lk"><div class="hx" style="--c:#C24A40"></div><span class="lv">ур. 45</span></div>
+</div>
+<div class="sh"><div class="r g8"><div class="gm"></div><div class="c f1"><span class="h">Надрез <span class="dim m">· ур. 12 из 25 · обычный</span></span><span class="m dim">быстрый удар ×3, кладёт руну · ресурс 10 · откат 3 с</span></div><button class="bt sm">Снять</button><button class="bt g">Открыть</button></div></div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab on"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево<i class="dot"></i></button><button class="tab"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>B</b>Перенос: подходящие места подсвечены, отказ — строкой</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Книга</div><div class="f1"></div><div class="cur"><svg class="i gold"><use href="#coin"/></svg>12.4K</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl on">Скиллы</button><button class="pl">Цвета поддержек</button></div>
+<div class="ct" style="gap:6px">
+<div class="gr2">
+<div class="plc tg2"><div class="gm"></div><div class="c f1"><span class="rl">ЛКМ</span><span class="b m">Надрез · 12</span></div><span class="ch gn">заменить</span></div>
+<div class="plc tg2"><div class="gm"></div><div class="c f1"><span class="rl">ПКМ</span><span class="b m">Двойной росчерк · 9</span></div><span class="ch gn">заменить</span></div>
+<div class="plc tg2"><div class="gm"></div><div class="c f1"><span class="rl">Авто · сам</span><span class="b m">Рунный бросок · 7</span></div><span class="ch gn">заменить</span></div>
+<div class="plc tg2" style="background:#1E3A2A"><div class="so e" style="--c:var(--ok)"><svg class="i i12"><use href="#plus"/></svg></div><div class="c f1"><span class="rl">Авто · сам</span><span class="m ok b">отпусти здесь</span></div></div>
+</div>
+<div class="r g6"><span class="rl" style="width:40px">Ауры</span>
+<div class="plc no f1" style="min-height:44px"><div class="hx" style="--c:#C24A40"></div><span class="b x">Частый Ход</span></div>
+<div class="plc no f1" style="min-height:44px"><div class="hx" style="--c:#3F6FD1"></div><span class="b x">Метка</span></div>
+<div class="plc no fn" style="min-height:44px"><svg class="i"><use href="#lock"/></svg><span class="x">ур. 50</span></div><div class="plc no fn" style="min-height:44px"><svg class="i"><use href="#lock"/></svg><span class="x">ур. 75</span></div><div class="plc no fn" style="min-height:44px"><svg class="i"><use href="#lock"/></svg><span class="x">от вещи</span></div></div>
+<div class="abs c ac" style="left:300px;top:118px;z-index:4;filter:drop-shadow(0 6px 0 rgba(0,0,0,.4))"><div class="bg sel" style="width:52px;height:52px;background:#2E3A58"><div class="gm"></div></div><span class="ch gd">Веер кинжалов</span></div>
+<div class="r g4"><span class="sec f1">Сумка</span><button class="pl sm on">Все</button><button class="pl sm">Скиллы</button><button class="pl sm">Поддержки</button></div>
+<div class="r wr g6">
+<div class="bg"><div class="gm"></div></div><div class="bg"><div class="gm"></div></div><div class="bg"><div class="gm"></div></div><div class="bg"><div class="gm"></div></div><div class="bg"><div class="gm"></div></div><div class="bg" style="outline:2px dashed var(--hi)"></div><div class="bg"><div class="gm"></div></div><div class="bg"><div class="gm" style="--c:#5B9BFF"></div></div><div class="bg"><div class="gm" style="--c:#B07CFF"></div></div>
+</div>
+<div class="c g6 ma">
+<div class="li dk"><svg class="i bad"><use href="#warn"/></svg><span class="m f1">Отказ ядра показывается строкой 3 с: <b>«В слот ауры встаёт только аура»</b>, «Свободных слотов нет», «Это скилл другого класса»</span></div>
+<div class="li dk"><span class="kb">2×</span><span class="m f1 dim">Двойной клик по гему ставит его в первое свободное подходящее место. Тянуть гем обратно в сумку — снять.</span></div>
+</div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab on"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево<i class="dot"></i></button><button class="tab"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>C</b>Окно скилла: 5 сокетов по кругу, ветки 5 / 15 / 25</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><button class="ib" aria-label="Назад в Книгу"><svg class="i"><use href="#back"/></svg></button><div class="plate">Надрез</div><span class="ch rd">ЛКМ</span><div class="f1"></div><div class="cur"><svg class="i gold"><use href="#coin"/></svg>12.4K</div><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="ct" style="gap:6px">
+<div class="r g8 as">
+<div class="rel fn" style="width:220px;height:186px">
+<svg class="abs" width="220" height="186" aria-hidden="true"><circle cx="110" cy="94" r="76" fill="none" stroke="#3A4870" stroke-dasharray="3 5"/></svg>
+<div class="abs c ac" style="left:76px;top:62px;width:68px"><div class="gm" style="width:38px;height:38px;margin:9px"></div></div>
+<button class="so fl sk8" style="left:92px;top:0;--c:var(--aR)" aria-label="Сокет 1: Голод клинка"></button><span class="abs x dim" style="left:134px;top:4px">1 · носитель</span>
+<button class="so fl sk8" style="left:166px;top:52px;--c:var(--aG)" aria-label="Сокет 2: Цепь"></button>
+<button class="so e sk8" style="left:138px;top:139px;--c:var(--gold)" aria-label="Сокет 3: пусто, великая"><svg class="i i14 gold"><use href="#plus"/></svg></button><span class="abs x gold" style="left:176px;top:160px">3 · великая</span>
+<div class="so sk8" style="left:46px;top:139px"><svg class="i i14"><use href="#lock"/></svg></div>
+<div class="so sk8" style="left:18px;top:52px"><svg class="i i14"><use href="#lock"/></svg></div>
+</div>
+<div class="c g6 f1">
+<div class="r jb"><span class="h">Уровень 12 <span class="dim m">из 25</span></span><span class="x dim">эффект +22%</span></div>
+<div class="pg"><i style="width:58%;--c:var(--aR)"></i></div><span class="x dim">опыт 1 240 / 2 140 · за убийства и применения</span>
+<div class="cd dk c g2 m"><span>быстрый удар ×3, кладёт руну</span><span class="dim">ресурс 10 · откат 3 с</span></div>
+<div class="cd dk c g2 m"><span class="b">Связка</span><span class="dim">урон ×1.45 · ресурс ×1.3</span></div>
+<span class="x dim">Сокеты 4–5 откроют перерождения</span>
+</div></div>
+<div class="sec">Ветки · смена за золото</div>
+<div class="c g4">
+<div class="r g6"><span class="n gold" style="width:22px">5</span><button class="cd sel f1 c" style="padding:5px 8px"><span class="b m">Сильнее</span><span class="x dim">урон ×1.3</span></button><button class="cd f1 c" style="padding:5px 8px"><span class="b m">Точный надрез</span><span class="x dim">меняет эффект: крит +30%</span></button></div>
+<div class="r g6"><span class="n dim" style="width:22px">15</span><div class="cd dk f1 c off" style="padding:5px 8px"><span class="b m">Дешевле</span><span class="x dim">ресурс ×0.5</span></div><div class="cd dk f1 c off" style="padding:5px 8px"><span class="b m">Вторая руна</span><span class="x dim">урон ×0.8 · 2 руны</span></div></div>
+<div class="r g6"><span class="n dim" style="width:22px">25</span><div class="cd dk f1 c off" style="padding:5px 8px"><span class="b m">Тяжелее</span><span class="x dim">урон ×1.6 · откат ×1.25</span></div><div class="cd dk f1 c off" style="padding:5px 8px"><span class="b m">Надрез на добивание</span><span class="x dim">меняет эффект</span></div></div>
+</div>
+<div class="sec">Подходящие поддержки</div>
+<div class="r g6 wr"><span class="ch gn"><i class="so fl" style="width:10px;height:10px;border:0;--c:var(--aR)"></i>Голод клинка · в сокете 1</span><span class="ch gn"><i class="so fl" style="width:10px;height:10px;border:0;--c:var(--aG)"></i>Цепь · в сокете 2</span><button class="ch"><i class="so fl" style="width:10px;height:10px;border:0;--c:var(--aR)"></i>Разгон</button><button class="ch"><i class="so fl" style="width:10px;height:10px;border:0;--c:var(--aB)"></i>Казнящий</button><span class="ch" style="opacity:.5"><svg class="i i12"><use href="#lock"/></svg>Великая: Чистовик · ур. 30</span></div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab on"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево<i class="dot"></i></button><button class="tab"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1584,"height":692}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
