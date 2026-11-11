@@ -363,7 +363,7 @@ function clanWarSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, clanId: s
 
 function clanWarName(group: nkruntime.Group): string {
     const meta = clanMetaOf(group);
-    return meta.adjective + " " + meta.noun;
+    return meta.name || meta.adjective + " " + meta.noun;
 }
 
 function clanWarSettleDue(nk: nkruntime.Nakama, logger: nkruntime.Logger, clanId: string, nowUnixMs: number): void {

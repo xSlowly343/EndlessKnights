@@ -131,7 +131,7 @@ function clanApplyRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkru
                 logger.warn("clan request was not announced to %s: %s", staff, String(error));
             }
         }
-    return JSON.stringify({ clanId: group.id, adjective: meta.adjective, noun: meta.noun, until: now + ClanServerRules.requestDays * PartyDayMs });
+    return JSON.stringify({ clanId: group.id, adjective: meta.adjective, noun: meta.noun, name: meta.name || "", until: now + ClanServerRules.requestDays * PartyDayMs });
 }
 
 function clanRequestsView(nk: nkruntime.Nakama, group: nkruntime.Group, now: number): { [key: string]: any } {
@@ -187,7 +187,7 @@ function clanApplicationsRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, n
         if (!group)
             continue;
         const meta = clanMetaOf(group);
-        clans.push({ clanId: group.id, adjective: meta.adjective, noun: meta.noun, members: meta.members.length, at: entry.at, until: entry.at + ClanServerRules.requestDays * PartyDayMs });
+        clans.push({ clanId: group.id, adjective: meta.adjective, noun: meta.noun, name: meta.name || "", members: meta.members.length, at: entry.at, until: entry.at + ClanServerRules.requestDays * PartyDayMs });
     }
     return JSON.stringify({ clans: clans });
 }

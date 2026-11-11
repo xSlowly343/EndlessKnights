@@ -15,6 +15,8 @@ interface PartyMeta {
     code: string;
     access: string;
     title: string;
+    name?: string;
+    namedAt?: number;
     language: string;
     wanted: string;
     leader: string;
@@ -33,6 +35,7 @@ const PartyGroupPrefix = "party-";
 const PartyOpen = "open";
 const PartyInvite = "invite";
 const PartyAnyRole = "any";
+const PartyOwnTitleMark = "=";
 const PartyDayMs = 86400000;
 const PartyHoursHalfLifeDays = 7;
 const PartyMaxBlocks = 200;
@@ -68,6 +71,10 @@ function partyMetaOf(group: nkruntime.Group): PartyMeta {
     return group.metadata as PartyMeta;
 }
 
+function partyShownTitle(meta: PartyMeta): string {
+    return meta.name ? PartyOwnTitleMark + meta.name : meta.title;
+}
+
 function partyNative(group: nkruntime.Group): nkruntime.Group {
     return {
         id: group.id, name: group.name, langTag: group.langTag, open: group.open, edgeCount: group.edgeCount, maxCount: group.maxCount,
@@ -99,12 +106,13 @@ function partyDissolve(nk: nkruntime.Nakama, groupId: string, meta: PartyMeta, f
     if (hideoutWorthFreezing(nk, groupId, former)) {
         nk.storageWrite([{
             collection: "party_codes", key: meta.code, userId: PartySystemUser, permissionRead: 0, permissionWrite: 0,
-            value: { partyId: groupId, frozenAt: Date.now(), title: meta.title, language: meta.language, access: meta.access, wanted: meta.wanted }
+            value: { partyId: groupId, frozenAt: Date.now(), title: meta.title, name: meta.name || "", namedAt: meta.namedAt || 0, language: meta.language, access: meta.access, wanted: meta.wanted }
         }]);
     } else {
         nk.storageDelete([{ collection: "party_codes", key: meta.code, userId: PartySystemUser }]);
         chronicleForget(nk, groupId);
         hideoutForget(nk, groupId);
+        chatForget(nk, groupId);
     }
     nk.groupDelete(groupId);
 }
@@ -128,7 +136,7 @@ function partyThaw(nk: nkruntime.Nakama, userId: string, code: string, nowUnixMs
         throw new Error("the party rests until a former member returns");
     partyEnsureFree(nk, userId);
     const meta: PartyMeta = {
-        kind: PartyKind, code: code, access: frozen.access || PartyInvite, title: frozen.title || "", language: frozen.language || PartyDirectoryRules.languages[0],
+        kind: PartyKind, code: code, access: frozen.access || PartyInvite, title: frozen.title || "", name: frozen.name || "", namedAt: frozen.namedAt || 0, language: frozen.language || PartyDirectoryRules.languages[0],
         wanted: frozen.wanted || PartyAnyRole, leader: userId, members: [userId], hours: partyEmptyHours(), hoursAt: nowUnixMs
     };
     const group = partyNative(nk.groupCreate(userId, PartyGroupPrefix + nk.uuidv4(), userId, meta.language, "", "", meta.access === PartyOpen, meta, PartyDirectoryRules.maxMembers));
@@ -233,6 +241,8 @@ function partyView(nk: nkruntime.Nakama, group: nkruntime.Group): { [key: string
         code: meta.code,
         access: meta.access,
         title: meta.title,
+        name: meta.name || "",
+        renameFree: !meta.namedAt,
         language: meta.language,
         wanted: meta.wanted,
         leader: meta.leader,
@@ -293,6 +303,7 @@ function partyCreateFor(nk: nkruntime.Nakama, userId: string, request: { [key: s
         kind: PartyKind, code: "", access: access, title: title, language: language, wanted: wanted,
         leader: userId, members: [userId], hours: partyEmptyHours(), hoursAt: Date.now()
     };
+    socialRename(nk, userId, meta, request.name, TicketPartyRename, Date.now());
     const group = partyNative(nk.groupCreate(userId, PartyGroupPrefix + nk.uuidv4(), userId, language, "", "", access === PartyOpen, meta, rules.maxMembers));
     meta.code = partyReserveCode(nk, group.id);
     partySaveMeta(nk, group, meta);
@@ -497,7 +508,7 @@ function partyCandidates(nk: nkruntime.Nakama, userId: string, request: { [key: 
             group: group,
             score: (wantsMentor && hasMentor ? 8 : 0) + (activeNow ? 4 : 0) + (roleWanted && meta.wanted !== PartyAnyRole ? 2 : 0) + (roleWanted ? 1 : 0),
             card: {
-                id: group.id, title: meta.title, language: meta.language, wanted: meta.wanted, members: meta.members.length,
+                id: group.id, title: partyShownTitle(meta), language: meta.language, wanted: meta.wanted, members: meta.members.length,
                 maxMembers: rules.maxMembers, activeNow: activeNow, usuallyOnline: usual, wantsYou: roleWanted, hasMentor: hasMentor, hasStudent: hasStudent
             }
         });
@@ -584,7 +595,14 @@ function partyUpdateRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     meta.title = partyPick(request.title, rules.titles, meta.title);
     meta.language = partyPick(request.language, rules.languages, meta.language);
     meta.wanted = partyPick(request.wanted, rules.roles, meta.wanted);
-    partySaveMeta(nk, group, meta);
+    const paid = socialRename(nk, meta.leader, meta, request.name, TicketPartyRename, Date.now());
+    try {
+        partySaveMeta(nk, group, meta);
+    } catch (error) {
+        if (paid)
+            ticketGive(nk, meta.leader, TicketPartyRename);
+        throw error;
+    }
     return JSON.stringify(partyView(nk, group));
 }
 
