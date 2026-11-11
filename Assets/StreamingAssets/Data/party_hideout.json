@@ -25,6 +25,13 @@
     "takePerDay": 20,
     "journal": 30
   },
+  "order": {"days": 7, "fromTier": 2, "source": "hideout_order", "goals": [
+    {"id": "hunt_and_fish", "fromTier": 2, "needs": [{"counter": "bosses", "target": 20}, {"counter": "fishTogether", "target": 30}]},
+    {"id": "hunt_and_fire", "fromTier": 2, "needs": [{"counter": "bosses", "target": 30}, {"counter": "sitMinutes", "target": 120}]},
+    {"id": "guardians_and_trip", "fromTier": 2, "needs": [{"counter": "guardians", "target": 2}, {"counter": "partyTrips", "target": 2}]},
+    {"id": "guardians_and_garden", "fromTier": 3, "needs": [{"counter": "guardians", "target": 3}, {"counter": "gardenHarvests", "target": 4}]},
+    {"id": "hunt_and_garden", "fromTier": 3, "needs": [{"counter": "bosses", "target": 40}, {"counter": "gardenHarvests", "target": 6}]}
+  ]},
   "tiers": [
     {
       "id": "rest",

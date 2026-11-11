@@ -365,7 +365,9 @@ test("the shared garden waits for the gardeners and grows from everyone's input"
   assert.strictEqual(harvested.commons.garden[0].plant, "");
   const claim = plain(call("bob", "hideoutClaimRpc"));
   assert.strictEqual(claim.items[plant.herb], plant.yield, "the one who tended shares the harvest");
-  assert.deepStrictEqual(plain(call("bob", "hideoutClaimRpc").items), {}, "a claim is taken once");
+  assert.strictEqual(plain(call("bob", "hideoutClaimRpc")).items[plant.herb], plant.yield, "a claim comes again until it is confirmed");
+  assert.strictEqual(plain(call("bob", "hideoutClaimRpc", { ack: claim.seq - 1 })).seq, claim.seq, "a stale confirmation changes nothing");
+  assert.deepStrictEqual(plain(call("bob", "hideoutClaimRpc", { ack: claim.seq }).items), {}, "a confirmed claim is taken once");
   assert.deepStrictEqual(plain(call("cid", "hideoutClaimRpc").items), {}, "who did not tend gets nothing");
   assert.strictEqual(server.hideoutRead(nk, group.id).value.counters.gardenHarvests, 1);
 });
@@ -404,6 +406,10 @@ test("the storage takes peaceful goods only, limits what is taken out and keeps 
   assert.throws(() => call("ann", "hideoutStoreTakeRpc", { item: "ember_coal", amount: 3 }), /not enough/);
   const view = call("ann", "hideoutStoreTakeRpc", { item: "ember_coal", amount: 2 });
   assert.strictEqual(view.commons.storage.ember_coal, undefined);
+  assert.strictEqual(view.commons.owed.ember_coal, 2, "taken goods wait for a confirmed claim");
+  const taken = plain(call("ann", "hideoutClaimRpc"));
+  assert.deepStrictEqual(taken.items, { ember_coal: 2 });
+  assert.deepStrictEqual(plain(call("ann", "hideoutClaimRpc", { ack: taken.seq })).hideout.commons.owed, {});
   assert.deepStrictEqual(view.commons.journal.map((entry) => entry.name + ":" + entry.item + ":" + entry.amount),
     ["ann:ember_coal:-2", "bob:herb_knockbloom:-" + rules.takePerDay, "ann:ember_coal:2", "ann:herb_knockbloom:30"]);
   const tomorrow = plain(server.hideoutStore(nk, "bob", "herb_knockbloom", 1, false, now + 2 * 86400000));
@@ -456,4 +462,67 @@ test("the trophy hall shows the guardians, the rift and the feats of the chronic
   assert.strictEqual(hall.bosses, 1200);
   assert.strictEqual(hall.riftDepth, 31);
   assert.deepStrictEqual(plain(hall.feats), [{ id: "old_guard", level: 2 }]);
+});
+
+function yard(nk, call) {
+  party(call, ["ann", "bob"]);
+  bosses(nk, "ann", rules.tiers[1].bosses);
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.hideoutChange(nk, group.id, (value) => { value.tier = 1; value.sitSeconds = rules.tiers[1].sitSeconds; });
+  return group;
+}
+
+test("the yard gets a weekly party order, and filling it pays everyone and counts for the tiers", () => {
+  const { nk, call } = world("ann", "bob");
+  const group = yard(nk, call);
+  const first = at(nk, "ann", true, now);
+  assert.strictEqual(first.tier, 2);
+  assert.ok(first.order && first.order.done === false && first.order.needs.length === 2);
+  assert.ok(first.order.needs.every((need) => need.have === 0), "progress starts at the moment the order appears");
+  assert.ok(first.order.daysLeft >= 1 && first.order.daysLeft <= rules.orderDays);
+  const goal = rules.orderGoals.filter((entry) => entry.id === first.order.id)[0];
+  const fill = (need) => {
+    if (need.counter === "bosses")
+      server.chronicleUpdate(nk, group.id, (value) => { value.stats.bossesTogether += need.target; });
+    else if (need.counter === "guardians")
+      server.chronicleUpdate(nk, group.id, (value) => { value.stats.guardiansTogether += need.target; });
+    else if (need.counter === "sitMinutes")
+      server.hideoutChange(nk, group.id, (value) => { value.sitSeconds += need.target * 60; });
+    else
+      server.hideoutChange(nk, group.id, (value) => { value.counters[need.counter] = (value.counters[need.counter] || 0) + need.target; });
+  };
+  fill(goal.needs[0]);
+  const half = at(nk, "ann", true, now + 1);
+  assert.strictEqual(half.order.done, false);
+  assert.strictEqual(half.order.needs[0].have, goal.needs[0].target);
+  fill(goal.needs[1]);
+  const done = at(nk, "bob", true, now + 2);
+  assert.strictEqual(done.order.done, true);
+  assert.strictEqual(done.orders, 1);
+  const source = server.WalletServerRules.sources.filter((entry) => entry.id === rules.orderSource)[0];
+  assert.strictEqual(server.walletRead(nk, "ann").value.balances.friendship, source.amount);
+  assert.strictEqual(server.walletRead(nk, "bob").value.balances.friendship, source.amount);
+  assert.strictEqual(at(nk, "ann", true, now + 3).orders, 1, "one order a week");
+  const next = at(nk, "ann", true, now + rules.orderDays * 86400000);
+  assert.strictEqual(next.order.done, false);
+  assert.ok(next.order.needs.every((need) => need.have === 0));
+});
+
+test("the leader changes the weekly order once", () => {
+  const { nk, call } = world("ann", "bob");
+  yard(nk, call);
+  const first = at(nk, "ann", true, now);
+  assert.strictEqual(first.order.canRedraw, true);
+  assert.strictEqual(at(nk, "bob", true, now).order.canRedraw, false);
+  assert.throws(() => server.hideoutOrderRedraw(nk, "bob", now + 1), /only the leader/);
+  const second = plain(server.hideoutOrderRedraw(nk, "ann", now + 1));
+  assert.notStrictEqual(second.order.id, first.order.id);
+  assert.strictEqual(second.order.canRedraw, false);
+  assert.throws(() => server.hideoutOrderRedraw(nk, "ann", now + 2), /cannot be changed/);
+});
+
+test("there is no party order before the yard", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  assert.strictEqual(at(nk, "ann", true, now).order, null);
 });

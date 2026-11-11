@@ -114,6 +114,41 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void AGiftIsTakenOnceEvenIfTheServerSendsItAgain()
+        {
+            var loop = Town();
+            Assert.That(loop.Town.ReceiveGift("ann_1", "herb_windwort", 4), Is.EqualTo(TownResult.Done));
+            Assert.That(loop.Town.ReceiveGift("ann_1", "herb_windwort", 4), Is.EqualTo(TownResult.Already));
+            Assert.That(loop.Town.ReceiveGift("ann_2", "find_dragon_scale", 1), Is.EqualTo(TownResult.NotGiftable));
+            Assert.That(loop.Camp.Count("herb_windwort"), Is.EqualTo(4));
+            for (var i = 0; i < Rules.GiftInbox * 3; i++)
+                loop.Town.ReceiveGift("bob_" + i, "herb_windwort", 1);
+            Assert.That(loop.State.Town.Gifts.Count, Is.EqualTo(Rules.GiftInbox * 2));
+
+            var copy = Game.Core.Save.GameStateJson.Read(new Game.Core.Content.ContentNode(Game.Core.Save.GameStateJson.Write(loop.State), "save", string.Empty),
+                TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Town.Gifts, Is.EqualTo(loop.State.Town.Gifts));
+        }
+
+        [Test]
+        public void OldOrdersLeaveTheBoardAndNewOnesCome()
+        {
+            var loop = Town();
+            loop.State.Town.Orders.Clear();
+            loop.State.Town.Day = 99;
+            loop.Town.SetDay(100);
+            var first = loop.State.Town.Orders.Select(order => order.Request).ToList();
+            Assert.That(first, Is.Not.Empty);
+            Assert.That(loop.State.Town.Orders.All(order => order.Day == 100), Is.True);
+
+            loop.Town.SetDay(100 + Rules.OrderDays - 1);
+            Assert.That(loop.State.Town.Orders.Count(order => order.Day == 100), Is.EqualTo(first.Count));
+            loop.Town.SetDay(100 + Rules.OrderDays);
+            Assert.That(loop.State.Town.Orders.Any(order => order.Day == 100), Is.False);
+            Assert.That(loop.State.Town.Orders, Is.Not.Empty);
+        }
+
+        [Test]
         public void TheBoardSurvivesTheSave()
         {
             var loop = Town();

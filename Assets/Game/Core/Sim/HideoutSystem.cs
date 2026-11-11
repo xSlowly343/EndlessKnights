@@ -175,6 +175,17 @@ namespace Game.Core.Sim
             station.Partners.AddRange(partners);
         }
 
+        public void UseOrder(string id, bool done, int daysLeft, bool canRedraw, IReadOnlyList<PartyOrderNeed> needs)
+        {
+            var order = State.Order;
+            order.Id = id;
+            order.Done = done;
+            order.DaysLeft = daysLeft;
+            order.CanRedraw = canRedraw;
+            order.Needs.Clear();
+            order.Needs.AddRange(needs);
+        }
+
         public void UseTrophies(long bosses, long guardians, long riftDepth, long hours, IReadOnlyList<TrophyFeat> feats)
         {
             var trophies = State.Trophies;
@@ -248,6 +259,15 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public bool Receive(long seq, IReadOnlyDictionary<string, long> items)
+        {
+            if (seq <= State.ClaimSeq)
+                return false;
+            State.ClaimSeq = seq;
+            Receive(items);
+            return true;
+        }
+
         public void Receive(IReadOnlyDictionary<string, long> items)
         {
             foreach (var pair in items)
@@ -289,6 +309,7 @@ namespace Game.Core.Sim
         public void Leave()
         {
             UseTrophies(0, 0, 0, 0, System.Array.Empty<TrophyFeat>());
+            UseOrder(string.Empty, false, 0, false, System.Array.Empty<PartyOrderNeed>());
             UseCrafts(System.Array.Empty<string>(), System.Array.Empty<string>());
             UseCommons(false, System.Array.Empty<SharedBed>(), new Dictionary<string, long>(), false, new Dictionary<string, long>(), System.Array.Empty<StorageEntry>(), 0, 0);
             UseCorners(false, System.Array.Empty<HideoutCorner>());

@@ -41,6 +41,7 @@ namespace Game.Core.Party
                 _members[i] = new PartyMember();
         }
 
+        public Content.DungeonRules? Dungeons { get; set; }
         public long Tick { get; private set; }
         public uint EnemyId { get; private set; }
         public PartyEnemyKind EnemyKind { get; private set; }
@@ -879,8 +880,20 @@ namespace Game.Core.Party
                 ClearWeaken();
             if (kind != PartyEnemyKind.Boss)
                 return;
-            BossTicksLeft = Ticks(gate?.TimerSeconds ?? _stages.BossTimerSeconds);
+            BossTicksLeft = Ticks(gate?.TimerSeconds ?? (World == PartyWorld.Dungeon && Dungeons != null ? DungeonTimerSeconds(Dungeons) : _stages.BossTimerSeconds));
             Events.Add(new PartyEvent(PartyEventKind.BossStarted, Tick, EnemyId, kind));
+        }
+
+        private double DungeonTimerSeconds(Content.DungeonRules dungeons)
+        {
+            var seconds = dungeons.BossTimerSeconds;
+            var mask = PartyDungeonId.ModifierMask(RiftId);
+            for (var i = 0; i < dungeons.Modifiers.Count; i++)
+            {
+                if ((mask & (1 << i)) != 0)
+                    seconds *= dungeons.Modifiers[i].BossTimer;
+            }
+            return seconds;
         }
 
         private double TakeWeaken()

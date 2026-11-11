@@ -283,6 +283,8 @@ namespace Game.Net.Tests
         public void TheTownGatesAreReadFromTheServer()
         {
             Assert.That(TownReply.GiftPayload("bob", "herb_windwort", 3), Is.EqualTo("{\"to\":\"bob\",\"item\":\"herb_windwort\",\"amount\":3}"));
+            Assert.That(TownReply.ClaimPayload(new[] { "ann_1", "bob_2" }), Is.EqualTo("{\"ack\":[\"ann_1\",\"bob_2\"]}"));
+            Assert.That(TownReply.ClaimPayload(System.Array.Empty<string>()), Is.EqualTo("{\"ack\":[]}"));
             var reply = TownReply.From(NakamaJson.Parse("{\"guilds\":[\"gardeners\"],\"sentToday\":2,\"giftsPerDay\":5,\"inbox\":[],\"claimed\":[{\"id\":\"g1\",\"from\":\"a\",\"fromName\":\"Ann\",\"item\":\"herb_hushbell\",\"amount\":2,\"at\":1789}]}"));
             Assert.That(reply.Guilds, Is.EqualTo(new[] { "gardeners" }));
             Assert.That(reply.SentToday, Is.EqualTo(2));
@@ -402,6 +404,16 @@ namespace Game.Net.Tests
             Assert.That(commons.TakePerDay, Is.EqualTo(20));
             Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":3,\"here\":[],\"commons\":{\"storage\":null}}")).StorageBuilt, Is.False);
             Assert.That(HideoutReply.ClaimedItems(NakamaJson.Parse("{\"items\":{\"herb_knockbloom\":3},\"hideout\":{}}"))["herb_knockbloom"], Is.EqualTo(3));
+            Assert.That(HideoutReply.ClaimSeq(NakamaJson.Parse("{\"seq\":1800000000123,\"items\":{}}")), Is.EqualTo(1800000000123));
+            Assert.That(HideoutReply.ClaimPayload(1800000000123), Is.EqualTo("{\"ack\":1800000000123}"));
+            var ordered = HideoutReply.From(NakamaJson.Parse("{\"tier\":2,\"here\":[],\"order\":{\"id\":\"hunt_and_fish\",\"done\":false,\"daysLeft\":4,\"canRedraw\":true,"
+                + "\"needs\":[{\"counter\":\"bosses\",\"have\":7,\"target\":20},{\"counter\":\"fishTogether\",\"have\":0,\"target\":30}]}}"));
+            Assert.That(ordered.OrderId, Is.EqualTo("hunt_and_fish"));
+            Assert.That(ordered.OrderDaysLeft, Is.EqualTo(4));
+            Assert.That(ordered.OrderCanRedraw, Is.True);
+            Assert.That(ordered.OrderNeeds[0].Have, Is.EqualTo(7));
+            Assert.That(ordered.OrderNeeds[1].Target, Is.EqualTo(30));
+            Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":1,\"here\":[],\"order\":null}")).OrderId, Is.Empty);
         }
 
         [Test]

@@ -107,6 +107,26 @@ test("a lost boss ends the dungeon instead of sending the party to farm", () => 
   assert.strictEqual(encounter.farming, false);
 });
 
+test("the dungeon boss runs on the key's own timer", () => {
+  const rules = party.PartyServerRules;
+  const hurry = rules.dungeonTimers.findIndex((timer) => timer < 1);
+  assert.ok(hurry >= 0 && rules.dungeonTimerSeconds !== rules.bossTimerSeconds);
+  assert.strictEqual(party.partyDungeonTimer(rules, keyId), rules.dungeonTimerSeconds);
+  const hurried = keyId - 5 * 4294967296 + Math.pow(2, hurry) * 4294967296;
+  assert.strictEqual(party.partyDungeonTimer(rules, hurried), rules.dungeonTimerSeconds * rules.dungeonTimers[hurry]);
+  const { nk, call } = world("ann", "bob");
+  const state = match(nk, call, "ann", "bob");
+  step(nk, state, 1000);
+  launch(nk, state, "ann", hurried);
+  const encounter = state.host.encounter;
+  for (let i = 0; i < 2000 && !encounter.fightingBoss; i++) {
+    killEnemy(encounter);
+    step(nk, state, 1000);
+  }
+  const ticks = rules.dungeonTimerSeconds * rules.dungeonTimers[hurry] * 10;
+  assert.ok(encounter.bossTicksLeft <= ticks && encounter.bossTicksLeft > ticks - 10, String(encounter.bossTicksLeft));
+});
+
 test("a member's keys are relayed to the others under the sender's slot", () => {
   const { nk, call } = world("ann", "bob");
   const state = match(nk, call, "ann", "bob");

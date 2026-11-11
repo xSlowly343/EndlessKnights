@@ -6,6 +6,7 @@ namespace Game.Core.Sim
     {
         public string Request { get; set; } = string.Empty;
         public int Amount { get; set; }
+        public long Day { get; set; }
     }
 
     public sealed class TownState
@@ -15,5 +16,6 @@ namespace Game.Core.Sim
         public Dictionary<string, long> Reputation { get; } = new Dictionary<string, long>(System.StringComparer.Ordinal);
         public long Done { get; set; }
         public long RedrawDay { get; set; } = -1;
+        public List<string> Gifts { get; } = new List<string>();
     }
 }

@@ -34,6 +34,8 @@ interface PartyEncounterRules {
     pierceKillsPerTick: number;
     pierceCaps: PartyPierceCaps;
     gates: PartyGate[];
+    dungeonTimerSeconds: number;
+    dungeonTimers: number[];
 }
 
 interface PartyGate {
@@ -74,6 +76,15 @@ const enum PartyEventKind { EnemySpawned = 0, BossStarted = 1, EnemyKilled = 2, 
 const enum PartyWorld { Home = 0, Rift = 1, Dungeon = 2 }
 
 function partyDungeonStage(id: number): number { return id % 16777216; }
+
+function partyDungeonTimer(rules: PartyEncounterRules, id: number): number {
+    const mask = Math.floor(id / 4294967296) % 4096;
+    let seconds = rules.dungeonTimerSeconds;
+    for (let i = 0; i < rules.dungeonTimers.length; i++)
+        if (Math.floor(mask / Math.pow(2, i)) % 2 === 1)
+            seconds *= rules.dungeonTimers[i];
+    return seconds;
+}
 
 function partyDungeonStages(id: number): number { return Math.max(1, Math.floor(id / 70368744177664) % 8); }
 const PartyNoWorld = 255;

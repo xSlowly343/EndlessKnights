@@ -73,6 +73,18 @@ namespace Game.Net.Nakama
             var crafts = NakamaJson.Field(json, "crafts");
             ForgePartners = crafts != null && crafts.Kind == JsonKind.Object ? CosmeticsMineView.Ids(crafts, "forge") : System.Array.Empty<string>();
             CauldronPartners = crafts != null && crafts.Kind == JsonKind.Object ? CosmeticsMineView.Ids(crafts, "cauldron") : System.Array.Empty<string>();
+            var order = NakamaJson.Field(json, "order");
+            var needs = new List<PartyOrderNeed>();
+            if (order != null && order.Kind == JsonKind.Object)
+            {
+                OrderId = NakamaJson.Text(order, "id");
+                OrderDone = NakamaJson.Flag(order, "done");
+                OrderDaysLeft = (int)NakamaJson.Number(order, "daysLeft");
+                OrderCanRedraw = NakamaJson.Flag(order, "canRedraw");
+                foreach (var entry in NakamaJson.Items(order, "needs"))
+                    needs.Add(new PartyOrderNeed(NakamaJson.Text(entry, "counter"), (long)NakamaJson.Number(entry, "have"), (long)NakamaJson.Number(entry, "target")));
+            }
+            OrderNeeds = needs;
             var project = NakamaJson.Field(json, "project");
             if (project != null && project.Kind == JsonKind.Object)
             {
@@ -85,6 +97,11 @@ namespace Game.Net.Nakama
             }
         }
 
+        public string OrderId { get; } = string.Empty;
+        public bool OrderDone { get; }
+        public int OrderDaysLeft { get; }
+        public bool OrderCanRedraw { get; }
+        public IReadOnlyList<PartyOrderNeed> OrderNeeds { get; }
         public bool Together { get; }
         public long TrophyBosses { get; }
         public long TrophyGuardians { get; }
@@ -139,6 +156,9 @@ namespace Game.Net.Nakama
         public static async Task<HideoutReply> GiveAsync(NakamaClient client, NakamaSession session, string item, int amount, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_give", GivePayload(item, amount), cancel).ConfigureAwait(false)));
 
+        public static async Task<HideoutReply> OrderRedrawAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_order_redraw", "{}", cancel).ConfigureAwait(false)));
+
         public static async Task<HideoutReply> WantAsync(NakamaClient client, NakamaSession session, string building, bool on, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_want", WantPayload(building, on), cancel).ConfigureAwait(false)));
 
@@ -190,11 +210,15 @@ namespace Game.Net.Nakama
 
         public static IReadOnlyDictionary<string, long> ClaimedItems(JsonValue json) => Amounts(NakamaJson.Field(json, "items"));
 
-        public static async Task<(IReadOnlyDictionary<string, long> Items, HideoutReply Hideout)> ClaimAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default)
+        public static string ClaimPayload(long ack) => NakamaJson.Object(("ack", ack.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
+        public static long ClaimSeq(JsonValue json) => (long)NakamaJson.Number(json, "seq");
+
+        public static async Task<(long Seq, IReadOnlyDictionary<string, long> Items, HideoutReply Hideout)> ClaimAsync(NakamaClient client, NakamaSession session, long ack, CancellationToken cancel = default)
         {
-            var json = NakamaJson.Parse(await client.RpcAsync(session, "hideout_claim", "{}", cancel).ConfigureAwait(false));
+            var json = NakamaJson.Parse(await client.RpcAsync(session, "hideout_claim", ClaimPayload(ack), cancel).ConfigureAwait(false));
             var hideout = NakamaJson.Field(json, "hideout");
-            return (ClaimedItems(json), From(hideout ?? json));
+            return (ClaimSeq(json), ClaimedItems(json), From(hideout ?? json));
         }
 
         private static IReadOnlyDictionary<string, int> Counts(JsonValue? json)

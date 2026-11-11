@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "orders": { "perDay": 3, "keep": 6 },
+  "orders": { "perDay": 3, "keep": 6, "days": 3},
   "reward": { "reputation": 10, "shards": 3, "dust": 20, "recipeChance": 0.2 },
   "residents": [
     { "id": "tess", "name": { "ru": "Травница Тесс", "en": "Tess the Herbalist" }, "guild": "gardeners" },

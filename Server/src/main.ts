@@ -102,6 +102,7 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("hideout_store_put", hideoutStorePutRpc);
     initializer.registerRpc("hideout_store_take", hideoutStoreTakeRpc);
     initializer.registerRpc("hideout_brewed", hideoutBrewedRpc);
+    initializer.registerRpc("hideout_order_redraw", hideoutOrderRedrawRpc);
     initializer.registerRpc("companion_place", companionPlaceRpc);
     initializer.registerRpc("companion_pet", companionPetRpc);
     initializer.registerRpc("companion_warm", companionWarmRpc);

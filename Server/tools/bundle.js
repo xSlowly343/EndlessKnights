@@ -5,6 +5,7 @@ const root = path.join(__dirname, "..");
 const data = path.join(root, "..", "Assets", "StreamingAssets", "Data");
 const party = JSON.parse(fs.readFileSync(path.join(data, "party.json"), "utf8"));
 const stages = JSON.parse(fs.readFileSync(path.join(data, "stages.json"), "utf8"));
+const dungeons = JSON.parse(fs.readFileSync(path.join(data, "dungeons.json"), "utf8"));
 const rift = JSON.parse(fs.readFileSync(path.join(data, "rift.json"), "utf8"));
 const intake = JSON.parse(fs.readFileSync(path.join(root, "config", "intake.json"), "utf8"));
 const coopCurrency = JSON.parse(fs.readFileSync(path.join(data, "coop_currency.json"), "utf8"));
@@ -81,7 +82,9 @@ const rules = {
   bossRetryAfterKills: stages.boss.retryAfterKills,
   bossTimerSeconds: stages.boss.timerSeconds,
   bossHpMultiplier: stages.boss.hpMultiplier,
-  gates: (stages.gates || []).map((gate) => ({ stage: gate.stage, hpMultiplier: gate.hpMultiplier, timerSeconds: gate.timerSeconds }))
+  gates: (stages.gates || []).map((gate) => ({ stage: gate.stage, hpMultiplier: gate.hpMultiplier, timerSeconds: gate.timerSeconds })),
+  dungeonTimerSeconds: dungeons.bossTimerSeconds,
+  dungeonTimers: dungeons.modifiers.map((modifier) => modifier.bossTimer || 1)
 };
 
 function statSum(modifiers, stat, kind) {
@@ -494,8 +497,14 @@ const hideoutRules = {
   levelTiers: hideout.levelTiers,
   materials: Object.fromEntries(clanCamp.materials.map((material) => [material.item, material.points])),
   maxGive: clanCamp.maxGive,
-  startBuilt: guilds.build.startBuilt
+  startBuilt: guilds.build.startBuilt,
+  orderDays: hideout.order.days,
+  orderFromTier: hideout.order.fromTier,
+  orderSource: hideout.order.source,
+  orderGoals: hideout.order.goals.map((goal) => ({ id: goal.id, fromTier: goal.fromTier, needs: goal.needs.map((need) => ({ counter: need.counter, target: need.target })) }))
 };
+if (!walletRules.sources.some((entry) => entry.id === hideoutRules.orderSource))
+  throw new Error("coop_currency.json: the party order needs the " + hideoutRules.orderSource + " source");
 for (const row of hideoutRules.gardenRows)
   if (!hideoutRules.buildings.some((building) => building.id === row))
     throw new Error("party_hideout.json: unknown garden row " + row);

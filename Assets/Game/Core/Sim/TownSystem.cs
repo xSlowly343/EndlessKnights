@@ -10,7 +10,8 @@ namespace Game.Core.Sim
         NotEnough,
         NotGiftable,
         BadAmount,
-        NoRedraw
+        NoRedraw,
+        Already
     }
 
     public sealed class TownSystem
@@ -45,6 +46,7 @@ namespace Game.Core.Sim
                 return;
             var days = State.Day < 0 ? 1 : System.Math.Min(day - State.Day, _rules.OrdersKept);
             State.Day = day;
+            State.Orders.RemoveAll(order => day - order.Day >= _rules.OrderDays);
             var fresh = (int)System.Math.Min(_rules.OrdersKept, days * _rules.OrdersPerDay);
             for (var i = 0; i < fresh && State.Orders.Count < _rules.OrdersKept; i++)
                 Issue();
@@ -124,6 +126,19 @@ namespace Game.Core.Sim
 
         public TownResult ReturnGift(string item, int amount) => Receive(item, amount);
 
+        public TownResult ReceiveGift(string id, string item, int amount)
+        {
+            if (State.Gifts.Contains(id))
+                return TownResult.Already;
+            var result = Receive(item, amount);
+            if (result != TownResult.Done)
+                return result;
+            State.Gifts.Add(id);
+            if (State.Gifts.Count > _rules.GiftInbox * 2)
+                State.Gifts.RemoveRange(0, State.Gifts.Count - _rules.GiftInbox * 2);
+            return TownResult.Done;
+        }
+
         public TownResult Receive(string item, int amount)
         {
             if (!_rules.Giftable(item))
@@ -145,7 +160,7 @@ namespace Game.Core.Sim
             if (pool.Count == 0)
                 return;
             var pick = pool[_state.Rng.NextInt(0, pool.Count)];
-            State.Orders.Add(new TownOrder { Request = pick.Id, Amount = _state.Rng.NextInt(pick.Min, pick.Max + 1) });
+            State.Orders.Add(new TownOrder { Request = pick.Id, Amount = _state.Rng.NextInt(pick.Min, pick.Max + 1), Day = State.Day });
         }
 
         private bool Ordered(string request)

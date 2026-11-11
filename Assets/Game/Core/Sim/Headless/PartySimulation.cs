@@ -48,7 +48,7 @@ namespace Game.Core.Sim.Headless
         {
             var synergy = Synergy ?? _data.Synergy;
             var network = new LoopbackNetwork(_seed, MinLatencyMs, MaxLatencyMs, LossAfterJoin ? 0 : _loss, 4096);
-            var host = new PartyHost(new PartyEncounter(_data.Party, _data.Stages, _seed), network.Connect(HostId), _data.Party, _data.Rift, synergy);
+            var host = new PartyHost(new PartyEncounter(_data.Party, _data.Stages, _seed) { Dungeons = _data.Dungeons }, network.Connect(HostId), _data.Party, _data.Rift, synergy);
             var loops = new GameLoop[_classes.Count];
             var clients = new PartyClient[_classes.Count];
             var kills = new long[_classes.Count];

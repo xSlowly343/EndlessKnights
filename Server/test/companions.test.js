@@ -20,7 +20,11 @@ function world(...names) {
 }
 
 const friendship = (nk, user) => server.walletRead(nk, user).value.balances.friendship;
-const claim = (nk, user, time) => plain(server.hideoutClaim(nk, user, time).items);
+const claim = (nk, user, time) => {
+  const got = plain(server.hideoutClaim(nk, user, undefined, time));
+  server.hideoutClaim(nk, user, got.seq, time);
+  return got.items;
+};
 
 test("rules come from companions.json", () => {
   assert.strictEqual(rules.companions.camp_dog, "green_hills");
@@ -80,12 +84,13 @@ test("the far party trip needs two companions, takes a day and pays everyone", (
   const back = now + 1 + rules.farTripMs;
   const got = plain(server.companionFarClaim(nk, "ann", back));
   const rare = Math.floor(3 * rules.rarePerCompanion * (1 + rules.rarePerBiome));
-  assert.strictEqual(got.items.bone_hills, 2 * rules.bonesPerCompanion);
-  assert.strictEqual(got.items.bone_sky, rules.bonesPerCompanion);
-  assert.strictEqual(Object.keys(got.items).filter((id) => id.indexOf("fish_") === 0).reduce((sum, id) => sum + got.items[id], 0), rare);
+  assert.strictEqual(got.loot.bone_hills, 2 * rules.bonesPerCompanion);
+  assert.strictEqual(got.loot.bone_sky, rules.bonesPerCompanion);
+  assert.strictEqual(Object.keys(got.loot).filter((id) => id.indexOf("fish_") === 0).reduce((sum, id) => sum + got.loot[id], 0), rare);
   assert.strictEqual(got.granted, 5);
-  assert.strictEqual(got.items.companion_soul, 5, "five souls of the underside each");
+  assert.strictEqual(got.loot.companion_soul, 5, "five souls of the underside each");
   assert.throws(() => server.companionFarClaim(nk, "ann", back), /already claimed/);
+  assert.strictEqual(claim(nk, "ann", back).bone_hills, 2 * rules.bonesPerCompanion, "the loot arrives through a confirmed claim");
   assert.throws(() => server.companionFarJoin(nk, "ann", "camp_crow", back), /not claimed yet/);
   server.companionFarClaim(nk, "bob", back);
   server.companionFarClaim(nk, "cid", back);

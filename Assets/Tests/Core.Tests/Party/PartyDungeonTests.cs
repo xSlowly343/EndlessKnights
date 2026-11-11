@@ -51,7 +51,7 @@ namespace Game.Core.Tests.Party
             public Rig(double strikesPerEnemy, params long[] stages)
             {
                 Network = new LoopbackNetwork(5, 20, 60, 0, 4096);
-                Host = new PartyHost(new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 9), Network.Connect(HostId), TestWorld.Data.Party,
+                Host = new PartyHost(new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 9) { Dungeons = Rules }, Network.Connect(HostId), TestWorld.Data.Party,
                     TestWorld.Data.Rift);
                 Members = new Member[stages.Length];
                 for (var i = 0; i < stages.Length; i++)
@@ -234,6 +234,22 @@ namespace Game.Core.Tests.Party
             Assert.That(leader.Loop.Dungeons.Keys, Is.EquivalentTo(new[] { key }));
             Assert.That(key.Attempts, Is.EqualTo(Rules.KeyAttempts - 1));
             Assert.That(member.Loop.Dungeons.Keys, Is.Empty);
+        }
+
+        [Test]
+        public void ThePartyDungeonBossRunsOnTheTimerOfTheKey()
+        {
+            var rig = new Rig(10, 400, 400);
+            var leader = rig.Members[0];
+            leader.Loop.State.Dungeons.Keys.Add(KeyAt(2, 300, "hurry"));
+            rig.Run(8);
+            Assert.That(leader.Client.ProposeDungeon(leader.Client.PartyKey(leader.Client.OwnSlot, 0)), Is.True);
+            Assert.That(rig.RunUntil(() => rig.Host.Encounter.World == PartyWorld.Dungeon && rig.Host.Encounter.EnemyKind == PartyEnemyKind.Boss, 600), Is.True);
+
+            Rules.TryGetModifier("hurry", out var hurry);
+            var ticks = Rules.BossTimerSeconds * hurry!.BossTimer * GameLoop.TicksPerSecond;
+            Assert.That(rig.Host.Encounter.BossTicksLeft, Is.InRange(ticks - 10, ticks));
+            Assert.That(ticks, Is.Not.EqualTo(TestWorld.Data.Stages.BossTimerSeconds * GameLoop.TicksPerSecond));
         }
 
         [Test]

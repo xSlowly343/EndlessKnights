@@ -57,5 +57,44 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.State.Hideout.PierRareBoost, Is.Zero);
             Assert.That(loop.State.Hideout.Trophies.Feats, Is.Empty);
         }
+
+        [Test]
+        public void ThePartyOrderShowsItsNeedsAndTheDaysLeft()
+        {
+            var loop = Built();
+            Assert.That(HideoutView.Order(loop.Hideout.State), Is.EqualTo(new[] { Texts.Get("hideout.order.none") }));
+
+            loop.Hideout.UseOrder("hunt_and_fish", false, 4, true, new[] { new PartyOrderNeed("bosses", 7, 20), new PartyOrderNeed("fishTogether", 0, 30) });
+            var lines = HideoutView.Order(loop.Hideout.State);
+            Assert.That(lines, Has.Count.EqualTo(4));
+            Assert.That(lines[0], Does.Contain(Texts.Get("hideout.order.hunt_and_fish")).And.Contain("4"));
+            Assert.That(lines[1], Does.Contain("7").And.Contain("20"));
+            Assert.That(lines[3], Is.EqualTo(Texts.Get("hideout.order.redraw")));
+            foreach (var goal in new[] { "hunt_and_fish", "hunt_and_fire", "guardians_and_trip", "guardians_and_garden", "hunt_and_garden" })
+                Assert.That(Texts.Has("hideout.order." + goal), Is.True, goal);
+            foreach (var counter in new[] { "bosses", "guardians", "fishTogether", "sitMinutes", "partyTrips", "gardenHarvests" })
+                Assert.That(Texts.Has("hideout.order.counter." + counter), Is.True, counter);
+
+            loop.Hideout.Leave();
+            Assert.That(loop.State.Hideout.Order.Id, Is.Empty);
+        }
+
+        [Test]
+        public void ADeliveryFromTheHideoutIsTakenOnceEvenIfItComesTwice()
+        {
+            var loop = Built();
+            var items = new System.Collections.Generic.Dictionary<string, long> { ["ember_coal"] = 2 };
+            var before = loop.Camp.Count("ember_coal");
+
+            Assert.That(loop.Hideout.Receive(1800000000001, items), Is.True);
+            Assert.That(loop.Hideout.Receive(1800000000001, items), Is.False);
+            Assert.That(loop.Camp.Count("ember_coal"), Is.EqualTo(before + 2));
+            Assert.That(loop.Hideout.Receive(1800000000002, items), Is.True);
+            Assert.That(loop.Camp.Count("ember_coal"), Is.EqualTo(before + 4));
+
+            var restored = Game.Core.Save.GameStateJson.Read(new Game.Core.Content.ContentNode(Game.Core.Save.GameStateJson.Write(loop.State), "save", string.Empty),
+                TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(restored.Hideout.ClaimSeq, Is.EqualTo(1800000000002));
+        }
     }
 }

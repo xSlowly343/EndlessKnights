@@ -848,7 +848,7 @@ class PartyEncounter {
             this.clearWeaken();
         if (kind !== PartyEnemyKind.Boss)
             return;
-        this.bossTicksLeft = partyTicks(gate ? gate.timerSeconds : this.rules.bossTimerSeconds);
+        this.bossTicksLeft = partyTicks(gate ? gate.timerSeconds : this.world === PartyWorld.Dungeon ? partyDungeonTimer(this.rules, this.riftId) : this.rules.bossTimerSeconds);
         this.addEvent(PartyEventKind.BossStarted);
     }
 
