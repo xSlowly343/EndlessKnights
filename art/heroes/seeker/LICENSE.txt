@@ -1,0 +1,25 @@
+HOODED SEEKER - Metroidvania Character
+Copyright (c) Primitive Pixels. All rights reserved.
+
+You may:
+- Use these assets in any number of commercial or non-commercial
+  games, apps, prototypes, game jams, trailers and promotional
+  material for those projects.
+- Modify, recolour, cut up and extend the assets for use in your
+  projects.
+
+You may not:
+- Sell, share, sublicense or redistribute the assets, or modified
+  versions of them, as assets (on their own, in an asset pack, a
+  template, a tileset or a game kit), whether free or paid.
+- Claim the assets as your own work.
+- Use the assets to train machine learning models or in datasets.
+- Mint the assets or anything made from them as NFTs.
+
+Credit is not required, but "Character art by Primitive Pixels" in
+your credits is always appreciated.
+
+The license is granted to the purchaser and covers their own projects
+and their team working on those projects.
+
+The assets are provided "as is", without warranty of any kind.

@@ -1,0 +1,91 @@
+HOODED SEEKER - ANIMATION GUIDE  (FREE)
+Primitive Pixels
+
+This is a quick doc rundown that you can reference if you ever get stuck
+trying to figure out how to rig up the animations or lining up VFX to frames.
+
+----------------------------------------------------------------
+TWO THINGS TO KNOW FIRST
+----------------------------------------------------------------
+1. THE FEET POINT (PIVOT)
+   The frames are different sizes, because a sword swing needs more
+   room than standing still. Every animation has a "feet" point: the
+   spot on the ground between his feet, counted in pixels from the
+   top-left corner of a frame. Set that as the sprite's origin and
+   every animation lines up, whatever its size.
+
+2. READING A SHEET
+   Every sheet is one row of frames, left to right. The frame size and
+   the number of frames are in the file name: Seeker_Void_Run_30x30_10f.png
+   means each frame is 30 x 30 and there are 10 frames.
+
+----------------------------------------------------------------
+THE ANIMATIONS
+----------------------------------------------------------------
+
+IDLE
+  File      Seeker_Void_Idle_30x30_24f.png
+  Frames    24, each 30 x 30, loops
+  Speed     every frame 100 ms (10 fps)
+  Feet      15, 28  (the pivot, see the top of this file)
+
+  Loop it whenever he is standing still.
+
+RUN
+  File      Seeker_Void_Run_30x30_10f.png
+  Frames    10, each 30 x 30, loops
+  Speed     every frame 70 ms (14 fps)
+  Feet      17, 28  (the pivot, see the top of this file)
+
+  Loop it while he moves. The timing suits a run speed of about
+  140 pixels a second at 1x. Speed the frames up or down with your
+  run speed and the feet won't slide.
+
+JUMPFALL
+  File      Seeker_Void_JumpFall_30x30_28f.png
+  Frames    28, each 30 x 30, plays once
+  Speed     frame by frame: 40, 30, 30, 30, 30, 30, 30, 30, 30,
+            30, 30, 30, 30, 60, 60, 40, 40, 40, 40,
+            40, 40, 40, 40, 40, 40, 40, 60, 80 ms
+  Feet      16, 28  (the pivot, see the top of this file)
+
+  One sheet for the whole jump. Pick the frame from his vertical
+  speed rather than from time:
+    frame 0       takeoff
+    frames 1-12   going up
+    frames 13-14  the top of the jump
+    frames 15-25  falling (loop these for a long fall)
+    frames 26-27  landing
+
+ATTACK1
+  File      Seeker_Void_Attack1_90x50_8f.png
+  Frames    8, each 90 x 50, plays once
+  Speed     frame by frame: 40, 40, 60, 40, 60, 40, 60, 80 ms
+  Feet      16, 38  (the pivot, see the top of this file)
+
+  The first swing of the 3-hit combo. The hit lands on frames 3-4.
+  To chain into Attack2, let the player cancel from frame 5 on.
+  When you cancel, let the rest of its FX sheet (FX Split folder)
+  play out where the swing was, so the slash always finishes.
+
+HURT
+  File      Seeker_Void_Hurt_55x80_9f.png
+  Frames    9, each 55 x 80, plays once
+  Speed     frame by frame: 40, 60, 50, 50, 50, 60, 60, 80,
+            100 ms
+  Feet      26, 52  (the pivot, see the top of this file)
+
+  Getting hit, staying in place.
+
+DEATH
+  File      Seeker_Void_Death_40x50_20f.png
+  Frames    20, each 40 x 50, plays once
+  Speed     frame by frame: 100, 80, 80, 80, 100, 80, 70, 70,
+            70, 70, 70, 80, 80, 80, 80, 80, 80, 80,
+            80, 900 ms
+  Feet      20, 48  (the pivot, see the top of this file)
+
+  Play it once and stay on the last frame.
+
+----------------------------------------------------------------
+Questions or requests: primitive.pixels.games@gmail.com
