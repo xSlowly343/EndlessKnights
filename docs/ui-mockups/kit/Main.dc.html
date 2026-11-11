@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Rift Warden: игра на рабочем столе</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./rw.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="rw" style="width:1280px;height:760px;overflow:hidden;background:#0A0E18">
+<div style="width:1506px;height:894px;zoom:.85;position:relative;background:linear-gradient(160deg,#16213C,#0C1222 70%)">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="hero" viewBox="0 0 16 24"><path fill="#7A52C8" d="M5 1h6v5H5z"/><path fill="#F2C9A0" d="M6 3h4v3H6z"/><path fill="#1B2236" d="M9 4h1v1H9z"/><path fill="#E0574A" d="M4 6h8v1H4z"/><path fill="#4A3570" d="M5 7h6v7H5zM3 7h2v5H3zM11 7h2v5h-2z"/><path fill="#F0B43C" d="M5 11h6v1H5z"/><path fill="#CFE3FF" d="M13 4h1v4h-1zM2 12h1v3H2z"/><path fill="#2A2040" d="M5 14h2v7H5zM9 14h2v7H9z"/><path fill="#1B1430" d="M5 21h3v2H5zM9 21h3v2H9z"/></symbol><symbol id="mob" viewBox="0 0 20 22"><path fill="#8A5A2A" d="M0 2h2v9H0z"/><path fill="#6FA84A" d="M4 6h12v12H4zM1 7h3v8H1zM16 7h3v8h-3z"/><path fill="#7DBB52" d="M6 1h8v6H6z"/><path fill="#4E8236" d="M6 12h8v5H6zM5 18h4v4H5zM11 18h4v4h-4z"/><path fill="#FF5A5A" d="M7 3h2v2H7zM11 3h2v2h-2z"/><path fill="#1B2236" d="M8 6h4v1H8z"/></symbol></svg>
+
+<div class="c g12" style="position:absolute;left:56px;top:56px;width:560px">
+<div class="n" style="font-size:64px;line-height:1;color:var(--gold);text-shadow:0 4px 0 #7A1E24">RIFT WARDEN</div>
+<div class="hh">UI/UX система · обзор</div>
+<p class="dim" style="font-size:15px;line-height:1.5">Фоновая игра для Windows: бой идёт в полоске 480×180 над панелью задач, урон — от клавиш, мыши и кликов в любых программах. Весь остальной интерфейс живёт в одной панели той же ширины, которая выезжает из полоски вверх.</p>
+<div class="gr2" style="gap:10px;margin-top:8px">
+<div class="cd c g4"><div class="b gold">Полоска всегда на месте</div><div class="dim m">HUD не перекрывается панелью и не двигается. Прозрачные места пропускают клики.</div></div>
+<div class="cd c g4"><div class="b gold">Одна панель, две высоты</div><div class="dim m">480×600 для билда, 480×320 для быстрых действий. Широкий режим 960×640 только у Дерева.</div></div>
+<div class="cd c g4"><div class="b gold">Мышь рядом</div><div class="dim m">Нижний ряд вкладок стоит вплотную к полоске: от ☰ до вкладки около 60 px.</div></div>
+<div class="cd c g4"><div class="b gold">Без отдельных окон</div><div class="dim m">Описание выбранного — нижний лист в панели. Подтверждения — поверх содержимого панели.</div></div>
+</div>
+<div class="c g6" style="margin-top:10px">
+<div class="sec">Чем заменены привычные экраны</div>
+<div class="r g8 m"><span class="ch gd">Главное меню</span><span class="dim">его нет: игра стартует в полоску; первый запуск — карточка согласия и выбор персонажа</span></div>
+<div class="r g8 m"><span class="ch gd">Пауза</span><span class="dim">меню в трее и переключатель в Настройках; полоска гаснет</span></div>
+<div class="r g8 m"><span class="ch gd">Смерть</span><span class="dim">герой не умирает: провал босса — «Отступление» и подсказка, чего не хватает</span></div>
+<div class="r g8 m"><span class="ch gd">Победа</span><span class="dim">итог босса в полоске, награды письмом в «Почту»</span></div>
+</div>
+</div>
+
+<div style="position:absolute;left:0;right:0;bottom:0;height:48px;background:#1C2333;border-top:1px solid #2E3850;display:flex;align-items:center;gap:14px;padding:0 20px"><div style="width:22px;height:22px;background:#5B9BFF;border-radius:4px"></div><div style="width:22px;height:22px;background:#3A4870;border-radius:4px"></div><div style="width:22px;height:22px;background:#3A4870;border-radius:4px"></div><div style="width:22px;height:22px;background:var(--plate);border-radius:4px;box-shadow:0 3px 0 -1px var(--gold)"></div><div class="ml dim m">панель задач Windows</div></div>
+
+<div class="c" style="position:absolute;left:1002px;bottom:48px;gap:6px">
+<div class="pn"><div class="pi">
+<div class="grip"></div>
+<div class="hd"><div class="plate">Герой</div><div class="f1"></div><div class="cur"><svg class="i gold" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8v8"/></svg>12.4K</div><div class="cur"><svg class="i rift" viewBox="0 0 24 24"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg>18</div><button class="ib" aria-label="Закрепить"><svg class="i" viewBox="0 0 24 24"><path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4z"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+<div class="st"><button class="pl on">Обзор</button><button class="pl">Статы</button><div class="f1"></div><div class="sg"><span class="on">Пресет 1</span><span>2</span><span>3</span></div></div>
+<div class="ct">
+<div class="r g8"><div class="av s56" style="--c:var(--aR)"><svg class="spr" style="position:static;width:28px;height:42px"><use href="#hero"/></svg></div><div class="c g2 f1"><div class="h">Runedancer · ур. 37</div><div class="dim m">Этап 412 · рекорд 430</div><div class="pg" style="margin-top:3px"><i style="width:64%;--c:var(--blue)"></i></div></div></div>
+<div class="r g8 jc" style="flex:1"><div class="c g6"><div class="sl q3"><svg class="i" viewBox="0 0 24 24"><path d="M5 20v-8a7 7 0 0 1 14 0v8M9 20v-6h6v6"/></svg></div><div class="sl q4"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z"/></svg></div><div class="sl q2"><svg class="i" viewBox="0 0 24 24"><path d="M7 11V5h3v5M10 10V4h3v6M13 10V5h3v8l-2 7H8l-3-6 2-2z"/></svg></div><div class="sl e"><svg class="i" viewBox="0 0 24 24"><path d="M7 4h5v10l6 3v3H7z"/></svg></div></div>
+<div class="c ac g8" style="width:150px"><svg style="width:96px;height:144px;shape-rendering:crispEdges"><use href="#hero"/></svg><div class="sl q5 sel" style="width:120px"><svg class="i" viewBox="0 0 24 24"><path d="M5 19 19 5M14 5h5v5M5 14l5 5"/></svg><span class="lv">T1</span></div><div class="x dim">Рунные кинжалы</div></div>
+<div class="c g6"><div class="sl q3 rnd"><svg class="i" viewBox="0 0 24 24"><path d="M6 4l6 8 6-8M12 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/></svg></div><div class="sl q1 rnd"><svg class="i" viewBox="0 0 24 24"><path d="M12 8a6 6 0 1 0 0 12 6 6 0 0 0 0-12zM9 8l3-4 3 4"/></svg></div><div class="sl e rnd"><svg class="i" viewBox="0 0 24 24"><path d="M12 8a6 6 0 1 0 0 12 6 6 0 0 0 0-12zM9 8l3-4 3 4"/></svg></div></div></div>
+<div class="gr3"><div class="cd c"><span class="x dim">Урон за удар</span><span class="n h">48.2K</span></div><div class="cd c"><span class="x dim">DPS сейчас</span><span class="n h">1.31M</span></div><div class="cd c"><span class="x dim">Шанс крита</span><span class="n h">24%</span></div></div>
+<div class="li" style="min-height:36px"><svg class="i gold" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span class="f1 m">Свободных очков дерева: 2</span><button class="bt sm g">В дерево</button></div>
+</div>
+<div class="tb"><button class="tab on"><svg class="i" viewBox="0 0 24 24"><path d="M5 20v-8a7 7 0 0 1 14 0v8M9 20v-6h6v6"/></svg>Герой</button><button class="tab"><svg class="i" viewBox="0 0 24 24"><path d="M4 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-5a2 2 0 0 0-2 2"/></svg>Книга</button><button class="tab"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v5m0 0-6 6m6-6 6 6M12 4h.01M6 17h.01M18 17h.01"/></svg>Дерево<i class="dot"></i></button><button class="tab"><svg class="i" viewBox="0 0 24 24"><path d="M6 9h12l1 11H5zM9 9V7a3 3 0 0 1 6 0v2"/></svg>Предметы</button><button class="tab"><svg class="i" viewBox="0 0 24 24"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 20a6 6 0 0 1 12 0M16 11a3 3 0 1 0 0-6M22 20a6 6 0 0 0-4-5.7"/></svg>Отряд</button><button class="tab"><svg class="i" viewBox="0 0 24 24" style="stroke-width:3"><path d="M5 12h.01M12 12h.01M19 12h.01"/></svg>Ещё</button></div>
+</div></div>
+
+<div class="sp sn">
+<div class="sp-t"><svg class="i gold" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8v8"/></svg><span class="n ol" style="font-size:15px">12.4K</span><div class="f1 r jc g6"><span class="n ol">Этап 412</span><div class="wv"><i class="d"></i><i class="d"></i><i class="cu"></i><i></i><svg class="i i14 ol" viewBox="0 0 24 24" style="color:#fff"><path d="M12 3a8 8 0 0 0-5 14v3h10v-3a8 8 0 0 0-5-14zM9 12h.01M15 12h.01"/></svg></div></div><button class="sb" aria-label="Режим фокуса"><svg class="i i14" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg></button><button class="sb on" aria-label="Панель"><svg class="i i14" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
+<svg class="spr" style="left:36px;top:78px;width:48px;height:72px"><use href="#hero"/></svg>
+<svg class="spr" style="left:340px;top:70px;width:76px;height:84px"><use href="#mob"/></svg>
+<span class="dm" style="left:300px;top:52px">48.2K</span><span class="dm cr" style="left:346px;top:36px">193K</span>
+<div class="sp-b"><div class="orb" style="--f:62%">62</div><div class="vl"></div><div class="sk"><u>Л</u></div><div class="sk cd" style="--f:45%"><u>П</u>7</div><div class="sk rn" style="--c:var(--aB)"></div><div class="sk lk rn"></div><div class="f1"></div><span class="n ol m">3.4M</span><div class="hp" style="width:120px"><i style="width:62%"></i></div></div>
+</div>
+</div>
+
+<div class="c g4" style="position:absolute;left:770px;bottom:120px;width:210px;text-align:right"><div class="b gold">Полоска боя 480×180</div><div class="dim m">HUD: золото, этап и волны, цифры урона, ресурс, скиллы, HP врага</div></div>
+<div class="c g4" style="position:absolute;left:770px;top:150px;width:210px;text-align:right"><div class="b gold">Панель 480×600</div><div class="dim m">заголовок 46 · подвкладки 40 · содержимое · нижний ряд 60 · зазор до полоски 6</div></div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":760}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
