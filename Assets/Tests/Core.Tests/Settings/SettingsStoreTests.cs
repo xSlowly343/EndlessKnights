@@ -33,6 +33,8 @@ namespace Game.Core.Tests.Settings
             NumberFormat = new NumberFormatSettings(NumberFormat.Engineering, 3, ",", "."),
             MasterVolume = 0.3,
             HitVolume = 0.2,
+            HeroStrikeOpacity = 0.7,
+            AllyStrikeOpacity = 0.2,
             CountWheel = false,
             Language = "en",
             InputConsentGiven = true

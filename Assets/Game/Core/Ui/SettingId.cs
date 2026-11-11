@@ -27,6 +27,8 @@ namespace Game.Core.Ui
         ErrorReports,
         PrivacyPolicy,
         Eula,
-        CompanionStrip
+        CompanionStrip,
+        HeroStrikeOpacity,
+        AllyStrikeOpacity
     }
 }

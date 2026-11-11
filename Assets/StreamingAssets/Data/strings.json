@@ -985,6 +985,8 @@
     "settings.skillVolume": { "ru": "Скиллы", "en": "Skills" },
     "settings.interfaceVolume": { "ru": "Интерфейс", "en": "Interface" },
     "settings.notificationVolume": { "ru": "Уведомления", "en": "Notifications" },
+    "settings.heroStrikeOpacity": { "ru": "Видимость удара героя", "en": "Hero strike visibility" },
+    "settings.allyStrikeOpacity": { "ru": "Видимость ударов отряда", "en": "Party strike visibility" },
     "settings.countKeys": { "ru": "Считать клавиши", "en": "Count keys" },
     "settings.countMouseMovement": { "ru": "Считать движение мыши", "en": "Count mouse movement" },
     "settings.countClicks": { "ru": "Считать клики", "en": "Count clicks" },

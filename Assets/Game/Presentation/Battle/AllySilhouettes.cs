@@ -24,6 +24,8 @@ namespace Game.Presentation.Battle
         private const float SwingPeriodSeconds = 0.75f;
         private const float FadedAlpha = 0.45f;
         private const int BodySortingOrder = 9;
+        private const float StrikeDepth = 0.5f;
+        private const float DefaultStrikeOpacity = 0.5f;
 
         private static readonly float[] CentresPx = { 49f, 29f, 10f };
         private static readonly Color BubbleFill = new Color32(0x1B, 0x22, 0x36, 0xEB);
@@ -34,6 +36,8 @@ namespace Game.Presentation.Battle
         private static readonly Color OfflineMark = new Color32(0xE0, 0x57, 0x4A, 0xFF);
 
         private readonly SpriteRenderer[] _bodies = new SpriteRenderer[StripAllies.MaxShown];
+        private readonly HeroStrike[] _strikes = new HeroStrike[StripAllies.MaxShown];
+        private readonly float[] _swingAge = new float[StripAllies.MaxShown];
         private readonly Image[] _marks = new Image[StripAllies.MaxShown];
         private readonly TextMeshProUGUI[] _markTexts = new TextMeshProUGUI[StripAllies.MaxShown];
         private readonly Image[] _bubbles = new Image[StripAllies.MaxShown];
@@ -42,12 +46,15 @@ namespace Game.Presentation.Battle
         private readonly float[] _phase = { 0f, 0.31f, 0.57f };
         private int _count;
 
-        private AllySilhouettes(Transform scene, RectTransform canvas, UiTheme theme)
+        private AllySilhouettes(Transform scene, RectTransform canvas, UiTheme theme, int flightSortingOrder, int burstSortingOrder)
         {
             for (var i = 0; i < StripAllies.MaxShown; i++)
             {
                 _bodies[i] = HeroModel.Create("Ally " + i, BodyFeet(i), BodyScale, BodySortingOrder, scene);
                 _bodies[i].gameObject.SetActive(false);
+                _strikes[i] = new HeroStrike("Ally strike " + i, BodyFeet(i), BodyScale, flightSortingOrder, burstSortingOrder, StrikeDepth, scene);
+                _strikes[i].UseOpacity(DefaultStrikeOpacity);
+                _swingAge[i] = float.MaxValue;
                 _marks[i] = UiElements.Dot("Ally mark " + i, canvas, FightingMark);
                 StripCanvas.Place(_marks[i].rectTransform, CentresPx[i], GroundPx - BodyHeightPx - MarkGapPx - MarkPx / 2f, Vector2.one * MarkPx, new Vector2(0.5f, 0.5f));
                 _markTexts[i] = UiElements.Label("Text", _marks[i].rectTransform, theme.BoldFont, 9f, Color.white, TextAlignmentOptions.Center);
@@ -65,9 +72,18 @@ namespace Game.Presentation.Battle
             }
         }
 
-        public static AllySilhouettes Create(Transform scene, RectTransform canvas, UiTheme theme) => new AllySilhouettes(scene, canvas, theme);
+        public static AllySilhouettes Create(Transform scene, RectTransform canvas, UiTheme theme, int flightSortingOrder, int burstSortingOrder) =>
+            new AllySilhouettes(scene, canvas, theme, flightSortingOrder, burstSortingOrder);
 
         public int Shown => _count;
+
+        public HeroStrike Strike(int index) => _strikes[index];
+
+        public void UseStrikeOpacity(float opacity)
+        {
+            for (var i = 0; i < _strikes.Length; i++)
+                _strikes[i].UseOpacity(opacity);
+        }
 
         public string ReactionShown(int index) => _bubbles[index].gameObject.activeSelf ? _bubbleTexts[index].text : string.Empty;
 
@@ -89,6 +105,7 @@ namespace Game.Presentation.Battle
                 var color = Color.Lerp(Color.white, PartyColors.Of(ally.ColorIndex), TintStrength);
                 color.a = ally.Faded ? FadedAlpha : 1f;
                 _bodies[i].color = color;
+                _strikes[i].UseTint(Color.Lerp(Color.white, PartyColors.Of(ally.ColorIndex), TintStrength));
                 _marks[i].color = MarkColor(ally.Presence);
                 var mark = StripAllies.StatusMark(ally.Presence);
                 if (_markTexts[i].text != mark)
@@ -100,15 +117,25 @@ namespace Game.Presentation.Battle
             }
         }
 
-        public void Animate(float time)
+        public void Animate(float time, float delta, Vector2 target)
         {
-            for (var i = 0; i < _count; i++)
+            for (var i = 0; i < StripAllies.MaxShown; i++)
             {
-                var into = Mathf.Repeat(time + _phase[i], SwingPeriodSeconds);
-                var attacking = _shown[i].Swings && into < HeroModel.Attack.Duration;
-                var sprite = attacking ? HeroModel.Attack.SpriteAt(into) : HeroModel.Idle.SpriteAt(time + _phase[i]);
-                if (_bodies[i].sprite != sprite)
-                    _bodies[i].sprite = sprite;
+                var swinging = i < _count && _shown[i].Swings;
+                var into = swinging ? Mathf.Repeat(time + _phase[i], SwingPeriodSeconds) : float.MaxValue;
+                var attacking = into < HeroModel.Attack.Duration;
+                if (i < _count)
+                {
+                    var sprite = attacking ? HeroModel.Attack.SpriteAt(into) : HeroModel.Idle.SpriteAt(time + _phase[i]);
+                    if (_bodies[i].sprite != sprite)
+                        _bodies[i].sprite = sprite;
+                }
+                var strikes = attacking && into >= HeroModel.StrikeSeconds && (_swingAge[i] < HeroModel.StrikeSeconds || _swingAge[i] > into);
+                if (strikes)
+                    _strikes[i].Launch(target);
+                _swingAge[i] = into;
+                _strikes[i].ShowSlash(into);
+                _strikes[i].Animate(delta);
             }
         }
 

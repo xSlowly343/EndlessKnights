@@ -49,6 +49,11 @@ namespace Game.Core.Settings
                     ["interface"] = JsonValue.Of(settings.InterfaceVolume),
                     ["notifications"] = JsonValue.Of(settings.NotificationVolume)
                 }),
+                ["strikeOpacity"] = JsonValue.Object(new Dictionary<string, JsonValue>
+                {
+                    ["hero"] = JsonValue.Of(settings.HeroStrikeOpacity),
+                    ["allies"] = JsonValue.Of(settings.AllyStrikeOpacity)
+                }),
                 ["input"] = JsonValue.Object(new Dictionary<string, JsonValue>
                 {
                     ["keys"] = JsonValue.Of(settings.CountKeys),
@@ -109,6 +114,12 @@ namespace Game.Core.Settings
                 settings.SkillVolume = Read(volume, "skills", Volume, settings.SkillVolume, problems);
                 settings.InterfaceVolume = Read(volume, "interface", Volume, settings.InterfaceVolume, problems);
                 settings.NotificationVolume = Read(volume, "notifications", Volume, settings.NotificationVolume, problems);
+            }
+            if (root.HasField("strikeOpacity"))
+            {
+                var opacity = root.Field("strikeOpacity");
+                settings.HeroStrikeOpacity = Read(opacity, "hero", Volume, settings.HeroStrikeOpacity, problems);
+                settings.AllyStrikeOpacity = Read(opacity, "allies", Volume, settings.AllyStrikeOpacity, problems);
             }
             if (root.HasField("input"))
             {

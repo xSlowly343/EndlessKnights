@@ -18,6 +18,8 @@ namespace Game.Core.Settings
         public double SkillVolume { get; set; } = 0.6;
         public double InterfaceVolume { get; set; } = 0.6;
         public double NotificationVolume { get; set; } = 0.6;
+        public double HeroStrikeOpacity { get; set; } = 1;
+        public double AllyStrikeOpacity { get; set; } = 0.5;
         public bool CountKeys { get; set; } = true;
         public bool CountMouseMovement { get; set; } = true;
         public bool CountClicks { get; set; } = true;

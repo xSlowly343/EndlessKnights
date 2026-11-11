@@ -56,6 +56,9 @@ namespace Game.Presentation.Battle
         private const float GoldWidthPx = 90f;
 
         private const float HeroScale = 3f;
+        private const int FighterSortingOrder = 10;
+        private const int StrikeSortingOrder = 11;
+        private const float StrikeDepthIntoEnemy = 0.25f;
 
         private static readonly Vector2 HeroFeet = StripSpace.AtPx(85f, 150f);
         private static readonly float EnemyX = StripSpace.Units(416f);
@@ -94,6 +97,8 @@ namespace Game.Presentation.Battle
 
         private Transform _scene = null!;
         private SpriteRenderer _hero = null!;
+        private HeroStrike _strike = null!;
+        private bool _struck = true;
         private SpriteRenderer _enemy = null!;
         private AllySilhouettes _allies = null!;
         private PartyEnemyMarks _marks = null!;
@@ -173,6 +178,16 @@ namespace Game.Presentation.Battle
             return view;
         }
 
+        public HeroStrike Strike => _strike;
+
+        public Vector2 StrikeTarget => EnemyCentre + new Vector2(-_enemyScale * StrikeDepthIntoEnemy, 0f);
+
+        public void UseStrikeOpacity(float hero, float allies)
+        {
+            _strike.UseOpacity(hero);
+            _allies.UseStrikeOpacity(allies);
+        }
+
         private Vector2 EnemyCentre => new Vector2(EnemyX, GroundY + _enemyScale / 2f);
 
         public void ShowEnemy(bool boss, bool guardian)
@@ -214,7 +229,10 @@ namespace Game.Presentation.Battle
         {
             _flashAge = 0f;
             if (!Attacking || HeroModel.Attack.FrameAt(_attackAge) >= HeroModel.AttackCancelFrame)
+            {
                 _attackAge = 0f;
+                _struck = false;
+            }
             if (crit)
                 _critShakeAge = 0f;
             var origin = _enemyScale > EnemySize ? BossNumbersOrigin : NumbersOrigin;
@@ -275,8 +293,9 @@ namespace Game.Presentation.Battle
             _theme = UiTheme.Load();
             _scene = new GameObject("Scene").transform;
             _scene.SetParent(transform, false);
-            _hero = HeroModel.Create("Hero", HeroFeet, HeroScale, 10, _scene);
-            _enemy = ShapeSprites.Create("Enemy", ShapeSprites.Circle, EnemyColor, EnemyCentre, Vector2.one * EnemySize, 10, _scene);
+            _hero = HeroModel.Create("Hero", HeroFeet, HeroScale, FighterSortingOrder, _scene);
+            _strike = new HeroStrike("Hero strike", HeroFeet, HeroScale, StrikeSortingOrder, StrikeSortingOrder, 0f, _scene);
+            _enemy = ShapeSprites.Create("Enemy", ShapeSprites.Circle, EnemyColor, EnemyCentre, Vector2.one * EnemySize, FighterSortingOrder, _scene);
             _enemy.gameObject.AddComponent<CircleCollider2D>();
             _hero.gameObject.AddComponent<BoxCollider2D>();
             ShapeSprites.Create("Ground", ShapeSprites.Square, GroundColor, new Vector2(StripSpace.Width / 2f, GroundY), new Vector2(StripSpace.Width, StripSpace.Units(2f)), 9, _scene);
@@ -292,7 +311,7 @@ namespace Game.Presentation.Battle
             var notice = StripCanvas.PxOf(NoticePosition);
             StripCanvas.Place(_noticeText.rectTransform, notice.x, StripSpace.BaseHeightPx - notice.y, new Vector2(320f, 20f), new Vector2(0.5f, 0.5f));
             _noticeText.gameObject.SetActive(false);
-            _allies = AllySilhouettes.Create(_scene, texts, _theme);
+            _allies = AllySilhouettes.Create(_scene, texts, _theme, FighterSortingOrder, StrikeSortingOrder);
             _numbers = DamageNumbers.Create();
             _numbers.transform.SetParent(transform, false);
             _coins = CoinBurst.Create(CoinTarget);
@@ -439,7 +458,7 @@ namespace Game.Presentation.Battle
             AnimateBars(delta);
             AnimateEnemy(delta);
             AnimateHero(delta);
-            _allies.Animate(Time.unscaledTime);
+            _allies.Animate(Time.unscaledTime, delta, StrikeTarget);
             _marks.Animate(delta);
             AnimateEffects(delta);
         }
@@ -486,6 +505,13 @@ namespace Game.Presentation.Battle
             var sprite = Attacking ? HeroModel.Attack.SpriteAt(_attackAge) : HeroModel.Idle.SpriteAt(_idleAge);
             if (_hero.sprite != sprite)
                 _hero.sprite = sprite;
+            if (!_struck && _attackAge >= HeroModel.StrikeSeconds)
+            {
+                _struck = true;
+                _strike.Launch(StrikeTarget);
+            }
+            _strike.ShowSlash(_attackAge);
+            _strike.Animate(delta);
         }
 
         private bool Attacking => _attackAge < HeroModel.Attack.Duration;
