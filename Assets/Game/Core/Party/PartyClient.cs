@@ -384,7 +384,7 @@ namespace Game.Core.Party
                         OnRelay(relay);
                     break;
                 case PartyMessageKind.EncounterState when PartyCodec.TryDecode(_in, length, out EncounterStateMessage state):
-                    if (state.Sequence > _state.Sequence)
+                    if (state.Sequence > _state.Sequence && (Status != PartyLink.Joining || _inRoster))
                         OnState(state);
                     break;
                 case PartyMessageKind.EnemyKilled when PartyCodec.TryDecode(_in, length, out EnemyKilledMessage killed):

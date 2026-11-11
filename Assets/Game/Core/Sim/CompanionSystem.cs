@@ -390,8 +390,11 @@ namespace Game.Core.Sim
             points *= 1 + GearStat(companion, CompanionGearStat.Bond) + HomeOwn(OwnEffectKind.Bond) + Bonus(companion, CompanionStat.Bond);
             progress.Bond = System.Math.Min(_rules.Bond.PointsTo(_rules.Bond.MaxHearts), progress.Bond + points);
             var after = Hearts(companion);
-            if (after > before)
-                _events.Add(GameEvent.ForStage(GameEventKind.CompanionHeart, _state.Tick, after));
+            if (after <= before)
+                return;
+            _events.Add(GameEvent.ForStage(GameEventKind.CompanionHeart, _state.Tick, after));
+            if (after >= _rules.Bond.MaxHearts)
+                State.Souls += (long)TreeStat(MenagerieStat.LastHeartSouls);
         }
 
         public CompanionResult Pet(string companion)
@@ -400,7 +403,7 @@ namespace Game.Core.Sim
                 return CompanionResult.UnknownCompanion;
             var progress = Progress(companion);
             var rules = _rules.Bond;
-            if (progress.PetsToday >= rules.PetsPerDay)
+            if (progress.PetsToday >= rules.PetsPerDay + (int)TreeStat(MenagerieStat.PetsPerDay))
                 return CompanionResult.Full;
             if (progress.LastPetTick != long.MinValue && _state.Tick - progress.LastPetTick < rules.PetEveryTicks)
                 return CompanionResult.TooSoon;
@@ -554,6 +557,7 @@ namespace Game.Core.Sim
             var first = State.Day < 0;
             State.Day = day;
             Work?.SetDay(day);
+            GiveWeeklySouls(day);
             if (!first)
                 GiveDailyItems();
             foreach (var progress in State.Progress.Values)
@@ -563,6 +567,16 @@ namespace Game.Core.Sim
                 progress.FavouriteBondsToday = 0;
                 progress.FriendPetsToday = 0;
             }
+        }
+
+        private void GiveWeeklySouls(long day)
+        {
+            var souls = (long)TreeStat(MenagerieStat.WeeklySouls);
+            var week = ChronicleCatalog.WeekOf(day);
+            if (souls <= 0 || State.SoulTreeWeek == week)
+                return;
+            State.SoulTreeWeek = week;
+            State.Souls += souls;
         }
 
         public bool IsFavourite(string companion, string food)
@@ -893,9 +907,9 @@ namespace Game.Core.Sim
                 return CompanionResult.Repeat;
             if (progress.Form.Length > 0)
             {
-                if (State.Souls < _rules.Forms.ChangeSouls)
+                if (State.Souls < FormChangeSouls)
                     return CompanionResult.NoSouls;
-                State.Souls -= _rules.Forms.ChangeSouls;
+                State.Souls -= FormChangeSouls;
             }
             progress.Form = form;
             if (!progress.Forms.Contains(form))
@@ -904,6 +918,8 @@ namespace Game.Core.Sim
             _events.Add(GameEvent.ForStage(GameEventKind.CompanionEvolved, _state.Tick, progress.Stage));
             return CompanionResult.Done;
         }
+
+        public long FormChangeSouls => (long)System.Math.Ceiling(_rules.Forms.ChangeSouls * System.Math.Max(0, 1 - TreeStat(MenagerieStat.FormCost)) - 1e-9);
 
         public double FormLoot(string companion) => FormOf(companion)?.Loot ?? 0;
 
@@ -945,18 +961,14 @@ namespace Game.Core.Sim
             if (cost == null)
                 return CompanionResult.MaxStars;
             var progress = Progress(companion);
-            if (souls)
-            {
-                if (State.Souls < StarPrice(cost.Souls))
-                    return CompanionResult.NoSouls;
+            if (souls ? State.Souls < StarPrice(cost.Souls) : progress.OwnSparks < StarPrice(cost.Sparks))
+                return CompanionResult.NoSouls;
+            var chance = TreeStat(MenagerieStat.FreeStar);
+            var free = chance > 0 && _state.Rng.NextDouble() < chance;
+            if (!free && souls)
                 State.Souls -= StarPrice(cost.Souls);
-            }
-            else
-            {
-                if (progress.OwnSparks < StarPrice(cost.Sparks))
-                    return CompanionResult.NoSouls;
+            else if (!free)
                 progress.OwnSparks -= StarPrice(cost.Sparks);
-            }
             progress.Stars++;
             ApplyPerks();
             _events.Add(GameEvent.ForStage(GameEventKind.CompanionEvolved, _state.Tick, progress.Stage));
@@ -1027,6 +1039,14 @@ namespace Game.Core.Sim
                 return;
             State.SoulHostDay = day;
             State.Souls += _rules.Stars.SoulsPerHost;
+        }
+
+        public void NoteWeeklyTrial(long week)
+        {
+            if (State.SoulTrialWeek == week)
+                return;
+            State.SoulTrialWeek = week;
+            State.Souls += _rules.Stars.SoulsPerWeeklyTrial;
         }
 
         public double TraitFactor(string companion)
@@ -1278,7 +1298,7 @@ namespace Game.Core.Sim
                 return CompanionResult.UnknownTrait;
             if (TraitsOf(companion).Contains(trait))
                 return CompanionResult.Repeat;
-            var price = (long)System.Math.Ceiling(_rules.TraitChangeShards * System.Math.Max(0, 1 - HomeOwn(OwnEffectKind.TraitPrice)) * System.Math.Max(0, 1 + Bonus(companion, CompanionStat.TraitChangePrice)) - 1e-9);
+            var price = (long)System.Math.Ceiling(_rules.TraitChangeShards * System.Math.Max(0, 1 - HomeOwn(OwnEffectKind.TraitPrice) - TreeStat(MenagerieStat.TraitCost)) * System.Math.Max(0, 1 + Bonus(companion, CompanionStat.TraitChangePrice)) - 1e-9);
             if (_state.Drops.Shards < price)
                 return CompanionResult.NoShards;
             _state.Drops.Shards -= price;
@@ -1558,7 +1578,7 @@ namespace Game.Core.Sim
                 return CompanionResult.LastStage;
             if (CircleProgress(companion) < next.Count)
                 return CompanionResult.Locked;
-            if (State.Essence < next.Essence)
+            if (State.Essence < CircleEssence(next.Essence))
                 return CompanionResult.NoEssence;
             if (next.Blooms > 0 && _camp.Count(_rules.Bloom) < next.Blooms)
                 return CompanionResult.NoBlooms;
@@ -1569,13 +1589,15 @@ namespace Game.Core.Sim
             return CompanionResult.Done;
         }
 
+        public long CircleEssence(long essence) => (long)System.Math.Ceiling(essence * System.Math.Max(0, 1 - TreeStat(MenagerieStat.CircleCost)) - 1e-9);
+
         public CompanionResult AdvanceCircle(string companion)
         {
             var result = CanAdvanceCircle(companion);
             if (result != CompanionResult.Done)
                 return result;
             var next = NextCircle(companion)!;
-            State.Essence -= next.Essence;
+            State.Essence -= CircleEssence(next.Essence);
             if (next.Blooms > 0)
                 _camp.Take(_rules.Bloom, next.Blooms);
             if (next.Bones > 0)

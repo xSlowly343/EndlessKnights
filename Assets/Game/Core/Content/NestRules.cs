@@ -25,6 +25,7 @@ namespace Game.Core.Content
         public double CoalSeconds { get; private set; }
         public double CoalSecondsPerDay { get; private set; }
         public double FriendWarmSeconds { get; private set; }
+        public double EarlyHatchSeconds { get; private set; }
         public double SparkExperience { get; private set; }
         public int SparksForChoice { get; private set; }
         public IReadOnlyList<NestTrophy> Trophies { get; private set; } = Array.Empty<NestTrophy>();
@@ -54,6 +55,7 @@ namespace Game.Core.Content
                 CoalSeconds = node.Field("coalHours").AsNumber(0, 100) * hour,
                 CoalSecondsPerDay = node.Field("coalHoursPerDay").AsNumber(0, 100) * hour,
                 FriendWarmSeconds = node.Field("friendWarmHours").AsNumber(0, 100) * hour,
+                EarlyHatchSeconds = node.Field("earlyHatchHours").AsNumber(0, 10_000) * hour,
                 SparkExperience = node.Field("sparkExperience").AsNumber(0, 1e9),
                 SparksForChoice = node.Field("sparksForChoice").AsInt(1, 1000),
                 Trophies = trophies,

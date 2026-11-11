@@ -195,6 +195,31 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void TheFirstWeeklyGoalOfTheWeekGivesSoulsOnce()
+        {
+            var loop = AfterPrestige();
+            loop.SetLocalDay(20400);
+            var souls = TestWorld.Data.Companions.Stars.SoulsPerWeeklyTrial;
+            var weekly = loop.Chronicle.WeeklyTrials[0];
+            loop.StartWeeklyTrial(weekly.Id);
+            Reach(loop, weekly.GoalStage - 1);
+            Assert.That(loop.State.Companions.Souls, Is.Zero);
+
+            Reach(loop, weekly.GoalStage + 5);
+
+            Assert.That(souls, Is.GreaterThan(0));
+            Assert.That(loop.State.Companions.Souls, Is.EqualTo(souls));
+            Assert.That(loop.State.Companions.SoulTrialWeek, Is.EqualTo(loop.State.Chronicle.Week));
+            var copy = GameStateJson.Read(new ContentNode(GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Companions.SoulTrialWeek, Is.EqualTo(loop.State.Companions.SoulTrialWeek));
+
+            loop.Companions.NoteWeeklyTrial(loop.State.Chronicle.Week);
+            Assert.That(loop.State.Companions.Souls, Is.EqualTo(souls), "one reward a week");
+            loop.Companions.NoteWeeklyTrial(loop.State.Chronicle.Week + 1);
+            Assert.That(loop.State.Companions.Souls, Is.EqualTo(souls * 2), "a goal already completed for good still pays next week");
+        }
+
+        [Test]
         public void ANewWeekEndsTheWeeklyRunAndClearsTheBest()
         {
             var loop = AfterPrestige();

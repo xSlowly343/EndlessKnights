@@ -17,10 +17,6 @@ namespace Game.Core.Ui
 
         public static IReadOnlyList<string> Eula => Lines("eula.line.", EulaLines);
 
-        public static string Title(SettingId id) => id == SettingId.Eula ? EulaTitle : PolicyTitle;
-
-        public static IReadOnlyList<string> Lines(SettingId id) => id == SettingId.Eula ? Eula : Policy;
-
         private static IReadOnlyList<string> Lines(string prefix, int count)
         {
             var lines = new string[count];

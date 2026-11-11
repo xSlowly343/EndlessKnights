@@ -1713,6 +1713,7 @@
     "coalHours": 1,
     "coalHoursPerDay": 6,
     "friendWarmHours": 2,
+    "earlyHatchHours": 6,
     "sparkExperience": 150,
     "sparksForChoice": 5,
     "trophies": [
@@ -1835,7 +1836,8 @@
     "souls": {
       "perHostDaily": 1,
       "tripHoursPerSoul": 20,
-      "perPartyTrip": 5
+      "perPartyTrip": 5,
+      "perWeeklyTrial": 3
     }
   },
   "forms": {
@@ -2777,14 +2779,14 @@
         ],
         "b": [
           {
-            "stat": "none",
-            "waits": "coalSeconds"
+            "stat": "coalWarm",
+            "value": 0.2
           }
         ],
         "c": [
           {
-            "stat": "none",
-            "waits": "earlyHatch"
+            "stat": "earlyHatch",
+            "value": 0.1
           }
         ]
       },
@@ -2803,8 +2805,8 @@
         ],
         "b": [
           {
-            "stat": "none",
-            "waits": "petsPerDay"
+            "stat": "petsPerDay",
+            "value": 1
           }
         ],
         "c": [
@@ -2861,8 +2863,8 @@
         ],
         "c": [
           {
-            "stat": "none",
-            "waits": "weeklySouls"
+            "stat": "weeklySouls",
+            "value": 5
           }
         ]
       },
@@ -3076,8 +3078,8 @@
         ],
         "c": [
           {
-            "stat": "none",
-            "waits": "sparksForEgg"
+            "stat": "choiceSparks",
+            "value": 1
           }
         ]
       },
@@ -3205,8 +3207,8 @@
         ],
         "b": [
           {
-            "stat": "none",
-            "waits": "gearPrice"
+            "stat": "gearCost",
+            "value": 0.05
           }
         ],
         "c": [
@@ -3334,14 +3336,14 @@
         },
         "a": [
           {
-            "stat": "none",
-            "waits": "formCost"
+            "stat": "formCost",
+            "value": 0.05
           }
         ],
         "b": [
           {
-            "stat": "none",
-            "waits": "traitCost"
+            "stat": "traitCost",
+            "value": 0.05
           }
         ],
         "c": [
@@ -3394,8 +3396,8 @@
         ],
         "b": [
           {
-            "stat": "none",
-            "waits": "friendWarm"
+            "stat": "friendWarm",
+            "value": 0.1
           }
         ],
         "c": [
@@ -3427,8 +3429,8 @@
         ],
         "c": [
           {
-            "stat": "none",
-            "waits": "tenthHeartSouls"
+            "stat": "lastHeartSouls",
+            "value": 10
           }
         ]
       },
@@ -3697,8 +3699,8 @@
         ],
         "c": [
           {
-            "stat": "none",
-            "waits": "freeStar"
+            "stat": "freeStar",
+            "value": 0.03
           }
         ]
       },
@@ -4155,8 +4157,8 @@
             },
             "lines": [
               {
-                "stat": "none",
-                "waits": "circleCost"
+                "stat": "circleCost",
+                "value": 0.2
               }
             ]
           },

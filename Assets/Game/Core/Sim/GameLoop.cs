@@ -205,6 +205,7 @@ namespace Game.Core.Sim
             _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
             _hideout.Decor = _decor;
             _hideout.Companions = _companions;
+            _chronicle.Companions = _companions;
             _hideout.Nest = _nest;
             _museum.Companions = _companions;
             _forge.Shared = data.Hideout.Crafts;

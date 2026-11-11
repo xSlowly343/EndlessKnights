@@ -153,7 +153,7 @@ namespace Game.Core.Tests.Sim
             try
             {
                 SettingsScreen.UseLooks(new HeroLookChooser(loop.Cosmetics));
-                Assert.That(SettingsScreen.Rows(3), Is.EqualTo(new[] { SettingId.HeroCloak, SettingId.HeroEyes, SettingId.HeroStrike }));
+                Assert.That(SettingsScreen.Rows(2), Is.EqualTo(new[] { SettingId.HeroCloak, SettingId.HeroEyes, SettingId.HeroStrike }));
                 Assert.That(SettingsScreen.Value(SettingId.HeroEyes, settings), Is.EqualTo("Глаза Изнанки"));
                 Assert.That(SettingsScreen.Change(SettingId.HeroEyes, settings, -1), Is.True);
                 Assert.That(SettingsScreen.Value(SettingId.HeroEyes, settings), Is.EqualTo("Розовые глаза · примерка, 200 крист."));

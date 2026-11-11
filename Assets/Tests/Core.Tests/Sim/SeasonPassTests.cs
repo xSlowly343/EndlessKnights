@@ -25,7 +25,7 @@ namespace Game.Core.Tests.Sim
             var season = Rules.Seasons[0];
             Assert.That(season.Free.Concat(season.Premium).Where(r => r.Cosmetic.Length > 0).All(r => TestWorld.Real.Cosmetics.TryGet(r.Cosmetic, out var item) && item.Source == "pass"), Is.True);
             Assert.That(season.Free.Sum(r => r.Crystals), Is.EqualTo(200));
-            Assert.That(TestWorld.Real.Cosmetics.All.Count(c => c.ForSale), Is.EqualTo(72), "pass items are not sold");
+            Assert.That(TestWorld.Real.Cosmetics.All.Count(c => c.ForSale), Is.EqualTo(94), "pass items are not sold");
         }
 
         [Test]

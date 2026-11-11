@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using Game.Core.Settings;
-using Game.Core.Text;
-using Game.Core.Ui;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Settings
@@ -80,21 +78,6 @@ namespace Game.Core.Tests.Settings
 
             Assert.That(loaded.TelemetryConsentGiven, Is.False);
             Assert.That(problems.Count, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void PrivacyTabTogglesTelemetry()
-        {
-            Texts.UseLanguage("ru");
-            var settings = new GameSettings();
-
-            Assert.That(SettingsScreen.Rows(2), Does.Contain(SettingId.Telemetry));
-            Assert.That(SettingsScreen.KindOf(SettingId.Telemetry), Is.EqualTo(SettingKind.Toggle));
-            Assert.That(SettingsScreen.Value(SettingId.Telemetry, settings), Is.EqualTo("Выкл"));
-            Assert.That(SettingsScreen.Change(SettingId.Telemetry, settings, 1), Is.True);
-            Assert.That(settings.TelemetryConsentGiven, Is.True);
-            Assert.That(PanelSections.SubTabs(PanelSection.Settings)[2], Is.EqualTo("Приватность"));
-            Assert.That(SettingsScreen.Note(2), Is.Not.Empty);
         }
     }
 }

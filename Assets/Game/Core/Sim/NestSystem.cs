@@ -36,6 +36,8 @@ namespace Game.Core.Sim
         private NestRules Rules => _companions.Rules.Nest;
         private CompanionState State => _state.Companions;
 
+        public int ChoiceSparks => System.Math.Max(1, Rules.SparksForChoice - (int)_companions.TreeStat(MenagerieStat.ChoiceSparks));
+
         public int Slots => _camp.Slots(Rules.Building) + _companions.NestBonusSlots;
 
         public string EggCompanion(string biome)
@@ -70,7 +72,11 @@ namespace Game.Core.Sim
 
         public void Lay(string biome)
         {
-            State.Eggs.Add(new CompanionEgg { Biome = biome, SecondsLeft = Rules.HatchSeconds * System.Math.Max(0.1, 1 - _companions.TreeStat(MenagerieStat.HatchTime) - _companions.HomeOwn(OwnEffectKind.Hatch)) });
+            var seconds = Rules.HatchSeconds * System.Math.Max(0.1, 1 - _companions.TreeStat(MenagerieStat.HatchTime) - _companions.HomeOwn(OwnEffectKind.Hatch));
+            var early = _companions.TreeStat(MenagerieStat.EarlyHatch);
+            if (early > 0 && _state.Rng.NextDouble() < early)
+                seconds = System.Math.Max(0, seconds - Rules.EarlyHatchSeconds);
+            State.Eggs.Add(new CompanionEgg { Biome = biome, SecondsLeft = seconds });
             _events.Add(GameEvent.ForStage(GameEventKind.CompanionEggFound, _state.Tick, State.Eggs.Count));
         }
 
@@ -81,15 +87,31 @@ namespace Game.Core.Sim
             if (seconds <= 0)
                 return;
             State.EggCooldown = System.Math.Max(0, State.EggCooldown - seconds);
-            var warm = System.Math.Min(Slots, State.Eggs.Count);
-            for (var i = warm - 1; i >= 0; i--)
+            var left = seconds;
+            while (left > 0 && State.Eggs.Count > 0)
             {
-                var egg = State.Eggs[i];
-                egg.SecondsLeft -= seconds;
-                if (egg.SecondsLeft <= 0)
-                    Hatch(i);
+                var warm = System.Math.Min(Slots, State.Eggs.Count);
+                if (warm <= 0)
+                    break;
+                var step = System.Math.Min(left, System.Math.Max(0, SoonestHatch(warm)));
+                left -= step;
+                for (var i = warm - 1; i >= 0; i--)
+                {
+                    var egg = State.Eggs[i];
+                    egg.SecondsLeft -= step;
+                    if (egg.SecondsLeft <= 0)
+                        Hatch(i);
+                }
             }
             NoteRewards();
+        }
+
+        private double SoonestHatch(int warm)
+        {
+            var soonest = double.MaxValue;
+            for (var i = 0; i < warm; i++)
+                soonest = System.Math.Min(soonest, State.Eggs[i].SecondsLeft);
+            return soonest;
         }
 
         public void SetDay() => State.CoalToday = 0;
@@ -103,7 +125,7 @@ namespace Game.Core.Sim
             if (!_camp.Take(Rules.Coal, 1))
                 return NestResult.NoCoal;
             State.CoalToday += Rules.CoalSeconds;
-            Warm(index, Rules.CoalSeconds);
+            Warm(index, Rules.CoalSeconds * (1 + _companions.TreeStat(MenagerieStat.CoalWarm)));
             return NestResult.Done;
         }
 
@@ -111,7 +133,7 @@ namespace Game.Core.Sim
         {
             if (index < 0 || index >= State.Eggs.Count)
                 return NestResult.NoEgg;
-            Warm(index, Rules.FriendWarmSeconds);
+            Warm(index, Rules.FriendWarmSeconds * (1 + _companions.TreeStat(MenagerieStat.FriendWarm)));
             return NestResult.Done;
         }
 
@@ -168,9 +190,9 @@ namespace Game.Core.Sim
                 return NestResult.UnknownBiome;
             if (_companions.Known(companion) || HasEgg(biome))
                 return NestResult.BiomeTaken;
-            if (State.Sparks < Rules.SparksForChoice)
+            if (State.Sparks < ChoiceSparks)
                 return NestResult.NoSparks;
-            State.Sparks -= Rules.SparksForChoice;
+            State.Sparks -= ChoiceSparks;
             Lay(biome);
             return NestResult.Done;
         }

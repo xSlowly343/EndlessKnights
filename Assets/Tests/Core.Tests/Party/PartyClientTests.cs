@@ -329,10 +329,33 @@ namespace Game.Core.Tests.Party
             foreach (var player in rig.Players)
             {
                 Assert.That(player.Client.Status, Is.EqualTo(PartyLink.Linked));
-                Assert.That(player.Client.EnemyId, Is.EqualTo(rig.Host.Encounter.EnemyId));
+                Assert.That(player.Client.EnemyId, Is.InRange(rig.Host.Encounter.EnemyId - 1, rig.Host.Encounter.EnemyId), "the client follows the new host within one state packet");
             }
             Assert.That(rig.Players[0].Client.PartyRewards, Is.GreaterThan(paidBefore + 3));
             Assert.That(rig.Players[0].Client.LastBossKill.EnemyId, Is.LessThanOrEqualTo(rig.Host.Encounter.EnemyId), "bosses of the old match do not hide the new ones");
+        }
+
+        [Test]
+        public void AStateOfTheOldHostThatArrivesAfterRejoinDoesNotFreezeTheFight()
+        {
+            var rig = new Rig(5, 5);
+            rig.Run(30);
+            var oldEnemy = rig.Host.Encounter.EnemyId;
+            var stale = new byte[256];
+            var length = Game.Core.Party.Wire.PartyCodec.Encode(stale, new Game.Core.Party.Wire.EncounterStateMessage { Sequence = 1_000_000, EnemyId = oldEnemy + 50, BarFull = 2, BarLeft = 2 });
+            var oldHost = rig.Network.Connect(HostId);
+
+            rig.ReplaceHost(77);
+            foreach (var player in rig.Players)
+            {
+                player.Client.Rejoin();
+                oldHost.Send(player.Id, stale, length);
+            }
+            rig.Run(30);
+
+            Assert.That(rig.Host.Kills, Is.GreaterThan(3));
+            foreach (var player in rig.Players)
+                Assert.That(player.Client.EnemyId, Is.LessThan(oldEnemy + 50));
         }
 
         [Test]
