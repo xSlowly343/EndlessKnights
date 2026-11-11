@@ -4,6 +4,8 @@ namespace Game.Core.Ui
     {
         Toggle,
         Choice,
-        Action
+        Action,
+        Segments,
+        Slider
     }
 }

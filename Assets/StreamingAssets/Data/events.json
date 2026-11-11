@@ -5,6 +5,7 @@
   "guestEvery": 5,
   "tokensPerGuest": 1,
   "dailyTokenCap": 300,
+  "companionGoals": 4,
   "boss": {
     "perDay": 1,
     "timerSeconds": 60,
@@ -96,6 +97,7 @@
     },
     {
       "id": "long_night",
+      "companion": "star_kitten",
       "name": {
         "ru": "Долгая Ночь",
         "en": "The Long Night"
@@ -137,6 +139,7 @@
     },
     {
       "id": "flood_tide",
+      "companion": "bloom_hare",
       "name": {
         "ru": "Половодье",
         "en": "Flood Tide"

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Build;
 using Game.Core.Content;
 using Game.Core.Math;
 using Game.Core.Settings;
@@ -22,6 +23,8 @@ namespace Game.Bootstrap
         private GameLoop? _loop;
         private NotificationDriver? _notifications;
         private ChangeLog? _changeLog;
+        private bool _firstRun;
+        private PanelCanvas? _panels;
 
         public GameSettings Settings { get; private set; } = new GameSettings();
 
@@ -30,7 +33,10 @@ namespace Game.Bootstrap
             var driver = host.AddComponent<SettingsDriver>();
             driver._store = new SettingsStore(SaveDriver.SaveDirectory);
             var problems = new List<string>();
+            driver._firstRun = !driver._store.Exists;
             driver.Settings = driver._store.Load(problems);
+            if (driver._firstRun)
+                PrivacyPolicy.Accept(driver.Settings);
             foreach (var problem in problems)
                 Debug.LogWarning("Settings: " + problem);
             ApplyText(driver.Settings);
@@ -40,6 +46,7 @@ namespace Game.Bootstrap
         public void Bind(PanelCanvas panels, PanelModeDriver? panelMode, TaskbarDockDriver? dock, TrayDriver? tray, BattleView? battle, GameLoop? loop, NotificationDriver? notifications, ChangeLog? changeLog)
         {
             _changeLog = changeLog;
+            _panels = panels;
             _loop = loop;
             _notifications = notifications;
             ApplyPermissions();
@@ -67,12 +74,9 @@ namespace Game.Bootstrap
                 _tray.UseState(TrayStateOf(Settings));
                 _tray.StateChanged += OnTrayChanged;
             }
-            var firstRun = !Settings.InputConsentGiven;
-            var showWhatsNew = WhatsNew.ShowOnStart(Settings, _changeLog, firstRun);
+            var showWhatsNew = WhatsNew.ShowOnStart(Settings, _changeLog, _firstRun);
             Save();
-            if (PrivacyPolicy.ShouldAskConsent(Settings))
-                _panelMode?.OpenConsent();
-            else if (showWhatsNew)
+            if (showWhatsNew)
                 ShowWhatsNew();
             else
                 _panelMode?.Refresh();
@@ -123,6 +127,14 @@ namespace Game.Bootstrap
                 case SettingId.WhatsNew:
                     ShowWhatsNew();
                     return;
+                case SettingId.Coupon:
+                    return;
+                case SettingId.BuildCopy:
+                    CopyBuild();
+                    return;
+                case SettingId.BuildPaste:
+                    PasteBuild();
+                    return;
                 case SettingId.ResetPosition:
                     _dock?.UseOffset((int)Settings.StripOffset);
                     break;
@@ -135,6 +147,25 @@ namespace Game.Bootstrap
                     break;
             }
             Save();
+        }
+
+        private void CopyBuild()
+        {
+            var code = _loop?.ShareBuild() ?? string.Empty;
+            if (code.Length > 0)
+                GUIUtility.systemCopyBuffer = code;
+            _panels?.ShowNotice(code.Length > 0 ? BuildCodeText.Copied : BuildCodeText.NothingToCopy);
+        }
+
+        private void PasteBuild()
+        {
+            if (_loop == null)
+                return;
+            var code = GUIUtility.systemCopyBuffer;
+            var build = _loop.ReadBuild(code);
+            var result = _loop.ImportBuild(code);
+            var tree = _loop.ClassTreeDef;
+            _panels?.ShowNotice(result == BuildImportResult.Done && build != null && tree != null ? BuildCodeText.Imported(build, tree, _loop.Data.Gems) : BuildCodeText.Result(result));
         }
 
         private void ShowWhatsNew()

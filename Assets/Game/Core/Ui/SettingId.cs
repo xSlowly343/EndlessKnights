@@ -28,6 +28,9 @@ namespace Game.Core.Ui
         AllyStrikeOpacity,
         HeroCloak,
         HeroEyes,
-        HeroStrike
+        HeroStrike,
+        Coupon,
+        BuildCopy,
+        BuildPaste
     }
 }

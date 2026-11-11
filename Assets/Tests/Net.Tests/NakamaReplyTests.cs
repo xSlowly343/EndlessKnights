@@ -28,6 +28,14 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ACouponReplyGivesItsStatus()
+        {
+            Assert.That(CouponDirectory.Status("{\"status\":\"done\",\"letter\":{\"id\":\"coupon:A\"}}"), Is.EqualTo("done"));
+            Assert.That(CouponDirectory.Status("{\"status\":\"used\"}"), Is.EqualTo("used"));
+            Assert.That(CouponDirectory.Status("{}"), Is.Empty);
+        }
+
+        [Test]
         public void ABrokenTokenIsRefused() => Assert.Throws<NakamaException>(() => NakamaSession.FromTokens("not-a-jwt", ""));
 
         [TestCase("Error: not in a party at partyConnectRpc (index.js:600:15(12))", "not in a party")]

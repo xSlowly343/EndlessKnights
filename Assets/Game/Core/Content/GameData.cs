@@ -179,6 +179,7 @@ namespace Game.Core.Content
             var distill = DistillRules.Load(readFile(DistillRules.FileName), camp);
             var colossus = ColossusSeedRules.Load(readFile(ColossusSeedRules.FileName));
             var companions = CompanionRules.Load(readFile(CompanionRules.FileName), stages.Biomes, cooking, colossus.Bloom, expeditions);
+            seasonalEvents.CheckCompanions(companions);
             var caravan = CaravanRules.Load(readFile(CaravanRules.FileName), stages.Biomes);
             var digs = DigRules.Load(readFile(DigRules.FileName), camp, stages.Biomes);
             var museum = MuseumRules.Load(readFile(MuseumRules.FileName), fishing, garden, cooking, alchemy, expeditions, digs);
