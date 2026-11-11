@@ -7,6 +7,8 @@ namespace Game.Core.Sim
         NoKey,
         AlreadyInside,
         InsideRift,
-        InParty
+        InParty,
+        OutsideRift,
+        WrongKey
     }
 }

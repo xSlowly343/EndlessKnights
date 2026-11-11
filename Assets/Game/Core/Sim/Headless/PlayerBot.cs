@@ -382,6 +382,8 @@ namespace Game.Core.Sim.Headless
             var dungeons = _loop.Dungeons;
             if (!state.Dungeons.Auto)
                 dungeons.SetAuto(true, 1);
+            if (!state.Dungeons.AutoMerge)
+                dungeons.SetAutoMerge(true);
             if (dungeons.Inside || state.Rift.Inside || state.FightingBoss)
                 return;
             var rules = dungeons.Rules;

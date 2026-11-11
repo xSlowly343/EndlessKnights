@@ -133,6 +133,8 @@ namespace Game.Core.Sim.Rift
         {
             if (!Inside)
                 return false;
+            if (_state.Dungeons.Inside)
+                BeforeLeave?.Invoke();
             var rift = _state.Rift;
             var riftProgress = StageProgress.Capture(_state);
             (rift.OtherWorld ?? new StageProgress()).Restore(_state);
@@ -174,8 +176,12 @@ namespace Game.Core.Sim.Rift
             Rebuild();
         }
 
-        private StageTable BuildWorld() =>
-            _home.ForWorld(_rules.HpMultiplier, _rules.WallPeriod, _rules.WallZoneLength, _rules.WallRate, _rules.BossTimerSeconds);
+        public System.Action? BeforeLeave { get; set; }
+
+        public static StageTable BuildWorld(StageTable home, RiftRules rules) =>
+            home.ForWorld(rules.HpMultiplier, rules.WallPeriod, rules.WallZoneLength, rules.WallRate, rules.BossTimerSeconds);
+
+        private StageTable BuildWorld() => BuildWorld(_home, _rules);
 
         private void SwitchWorld()
         {

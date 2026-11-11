@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Content;
+using Game.Core.Content.Rift;
 using Game.Core.Math;
 using Game.Core.Sim.Rift;
 using Game.Core.Stats;
@@ -8,7 +9,7 @@ namespace Game.Core.Sim
 {
     public sealed class DungeonSystem
     {
-        private const int AutoEveryTicks = 10;
+        private const int HousekeepingEveryTicks = 10;
 
         private readonly GameState _state;
         private readonly StageSystem _stage;
@@ -16,13 +17,17 @@ namespace Game.Core.Sim
         private readonly EventQueue _events;
         private readonly ModifierLayer _layer;
         private DungeonRules _rules;
+        private RiftRules _riftRules;
         private StageTable _home;
+        private StageTable _riftWorld;
         private EnemyCatalog _enemies;
 
         public DungeonSystem(GameData data, GameState state, StatSheet hero, StageSystem stage, DropSystem drops, EventQueue events)
         {
             _rules = data.Dungeons;
+            _riftRules = data.Rift;
             _home = data.Stages;
+            _riftWorld = RiftSystem.BuildWorld(_home, _riftRules);
             _enemies = data.Enemies;
             _state = state;
             _stage = stage;
@@ -43,7 +48,9 @@ namespace Game.Core.Sim
         public void UseData(GameData data)
         {
             _rules = data.Dungeons;
+            _riftRules = data.Rift;
             _home = data.Stages;
+            _riftWorld = RiftSystem.BuildWorld(_home, _riftRules);
             _enemies = data.Enemies;
             if (Inside)
                 ApplyWorld();
@@ -59,6 +66,8 @@ namespace Game.Core.Sim
             }
             return bonus;
         }
+
+        public double RiftShards(DungeonKey key) => _rules.Rift.Shards(key.Tier) * (1 + RewardBonus(key));
 
         public long StageOf(DungeonKey key) => key.Stage > 0 ? key.Stage : _rules.TierAt(key.Tier)?.Stage ?? 1;
 
@@ -78,8 +87,13 @@ namespace Game.Core.Sim
             var blocked = Blocked();
             if (blocked != DungeonResult.Entered)
                 return blocked;
-            var tier = _rules.TierAt(key.Tier);
-            if (tier == null || !_state.Dungeons.Keys.Remove(key))
+            if (!Usable(key))
+                return DungeonResult.NoKey;
+            if (key.ForRift != _state.Rift.Inside)
+                return key.ForRift ? DungeonResult.OutsideRift : DungeonResult.InsideRift;
+            if (key.ForRift && key.Rift != _state.Rift.WindowId)
+                return DungeonResult.WrongKey;
+            if (!_state.Dungeons.Keys.Remove(key))
                 return DungeonResult.NoKey;
             var dungeons = _state.Dungeons;
             dungeons.Home = StageProgress.Capture(_state);
@@ -97,13 +111,32 @@ namespace Game.Core.Sim
             _state.Dungeons.AutoMinTier = System.Math.Max(1, minTier);
         }
 
+        public void SetAutoMerge(bool on)
+        {
+            _state.Dungeons.AutoMerge = on;
+            if (on)
+                MergeAll();
+        }
+
+        public void SetAutoSkip(string modifier, bool skip)
+        {
+            var skipped = _state.Dungeons.AutoSkip;
+            if (!skip)
+                skipped.Remove(modifier);
+            else if (!skipped.Contains(modifier) && _rules.TryGetModifier(modifier, out _))
+                skipped.Add(modifier);
+        }
+
         public DungeonKey? AutoKey()
         {
             var dungeons = _state.Dungeons;
+            var rift = _state.Rift.Inside;
             DungeonKey? best = null;
             foreach (var key in dungeons.Keys)
             {
-                if (key.Tier < dungeons.AutoMinTier || key.Attempts < _rules.KeyAttempts || _rules.TierAt(key.Tier) == null)
+                if (key.ForRift != rift || (rift && key.Rift != _state.Rift.WindowId))
+                    continue;
+                if (key.Tier < dungeons.AutoMinTier || key.Attempts < _rules.KeyAttempts || !Usable(key) || Skipped(key))
                     continue;
                 if (best == null || key.Tier > best.Tier || (key.Tier == best.Tier && StageOf(key) > StageOf(best)))
                     best = key;
@@ -115,25 +148,14 @@ namespace Game.Core.Sim
         {
             if (!Inside)
             {
-                EnterAutomatically();
+                Housekeep();
                 return;
             }
             var dungeons = _state.Dungeons;
             if (_state.Stage >= dungeons.StartStage + _rules.Stages)
-            {
-                var key = dungeons.Active!;
-                var tier = _rules.TierAt(key.Tier)!;
-                dungeons.Completed++;
-                if (tier.Tier > dungeons.BestTier)
-                    dungeons.BestTier = tier.Tier;
-                _drops.GiveDungeonLoot(tier, StageOf(key), RewardBonus(key));
-                _events.Add(GameEvent.ForStage(GameEventKind.DungeonCompleted, _state.Tick, tier.Tier));
-                Leave();
-            }
+                Complete();
             else if (_state.BossFailsInARow > 0)
-            {
                 Fail();
-            }
         }
 
         public bool Abandon()
@@ -144,12 +166,19 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public void Retreat()
+        {
+            if (!Inside)
+                return;
+            _state.Dungeons.Keys.Add(_state.Dungeons.Active!);
+            Leave();
+        }
+
         public bool RetreatIfAway(double awaySeconds)
         {
             if (!Inside || awaySeconds < _rules.RetreatSeconds)
                 return false;
-            _state.Dungeons.Keys.Add(_state.Dungeons.Active!);
-            Leave();
+            Retreat();
             return true;
         }
 
@@ -157,38 +186,84 @@ namespace Game.Core.Sim
         {
             if (!_state.Dungeons.Keys.Remove(key))
                 return DungeonKeyResult.NoKey;
-            _drops.SalvageKey(key.Tier);
+            _drops.SalvageKey(key);
             return DungeonKeyResult.Done;
         }
 
-        public DungeonKeyResult Merge(int tier)
+        public DungeonKeyResult Merge(int tier, bool rift = false)
         {
-            var next = _rules.TierAt(tier + 1);
-            if (_rules.TierAt(tier) == null || next == null || (next.NeedsLimit && _state.GatesCleared.Count == 0))
+            if (!rift)
+            {
+                var next = _rules.TierAt(tier + 1);
+                if (_rules.TierAt(tier) == null || next == null || (next.NeedsLimit && _state.GatesCleared.Count == 0))
+                    return DungeonKeyResult.NoHigherTier;
+            }
+            else if (tier < 1)
+            {
                 return DungeonKeyResult.NoHigherTier;
+            }
             var keys = _state.Dungeons.Keys;
             var found = 0;
             foreach (var key in keys)
             {
-                if (key.Tier == tier)
+                if (key.Tier == tier && key.ForRift == rift)
                     found++;
             }
             if (found < _rules.MergeCount)
                 return DungeonKeyResult.NotEnoughKeys;
             var stage = 0L;
+            var window = 0L;
             var left = _rules.MergeCount;
             for (var i = keys.Count - 1; i >= 0 && left > 0; i--)
             {
-                if (keys[i].Tier != tier)
+                if (keys[i].Tier != tier || keys[i].ForRift != rift)
                     continue;
                 stage = System.Math.Max(stage, StageOf(keys[i]));
+                window = keys[i].Rift;
                 keys.RemoveAt(i);
                 left--;
             }
-            keys.Add(_drops.MakeKey(next.Tier, stage));
+            keys.Add(_drops.MakeKey(tier + 1, stage, window));
             _state.Dungeons.Merged++;
-            _events.Add(GameEvent.ForStage(GameEventKind.DungeonKeysMerged, _state.Tick, next.Tier));
+            _events.Add(GameEvent.ForStage(GameEventKind.DungeonKeysMerged, _state.Tick, tier + 1));
             return DungeonKeyResult.Done;
+        }
+
+        public int MergeAll()
+        {
+            var merged = 0;
+            var highest = 0;
+            foreach (var key in _state.Dungeons.Keys)
+                highest = System.Math.Max(highest, key.Tier);
+            for (var tier = 1; tier <= highest; tier++)
+            {
+                while (Merge(tier) == DungeonKeyResult.Done)
+                {
+                    merged++;
+                    highest = System.Math.Max(highest, tier + 1);
+                }
+                while (Merge(tier, true) == DungeonKeyResult.Done)
+                {
+                    merged++;
+                    highest = System.Math.Max(highest, tier + 1);
+                }
+            }
+            return merged;
+        }
+
+        private bool Usable(DungeonKey key) => key.ForRift ? key.Tier >= 1 : _rules.TierAt(key.Tier) != null;
+
+        private bool Skipped(DungeonKey key)
+        {
+            var skipped = _state.Dungeons.AutoSkip;
+            if (skipped.Count == 0)
+                return false;
+            foreach (var id in key.Modifiers)
+            {
+                if (skipped.Contains(id))
+                    return true;
+            }
+            return false;
         }
 
         private void RefillOldKeys()
@@ -209,22 +284,54 @@ namespace Game.Core.Sim
                 return DungeonResult.Locked;
             if (Inside || _state.Events.FightInside)
                 return DungeonResult.AlreadyInside;
-            if (_state.Rift.Inside)
-                return DungeonResult.InsideRift;
             if (_stage.Linked)
                 return DungeonResult.InParty;
             return DungeonResult.Entered;
         }
 
-        private void EnterAutomatically()
+        private void Housekeep()
         {
-            if (!_state.Dungeons.Auto || _state.FightingBoss || _state.Tick % AutoEveryTicks != 0 || _state.Dungeons.Keys.Count == 0)
+            var dungeons = _state.Dungeons;
+            if (dungeons.Keys.Count == 0 || _state.Tick % HousekeepingEveryTicks != 0)
                 return;
-            if (Blocked() != DungeonResult.Entered)
+            DropKeysOfClosedRifts();
+            if (dungeons.AutoMerge)
+                MergeAll();
+            if (!dungeons.Auto || _state.FightingBoss || Blocked() != DungeonResult.Entered)
                 return;
             var key = AutoKey();
             if (key != null)
                 Enter(key);
+        }
+
+        private void DropKeysOfClosedRifts()
+        {
+            var keys = _state.Dungeons.Keys;
+            for (var i = keys.Count - 1; i >= 0; i--)
+            {
+                if (keys[i].ForRift && keys[i].Rift != _state.Rift.WindowId)
+                    keys.RemoveAt(i);
+            }
+        }
+
+        private void Complete()
+        {
+            var dungeons = _state.Dungeons;
+            var key = dungeons.Active!;
+            dungeons.Completed++;
+            if (key.ForRift)
+            {
+                _state.Rift.Shards += BigNumber.FromDouble(RiftShards(key));
+            }
+            else
+            {
+                var tier = _rules.TierAt(key.Tier)!;
+                if (tier.Tier > dungeons.BestTier)
+                    dungeons.BestTier = tier.Tier;
+                _drops.GiveDungeonLoot(tier, StageOf(key), RewardBonus(key));
+            }
+            _events.Add(GameEvent.ForStage(GameEventKind.DungeonCompleted, _state.Tick, key.Tier));
+            Leave();
         }
 
         private void Fail()
@@ -242,11 +349,12 @@ namespace Game.Core.Sim
         private void Leave()
         {
             var dungeons = _state.Dungeons;
+            var rift = dungeons.Active!.ForRift;
             (dungeons.Home ?? new StageProgress()).Restore(_state);
             dungeons.Home = null;
             dungeons.Active = null;
-            _stage.UseData(_home, _enemies);
-            _stage.RaisesRecord = true;
+            _stage.UseData(rift ? _riftWorld : _home, _enemies);
+            _stage.RaisesRecord = !rift;
             _stage.Scripted = false;
             _layer.Set(System.Array.Empty<Modifier>());
             Respawn();
@@ -255,7 +363,7 @@ namespace Game.Core.Sim
         private void ApplyWorld()
         {
             var key = _state.Dungeons.Active!;
-            var enemyHp = _rules.DepthEnemyHp;
+            var enemyHp = key.ForRift ? _rules.Rift.EnemyHp : _rules.DepthEnemyHp;
             var bossHp = 1.0;
             var timer = 1.0;
             var modifiers = new List<Modifier>();
@@ -268,7 +376,7 @@ namespace Game.Core.Sim
                 timer *= modifier.BossTimer;
                 modifiers.AddRange(modifier.Hero);
             }
-            _stage.UseData(_home.ForDepth(enemyHp, bossHp, _rules.BossTimerSeconds * timer), _enemies);
+            _stage.UseData((key.ForRift ? _riftWorld : _home).ForDepth(enemyHp, bossHp, _rules.BossTimerSeconds * timer), _enemies);
             _stage.RaisesRecord = false;
             _stage.Scripted = true;
             _layer.Set(modifiers);

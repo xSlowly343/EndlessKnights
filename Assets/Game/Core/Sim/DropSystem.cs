@@ -221,32 +221,48 @@ namespace Game.Core.Sim
             var chance = type == EnemyType.Guardian ? rules.GuardianKeyChance : _rules.IsSpecialBoss(stage) ? rules.SpecialBossKeyChance : rules.BossKeyChance;
             if (chance <= 0)
                 return;
+            var divisor = rules.PartyDivisor(_state.PartyAllies);
             var dungeons = _state.Dungeons;
             dungeons.BossesWithoutKey++;
-            var guaranteed = rules.KeyPity > 0 && dungeons.BossesWithoutKey >= rules.KeyPity;
-            if (!_state.Drops.Rng.Chance(chance) && !guaranteed)
+            var guaranteed = rules.KeyPity > 0 && dungeons.BossesWithoutKey >= rules.KeyPity * divisor;
+            if (!_state.Drops.Rng.Chance(chance / divisor) && !guaranteed)
                 return;
             dungeons.BossesWithoutKey = 0;
             Push(PendingDrop.Key(stage));
         }
 
+        private void RollRiftKey(long stage, EnemyType type)
+        {
+            var rules = Dungeons;
+            if (rules == null || !_state.Rift.Inside || _state.Dungeons.Inside || _state.Events.FightInside || stage < rules.Rift.FromStage
+                || Unlocks?.IsOpen(Feature.Dungeons) == false)
+                return;
+            var chance = (type == EnemyType.Guardian ? rules.Rift.GuardianKeyChance : rules.Rift.BossKeyChance) / rules.PartyDivisor(_state.PartyAllies);
+            if (chance > 0 && _state.Drops.Rng.Chance(chance))
+                Push(PendingDrop.RiftKey(stage));
+        }
+
         private void DeliverKey(PendingDrop drop)
         {
             var rules = Dungeons!;
+            if (drop.IsRiftKey)
+            {
+                if (_state.Rift.WindowId == 0)
+                    return;
+                var riftTier = rules.Rift.TierAt(drop.Stage);
+                _state.Dungeons.Keys.Add(MakeKey(riftTier, drop.Stage, _state.Rift.WindowId));
+                _events.Add(GameEvent.ForStage(GameEventKind.DungeonKeyDropped, _state.Tick, riftTier));
+                return;
+            }
             var highest = rules.HighestTierFor(drop.Stage, _state.GatesCleared.Count > 0);
             if (highest < 1)
                 return;
             var tier = System.Math.Max(1, highest - _state.Drops.Rng.NextInt(0, 2));
-            if (_state.Dungeons.Keys.Count >= rules.KeyBag)
-            {
-                SalvageKey(tier);
-                return;
-            }
             _state.Dungeons.Keys.Add(MakeKey(tier, drop.Stage));
             _events.Add(GameEvent.ForStage(GameEventKind.DungeonKeyDropped, _state.Tick, tier));
         }
 
-        public DungeonKey MakeKey(int tier, long stage)
+        public DungeonKey MakeKey(int tier, long stage, long rift = 0)
         {
             var rules = Dungeons!;
             var rng = _state.Drops.Rng;
@@ -259,12 +275,16 @@ namespace Game.Core.Sim
                 chosen.Add(pool[index].Id);
                 pool.RemoveAt(index);
             }
-            return new DungeonKey(tier, chosen, stage, rules.KeyAttempts);
+            return new DungeonKey(tier, chosen, stage, rules.KeyAttempts, rift);
         }
 
-        public void SalvageKey(int tier)
+        public void SalvageKey(DungeonKey key)
         {
-            _state.Drops.Shards += Dungeons!.SalvageShards(tier);
+            var tier = key.Tier;
+            if (key.ForRift)
+                _state.Rift.Shards += BigNumber.FromDouble(Dungeons!.Rift.Shards(tier) * Dungeons.SalvageShare);
+            else
+                _state.Drops.Shards += Dungeons!.SalvageShards(tier);
             _state.Dungeons.Salvaged++;
             _events.Add(GameEvent.ForStage(GameEventKind.DungeonKeySalvaged, _state.Tick, tier));
         }
@@ -361,7 +381,10 @@ namespace Game.Core.Sim
         public void OnBossDefeated(long stage, EnemyType type, long recordBefore, bool raisesRecord)
         {
             if (!raisesRecord)
+            {
+                RollRiftKey(stage, type);
                 return;
+            }
             if (type == EnemyType.Guardian)
                 GuardianKilled?.Invoke(stage, stage >= recordBefore);
             GiveShards(stage, type, recordBefore);

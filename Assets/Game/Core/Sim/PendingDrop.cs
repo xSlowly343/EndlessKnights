@@ -5,9 +5,10 @@ namespace Game.Core.Sim
 {
     public readonly struct PendingDrop
     {
-        private PendingDrop(DropSource source, long stage, ItemSlot slot, ItemRarity rarity, WeaponType? type, string? color, bool key = false)
+        private PendingDrop(DropSource source, long stage, ItemSlot slot, ItemRarity rarity, WeaponType? type, string? color, bool key = false, bool riftKey = false)
         {
             IsKey = key;
+            IsRiftKey = riftKey;
             Source = source;
             Stage = stage;
             Slot = slot;
@@ -23,6 +24,7 @@ namespace Game.Core.Sim
         public WeaponType? Type { get; }
         public string? Color { get; }
         public bool IsKey { get; }
+        public bool IsRiftKey { get; }
 
         public static PendingDrop Weapon(DropSource source, long stage, ItemRarity rarity, WeaponType type) =>
             new PendingDrop(source, stage, ItemSlot.Weapon, rarity, type, null);
@@ -32,5 +34,8 @@ namespace Game.Core.Sim
 
         public static PendingDrop Key(long stage) =>
             new PendingDrop(DropSource.Record, stage, ItemSlot.Weapon, ItemRarity.Simple, null, null, key: true);
+
+        public static PendingDrop RiftKey(long stage) =>
+            new PendingDrop(DropSource.Record, stage, ItemSlot.Weapon, ItemRarity.Simple, null, null, key: true, riftKey: true);
     }
 }
