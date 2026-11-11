@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Подземелья и Разлом</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="./rw.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&amp;family=Rubik:wght@400;500;700&amp;display=swap">
+<style>body{margin:0}.ky{width:36px;height:36px;border-radius:4px;background:#1D2540;border:2px solid var(--res);display:grid;place-items:center;font:14px 'Lilita One',Rubik;color:#fff;flex:none}.ky.rf{border-color:var(--rift);background:#2F2750}</style>
+</helmet>
+<div class="rw bd" style="width:1584px;height:692px">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="th" viewBox="0 0 24 24"><path d="M5 20v-8a7 7 0 0 1 14 0v8M9 20v-6h6v6"/></symbol><symbol id="tb" viewBox="0 0 24 24"><path d="M4 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-5a2 2 0 0 0-2 2"/></symbol><symbol id="tt" viewBox="0 0 24 24"><path d="M12 5v5m0 0-6 6m6-6 6 6M12 4h.01M6 17h.01M18 17h.01"/></symbol><symbol id="ti" viewBox="0 0 24 24"><path d="M6 9h12l1 11H5zM9 9V7a3 3 0 0 1 6 0v2"/></symbol><symbol id="tp" viewBox="0 0 24 24"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 20a6 6 0 0 1 12 0M16 11a3 3 0 1 0 0-6M22 20a6 6 0 0 0-4-5.7"/></symbol><symbol id="tm" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></symbol><symbol id="x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol><symbol id="pin" viewBox="0 0 24 24"><path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4z"/></symbol><symbol id="shard" viewBox="0 0 24 24"><path d="M12 2l5 9-5 11-5-11z"/></symbol><symbol id="crown" viewBox="0 0 24 24"><path d="M3 18h18M4 16l-1-9 5 4 4-7 4 7 5-4-1 9z"/></symbol><symbol id="warn" viewBox="0 0 24 24"><path d="M12 3l10 18H2zM12 10v5M12 18h.01"/></symbol></svg>
+
+<div class="col"><div class="cap"><b>A</b>Подземелья: ключи, модификаторы, награда</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Портал</div><div class="f1"></div><div class="cur"><svg class="i res"><use href="#shard"/></svg>184</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl">Портал</button><button class="pl on">Подземелья</button><button class="pl">Разлом</button><button class="pl">Турнир</button></div>
+<div class="ct" style="gap:6px">
+<div class="r g4"><button class="pl sm on">Все</button><button class="pl sm">Обычные</button><button class="pl sm">Разлома</button><button class="pl sm">Свежие</button><button class="pl sm">Тир 3+</button><div class="f1"></div><span class="x dim">Показано ключей: 5 из 12</span></div>
+<button class="li sel"><div class="ky">4</div><div class="c f1"><span class="m b">Ключ тира 4 · этап 300 · попыток 3 из 3</span><div class="r g4"><span class="ch rd">Спешка</span><span class="ch rd">Крепкий хозяин</span></div></div></button>
+<button class="li"><div class="ky">3</div><div class="c f1"><span class="m b">Ключ тира 3 · этап 250 · попыток 1 из 3</span><div class="r g4"><span class="ch rd">Толстокожие</span></div></div></button>
+<button class="li"><div class="ky">3</div><div class="c f1"><span class="m b">Ключ тира 3 · этап 250 · попыток 3 из 3</span><span class="x dim">без модификаторов</span></div></button>
+<button class="li"><div class="ky rf">2</div><div class="c f1"><span class="m b">Ключ Разлома тира 2 · этап 120 · попыток 2 из 3</span><span class="x bad">Ключ Разлома работает только в Разломе</span></div></button>
+<div class="r g8"><div class="tg on"></div><span class="x f1">Автослияние включено: 3 ключа одного тира дают ключ тиром выше</span></div>
+<div class="r g8"><div class="tg"></div><span class="x f1 dim">Ключи ждут вас · включи, чтобы проходились сами от тира 3</span></div>
+<div class="sh"><div class="r jb"><span class="h">Тир 4 · 2 этапа и хозяин</span><span class="x dim">таймер босса 45 с × 0.6 = 27 с</span></div><span class="m">Вещей 3 · Осколков 20 · за модификаторы +70%</span><div class="r g6"><button class="bt sm o">Разобрать: Осколков 10</button><button class="bt sm d" disabled>Слить · нужно 3</button><div class="f1"></div><button class="bt g">Войти</button></div></div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево</button><button class="tab"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab on"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>B</b>Подземелье отряда: общий список, запускает лидер</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Портал</div><span class="ch bl">отряд · 3</span><div class="f1"></div><div class="cur"><svg class="i res"><use href="#shard"/></svg>184</div><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl">Портал</button><button class="pl on">Подземелья</button><button class="pl">Разлом</button><button class="pl">Турнир</button></div>
+<div class="ct" style="gap:6px">
+<div class="li dk"><svg class="i gold"><use href="#crown"/></svg><span class="m f1">Ключи отряда общие. Забег запускает лидер: <b>Вы</b>. Потраченный ключ делится: половина попыток вернётся владельцу.</span></div>
+<button class="li sel"><div class="ky">4</div><div class="c f1"><span class="m b">Тир 4 · этап 300 · попыток 3 из 3</span><div class="r g4"><span class="ch rd">Спешка</span><span class="ch rd">Крепкий хозяин</span><span class="ch">ваш</span></div></div></button>
+<button class="li"><div class="ky">5</div><div class="c f1"><span class="m b">Тир 5 · этап 350 · попыток 2 из 3</span><div class="r g4"><span class="ch rd">Без Фокуса</span><span class="ch" style="color:#8FE0A8">ключ Mira</span></div></div></button>
+<button class="li"><div class="ky">3</div><div class="c f1"><span class="m b">Тир 3 · этап 250 · попыток 3 из 3</span><div class="r g4"><span class="ch" style="color:#D2B4FF">ключ Olaf</span></div></div></button>
+<div class="sec">Кто идёт</div>
+<div class="r g6"><span class="ch gn">Вы · готов</span><span class="ch gn">Mira · готова</span><span class="ch">Olaf · в Лагере, не идёт</span></div>
+<div class="li dk"><svg class="i bad"><use href="#warn"/></svg><span class="x f1">Причины отказа: «Нельзя в общем бою отряда», «Забег уже идёт», «Нельзя из Разлома», «Подземелья ещё закрыты».</span></div>
+<div class="sh"><div class="r jb"><span class="h">Тир 4 отрядом</span><span class="x dim">HP врагов ×4 за глубину · таймер 27 с</span></div><div class="r g6"><span class="x dim f1">У участника без лидерства кнопка серая: «Запускает лидер»</span><button class="bt g lg">Запустить для отряда</button></div></div>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево</button><button class="tab"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab on"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+
+<div class="col"><div class="cap"><b>C</b>Разлом: окно события, рубежи, доска отрядов</div>
+<div class="pn"><div class="pi"><div class="grip"></div>
+<div class="hd"><div class="plate">Портал</div><div class="f1"></div><div class="cur"><svg class="i rift"><use href="#shard"/></svg>64</div><button class="ib" aria-label="Закрепить"><svg class="i"><use href="#pin"/></svg></button><button class="ib x" aria-label="Свернуть"><svg class="i"><use href="#x"/></svg></button></div>
+<div class="st"><button class="pl">Портал</button><button class="pl">Подземелья</button><button class="pl on">Разлом<i class="rd"></i></button><button class="pl">Турнир</button></div>
+<div class="ct" style="gap:6px">
+<div class="cd rf c g4"><div class="r jb"><span class="h rift">Разлом открыт</span><span class="x dim">ещё 9 ч 12 мин · окна: вт и сб</span></div><div class="r g4"><span class="ch vi">Без Фокуса</span><span class="ch vi">Буря мыши</span><span class="x dim">модификаторы этого окна</span></div><div class="r g8"><span class="x dim f1">Ваш отряд: этап 137 · HP врагов ×10 · таймер босса 30 с</span><button class="bt vi">Войти отрядом</button></div></div>
+<div class="sec">Рубежи · каждые 25 этапов</div>
+<div class="r g6 m"><span class="ch gn">25 ✓</span><span class="ch gn">50 ✓</span><span class="ch gn">75 ✓</span><span class="ch gn">100 ✓</span><span class="ch gn">125 ✓</span><span class="ch gd">150 · Осколки +60 · Знаки +10</span></div>
+<div class="pg"><i style="width:48%;--c:var(--rift)"></i></div>
+<div class="sec">Доска отрядов · обновляется раз в 5 мин</div>
+<div class="c g2 m">
+<div class="li dk" style="min-height:28px"><span class="f1">1. Ходоки Разлома · этап 212</span><span class="x dim">Осколки +390</span></div>
+<div class="li dk" style="min-height:28px"><span class="f1">2. Фонарщики · этап 198</span><span class="x dim">Осколки +260</span></div>
+<div class="li dk" style="min-height:28px"><span class="f1">3. Совы · этап 190</span><span class="x dim">Осколки +260</span></div>
+<div class="li sel" style="min-height:28px"><span class="f1 b">14. Ночные совы · этап 137 · ваш отряд</span><span class="x gold">Осколки +90</span></div>
+</div>
+<span class="x dim">Итог придёт письмом «Итоги Разлома»: 14 место из 61. Вне окна — отсчёт до следующего и прошлый результат.</span>
+</div>
+<div class="tb"><button class="tab"><svg class="i"><use href="#th"/></svg>Герой</button><button class="tab"><svg class="i"><use href="#tb"/></svg>Книга</button><button class="tab"><svg class="i"><use href="#tt"/></svg>Дерево</button><button class="tab"><svg class="i"><use href="#ti"/></svg>Предметы</button><button class="tab"><svg class="i"><use href="#tp"/></svg>Отряд</button><button class="tab on"><svg class="i" style="stroke-width:3"><use href="#tm"/></svg>Ещё</button></div>
+</div></div></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1584,"height":692}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

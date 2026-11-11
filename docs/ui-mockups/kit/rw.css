@@ -13,7 +13,7 @@
 /* board */
 .bd{display:flex;gap:40px;padding:32px;background:#0A0E18;align-items:flex-start;overflow:hidden}
 .col{display:flex;flex-direction:column;gap:8px;flex:none}
-.cap{height:20px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+.cap{max-width:480px;overflow:hidden;text-overflow:ellipsis;height:20px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
 .cap b{color:var(--gold);margin-right:6px}
 
 /* layout */
