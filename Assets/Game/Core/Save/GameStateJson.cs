@@ -1726,7 +1726,9 @@ namespace Game.Core.Save
                 ("auto", JsonValue.Of(dungeons.Auto)),
                 ("autoMinTier", JsonValue.Of(dungeons.AutoMinTier)),
                 ("autoMerge", JsonValue.Of(dungeons.AutoMerge)),
-                ("autoSkip", JsonValue.Array(skipped)));
+                ("autoSkip", JsonValue.Array(skipped)),
+                ("party", JsonValue.Of(dungeons.Party)),
+                ("borrowed", JsonValue.Of(dungeons.Borrowed)));
         }
 
         private static JsonValue WriteKey(DungeonKey key)
@@ -1764,6 +1766,10 @@ namespace Game.Core.Save
             dungeons.AutoMerge = node.Field("autoMerge").AsBool();
             foreach (var item in node.Field("autoSkip").Items())
                 dungeons.AutoSkip.Add(item.AsString());
+            if (!node.HasField("party") || dungeons.Active == null)
+                return;
+            dungeons.Party = node.Field("party").AsBool();
+            dungeons.Borrowed = node.Field("borrowed").AsBool();
         }
 
         private static DungeonKey ReadKey(ContentNode node)

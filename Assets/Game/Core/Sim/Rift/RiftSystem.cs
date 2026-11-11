@@ -144,6 +144,8 @@ namespace Game.Core.Sim.Rift
             return true;
         }
 
+        public bool LeaveIfAway(double awaySeconds, double afterSeconds) => !_stage.Linked && awaySeconds >= afterSeconds && Leave();
+
         public bool CloseIfEnded(long nowUnixMs)
         {
             var rift = _state.Rift;

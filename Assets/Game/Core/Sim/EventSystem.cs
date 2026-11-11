@@ -139,6 +139,17 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public bool RetreatIfAway(double awaySeconds, double afterSeconds)
+        {
+            var events = State;
+            if (!events.FightInside || awaySeconds < afterSeconds)
+                return false;
+            events.BossFightsToday = System.Math.Max(0, events.BossFightsToday - 1);
+            events.BossFights = System.Math.Max(0, events.BossFights - 1);
+            LeaveFight();
+            return true;
+        }
+
         public IReadOnlyList<string> GoalsToSend()
         {
             var ids = new List<string>();
@@ -250,7 +261,7 @@ namespace Game.Core.Sim
 
         private void ApplyFightWorld()
         {
-            _stage.UseData(_home.ForDungeon(1, _rules.BossHpMultiplier, _rules.BossTimerSeconds), _enemies);
+            _stage.UseData(_home.ForDepth(1, _rules.BossHpMultiplier, _rules.BossTimerSeconds), _enemies);
             _stage.RaisesRecord = false;
             _stage.Scripted = true;
         }

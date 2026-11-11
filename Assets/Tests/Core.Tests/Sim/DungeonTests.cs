@@ -258,7 +258,6 @@ namespace Game.Core.Tests.Sim
         {
             Assert.That(Rules.PartyDivisor(0), Is.EqualTo(1));
             Assert.That(Rules.PartyDivisor(3), Is.EqualTo(1 + 3 * Rules.PartySplit));
-            Assume.That(Rules.PartySplit, Is.EqualTo(1));
             var (solo, _) = Hero();
             var (party, _) = Hero();
             party.State.PartyAllies = 3;
@@ -275,7 +274,7 @@ namespace Game.Core.Tests.Sim
             }
 
             Assert.That(solo.Dungeons.Keys.Count, Is.InRange(160, 240));
-            Assert.That(party.Dungeons.Keys.Count, Is.InRange(30, 75));
+            Assert.That(party.Dungeons.Keys.Count, Is.InRange(55, 110));
         }
 
         private static (GameLoop Loop, FakeInputSource Input) InRift(double power = 1e12)
@@ -716,6 +715,32 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Prestige.TryPrestige(), Is.False);
             loop.Dungeons.Abandon();
             Assert.That(loop.Prestige.Available, Is.True);
+        }
+
+        [Test]
+        public void ALongAbsenceInsideTheRiftReturnsHomeAndKeepsTheRiftProgress()
+        {
+            var (loop, _) = InRift();
+            loop.State.Stage = 15;
+
+            Assert.That(loop.ReturnHomeIfAway(Rules.RetreatSeconds - 1), Is.False);
+            Assert.That(loop.State.Rift.Inside, Is.True);
+            Assert.That(loop.ReturnHomeIfAway(3600), Is.True);
+
+            Assert.That(loop.State.Rift.Inside, Is.False);
+            Assert.That(loop.State.Stage, Is.EqualTo(300));
+            Assert.That(loop.State.Rift.OtherWorld!.Stage, Is.EqualTo(15));
+            Assert.That(loop.Stages.RaisesRecord, Is.True);
+        }
+
+        [Test]
+        public void TheKeyChanceOfAPartyIsHigherThanOfOneHeroButNotFourfold()
+        {
+            Assume.That(Rules.PartySplit, Is.EqualTo(0.5));
+
+            Assert.That(2 / Rules.PartyDivisor(1), Is.EqualTo(4.0 / 3).Within(1e-9));
+            Assert.That(3 / Rules.PartyDivisor(2), Is.EqualTo(1.5).Within(1e-9));
+            Assert.That(4 / Rules.PartyDivisor(3), Is.EqualTo(1.6).Within(1e-9));
         }
 
         [Test]

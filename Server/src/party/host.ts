@@ -43,7 +43,7 @@ class PartyHost {
     pairTicks: { [pair: string]: number } = {};
     readonly flags = [0, 0, 0, 0];
     readonly reports: number[] = [];
-    readonly worldRequests: { slot: number; world: PartyWorld; cancel: boolean }[] = [];
+    readonly worldRequests: { slot: number; world: PartyWorld; cancel: boolean; riftId: number }[] = [];
     readonly bossRequests: number[] = [];
     riftCleared = 0;
     private readonly allowance = [0, 0, 0, 0];
@@ -180,7 +180,7 @@ class PartyHost {
             case PartyMessageKind.WorldRequest: {
                 const request = partyDecodeWorldRequest(data);
                 if (request)
-                    this.worldRequests.push({ slot: slot, world: request.world, cancel: request.cancel });
+                    this.worldRequests.push({ slot: slot, world: request.world, cancel: request.cancel, riftId: request.riftId });
                 break;
             }
             case PartyMessageKind.BossRequest:
@@ -198,6 +198,12 @@ class PartyHost {
                 const relay = partyDecodeFocusRelay(data);
                 if (relay)
                     this.relay(slot, relay.focus);
+                break;
+            }
+            case PartyMessageKind.PartyKeys: {
+                const relayed = partyRelayKeys(data, slot);
+                if (relayed)
+                    this.broadcast(relayed, slot);
                 break;
             }
             case PartyMessageKind.PartyReaction: {

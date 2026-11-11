@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game.Core.Content;
 using Game.Core.Content.Rift;
 using Game.Core.Math;
+using Game.Core.Party;
 using Game.Core.Sim.Rift;
 using Game.Core.Stats;
 
@@ -95,6 +96,12 @@ namespace Game.Core.Sim
                 return DungeonResult.WrongKey;
             if (!_state.Dungeons.Keys.Remove(key))
                 return DungeonResult.NoKey;
+            Start(key);
+            return DungeonResult.Entered;
+        }
+
+        private void Start(DungeonKey key)
+        {
             var dungeons = _state.Dungeons;
             dungeons.Home = StageProgress.Capture(_state);
             dungeons.Active = key;
@@ -102,7 +109,84 @@ namespace Game.Core.Sim
             new StageProgress { Stage = dungeons.StartStage, HighestStage = dungeons.StartStage }.Restore(_state);
             ApplyWorld();
             Respawn();
+        }
+
+        private int ModifierMask(DungeonKey key)
+        {
+            var mask = 0;
+            for (var i = 0; i < _rules.Modifiers.Count; i++)
+            {
+                foreach (var id in key.Modifiers)
+                {
+                    if (id == _rules.Modifiers[i].Id)
+                        mask |= 1 << i;
+                }
+            }
+            return mask;
+        }
+
+        private DungeonKey? OwnKey(long partyId)
+        {
+            var wanted = PartyDungeonId.Pack(PartyDungeonId.Stage(partyId), PartyDungeonId.Tier(partyId), PartyDungeonId.ModifierMask(partyId), 0,
+                PartyDungeonId.Stages(partyId), PartyDungeonId.Attempts(partyId));
+            foreach (var key in _state.Dungeons.Keys)
+            {
+                if (PartyReady(key) && PartyId(key, 0) == wanted)
+                    return key;
+            }
+            return null;
+        }
+
+        public bool InParty => Inside && _state.Dungeons.Party;
+
+        public bool PartyReady(DungeonKey key) =>
+            !key.ForRift && _rules.TierAt(key.Tier) != null && key.Tier <= PartyDungeonId.MaxTier && StageOf(key) <= PartyDungeonId.MaxStage
+            && _rules.Modifiers.Count <= PartyDungeonId.MaxModifiers && _rules.Stages <= PartyDungeonId.MaxStages;
+
+        public long PartyId(DungeonKey key, int ownerSlot) =>
+            PartyDungeonId.Pack(StageOf(key), key.Tier, ModifierMask(key), ownerSlot, _rules.Stages, key.Attempts);
+
+        public DungeonKey KeyOf(long partyId)
+        {
+            var mask = PartyDungeonId.ModifierMask(partyId);
+            var modifiers = new List<string>();
+            for (var i = 0; i < _rules.Modifiers.Count; i++)
+            {
+                if ((mask & (1 << i)) != 0)
+                    modifiers.Add(_rules.Modifiers[i].Id);
+            }
+            return new DungeonKey(PartyDungeonId.Tier(partyId), modifiers, PartyDungeonId.Stage(partyId), System.Math.Max(1, PartyDungeonId.Attempts(partyId)));
+        }
+
+        public DungeonResult EnterParty(long partyId, bool owned)
+        {
+            if (Inside || _state.Events.FightInside)
+                return DungeonResult.AlreadyInside;
+            if (_state.Rift.Inside)
+                return DungeonResult.InsideRift;
+            var own = owned ? OwnKey(partyId) : null;
+            var key = own ?? KeyOf(partyId);
+            if (_rules.TierAt(key.Tier) == null)
+                return DungeonResult.NoKey;
+            var dungeons = _state.Dungeons;
+            if (own != null)
+                dungeons.Keys.Remove(own);
+            dungeons.Party = true;
+            dungeons.Borrowed = own == null;
+            Start(key);
             return DungeonResult.Entered;
+        }
+
+        public void LeaveParty(bool completed)
+        {
+            if (!InParty)
+                return;
+            if (completed)
+                Complete();
+            else if (_state.Dungeons.Borrowed)
+                Leave();
+            else
+                Fail();
         }
 
         public void SetAuto(bool on, int minTier)
@@ -152,6 +236,12 @@ namespace Game.Core.Sim
                 return;
             }
             var dungeons = _state.Dungeons;
+            if (dungeons.Party)
+            {
+                if (!_stage.Linked)
+                    Retreat();
+                return;
+            }
             if (_state.Stage >= dungeons.StartStage + _rules.Stages)
                 Complete();
             else if (_state.BossFailsInARow > 0)
@@ -170,7 +260,8 @@ namespace Game.Core.Sim
         {
             if (!Inside)
                 return;
-            _state.Dungeons.Keys.Add(_state.Dungeons.Active!);
+            if (!_state.Dungeons.Borrowed)
+                _state.Dungeons.Keys.Add(_state.Dungeons.Active!);
             Leave();
         }
 
@@ -328,7 +419,8 @@ namespace Game.Core.Sim
                 var tier = _rules.TierAt(key.Tier)!;
                 if (tier.Tier > dungeons.BestTier)
                     dungeons.BestTier = tier.Tier;
-                _drops.GiveDungeonLoot(tier, StageOf(key), RewardBonus(key));
+                var lootStage = dungeons.Borrowed ? System.Math.Min(StageOf(key), System.Math.Max(1, _state.RecordStage)) : StageOf(key);
+                _drops.GiveDungeonLoot(tier, lootStage, RewardBonus(key));
             }
             _events.Add(GameEvent.ForStage(GameEventKind.DungeonCompleted, _state.Tick, key.Tier));
             Leave();
@@ -353,6 +445,8 @@ namespace Game.Core.Sim
             (dungeons.Home ?? new StageProgress()).Restore(_state);
             dungeons.Home = null;
             dungeons.Active = null;
+            dungeons.Party = false;
+            dungeons.Borrowed = false;
             _stage.UseData(rift ? _riftWorld : _home, _enemies);
             _stage.RaisesRecord = !rift;
             _stage.Scripted = false;

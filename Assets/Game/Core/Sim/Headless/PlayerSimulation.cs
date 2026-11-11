@@ -68,7 +68,7 @@ namespace Game.Core.Sim.Headless
                     if (tick % ActEveryTicks == 0)
                         Act(bot, state, ActEveryTicks * GameLoop.TickSeconds);
                 }
-                loop.Dungeons.RetreatIfAway(offlineSeconds);
+                loop.ReturnHomeIfAway(offlineSeconds);
                 loop.ApplyOffline(offline.Simulate(state, offlineSeconds));
                 awaySeconds = offlineSeconds;
                 CountGold(state);

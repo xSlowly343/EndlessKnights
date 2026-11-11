@@ -19,6 +19,8 @@ namespace Game.Core.Sim
         public int AutoMinTier { get; set; } = 1;
         public bool AutoMerge { get; set; }
         public List<string> AutoSkip { get; } = new List<string>();
+        public bool Party { get; set; }
+        public bool Borrowed { get; set; }
         public bool Inside => Active != null;
     }
 }
