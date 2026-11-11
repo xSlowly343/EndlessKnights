@@ -112,10 +112,10 @@ namespace Game.Net.Nakama
         public static async Task<HideoutReply> FarStartAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
             HideoutReply.From(NakamaJson.Parse(await client.RpcAsync(session, "companion_far_start", "{}", cancel).ConfigureAwait(false)));
 
-        public static async Task<(IReadOnlyDictionary<string, long> Items, int Granted, HideoutReply Hideout)> FarClaimAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default)
+        public static async Task<(IReadOnlyDictionary<string, long> Loot, int Granted, HideoutReply Hideout)> FarClaimAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default)
         {
             var json = NakamaJson.Parse(await client.RpcAsync(session, "companion_far_claim", "{}", cancel).ConfigureAwait(false));
-            return (HideoutReply.ClaimedItems(json), (int)NakamaJson.Number(json, "granted"), HideoutReply.From(NakamaJson.Field(json, "hideout") ?? json));
+            return (HideoutReply.Amounts(NakamaJson.Field(json, "loot")), (int)NakamaJson.Number(json, "granted"), HideoutReply.From(NakamaJson.Field(json, "hideout") ?? json));
         }
 
         public static async Task<(string Companion, long Friendship)> ShopBuyAsync(NakamaClient client, NakamaSession session, string companion, CancellationToken cancel = default)

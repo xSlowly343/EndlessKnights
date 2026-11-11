@@ -122,11 +122,11 @@ function townGiftSend(nk: nkruntime.Nakama, userId: string, request: any, nowUni
     return townView(nk, userId, nowUnixMs, { sent: gift });
 }
 
-function townGiftClaim(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [key: string]: any } {
-    const gifts = townInbox(nk, userId);
-    if (gifts.length > 0)
-        nk.storageDelete(gifts.map((gift) => ({ collection: TownGiftCollection, key: gift.id, userId: userId })));
-    return townView(nk, userId, nowUnixMs, { claimed: gifts });
+function townGiftClaim(nk: nkruntime.Nakama, userId: string, ack: unknown, nowUnixMs: number): { [key: string]: any } {
+    const taken = Array.isArray(ack) ? ack.filter((id) => typeof id === "string" && id.length > 0 && id.length <= 128).slice(0, TownServerRules.giftInbox) : [];
+    if (taken.length > 0)
+        nk.storageDelete(taken.map((id) => ({ collection: TownGiftCollection, key: id as string, userId: userId })));
+    return townView(nk, userId, nowUnixMs, { claimed: townInbox(nk, userId) });
 }
 
 function townMineRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
@@ -138,5 +138,5 @@ function townGiftSendRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: n
 }
 
 function townGiftClaimRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
-    return JSON.stringify(townGiftClaim(nk, partyCaller(ctx), Date.now()));
+    return JSON.stringify(townGiftClaim(nk, partyCaller(ctx), partyRequest(payload).ack, Date.now()));
 }

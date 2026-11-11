@@ -142,6 +142,15 @@ function hideoutOwe(value: HideoutValue, userId: string, item: string, amount: n
     value.owed[userId] = owed;
 }
 
+function hideoutWaiting(value: HideoutValue, userId: string): { [item: string]: number } {
+    const waiting: { [item: string]: number } = {};
+    const claim = value.claims[userId];
+    for (const source of [claim ? claim.items : {}, value.owed[userId] || {}])
+        for (const item of Object.keys(source))
+            waiting[item] = (waiting[item] || 0) + source[item];
+    return waiting;
+}
+
 function hideoutStorable(item: unknown): boolean {
     const rules = hideoutCommons();
     if (typeof item !== "string" || item.length === 0 || item.length > 64 || rules.storageNever.indexOf(item) >= 0)
@@ -174,7 +183,7 @@ function hideoutCommonsView(nk: nkruntime.Nakama, value: HideoutValue, members: 
             const rule = hideoutPlantRule(bed.plant);
             return { plant: bed.plant, share: rule ? Math.min(1, bed.grown / rule.growSeconds) : 0, ready: bed.ready, tended: bed.by[userId] !== undefined };
         }),
-        owed: value.owed[userId] || {},
+        owed: hideoutWaiting(value, userId),
         storage: value.buildings["storage"] ? value.storage : null,
         journal: value.journal.slice().reverse().map((entry) => ({ at: entry.at, name: nameOf(entry.userId), item: entry.item, amount: entry.amount })),
         takenToday: hideoutTakenToday(value, userId, nowUnixMs), takePerDay: hideoutCommons().takePerDay
@@ -215,13 +224,22 @@ function hideoutHarvest(nk: nkruntime.Nakama, userId: string, bed: unknown, nowU
     }, nowUnixMs);
 }
 
-function hideoutClaim(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [key: string]: any } {
+function hideoutClaim(nk: nkruntime.Nakama, userId: string, ack: unknown, nowUnixMs: number): { [key: string]: any } {
     let items: { [item: string]: number } = {};
+    let seq = 0;
     const view = hideoutUpdate(nk, userId, (hideout) => {
-        items = hideout.owed[userId] || {};
-        delete hideout.owed[userId];
+        let claim = hideout.claims[userId] || { seq: 0, items: {} };
+        if (typeof ack === "number" && ack === claim.seq)
+            claim = { seq: claim.seq, items: {} };
+        if (Object.keys(claim.items).length === 0 && hideout.owed[userId]) {
+            claim = { seq: Math.max(nowUnixMs, claim.seq + 1), items: hideout.owed[userId] };
+            delete hideout.owed[userId];
+        }
+        hideout.claims[userId] = claim;
+        items = claim.items;
+        seq = claim.seq;
     }, nowUnixMs);
-    return { items: items, hideout: view };
+    return { seq: seq, items: items, hideout: view };
 }
 
 function hideoutStore(nk: nkruntime.Nakama, userId: string, item: unknown, amount: unknown, put: boolean, nowUnixMs: number): { [key: string]: any } {
@@ -245,6 +263,7 @@ function hideoutStore(nk: nkruntime.Nakama, userId: string, item: unknown, amoun
             hideout.storage[id] -= amount;
             if (hideout.storage[id] === 0)
                 delete hideout.storage[id];
+            hideoutOwe(hideout, userId, id, amount);
         }
         hideoutJournal(hideout, { at: nowUnixMs, userId: userId, item: id, amount: put ? amount : -amount });
     }, nowUnixMs);
@@ -260,7 +279,7 @@ function hideoutHarvestRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk:
 }
 
 function hideoutClaimRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
-    return JSON.stringify(hideoutClaim(nk, partyCaller(ctx), Date.now()));
+    return JSON.stringify(hideoutClaim(nk, partyCaller(ctx), payload ? partyRequest(payload).ack : undefined, Date.now()));
 }
 
 function hideoutStorePutRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {

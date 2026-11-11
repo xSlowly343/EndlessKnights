@@ -55,6 +55,7 @@ namespace Game.Core.Content
 
         public int OrdersPerDay { get; private set; }
         public int OrdersKept { get; private set; }
+        public int OrderDays { get; private set; }
         public long Reputation { get; private set; }
         public long Shards { get; private set; }
         public double Dust { get; private set; }
@@ -138,6 +139,7 @@ namespace Game.Core.Content
             {
                 OrdersPerDay = orders.Field("perDay").AsInt(1, 20),
                 OrdersKept = orders.Field("keep").AsInt(1, 50),
+                OrderDays = orders.Field("days").AsInt(1, 365),
                 Reputation = reward.Field("reputation").AsLong(0, 1_000_000),
                 Shards = reward.Field("shards").AsLong(0, 1_000_000),
                 Dust = reward.Field("dust").AsNumber(0, 1_000_000),

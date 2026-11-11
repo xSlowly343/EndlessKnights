@@ -236,9 +236,11 @@ function companionFarClaim(nk: nkruntime.Nakama, userId: string, nowUnixMs: numb
             throw new Error("already claimed");
         trip.claimed.push(userId);
         items = companionFarLoot(trip);
+        for (const item of Object.keys(items))
+            hideoutOwe(hideout, userId, item, items[item]);
     }, nowUnixMs);
     const granted = walletGrant(nk, userId, "companion_trip", 1, nowUnixMs);
-    return { items: items, granted: granted, hideout: view };
+    return { loot: items, granted: granted, hideout: view };
 }
 
 function companionWeekOf(nowUnixMs: number): number {

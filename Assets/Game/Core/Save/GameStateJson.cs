@@ -104,6 +104,7 @@ namespace Game.Core.Save
                     ("orders", JsonValue.Of(state.Hideout.Orders)),
                     ("sitSeconds", JsonValue.Of(state.Hideout.SitSeconds)),
                     ("fireLevel", JsonValue.Of(state.Hideout.FireLevel)),
+                    ("claimSeq", JsonValue.Of(state.Hideout.ClaimSeq.ToString(System.Globalization.CultureInfo.InvariantCulture))),
                     ("buildings", WriteLevels(state.Hideout.Buildings)))),
                 ("clanCamp", Object(
                     ("level", JsonValue.Of(state.ClanCamp.Level)),
@@ -1065,24 +1066,29 @@ namespace Game.Core.Save
         {
             var orders = new JsonValue[town.Orders.Count];
             for (var i = 0; i < orders.Length; i++)
-                orders[i] = Object(("request", JsonValue.Of(town.Orders[i].Request)), ("amount", JsonValue.Of(town.Orders[i].Amount)));
+                orders[i] = Object(("request", JsonValue.Of(town.Orders[i].Request)), ("amount", JsonValue.Of(town.Orders[i].Amount)), ("day", JsonValue.Of(town.Orders[i].Day)));
             var guilds = new List<string>(town.Reputation.Keys);
             guilds.Sort(System.StringComparer.Ordinal);
             var reputation = new JsonValue[guilds.Count];
             for (var i = 0; i < reputation.Length; i++)
                 reputation[i] = Object(("guild", JsonValue.Of(guilds[i])), ("value", JsonValue.Of(town.Reputation[guilds[i]])));
-            return Object(("day", JsonValue.Of(town.Day)), ("orders", JsonValue.Array(orders)), ("reputation", JsonValue.Array(reputation)), ("done", JsonValue.Of(town.Done)), ("redrawDay", JsonValue.Of(town.RedrawDay)));
+            return Object(("day", JsonValue.Of(town.Day)), ("orders", JsonValue.Array(orders)), ("reputation", JsonValue.Array(reputation)), ("done", JsonValue.Of(town.Done)), ("redrawDay", JsonValue.Of(town.RedrawDay)), ("gifts", WriteIds(town.Gifts)));
         }
 
         private static void ReadTown(ContentNode node, TownState town)
         {
             town.Day = node.Field("day").AsLong(-1);
             foreach (var item in node.Field("orders").Items())
-                town.Orders.Add(new TownOrder { Request = item.Field("request").AsString(), Amount = item.Field("amount").AsInt(1) });
+                town.Orders.Add(new TownOrder { Request = item.Field("request").AsString(), Amount = item.Field("amount").AsInt(1), Day = item.HasField("day") ? item.Field("day").AsLong(-1) : town.Day });
             foreach (var item in node.Field("reputation").Items())
                 town.Reputation[item.Field("guild").AsString()] = item.Field("value").AsLong(0);
             town.Done = node.Field("done").AsLong(0);
             town.RedrawDay = node.HasField("redrawDay") ? node.Field("redrawDay").AsLong(-1) : -1;
+            if (node.HasField("gifts"))
+            {
+                foreach (var item in node.Field("gifts").Items())
+                    town.Gifts.Add(item.AsString());
+            }
         }
 
         private static JsonValue WriteDecor(DecorState decor)
@@ -1460,6 +1466,8 @@ namespace Game.Core.Save
             hideout.Orders = node.Field("orders").AsInt(0);
             hideout.SitSeconds = node.Field("sitSeconds").AsLong(0);
             hideout.FireLevel = node.Field("fireLevel").AsInt(0, 10);
+            if (node.HasField("claimSeq"))
+                hideout.ClaimSeq = (long)ReadCount(node.Field("claimSeq"));
             if (node.HasField("buildings"))
                 ReadLevels(node.Field("buildings"), hideout.Buildings);
         }

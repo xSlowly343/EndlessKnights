@@ -48,6 +48,22 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void ADishWithFewerChopsStillGetsCooked()
+        {
+            var (loop, input) = Cook();
+            var dish = Rules.Dishes[0];
+            Stock(loop, dish);
+            loop.State.Museum.Perks[(int)MuseumPerk.FewerChops] = 0.5;
+            Assert.That(loop.Cooking.ChopsOf(dish), Is.LessThan(dish.Chops));
+            Assert.That(loop.Cooking.Cook(dish.Id), Is.EqualTo(CookingResult.Done));
+
+            Prepare(loop, input, dish);
+
+            Assert.That(loop.State.Museum.Perks[(int)MuseumPerk.FewerChops], Is.EqualTo(0.5));
+            Assert.That(loop.State.Cooking.Meals, Does.Contain(dish.Id));
+        }
+
+        [Test]
         public void TheChefTableWaitsForTheCooksGuildAndTheIngredients()
         {
             var input = new FakeInputSource();

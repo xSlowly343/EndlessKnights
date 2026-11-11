@@ -205,6 +205,23 @@ namespace Game.Core.Ui
         private static int RoleMaskOf(Game.Core.Content.Synergy.SynergyRules synergy, string heroName) =>
             HeroClassNames.ByName.TryGetValue(heroName, out var heroClass) ? synergy.RoleMaskOf(heroClass) : 0;
 
+        public static List<string> Order(HideoutState state)
+        {
+            var lines = new List<string>();
+            var order = state.Order;
+            if (order.Id.Length == 0)
+            {
+                lines.Add(Texts.Get("hideout.order.none"));
+                return lines;
+            }
+            lines.Add(Texts.Format(order.Done ? "hideout.order.done" : "hideout.order.title", Texts.Get("hideout.order." + order.Id), order.DaysLeft));
+            foreach (var need in order.Needs)
+                lines.Add(Texts.Format("hideout.order.need", Texts.Get("hideout.order.counter." + need.Counter), need.Have, need.Target));
+            if (order.CanRedraw)
+                lines.Add(Texts.Get("hideout.order.redraw"));
+            return lines;
+        }
+
         public static List<string> TrophyHall(HideoutState state)
         {
             var lines = new List<string>();

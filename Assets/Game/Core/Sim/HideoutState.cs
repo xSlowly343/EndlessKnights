@@ -78,8 +78,33 @@ namespace Game.Core.Sim
         public List<TrophyFeat> Feats { get; } = new List<TrophyFeat>();
     }
 
+    public readonly struct PartyOrderNeed
+    {
+        public PartyOrderNeed(string counter, long have, long target)
+        {
+            Counter = counter;
+            Have = have;
+            Target = target;
+        }
+
+        public string Counter { get; }
+        public long Have { get; }
+        public long Target { get; }
+    }
+
+    public sealed class PartyOrder
+    {
+        public string Id { get; set; } = string.Empty;
+        public bool Done { get; set; }
+        public int DaysLeft { get; set; }
+        public bool CanRedraw { get; set; }
+        public List<PartyOrderNeed> Needs { get; } = new List<PartyOrderNeed>();
+    }
+
     public sealed class HideoutState
     {
+        public PartyOrder Order { get; } = new PartyOrder();
+        public long ClaimSeq { get; set; }
         public int Tier { get; set; }
         public int Members { get; set; }
         public long Bosses { get; set; }

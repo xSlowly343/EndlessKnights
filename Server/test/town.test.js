@@ -57,10 +57,12 @@ test("a full inbox refuses more gifts and claiming empties it once", () => {
     for (let i = 0; i < rules.giftsPerDay && sent < rules.giftInbox; i++, sent++)
       server.townGiftSend(nk, "friend" + friend, { to: "bob", item: "herb_hushbell", amount: 2 }, now + sent);
   assert.throws(() => server.townGiftSend(nk, "friend" + (Math.ceil(rules.giftInbox / rules.giftsPerDay)), { to: "bob", item: "herb_hushbell", amount: 1 }, now + 1000), /inbox is full/);
-  const claimed = plain(server.townGiftClaim(nk, "bob", now));
+  const claimed = plain(server.townGiftClaim(nk, "bob", undefined, now));
   assert.strictEqual(claimed.claimed.length, rules.giftInbox);
-  assert.deepStrictEqual(claimed.inbox, []);
-  assert.deepStrictEqual(plain(server.townGiftClaim(nk, "bob", now)).claimed, []);
+  assert.strictEqual(plain(server.townGiftClaim(nk, "bob", undefined, now)).claimed.length, rules.giftInbox, "gifts wait until the client confirms them");
+  const left = plain(server.townGiftClaim(nk, "bob", claimed.claimed.slice(1).map((gift) => gift.id), now));
+  assert.deepStrictEqual(left.claimed.map((gift) => gift.id), [claimed.claimed[0].id]);
+  assert.deepStrictEqual(plain(server.townGiftClaim(nk, "bob", [claimed.claimed[0].id, 7, "stranger"], now)).inbox, []);
 });
 
 test("built guilds come from the town record of the server", () => {

@@ -54,8 +54,16 @@ namespace Game.Net.Nakama
         public static async Task<TownReply> SendGiftAsync(NakamaClient client, NakamaSession session, string to, string item, int amount, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "town_gift_send", GiftPayload(to, item, amount), cancel).ConfigureAwait(false)));
 
-        public static async Task<TownReply> ClaimGiftsAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
-            From(NakamaJson.Parse(await client.RpcAsync(session, "town_gift_claim", "{}", cancel).ConfigureAwait(false)));
+        public static string ClaimPayload(IReadOnlyList<string> received)
+        {
+            var ids = new string[received.Count];
+            for (var i = 0; i < ids.Length; i++)
+                ids[i] = NakamaJson.Quote(received[i]);
+            return NakamaJson.Object(("ack", "[" + string.Join(",", ids) + "]"));
+        }
+
+        public static async Task<TownReply> ClaimGiftsAsync(NakamaClient client, NakamaSession session, IReadOnlyList<string> received, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "town_gift_claim", ClaimPayload(received), cancel).ConfigureAwait(false)));
 
         private static IReadOnlyList<TownGift> Gifts(JsonValue json, string name)
         {

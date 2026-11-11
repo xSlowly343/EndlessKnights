@@ -29,6 +29,10 @@ interface HideoutRules {
     materials: { [item: string]: number };
     maxGive: number;
     startBuilt: string[];
+    orderDays: number;
+    orderFromTier: number;
+    orderSource: string;
+    orderGoals: HideoutOrderRule[];
 }
 
 interface HideoutProject {
@@ -72,6 +76,8 @@ interface HideoutValue {
     warmed: { [userId: string]: { day: number; owners: string[] } };
     farTrip: HideoutFarTrip | null;
     farTrips: { day: number; count: number };
+    order: HideoutOrder | null;
+    claims: { [userId: string]: { seq: number; items: { [item: string]: number } } };
 }
 
 interface HideoutChronicle {
@@ -90,7 +96,7 @@ const HideoutMaxCornerText = 40;
 const HideoutCornerBuilding = "corner";
 
 function hideoutEmpty(): HideoutValue {
-    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {}, crafting: {}, brews: {}, pets: {}, petted: {}, warmed: {}, farTrip: null, farTrips: { day: 0, count: 0 } };
+    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {}, crafting: {}, brews: {}, pets: {}, petted: {}, warmed: {}, farTrip: null, farTrips: { day: 0, count: 0 }, order: null, claims: {} };
 }
 
 function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutValue; version: string } {
@@ -125,6 +131,8 @@ function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutVal
     value.warmed = stored.warmed || {};
     value.farTrip = stored.farTrip || null;
     value.farTrips = stored.farTrips || { day: 0, count: 0 };
+    value.order = stored.order || null;
+    value.claims = stored.claims || {};
     return { value: value, version: objects[0].version };
 }
 
@@ -314,7 +322,8 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
         commons: hideoutCommonsView(nk, value, meta.members, userId, nowUnixMs),
         crafts: hideoutCraftView(value, meta.members, userId, nowUnixMs, nameOf),
         trophies: hideoutTrophies(nk, group.id, value, chronicle),
-        companions: companionView(value, meta, userId, nowUnixMs, nameOf)
+        companions: companionView(value, meta, userId, nowUnixMs, nameOf),
+        order: hideoutOrderView(value, chronicle, meta.leader === userId, nowUnixMs)
     };
 }
 
@@ -326,6 +335,7 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
     const chronicle = hideoutChronicle(nk, group.id);
     let signs: { [userId: string]: number } = {};
     let pairs: string[] = [];
+    let ordered = false;
     const value = hideoutChange(nk, group.id, (hideout) => {
         signs = {};
         hideoutGrowGarden(hideout, hideoutHere(hideout, meta.members, nowUnixMs).length >= 2, nowUnixMs);
@@ -340,6 +350,8 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
         pairs = companionPairsHere(hideout, meta.members, nowUnixMs);
         hideoutFinish(hideout, chronicle);
         hideoutRise(nk, hideout, meta.members.length, chronicle);
+        ordered = hideoutOrderStep(hideout, chronicle, nowUnixMs);
+        hideoutRise(nk, hideout, meta.members.length, chronicle);
         hideoutNoteFormer(hideout, meta.members);
         hideoutSeatCorners(hideout, meta.members);
         return hideout;
@@ -347,6 +359,13 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
     for (const id of Object.keys(signs)) {
         try {
             walletGrant(nk, id, "hideout_fire", signs[id], nowUnixMs);
+        } catch (error) {
+            continue;
+        }
+    }
+    for (const id of ordered ? meta.members : []) {
+        try {
+            walletGrant(nk, id, HideoutServerRules.orderSource, 1, nowUnixMs);
         } catch (error) {
             continue;
         }

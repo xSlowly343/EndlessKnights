@@ -122,7 +122,7 @@ namespace Game.Core.Sim
             work.Clicks = 0;
             work.MouseMeters = 0;
             work.IdleSeconds = 0;
-            if (State.Chops < dish.Chops || State.Plates < dish.Plates)
+            if (State.Chops < chops || State.Plates < dish.Plates)
                 return;
             State.Meals.Add(dish.Id);
             if (State.Meals.Count < _rules.MealsKept && _state.Rng.NextDouble() < _state.Perk(MuseumPerk.DoubleMeal))
