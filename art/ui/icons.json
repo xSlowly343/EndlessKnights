@@ -20,7 +20,9 @@
     "sets": { "size": 64, "tile": "#26304A", "padding": 0.17, "style": "glow", "color": "#B07CFF" },
     "menu": { "size": 64, "tile": "#26304A", "padding": 0.17, "style": "glow", "color": "#9FB0C8" },
     "buttons": { "size": 48, "tile": "#26304A", "padding": 0.2, "style": "glow", "color": "#9FB0C8" },
-    "companions": { "size": 64, "tile": "#26304A", "padding": 0.15, "style": "glow", "color": "#9FB0C8" }
+    "companions": { "size": 64, "tile": "#26304A", "padding": 0.15, "style": "glow", "color": "#9FB0C8" },
+    "chat": { "size": 40, "tile": "#26304A", "padding": 0.12, "style": "glow", "color": "#9FB0C8" },
+    "tickets": { "size": 48, "tile": "#26304A", "padding": 0.12, "style": "glow", "color": "#FFD24A" }
   },
   "attributes": { "red": "#E0574A", "green": "#4FC277", "blue": "#3F6FD1", "white": "#7F89A0" },
   "icons": [
@@ -1204,6 +1206,10 @@
     { "group": "buttons", "id": "pause", "source": "guard13007/pause-button", "color": "#F0A040" },
     { "group": "buttons", "id": "speed", "source": "delapouite/fast-forward-button", "color": "#4FC8E8" },
     { "group": "buttons", "id": "reward", "source": "lorc/trophy", "color": "#FFD24A" },
-    { "group": "buttons", "id": "home", "source": "delapouite/house", "color": "#6ED46E" }
+    { "group": "buttons", "id": "home", "source": "delapouite/house", "color": "#6ED46E" },
+    { "group": "chat", "id": "developer", "source": "../own/chat_developer", "color": "#FFD24A" },
+    { "group": "chat", "id": "moderator", "source": "../own/chat_moderator", "color": "#4FC277" },
+    { "group": "tickets", "id": "party_rename", "source": "../own/ticket_party_rename", "color": "#4FA8F0" },
+    { "group": "tickets", "id": "clan_rename", "source": "../own/ticket_clan_rename", "color": "#B070F0" }
   ]
 }

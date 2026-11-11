@@ -118,6 +118,16 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("event_buy", eventBuyRpc);
     initializer.registerRpc("event_board", eventBoardRpc);
     initializer.registerRpc("town_mine", townMineRpc);
+    initializer.registerRpc("ticket_mine", ticketMineRpc);
+    initializer.registerRpc("ticket_buy", ticketBuyRpc);
+    initializer.registerRpc("chat_role", chatRoleRpc);
+    initializer.registerRpc("chat_send", chatSendRpc);
+    initializer.registerRpc("chat_read", chatReadRpc);
+    initializer.registerRpc("chat_delete", chatDeleteRpc);
+    initializer.registerRpc("chat_report", chatReportRpc);
+    initializer.registerRpc("chat_moderation", chatModerationRpc);
+    initializer.registerRpc("chat_mute", chatMuteRpc);
+    initializer.registerRpc("chat_remove", chatRemoveRpc);
     initializer.registerRpc("town_gift_send", townGiftSendRpc);
     initializer.registerRpc("town_gift_claim", townGiftClaimRpc);
     initializer.registerRpc("camp_publish", campPublishRpc);

@@ -37,7 +37,7 @@ namespace Game.Core.Ui
         public static PartySearchRow From(string partyId, string titleId, string language, string wanted, int members, int maxMembers,
             bool activeNow, string? usuallyOnline, bool wantsYou)
         {
-            var title = titleId.Length > 0 && Texts.Has("party.title." + titleId) ? PartyCardText.Title(titleId) : Texts.Get("party.search.untitled");
+            var title = titleId.Length > 0 && (PartyCardText.IsOwnTitle(titleId) || Texts.Has("party.title." + titleId)) ? PartyCardText.Title(titleId) : Texts.Get("party.search.untitled");
             var details = Texts.Has("settings.language." + language) ? PartyCardText.Language(language) : language.ToUpperInvariant();
             if (!string.IsNullOrEmpty(usuallyOnline) && Texts.Has("party.time." + usuallyOnline))
                 details += Separator + PartyCardText.UsuallyOnline(usuallyOnline!);

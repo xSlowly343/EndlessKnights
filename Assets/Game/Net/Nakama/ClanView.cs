@@ -12,6 +12,8 @@ namespace Game.Net.Nakama
             Access = NakamaJson.Text(json, "access");
             Adjective = NakamaJson.Text(json, "adjective");
             Noun = NakamaJson.Text(json, "noun");
+            Name = NakamaJson.Text(json, "name");
+            RenameFree = NakamaJson.Flag(json, "renameFree");
             Language = NakamaJson.Text(json, "language");
             Leader = NakamaJson.Text(json, "leader");
             MaxMembers = (int)NakamaJson.Number(json, "maxMembers");
@@ -28,6 +30,8 @@ namespace Game.Net.Nakama
         public string Access { get; }
         public string Adjective { get; }
         public string Noun { get; }
+        public string Name { get; }
+        public bool RenameFree { get; }
         public string Language { get; }
         public string Leader { get; }
         public int MaxMembers { get; }
@@ -74,6 +78,7 @@ namespace Game.Net.Nakama
             Id = NakamaJson.Text(json, "id");
             Adjective = NakamaJson.Text(json, "adjective");
             Noun = NakamaJson.Text(json, "noun");
+            Name = NakamaJson.Text(json, "name");
             Language = NakamaJson.Text(json, "language");
             Members = (int)NakamaJson.Number(json, "members");
             MaxMembers = (int)NakamaJson.Number(json, "maxMembers");
@@ -85,6 +90,7 @@ namespace Game.Net.Nakama
         public string Id { get; }
         public string Adjective { get; }
         public string Noun { get; }
+        public string Name { get; }
         public string Language { get; }
         public int Members { get; }
         public int MaxMembers { get; }

@@ -15,6 +15,8 @@ namespace Game.Presentation.Ui
         private const string Currencies = "currencies";
         private const string Slots = "slots";
         private const string Filters = "filters";
+        private const string ChatRoles = "chat";
+        private const string Tickets = "tickets";
         private const string ArmorSlot = "armor";
         private const string ArmorIcon = "chest";
 
@@ -29,6 +31,10 @@ namespace Game.Presentation.Ui
         public static Sprite? Slot(string slot) => Get(Slots, slot == ArmorSlot ? ArmorIcon : slot);
 
         public static Sprite? Filter(GemBagFilter filter) => Get(Filters, filter.ToString().ToLowerInvariant());
+
+        public static Sprite? ChatRole(string role) => role.Length == 0 ? null : Get(ChatRoles, role);
+
+        public static Sprite? Ticket(string id) => Get(Tickets, id);
 
         public static Sprite? Get(string group, string id)
         {

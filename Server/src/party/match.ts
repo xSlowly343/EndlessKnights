@@ -243,7 +243,7 @@ function partyWriteBoard(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: 
         if (member.joined && !member.guest)
             members.push(member.playerId);
     const group = partyGroupById(nk, state.partyId);
-    const title = group ? partyMetaOf(group).title : "";
+    const title = group ? partyShownTitle(partyMetaOf(group)) : "";
     const cleared = host.riftCleared;
     host.riftCleared = 0;
     const depth = riftBoardAdd(nk, riftId, state.partyId, title, cleared, members, nowUnixMs);

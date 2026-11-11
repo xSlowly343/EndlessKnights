@@ -10,6 +10,17 @@ namespace Game.Core.Ui
 
         public static string Name(string adjective, string noun) => Texts.Format("clan.name", Texts.Get("clan.adjective." + adjective), Texts.Get("clan.noun." + noun));
 
+        public static string Name(string adjective, string noun, string ownName) => ownName.Length > 0 ? ownName : Name(adjective, noun);
+
+        public static string Tag(string adjective, string noun, string ownName)
+        {
+            if (ownName.Length == 0)
+                return Tag(adjective, noun);
+            var gap = ownName.IndexOf(' ');
+            var tag = gap > 0 && gap + 1 < ownName.Length ? Initial(ownName) + Initial(ownName.Substring(gap + 1)) : ownName.Substring(0, System.Math.Min(2, ownName.Length));
+            return tag.ToUpperInvariant();
+        }
+
         public static string Tag(string adjective, string noun) =>
             (Initial(Texts.Get("clan.adjective." + adjective)) + Initial(Texts.Get("clan.noun." + noun))).ToUpperInvariant();
 

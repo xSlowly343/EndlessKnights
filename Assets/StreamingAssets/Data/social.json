@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "names": {
+    "minLength": 3,
+    "maxLength": 20
+  },
+  "tickets": [
+    { "id": "party_rename", "price": 300 },
+    { "id": "clan_rename", "price": 1000 }
+  ],
+  "roles": [
+    { "id": "developer", "muteHours": 8760, "grantsRoles": true },
+    { "id": "moderator", "muteHours": 72, "grantsRoles": false }
+  ],
+  "chat": {
+    "maxLength": 200,
+    "days": 7,
+    "pollSeconds": 5,
+    "removedKept": 30,
+    "channels": [
+      { "id": "world", "history": 100, "perMinute": 5, "cooldownSeconds": 5 },
+      { "id": "party", "history": 50, "perMinute": 20, "cooldownSeconds": 1 },
+      { "id": "clan", "history": 100, "perMinute": 12, "cooldownSeconds": 2 }
+    ],
+    "reportReasons": ["insult", "spam", "advertising", "other"],
+    "autoMute": { "reporters": 5, "days": 1, "hours": 24 },
+    "maxMuteHours": 8760
+  },
+  "banned": [
+    "fuck", "shit", "bitch", "cunt", "nigger", "nigga", "faggot", "whore", "slut", "asshole", "pussy", "wank", "retard", "hitler", "nazi",
+    "хуй", "хуйн", "хуев", "хуел", "охуе", "хуил", "хуяр", "хуяч", "нахуя", "пизд", "ебанут", "ебаны", "ебанн", "ебанат", "ебло", "ебуч", "заеб", "уеб", "выеб", "наеб", "долбоеб",
+    "бляд", "мудак", "мудил", "пидор", "пидар", "пидр", "гандон", "говн", "залуп", "шлюх", "нигг", "гитлер", "свастик"
+  ]
+}

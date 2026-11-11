@@ -20,6 +20,8 @@ interface ClanMeta {
     access: string;
     adjective: string;
     noun: string;
+    name?: string;
+    namedAt?: number;
     language: string;
     leader: string;
     officers: string[];
@@ -93,6 +95,7 @@ function clanHandOver(nk: nkruntime.Nakama, group: nkruntime.Group, meta: ClanMe
 function clanDissolve(nk: nkruntime.Nakama, groupId: string, code: string): void {
     nk.storageDelete([{ collection: ClanChronicleCollection, key: groupId, userId: PartySystemUser }]);
     nk.storageDelete([{ collection: ClanCodes, key: code, userId: PartySystemUser }]);
+    chatForget(nk, groupId);
     nk.groupDelete(groupId);
 }
 
@@ -176,7 +179,8 @@ function clanView(nk: nkruntime.Nakama, group: nkruntime.Group, now: number): { 
     });
     members.sort((a, b) => clanRoleOrder(a.role) - clanRoleOrder(b.role) || b.seen - a.seen);
     return {
-        id: group.id, code: meta.code, access: meta.access, adjective: meta.adjective, noun: meta.noun, language: meta.language, leader: meta.leader,
+        id: group.id, code: meta.code, access: meta.access, adjective: meta.adjective, noun: meta.noun, name: meta.name || "",
+        renameFree: !meta.namedAt, language: meta.language, leader: meta.leader,
         maxMembers: ClanServerRules.maxMembers, maxOfficers: ClanServerRules.maxOfficers, activeNow: clanActiveCount(seen, meta.members, now), members: members
     };
 }
@@ -197,6 +201,7 @@ function clanCreateFor(nk: nkruntime.Nakama, userId: string, request: { [key: st
         language: partyPick(request.language, rules.languages, rules.languages[0]),
         leader: userId, officers: [], members: [userId]
     };
+    socialRename(nk, userId, meta, request.name, TicketClanRename, now);
     const group = partyNative(nk.groupCreate(userId, ClanGroupPrefix + nk.uuidv4(), userId, meta.language, "", "", meta.access === PartyOpen, meta, rules.maxMembers));
     meta.code = clanReserveCode(nk, group.id);
     clanSaveMeta(nk, group, meta);
@@ -315,7 +320,7 @@ function clanCandidates(nk: nkruntime.Nakama, userId: string, request: { [key: s
         const activeNow = clanActiveCount(clanLastSeen(nk, meta.members), meta.members, now);
         result.push({
             group: group,
-            card: { id: group.id, adjective: meta.adjective, noun: meta.noun, language: meta.language, members: meta.members.length, maxMembers: rules.maxMembers, activeNow: activeNow, byRequest: meta.access !== PartyOpen }
+            card: { id: group.id, adjective: meta.adjective, noun: meta.noun, name: meta.name || "", language: meta.language, members: meta.members.length, maxMembers: rules.maxMembers, activeNow: activeNow, byRequest: meta.access !== PartyOpen }
         });
     }
     result.sort((a, b) => b.card.activeNow - a.card.activeNow || b.card.members - a.card.members);
@@ -421,7 +426,14 @@ function clanUpdateRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkr
     meta.adjective = partyPick(request.adjective, rules.adjectives, meta.adjective);
     meta.noun = partyPick(request.noun, rules.nouns, meta.noun);
     meta.language = partyPick(request.language, rules.languages, meta.language);
-    clanSaveMeta(nk, group, meta);
+    const paid = socialRename(nk, meta.leader, meta, request.name, TicketClanRename, now);
+    try {
+        clanSaveMeta(nk, group, meta);
+    } catch (error) {
+        if (paid)
+            ticketGive(nk, meta.leader, TicketClanRename);
+        throw error;
+    }
     return JSON.stringify(clanView(nk, group, now));
 }
 
