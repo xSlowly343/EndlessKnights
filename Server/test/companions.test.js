@@ -94,6 +94,21 @@ test("the far party trip needs two companions, takes a day and pays everyone", (
   assert.throws(() => server.companionFarStart(nk, "ann", now + 2), /already went today/);
 });
 
+test("a party trip counts for the hideout and does not wait for those who left or stay away", () => {
+  const { nk, call } = world("ann", "bob", "cid");
+  server.companionFarJoin(nk, "ann", "camp_dog", now);
+  server.companionFarJoin(nk, "bob", "camp_dog", now);
+  server.companionFarJoin(nk, "cid", "camp_dog", now);
+  server.companionFarStart(nk, "ann", now + 1);
+  assert.strictEqual(server.hideoutRead(nk, server.partyGroupOfUser(nk, "ann").id).value.counters.partyTrips, 1);
+  const back = now + 1 + rules.farTripMs;
+  server.companionFarClaim(nk, "ann", back);
+  call("cid", "partyLeaveRpc", {});
+  assert.throws(() => server.companionFarJoin(nk, "ann", "camp_crow", back + 1), /not claimed yet/);
+  server.companionFarJoin(nk, "ann", "camp_crow", back + rules.farTripMs);
+  assert.strictEqual(claim(nk, "bob", back + rules.farTripMs + 1).bone_hills, 3 * rules.bonesPerCompanion);
+});
+
 test("a party trip holds at most four companions", () => {
   const { nk } = world("ann", "bob", "cid", "dan");
   for (const name of ["ann", "bob", "cid", "dan"])

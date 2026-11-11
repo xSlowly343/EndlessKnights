@@ -3,7 +3,7 @@
   "stages": 2,
   "bossTimerSeconds": 45,
   "maxModifiers": 3,
-  "keys": {"fromStage": 150, "boss": 0.03, "specialBoss": 0.15, "guardian": 0.5, "attempts": 3, "pity": 60, "merge": 3, "salvage": 0.5, "retreatSeconds": 60, "partySplit": 1},
+  "keys": {"fromStage": 150, "boss": 0.03, "specialBoss": 0.15, "guardian": 0.5, "attempts": 3, "pity": 60, "merge": 3, "salvage": 0.5, "retreatSeconds": 60, "partySplit": 0.5},
   "depth": {"enemyHp": 4},
   "rift": {"fromStage": 10, "boss": 0.05, "guardian": 0.5, "stagesPerTier": 25, "enemyHp": 4, "shardsPerTier": 10},
   "tiers": [

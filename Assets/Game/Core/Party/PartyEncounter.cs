@@ -62,6 +62,7 @@ namespace Game.Core.Party
         public int WeakenedSpawns { get; private set; }
         public double WeakenShare { get; private set; }
         public long RiftStagesCleared { get; private set; }
+        public int DungeonStagesCleared { get; private set; }
         public double EnemyRegen { get; private set; }
         public double BossShield { get; private set; }
         public double ExtraStageEnemies { get; private set; }
@@ -266,6 +267,8 @@ namespace Game.Core.Party
             {
                 if (World == PartyWorld.Rift)
                     return 1 + RiftStagesCleared;
+                if (World == PartyWorld.Dungeon)
+                    return PartyDungeonId.Stage(RiftId) + 1 + DungeonStagesCleared;
                 var count = SortStages(true);
                 if (count == 0)
                     count = SortStages(false);
@@ -657,6 +660,7 @@ namespace Game.Core.Party
             World = world;
             RiftId = riftId;
             RiftStagesCleared = 0;
+            DungeonStagesCleared = 0;
             KillsOnStage = 0;
             Farming = false;
             FarmKills = 0;
@@ -709,6 +713,11 @@ namespace Game.Core.Party
             if (BossTicksLeft > 0)
                 return;
             Events.Add(new PartyEvent(PartyEventKind.BossFailed, Tick, EnemyId, EnemyKind));
+            if (World == PartyWorld.Dungeon)
+            {
+                SwitchWorld(PartyWorld.Home, 0);
+                return;
+            }
             Farming = true;
             FarmKills = 0;
             Spawn(PartyEnemyKind.Normal);
@@ -775,6 +784,11 @@ namespace Game.Core.Party
                     RiftStagesCleared++;
                 KillsOnStage = 0;
                 Farming = false;
+                if (World == PartyWorld.Dungeon && ++DungeonStagesCleared >= PartyDungeonId.Stages(RiftId))
+                {
+                    SwitchWorld(PartyWorld.Home, 0);
+                    return;
+                }
             }
             else if (Farming)
             {

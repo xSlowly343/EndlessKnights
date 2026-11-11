@@ -51,6 +51,16 @@ namespace Game.Core.Party
         private readonly int[] _allyHits = new int[PartyRules.MaxSlots];
         private long _lastSentReactionTick = PartyEncounter.Never;
         private int _contributionKills;
+        private const double KeysSeconds = 2;
+        private const int DungeonResultTicks = 10;
+
+        private readonly long[] _partyKeys = new long[PartyRules.MaxSlots * PartyKeysMessage.MaxKeys];
+        private readonly byte[] _partyKeyCount = new byte[PartyRules.MaxSlots];
+        private readonly int[] _keyPicks = new int[PartyKeysMessage.MaxKeys];
+        private bool _keysNow;
+        private long _dungeonId;
+        private int _dungeonBossKills;
+        private long _dungeonLeftTick;
         private int _ownSlot = PartyEncounter.NoSlot;
         private int _firstEvent;
         private bool _offerNow;
@@ -183,6 +193,34 @@ namespace Game.Core.Party
         }
 
         public bool RiftOpen(long nowUnixMs) => _loop.Rift.WindowAt(nowUnixMs) != null;
+
+        public bool CanLaunchDungeon => InParty && !IsGuest && IsLeader && _state.World == PartyWorld.Home && !_state.Switching;
+
+        public long DungeonId => _state.World == PartyWorld.Dungeon ? _state.RiftId : 0;
+
+        public int PartyKeyCount(int slot) => slot >= 0 && slot < PartyRules.MaxSlots ? _partyKeyCount[slot] : 0;
+
+        public long PartyKey(int slot, int index) =>
+            index >= 0 && index < PartyKeyCount(slot) ? _partyKeys[slot * PartyKeysMessage.MaxKeys + index] : 0;
+
+        public bool ProposeDungeon(long partyKey)
+        {
+            if (!CanLaunchDungeon || partyKey <= 0 || !HoldsPartyKey(partyKey))
+                return false;
+            SendToHost(PartyCodec.Encode(_out, new WorldRequestMessage { World = PartyWorld.Dungeon, RiftId = partyKey }));
+            return true;
+        }
+
+        private bool HoldsPartyKey(long partyKey)
+        {
+            var slot = PartyDungeonId.Owner(partyKey);
+            for (var i = 0; i < PartyKeyCount(slot); i++)
+            {
+                if (PartyKey(slot, i) == partyKey)
+                    return true;
+            }
+            return false;
+        }
 
         public bool CanCallBoss => InParty && !IsGuest && IsLeader && _state.Farming && _state.EnemyKind != PartyEnemyKind.Boss && !_state.Switching;
 
@@ -318,6 +356,10 @@ namespace Game.Core.Party
                     if (InParty)
                         OnOffer(offer);
                     break;
+                case PartyMessageKind.PartyKeys when PartyCodec.TryDecode(_in, length, out PartyKeysMessage keys):
+                    if (InParty && keys.Slot != _ownSlot)
+                        StoreKeys(keys);
+                    break;
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
                     if (InParty && reaction.Slot < PartyRules.MaxSlots && reaction.Slot != _ownSlot && _rules.Reactions.Knows(reaction.Reaction))
                         ShowReaction(reaction.Slot, reaction.Reaction);
@@ -370,7 +412,10 @@ namespace Game.Core.Party
         private void OnRoster(in RosterMessage roster)
         {
             if (roster.Version != Roster.Version)
+            {
                 _loadoutNow = true;
+                _keysNow = true;
+            }
             Roster = roster;
             _ownSlot = roster.SlotOf(_transport.LocalId);
             _inRoster = _ownSlot != PartyEncounter.NoSlot;
@@ -542,6 +587,13 @@ namespace Game.Core.Party
             var rift = _loop.Rift;
             if (_state.EnemyId == 0 || IsGuest)
                 return;
+            FollowDungeon();
+            if (_state.World == PartyWorld.Dungeon)
+            {
+                if (rift.Inside)
+                    rift.Leave();
+                return;
+            }
             if (_state.World == PartyWorld.Rift)
             {
                 if ((!rift.Inside || _loop.State.Rift.WindowId != _state.RiftId) && _refusedRift != _state.RiftId
@@ -552,6 +604,103 @@ namespace Game.Core.Party
             {
                 rift.Leave();
             }
+        }
+
+        private void FollowDungeon()
+        {
+            var dungeons = _loop.Dungeons;
+            if (_state.World == PartyWorld.Dungeon)
+            {
+                if (_dungeonId == _state.RiftId)
+                    return;
+                _dungeonId = _state.RiftId;
+                _dungeonBossKills = BossKillsSeen;
+                _dungeonLeftTick = 0;
+                if (_loop.Rift.Inside)
+                    _loop.Rift.Leave();
+                var owned = PartyDungeonId.Owner(_dungeonId) == _ownSlot;
+                if (_loop.Peaceful.InCamp)
+                    dungeons.SpendParty(_dungeonId, owned);
+                else
+                    dungeons.EnterParty(_dungeonId, owned);
+                return;
+            }
+            if (_dungeonId == 0)
+                return;
+            var completed = BossKillsSeen - _dungeonBossKills >= PartyDungeonId.Stages(_dungeonId);
+            if (!completed && _dungeonLeftTick == 0)
+            {
+                _dungeonLeftTick = _tick;
+                return;
+            }
+            if (!completed && _tick - _dungeonLeftTick < DungeonResultTicks)
+                return;
+            dungeons.LeaveParty(completed);
+            _dungeonId = 0;
+            _dungeonLeftTick = 0;
+        }
+
+        private void SendKeys()
+        {
+            var dungeons = _loop.Dungeons;
+            var keys = dungeons.Keys;
+            var message = new PartyKeysMessage { Slot = (byte)System.Math.Max(0, _ownSlot) };
+            for (var i = 0; i < PartyKeysMessage.MaxKeys; i++)
+                _keyPicks[i] = -1;
+            var offered = _loop.Peaceful.InCamp ? 0 : PartyKeysMessage.MaxKeys;
+            for (var pick = 0; pick < offered; pick++)
+            {
+                var best = -1;
+                for (var i = 0; i < keys.Count; i++)
+                {
+                    if (!dungeons.PartyReady(keys[i]) || Picked(i, pick))
+                        continue;
+                    if (best < 0 || keys[i].Tier > keys[best].Tier || (keys[i].Tier == keys[best].Tier && dungeons.StageOf(keys[i]) > dungeons.StageOf(keys[best])))
+                        best = i;
+                }
+                if (best < 0)
+                    break;
+                _keyPicks[pick] = best;
+                message.SetKey(pick, dungeons.PartyId(keys[best], _ownSlot));
+                message.Count++;
+            }
+            var changed = KeysChanged(message);
+            if (!changed && (!_keysNow || message.Count == 0))
+                return;
+            _keysNow = false;
+            StoreKeys(message);
+            SendToHost(PartyCodec.Encode(_out, message));
+        }
+
+        private bool KeysChanged(in PartyKeysMessage message)
+        {
+            if (_partyKeyCount[message.Slot] != message.Count)
+                return true;
+            for (var i = 0; i < message.Count; i++)
+            {
+                if (_partyKeys[message.Slot * PartyKeysMessage.MaxKeys + i] != message.Key(i))
+                    return true;
+            }
+            return false;
+        }
+
+        private bool Picked(int index, int picked)
+        {
+            for (var i = 0; i < picked; i++)
+            {
+                if (_keyPicks[i] == index)
+                    return true;
+            }
+            return false;
+        }
+
+        private void StoreKeys(in PartyKeysMessage message)
+        {
+            if (message.Slot >= PartyRules.MaxSlots)
+                return;
+            _partyKeyCount[message.Slot] = message.Count;
+            for (var i = 0; i < PartyKeysMessage.MaxKeys; i++)
+                _partyKeys[message.Slot * PartyKeysMessage.MaxKeys + i] = i < message.Count ? message.Key(i) : 0;
         }
 
         private void OnKilled(in EnemyKilledMessage killed)
@@ -660,6 +809,7 @@ namespace Game.Core.Party
             _loop.Skills.ShareEnemy(true);
             _offerNow = true;
             _loadoutNow = true;
+            _keysNow = true;
             if (_state.EnemyId > 0 && _state.EnemyId - 1 > _rewardedUpTo)
                 _rewardedUpTo = _state.EnemyId - 1;
             _settledUpTo = _rewardedUpTo;
@@ -678,6 +828,10 @@ namespace Game.Core.Party
         private void Unlink()
         {
             System.Array.Clear(_allyLoadouts, 0, _allyLoadouts.Length);
+            System.Array.Clear(_partyKeys, 0, _partyKeys.Length);
+            System.Array.Clear(_partyKeyCount, 0, _partyKeyCount.Length);
+            _dungeonId = 0;
+            _dungeonLeftTick = 0;
             _loop.State.PartyAllies = 0;
             for (var slot = 0; slot < PartyRules.MaxSlots; slot++)
                 _loop.Gear.SetAllyEcho(slot, 0);
@@ -998,6 +1152,8 @@ namespace Game.Core.Party
                 SendOffer();
             if (InParty)
                 SendLoadout();
+            if (InParty && !IsGuest && _ownSlot >= 0 && Every(KeysSeconds))
+                SendKeys();
             if ((InParty || Status == PartyLink.Joining) && Every(_rules.PresenceSeconds))
                 SendToHost(PartyCodec.Encode(_out, new PresenceMessage
                 {

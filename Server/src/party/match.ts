@@ -188,6 +188,9 @@ function partyHandleWorld(nk: nkruntime.Nakama, state: PartyMatchState, nowUnixM
             host.encounter.cancelWorld();
         } else if (request.world === PartyWorld.Home) {
             host.encounter.proposeWorld(PartyWorld.Home, 0);
+        } else if (request.world === PartyWorld.Dungeon) {
+            if (host.encounter.world === PartyWorld.Home && request.riftId > 0 && request.riftId <= Number.MAX_SAFE_INTEGER)
+                host.encounter.proposeWorld(PartyWorld.Dungeon, request.riftId);
         } else if (request.world === PartyWorld.Rift && host.encounter.world !== PartyWorld.Rift && !host.encounter.switching) {
             const rift = riftPartyJoin(nk, nowUnixMs);
             if (rift !== null)

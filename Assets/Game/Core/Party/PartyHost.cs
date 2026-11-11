@@ -170,6 +170,10 @@ namespace Game.Core.Party
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
                     React(slot, reaction);
                     break;
+                case PartyMessageKind.PartyKeys when PartyCodec.TryDecode(_in, length, out PartyKeysMessage keys):
+                    keys.Slot = (byte)slot;
+                    BroadcastExcept(slot, PartyCodec.Encode(_out, keys));
+                    break;
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     ShareResource(slot, resource.Amount);
                     break;
@@ -302,6 +306,12 @@ namespace Game.Core.Party
             if (request.World == PartyWorld.Home)
             {
                 _encounter.ProposeWorld(PartyWorld.Home, 0);
+                return;
+            }
+            if (request.World == PartyWorld.Dungeon)
+            {
+                if (_encounter.World == PartyWorld.Home && request.RiftId > 0)
+                    _encounter.ProposeWorld(PartyWorld.Dungeon, request.RiftId);
                 return;
             }
             if (request.World == PartyWorld.Rift && _rift?.Schedule.WindowAt(ClockUnixMs) != null)

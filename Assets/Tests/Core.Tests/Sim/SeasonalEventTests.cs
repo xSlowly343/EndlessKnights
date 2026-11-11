@@ -87,6 +87,37 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void TheEventBossIsAsThickAsTheRecordBossAtHome()
+        {
+            var loop = InEvent(new FakeInputSource());
+            loop.State.RecordStage = 20000;
+            var stages = TestWorld.Data.Stages;
+
+            loop.SeasonalEvents.StartBossFight();
+
+            Assert.That((stages.ForDepth(1, Rules.BossHpMultiplier, Rules.BossTimerSeconds).EnemyHp(20000) / stages.EnemyHp(20000)).ToDouble(), Is.EqualTo(1).Within(1e-9));
+            Assert.That(loop.State.EnemyMaxHp.Log10(), Is.GreaterThan(stages.EnemyHp(20000).Log10() - 1));
+        }
+
+        [Test]
+        public void ALongAbsenceInsideTheEventFightReturnsHomeAndGivesTheFightBack()
+        {
+            var loop = InEvent(new FakeInputSource());
+            loop.State.RecordStage = 30;
+            var home = loop.State.Stage;
+            loop.SeasonalEvents.StartBossFight();
+            Assert.That(loop.SeasonalEvents.FightsLeftToday, Is.Zero);
+
+            Assert.That(loop.ReturnHomeIfAway(5), Is.False);
+            Assert.That(loop.SeasonalEvents.FightInside, Is.True);
+            Assert.That(loop.ReturnHomeIfAway(3600), Is.True);
+
+            Assert.That(loop.SeasonalEvents.FightInside, Is.False);
+            Assert.That(loop.State.Stage, Is.EqualTo(home));
+            Assert.That(loop.SeasonalEvents.FightsLeftToday, Is.EqualTo(1));
+        }
+
+        [Test]
         public void TheEventBossIsFoughtOnceADayAndAWinPaysTokensAndAScore()
         {
             var input = new FakeInputSource();

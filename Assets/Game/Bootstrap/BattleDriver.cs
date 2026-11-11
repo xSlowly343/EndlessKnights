@@ -52,7 +52,7 @@ namespace Game.Bootstrap
         {
             if (awaySeconds <= 0)
                 return null;
-            _loop.Dungeons.RetreatIfAway(awaySeconds);
+            _loop.ReturnHomeIfAway(awaySeconds);
             var result = new OfflineCalculator(_data, _loop.Hero).Simulate(_loop.State, awaySeconds);
             _loop.ApplyOffline(result);
             return result;

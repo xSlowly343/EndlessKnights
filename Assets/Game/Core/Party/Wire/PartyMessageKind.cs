@@ -17,6 +17,7 @@ namespace Game.Core.Party.Wire
         FocusRelay,
         PartyResource,
         BossRequest = 16,
-        PartyLoadout = 18
+        PartyLoadout = 18,
+        PartyKeys = 19
     }
 }

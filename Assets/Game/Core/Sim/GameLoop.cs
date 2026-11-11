@@ -763,6 +763,15 @@ namespace Game.Core.Sim
 
         public QuestResult SwapQuest(int index) => _quests.Swap(index);
 
+        public bool ReturnHomeIfAway(double awaySeconds)
+        {
+            var after = _dungeons.Rules.RetreatSeconds;
+            var fromDungeon = _dungeons.RetreatIfAway(awaySeconds);
+            var fromFight = _seasonal.RetreatIfAway(awaySeconds, after);
+            var fromRift = _rift.LeaveIfAway(awaySeconds, after);
+            return fromDungeon || fromFight || fromRift;
+        }
+
         public void ApplyOffline(OfflineResult result)
         {
             _drops.ApplyOffline(result);

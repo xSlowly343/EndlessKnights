@@ -123,6 +123,7 @@ class PartyEncounter {
     weakenedSpawns = 0;
     weakenShare = 0;
     riftStagesCleared = 0;
+    dungeonStagesCleared = 0;
     enemyRegen = 0;
     bossShield = 0;
     extraStageEnemies = 0;
@@ -264,6 +265,8 @@ class PartyEncounter {
     waveStage(): number {
         if (this.world === PartyWorld.Rift)
             return 1 + this.riftStagesCleared;
+        if (this.world === PartyWorld.Dungeon)
+            return partyDungeonStage(this.riftId) + 1 + this.dungeonStagesCleared;
         let stages = this.sortedStages(true);
         if (stages.length === 0)
             stages = this.sortedStages(false);
@@ -615,6 +618,7 @@ class PartyEncounter {
         this.world = world;
         this.riftId = riftId;
         this.riftStagesCleared = 0;
+        this.dungeonStagesCleared = 0;
         this.killsOnStage = 0;
         this.farming = false;
         this.farmKills = 0;
@@ -660,6 +664,10 @@ class PartyEncounter {
         if (this.bossTicksLeft > 0)
             return;
         this.addEvent(PartyEventKind.BossFailed);
+        if (this.world === PartyWorld.Dungeon) {
+            this.switchWorld(PartyWorld.Home, 0);
+            return;
+        }
         this.farming = true;
         this.farmKills = 0;
         this.spawn(PartyEnemyKind.Normal);
@@ -760,6 +768,10 @@ class PartyEncounter {
                 this.riftStagesCleared++;
             this.killsOnStage = 0;
             this.farming = false;
+            if (this.world === PartyWorld.Dungeon && ++this.dungeonStagesCleared >= partyDungeonStages(this.riftId)) {
+                this.switchWorld(PartyWorld.Home, 0);
+                return;
+            }
         } else if (this.farming) {
             this.farmKills++;
             if (this.farmKills >= this.rules.bossRetryAfterKills)

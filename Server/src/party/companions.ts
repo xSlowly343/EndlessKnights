@@ -178,12 +178,18 @@ function companionWarm(nk: nkruntime.Nakama, userId: string, owner: unknown, now
 function companionFarJoin(nk: nkruntime.Nakama, userId: string, companion: unknown, nowUnixMs: number): { [key: string]: any } {
     if (companion !== null && !companionKnown(companion))
         throw new Error("unknown companion");
-    return hideoutUpdate(nk, userId, (hideout) => {
-        if (hideout.farTrip && hideout.farTrip.endsAt > 0) {
+    return hideoutUpdate(nk, userId, (hideout, meta) => {
+        const last = hideout.farTrip;
+        if (last && last.endsAt > 0) {
             if (companionFarRunning(hideout, nowUnixMs))
                 throw new Error("the party trip is on the road");
-            if (Object.keys(hideout.farTrip.sent).some((id) => hideout.farTrip!.claimed.indexOf(id) < 0))
+            const waiting = Object.keys(last.sent).filter((id) => last.claimed.indexOf(id) < 0 && meta.members.indexOf(id) >= 0);
+            if (waiting.length > 0 && nowUnixMs < last.endsAt + CompanionServerRules.farTripMs)
                 throw new Error("the last party trip is not claimed yet");
+            const loot = companionFarLoot(last);
+            for (const id of waiting)
+                for (const item of Object.keys(loot))
+                    hideoutOwe(hideout, id, item, loot[item]);
             hideout.farTrip = null;
         }
         const trip = hideout.farTrip || { sent: {}, endsAt: 0, claimed: [] };
@@ -215,6 +221,7 @@ function companionFarStart(nk: nkruntime.Nakama, userId: string, nowUnixMs: numb
         if (count >= CompanionServerRules.farTripsPerDay)
             throw new Error("the party trip already went today");
         hideout.farTrips = { day: day, count: count + 1 };
+        hideout.counters["partyTrips"] = (hideout.counters["partyTrips"] || 0) + 1;
         trip.endsAt = nowUnixMs + CompanionServerRules.farTripMs;
     }, nowUnixMs);
 }
