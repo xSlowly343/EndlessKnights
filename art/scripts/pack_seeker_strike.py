@@ -1,4 +1,5 @@
 import json
+import uuid
 from pathlib import Path
 
 from PIL import Image
@@ -10,7 +11,28 @@ ATTACK = RESOURCES / "Seeker_Void_Attack1_90x50_8f.png"
 ATTACK_CELL = (90, 50)
 FIRST_SLASH_FRAME = 3
 FACE_BOX = (12, 18, 24, 25)
-EFFECTS = {"void-crescent": "Crescent", "void-burst": "Burst"}
+MANIFEST = RESOURCES / "strikes.json"
+SHEET_META = RESOURCES / "Seeker_Void_Crescent_87x42_8f.png.meta"
+STRIKES = [
+    {"look": 0, "id": "void", "flight": ("void-crescent", "Seeker_Void_Crescent"), "burst": ("void-burst", "Seeker_Void_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#6ffd92"},
+    {"look": 1, "id": "star", "flight": ("star-seed", "Seeker_Star_Flight"), "burst": ("star-fall", "Seeker_Star_Burst"),
+     "path": "line", "arcPx": 12, "burstAt": "ground", "slash": "#ffe066"},
+    {"look": 2, "id": "moth", "flight": ("moth-flock", "Seeker_Moth_Flight"), "burst": ("moth-scatter", "Seeker_Moth_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#b3a4ee"},
+    {"look": 3, "id": "cog", "flight": ("cog-roll", "Seeker_Cog_Flight"), "burst": ("cog-break", "Seeker_Cog_Burst"),
+     "path": "ground", "arcPx": 0, "burstAt": "ground", "slash": "#f0b424"},
+    {"look": 4, "id": "card", "flight": ("card-throw", "Seeker_Card_Flight"), "burst": ("card-cut", "Seeker_Card_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#ff6a7a"},
+    {"look": 5, "id": "bramble", "flight": ("bramble-run", "Seeker_Bramble_Flight"), "burst": ("bramble-bloom", "Seeker_Bramble_Burst"),
+     "path": "ground", "arcPx": 0, "burstAt": "ground", "slash": "#7cc048"},
+    {"look": 6, "id": "rift", "flight": ("rift-crack", "Seeker_Rift_Flight"), "burst": ("rift-claw", "Seeker_Rift_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#d24cf0"},
+    {"look": 7, "id": "koi", "flight": ("koi-leap", "Seeker_Koi_Flight"), "burst": ("koi-splash", "Seeker_Koi_Burst"),
+     "path": "line", "arcPx": 14, "burstAt": "ground", "slash": "#78ccf4"},
+    {"look": 8, "id": "chord", "flight": ("chord-wave", "Seeker_Chord_Flight"), "burst": ("chord-ring", "Seeker_Chord_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#ff5aa8"},
+]
 
 
 def is_green(pixel):
@@ -47,7 +69,16 @@ def split_attack():
     slash.save(RESOURCES / f"Seeker_Void_Attack1Slash_{width}x{height}_{frames}f.png")
 
 
-def pack_effect(source, name):
+def write_meta(sheet):
+    meta = sheet.with_name(sheet.name + ".meta")
+    if meta.exists():
+        return
+    lines = SHEET_META.read_text().splitlines()
+    lines[1] = "guid: " + uuid.uuid4().hex
+    meta.write_text("\n".join(lines) + "\n")
+
+
+def pack_effect(source, prefix):
     data = json.loads((STRIKE / f"{source}.json").read_text())["meta"]["pixelfx"]
     sheet = Image.open(STRIKE / f"{source}.png").convert("RGBA")
     width, height = data["frameSize"]
@@ -67,19 +98,26 @@ def pack_effect(source, name):
     strip = Image.new("RGBA", (cell[0] * len(frames), cell[1]), (0, 0, 0, 0))
     for index, frame in enumerate(frames):
         strip.paste(frame.crop((left, top, right, bottom)), (index * cell[0], 0))
-    target = f"Seeker_Void_{name}_{cell[0]}x{cell[1]}_{len(frames)}f.png"
-    for stale in RESOURCES.glob(f"Seeker_Void_{name}_*f.png"):
-        if stale.name != target:
+    name = f"{prefix}_{cell[0]}x{cell[1]}_{len(frames)}f"
+    for stale in RESOURCES.glob(f"{prefix}_*f.png"):
+        if stale.stem != name:
             print(f"stale sheet left in place: {stale.name}")
-    strip.save(RESOURCES / target)
-    pivot = (data["pivot"][0] - left, data["pivot"][1] - top)
-    print(f"{target}: pivot {pivot}, {data['fps']} fps")
+    strip.save(RESOURCES / f"{name}.png")
+    write_meta(RESOURCES / f"{name}.png")
+    return {"file": name, "width": cell[0], "height": cell[1], "frames": len(frames),
+            "pivot": [data["pivot"][0] - left, data["pivot"][1] - top], "fps": data["fps"]}
 
 
 def main():
     split_attack()
-    for source, name in EFFECTS.items():
-        pack_effect(source, name)
+    strikes = []
+    for strike in STRIKES:
+        strikes.append({
+            "look": strike["look"], "id": strike["id"], "path": strike["path"], "arcPx": strike["arcPx"],
+            "burstAt": strike["burstAt"], "slash": strike["slash"],
+            "flight": pack_effect(*strike["flight"]), "burst": pack_effect(*strike["burst"]),
+        })
+    MANIFEST.write_text(json.dumps({"version": 1, "strikes": strikes}, indent=2) + "\n")
 
 
 if __name__ == "__main__":

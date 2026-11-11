@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "star-seed 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "star-seed 1",
+   "frame": {
+    "x": 96,
+    "y": 0,
+    "w": 96,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "star-seed 2",
+   "frame": {
+    "x": 0,
+    "y": 48,
+    "w": 96,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "star-seed 3",
+   "frame": {
+    "x": 96,
+    "y": 48,
+    "w": 96,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "star-seed 4",
+   "frame": {
+    "x": 0,
+    "y": 96,
+    "w": 96,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "star-seed 5",
+   "frame": {
+    "x": 96,
+    "y": 96,
+    "w": 96,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "star-seed 6",
+   "frame": {
+    "x": 0,
+    "y": 144,
+    "w": 96,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "star-seed 7",
+   "frame": {
+    "x": 96,
+    "y": 144,
+    "w": 96,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 48
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "star-seed.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 192,
+   "h": 192
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "star-seed",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/star-seed",
+   "name": "Star seed",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    96,
+    48
+   ],
+   "pivot": [
+    78,
+    24
+   ],
+   "columns": 2
+  }
+ }
+}

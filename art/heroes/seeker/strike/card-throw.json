@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "card-throw 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-throw 1",
+   "frame": {
+    "x": 112,
+    "y": 0,
+    "w": 112,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-throw 2",
+   "frame": {
+    "x": 0,
+    "y": 56,
+    "w": 112,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-throw 3",
+   "frame": {
+    "x": 112,
+    "y": 56,
+    "w": 112,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-throw 4",
+   "frame": {
+    "x": 0,
+    "y": 112,
+    "w": 112,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-throw 5",
+   "frame": {
+    "x": 112,
+    "y": 112,
+    "w": 112,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-throw 6",
+   "frame": {
+    "x": 0,
+    "y": 168,
+    "w": 112,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-throw 7",
+   "frame": {
+    "x": 112,
+    "y": 168,
+    "w": 112,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 56
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "card-throw.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 224,
+   "h": 224
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "card-throw",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/card-throw",
+   "name": "Card throw",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    112,
+    56
+   ],
+   "pivot": [
+    92,
+    28
+   ],
+   "columns": 2
+  }
+ }
+}

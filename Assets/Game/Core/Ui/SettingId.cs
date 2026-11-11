@@ -29,6 +29,9 @@ namespace Game.Core.Ui
         Eula,
         CompanionStrip,
         HeroStrikeOpacity,
-        AllyStrikeOpacity
+        AllyStrikeOpacity,
+        HeroCloak,
+        HeroEyes,
+        HeroStrike
     }
 }

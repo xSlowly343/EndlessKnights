@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "strikes": [
+    {
+      "look": 0,
+      "id": "void",
+      "path": "line",
+      "arcPx": 0,
+      "burstAt": "body",
+      "slash": "#6ffd92",
+      "flight": {
+        "file": "Seeker_Void_Crescent_87x42_8f",
+        "width": 87,
+        "height": 42,
+        "frames": 8,
+        "pivot": [
+          72,
+          21
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Void_Burst_80x54_17f",
+        "width": 80,
+        "height": 54,
+        "frames": 17,
+        "pivot": [
+          32,
+          27
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 1,
+      "id": "star",
+      "path": "line",
+      "arcPx": 12,
+      "burstAt": "ground",
+      "slash": "#ffe066",
+      "flight": {
+        "file": "Seeker_Star_Flight_81x32_8f",
+        "width": 81,
+        "height": 32,
+        "frames": 8,
+        "pivot": [
+          69,
+          12
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Star_Burst_75x83_17f",
+        "width": 75,
+        "height": 83,
+        "frames": 17,
+        "pivot": [
+          39,
+          68
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 2,
+      "id": "moth",
+      "path": "line",
+      "arcPx": 0,
+      "burstAt": "body",
+      "slash": "#b3a4ee",
+      "flight": {
+        "file": "Seeker_Moth_Flight_101x39_8f",
+        "width": 101,
+        "height": 39,
+        "frames": 8,
+        "pivot": [
+          88,
+          20
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Moth_Burst_66x64_17f",
+        "width": 66,
+        "height": 64,
+        "frames": 17,
+        "pivot": [
+          31,
+          41
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 3,
+      "id": "cog",
+      "path": "ground",
+      "arcPx": 0,
+      "burstAt": "ground",
+      "slash": "#f0b424",
+      "flight": {
+        "file": "Seeker_Cog_Flight_73x31_8f",
+        "width": 73,
+        "height": 31,
+        "frames": 8,
+        "pivot": [
+          58,
+          26
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Cog_Burst_81x51_18f",
+        "width": 81,
+        "height": 51,
+        "frames": 18,
+        "pivot": [
+          32,
+          41
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 4,
+      "id": "card",
+      "path": "line",
+      "arcPx": 0,
+      "burstAt": "body",
+      "slash": "#ff6a7a",
+      "flight": {
+        "file": "Seeker_Card_Flight_65x33_8f",
+        "width": 65,
+        "height": 33,
+        "frames": 8,
+        "pivot": [
+          55,
+          17
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Card_Burst_68x53_18f",
+        "width": 68,
+        "height": 53,
+        "frames": 18,
+        "pivot": [
+          36,
+          28
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 5,
+      "id": "bramble",
+      "path": "ground",
+      "arcPx": 0,
+      "burstAt": "ground",
+      "slash": "#7cc048",
+      "flight": {
+        "file": "Seeker_Bramble_Flight_84x22_8f",
+        "width": 84,
+        "height": 22,
+        "frames": 8,
+        "pivot": [
+          74,
+          18
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Bramble_Burst_64x61_17f",
+        "width": 64,
+        "height": 61,
+        "frames": 17,
+        "pivot": [
+          32,
+          60
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 6,
+      "id": "rift",
+      "path": "line",
+      "arcPx": 0,
+      "burstAt": "body",
+      "slash": "#d24cf0",
+      "flight": {
+        "file": "Seeker_Rift_Flight_90x21_8f",
+        "width": 90,
+        "height": 21,
+        "frames": 8,
+        "pivot": [
+          76,
+          10
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Rift_Burst_58x58_17f",
+        "width": 58,
+        "height": 58,
+        "frames": 17,
+        "pivot": [
+          21,
+          29
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 7,
+      "id": "koi",
+      "path": "line",
+      "arcPx": 14,
+      "burstAt": "ground",
+      "slash": "#78ccf4",
+      "flight": {
+        "file": "Seeker_Koi_Flight_81x46_8f",
+        "width": 81,
+        "height": 46,
+        "frames": 8,
+        "pivot": [
+          72,
+          24
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Koi_Burst_67x45_16f",
+        "width": 67,
+        "height": 45,
+        "frames": 16,
+        "pivot": [
+          32,
+          28
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 8,
+      "id": "chord",
+      "path": "line",
+      "arcPx": 0,
+      "burstAt": "body",
+      "slash": "#ff5aa8",
+      "flight": {
+        "file": "Seeker_Chord_Flight_102x39_8f",
+        "width": 102,
+        "height": 39,
+        "frames": 8,
+        "pivot": [
+          82,
+          20
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Chord_Burst_87x87_18f",
+        "width": 87,
+        "height": 87,
+        "frames": 18,
+        "pivot": [
+          43,
+          45
+        ],
+        "fps": 30
+      }
+    }
+  ]
+}

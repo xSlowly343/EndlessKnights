@@ -67,6 +67,9 @@ namespace Game.Core.Party
         private bool _loadoutNow;
         private PartyLoadoutMessage _sentLoadout;
         private readonly PartyLoadoutMessage[] _allyLoadouts = new PartyLoadoutMessage[PartyRules.MaxSlots];
+        private readonly HeroLook[] _allyLooks = new HeroLook[PartyRules.MaxSlots];
+        private HeroLook _sentLook;
+        private bool _lookNow;
         private long _refusedRift;
         private long _guestLinkTick;
         private int _auraBoundGem;
@@ -368,6 +371,10 @@ namespace Game.Core.Party
                     if (InParty && loadout.Slot < PartyRules.MaxSlots && loadout.Slot != _ownSlot)
                         _allyLoadouts[loadout.Slot] = loadout;
                     break;
+                case PartyMessageKind.PartyLook when PartyCodec.TryDecode(_in, length, out PartyLookMessage look):
+                    if (InParty && look.Slot < PartyRules.MaxSlots && look.Slot != _ownSlot)
+                        _allyLooks[look.Slot] = look.Look;
+                    break;
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     if (InParty && resource.Slot != _ownSlot)
                         _loop.Resource.GiftFromAlly(System.Math.Min(resource.Amount, _rules.Buffs.AllyResourceMax));
@@ -415,6 +422,7 @@ namespace Game.Core.Party
             {
                 _loadoutNow = true;
                 _keysNow = true;
+                _lookNow = true;
             }
             Roster = roster;
             _ownSlot = roster.SlotOf(_transport.LocalId);
@@ -425,6 +433,7 @@ namespace Game.Core.Party
                 {
                     _loop.PartyBuffs.ClearAlly(slot);
                     _allyLoadouts[slot] = default;
+                    _allyLooks[slot] = default;
                 }
             }
         }
@@ -810,6 +819,7 @@ namespace Game.Core.Party
             _offerNow = true;
             _loadoutNow = true;
             _keysNow = true;
+            _lookNow = true;
             if (_state.EnemyId > 0 && _state.EnemyId - 1 > _rewardedUpTo)
                 _rewardedUpTo = _state.EnemyId - 1;
             _settledUpTo = _rewardedUpTo;
@@ -825,9 +835,13 @@ namespace Game.Core.Party
         public PartyLoadoutMessage AllyLoadout(int slot) =>
             slot >= 0 && slot < _allyLoadouts.Length && slot != _ownSlot ? _allyLoadouts[slot] : default;
 
+        public HeroLook AllyLook(int slot) =>
+            slot >= 0 && slot < _allyLooks.Length && slot != _ownSlot ? _allyLooks[slot] : default;
+
         private void Unlink()
         {
             System.Array.Clear(_allyLoadouts, 0, _allyLoadouts.Length);
+            System.Array.Clear(_allyLooks, 0, _allyLooks.Length);
             System.Array.Clear(_partyKeys, 0, _partyKeys.Length);
             System.Array.Clear(_partyKeyCount, 0, _partyKeyCount.Length);
             _dungeonId = 0;
@@ -1152,6 +1166,8 @@ namespace Game.Core.Party
                 SendOffer();
             if (InParty)
                 SendLoadout();
+            if (InParty)
+                SendLook();
             if (InParty && !IsGuest && _ownSlot >= 0 && Every(KeysSeconds))
                 SendKeys();
             if ((InParty || Status == PartyLink.Joining) && Every(_rules.PresenceSeconds))
@@ -1232,6 +1248,16 @@ namespace Game.Core.Party
             _loadoutNow = false;
             _sentLoadout = loadout;
             SendToHost(PartyCodec.Encode(_out, loadout));
+        }
+
+        private void SendLook()
+        {
+            var look = _loop.Cosmetics.Look;
+            if (!_lookNow && look == _sentLook && !Every(_rules.PresenceSeconds))
+                return;
+            _lookNow = false;
+            _sentLook = look;
+            SendToHost(PartyCodec.Encode(_out, PartyLookMessage.Of(look)));
         }
 
         private PartyLoadoutMessage OwnLoadout()

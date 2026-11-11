@@ -4,6 +4,7 @@ interface CosmeticItemRule {
     price: number;
     source: string;
     clan: boolean;
+    look: number;
 }
 
 interface CosmeticRules {

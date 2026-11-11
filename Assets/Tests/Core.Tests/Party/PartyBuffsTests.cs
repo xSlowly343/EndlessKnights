@@ -121,6 +121,28 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AlliesSeeEachOthersLook()
+        {
+            var rig = new Rig(2);
+            var dresser = rig.Members[0];
+            var friend = rig.Members[1];
+            rig.Run(5);
+            var dresserSlot = friend.Client.Roster.SlotOf(10UL);
+            Assert.That(friend.Client.AllyLook(dresserSlot), Is.EqualTo(default(HeroLook)));
+
+            dresser.Loop.Cosmetics.Equip("cloak_moss");
+            dresser.Loop.Cosmetics.Grant("strike_koi");
+            dresser.Loop.Cosmetics.Equip("strike_koi");
+            rig.Run(2);
+
+            Assert.That(friend.Client.AllyLook(dresserSlot), Is.EqualTo(new HeroLook(4, 0, 7)));
+            Assert.That(dresser.Client.AllyLook(dresserSlot), Is.EqualTo(default(HeroLook)), "the own slot is not an ally");
+            var allies = new Game.Core.Ui.StripAlly[Game.Core.Ui.StripAllies.MaxShown];
+            Assert.That(Game.Core.Ui.StripAllies.Fill(friend.Client, allies), Is.EqualTo(1));
+            Assert.That(allies[0].Look.Strike, Is.EqualTo(7));
+        }
+
+        [Test]
         public void MembersSeeTheHordeAndTheColossusShieldOfTheHost()
         {
             var rift = TestWorld.Data.Rift;

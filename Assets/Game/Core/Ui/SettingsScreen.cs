@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Content;
 using Game.Core.Math;
 using Game.Core.Settings;
 using Game.Core.Sim;
@@ -20,9 +21,22 @@ namespace Game.Core.Ui
             new[] { SettingId.Language, SettingId.AlwaysOnTop, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.HeroStrikeOpacity, SettingId.AllyStrikeOpacity, SettingId.CompanionStrip, SettingId.InputConsent, SettingId.WhatsNew },
             new[] { SettingId.MasterVolume, SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume },
             new[] { SettingId.Telemetry, SettingId.ErrorReports, SettingId.PrivacyPolicy, SettingId.Eula },
+            new[] { SettingId.HeroCloak, SettingId.HeroEyes, SettingId.HeroStrike },
         };
 
         public static int TabCount => Tabs.Length;
+
+        public static HeroLookChooser? Looks { get; private set; }
+
+        public static void UseLooks(HeroLookChooser? looks) => Looks = looks;
+
+        public static string LookSlotOf(SettingId id) => id switch
+        {
+            SettingId.HeroCloak => CosmeticCatalog.CloakSlot,
+            SettingId.HeroEyes => CosmeticCatalog.EyesSlot,
+            SettingId.HeroStrike => CosmeticCatalog.StrikeSlot,
+            _ => string.Empty
+        };
 
         public static int MaxRows
         {
@@ -133,6 +147,10 @@ namespace Game.Core.Ui
                 case SettingId.PrivacyPolicy:
                 case SettingId.Eula:
                     return true;
+                case SettingId.HeroCloak:
+                case SettingId.HeroEyes:
+                case SettingId.HeroStrike:
+                    return Looks != null && Looks.Step(LookSlotOf(id), step);
                 default:
                     return ChangeVolume(id, settings, step);
             }
@@ -143,6 +161,7 @@ namespace Game.Core.Ui
             0 => Texts.Get("settings.credits"),
             1 => Texts.Get("settings.soundNote"),
             2 => Texts.Get("settings.privacyNote"),
+            3 => Texts.Get("settings.lookNote"),
             _ => string.Empty
         };
 
@@ -166,6 +185,7 @@ namespace Game.Core.Ui
             SettingId.FrameRate => Texts.Format("settings.fps", settings.FrameRate),
             SettingId.NumberFormat => Texts.Get("settings.format." + FormatKey(settings.NumberFormat.Format)),
             SettingId.Decimals => settings.NumberFormat.Decimals.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            SettingId.HeroCloak or SettingId.HeroEyes or SettingId.HeroStrike => Looks?.Label(LookSlotOf(id), settings.Language == "ru") ?? string.Empty,
             _ => Texts.Format("battle.percent", (int)System.Math.Round(VolumeOf(id, settings) * 100))
         };
 

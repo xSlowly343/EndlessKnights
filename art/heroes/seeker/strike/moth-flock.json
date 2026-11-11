@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "moth-flock 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-flock 1",
+   "frame": {
+    "x": 120,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-flock 2",
+   "frame": {
+    "x": 240,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-flock 3",
+   "frame": {
+    "x": 0,
+    "y": 64,
+    "w": 120,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-flock 4",
+   "frame": {
+    "x": 120,
+    "y": 64,
+    "w": 120,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-flock 5",
+   "frame": {
+    "x": 240,
+    "y": 64,
+    "w": 120,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-flock 6",
+   "frame": {
+    "x": 0,
+    "y": 128,
+    "w": 120,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 64
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-flock 7",
+   "frame": {
+    "x": 120,
+    "y": 128,
+    "w": 120,
+    "h": 64
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 64
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 64
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "moth-flock.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 360,
+   "h": 192
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "moth-flock",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/moth-flock",
+   "name": "Moth flock",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    120,
+    64
+   ],
+   "pivot": [
+    98,
+    32
+   ],
+   "columns": 3
+  }
+ }
+}

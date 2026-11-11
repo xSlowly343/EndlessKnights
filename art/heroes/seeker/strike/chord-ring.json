@@ -1,0 +1,457 @@
+{
+ "frames": [
+  {
+   "filename": "chord-ring 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 1",
+   "frame": {
+    "x": 128,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 2",
+   "frame": {
+    "x": 256,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 3",
+   "frame": {
+    "x": 384,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 4",
+   "frame": {
+    "x": 0,
+    "y": 96,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 5",
+   "frame": {
+    "x": 128,
+    "y": 96,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 6",
+   "frame": {
+    "x": 256,
+    "y": 96,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 7",
+   "frame": {
+    "x": 384,
+    "y": 96,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 8",
+   "frame": {
+    "x": 0,
+    "y": 192,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 9",
+   "frame": {
+    "x": 128,
+    "y": 192,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 10",
+   "frame": {
+    "x": 256,
+    "y": 192,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 11",
+   "frame": {
+    "x": 384,
+    "y": 192,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 12",
+   "frame": {
+    "x": 0,
+    "y": 288,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 13",
+   "frame": {
+    "x": 128,
+    "y": 288,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 14",
+   "frame": {
+    "x": 256,
+    "y": 288,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 15",
+   "frame": {
+    "x": 384,
+    "y": 288,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 16",
+   "frame": {
+    "x": 0,
+    "y": 384,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 17",
+   "frame": {
+    "x": 128,
+    "y": 384,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "chord-ring 18",
+   "frame": {
+    "x": 256,
+    "y": 384,
+    "w": 128,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 96
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "chord-ring.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 512,
+   "h": 480
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "chord-ring",
+    "from": 0,
+    "to": 18,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/chord-ring",
+   "name": "Chord ring",
+   "fps": 30,
+   "loop": false,
+   "frames": 19,
+   "frameSize": [
+    128,
+    96
+   ],
+   "pivot": [
+    64,
+    52
+   ],
+   "columns": 4
+  }
+ }
+}

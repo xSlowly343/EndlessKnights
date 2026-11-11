@@ -20,7 +20,7 @@ function world(...names) {
 const give = (nk, user, crystals) => server.walletGrant(nk, user, "crystal_purchase", crystals, now);
 
 test("rules come from cosmetics.json and every reward exists", () => {
-  assert.strictEqual(rules.items.filter((i) => i.source === "shop").length, 72);
+  assert.strictEqual(rules.items.filter((i) => i.source === "shop").length, 94);
   assert.strictEqual(item(rules.championTop10).source, "reward");
   assert.strictEqual(item(rules.warVictors).clan, true);
   assert.deepStrictEqual(Object.keys(plain(rules.leagueBanners)), ["bronze", "silver", "gold"]);

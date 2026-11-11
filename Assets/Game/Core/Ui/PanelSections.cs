@@ -40,7 +40,7 @@ namespace Game.Core.Ui
             PanelSection.Tree => 3,
             PanelSection.Items => 3,
             PanelSection.Party => 4,
-            PanelSection.Settings => 3,
+            PanelSection.Settings => 4,
             _ => 0,
         };
 

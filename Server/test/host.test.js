@@ -368,3 +368,32 @@ test("the damage cap grows with the enemies on the stage and a strong hit pierce
   host.tick();
   assert.ok(host.kills - before >= 3, "one batch takes several enemies at once");
 });
+
+function look(cloak, eyes, strike) {
+  return Uint8Array.from([20, 0, cloak, eyes, strike]).buffer;
+}
+
+test("a hero look is relayed to the others with the sender slot, unknown looks are dropped", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.join("user-b", "12");
+  host.tick();
+  host.outbox.length = 0;
+  host.receive("user-b", look(3, 2, 6));
+  const relayed = host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 20);
+  assert.strictEqual(relayed.length, 1);
+  assert.deepStrictEqual(Array.from(new Uint8Array(relayed[0].data)), [20, 1, 3, 2, 6]);
+  host.outbox.length = 0;
+  host.receive("user-b", look(200, 2, 6));
+  host.receive("user-b", Uint8Array.from([20, 0, 1, 1]).buffer);
+  assert.strictEqual(host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 20).length, 0);
+});
+
+test("starter looks cannot be bought", () => {
+  const rules = party.CosmeticServerRules;
+  for (const slot of ["heroCloak", "heroEyes", "heroStrike"]) {
+    const starters = rules.items.filter((item) => item.slot === slot && item.source === "starter");
+    assert.ok(starters.some((item) => item.look === 0), slot + " has a default look");
+    assert.ok(starters.every((item) => item.price === 0));
+  }
+});

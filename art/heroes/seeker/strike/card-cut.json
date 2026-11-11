@@ -1,0 +1,457 @@
+{
+ "frames": [
+  {
+   "filename": "card-cut 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 1",
+   "frame": {
+    "x": 112,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 2",
+   "frame": {
+    "x": 224,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 3",
+   "frame": {
+    "x": 336,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 4",
+   "frame": {
+    "x": 448,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 5",
+   "frame": {
+    "x": 0,
+    "y": 96,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 6",
+   "frame": {
+    "x": 112,
+    "y": 96,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 7",
+   "frame": {
+    "x": 224,
+    "y": 96,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 8",
+   "frame": {
+    "x": 336,
+    "y": 96,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 9",
+   "frame": {
+    "x": 448,
+    "y": 96,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 10",
+   "frame": {
+    "x": 0,
+    "y": 192,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 11",
+   "frame": {
+    "x": 112,
+    "y": 192,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 12",
+   "frame": {
+    "x": 224,
+    "y": 192,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 13",
+   "frame": {
+    "x": 336,
+    "y": 192,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 14",
+   "frame": {
+    "x": 448,
+    "y": 192,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 15",
+   "frame": {
+    "x": 0,
+    "y": 288,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 16",
+   "frame": {
+    "x": 112,
+    "y": 288,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 17",
+   "frame": {
+    "x": 224,
+    "y": 288,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  },
+  {
+   "filename": "card-cut 18",
+   "frame": {
+    "x": 336,
+    "y": 288,
+    "w": 112,
+    "h": 96
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 96
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 96
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "card-cut.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 560,
+   "h": 384
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "card-cut",
+    "from": 0,
+    "to": 18,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/card-cut",
+   "name": "Card cut",
+   "fps": 30,
+   "loop": false,
+   "frames": 19,
+   "frameSize": [
+    112,
+    96
+   ],
+   "pivot": [
+    56,
+    44
+   ],
+   "columns": 5
+  }
+ }
+}

@@ -1,0 +1,457 @@
+{
+ "frames": [
+  {
+   "filename": "moth-scatter 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 1",
+   "frame": {
+    "x": 128,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 2",
+   "frame": {
+    "x": 256,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 3",
+   "frame": {
+    "x": 384,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 4",
+   "frame": {
+    "x": 0,
+    "y": 104,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 5",
+   "frame": {
+    "x": 128,
+    "y": 104,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 6",
+   "frame": {
+    "x": 256,
+    "y": 104,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 7",
+   "frame": {
+    "x": 384,
+    "y": 104,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 8",
+   "frame": {
+    "x": 0,
+    "y": 208,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 9",
+   "frame": {
+    "x": 128,
+    "y": 208,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 10",
+   "frame": {
+    "x": 256,
+    "y": 208,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 11",
+   "frame": {
+    "x": 384,
+    "y": 208,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 12",
+   "frame": {
+    "x": 0,
+    "y": 312,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 13",
+   "frame": {
+    "x": 128,
+    "y": 312,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 14",
+   "frame": {
+    "x": 256,
+    "y": 312,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 15",
+   "frame": {
+    "x": 384,
+    "y": 312,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 16",
+   "frame": {
+    "x": 0,
+    "y": 416,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 17",
+   "frame": {
+    "x": 128,
+    "y": 416,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  },
+  {
+   "filename": "moth-scatter 18",
+   "frame": {
+    "x": 256,
+    "y": 416,
+    "w": 128,
+    "h": 104
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 128,
+    "h": 104
+   },
+   "sourceSize": {
+    "w": 128,
+    "h": 104
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "moth-scatter.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 512,
+   "h": 520
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "moth-scatter",
+    "from": 0,
+    "to": 18,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/moth-scatter",
+   "name": "Moth scatter",
+   "fps": 30,
+   "loop": false,
+   "frames": 19,
+   "frameSize": [
+    128,
+    104
+   ],
+   "pivot": [
+    64,
+    58
+   ],
+   "columns": 4
+  }
+ }
+}

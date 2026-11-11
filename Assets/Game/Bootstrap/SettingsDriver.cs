@@ -48,6 +48,9 @@ namespace Game.Bootstrap
             _tray = tray;
             _battle = battle;
             ApplyStrikeOpacity();
+            HeroModel.UseCosmetics(loop?.Cosmetics);
+            SettingsScreen.UseLooks(loop == null ? null : new HeroLookChooser(loop.Cosmetics));
+            ApplyLook();
             ApplyText(Settings);
             panels.Settings.Use(Settings);
             panels.Settings.UseVersion(Application.version);
@@ -109,6 +112,11 @@ namespace Game.Bootstrap
                 case SettingId.AllyStrikeOpacity:
                     ApplyStrikeOpacity();
                     break;
+                case SettingId.HeroCloak:
+                case SettingId.HeroEyes:
+                case SettingId.HeroStrike:
+                    ApplyLook();
+                    return;
                 case SettingId.InputConsent:
                     _panelMode?.OpenConsent();
                     return;
@@ -179,6 +187,12 @@ namespace Game.Bootstrap
         }
 
         private void ApplyStrikeOpacity() => _battle?.UseStrikeOpacity((float)Settings.HeroStrikeOpacity, (float)Settings.AllyStrikeOpacity);
+
+        private void ApplyLook()
+        {
+            if (_battle != null && SettingsScreen.Looks != null)
+                _battle.UseLook(SettingsScreen.Looks.Shown);
+        }
 
         private static void ApplyText(GameSettings settings)
         {

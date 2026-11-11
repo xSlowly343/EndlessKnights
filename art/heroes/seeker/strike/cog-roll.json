@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "cog-roll 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "cog-roll 1",
+   "frame": {
+    "x": 112,
+    "y": 0,
+    "w": 112,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "cog-roll 2",
+   "frame": {
+    "x": 0,
+    "y": 48,
+    "w": 112,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "cog-roll 3",
+   "frame": {
+    "x": 112,
+    "y": 48,
+    "w": 112,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "cog-roll 4",
+   "frame": {
+    "x": 0,
+    "y": 96,
+    "w": 112,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "cog-roll 5",
+   "frame": {
+    "x": 112,
+    "y": 96,
+    "w": 112,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "cog-roll 6",
+   "frame": {
+    "x": 0,
+    "y": 144,
+    "w": 112,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "cog-roll 7",
+   "frame": {
+    "x": 112,
+    "y": 144,
+    "w": 112,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 48
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "cog-roll.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 224,
+   "h": 192
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "cog-roll",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/cog-roll",
+   "name": "Cog roll",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    112,
+    48
+   ],
+   "pivot": [
+    90,
+    38
+   ],
+   "columns": 2
+  }
+ }
+}

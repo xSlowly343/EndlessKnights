@@ -18,6 +18,7 @@ namespace Game.Core.Party.Wire
         PartyResource,
         BossRequest = 16,
         PartyLoadout = 18,
-        PartyKeys = 19
+        PartyKeys = 19,
+        PartyLook = 20
     }
 }

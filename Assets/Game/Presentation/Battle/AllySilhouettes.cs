@@ -13,7 +13,6 @@ namespace Game.Presentation.Battle
     {
         private const float BodyScale = 2f;
         private const float BodyHeightPx = 48f;
-        private const float TintStrength = 0.35f;
         private const float GroundPx = 150f;
         private const float MarkPx = 12f;
         private const float MarkGapPx = 4f;
@@ -40,6 +39,7 @@ namespace Game.Presentation.Battle
 
         private readonly SpriteRenderer[] _bodies = new SpriteRenderer[StripAllies.MaxShown];
         private readonly HeroStrike[] _strikes = new HeroStrike[StripAllies.MaxShown];
+        private readonly HeroSkin[] _skins = new HeroSkin[StripAllies.MaxShown];
         private readonly float[] _swingAge = new float[StripAllies.MaxShown];
         private readonly int[] _queuedSwings = new int[StripAllies.MaxShown];
         private readonly BigNumber[] _queuedDamage = new BigNumber[StripAllies.MaxShown];
@@ -58,6 +58,7 @@ namespace Game.Presentation.Battle
             {
                 _bodies[i] = HeroModel.Create("Ally " + i, BodyFeet(i), BodyScale, BodySortingOrder, scene);
                 _bodies[i].gameObject.SetActive(false);
+                _skins[i] = HeroModel.Skin(default);
                 _strikes[i] = new HeroStrike("Ally strike " + i, BodyFeet(i), BodyScale, flightSortingOrder, burstSortingOrder, StrikeDepth, scene);
                 _strikes[i].UseOpacity(DefaultStrikeOpacity);
                 Rest(i);
@@ -124,11 +125,16 @@ namespace Game.Presentation.Battle
                     continue;
                 }
                 var ally = allies[i];
+                var changed = ally.Look != _shown[i].Look || ally.Slot != _shown[i].Slot;
                 _shown[i] = ally;
-                var color = Color.Lerp(Color.white, PartyColors.Of(ally.ColorIndex), TintStrength);
-                color.a = ally.Faded ? FadedAlpha : 1f;
-                _bodies[i].color = color;
-                _strikes[i].UseTint(Color.Lerp(Color.white, PartyColors.Of(ally.ColorIndex), TintStrength));
+                if (changed)
+                {
+                    _skins[i] = HeroModel.Skin(ally.Look);
+                    _strikes[i].Use(HeroModel.Strike(ally.Look.Strike));
+                }
+                var alpha = ally.Faded ? FadedAlpha : 1f;
+                if (_bodies[i].color.a != alpha)
+                    _bodies[i].color = new Color(1f, 1f, 1f, alpha);
                 _marks[i].color = MarkColor(ally.Presence);
                 var mark = StripAllies.StatusMark(ally.Presence);
                 if (_markTexts[i].text != mark)
@@ -150,7 +156,7 @@ namespace Game.Presentation.Battle
                     Swing(i);
                 if (i < _count)
                 {
-                    var sprite = _swingAge[i] < HeroModel.Attack.Duration ? HeroModel.Attack.SpriteAt(_swingAge[i]) : HeroModel.Idle.SpriteAt(time + _phase[i]);
+                    var sprite = _swingAge[i] < HeroModel.Attack.Duration ? _skins[i].Attack.SpriteAt(_swingAge[i]) : _skins[i].Idle.SpriteAt(time + _phase[i]);
                     if (_bodies[i].sprite != sprite)
                         _bodies[i].sprite = sprite;
                 }

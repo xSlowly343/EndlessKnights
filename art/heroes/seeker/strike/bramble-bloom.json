@@ -1,0 +1,457 @@
+{
+ "frames": [
+  {
+   "filename": "bramble-bloom 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 1",
+   "frame": {
+    "x": 112,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 2",
+   "frame": {
+    "x": 224,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 3",
+   "frame": {
+    "x": 336,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 4",
+   "frame": {
+    "x": 0,
+    "y": 76,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 5",
+   "frame": {
+    "x": 112,
+    "y": 76,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 6",
+   "frame": {
+    "x": 224,
+    "y": 76,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 7",
+   "frame": {
+    "x": 336,
+    "y": 76,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 8",
+   "frame": {
+    "x": 0,
+    "y": 152,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 9",
+   "frame": {
+    "x": 112,
+    "y": 152,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 10",
+   "frame": {
+    "x": 224,
+    "y": 152,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 11",
+   "frame": {
+    "x": 336,
+    "y": 152,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 12",
+   "frame": {
+    "x": 0,
+    "y": 228,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 13",
+   "frame": {
+    "x": 112,
+    "y": 228,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 14",
+   "frame": {
+    "x": 224,
+    "y": 228,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 15",
+   "frame": {
+    "x": 336,
+    "y": 228,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 16",
+   "frame": {
+    "x": 0,
+    "y": 304,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 17",
+   "frame": {
+    "x": 112,
+    "y": 304,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-bloom 18",
+   "frame": {
+    "x": 224,
+    "y": 304,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "bramble-bloom.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 448,
+   "h": 380
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "bramble-bloom",
+    "from": 0,
+    "to": 18,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/bramble-bloom",
+   "name": "Bramble bloom",
+   "fps": 30,
+   "loop": false,
+   "frames": 19,
+   "frameSize": [
+    112,
+    76
+   ],
+   "pivot": [
+    56,
+    62
+   ],
+   "columns": 4
+  }
+ }
+}

@@ -84,15 +84,43 @@ namespace Game.Platform.Tests
         }
 
         [Test]
-        public void TintKeepsTheChosenOpacity()
+        public void AnotherStrikeArtSwapsTheSheetsAndStopsWhatWasFlying()
         {
-            _strike.UseOpacity(0.5f);
-            _strike.UseTint(new Color(0.8f, 0.9f, 1f));
+            var target = new Vector2(20f, 4f);
+            _strike.Launch();
+            _strike.Animate(0.01f, target);
+            Assert.That(_strike.Flying, Is.EqualTo(1));
 
-            var slash = _scene.transform.Find("Strike slash").GetComponent<SpriteRenderer>();
-            Assert.That(slash.color.b, Is.EqualTo(1f));
-            Assert.That(slash.color.r, Is.EqualTo(0.8f).Within(0.001f));
-            Assert.That(slash.color.a, Is.EqualTo(0.5f).Within(0.001f));
+            var cog = HeroModel.Strike(3);
+            _strike.Use(cog);
+            Assert.That(_strike.Art, Is.SameAs(cog));
+            Assert.That(_strike.Flying, Is.Zero);
+            Assert.That(_scene.transform.Find("Strike crescent 0").GetComponent<SpriteRenderer>().enabled, Is.False);
+
+            _strike.Launch();
+            _strike.Animate(HeroStrike.FlightSeconds / 2f, target);
+            var flying = _scene.transform.Find("Strike crescent 0");
+            if (!flying.GetComponent<SpriteRenderer>().enabled)
+                flying = _scene.transform.Find("Strike crescent 1");
+            Assert.That(flying.position.y, Is.EqualTo(2f).Within(0.001f), "a cog rolls along the ground the hero stands on");
+            _strike.Animate(HeroStrike.FlightSeconds, target);
+            Assert.That(_strike.Bursting, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void EveryStrikeOfTheCatalogHasItsSheets()
+        {
+            for (var look = 0; look <= 8; look++)
+            {
+                var art = HeroModel.Strike(look);
+                Assert.That(art.Look, Is.EqualTo(look));
+                Assert.That(art.Flight.FrameCount, Is.EqualTo(8), "the flight is played over the same 0.15 s for every strike");
+                Assert.That(art.Burst.Duration, Is.LessThanOrEqualTo(0.61f));
+                Assert.That(art.Slash.FrameCount, Is.EqualTo(HeroModel.Attack.FrameCount));
+            }
+            Assert.That(HeroModel.Strike(200), Is.SameAs(HeroModel.Strike(0)), "an unknown strike falls back to the void crescent");
+            Assert.That(HeroModel.Strike(1).ArcPx, Is.GreaterThan(0f));
+            Assert.That(HeroModel.Strike(5).RunsOnGround && HeroModel.Strike(5).BurstsOnGround, Is.True);
         }
     }
 }

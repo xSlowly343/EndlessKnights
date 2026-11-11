@@ -167,6 +167,10 @@ namespace Game.Core.Party
                     loadout.Slot = (byte)slot;
                     BroadcastExcept(slot, PartyCodec.Encode(_out, loadout));
                     break;
+                case PartyMessageKind.PartyLook when PartyCodec.TryDecode(_in, length, out PartyLookMessage look):
+                    look.Slot = (byte)slot;
+                    BroadcastExcept(slot, PartyCodec.Encode(_out, look));
+                    break;
                 case PartyMessageKind.PartyReaction when PartyCodec.TryDecode(_in, length, out PartyReactionMessage reaction):
                     React(slot, reaction);
                     break;

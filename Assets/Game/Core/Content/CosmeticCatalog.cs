@@ -5,7 +5,7 @@ namespace Game.Core.Content
 {
     public sealed class CosmeticDef
     {
-        public CosmeticDef(string id, string slot, string nameRu, string nameEn, long price, string source, string hero, string weaponType, bool clan, string achievement)
+        public CosmeticDef(string id, string slot, string nameRu, string nameEn, long price, string source, string hero, string weaponType, bool clan, string achievement, int look = 0, string color = "")
         {
             Id = id;
             Slot = slot;
@@ -17,6 +17,8 @@ namespace Game.Core.Content
             WeaponType = weaponType;
             Clan = clan;
             Achievement = achievement;
+            Look = look;
+            Color = color;
         }
 
         public string Id { get; }
@@ -29,6 +31,9 @@ namespace Game.Core.Content
         public string WeaponType { get; }
         public bool Clan { get; }
         public string Achievement { get; }
+        public int Look { get; }
+        public string Color { get; }
+        public bool Starter => Source == CosmeticCatalog.StarterSource;
         public bool ForSale => Source == CosmeticCatalog.ShopSource && Price > 0;
 
         public string EquipKey => Hero.Length > 0 ? Slot + ":" + Hero : WeaponType.Length > 0 ? Slot + ":" + WeaponType : Slot;
@@ -39,7 +44,13 @@ namespace Game.Core.Content
         public const string FileName = "cosmetics.json";
         public const int SupportedVersion = 1;
         public const string ShopSource = "shop";
-        public static readonly IReadOnlyList<string> Sources = new[] { ShopSource, "pass", "drop", "reward", "event" };
+        public const string StarterSource = "starter";
+        public const string CloakSlot = "heroCloak";
+        public const string EyesSlot = "heroEyes";
+        public const string StrikeSlot = "heroStrike";
+        public const int MaxLook = byte.MaxValue;
+        public static readonly IReadOnlyList<string> Sources = new[] { ShopSource, "pass", "drop", "reward", "event", StarterSource };
+        public static readonly IReadOnlyList<string> LookSlots = new[] { CloakSlot, EyesSlot, StrikeSlot };
 
         private readonly Dictionary<string, CosmeticDef> _byId;
 
@@ -63,6 +74,18 @@ namespace Game.Core.Content
 
         public bool TryGet(string id, out CosmeticDef item) => _byId.TryGetValue(id, out item!);
 
+        public CosmeticDef? ByLook(string slot, int look)
+        {
+            foreach (var item in All)
+            {
+                if (item.Look == look && item.Slot == slot)
+                    return item;
+            }
+            return null;
+        }
+
+        public static bool IsLookSlot(string slot) => ((IList<string>)LookSlots).Contains(slot);
+
         public static CosmeticCatalog Load(string json)
         {
             var root = ContentNode.Root(json, FileName);
@@ -74,6 +97,7 @@ namespace Game.Core.Content
                 slots.Add(slot.AsString());
             var all = new List<CosmeticDef>();
             var ids = new HashSet<string>(StringComparer.Ordinal);
+            var looks = new HashSet<string>(StringComparer.Ordinal);
             foreach (var node in root.Field("items").Items())
             {
                 var id = node.Field("id").AsString();
@@ -90,12 +114,19 @@ namespace Game.Core.Content
                     throw node.Field("price").Error($"cosmetic '{id}' is sold in the shop but has no price");
                 if (source != ShopSource && price != 0)
                     throw node.Field("price").Error($"cosmetic '{id}' is not sold but has a price");
+                var look = node.HasField("look") ? node.Field("look").AsInt(0, MaxLook) : 0;
+                if (IsLookSlot(slot) && !looks.Add(slot + ":" + look))
+                    throw node.Field("look").Error($"look {look} is used twice in slot '{slot}'");
+                if (IsLookSlot(slot) != node.HasField("look"))
+                    throw node.Field("slot").Error($"cosmetic '{id}': only hero looks carry a look number");
                 var name = node.Field("name");
                 all.Add(new CosmeticDef(id, slot, name.Field("ru").AsString(), name.Field("en").AsString(), price, source,
                     node.HasField("hero") ? node.Field("hero").AsString() : string.Empty,
                     node.HasField("weaponType") ? node.Field("weaponType").AsString() : string.Empty,
                     node.HasField("clan") && node.Field("clan").AsBool(),
-                    node.HasField("achievement") ? node.Field("achievement").AsString() : string.Empty));
+                    node.HasField("achievement") ? node.Field("achievement").AsString() : string.Empty,
+                    look,
+                    node.HasField("color") ? node.Field("color").AsString() : string.Empty));
             }
             return new CosmeticCatalog(all, slots, root.Field("crystalsPerDollar").AsInt(1), root.Field("weeklyDiscount").AsNumber(0, 0.9), root.Field("bundleDiscount").AsNumber(0, 0.9));
         }

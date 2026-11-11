@@ -19,22 +19,30 @@ namespace Game.Presentation.Battle
         private readonly float[] _flightAge = new float[Flights];
         private readonly float[] _burstAge = new float[Bursts];
         private readonly Vector3 _from;
+        private readonly Vector3 _groundFrom;
+        private readonly float _groundY;
+        private readonly float _pixel;
         private readonly float _depth;
         private Color _color = Color.white;
+        private StrikeArt _art;
 
         public HeroStrike(string name, Vector2 feet, float scale, int flightSortingOrder, int burstSortingOrder, float depth, Transform parent)
         {
             _depth = depth;
-            _from = Deep(feet + LaunchFromFeetPx * (scale / StripSpace.PixelsPerUnit));
-            _slash = Create(name + " slash", HeroModel.Slash, Deep(feet), scale, flightSortingOrder, parent);
+            _art = HeroModel.Strike(HeroModel.DefaultLook);
+            _pixel = scale / StripSpace.PixelsPerUnit;
+            _groundY = feet.y;
+            _from = Deep(feet + LaunchFromFeetPx * _pixel);
+            _groundFrom = Deep(feet + new Vector2(LaunchFromFeetPx.x * _pixel, 0f));
+            _slash = Create(name + " slash", _art.Slash, Deep(feet), scale, flightSortingOrder, parent);
             for (var i = 0; i < Flights; i++)
             {
-                _crescents[i] = Create(name + " crescent " + i, HeroModel.Crescent, _from, scale, flightSortingOrder, parent);
+                _crescents[i] = Create(name + " crescent " + i, _art.Flight, _from, scale, flightSortingOrder, parent);
                 _flightAge[i] = float.MaxValue;
             }
             for (var i = 0; i < Bursts; i++)
             {
-                _bursts[i] = Create(name + " burst " + i, HeroModel.Burst, _from, scale, burstSortingOrder, parent);
+                _bursts[i] = Create(name + " burst " + i, _art.Burst, _from, scale, burstSortingOrder, parent);
                 _burstAge[i] = float.MaxValue;
             }
         }
@@ -45,7 +53,26 @@ namespace Game.Presentation.Battle
 
         public int Flying => Count(_flightAge, FlightSeconds);
 
-        public int Bursting => Count(_burstAge, HeroModel.Burst.Duration);
+        public int Bursting => Count(_burstAge, _art.Burst.Duration);
+
+        public StrikeArt Art => _art;
+
+        public void Use(StrikeArt art)
+        {
+            if (ReferenceEquals(_art, art))
+                return;
+            _art = art;
+            for (var i = 0; i < Flights; i++)
+            {
+                _flightAge[i] = float.MaxValue;
+                _crescents[i].enabled = false;
+            }
+            for (var i = 0; i < Bursts; i++)
+            {
+                _burstAge[i] = float.MaxValue;
+                _bursts[i].enabled = false;
+            }
+        }
 
         public void UseOpacity(float opacity)
         {
@@ -53,17 +80,9 @@ namespace Game.Presentation.Battle
             Recolor();
         }
 
-        public void UseTint(Color tint)
-        {
-            if (_color.r == tint.r && _color.g == tint.g && _color.b == tint.b)
-                return;
-            _color = new Color(tint.r, tint.g, tint.b, _color.a);
-            Recolor();
-        }
-
         public void ShowSlash(float attackAge)
         {
-            var clip = HeroModel.Slash;
+            var clip = _art.Slash;
             var shown = Visible && attackAge >= HeroModel.StrikeSeconds && attackAge < clip.Duration;
             if (_slash.enabled != shown)
                 _slash.enabled = shown;
@@ -78,7 +97,10 @@ namespace Game.Presentation.Battle
 
         public void Animate(float delta, Vector2 target)
         {
-            var clipSpeed = HeroModel.Crescent.Duration / FlightSeconds;
+            var clipSpeed = _art.Flight.Duration / FlightSeconds;
+            var from = _art.RunsOnGround ? _groundFrom : _from;
+            var flightTarget = Deep(_art.RunsOnGround ? new Vector2(target.x, _groundY) : target);
+            var burstTarget = Deep(_art.BurstsOnGround ? new Vector2(target.x, _groundY) : target);
             for (var i = 0; i < Flights; i++)
             {
                 if (_flightAge[i] >= FlightSeconds)
@@ -88,22 +110,24 @@ namespace Game.Presentation.Battle
                 {
                     var slot = Oldest(_burstAge);
                     _burstAge[slot] = 0f;
-                    _bursts[slot].transform.position = Deep(target);
+                    _bursts[slot].transform.position = burstTarget;
                 }
                 else
                 {
                     var progress = Mathf.Pow(_flightAge[i] / FlightSeconds, FlightEase);
-                    _crescents[i].transform.position = Vector3.Lerp(_from, Deep(target), progress);
+                    var position = Vector3.Lerp(from, flightTarget, progress);
+                    position.y += Mathf.Sin(progress * Mathf.PI) * _art.ArcPx * _pixel;
+                    _crescents[i].transform.position = position;
                 }
-                Show(_crescents[i], HeroModel.Crescent, _flightAge[i] * clipSpeed);
+                Show(_crescents[i], _art.Flight, _flightAge[i] * clipSpeed);
             }
             for (var i = 0; i < Bursts; i++)
             {
-                if (_burstAge[i] >= HeroModel.Burst.Duration)
+                if (_burstAge[i] >= _art.Burst.Duration)
                     continue;
-                Show(_bursts[i], HeroModel.Burst, _burstAge[i]);
+                Show(_bursts[i], _art.Burst, _burstAge[i]);
                 _burstAge[i] += delta;
-                if (_burstAge[i] >= HeroModel.Burst.Duration)
+                if (_burstAge[i] >= _art.Burst.Duration)
                     _bursts[i].enabled = false;
             }
         }

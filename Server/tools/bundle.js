@@ -337,7 +337,7 @@ if (cosmetics.version !== 1)
   throw new Error("cosmetics.json: version " + cosmetics.version + " is not supported");
 const cosmeticIds = new Set(cosmetics.items.map((item) => item.id));
 const cosmeticRules = {
-  items: cosmetics.items.map((item) => ({ id: item.id, slot: item.slot, price: item.price, source: item.source, clan: !!item.clan })),
+  items: cosmetics.items.map((item) => ({ id: item.id, slot: item.slot, price: item.price, source: item.source, clan: !!item.clan, look: item.look || 0 })),
   championTop10: "champion_top10",
   championTop100: "champion_top100",
   warVictors: "war_victors",

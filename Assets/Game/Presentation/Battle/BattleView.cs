@@ -1,4 +1,5 @@
 using Game.Core.Math;
+using Game.Core.Sim;
 using Game.Core.Ui;
 using Game.Presentation.Strip;
 using Game.Presentation.Ui;
@@ -98,6 +99,8 @@ namespace Game.Presentation.Battle
         private Transform _scene = null!;
         private SpriteRenderer _hero = null!;
         private HeroStrike _strike = null!;
+        private HeroSkin _skin = null!;
+        private HeroLook _look;
         private bool _struck = true;
         private SpriteRenderer _enemy = null!;
         private AllySilhouettes _allies = null!;
@@ -179,6 +182,15 @@ namespace Game.Presentation.Battle
         }
 
         public HeroStrike Strike => _strike;
+
+        public HeroLook Look => _look;
+
+        public void UseLook(HeroLook look)
+        {
+            _look = look;
+            _skin = HeroModel.Skin(look);
+            _strike.Use(HeroModel.Strike(look.Strike));
+        }
 
         public Vector2 StrikeTarget => EnemyCentre + new Vector2(-_enemyScale * StrikeDepthIntoEnemy, 0f);
 
@@ -294,6 +306,7 @@ namespace Game.Presentation.Battle
             _scene = new GameObject("Scene").transform;
             _scene.SetParent(transform, false);
             _hero = HeroModel.Create("Hero", HeroFeet, HeroScale, FighterSortingOrder, _scene);
+            _skin = HeroModel.Skin(_look);
             _strike = new HeroStrike("Hero strike", HeroFeet, HeroScale, StrikeSortingOrder, StrikeSortingOrder, 0f, _scene);
             _enemy = ShapeSprites.Create("Enemy", ShapeSprites.Circle, EnemyColor, EnemyCentre, Vector2.one * EnemySize, FighterSortingOrder, _scene);
             _enemy.gameObject.AddComponent<CircleCollider2D>();
@@ -503,7 +516,7 @@ namespace Game.Presentation.Battle
             _idleAge = Mathf.Repeat(_idleAge + delta, HeroModel.Idle.Duration);
             if (_attackAge < float.MaxValue)
                 _attackAge += delta;
-            var sprite = Attacking ? HeroModel.Attack.SpriteAt(_attackAge) : HeroModel.Idle.SpriteAt(_idleAge);
+            var sprite = Attacking ? _skin.Attack.SpriteAt(_attackAge) : _skin.Idle.SpriteAt(_idleAge);
             if (_hero.sprite != sprite)
                 _hero.sprite = sprite;
             if (!_struck && _attackAge >= HeroModel.StrikeSeconds)

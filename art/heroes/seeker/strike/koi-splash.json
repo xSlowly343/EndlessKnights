@@ -1,0 +1,457 @@
+{
+ "frames": [
+  {
+   "filename": "koi-splash 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 1",
+   "frame": {
+    "x": 112,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 2",
+   "frame": {
+    "x": 224,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 3",
+   "frame": {
+    "x": 336,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 4",
+   "frame": {
+    "x": 0,
+    "y": 88,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 5",
+   "frame": {
+    "x": 112,
+    "y": 88,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 6",
+   "frame": {
+    "x": 224,
+    "y": 88,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 7",
+   "frame": {
+    "x": 336,
+    "y": 88,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 8",
+   "frame": {
+    "x": 0,
+    "y": 176,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 9",
+   "frame": {
+    "x": 112,
+    "y": 176,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 10",
+   "frame": {
+    "x": 224,
+    "y": 176,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 11",
+   "frame": {
+    "x": 336,
+    "y": 176,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 12",
+   "frame": {
+    "x": 0,
+    "y": 264,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 13",
+   "frame": {
+    "x": 112,
+    "y": 264,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 14",
+   "frame": {
+    "x": 224,
+    "y": 264,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 15",
+   "frame": {
+    "x": 336,
+    "y": 264,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 16",
+   "frame": {
+    "x": 0,
+    "y": 352,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 17",
+   "frame": {
+    "x": 112,
+    "y": 352,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "koi-splash 18",
+   "frame": {
+    "x": 224,
+    "y": 352,
+    "w": 112,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 88
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "koi-splash.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 448,
+   "h": 440
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "koi-splash",
+    "from": 0,
+    "to": 18,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/koi-splash",
+   "name": "Koi splash",
+   "fps": 30,
+   "loop": false,
+   "frames": 19,
+   "frameSize": [
+    112,
+    88
+   ],
+   "pivot": [
+    56,
+    60
+   ],
+   "columns": 4
+  }
+ }
+}

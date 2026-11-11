@@ -27,7 +27,9 @@ namespace Game.Core.Sim
 
         public void UseCatalog(CosmeticCatalog catalog) => _catalog = catalog;
 
-        public bool Owns(string id) => State.Owned.Contains(id);
+        public bool Owns(string id) => State.Owned.Contains(id) || (_catalog.TryGet(id, out var item) && item.Starter);
+
+        public HeroLook Look => new HeroLook(LookOf(CosmeticCatalog.CloakSlot), LookOf(CosmeticCatalog.EyesSlot), LookOf(CosmeticCatalog.StrikeSlot));
 
         public bool Grant(string id)
         {
@@ -47,7 +49,7 @@ namespace Game.Core.Sim
             var stale = new List<string>();
             foreach (var pair in State.Equipped)
             {
-                if (!State.Owned.Contains(pair.Value))
+                if (!Owns(pair.Value))
                     stale.Add(pair.Key);
             }
             foreach (var key in stale)
@@ -69,6 +71,8 @@ namespace Game.Core.Sim
         public bool Unequip(string equipKey) => State.Equipped.Remove(equipKey);
 
         public bool IsEquipped(string id) => _catalog.TryGet(id, out var item) && State.Equipped.TryGetValue(item.EquipKey, out var worn) && worn == id;
+
+        private byte LookOf(string slot) => (byte)(Worn(slot)?.Look ?? 0);
 
         public CosmeticDef? Worn(string slot, string heroOrWeaponType = "")
         {
