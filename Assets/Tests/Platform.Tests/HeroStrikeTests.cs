@@ -24,8 +24,8 @@ namespace Game.Platform.Tests
         {
             var target = new Vector2(28f, 5f);
 
-            _strike.Launch(target);
-            _strike.Animate(0.1f);
+            _strike.Launch();
+            _strike.Animate(0.05f, target);
 
             Assert.That(_strike.Flying, Is.EqualTo(1));
             Assert.That(_strike.Bursting, Is.Zero);
@@ -33,7 +33,7 @@ namespace Game.Platform.Tests
             Assert.That(crescent.GetComponent<SpriteRenderer>().enabled, Is.True);
             Assert.That(crescent.position.x, Is.GreaterThan(6f).And.LessThan(28f));
 
-            _strike.Animate(HeroModel.Crescent.Duration);
+            _strike.Animate(HeroStrike.FlightSeconds, target);
 
             Assert.That(_strike.Flying, Is.Zero);
             Assert.That(_strike.Bursting, Is.EqualTo(1));
@@ -42,7 +42,7 @@ namespace Game.Platform.Tests
             Assert.That(burst.GetComponent<SpriteRenderer>().enabled, Is.True);
             Assert.That((Vector2)burst.position, Is.EqualTo(target));
 
-            _strike.Animate(HeroModel.Burst.Duration);
+            _strike.Animate(HeroModel.Burst.Duration, target);
 
             Assert.That(_strike.Bursting, Is.Zero);
             Assert.That(burst.GetComponent<SpriteRenderer>().enabled, Is.False);
@@ -65,8 +65,8 @@ namespace Game.Platform.Tests
         public void OpacityFadesEveryLayerAndZeroHidesThem()
         {
             _strike.UseOpacity(0.4f);
-            _strike.Launch(new Vector2(28f, 5f));
-            _strike.Animate(0.1f);
+            _strike.Launch();
+            _strike.Animate(0.05f, new Vector2(28f, 5f));
             _strike.ShowSlash(HeroModel.StrikeSeconds + 0.01f);
 
             var crescent = _scene.transform.Find("Strike crescent 0").GetComponent<SpriteRenderer>();
@@ -76,7 +76,7 @@ namespace Game.Platform.Tests
             Assert.That(slash.color.a, Is.EqualTo(0.4f).Within(0.001f));
 
             _strike.UseOpacity(0f);
-            _strike.Animate(0.05f);
+            _strike.Animate(0.05f, new Vector2(28f, 5f));
             _strike.ShowSlash(HeroModel.StrikeSeconds + 0.02f);
 
             Assert.That(crescent.enabled, Is.False);

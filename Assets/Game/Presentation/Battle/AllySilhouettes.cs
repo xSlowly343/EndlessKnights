@@ -132,10 +132,10 @@ namespace Game.Presentation.Battle
                 }
                 var strikes = attacking && into >= HeroModel.StrikeSeconds && (_swingAge[i] < HeroModel.StrikeSeconds || _swingAge[i] > into);
                 if (strikes)
-                    _strikes[i].Launch(target);
+                    _strikes[i].Launch();
                 _swingAge[i] = into;
                 _strikes[i].ShowSlash(into);
-                _strikes[i].Animate(delta);
+                _strikes[i].Animate(delta, target);
             }
         }
 

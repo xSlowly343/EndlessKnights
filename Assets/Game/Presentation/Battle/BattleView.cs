@@ -230,7 +230,7 @@ namespace Game.Presentation.Battle
             _flashAge = 0f;
             if (!Attacking || HeroModel.Attack.FrameAt(_attackAge) >= HeroModel.AttackCancelFrame)
             {
-                _attackAge = 0f;
+                _attackAge = HeroModel.StrikeSeconds;
                 _struck = false;
             }
             if (crit)
@@ -508,10 +508,10 @@ namespace Game.Presentation.Battle
             if (!_struck && _attackAge >= HeroModel.StrikeSeconds)
             {
                 _struck = true;
-                _strike.Launch(StrikeTarget);
+                _strike.Launch();
             }
             _strike.ShowSlash(_attackAge);
-            _strike.Animate(delta);
+            _strike.Animate(delta, StrikeTarget);
         }
 
         private bool Attacking => _attackAge < HeroModel.Attack.Duration;

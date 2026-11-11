@@ -9,6 +9,8 @@ namespace Game.Presentation.Battle
         private const int Bursts = 3;
         private const float FlightEase = 0.85f;
 
+        public const float FlightSeconds = 0.15f;
+
         private static readonly Vector2 LaunchFromFeetPx = new Vector2(40f, 13f);
 
         private readonly SpriteRenderer _slash;
@@ -16,7 +18,6 @@ namespace Game.Presentation.Battle
         private readonly SpriteRenderer[] _bursts = new SpriteRenderer[Bursts];
         private readonly float[] _flightAge = new float[Flights];
         private readonly float[] _burstAge = new float[Bursts];
-        private readonly Vector2[] _targets = new Vector2[Flights];
         private readonly Vector3 _from;
         private readonly float _depth;
         private Color _color = Color.white;
@@ -42,7 +43,7 @@ namespace Game.Presentation.Battle
 
         public bool SlashShown => _slash.enabled;
 
-        public int Flying => Count(_flightAge, HeroModel.Crescent.Duration);
+        public int Flying => Count(_flightAge, FlightSeconds);
 
         public int Bursting => Count(_burstAge, HeroModel.Burst.Duration);
 
@@ -73,32 +74,28 @@ namespace Game.Presentation.Battle
                 _slash.sprite = sprite;
         }
 
-        public void Launch(Vector2 target)
-        {
-            var slot = Oldest(_flightAge);
-            _flightAge[slot] = 0f;
-            _targets[slot] = target;
-        }
+        public void Launch() => _flightAge[Oldest(_flightAge)] = 0f;
 
-        public void Animate(float delta)
+        public void Animate(float delta, Vector2 target)
         {
+            var clipSpeed = HeroModel.Crescent.Duration / FlightSeconds;
             for (var i = 0; i < Flights; i++)
             {
-                if (_flightAge[i] >= HeroModel.Crescent.Duration)
+                if (_flightAge[i] >= FlightSeconds)
                     continue;
                 _flightAge[i] += delta;
-                if (_flightAge[i] >= HeroModel.Crescent.Duration)
+                if (_flightAge[i] >= FlightSeconds)
                 {
                     var slot = Oldest(_burstAge);
                     _burstAge[slot] = 0f;
-                    _bursts[slot].transform.position = Deep(_targets[i]);
+                    _bursts[slot].transform.position = Deep(target);
                 }
                 else
                 {
-                    var progress = Mathf.Pow(_flightAge[i] / HeroModel.Crescent.Duration, FlightEase);
-                    _crescents[i].transform.position = Vector3.Lerp(_from, Deep(_targets[i]), progress);
+                    var progress = Mathf.Pow(_flightAge[i] / FlightSeconds, FlightEase);
+                    _crescents[i].transform.position = Vector3.Lerp(_from, Deep(target), progress);
                 }
-                Show(_crescents[i], HeroModel.Crescent, _flightAge[i]);
+                Show(_crescents[i], HeroModel.Crescent, _flightAge[i] * clipSpeed);
             }
             for (var i = 0; i < Bursts; i++)
             {
