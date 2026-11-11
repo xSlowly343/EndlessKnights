@@ -618,7 +618,11 @@ namespace Game.Core.Party
                 _dungeonLeftTick = 0;
                 if (_loop.Rift.Inside)
                     _loop.Rift.Leave();
-                dungeons.EnterParty(_dungeonId, PartyDungeonId.Owner(_dungeonId) == _ownSlot);
+                var owned = PartyDungeonId.Owner(_dungeonId) == _ownSlot;
+                if (_loop.Peaceful.InCamp)
+                    dungeons.SpendParty(_dungeonId, owned);
+                else
+                    dungeons.EnterParty(_dungeonId, owned);
                 return;
             }
             if (_dungeonId == 0)
@@ -643,7 +647,8 @@ namespace Game.Core.Party
             var message = new PartyKeysMessage { Slot = (byte)System.Math.Max(0, _ownSlot) };
             for (var i = 0; i < PartyKeysMessage.MaxKeys; i++)
                 _keyPicks[i] = -1;
-            for (var pick = 0; pick < PartyKeysMessage.MaxKeys; pick++)
+            var offered = _loop.Peaceful.InCamp ? 0 : PartyKeysMessage.MaxKeys;
+            for (var pick = 0; pick < offered; pick++)
             {
                 var best = -1;
                 for (var i = 0; i < keys.Count; i++)

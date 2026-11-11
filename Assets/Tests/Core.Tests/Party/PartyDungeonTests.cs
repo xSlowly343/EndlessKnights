@@ -135,6 +135,35 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AMemberInTheCampOffersNoKeysAndStaysOutOfThePartyRun()
+        {
+            var rig = new Rig(10, 400, 400);
+            var leader = rig.Members[0];
+            var member = rig.Members[1];
+            leader.Loop.State.Dungeons.Keys.Add(KeyAt(1, 300));
+            member.Loop.State.Dungeons.Keys.Add(KeyAt(2, 300));
+            rig.Run(8);
+            Assert.That(leader.Client.PartyKeyCount(member.Client.OwnSlot), Is.EqualTo(1));
+
+            Assert.That(member.Loop.Peaceful.SetMode(Game.Core.Content.PeacefulMode.Camp), Is.EqualTo(PeacefulResult.Done));
+            rig.Run(8);
+            Assert.That(leader.Client.PartyKeyCount(member.Client.OwnSlot), Is.Zero);
+
+            Assert.That(leader.Client.ProposeDungeon(leader.Client.PartyKey(leader.Client.OwnSlot, 0)), Is.True);
+            Assert.That(rig.RunUntil(() => rig.Host.Encounter.World == PartyWorld.Dungeon, 30), Is.True);
+            rig.Run(1);
+            Assert.That(leader.Loop.Dungeons.InParty, Is.True);
+            Assert.That(member.Loop.Dungeons.Inside, Is.False);
+
+            Assert.That(rig.RunUntil(() => rig.Host.Encounter.World == PartyWorld.Home, 600), Is.True);
+            rig.Run(3);
+            Assert.That(leader.Loop.State.Dungeons.Completed, Is.EqualTo(1));
+            Assert.That(member.Loop.State.Dungeons.Completed, Is.Zero);
+            Assert.That(member.DungeonDrops, Is.Zero);
+            Assert.That(member.Loop.Dungeons.Keys.Count, Is.EqualTo(1));
+        }
+
+        [Test]
         public void TheLeaderLaunchesAnyPartyKeyAndEveryoneGetsTheLoot()
         {
             var rig = new Rig(10, 400, 400);

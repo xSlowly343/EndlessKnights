@@ -177,6 +177,13 @@ namespace Game.Core.Sim
             return DungeonResult.Entered;
         }
 
+        public void SpendParty(long partyId, bool owned)
+        {
+            var own = owned ? OwnKey(partyId) : null;
+            if (own != null)
+                _state.Dungeons.Keys.Remove(own);
+        }
+
         public void LeaveParty(bool completed)
         {
             if (!InParty)
