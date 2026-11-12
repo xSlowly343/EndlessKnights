@@ -11,7 +11,11 @@ namespace Game.Core.Sim
         NotGiftable,
         BadAmount,
         NoRedraw,
-        Already
+        Already,
+        NotForSale,
+        BadPrice,
+        TooManyLots,
+        NoOffer
     }
 
     public sealed class TownSystem
@@ -136,6 +140,60 @@ namespace Game.Core.Sim
             State.Gifts.Add(id);
             if (State.Gifts.Count > _rules.GiftInbox * 2)
                 State.Gifts.RemoveRange(0, State.Gifts.Count - _rules.GiftInbox * 2);
+            return TownResult.Done;
+        }
+
+        public TownResult PackLot(string item, int amount, int price, int lotsOnTheCounter)
+        {
+            var market = _rules.Market;
+            if (!market.Sells(item))
+                return TownResult.NotForSale;
+            if (amount <= 0 || amount > market.MaxAmount)
+                return TownResult.BadAmount;
+            if (price < market.MinPrice || price > market.MaxPrice)
+                return TownResult.BadPrice;
+            if (lotsOnTheCounter + State.Offers.Count >= market.MaxLots)
+                return TownResult.TooManyLots;
+            if (!_camp.Take(item, amount))
+                return TownResult.NotEnough;
+            State.OfferSeq++;
+            State.Offers.Add(new TownOffer { Nonce = "d" + System.Math.Max(0, State.Day).ToString(System.Globalization.CultureInfo.InvariantCulture) + "n" + State.OfferSeq.ToString(System.Globalization.CultureInfo.InvariantCulture), Item = item, Amount = amount, Price = price });
+            return TownResult.Done;
+        }
+
+        public TownOffer? Offer(string nonce)
+        {
+            for (var i = 0; i < State.Offers.Count; i++)
+            {
+                if (State.Offers[i].Nonce == nonce)
+                    return State.Offers[i];
+            }
+            return null;
+        }
+
+        public TownResult SettleLot(string nonce) => Offer(nonce) is { } offer && State.Offers.Remove(offer) ? TownResult.Done : TownResult.NoOffer;
+
+        public TownResult ReturnLot(string nonce)
+        {
+            if (Offer(nonce) is not { } offer)
+                return TownResult.NoOffer;
+            State.Offers.Remove(offer);
+            _camp.Add(offer.Item, offer.Amount);
+            return TownResult.Done;
+        }
+
+        public TownResult ReceiveLot(string id, string item, int amount)
+        {
+            if (State.Deliveries.Contains(id))
+                return TownResult.Already;
+            if (!_rules.Market.Sells(item))
+                return TownResult.NotForSale;
+            if (amount <= 0 || amount > _rules.Market.MaxAmount)
+                return TownResult.BadAmount;
+            _camp.Add(item, amount);
+            State.Deliveries.Add(id);
+            if (State.Deliveries.Count > _rules.Market.Inbox * 2)
+                State.Deliveries.RemoveRange(0, State.Deliveries.Count - _rules.Market.Inbox * 2);
             return TownResult.Done;
         }
 

@@ -104,11 +104,11 @@ namespace Game.Core.Sim
                 PhantomStrike();
         }
 
-        public void OnSkillCast(GemDef skill)
+        public void OnSkillCast(GemDef skill, SkillDef? variant = null)
         {
             if (!On)
                 return;
-            var strike = skill.Skill?.Effect as StrikeEffect;
+            var strike = (variant ?? skill.Skill)?.CastStrike;
             if (Breach && (Flag(DuelistStats.BreachOnCast) || strike is { Breach: true }))
                 OpenBreach();
             if (strike == null)

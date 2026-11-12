@@ -13,6 +13,8 @@ namespace Game.Core.Ui
 
         public static string Opens(int level) => Texts.Format("branch.opens", level);
 
+        public static string Evolves(GemDef next, int heroLevel) => Texts.Format("skill.evolves", heroLevel, Texts.Pick(next.NameRu, next.NameEn));
+
         public static string Cost(BigNumber cost, NumberFormatSettings format) => cost.IsZero ? Texts.Get("branch.free") : Texts.Format("branch.cost", NumberFormatter.Format(cost, format));
 
         public static string Summary(SkillBranch branch, SkillEffect? skillEffect = null)

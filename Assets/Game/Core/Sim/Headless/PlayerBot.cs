@@ -84,7 +84,7 @@ namespace Game.Core.Sim.Headless
             for (var row = 0; row < state.Skills.Count; row++)
             {
                 var skill = state.Skills[row].Skill;
-                if (!state.GemProgress.TryGetValue(skill.Id, out var progress))
+                if (!state.GemProgress.TryGetValue(skill.ProgressId, out var progress))
                     continue;
                 for (var tier = 0; tier < skill.Branches.Count && tier < progress.Branches.Length; tier++)
                 {

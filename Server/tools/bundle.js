@@ -426,6 +426,27 @@ const townData = JSON.parse(fs.readFileSync(path.join(data, "town.json"), "utf8"
 if (townData.version !== 1)
   throw new Error("town.json: version " + townData.version + " is not supported");
 const townRules = { giftsPerDay: townData.gifts.perDay, giftMaxAmount: townData.gifts.maxAmount, giftInbox: townData.gifts.inbox, giftItems: townData.gifts.items };
+const marketData = townData.market;
+const marketTreats = JSON.parse(fs.readFileSync(path.join(data, "companions.json"), "utf8")).treats.recipes;
+const marketRules = {
+  currency: marketData.currency,
+  items: marketData.items,
+  maxLots: marketData.maxLots,
+  maxAmount: marketData.maxAmount,
+  minPrice: marketData.minPrice,
+  maxPrice: marketData.maxPrice,
+  days: marketData.days,
+  fee: marketData.fee,
+  shown: marketData.shown,
+  inbox: marketData.inbox
+};
+if (!coopCurrency.currencies.includes(marketRules.currency) || marketRules.currency === "crystals")
+  throw new Error("town.json: market currency " + marketRules.currency + " is not a coop currency for trade");
+for (const item of marketRules.items)
+  if (!marketTreats.some((treat) => "treat_" + treat.id === item && !treat.delicacy))
+    throw new Error("town.json: market item " + item + " is not a companion treat for sale");
+if (!(marketRules.minPrice >= 1) || !(marketRules.maxPrice >= marketRules.minPrice) || !(marketRules.fee >= 0 && marketRules.fee < 1) || !(marketRules.maxLots >= 1) || !(marketRules.maxAmount >= 1) || !(marketRules.days > 0))
+  throw new Error("town.json: market limits are out of range");
 
 const chests = JSON.parse(fs.readFileSync(path.join(data, "chests.json"), "utf8"));
 if (chests.version !== 1)
@@ -599,4 +620,4 @@ if (!walletRules.sources.some((source) => source.id === "clan_fair"))
   throw new Error("coop_currency.json: the fair needs the clan_fair source");
 
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\nvar SeasonPassServerRules = " + JSON.stringify(seasonPassRules) + ";\nvar CrystalChangeServerRules = " + JSON.stringify(crystalChangeRules) + ";\nvar SeasonalEventServerRules = " + JSON.stringify(seasonalEventRules) + ";\nvar TownServerRules = " + JSON.stringify(townRules) + ";\nvar ChestServerRules = " + JSON.stringify(chestRules) + ";\nvar TournamentServerRules = " + JSON.stringify(tournamentRules) + ";\nvar ClanCampServerRules = " + JSON.stringify(clanCampRules) + ";\nvar TownBuildServerRules = " + JSON.stringify(townBuildRules) + ";\nvar HideoutServerRules = " + JSON.stringify(hideoutRules) + ";\nvar FairServerRules = " + JSON.stringify(fairRules) + ";\n" + "var CompanionServerRules = " + JSON.stringify(companionRules) + ";\n" + "var SocialServerRules = " + JSON.stringify(socialRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\nvar SeasonPassServerRules = " + JSON.stringify(seasonPassRules) + ";\nvar CrystalChangeServerRules = " + JSON.stringify(crystalChangeRules) + ";\nvar SeasonalEventServerRules = " + JSON.stringify(seasonalEventRules) + ";\nvar TownServerRules = " + JSON.stringify(townRules) + ";\nvar MarketServerRules = " + JSON.stringify(marketRules) + ";\nvar ChestServerRules = " + JSON.stringify(chestRules) + ";\nvar TournamentServerRules = " + JSON.stringify(tournamentRules) + ";\nvar ClanCampServerRules = " + JSON.stringify(clanCampRules) + ";\nvar TownBuildServerRules = " + JSON.stringify(townBuildRules) + ";\nvar HideoutServerRules = " + JSON.stringify(hideoutRules) + ";\nvar FairServerRules = " + JSON.stringify(fairRules) + ";\n" + "var CompanionServerRules = " + JSON.stringify(companionRules) + ";\n" + "var SocialServerRules = " + JSON.stringify(socialRules) + ";\n" + code);

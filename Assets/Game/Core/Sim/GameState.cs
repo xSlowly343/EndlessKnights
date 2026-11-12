@@ -133,6 +133,7 @@ namespace Game.Core.Sim
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();
+        public RecapState Recap { get; } = new RecapState();
         public List<string> Atlas { get; } = new List<string>();
         public Dictionary<string, int> Resonance { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
         public Dictionary<string, int> Spirits { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
@@ -209,15 +210,15 @@ namespace Game.Core.Sim
 
         public GemProgress ProgressOf(GemDef gem)
         {
-            if (!GemProgress.TryGetValue(gem.Id, out var progress))
+            if (!GemProgress.TryGetValue(gem.ProgressId, out var progress))
             {
                 progress = new GemProgress();
-                GemProgress.Add(gem.Id, progress);
+                GemProgress.Add(gem.ProgressId, progress);
             }
             return progress;
         }
 
-        public int LevelOf(GemDef gem) => GemProgress.TryGetValue(gem.Id, out var progress) ? progress.Level : 1;
+        public int LevelOf(GemDef gem) => GemProgress.TryGetValue(gem.ProgressId, out var progress) ? progress.Level : 1;
         public BigNumber[] QueueDamage { get; } = new BigNumber[QueueDepth];
         public BigNumber PierceDamage { get; set; }
 
@@ -280,6 +281,7 @@ namespace Game.Core.Sim
         public bool PauseCritArmed { get; set; }
         public long CritsTowardBurst { get; set; }
         public HashSet<long> GatesCleared { get; } = new HashSet<long>();
+        public HashSet<Feature> OpenedFeatures { get; } = new HashSet<Feature>();
         public int MentorCoopPoints { get; set; }
         public int ServerCoopHelpPoints { get; set; }
         public int CoopHelpPoints => System.Math.Max(MentorCoopPoints, ServerCoopHelpPoints);

@@ -15,8 +15,8 @@
   ],
   "tiers": [
     { "id": "camp_site", "name": { "ru": "Стоянка", "en": "Camp Site" }, "fromRecord": 1, "slots": { "nest": 1, "bonfire": 1, "garden_bed": 4, "cauldron": 1 } },
-    { "id": "camp", "name": { "ru": "Лагерь", "en": "Camp" }, "fromRecord": 51, "slots": { "nest": 1, "bonfire": 1, "garden_bed": 8, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1 } },
-    { "id": "outpost", "name": { "ru": "Застава", "en": "Outpost" }, "fromRecord": 101, "slots": { "nest": 2, "bonfire": 1, "garden_bed": 12, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1, "chef_table": 1, "dig_site": 1 } },
-    { "id": "stronghold", "name": { "ru": "Крепость", "en": "Stronghold" }, "fromRecord": 201, "slots": { "nest": 2, "bonfire": 1, "garden_bed": 16, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1, "chef_table": 1, "dig_site": 1, "observatory": 1, "banner_spot": 1 } }
+    { "id": "camp", "name": { "ru": "Лагерь", "en": "Camp" }, "fromRecord": 1000, "requires": { "campBuilding": { "bonfire": 2 } }, "slots": { "nest": 1, "bonfire": 1, "garden_bed": 8, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1 } },
+    { "id": "outpost", "name": { "ru": "Застава", "en": "Outpost" }, "fromRecord": 2500, "requires": { "dungeonTier": 6 }, "slots": { "nest": 2, "bonfire": 1, "garden_bed": 12, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1, "chef_table": 1, "dig_site": 1 } },
+    { "id": "stronghold", "name": { "ru": "Крепость", "en": "Stronghold" }, "fromRecord": 5000, "requires": { "trials": 1 }, "slots": { "nest": 2, "bonfire": 1, "garden_bed": 16, "cauldron": 1, "pier": 1, "forge": 1, "trophy_shelf": 1, "chef_table": 1, "dig_site": 1, "observatory": 1, "banner_spot": 1 } }
   ]
 }

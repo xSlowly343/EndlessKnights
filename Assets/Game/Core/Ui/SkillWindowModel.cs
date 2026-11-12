@@ -23,6 +23,8 @@ namespace Game.Core.Ui
         public double Experience { get; private set; }
         public double ExperienceToNext { get; private set; }
         public bool IsAura => Skill != null && SkillLoadout.IsAura(Skill);
+        public GemDef? NextForm { get; private set; }
+        public int NextFormLevel { get; private set; }
         public int TierCount { get; private set; }
         public int Sockets { get; private set; }
         public int MaxSockets => _loop.Book.MaxSockets;
@@ -41,9 +43,14 @@ namespace Game.Core.Ui
             var skills = _loop.State.Skills;
             Skill = Row >= 0 && Row < skills.Count ? skills[Row].Skill : null;
             TierCount = 0;
+            NextForm = null;
+            NextFormLevel = 0;
             _supports.Clear();
             if (Skill == null)
                 return;
+            if (_loop.Book.OfHeroClass(Skill))
+                NextForm = _loop.Book.NextFormOf(Skill);
+            NextFormLevel = NextForm == null ? 0 : _loop.Book.UnlockLevel(NextForm);
             var progress = _loop.State.ProgressOf(Skill);
             Level = progress.Level;
             Experience = progress.Experience;

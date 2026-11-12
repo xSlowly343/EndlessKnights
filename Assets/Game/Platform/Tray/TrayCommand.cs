@@ -8,6 +8,7 @@ namespace Game.Platform.Windows.Tray
         Exit = 4,
         ToggleInputDebug = 5,
         TogglePanel = 6,
+        ToggleHidden = 7,
         FrameRate30 = 30,
         FrameRate60 = 60,
         FrameRate144 = 144

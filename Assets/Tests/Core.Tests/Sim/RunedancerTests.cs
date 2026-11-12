@@ -190,6 +190,16 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void AWhirlOfStrikesFinishesTheWordAsItsFirstFormDid()
+        {
+            var (loop, _) = Hero(Flat(RunedancerStats.RuneWord, 10));
+
+            loop.Combat.Runedancer.OnSkillCast(TestWorld.Data.Gems["runedancer_strong_2"]);
+
+            Assert.That(loop.State.Runedancer.Words, Is.EqualTo(1));
+        }
+
+        [Test]
         public void EveryThirdHitHangsADaggerAndTheRainDropsThemAll()
         {
             Assert.That(Rules.BladeEvery, Is.EqualTo(3));

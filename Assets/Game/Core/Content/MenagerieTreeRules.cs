@@ -45,6 +45,22 @@ namespace Game.Core.Content
         LastHeartSouls,
         CircleCost,
         FreeStar,
+        FavouriteFood,
+        HeartsExperience,
+        HeartsTraits,
+        DevotedExperience,
+        DevotedTraits,
+        DevotedStarCost,
+        MentorShare,
+        ChoiceLetters,
+        LetterBond,
+        Sparks,
+        RepeatSpark,
+        TripSpark,
+        PerCompanion,
+        PackLoot,
+        PackFamily,
+        BurrowTries,
         Count
     }
 
@@ -156,6 +172,8 @@ namespace Game.Core.Content
         public int AlbumPoints { get; private set; }
         public int RefundSouls { get; private set; }
         public int FreeResetDays { get; private set; } = 1;
+        public int HeartsForExperience { get; private set; } = int.MaxValue;
+        public int HeartsForTraits { get; private set; } = int.MaxValue;
 
         public double ExperienceFor(int level) => level <= 1 ? 0 : ExperiencePerLevel * level;
 
@@ -214,7 +232,23 @@ namespace Game.Core.Content
             ["petsPerDay"] = MenagerieStat.PetsPerDay,
             ["lastHeartSouls"] = MenagerieStat.LastHeartSouls,
             ["circleCost"] = MenagerieStat.CircleCost,
-            ["freeStar"] = MenagerieStat.FreeStar
+            ["freeStar"] = MenagerieStat.FreeStar,
+            ["favouriteFood"] = MenagerieStat.FavouriteFood,
+            ["heartsExperience"] = MenagerieStat.HeartsExperience,
+            ["heartsTraits"] = MenagerieStat.HeartsTraits,
+            ["devotedExperience"] = MenagerieStat.DevotedExperience,
+            ["devotedTraits"] = MenagerieStat.DevotedTraits,
+            ["devotedStarCost"] = MenagerieStat.DevotedStarCost,
+            ["mentorShare"] = MenagerieStat.MentorShare,
+            ["choiceLetters"] = MenagerieStat.ChoiceLetters,
+            ["letterBond"] = MenagerieStat.LetterBond,
+            ["sparks"] = MenagerieStat.Sparks,
+            ["repeatSpark"] = MenagerieStat.RepeatSpark,
+            ["tripSpark"] = MenagerieStat.TripSpark,
+            ["perCompanion"] = MenagerieStat.PerCompanion,
+            ["packLoot"] = MenagerieStat.PackLoot,
+            ["packFamily"] = MenagerieStat.PackFamily,
+            ["burrowTries"] = MenagerieStat.BurrowTries
         };
 
         private static readonly Dictionary<string, MenagerieTheme> Themes = new Dictionary<string, MenagerieTheme>(StringComparer.Ordinal)
@@ -295,7 +329,9 @@ namespace Game.Core.Content
                 AlbumStars = points.Field("albumStars").AsInt(0, 100000),
                 AlbumPoints = points.Field("album").AsInt(0, 100),
                 RefundSouls = respec.Field("refundSouls").AsInt(0, 100000),
-                FreeResetDays = respec.Field("freeResetDays").AsInt(1, 365)
+                FreeResetDays = respec.Field("freeResetDays").AsInt(1, 365),
+                HeartsForExperience = node.Field("hearts").Field("experience").AsInt(1, 100),
+                HeartsForTraits = node.Field("hearts").Field("traits").AsInt(1, 100)
             };
         }
     }

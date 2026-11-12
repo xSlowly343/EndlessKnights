@@ -67,7 +67,7 @@ namespace Game.Core.Tests.Save
         {
             var loop = LoadOld();
 
-            Assert.That(loop.State.Skills.Select(slot => slot.Skill.Id), Is.EqualTo(new[] { "duelist_hit_1" }), "another class and a common skill above the hero level leave the Book");
+            Assert.That(loop.State.Skills.Select(slot => slot.Skill.Root.Id), Is.EqualTo(new[] { "duelist_hit_1" }), "another class and a common skill above the hero level leave the Book");
             Assert.That(loop.State.LegacyGems, Is.False);
         }
 

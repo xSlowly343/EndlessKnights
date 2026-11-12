@@ -179,11 +179,12 @@ namespace Game.Core.Content
             var distill = DistillRules.Load(readFile(DistillRules.FileName), camp);
             var colossus = ColossusSeedRules.Load(readFile(ColossusSeedRules.FileName));
             var companions = CompanionRules.Load(readFile(CompanionRules.FileName), stages.Biomes, cooking, colossus.Bloom, expeditions);
+            seasonalEvents.CheckCompanions(companions);
             var caravan = CaravanRules.Load(readFile(CaravanRules.FileName), stages.Biomes);
             var digs = DigRules.Load(readFile(DigRules.FileName), camp, stages.Biomes);
             var museum = MuseumRules.Load(readFile(MuseumRules.FileName), fishing, garden, cooking, alchemy, expeditions, digs);
             var decor = DecorRules.Load(readFile(DecorRules.FileName), camp);
-            var town = TownRules.Load(readFile(TownRules.FileName), alchemy, garden, stages.Biomes);
+            var town = TownRules.Load(readFile(TownRules.FileName), alchemy, garden, stages.Biomes, companions.Treats);
             var characterIds = new List<string>();
             foreach (var character in characters.All)
                 characterIds.Add(character.Id);
@@ -205,6 +206,7 @@ namespace Game.Core.Content
             var commonTrees = new Dictionary<string, ClassTree>(StringComparer.Ordinal);
             foreach (var treeId in treeTemplates.CommonTrees)
                 commonTrees[treeId] = ClassTreeLoader.LoadCommon(treeTemplates, treeId, readFile(ClassTreeLoader.CommonFileNameOf(treeId)));
+            unlocks.CheckBuildings(camp, hideout);
             return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Characters = characters, Unlocks = unlocks, Slates = slates, Quests = quests, Achievements = achievements, Bestiary = bestiary, Cosmetics = cosmetics, SeasonPass = seasonPass, Chests = chests, Tournaments = tournaments, ClanCamp = clanCamp, Guilds = guilds, Talents = talents, Hideout = hideout, CampLevels = campLevels, Apprentices = apprentices, CampModules = campModules, Digs = digs, Fair = fair, Caravan = caravan, Distill = distill, Colossus = colossus, Events = seasonalEvents, Peaceful = peaceful, Camp = camp, Garden = garden, Alchemy = alchemy, Expeditions = expeditions, Companions = companions, Town = town, Fishing = fishing, Cooking = cooking, Forge = forge, Museum = museum, Decor = decor, Dungeons = dungeons, Raid = raid, ClanTree = clanTree, Mentor = mentor, TreeTemplates = treeTemplates, ClassTrees = classTrees, CommonTrees = commonTrees };
         }
     }

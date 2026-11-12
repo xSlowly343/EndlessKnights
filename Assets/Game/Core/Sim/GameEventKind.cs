@@ -37,6 +37,7 @@ namespace Game.Core.Sim
         PeacefulActivityChanged,
         TeaPauseSuggested,
         CampTierReached,
+        FeatureOpened,
         PlantReady,
         MutationFound,
         PotionBrewed,
@@ -76,6 +77,8 @@ namespace Game.Core.Sim
         WispCaught,
         WispEscaped,
         DungeonKeySalvaged,
-        DungeonKeysMerged
+        DungeonKeysMerged,
+        StripPlaceChanged,
+        StripFightChanged
     }
 }

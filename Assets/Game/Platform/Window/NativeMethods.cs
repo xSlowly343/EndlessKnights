@@ -118,6 +118,12 @@ namespace Game.Platform.Windows.Window
         public static extern IntPtr GetForegroundWindow();
 
         [DllImport("user32.dll")]
+        public static extern IntPtr GetShellWindow();
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetDesktopWindow();
+
+        [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool SetForegroundWindow(IntPtr window);
 

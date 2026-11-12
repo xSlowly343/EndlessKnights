@@ -1,0 +1,655 @@
+{
+ "frames": [
+  {
+   "filename": "serpent-strike 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 1",
+   "frame": {
+    "x": 116,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 2",
+   "frame": {
+    "x": 232,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 3",
+   "frame": {
+    "x": 348,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 4",
+   "frame": {
+    "x": 464,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 5",
+   "frame": {
+    "x": 0,
+    "y": 68,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 6",
+   "frame": {
+    "x": 116,
+    "y": 68,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 7",
+   "frame": {
+    "x": 232,
+    "y": 68,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 8",
+   "frame": {
+    "x": 348,
+    "y": 68,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 9",
+   "frame": {
+    "x": 464,
+    "y": 68,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 10",
+   "frame": {
+    "x": 0,
+    "y": 136,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 11",
+   "frame": {
+    "x": 116,
+    "y": 136,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 12",
+   "frame": {
+    "x": 232,
+    "y": 136,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 13",
+   "frame": {
+    "x": 348,
+    "y": 136,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 14",
+   "frame": {
+    "x": 464,
+    "y": 136,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 15",
+   "frame": {
+    "x": 0,
+    "y": 204,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 16",
+   "frame": {
+    "x": 116,
+    "y": 204,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 17",
+   "frame": {
+    "x": 232,
+    "y": 204,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 18",
+   "frame": {
+    "x": 348,
+    "y": 204,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 19",
+   "frame": {
+    "x": 464,
+    "y": 204,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 20",
+   "frame": {
+    "x": 0,
+    "y": 272,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 21",
+   "frame": {
+    "x": 116,
+    "y": 272,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 22",
+   "frame": {
+    "x": 232,
+    "y": 272,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 23",
+   "frame": {
+    "x": 348,
+    "y": 272,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 24",
+   "frame": {
+    "x": 464,
+    "y": 272,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 25",
+   "frame": {
+    "x": 0,
+    "y": 340,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 26",
+   "frame": {
+    "x": 116,
+    "y": 340,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-strike 27",
+   "frame": {
+    "x": 232,
+    "y": 340,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "serpent-strike.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 580,
+   "h": 408
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "serpent-strike",
+    "from": 0,
+    "to": 27,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/serpent-strike",
+   "name": "Serpent strike",
+   "fps": 30,
+   "loop": false,
+   "frames": 28,
+   "frameSize": [
+    116,
+    68
+   ],
+   "pivot": [
+    74,
+    56
+   ],
+   "columns": 5
+  }
+ }
+}

@@ -465,8 +465,8 @@ namespace Game.Core.Tests.Build
         public void DeferredPaymentCostsLessAndDrainsOverTime()
         {
             var loop = Hero();
-            var gem = Gem("runedancer_hit_1");
             var slot = Equip(loop, "runedancer_hit_1", "deferred_payment");
+            var gem = loop.State.Skills[slot].Skill;
             loop.Book.SetSupport(slot, 0, Gem("deferred_payment"));
             var support = Gem("deferred_payment").Support!;
             var cost = gem.Skill!.ResourceCost * support.CostMultiplier * Gem("deferred_payment").ManaMultiplier;
@@ -817,7 +817,7 @@ namespace Game.Core.Tests.Build
         {
             var loop = Hero();
             var first = Equip(loop, "march", "resonance");
-            var second = Equip(loop, "runedancer_aura_1");
+            var second = Equip(loop, "runedancer_aura_2");
             loop.Book.SetSupport(first, 0, Gem("resonance"));
             loop.Book.SetSupport(second, 0, Gem("resonance"));
 

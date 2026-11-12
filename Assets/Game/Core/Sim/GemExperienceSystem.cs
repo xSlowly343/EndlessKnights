@@ -112,7 +112,7 @@ namespace Game.Core.Sim
 
         public void Grant(GemDef gem, double amount)
         {
-            if (!_state.GemProgress.TryGetValue(gem.Id, out var progress) || progress.Level >= _levels.Max)
+            if (!_state.GemProgress.TryGetValue(gem.ProgressId, out var progress) || progress.Level >= _levels.Max)
                 return;
             progress.Experience += amount;
             while (progress.Level < _levels.Max && progress.Experience >= _levels.ToNext(progress.Level))

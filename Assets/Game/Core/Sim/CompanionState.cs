@@ -73,6 +73,7 @@ namespace Game.Core.Sim
         public string HelpGuild { get; set; } = string.Empty;
         public double HelpSeconds { get; set; }
         public long BurrowWeek { get; set; } = -1;
+        public int BurrowRuns { get; set; } = 1;
         public Dictionary<int, int> TreeRanks { get; } = new Dictionary<int, int>();
         public Dictionary<int, string> TreeMajors { get; } = new Dictionary<int, string>();
         public double MenagerieExperience { get; set; }

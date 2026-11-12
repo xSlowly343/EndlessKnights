@@ -101,12 +101,12 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void AReservedAuraFollowsSkillPowerGainedWhileItIsOn()
         {
-            var hero = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_aura_1");
+            var hero = SkillTestHero.Of(HeroClass.Runedancer, "runedancer_aura_2");
             hero.Ticks(1);
             var reserved = hero.State.ReservedResource;
             var before = hero.Loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike);
 
-            hero.Loop.Hero.Add(new Modifier(TestWorld.Data.Gems["runedancer_aura_1"].PowerStat, ModifierKind.Increased, 1));
+            hero.Loop.Hero.Add(new Modifier(TestWorld.Data.Gems["runedancer_aura_2"].PowerStat, ModifierKind.Increased, 1));
             hero.Ticks(1);
 
             var after = hero.Loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike);

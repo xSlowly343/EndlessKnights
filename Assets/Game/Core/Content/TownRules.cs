@@ -48,6 +48,35 @@ namespace Game.Core.Content
         public bool WantsPotion => Recipe.Length > 0;
     }
 
+    public sealed class TownMarketRules
+    {
+        public string Currency { get; internal set; } = string.Empty;
+        public IReadOnlyList<string> Items { get; internal set; } = Array.Empty<string>();
+        public int MaxLots { get; internal set; }
+        public int MaxAmount { get; internal set; }
+        public int MinPrice { get; internal set; } = 1;
+        public int MaxPrice { get; internal set; } = 1;
+        public int Days { get; internal set; } = 1;
+        public double Fee { get; internal set; }
+        public int Inbox { get; internal set; } = 1;
+
+        public bool Sells(string item)
+        {
+            for (var i = 0; i < Items.Count; i++)
+            {
+                if (Items[i] == item)
+                    return true;
+            }
+            return false;
+        }
+
+        public long Total(int amount, int price) => (long)amount * price;
+
+        public long Fees(long total) => total <= 0 ? 0 : System.Math.Min(total - 1, (long)System.Math.Ceiling(total * Fee));
+
+        public long Proceeds(int amount, int price) => Total(amount, price) - Fees(Total(amount, price));
+    }
+
     public sealed class TownRules
     {
         public const string FileName = "town.json";
@@ -66,6 +95,7 @@ namespace Game.Core.Content
         public int GiftMaxAmount { get; private set; }
         public int GiftInbox { get; private set; }
         public IReadOnlyList<string> GiftItems { get; private set; } = Array.Empty<string>();
+        public TownMarketRules Market { get; private set; } = new TownMarketRules();
 
         public TownRequest? Request(string id)
         {
@@ -87,7 +117,37 @@ namespace Game.Core.Content
             return false;
         }
 
-        public static TownRules Load(string json, AlchemyRules alchemy, GardenRules garden, IReadOnlyList<string> biomes)
+        private static TownMarketRules LoadMarket(ContentNode root, CompanionTreatRules? treats)
+        {
+            if (!root.HasField("market"))
+                return new TownMarketRules();
+            var market = root.Field("market");
+            var items = new List<string>();
+            foreach (var node in market.Field("items").Items())
+            {
+                var item = node.AsString();
+                if (treats != null && (!item.StartsWith(CompanionTreatRules.Prefix, StringComparison.Ordinal) || treats.Treat(item) is not { Delicacy: false }))
+                    throw node.Error($"'{item}' is not a companion treat for sale");
+                if (items.Contains(item))
+                    throw node.Error($"duplicate market item '{item}'");
+                items.Add(item);
+            }
+            var minPrice = market.Field("minPrice").AsInt(1, 1_000_000);
+            return new TownMarketRules
+            {
+                Currency = market.Field("currency").AsString(),
+                Items = items,
+                MaxLots = market.Field("maxLots").AsInt(1, 100),
+                MaxAmount = market.Field("maxAmount").AsInt(1, 1000),
+                MinPrice = minPrice,
+                MaxPrice = market.Field("maxPrice").AsInt(minPrice, 1_000_000),
+                Days = market.Field("days").AsInt(1, 365),
+                Fee = market.Field("fee").AsNumber(0, 0.99),
+                Inbox = market.Field("inbox").AsInt(1, 1000)
+            };
+        }
+
+        public static TownRules Load(string json, AlchemyRules alchemy, GardenRules garden, IReadOnlyList<string> biomes, CompanionTreatRules? treats = null)
         {
             var root = ContentNode.Root(json, FileName);
             var version = root.Field("version").AsInt(1);
@@ -149,7 +209,8 @@ namespace Game.Core.Content
                 GiftsPerDay = gifts.Field("perDay").AsInt(0, 100),
                 GiftMaxAmount = gifts.Field("maxAmount").AsInt(1, 1000),
                 GiftInbox = gifts.Field("inbox").AsInt(1, 1000),
-                GiftItems = giftItems
+                GiftItems = giftItems,
+                Market = LoadMarket(root, treats)
             };
         }
 

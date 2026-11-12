@@ -346,6 +346,32 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void ARiftDungeonPaysOnlyItsOwnShardsAndDoesNotDeepenTheRift()
+        {
+            var (loop, input) = InRift(1e30);
+            var key = new DungeonKey(2, System.Array.Empty<string>(), 40, Rules.KeyAttempts, loop.State.Rift.WindowId);
+            loop.State.Dungeons.Keys.Add(key);
+            loop.State.Stage = 30;
+            loop.State.Rift.Deepest = 30;
+            var shards = loop.State.Rift.Shards;
+            var keys = 0;
+
+            Assert.That(loop.Dungeons.Enter(key), Is.EqualTo(DungeonResult.Entered));
+            for (var i = 0; i < 6000 && loop.Dungeons.Inside; i++)
+            {
+                input.PressKeys(3);
+                loop.Tick();
+                keys += loop.Events.CountOf(GameEventKind.DungeonKeyDropped);
+                loop.Events.Clear();
+            }
+
+            Assert.That(loop.State.Dungeons.Completed, Is.EqualTo(1));
+            Assert.That(loop.State.Rift.Deepest, Is.EqualTo(30), "the Rift record is set only in the Rift itself");
+            Assert.That((loop.State.Rift.Shards - shards).ToDouble(), Is.EqualTo(Rules.Rift.Shards(2)).Within(1e-6));
+            Assert.That(keys, Is.Zero);
+        }
+
+        [Test]
         public void LeavingTheRiftFromItsDungeonKeepsTheKeyAndBothWorlds()
         {
             var (loop, _) = InRift();

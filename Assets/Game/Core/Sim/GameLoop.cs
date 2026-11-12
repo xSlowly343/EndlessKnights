@@ -86,6 +86,7 @@ namespace Game.Core.Sim
         private readonly CompanionSystem _companions;
         private readonly NestSystem _nest;
         private readonly CompanionStrip _strip;
+        private readonly StripScene _scene;
         private readonly CompanionGearSystem _companionGear;
         private readonly CompanionWorkSystem _companionWork;
         private readonly CompanionAbilitySystem _companionAbilities;
@@ -151,7 +152,7 @@ namespace Game.Core.Sim
             _atlas = new AtlasSystem(data.Atlas, state, hero);
             _resonance = new ResonanceSystem(data.Resonance, state, hero);
             _spirits = new SpiritSystem(data.Spirits, state, _combat);
-            _unlocks = new Unlocks(data.Unlocks, state);
+            _unlocks = new Unlocks(data.Unlocks, state, Events);
             _artifacts.Unlocks = _unlocks;
             _atlas.Unlocks = _unlocks;
             _resonance.Unlocks = _unlocks;
@@ -166,7 +167,8 @@ namespace Game.Core.Sim
             _seasonal = new EventSystem(data, state, _stage, Events);
             _peaceful = new PeacefulSystem(data.Peaceful, state, Events);
             _talents = new TalentSystem(data.Talents, state);
-            _camp = new CampSystem(data.Camp, state, Events);
+            _camp = new CampSystem(data.Camp, state, Events) { Unlocks = _unlocks };
+            _unlocks.Camp = _camp;
             _clanCamp = new ClanCampSystem(data.ClanCamp, state, hero, _camp);
             _hideout = new HideoutSystem(data.Hideout, data.ClanCamp, data.Garden, state, _camp);
             _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden);
@@ -184,6 +186,7 @@ namespace Game.Core.Sim
             _companionWork = new CompanionWorkSystem(state, _camp, _companions, _expeditions);
             _menagerie = new MenagerieTreeSystem(_companions);
             _strip = new CompanionStrip(state, _companions, _expeditions, _peaceful, Events);
+            _scene = new StripScene(data.Panel.Scene, state, _peaceful, Events);
             _forge = new ForgeSystem(data.Forge, state, data.Stages, _camp, _peaceful, _weapons, _gear, Events);
             _mount = new MountSystem(data.Combat.Mount, state, data.Stages, hero);
             _facets = new FacetSystem(data.Combat.Facets, state, hero);
@@ -201,6 +204,7 @@ namespace Game.Core.Sim
                 _mount.NoteSalvage(drop);
             };
             _seasonal.BossWon = eventId => _drops.GiveEventPiece(eventId);
+            _seasonal.CompanionEarned = companion => Nest.GiveEventCompanion(companion);
             _museum = new MuseumSystem(data.Museum, state, hero, _alchemy, Events);
             _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
             _hideout.Decor = _decor;
@@ -237,6 +241,7 @@ namespace Game.Core.Sim
             _skills.Levels = data.Gems.Levels;
             _gemExperience = new GemExperienceSystem(data.Gems.Levels, state, hero, _skills, Events);
             _skills.RefreshBranches();
+            _book.Evolve();
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
@@ -296,6 +301,7 @@ namespace Game.Core.Sim
         public CompanionSystem Companions => _companions;
         public NestSystem Nest => _nest;
         public CompanionStrip Strip => _strip;
+        public StripScene Scene => _scene;
         public CompanionGearSystem CompanionGear => _companionGear;
         public CompanionWorkSystem CompanionWork => _companionWork;
         public CompanionAbilitySystem CompanionAbilities => _companionAbilities;
@@ -385,12 +391,15 @@ namespace Game.Core.Sim
             return false;
         }
 
+        private RecapSystem? _recap;
+
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue(EventCapacity);
 
         public const int EventCapacity = 4096;
         public InputSnapshot LastInput { get; private set; }
         public InputStats SessionInput { get; } = new InputStats();
+        public RecapSystem Recap => _recap ??= new RecapSystem(State);
         public double MetersPerPixel { get; set; } = InputStats.DefaultMetersPerPixel;
         public bool Paused { get; set; }
         public InputPermissions Permissions { get; set; } = InputPermissions.All;
@@ -470,6 +479,7 @@ namespace Game.Core.Sim
             RebuildTree();
             SyncPathSkill();
             PutOnSkills(equipped, reforge);
+            _book.Evolve();
             return ClassChangeResult.Changed;
         }
 
@@ -490,6 +500,8 @@ namespace Game.Core.Sim
                 if (skill.Ascendancy != null)
                     continue;
                 var reforged = reforge.Of(skill);
+                if (SkillBook.IsClassSkill(reforged) && !_book.OfHeroClass(reforged) && !_book.OpenedByWeapon(reforged))
+                    continue;
                 var slot = State.Skills[_skills.Equip(reforged, SkillLoadout.Accepts(role, reforged) ? role : (SkillSlotRole?)null)];
                 slot.StartCooldown((int)System.Math.Round(slot.Skill.Skill!.CooldownSeconds * TicksPerSecond));
                 supports.CopyTo(slot.Supports, 0);
@@ -497,6 +509,24 @@ namespace Game.Core.Sim
         }
 
         public ClassTree? ClassTreeDef => State.ClassChosen ? _data.ClassTreeOf(State.ClassName) : null;
+
+        public string ShareBuild() => ClassTreeDef is { } tree ? BuildCode.Encode(tree, State.ClassTree, State.Skills) : string.Empty;
+
+        public SharedBuild? ReadBuild(string? code) => BuildCode.Decode(code, _data.ClassTreeOf, _data.Gems);
+
+        public BuildImportResult ImportBuild(string? code)
+        {
+            if (ReadBuild(code) is not { } build)
+                return BuildImportResult.BadCode;
+            if (ClassTreeDef is not { } tree)
+                return BuildImportResult.NoClass;
+            if (build.TreeId != tree.Id)
+                return BuildImportResult.OtherClass;
+            BuildCode.UseAsPlan(build, tree, State.ClassTree);
+            FillTrees();
+            RebuildTree();
+            return BuildImportResult.Done;
+        }
 
         public double ClassAttribute => _classAttribute.Points;
 
@@ -635,7 +665,7 @@ namespace Game.Core.Sim
 
         public BigNumber BranchChangeCost(GemDef skill, int tier)
         {
-            var chosen = State.GemProgress.TryGetValue(skill.Id, out var progress) && tier >= 0 && tier < progress.Branches.Length
+            var chosen = State.GemProgress.TryGetValue(skill.ProgressId, out var progress) && tier >= 0 && tier < progress.Branches.Length
                 ? progress.Branches[tier]
                 : SkillBranches.NoChoice;
             if (chosen == SkillBranches.NoChoice || ClassTreeResetFree || ClassTreeDef is not { } tree)
@@ -680,7 +710,7 @@ namespace Game.Core.Sim
             if (State.Gold < cost)
                 return RefundResult.NotEnoughGold;
             State.Gold -= cost;
-            allocation.Clear();
+            allocation.ReturnPoints();
             RebuildTree();
             return RefundResult.Refunded;
         }
@@ -748,6 +778,7 @@ namespace Game.Core.Sim
             _drops.SetDay(day);
             _quests.SetDay(day);
             _chronicle.SetDay(day);
+            Recap.SetDay(day);
             _seasonal.SetDay(day);
             _town.SetDay(day);
             _companions.SetDay(day);
@@ -1008,6 +1039,7 @@ namespace Game.Core.Sim
             _dungeons.UseData(data);
             _seasonal.UseData(data);
             _peaceful.UseRules(data.Peaceful);
+            _scene.UseRules(data.Panel.Scene);
             _camp.UseRules(data.Camp);
             _garden.UseRules(data.Garden);
             _alchemy.UseRules(data.Alchemy);
@@ -1109,6 +1141,7 @@ namespace Game.Core.Sim
             RefreshPeacefulBonus();
             _peaceful.Tick(LastInput, MetersPerPixel);
             _camp.Tick();
+            _unlocks.Tick();
             _colossus.Tick();
             _garden.Tick();
             _alchemy.Tick();
@@ -1137,6 +1170,7 @@ namespace Game.Core.Sim
             _combat.NotePause(idleTicksBefore, input.HasInput);
             _resource.Tick(input);
             _weapons.ApplyBuiltInSupports(State.Skills);
+            _book.Evolve();
             _book.TrimSockets();
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);
@@ -1173,6 +1207,7 @@ namespace Game.Core.Sim
             _colossus.NoteGuardians(firstEvent);
             _nest.NoteGuardians(firstEvent);
             _strip.Tick(firstEvent, LastInput.HasAnyInput);
+            _scene.Tick();
             _forge.NoteKills(firstEvent);
             _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);
@@ -1197,6 +1232,7 @@ namespace Game.Core.Sim
             _artifacts.SkipAwakening();
             _achievements.Tick();
             _strip.Tick(firstEvent, LastInput.HasAnyInput);
+            _scene.Tick();
             State.Tick++;
             Hook?.AfterTick();
         }

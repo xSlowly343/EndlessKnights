@@ -29,6 +29,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Garden.Plant(9, "windwort"), Is.EqualTo(GardenResult.NoBed));
             Assert.That(loop.Garden.Plant(1, "stormfern"), Is.EqualTo(GardenResult.NoSeed), "a mutation needs its seed");
             loop.State.RecordStage = 51;
+            loop.State.Camp.Tier = 1;
             loop.Tick();
             Assert.That(loop.Garden.OpenBeds, Is.EqualTo(8));
             Assert.That(GardenView.Seeds(loop.Garden, loop.Camp).Count(s => s.Starter), Is.EqualTo(4));

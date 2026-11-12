@@ -220,6 +220,7 @@ namespace Game.Core.Sim
                 return ExpeditionResult.NoChoice;
             var expedition = State.Active[index];
             expedition.Choice = false;
+            _companions?.AddBond(expedition.Companion, _companions.TreeStat(MenagerieStat.LetterBond));
             if (wait)
             {
                 expedition.Waited = true;
@@ -254,7 +255,7 @@ namespace Game.Core.Sim
         private void SendLetter(Expedition expedition, int index)
         {
             expedition.Letter = _rules.Letters.Count == 0 ? 0 : (int)(_state.Rng.NextDouble() * _rules.Letters.Count) % _rules.Letters.Count;
-            expedition.Choice = _state.Rng.NextDouble() < (_rules.ChoiceChance + _state.Perk(MuseumPerk.LetterChoice)) * (1 + (_companions?.Own(expedition.Companion, OwnEffectKind.Choice) ?? 0));
+            expedition.Choice = _state.Rng.NextDouble() < (_rules.ChoiceChance + _state.Perk(MuseumPerk.LetterChoice) + (_companions?.TreeStat(MenagerieStat.ChoiceLetters) ?? 0)) * (1 + (_companions?.Own(expedition.Companion, OwnEffectKind.Choice) ?? 0));
             _events.Add(GameEvent.ForStage(GameEventKind.ExpeditionLetter, _state.Tick, index));
         }
 

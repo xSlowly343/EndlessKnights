@@ -19,11 +19,19 @@ namespace Game.Presentation.Ui
         private const float ClaimWidthPx = 88f;
         private const float ClaimHeightPx = 28f;
         private const float EmptyPx = 60f;
+        private const float PagerPx = 24f;
+        private const float TurnWidthPx = 44f;
+        private const float PageLabelWidthPx = 96f;
 
         private readonly UiTheme _theme;
         private readonly RectTransform _root;
         private readonly List<LetterRow> _rows = new List<LetterRow>();
         private readonly TextMeshProUGUI _empty;
+        private readonly RectTransform _pager;
+        private readonly UiButton _previous;
+        private readonly UiButton _next;
+        private readonly TextMeshProUGUI _pageLabel;
+        private IReadOnlyList<MailRow> _letters = Array.Empty<MailRow>();
         private float _contentPx = PanelGeometry.FullHeightPx;
 
         private MailPanel(RectTransform content, UiTheme theme)
@@ -34,6 +42,14 @@ namespace Game.Presentation.Ui
                 _rows.Add(LetterRow.Create(i, _root, this));
             _empty = UiElements.Label("Empty", _root, theme.TextFont, 12f, theme.TextDim, TextAlignmentOptions.Center);
             _empty.textWrappingMode = TextWrappingModes.Normal;
+            _pager = UiElements.Rect("Pager", _root);
+            _previous = Button(_pager, "‹", theme.Card, theme.Text, theme.TextDim, 14f);
+            UiElements.Anchor(_previous.Rect, new Vector2(0.5f, 0.5f), new Vector2(-(PageLabelWidthPx + TurnWidthPx) / 2f, 0f), new Vector2(TurnWidthPx, PagerPx));
+            _next = Button(_pager, "›", theme.Card, theme.Text, theme.TextDim, 14f);
+            UiElements.Anchor(_next.Rect, new Vector2(0.5f, 0.5f), new Vector2((PageLabelWidthPx + TurnWidthPx) / 2f, 0f), new Vector2(TurnWidthPx, PagerPx));
+            _pageLabel = UiElements.Label("Page", _pager, theme.TextFont, 12f, theme.TextDim, TextAlignmentOptions.Center);
+            UiElements.Anchor(_pageLabel.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(PageLabelWidthPx, PagerPx));
+            _pager.gameObject.SetActive(false);
             _root.gameObject.SetActive(false);
         }
 
@@ -44,6 +60,8 @@ namespace Game.Presentation.Ui
 
         public bool IsShown => _root.gameObject.activeSelf;
         public int ShownRows { get; private set; }
+        public int Page { get; private set; }
+        public int Pages { get; private set; } = 1;
 
         public void Show(bool shown, float contentPx)
         {
@@ -52,29 +70,66 @@ namespace Game.Presentation.Ui
             _contentPx = contentPx;
             if (!shown)
                 return;
-            Arrange();
+            Refresh();
             if (opened)
                 Opened?.Invoke();
         }
 
         public void ShowRows(IReadOnlyList<MailRow> rows)
         {
-            ShownRows = 0;
+            _letters = rows;
+            Refresh();
+        }
+
+        public void Turn(int pages)
+        {
+            Page += pages;
+            Refresh();
+        }
+
+        private void Refresh()
+        {
+            var page = MailText.Page(_letters.Count, PerPage(), Page);
+            Page = page.Index;
+            Pages = page.Pages;
+            ShownRows = page.Count;
             for (var i = 0; i < _rows.Count; i++)
             {
-                var shown = i < rows.Count;
-                _rows[i].Show(shown ? rows[i] : default, shown, _theme);
-                if (shown)
-                    ShownRows++;
+                var shown = i < page.Count;
+                _rows[i].Show(shown ? _letters[page.First + i] : default, shown, _theme);
             }
-            _empty.text = rows.Count == 0 ? MailText.Empty : string.Empty;
-            Arrange();
+            _empty.text = _letters.Count == 0 ? MailText.Empty : string.Empty;
+            _pager.gameObject.SetActive(page.Pages > 1);
+            _pageLabel.text = page.Label;
+            Dim(_previous, !page.HasPrevious);
+            Dim(_next, !page.HasNext);
+            Arrange(page.Count);
+        }
+
+        private int PerPage()
+        {
+            var whole = Fitting(_contentPx);
+            return System.Math.Max(1, _letters.Count <= whole ? whole : Fitting(_contentPx - PagerPx - GapPx));
+        }
+
+        private static int Fitting(float heightPx) =>
+            Mathf.Clamp(Mathf.FloorToInt((heightPx - TopPx + GapPx) / (RowPx + GapPx)), 0, MaxRows);
+
+        private void Dim(UiButton button, bool dimmed)
+        {
+            if (button.Label != null)
+                button.Label.color = dimmed ? _theme.TextDim : _theme.Text;
         }
 
         public bool TryClick(Vector2 worldPoint)
         {
             if (!IsShown)
                 return false;
+            if (Pages > 1 && (_previous.Contains(worldPoint) || _next.Contains(worldPoint)))
+            {
+                Turn(_previous.Contains(worldPoint) ? -1 : 1);
+                return true;
+            }
             foreach (var row in _rows)
             {
                 if (!row.ClaimContains(worldPoint))
@@ -87,18 +142,23 @@ namespace Game.Presentation.Ui
 
         public Vector2 WorldPointOfClaim(int row) => _rows[row].ClaimPoint;
 
-        private void Arrange()
+        public Vector2 WorldPointOfTurn(int pages) => pages < 0 ? Centre(_previous.Rect) : Centre(_next.Rect);
+
+        private static Vector2 Centre(RectTransform rect) => rect.TransformPoint(rect.rect.center);
+
+        private void Arrange(int shown)
         {
             var y = TopPx;
             for (var i = 0; i < _rows.Count; i++)
             {
-                var fits = y + RowPx <= _contentPx;
+                var fits = i < shown;
                 _rows[i].Fit(fits);
                 if (!fits)
                     continue;
                 Place(_rows[i].Rect, y, RowPx);
                 y += RowPx + GapPx;
             }
+            Place(_pager, y, PagerPx);
             Place(_empty.rectTransform, TopPx, EmptyPx);
         }
 

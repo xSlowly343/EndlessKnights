@@ -62,9 +62,9 @@ namespace Game.Core.Sim
             S.Moths = System.Math.Min(SwarmMax, S.Moths + (Flag(MothcallerStats.SwarmDouble) ? 2 : 1));
         }
 
-        public void OnSkillCast(GemDef skill)
+        public void OnSkillCast(GemDef skill, SkillDef? variant = null)
         {
-            if (!On || !(skill.Skill?.Effect is StrikeEffect strike))
+            if (!On || !((variant ?? skill.Skill)?.CastStrike is StrikeEffect strike))
                 return;
             if (strike.Moths > 0 && (Swarm || Pollen))
                 S.Moths = System.Math.Min(SwarmMax, S.Moths + strike.Moths);
