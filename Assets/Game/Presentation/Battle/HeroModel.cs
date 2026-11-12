@@ -55,11 +55,11 @@ namespace Game.Presentation.Battle
             var key = look.Cloak | (look.Eyes << 8);
             if (Skins.TryGetValue(key, out var skin))
                 return skin;
-            var cloak = ColorOf(CosmeticCatalog.CloakSlot, look.Cloak);
+            var cloak = PaintOf(look.Cloak);
             var eyes = ColorOf(CosmeticCatalog.EyesSlot, look.Eyes);
             skin = new HeroSkin(
-                Clip(Texture(IdleFile, cloak, eyes), 30, 30, 24, IdleFeet, Repeat(0.1f, 24), true),
-                Clip(Texture(AttackFile, cloak, eyes), 90, 50, 8, AttackFeet, AttackSeconds, false));
+                Clip(Texture(IdleFile, 30, cloak, eyes), 30, 30, 24, IdleFeet, Repeat(0.1f, 24), true),
+                Clip(Texture(AttackFile, 90, cloak, eyes), 90, 50, 8, AttackFeet, AttackSeconds, false));
             Skins.Add(key, skin);
             return skin;
         }
@@ -89,7 +89,7 @@ namespace Game.Presentation.Battle
                 Color? slash = look != DefaultLook && ColorUtility.TryParseHtmlString(node.Field("slash").AsString(), out var parsed) ? parsed : (Color?)null;
                 return new StrikeArt(
                     look,
-                    Clip(Texture(SlashFile, null, slash), 90, 50, 8, AttackFeet, AttackSeconds, false),
+                    Clip(Texture(SlashFile, 90, null, slash), 90, 50, 8, AttackFeet, AttackSeconds, false),
                     Sheet(node.Field("flight")),
                     Sheet(node.Field("burst")),
                     node.Field("path").AsString() == GroundPath,
@@ -117,14 +117,28 @@ namespace Game.Presentation.Battle
             return item != null && ColorUtility.TryParseHtmlString(item.Color, out var color) ? color : (Color?)null;
         }
 
-        private static Texture2D Texture(string file, Color? cloak, Color? glow)
+        private static CloakPaint? PaintOf(int look)
+        {
+            if (look == DefaultLook || _cosmetics == null)
+                return null;
+            var item = _cosmetics.Catalog.ByLook(CosmeticCatalog.CloakSlot, look);
+            if (item == null || !ColorUtility.TryParseHtmlString(item.Color, out var first))
+                return null;
+            var second = ColorUtility.TryParseHtmlString(item.Color2, out var parsed) ? parsed : first;
+            return new CloakPaint(first, second, CloakPaint.PatternOf(item.Pattern));
+        }
+
+        private static Texture2D Texture(string file, int cellWidth, CloakPaint? cloak, Color? glow)
         {
             var source = Resources.Load<Texture2D>(Folder + file);
             source.filterMode = FilterMode.Point;
             if ((!cloak.HasValue && !glow.HasValue) || !source.isReadable)
                 return source;
             var pixels = source.GetPixels32();
-            HeroPalette.Recolor(pixels, cloak, glow);
+            if (cloak.HasValue)
+                HeroPalette.Recolor(pixels, source.width, cellWidth, cloak.Value, glow);
+            else
+                HeroPalette.Recolor(pixels, null, glow);
             var texture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp };
             texture.SetPixels32(pixels);
             texture.Apply(false, true);

@@ -1,0 +1,699 @@
+{
+ "frames": [
+  {
+   "filename": "firework-bloom 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 1",
+   "frame": {
+    "x": 112,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 2",
+   "frame": {
+    "x": 224,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 3",
+   "frame": {
+    "x": 336,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 4",
+   "frame": {
+    "x": 448,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 5",
+   "frame": {
+    "x": 0,
+    "y": 84,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 6",
+   "frame": {
+    "x": 112,
+    "y": 84,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 7",
+   "frame": {
+    "x": 224,
+    "y": 84,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 8",
+   "frame": {
+    "x": 336,
+    "y": 84,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 9",
+   "frame": {
+    "x": 448,
+    "y": 84,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 10",
+   "frame": {
+    "x": 0,
+    "y": 168,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 11",
+   "frame": {
+    "x": 112,
+    "y": 168,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 12",
+   "frame": {
+    "x": 224,
+    "y": 168,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 13",
+   "frame": {
+    "x": 336,
+    "y": 168,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 14",
+   "frame": {
+    "x": 448,
+    "y": 168,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 15",
+   "frame": {
+    "x": 0,
+    "y": 252,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 16",
+   "frame": {
+    "x": 112,
+    "y": 252,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 17",
+   "frame": {
+    "x": 224,
+    "y": 252,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 18",
+   "frame": {
+    "x": 336,
+    "y": 252,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 19",
+   "frame": {
+    "x": 448,
+    "y": 252,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 20",
+   "frame": {
+    "x": 0,
+    "y": 336,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 21",
+   "frame": {
+    "x": 112,
+    "y": 336,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 22",
+   "frame": {
+    "x": 224,
+    "y": 336,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 23",
+   "frame": {
+    "x": 336,
+    "y": 336,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 24",
+   "frame": {
+    "x": 448,
+    "y": 336,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 25",
+   "frame": {
+    "x": 0,
+    "y": 420,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 26",
+   "frame": {
+    "x": 112,
+    "y": 420,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 27",
+   "frame": {
+    "x": 224,
+    "y": 420,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 28",
+   "frame": {
+    "x": 336,
+    "y": 420,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-bloom 29",
+   "frame": {
+    "x": 448,
+    "y": 420,
+    "w": 112,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 84
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "firework-bloom.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 560,
+   "h": 504
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "firework-bloom",
+    "from": 0,
+    "to": 29,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/firework-bloom",
+   "name": "Firework bloom",
+   "fps": 30,
+   "loop": false,
+   "frames": 30,
+   "frameSize": [
+    112,
+    84
+   ],
+   "pivot": [
+    62,
+    46
+   ],
+   "columns": 5
+  }
+ }
+}

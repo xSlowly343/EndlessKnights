@@ -32,6 +32,22 @@ STRIKES = [
      "path": "line", "arcPx": 14, "burstAt": "ground", "slash": "#78ccf4"},
     {"look": 8, "id": "chord", "flight": ("chord-wave", "Seeker_Chord_Flight"), "burst": ("chord-ring", "Seeker_Chord_Burst"),
      "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#ff5aa8"},
+    {"look": 9, "id": "phoenix", "flight": ("phoenix-glide", "Seeker_Phoenix_Flight"), "burst": ("phoenix-rise", "Seeker_Phoenix_Burst"),
+     "path": "line", "arcPx": 8, "burstAt": "ground", "slash": "#ff8a2a"},
+    {"look": 10, "id": "glacier", "flight": ("glacier-lance", "Seeker_Glacier_Flight"), "burst": ("glacier-bloom", "Seeker_Glacier_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "ground", "slash": "#72c0ee"},
+    {"look": 11, "id": "thunder", "flight": ("thunder-orb", "Seeker_Thunder_Flight"), "burst": ("thunder-strike", "Seeker_Thunder_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "ground", "slash": "#8c9cff"},
+    {"look": 12, "id": "blade", "flight": ("blade-volley", "Seeker_Blade_Flight"), "burst": ("blade-ring", "Seeker_Blade_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#dcecff"},
+    {"look": 13, "id": "wolf", "flight": ("wolf-lunge", "Seeker_Wolf_Flight"), "burst": ("wolf-bite", "Seeker_Wolf_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#4cc4d8"},
+    {"look": 14, "id": "ink", "flight": ("ink-stroke", "Seeker_Ink_Flight"), "burst": ("ink-enso", "Seeker_Ink_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#d8d8f0"},
+    {"look": 15, "id": "glass", "flight": ("glass-shard", "Seeker_Glass_Flight"), "burst": ("glass-rose", "Seeker_Glass_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#5a5ae8"},
+    {"look": 16, "id": "firework", "flight": ("firework-rocket", "Seeker_Firework_Flight"), "burst": ("firework-bloom", "Seeker_Firework_Burst"),
+     "path": "line", "arcPx": 16, "burstAt": "body", "slash": "#ff4ab4"},
 ]
 
 

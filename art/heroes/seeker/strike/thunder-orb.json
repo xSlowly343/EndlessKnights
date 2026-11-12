@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "thunder-orb 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-orb 1",
+   "frame": {
+    "x": 120,
+    "y": 0,
+    "w": 120,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-orb 2",
+   "frame": {
+    "x": 0,
+    "y": 52,
+    "w": 120,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-orb 3",
+   "frame": {
+    "x": 120,
+    "y": 52,
+    "w": 120,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-orb 4",
+   "frame": {
+    "x": 0,
+    "y": 104,
+    "w": 120,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-orb 5",
+   "frame": {
+    "x": 120,
+    "y": 104,
+    "w": 120,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-orb 6",
+   "frame": {
+    "x": 0,
+    "y": 156,
+    "w": 120,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-orb 7",
+   "frame": {
+    "x": 120,
+    "y": 156,
+    "w": 120,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 52
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "thunder-orb.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 240,
+   "h": 208
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "thunder-orb",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/thunder-orb",
+   "name": "Thunder orb",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    120,
+    52
+   ],
+   "pivot": [
+    98,
+    26
+   ],
+   "columns": 2
+  }
+ }
+}
