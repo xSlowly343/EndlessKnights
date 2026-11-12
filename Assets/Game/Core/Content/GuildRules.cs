@@ -39,20 +39,47 @@ namespace Game.Core.Content
         public bool Observatory { get; }
     }
 
+    public sealed class BuildResourceDef
+    {
+        public BuildResourceDef(string id, string nameRu, string nameEn, long dailyCap)
+        {
+            Id = id;
+            NameRu = nameRu;
+            NameEn = nameEn;
+            DailyCap = dailyCap;
+        }
+
+        public string Id { get; }
+        public string NameRu { get; }
+        public string NameEn { get; }
+        public long DailyCap { get; }
+    }
+
+    public static class TownResource
+    {
+        public const string Labour = "labour";
+        public const string Herbs = "herbs";
+        public const string Finds = "finds";
+
+        public static readonly IReadOnlyList<string> Counted = new[] { Labour, Herbs, Finds };
+    }
+
     public sealed class GuildRules
     {
         public const string FileName = "guilds.json";
         public const int SupportedVersion = 1;
 
         private GuildRules(IReadOnlyList<long> levels, IReadOnlyList<GuildDef> guilds, IReadOnlyList<DistrictDef> districts, IReadOnlyList<string> startBuilt,
-            IReadOnlyList<string> buildOrder, long dailyCap)
+            IReadOnlyList<string> buildOrder, int voteDays, int openHours, IReadOnlyList<BuildResourceDef> resources)
         {
             Levels = levels;
             Guilds = guilds;
             Districts = districts;
             StartBuilt = startBuilt;
             BuildOrder = buildOrder;
-            DailyCap = dailyCap;
+            VoteDays = voteDays;
+            OpenHours = openHours;
+            Resources = resources;
         }
 
         public IReadOnlyList<long> Levels { get; }
@@ -60,7 +87,9 @@ namespace Game.Core.Content
         public IReadOnlyList<DistrictDef> Districts { get; }
         public IReadOnlyList<string> StartBuilt { get; }
         public IReadOnlyList<string> BuildOrder { get; }
-        public long DailyCap { get; }
+        public int VoteDays { get; }
+        public int OpenHours { get; }
+        public IReadOnlyList<BuildResourceDef> Resources { get; }
         public int MaxLevel => Levels.Count;
 
         public int LevelAt(long reputation)
@@ -77,6 +106,16 @@ namespace Game.Core.Content
             {
                 if (guild.Id == id)
                     return guild;
+            }
+            return null;
+        }
+
+        public BuildResourceDef? Resource(string id)
+        {
+            foreach (var resource in Resources)
+            {
+                if (resource.Id == id)
+                    return resource;
             }
             return null;
         }
@@ -108,7 +147,63 @@ namespace Game.Core.Content
                 if (placed != 1)
                     throw build.Error($"guild '{guild.Id}' must be either built from the start or in the build order, once");
             }
-            return new GuildRules(levels, guilds, districts, startBuilt, order, build.Field("dailyCap").AsLong(1));
+            var resources = ResourcesOf(build.Field("resources"));
+            CheckNeeds(build.Field("needs"), order, resources);
+            build.Field("gatherDays").AsInt(1);
+            build.Field("activeDays").AsInt(1);
+            build.Field("minPlayers").AsInt(1);
+            return new GuildRules(levels, guilds, districts, startBuilt, order, build.Field("voteDays").AsInt(1), build.Field("openHours").AsInt(0), resources);
+        }
+
+        private static IReadOnlyList<BuildResourceDef> ResourcesOf(ContentNode node)
+        {
+            var resources = new List<BuildResourceDef>();
+            foreach (var item in node.Items())
+            {
+                var id = item.Field("id").AsString();
+                if (!Contains(TownResource.Counted, id))
+                    throw item.Field("id").Error($"the game does not count resource '{id}'");
+                foreach (var known in resources)
+                {
+                    if (known.Id == id)
+                        throw item.Field("id").Error($"resource '{id}' is listed twice");
+                }
+                var name = item.Field("name");
+                resources.Add(new BuildResourceDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), item.Field("dailyCap").AsLong(1)));
+            }
+            if (resources.Count == 0)
+                throw node.Error("the town needs resources to build from");
+            return resources;
+        }
+
+        private static void CheckNeeds(ContentNode node, IReadOnlyList<string> order, IReadOnlyList<BuildResourceDef> resources)
+        {
+            var seen = new List<string>();
+            foreach (var item in node.Items())
+            {
+                var guild = item.Field("guild").AsString();
+                if (!Contains(order, guild))
+                    throw item.Field("guild").Error($"guild '{guild}' is not in the build order");
+                if (Contains(seen, guild))
+                    throw item.Field("guild").Error($"guild '{guild}' is listed twice");
+                seen.Add(guild);
+                var perPlayerDay = item.Field("perPlayerDay");
+                var needed = 0;
+                foreach (var resource in resources)
+                {
+                    if (!perPlayerDay.HasField(resource.Id))
+                        continue;
+                    perPlayerDay.Field(resource.Id).AsLong(1);
+                    needed++;
+                }
+                if (needed == 0)
+                    throw perPlayerDay.Error($"guild '{guild}' needs at least one known resource");
+            }
+            foreach (var guild in order)
+            {
+                if (!Contains(seen, guild))
+                    throw node.Error($"guild '{guild}' has no resources to gather");
+            }
         }
 
         private static IReadOnlyList<DistrictDef> DistrictsOf(ContentNode node, IReadOnlyCollection<string> biomes)

@@ -1393,9 +1393,20 @@ namespace Game.Core.Save
                 ("work", JsonValue.Array(work)),
                 ("teaPause", JsonValue.Of(peaceful.TeaPause)),
                 ("unsentActions", JsonValue.Of(peaceful.UnsentActions)),
+                ("unsentGains", WriteGains(peaceful.UnsentGains)),
                 ("battleSeconds", JsonValue.Of(peaceful.BattleSeconds)),
                 ("quietSeconds", JsonValue.Of(peaceful.QuietSeconds)),
                 ("teaOffered", JsonValue.Of(peaceful.TeaOffered)));
+        }
+
+        private static JsonValue WriteGains(Dictionary<string, long> gains)
+        {
+            var ids = new List<string>(gains.Keys);
+            ids.Sort(System.StringComparer.Ordinal);
+            var items = new JsonValue[ids.Count];
+            for (var i = 0; i < items.Length; i++)
+                items[i] = Object(("resource", JsonValue.Of(ids[i])), ("count", JsonValue.Of(gains[ids[i]])));
+            return JsonValue.Array(items);
         }
 
         private static void ReadPeaceful(ContentNode node, PeacefulState peaceful)
@@ -1418,6 +1429,11 @@ namespace Game.Core.Save
             }
             peaceful.TeaPause = node.Field("teaPause").AsBool();
             peaceful.UnsentActions = node.HasField("unsentActions") ? node.Field("unsentActions").AsLong(0) : 0;
+            if (node.HasField("unsentGains"))
+            {
+                foreach (var item in node.Field("unsentGains").Items())
+                    peaceful.UnsentGains[item.Field("resource").AsString()] = item.Field("count").AsLong(0);
+            }
             peaceful.BattleSeconds = node.Field("battleSeconds").AsNumber(0, double.MaxValue);
             peaceful.QuietSeconds = node.Field("quietSeconds").AsNumber(0, double.MaxValue);
             peaceful.TeaOffered = node.Field("teaOffered").AsBool();

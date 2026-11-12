@@ -479,15 +479,32 @@ namespace Game.Net.Tests
         [Test]
         public void TheTownBuildIsReadFromTheServer()
         {
-            Assert.That(TownBuildReply.AddPayload(1200), Is.EqualTo("{\"actions\":1200}"));
-            var build = TownBuildReply.From(NakamaJson.Parse("{\"startBuilt\":[\"gardeners\",\"alchemists\"],\"built\":[\"fishers\"],\"project\":\"smiths\",\"progress\":3200,\"target\":50000,"
-                + "\"accepted\":1200,\"sentToday\":4800,\"dailyCap\":5000}"));
-            Assert.That(build.Built, Is.EqualTo(new[] { "gardeners", "alchemists", "fishers" }));
-            Assert.That(build.Project, Is.EqualTo("smiths"));
-            Assert.That(build.Progress, Is.EqualTo(3200));
-            Assert.That(build.Target, Is.EqualTo(50000));
-            Assert.That(build.Accepted, Is.EqualTo(1200));
-            Assert.That(build.LeftToday, Is.EqualTo(200));
+            Assert.That(TownBuildReply.AddPayload(new System.Collections.Generic.Dictionary<string, long> { ["labour"] = 1200, ["herbs"] = 7 }), Is.EqualTo("{\"gains\":{\"herbs\":7,\"labour\":1200}}"));
+            Assert.That(TownBuildReply.VotePayload("smiths"), Is.EqualTo("{\"guild\":\"smiths\"}"));
+            var vote = TownBuildReply.From(NakamaJson.Parse("{\"startBuilt\":[\"gardeners\",\"alchemists\"],\"built\":[\"fishers\"],\"round\":2,\"phase\":\"vote\",\"voteEnds\":9000000,"
+                + "\"candidates\":[{\"guild\":\"smiths\",\"votes\":31},{\"guild\":\"cooks\",\"votes\":4}],\"vote\":\"smiths\",\"project\":\"\",\"opensAt\":0,\"now\":1800000,"
+                + "\"resources\":[{\"id\":\"labour\",\"stock\":3200,\"need\":0,\"yours\":1500,\"sentToday\":4800,\"dailyCap\":5000}],\"accepted\":{\"labour\":1200}}"));
+            Assert.That(vote.Built, Is.EqualTo(new[] { "gardeners", "alchemists", "fishers" }));
+            Assert.That(vote.Board.Built, Is.EqualTo(new[] { "fishers" }));
+            Assert.That(vote.Board.Phase, Is.EqualTo(Game.Core.Sim.TownBoardPhase.Vote));
+            Assert.That(vote.Board.Round, Is.EqualTo(2));
+            Assert.That(vote.Board.SecondsLeft(0), Is.EqualTo(7200));
+            Assert.That(vote.Board.SecondsLeft(200), Is.EqualTo(7000));
+            Assert.That(vote.Board.Vote, Is.EqualTo("smiths"));
+            Assert.That(vote.Board.Candidates.Count, Is.EqualTo(2));
+            Assert.That(vote.Board.Candidates[0].Votes, Is.EqualTo(31));
+            Assert.That(vote.Board.Stocks[0].Stock, Is.EqualTo(3200));
+            Assert.That(vote.Board.Stocks[0].Yours, Is.EqualTo(1500));
+            Assert.That(vote.Board.LeftToday("labour"), Is.EqualTo(200));
+            Assert.That(vote.Accepted["labour"], Is.EqualTo(1200));
+
+            var opening = TownBuildReply.From(NakamaJson.Parse("{\"startBuilt\":[],\"built\":[],\"round\":1,\"phase\":\"build\",\"voteEnds\":100,\"candidates\":[],\"vote\":\"\",\"project\":\"smiths\","
+                + "\"opensAt\":4600000,\"now\":1000000,\"resources\":[{\"id\":\"labour\",\"stock\":70000,\"need\":63000,\"yours\":0,\"sentToday\":0,\"dailyCap\":5000}],\"accepted\":{}}"));
+            Assert.That(opening.Board.Phase, Is.EqualTo(Game.Core.Sim.TownBoardPhase.Opening));
+            Assert.That(opening.Board.Project, Is.EqualTo("smiths"));
+            Assert.That(opening.Board.SecondsLeft(0), Is.EqualTo(3600));
+            Assert.That(opening.Board.Gathered, Is.True);
+            Assert.That(opening.Accepted, Is.Empty);
         }
 
         [Test]

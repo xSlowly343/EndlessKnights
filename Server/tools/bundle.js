@@ -496,13 +496,23 @@ const campGuilds = JSON.parse(fs.readFileSync(path.join(data, "camp.json"), "utf
 for (const guild of campGuilds)
   if (!guilds.build.order.includes(guild))
     throw new Error("guilds.json: camp building guild " + guild + " is never built by the server");
+for (const guild of guilds.build.order)
+  if (!guilds.build.needs.some((need) => need.guild === guild))
+    throw new Error("guilds.json: building " + guild + " has no resources to gather");
+for (const need of guilds.build.needs)
+  for (const resource of Object.keys(need.perPlayerDay))
+    if (!guilds.build.resources.some((entry) => entry.id === resource))
+      throw new Error("guilds.json: building " + need.guild + " needs unknown resource " + resource);
 const townBuildRules = {
   startBuilt: guilds.build.startBuilt,
   order: guilds.build.order,
-  actionsPerPlayerDay: guilds.build.actionsPerPlayerDay,
-  buildDays: guilds.build.buildDays,
-  minTarget: guilds.build.minTarget,
-  dailyCap: guilds.build.dailyCap,
+  voteMs: guilds.build.voteDays * 86400000,
+  gatherDays: guilds.build.gatherDays,
+  openMs: guilds.build.openHours * 3600000,
+  activeDays: guilds.build.activeDays,
+  minPlayers: guilds.build.minPlayers,
+  resources: guilds.build.resources.map((resource) => ({ id: resource.id, dailyCap: resource.dailyCap })),
+  needs: Object.fromEntries(guilds.build.needs.map((need) => [need.guild, need.perPlayerDay])),
   keptDays: 8
 };
 

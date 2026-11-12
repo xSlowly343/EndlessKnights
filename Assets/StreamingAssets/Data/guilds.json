@@ -22,9 +22,22 @@
   "build": {
     "startBuilt": ["gardeners", "alchemists"],
     "order": ["fishers", "smiths", "cooks", "diggers", "distillers"],
-    "actionsPerPlayerDay": 1500,
-    "buildDays": 7,
-    "minTarget": 50000,
-    "dailyCap": 5000
+    "voteDays": 14,
+    "gatherDays": 21,
+    "openHours": 24,
+    "activeDays": 7,
+    "minPlayers": 2,
+    "resources": [
+      { "id": "labour", "name": { "ru": "Труд", "en": "Labour" }, "dailyCap": 5000 },
+      { "id": "herbs", "name": { "ru": "Травы", "en": "Herbs" }, "dailyCap": 300 },
+      { "id": "finds", "name": { "ru": "Находки", "en": "Finds" }, "dailyCap": 200 }
+    ],
+    "needs": [
+      { "guild": "fishers", "perPlayerDay": { "labour": 1500, "herbs": 8, "finds": 6 } },
+      { "guild": "smiths", "perPlayerDay": { "labour": 1800, "herbs": 6, "finds": 10 } },
+      { "guild": "cooks", "perPlayerDay": { "labour": 1500, "herbs": 14, "finds": 4 } },
+      { "guild": "diggers", "perPlayerDay": { "labour": 2000, "herbs": 6, "finds": 8 } },
+      { "guild": "distillers", "perPlayerDay": { "labour": 1500, "herbs": 12, "finds": 8 } }
+    ]
   }
 }
