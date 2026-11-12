@@ -30,6 +30,18 @@ namespace Game.Core.Sim
 
         public void SetPlace(PeacefulPlace place) => State.Place = place;
 
+        public PeacefulResult Enter(PeacefulPlace place)
+        {
+            if (InCamp && State.Place == place)
+                return PeacefulResult.Same;
+            if (SetMode(PeacefulMode.Camp) == PeacefulResult.Busy)
+                return PeacefulResult.Busy;
+            State.Place = place;
+            return PeacefulResult.Done;
+        }
+
+        public PeacefulResult Leave() => SetMode(PeacefulMode.Battle);
+
         public string Activity
         {
             get
