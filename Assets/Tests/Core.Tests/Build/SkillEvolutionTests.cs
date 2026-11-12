@@ -44,6 +44,29 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void EveryFormIsStrongerThanItsPredecessor()
+        {
+            foreach (var root in TestWorld.Data.Gems.All.Where(gem => gem.Evolves && gem.Root == gem))
+            {
+                for (var i = 1; i < root.Forms.Count; i++)
+                {
+                    var before = root.Forms[i - 1].Skill!;
+                    var after = root.Forms[i].Skill!;
+                    Assert.That(CastDamage(after), Is.GreaterThan(CastDamage(before)), root.Forms[i].Id + " per cast");
+                    Assert.That(CastDamage(after) / after.CooldownSeconds, Is.GreaterThanOrEqualTo(CastDamage(before) / before.CooldownSeconds - 1e-9), root.Forms[i].Id + " per second");
+                }
+            }
+        }
+
+        private static double CastDamage(SkillDef skill) =>
+            skill.Effect switch
+            {
+                StrikeEffect strike => strike.Multiplier * (1 + strike.QueueTargets),
+                FlurryEffect flurry => flurry.Hits * flurry.Multiplier * (1 + flurry.QueueTargets),
+                _ => throw new System.InvalidOperationException("a form deals damage by a strike or a flurry")
+            };
+
+        [Test]
         public void TheSkillInTheSlotEvolvesWhenTheHeroReachesTheLevelOfTheNextForm()
         {
             var loop = Runedancer(1);

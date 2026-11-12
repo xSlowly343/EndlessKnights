@@ -1461,11 +1461,11 @@
           "tags": ["Strike", "Skill"],
           "cost": {"resource": 20},
           "cooldownSeconds": 5,
-          "effect": {"type": "strike", "multiplier": 6, "critChance": 0.25, "runes": 1},
-          "text": {"ru": "удар ×6 с шансом крита +25%, кладёт руну", "en": "strike ×6 with +25% critical chance, lays a rune"},
+          "effect": {"type": "strike", "multiplier": 6, "critChance": 0.25, "runes": 2},
+          "text": {"ru": "удар ×6 с шансом крита +25%, кладёт две руны", "en": "strike ×6 with +25% critical chance, lays two runes"},
           "branches": [
             {"level": 5, "options": [{"id": "runedancer_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_hit_3_b5b", "name": {"ru": "Буква из тишины", "en": "Letter from Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 9}}]},
-            {"level": 15, "options": [{"id": "runedancer_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_hit_3_b15b"}]},
+            {"level": 15, "options": [{"id": "runedancer_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 3}, "id": "runedancer_hit_3_b15b"}]},
             {"level": 25, "options": [{"id": "runedancer_hit_3_b25a", "name": {"ru": "Тяжелее", "en": "Heavier"}, "damage": 1.6, "cooldown": 1.25}, {"id": "runedancer_hit_3_b25b", "name": {"ru": "Пламя добивает", "en": "Flame Finishes"}, "effect": {"lowHpBelow": 0.25, "lowHpMultiplier": 12}}]}
           ]
         }
@@ -1501,8 +1501,8 @@
           "tags": ["Strike", "Skill"],
           "cost": {"resource": 20},
           "cooldownSeconds": 6,
-          "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "runes": 1},
-          "text": {"ru": "руна прыгает на 3 врагов очереди ×2,5, кладёт руну", "en": "a rune jumps to 3 queued enemies ×2.5, lays a rune"},
+          "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "runes": 1, "blades": 1},
+          "text": {"ru": "руна прыгает на 3 врагов очереди ×2,5, кладёт руну и вешает кинжал", "en": "a rune jumps to 3 queued enemies ×2.5, lays a rune and hangs a dagger"},
           "branches": [
             {"level": 5, "options": [{"id": "runedancer_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_2_b5b", "name": {"ru": "Цепь-возврат", "en": "Returning Chain"}, "effect": {"killRefundShare": 1}}]},
             {"level": 15, "options": [{"id": "runedancer_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_queue_2_b15b"}]},
@@ -1520,8 +1520,8 @@
           "tags": ["Strike", "Skill"],
           "cost": {"resource": 20},
           "cooldownSeconds": 6,
-          "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "blades": 2},
-          "text": {"ru": "вся очередь ×3, вешает 2 кинжала", "en": "the whole queue ×3, hangs 2 daggers"},
+          "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "blades": 2, "runes": 1},
+          "text": {"ru": "вся очередь ×3, кладёт руну и вешает 2 кинжала", "en": "the whole queue ×3, lays a rune and hangs 2 daggers"},
           "branches": [
             {"level": 5, "options": [{"id": "runedancer_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_queue_3_b5b", "name": {"ru": "Веер в одного", "en": "Fan at One"}, "effect": {"queueTargets": 0, "multiplier": 5}}]},
             {"level": 15, "options": [{"id": "runedancer_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Второй клинок", "en": "Second Blade"}, "damage": 0.8, "effect": {"blades": 3}, "id": "runedancer_queue_3_b15b"}]},
@@ -1558,8 +1558,8 @@
           "tags": ["Strike", "Skill"],
           "cost": {"resource": 10},
           "cooldownSeconds": 6,
-          "effect": {"type": "strike", "multiplier": 5, "blades": 2},
-          "text": {"ru": "раз в 6 с клинок бьёт сам ×5 и вешает 2 кинжала", "en": "every 6 s a blade strikes by itself ×5 and hangs 2 daggers"},
+          "effect": {"type": "strike", "multiplier": 5, "blades": 2, "runes": 1},
+          "text": {"ru": "раз в 6 с клинок бьёт сам ×5, кладёт руну и вешает 2 кинжала", "en": "every 6 s the blade strikes by itself ×5, lays a rune and hangs 2 daggers"},
           "branches": [
             {"level": 5, "options": [{"id": "runedancer_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_2_b5b", "name": {"ru": "Клинок над боссом", "en": "Blade over the Boss"}, "effect": {"bossMultiplier": 1.6}}]},
             {"level": 15, "options": [{"id": "runedancer_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Второй клинок", "en": "Second Blade"}, "damage": 0.8, "effect": {"blades": 3}, "id": "runedancer_auto_2_b15b"}]},
@@ -1576,8 +1576,8 @@
           "tags": ["Strike", "Skill"],
           "cost": {"resource": 10},
           "cooldownSeconds": 10,
-          "effect": {"type": "strike", "multiplier": 4, "runes": 2},
-          "text": {"ru": "раз в 10 с удар ×4, дописывает две руны", "en": "every 10 s a strike ×4, writes two runes"},
+          "effect": {"type": "strike", "multiplier": 8.5, "runes": 2, "blades": 2},
+          "text": {"ru": "раз в 10 с удар ×8,5, дописывает две руны и вешает 2 кинжала", "en": "every 10 s a strike ×8.5, writes two runes and hangs 2 daggers"},
           "branches": [
             {"level": 5, "options": [{"id": "runedancer_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_3_b5b", "name": {"ru": "Страж очереди", "en": "Queue Guard"}, "effect": {"queueTargets": 2}}]},
             {"level": 15, "options": [{"id": "runedancer_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 3}, "id": "runedancer_auto_3_b15b"}]},
@@ -1616,8 +1616,8 @@
           "tags": ["Strike", "Skill"],
           "cost": {"resource": 50},
           "cooldownSeconds": 30,
-          "effect": {"type": "flurry", "hits": 15, "seconds": 3, "multiplier": 2},
-          "text": {"ru": "3 с вихрь ударов: 15 ударов ×2", "en": "3 s of whirling strikes: 15 strikes ×2"},
+          "effect": {"type": "flurry", "hits": 15, "seconds": 3, "multiplier": 2, "cast": {"word": true}},
+          "text": {"ru": "3 с вихрь ударов: 15 ударов ×2, сразу дописывает Слово", "en": "3 s whirl of strikes: 15 strikes ×2, completes the Word at once"},
           "branches": [
             {"level": 5, "options": [{"id": "runedancer_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_2_b5b", "name": {"ru": "Рваный ритм", "en": "Broken Rhythm"}, "effect": {"hits": 8, "seconds": 1, "multiplier": 3.5}}]},
             {"level": 15, "options": [{"id": "runedancer_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Долгий танец", "en": "Long Dance"}, "damage": 0.75, "effect": {"hits": 25, "seconds": 5}, "id": "runedancer_strong_2_b15b"}]},
@@ -1635,8 +1635,8 @@
           "tags": ["Strike", "Skill"],
           "cost": {"resource": 60},
           "cooldownSeconds": 40,
-          "effect": {"type": "strike", "multiplier": 8, "lowHpBelow": 0.3, "lowHpMultiplier": 20},
-          "text": {"ru": "удар ×8, по врагу ниже 30% HP ×20", "en": "strike ×8, ×20 against an enemy below 30% HP"},
+          "effect": {"type": "strike", "multiplier": 40, "lowHpBelow": 0.3, "lowHpMultiplier": 100, "word": true},
+          "text": {"ru": "удар ×40, по врагу ниже 30% HP ×100, сразу дописывает Слово", "en": "strike ×40, ×100 against an enemy below 30% HP, completes the Word at once"},
           "branches": [
             {"level": 5, "options": [{"id": "runedancer_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_strong_3_b5b", "name": {"ru": "Буква-казнь", "en": "Execution Letter"}, "effect": {"executeBelow": 0.08}}]},
             {"level": 15, "options": [{"id": "runedancer_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Ниже порога", "en": "Lower Bar"}, "damage": 0.75, "effect": {"lowHpBelow": 0.5}, "id": "runedancer_strong_3_b15b"}]},
@@ -1920,8 +1920,8 @@
           "tags": ["Strike", "Skill"],
           "cost": {"resource": 10},
           "cooldownSeconds": 10,
-          "effect": {"type": "strike", "multiplier": 4, "phantomSeconds": 2, "touches": 1},
-          "text": {"ru": "раз в 10 с повторная атака ×4, ставит отметину, фантом в бою 2 с", "en": "every 10 s a renewed attack ×4, leaves a mark, the phantom fights for 2 s"},
+          "effect": {"type": "strike", "multiplier": 8.5, "phantomSeconds": 2, "touches": 1},
+          "text": {"ru": "раз в 10 с повторная атака ×8,5, ставит отметину, фантом в бою 2 с", "en": "every 10 s a renewed attack ×8.5, leaves a mark, the phantom fights for 2 s"},
           "branches": [
             {"level": 5, "options": [{"id": "duelist_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_auto_3_b5b", "name": {"ru": "Ремиз по очереди", "en": "Remise down the Queue"}, "effect": {"queueTargets": 2}}]},
             {"level": 15, "options": [{"id": "duelist_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_auto_3_b15b", "name": {"ru": "Долгий ремиз", "en": "Long Remise"}, "damage": 0.8, "effect": {"phantomSeconds": 4}}]},
@@ -1960,7 +1960,7 @@
           "tags": ["Strike", "Skill"],
           "cost": {"resource": 50},
           "cooldownSeconds": 30,
-          "effect": {"type": "flurry", "hits": 20, "seconds": 4, "multiplier": 2, "touches": 2},
+          "effect": {"type": "flurry", "hits": 20, "seconds": 4, "multiplier": 2, "cast": {"touches": 2}},
           "text": {"ru": "4 с серия: 20 уколов ×2, ставит 2 отметины", "en": "4 s of thrusts: 20 thrusts ×2, leaves 2 marks"},
           "branches": [
             {"level": 5, "options": [{"id": "duelist_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_2_b5b", "name": {"ru": "Рваная серия", "en": "Broken Series"}, "effect": {"hits": 10, "seconds": 1, "multiplier": 3.5}}]},
@@ -1979,12 +1979,12 @@
           "tags": ["Strike", "Skill"],
           "cost": {"resource": 60},
           "cooldownSeconds": 40,
-          "effect": {"type": "strike", "multiplier": 8, "bossMultiplier": 2, "phantomSeconds": 10, "touches": 2},
-          "text": {"ru": "удар ×8, по боссу ×16, ставит 2 отметины, фантом в бою 10 с", "en": "strike ×8, ×16 against a boss, leaves 2 marks, the phantom fights for 10 s"},
+          "effect": {"type": "strike", "multiplier": 53.5, "bossMultiplier": 2, "phantomSeconds": 10, "touches": 2},
+          "text": {"ru": "удар ×53,5, по боссу ×107, ставит 2 отметины, фантом в бою 10 с", "en": "strike ×53.5, ×107 against a boss, leaves 2 marks, the phantom fights for 10 s"},
           "branches": [
             {"level": 5, "options": [{"id": "duelist_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "duelist_strong_3_b5b", "name": {"ru": "До конца времени", "en": "To the End of Time"}, "effect": {"bossTimerStopSeconds": 3}}]},
             {"level": 15, "options": [{"id": "duelist_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "duelist_strong_3_b15b", "name": {"ru": "Без отступления", "en": "No Retreat"}, "damage": 0.8, "effect": {"touches": 3}}]},
-            {"level": 25, "options": [{"id": "duelist_strong_3_b25a", "name": {"ru": "Дуэль с раненым", "en": "Duel with the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 24}}, {"id": "duelist_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+            {"level": 25, "options": [{"id": "duelist_strong_3_b25a", "name": {"ru": "Дуэль с раненым", "en": "Duel with the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 160.5}}, {"id": "duelist_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
           ]
         }
       ]
@@ -1999,8 +1999,8 @@
       "tags": ["Strike", "Skill"],
       "cost": {"resource": 30},
       "cooldownSeconds": 15,
-      "effect": {"type": "strike", "multiplier": 4, "breach": true},
-      "text": {"ru": "удар ×4 и сразу зажигает брешь", "en": "strike ×4 and opens the breach at once"}
+      "effect": {"type": "strike", "multiplier": 8, "breach": true},
+      "text": {"ru": "удар ×8 и сразу зажигает брешь", "en": "strike ×8 and opens the breach at once"}
     },
     {
       "id": "duelist_path_2",
@@ -2117,44 +2117,46 @@
         {"level": 5, "options": [{"id": "windshot_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_1_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "windshot_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_hit_1_b15b", "name": {"ru": "Натянутая", "en": "Drawn"}, "damage": 0.8, "effect": {"tension": 5}}]},
         {"level": 25, "options": [{"id": "windshot_hit_1_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}, {"id": "windshot_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "windshot_hit_2",
-      "kind": "active",
-      "weapon": "wind_bow",
-      "tier": "rare",
-      "role": "fast",
-      "color": "green",
-      "name": {"ru": "Быстрая стрела", "en": "Quick Arrow"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 5},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 2.5, "tension": 8},
-      "text": {"ru": "быстрая стрела ×2,5, натягивает лук: +8 Натяжения", "en": "a quick arrow ×2.5 that draws the bow: +8 Tension"},
-      "branches": [
-        {"level": 5, "options": [{"id": "windshot_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_2_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}]},
-        {"level": 15, "options": [{"id": "windshot_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_hit_2_b15b", "name": {"ru": "Лёгкая рука", "en": "Light Hand"}, "damage": 0.8, "effect": {"tension": 12}}]},
-        {"level": 25, "options": [{"id": "windshot_hit_2_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "windshot_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "windshot_hit_3",
-      "kind": "active",
-      "weapon": "wind_bow",
-      "tier": "epic",
-      "role": "fast",
-      "color": "green",
-      "name": {"ru": "Свистящая стрела", "en": "Whistling Arrow"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 5, "critChance": 0.5},
-      "text": {"ru": "стрела ×5 с +50% шанса крита", "en": "an arrow ×5 with +50% critical chance"},
-      "branches": [
-        {"level": 5, "options": [{"id": "windshot_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_3_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
-        {"level": 15, "options": [{"id": "windshot_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_hit_3_b15b", "name": {"ru": "Тихий свист", "en": "Quiet Whistle"}, "damage": 0.8, "effect": {"calmSeconds": 1}}]},
-        {"level": 25, "options": [{"id": "windshot_hit_3_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "windshot_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "windshot_hit_2",
+          "kind": "active",
+          "weapon": "wind_bow",
+          "tier": "rare",
+          "role": "fast",
+          "color": "green",
+          "name": {"ru": "Быстрая стрела", "en": "Quick Arrow"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 5},
+          "cooldownSeconds": 4,
+          "effect": {"type": "strike", "multiplier": 4, "tension": 8},
+          "text": {"ru": "быстрая стрела ×4, натягивает лук: +8 Натяжения", "en": "a quick arrow ×4 that draws the bow: +8 Tension"},
+          "branches": [
+            {"level": 5, "options": [{"id": "windshot_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_2_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 8}}]},
+            {"level": 15, "options": [{"id": "windshot_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_hit_2_b15b", "name": {"ru": "Лёгкая рука", "en": "Light Hand"}, "damage": 0.8, "effect": {"tension": 12}}]},
+            {"level": 25, "options": [{"id": "windshot_hit_2_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "windshot_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "windshot_hit_3",
+          "kind": "active",
+          "weapon": "wind_bow",
+          "tier": "epic",
+          "role": "fast",
+          "color": "green",
+          "name": {"ru": "Свистящая стрела", "en": "Whistling Arrow"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 5,
+          "effect": {"type": "strike", "multiplier": 5, "critChance": 0.5, "tension": 8},
+          "text": {"ru": "стрела ×5 с +50% шанса крита, +8 Натяжения", "en": "an arrow ×5 with +50% critical chance, +8 Tension"},
+          "branches": [
+            {"level": 5, "options": [{"id": "windshot_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_hit_3_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
+            {"level": 15, "options": [{"id": "windshot_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_hit_3_b15b", "name": {"ru": "Тихий свист", "en": "Quiet Whistle"}, "damage": 0.8, "effect": {"calmSeconds": 1}}]},
+            {"level": 25, "options": [{"id": "windshot_hit_3_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "windshot_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -2174,44 +2176,46 @@
         {"level": 5, "options": [{"id": "windshot_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_1_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "windshot_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_queue_1_b15b", "name": {"ru": "Порывистый веер", "en": "Gusty Fan"}, "damage": 0.8, "effect": {"gusts": 1}}]},
         {"level": 25, "options": [{"id": "windshot_queue_1_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "windshot_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "windshot_queue_2",
-      "kind": "active",
-      "weapon": "wind_bow",
-      "tier": "rare",
-      "role": "heavy",
-      "color": "green",
-      "name": {"ru": "Пронзающая стрела", "en": "Piercing Arrow"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3},
-      "text": {"ru": "стрела ×2,5 насквозь через 3 врагов", "en": "an arrow ×2.5 through 3 enemies"},
-      "branches": [
-        {"level": 5, "options": [{"id": "windshot_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_2_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
-        {"level": 15, "options": [{"id": "windshot_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_queue_2_b15b", "name": {"ru": "Навылет", "en": "Clean Through"}, "damage": 0.8, "effect": {"shot": true}}]},
-        {"level": 25, "options": [{"id": "windshot_queue_2_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.75}}, {"id": "windshot_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "windshot_queue_3",
-      "kind": "active",
-      "weapon": "wind_bow",
-      "tier": "legendary",
-      "role": "fast",
-      "color": "green",
-      "name": {"ru": "Град стрел", "en": "Arrow Hail"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "gusts": 1},
-      "text": {"ru": "град ×3 по всей очереди и порыв ветра", "en": "hail ×3 on the whole queue and a gust of wind"},
-      "branches": [
-        {"level": 5, "options": [{"id": "windshot_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_3_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}]},
-        {"level": 15, "options": [{"id": "windshot_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_queue_3_b15b", "name": {"ru": "Тихий град", "en": "Silent Hail"}, "damage": 0.8, "effect": {"calmSeconds": 2}}]},
-        {"level": 25, "options": [{"id": "windshot_queue_3_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "windshot_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "windshot_queue_2",
+          "kind": "active",
+          "weapon": "wind_bow",
+          "tier": "rare",
+          "role": "heavy",
+          "color": "green",
+          "name": {"ru": "Пронзающая стрела", "en": "Piercing Arrow"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "calmSeconds": 1},
+          "text": {"ru": "стрела ×2,5 насквозь через 3 врагов и 1 с штиля", "en": "an arrow ×2.5 through 3 enemies and 1 s of calm"},
+          "branches": [
+            {"level": 5, "options": [{"id": "windshot_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_2_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
+            {"level": 15, "options": [{"id": "windshot_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_queue_2_b15b", "name": {"ru": "Навылет", "en": "Clean Through"}, "damage": 0.8, "effect": {"shot": true}}]},
+            {"level": 25, "options": [{"id": "windshot_queue_2_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.75}}, {"id": "windshot_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "windshot_queue_3",
+          "kind": "active",
+          "weapon": "wind_bow",
+          "tier": "legendary",
+          "role": "heavy",
+          "color": "green",
+          "name": {"ru": "Град стрел", "en": "Arrow Hail"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "gusts": 1, "calmSeconds": 1},
+          "text": {"ru": "град ×3 по всей очереди, порыв ветра и 1 с штиля", "en": "hail ×3 on the whole queue, a gust of wind and 1 s of calm"},
+          "branches": [
+            {"level": 5, "options": [{"id": "windshot_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_queue_3_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}]},
+            {"level": 15, "options": [{"id": "windshot_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_queue_3_b15b", "name": {"ru": "Тихий град", "en": "Silent Hail"}, "damage": 0.8, "effect": {"calmSeconds": 2}}]},
+            {"level": 25, "options": [{"id": "windshot_queue_3_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "windshot_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -2224,48 +2228,50 @@
       "tags": ["Strike", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3, "critChance": 0.25},
-      "text": {"ru": "раз в 4 с ищет слабое место: стрела ×3 с +25% шанса крита", "en": "every 4 s finds a weak spot: an arrow ×3 with +25% critical chance"},
+      "effect": {"type": "strike", "multiplier": 3, "critChance": 0.25, "tension": 3},
+      "text": {"ru": "раз в 4 с ищет слабое место: стрела ×3 с +25% шанса крита, +3 Натяжения", "en": "every 4 s finds a weak spot: an arrow ×3 with +25% critical chance, +3 Tension"},
       "branches": [
         {"level": 5, "options": [{"id": "windshot_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_1_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "windshot_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_auto_1_b15b", "name": {"ru": "Глаз и тетива", "en": "Eye and String"}, "damage": 0.8, "effect": {"tension": 5}}]},
         {"level": 25, "options": [{"id": "windshot_auto_1_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "windshot_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "windshot_auto_2",
-      "kind": "active",
-      "weapon": "wind_bow",
-      "tier": "rare",
-      "color": "green",
-      "name": {"ru": "Спутник-сокол", "en": "Falcon Companion"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 10},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3},
-      "text": {"ru": "сокол бьёт сам раз в 3 с ×3", "en": "the falcon strikes by itself every 3 s ×3"},
-      "branches": [
-        {"level": 5, "options": [{"id": "windshot_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_2_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
-        {"level": 15, "options": [{"id": "windshot_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_auto_2_b15b", "name": {"ru": "Сокол в ветре", "en": "Falcon on the Wind"}, "damage": 0.8, "effect": {"gusts": 1}}]},
-        {"level": 25, "options": [{"id": "windshot_auto_2_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "windshot_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "windshot_auto_3",
-      "kind": "active",
-      "weapon": "wind_bow",
-      "tier": "mythic",
-      "color": "green",
-      "name": {"ru": "Ветряная мельница", "en": "Windmill"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 10},
-      "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 4, "gusts": 1},
-      "text": {"ru": "раз в 8 с стрела ×4 и порыв ветра", "en": "every 8 s an arrow ×4 and a gust of wind"},
-      "branches": [
-        {"level": 5, "options": [{"id": "windshot_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_3_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
-        {"level": 15, "options": [{"id": "windshot_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_auto_3_b15b", "name": {"ru": "Мельница бурь", "en": "Storm Mill"}, "damage": 0.8, "effect": {"gusts": 2}}]},
-        {"level": 25, "options": [{"id": "windshot_auto_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 6.0}}, {"id": "windshot_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "windshot_auto_2",
+          "kind": "active",
+          "weapon": "wind_bow",
+          "tier": "rare",
+          "color": "green",
+          "name": {"ru": "Спутник-сокол", "en": "Falcon Companion"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 10},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 4.5, "tension": 5},
+          "text": {"ru": "раз в 6 с сокол бьёт сам ×4,5 и приносит 5 Натяжения", "en": "every 6 s the falcon strikes by itself ×4.5 and brings 5 Tension"},
+          "branches": [
+            {"level": 5, "options": [{"id": "windshot_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_2_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
+            {"level": 15, "options": [{"id": "windshot_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_auto_2_b15b", "name": {"ru": "Сокол в ветре", "en": "Falcon on the Wind"}, "damage": 0.8, "effect": {"gusts": 1}}]},
+            {"level": 25, "options": [{"id": "windshot_auto_2_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "windshot_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "windshot_auto_3",
+          "kind": "active",
+          "weapon": "wind_bow",
+          "tier": "mythic",
+          "color": "green",
+          "name": {"ru": "Ветряная мельница", "en": "Windmill"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 10},
+          "cooldownSeconds": 10,
+          "effect": {"type": "strike", "multiplier": 7.5, "gusts": 1, "tension": 8},
+          "text": {"ru": "раз в 10 с стрела ×7,5, порыв ветра и +8 Натяжения", "en": "every 10 s an arrow ×7.5, a gust of wind and +8 Tension"},
+          "branches": [
+            {"level": 5, "options": [{"id": "windshot_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_auto_3_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
+            {"level": 15, "options": [{"id": "windshot_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_auto_3_b15b", "name": {"ru": "Мельница бурь", "en": "Storm Mill"}, "damage": 0.8, "effect": {"gusts": 2}}]},
+            {"level": 25, "options": [{"id": "windshot_auto_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 11}}, {"id": "windshot_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -2285,44 +2291,46 @@
         {"level": 5, "options": [{"id": "windshot_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_1_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 12}}]},
         {"level": 15, "options": [{"id": "windshot_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_strong_1_b15b", "name": {"ru": "Залп на выдохе", "en": "Exhaled Volley"}, "damage": 0.8, "effect": {"tension": 15}}]},
         {"level": 25, "options": [{"id": "windshot_strong_1_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "windshot_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "windshot_strong_2",
-      "kind": "active",
-      "weapon": "wind_bow",
-      "tier": "legendary",
-      "role": "heavy",
-      "color": "green",
-      "name": {"ru": "Буревестник", "en": "Stormbird"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 50},
-      "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 5, "gusts": 2},
-      "text": {"ru": "стрела ×5 и 2 порыва: удары пускают вторые стрелы", "en": "an arrow ×5 and 2 gusts: hits fire second arrows"},
-      "branches": [
-        {"level": 5, "options": [{"id": "windshot_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_2_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
-        {"level": 15, "options": [{"id": "windshot_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_strong_2_b15b", "name": {"ru": "Стая", "en": "Flock"}, "damage": 0.75, "effect": {"gusts": 3}}]},
-        {"level": 25, "options": [{"id": "windshot_strong_2_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "windshot_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "windshot_strong_3",
-      "kind": "active",
-      "weapon": "wind_bow",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "green",
-      "name": {"ru": "Небесная стрела", "en": "Sky Arrow"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 60},
-      "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 12, "bossMultiplier": 2, "calmSeconds": 3},
-      "text": {"ru": "стрела ×12, ×24 по боссу; 3 с прицеливания — штиль", "en": "an arrow ×12, ×24 against a boss; 3 s of aiming are a calm"},
-      "branches": [
-        {"level": 5, "options": [{"id": "windshot_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_3_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
-        {"level": 15, "options": [{"id": "windshot_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_strong_3_b15b", "name": {"ru": "Долгий прицел", "en": "Long Aim"}, "damage": 0.8, "effect": {"calmSeconds": 5}}]},
-        {"level": 25, "options": [{"id": "windshot_strong_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "windshot_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "windshot_strong_2",
+          "kind": "active",
+          "weapon": "wind_bow",
+          "tier": "legendary",
+          "role": "heavy",
+          "color": "green",
+          "name": {"ru": "Буревестник", "en": "Stormbird"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 50},
+          "cooldownSeconds": 30,
+          "effect": {"type": "strike", "multiplier": 9, "gusts": 2},
+          "text": {"ru": "стрела ×9 и 2 порыва: удары пускают вторые стрелы", "en": "an arrow ×9 and 2 gusts: hits fire second arrows"},
+          "branches": [
+            {"level": 5, "options": [{"id": "windshot_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_2_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
+            {"level": 15, "options": [{"id": "windshot_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_strong_2_b15b", "name": {"ru": "Стая", "en": "Flock"}, "damage": 0.75, "effect": {"gusts": 3}}]},
+            {"level": 25, "options": [{"id": "windshot_strong_2_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "windshot_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "windshot_strong_3",
+          "kind": "active",
+          "weapon": "wind_bow",
+          "tier": "mythic",
+          "role": "heavy",
+          "color": "green",
+          "name": {"ru": "Небесная стрела", "en": "Sky Arrow"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 60},
+          "cooldownSeconds": 40,
+          "effect": {"type": "strike", "multiplier": 12, "bossMultiplier": 2, "calmSeconds": 3, "gusts": 2},
+          "text": {"ru": "стрела ×12, ×24 по боссу, и 2 порыва; 3 с прицеливания — штиль", "en": "an arrow ×12, ×24 against a boss, and 2 gusts; 3 s of aiming are a calm"},
+          "branches": [
+            {"level": 5, "options": [{"id": "windshot_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "windshot_strong_3_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
+            {"level": 15, "options": [{"id": "windshot_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "windshot_strong_3_b15b", "name": {"ru": "Долгий прицел", "en": "Long Aim"}, "damage": 0.8, "effect": {"calmSeconds": 5}}]},
+            {"level": 25, "options": [{"id": "windshot_strong_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "windshot_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -2365,24 +2373,6 @@
       "text": {"ru": "стрела ×3 и 2 порыва ветра", "en": "an arrow ×3 and 2 gusts of wind"}
     },
     {
-      "id": "windshot_aura_1",
-      "kind": "aura",
-      "weapon": "wind_bow",
-      "tier": "common",
-      "color": "green",
-      "name": {"ru": "Горный воздух", "en": "Mountain Air"},
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "firstHitsBonus", "kind": "flat", "value": 0.1}, {"stat": "shotPower", "kind": "flat", "value": 0.1}], "reserve": 15, "party": true},
-      "text": {"ru": "отряд: первые удары по каждому врагу +10%; её выстрел сильнее на 0,1", "en": "party: the first hits on every enemy +10%; her shot is 0.1 stronger"},
-      "branches": [
-        {"level": 5, "options": [{"id": "windshot_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "firstHitsBonus", "kind": "flat", "value": 0.12}, {"stat": "shotPower", "kind": "flat", "value": 0.12}]}}, {"id": "windshot_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "windshot_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "firstHitsBonus", "kind": "flat", "value": 0.11}, {"stat": "shotPower", "kind": "flat", "value": 0.11}]}}, {"id": "windshot_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "windshot_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "firstHitsBonus", "kind": "flat", "value": 0.13}, {"stat": "shotPower", "kind": "flat", "value": 0.13}]}}, {"id": "windshot_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
-      ]
-    },
-    {
       "id": "windshot_aura_2",
       "kind": "aura",
       "weapon": "wind_bow",
@@ -2392,30 +2382,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "queueStrikeEvery", "kind": "flat", "value": 10}, {"stat": "queueStrikeMultiplier", "kind": "flat", "value": 2}, {"stat": "gustHits", "kind": "flat", "value": 1}], "reserve": 15, "party": true},
-      "text": {"ru": "отряд: каждый 10-й удар бьёт ×2 по очереди; её порыв на 1 удар дольше", "en": "party: every 10th hit strikes the queue ×2; her gust lasts 1 hit longer"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "queueStrikeEvery", "kind": "flat", "value": 10}, {"stat": "queueStrikeMultiplier", "kind": "flat", "value": 2}, {"stat": "gustHits", "kind": "flat", "value": 1}, {"stat": "firstHitsBonus", "kind": "flat", "value": 0.1}, {"stat": "shotPower", "kind": "flat", "value": 0.1}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: каждый 10-й удар бьёт ×2 по очереди, первые удары по каждому врагу +10%; её порыв на 1 удар дольше, её выстрел сильнее на 0,1", "en": "party: every 10th hit strikes ×2 along the queue, the first hits on each enemy +10%; her gust lasts 1 hit longer, her shot is stronger by 0.1"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "queueStrikeEvery", "kind": "flat", "value": 10}, {"stat": "queueStrikeMultiplier", "kind": "flat", "value": 2.4}, {"stat": "gustHits", "kind": "flat", "value": 1}]}}, {"id": "windshot_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "windshot_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "queueStrikeEvery", "kind": "flat", "value": 10}, {"stat": "queueStrikeMultiplier", "kind": "flat", "value": 2.2}, {"stat": "gustHits", "kind": "flat", "value": 1}]}}, {"id": "windshot_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "windshot_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "queueStrikeEvery", "kind": "flat", "value": 10}, {"stat": "queueStrikeMultiplier", "kind": "flat", "value": 2.6}, {"stat": "gustHits", "kind": "flat", "value": 1}]}}, {"id": "windshot_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
-      ]
-    },
-    {
-      "id": "windshot_aura_3",
-      "kind": "aura",
-      "weapon": "wind_bow",
-      "tier": "rare",
-      "color": "green",
-      "name": {"ru": "Ровный ветер", "en": "Steady Wind"},
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.1}, {"stat": "calmPenalty", "kind": "flat", "value": -0.03}], "reserve": 20, "party": true},
-      "text": {"ru": "отряд: +10% шанса крита; её штраф крита в штиль на 3% меньше", "en": "party: +10% critical chance; her calm critical penalty is 3% lower"},
-      "branches": [
-        {"level": 5, "options": [{"id": "windshot_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.12}, {"stat": "calmPenalty", "kind": "flat", "value": -0.036}]}}, {"id": "windshot_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "windshot_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.11}, {"stat": "calmPenalty", "kind": "flat", "value": -0.033}]}}, {"id": "windshot_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "windshot_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "critChance", "kind": "increased", "value": 0.13}, {"stat": "calmPenalty", "kind": "flat", "value": -0.039}]}}, {"id": "windshot_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "windshot_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "queueStrikeEvery", "kind": "flat", "value": 10}, {"stat": "queueStrikeMultiplier", "kind": "flat", "value": 2.4}, {"stat": "gustHits", "kind": "flat", "value": 1}, {"stat": "firstHitsBonus", "kind": "flat", "value": 0.12}, {"stat": "shotPower", "kind": "flat", "value": 0.12}]}}, {"id": "windshot_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "windshot_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "queueStrikeEvery", "kind": "flat", "value": 10}, {"stat": "queueStrikeMultiplier", "kind": "flat", "value": 2.2}, {"stat": "gustHits", "kind": "flat", "value": 1}, {"stat": "firstHitsBonus", "kind": "flat", "value": 0.11}, {"stat": "shotPower", "kind": "flat", "value": 0.11}]}}, {"id": "windshot_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "windshot_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "queueStrikeEvery", "kind": "flat", "value": 10}, {"stat": "queueStrikeMultiplier", "kind": "flat", "value": 2.6}, {"stat": "gustHits", "kind": "flat", "value": 1}, {"stat": "firstHitsBonus", "kind": "flat", "value": 0.13}, {"stat": "shotPower", "kind": "flat", "value": 0.13}]}}, {"id": "windshot_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -2428,12 +2400,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}], "reserve": 20, "party": true},
-      "text": {"ru": "отряд: +20% урона в первые секунды боя с боссом; её порыв на 200 px раньше", "en": "party: +20% damage in the first seconds of a boss fight; her gust comes 200 px sooner"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}, {"stat": "critChance", "kind": "increased", "value": 0.1}, {"stat": "calmPenalty", "kind": "flat", "value": -0.03}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +20% урона в первые секунды боя с боссом, +10% шанса крита; её порыв на 200 px раньше, её штраф крита в штиль на 3% меньше", "en": "party: +20% damage in the first seconds of a boss fight, +10% critical chance; her gust comes 200 px sooner, her critical penalty in a calm is 3% smaller"},
       "branches": [
-        {"level": 5, "options": [{"id": "windshot_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}]}}, {"id": "windshot_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "windshot_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}]}}, {"id": "windshot_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "windshot_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}]}}, {"id": "windshot_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "windshot_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}, {"stat": "critChance", "kind": "increased", "value": 0.12}, {"stat": "calmPenalty", "kind": "flat", "value": -0.036}]}}, {"id": "windshot_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "windshot_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}, {"stat": "critChance", "kind": "increased", "value": 0.11}, {"stat": "calmPenalty", "kind": "flat", "value": -0.033}]}}, {"id": "windshot_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "windshot_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.2, "when": "bossOpening"}, {"stat": "gustPx", "kind": "flat", "value": -200}, {"stat": "critChance", "kind": "increased", "value": 0.13}, {"stat": "calmPenalty", "kind": "flat", "value": -0.039}]}}, {"id": "windshot_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -2489,44 +2461,46 @@
         {"level": 5, "options": [{"id": "shardcaller_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_1_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}]},
         {"level": 15, "options": [{"id": "shardcaller_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_hit_1_b15b", "name": {"ru": "Вонзённый", "en": "Embedded"}, "damage": 0.8, "effect": {"crystals": 1}}]},
         {"level": 25, "options": [{"id": "shardcaller_hit_1_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}, {"id": "shardcaller_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "shardcaller_hit_2",
-      "kind": "active",
-      "weapon": "crystal_wand",
-      "tier": "rare",
-      "role": "fast",
-      "color": "green",
-      "name": {"ru": "Острый скол", "en": "Sharp Chip"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 5},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 2.5, "crystals": 1},
-      "text": {"ru": "скол ×2,5 и кристалл во врага", "en": "a chip ×2.5 and a crystal in the enemy"},
-      "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_2_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
-        {"level": 15, "options": [{"id": "shardcaller_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_hit_2_b15b", "name": {"ru": "Двойной скол", "en": "Double Chip"}, "damage": 0.8, "effect": {"crystals": 2}}]},
-        {"level": 25, "options": [{"id": "shardcaller_hit_2_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "shardcaller_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "shardcaller_hit_3",
-      "kind": "active",
-      "weapon": "crystal_wand",
-      "tier": "epic",
-      "role": "fast",
-      "color": "green",
-      "name": {"ru": "Звенящий удар", "en": "Ringing Blow"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 5, "bossMultiplier": 1.5},
-      "text": {"ru": "удар ×5, по боссу ×7,5", "en": "a blow ×5, ×7.5 against a boss"},
-      "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_3_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
-        {"level": 15, "options": [{"id": "shardcaller_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_hit_3_b15b", "name": {"ru": "Звон", "en": "Chime"}, "damage": 0.8, "effect": {"crack": true}}]},
-        {"level": 25, "options": [{"id": "shardcaller_hit_3_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "shardcaller_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "shardcaller_hit_2",
+          "kind": "active",
+          "weapon": "crystal_wand",
+          "tier": "rare",
+          "role": "fast",
+          "color": "green",
+          "name": {"ru": "Острый скол", "en": "Sharp Chip"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 5},
+          "cooldownSeconds": 4,
+          "effect": {"type": "strike", "multiplier": 4, "crystals": 1},
+          "text": {"ru": "скол ×4 и кристалл во врага", "en": "a chip ×4 and a crystal in the enemy"},
+          "branches": [
+            {"level": 5, "options": [{"id": "shardcaller_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_2_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
+            {"level": 15, "options": [{"id": "shardcaller_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_hit_2_b15b", "name": {"ru": "Двойной скол", "en": "Double Chip"}, "damage": 0.8, "effect": {"crystals": 2}}]},
+            {"level": 25, "options": [{"id": "shardcaller_hit_2_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "shardcaller_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "shardcaller_hit_3",
+          "kind": "active",
+          "weapon": "crystal_wand",
+          "tier": "epic",
+          "role": "fast",
+          "color": "green",
+          "name": {"ru": "Звенящий удар", "en": "Ringing Blow"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 5,
+          "effect": {"type": "strike", "multiplier": 5, "bossMultiplier": 1.5, "crystals": 1},
+          "text": {"ru": "удар ×5, по боссу ×7,5, и кристалл во врага", "en": "a blow ×5, ×7.5 against a boss, and a crystal in the enemy"},
+          "branches": [
+            {"level": 5, "options": [{"id": "shardcaller_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_hit_3_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
+            {"level": 15, "options": [{"id": "shardcaller_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_hit_3_b15b", "name": {"ru": "Звон", "en": "Chime"}, "damage": 0.8, "effect": {"crack": true}}]},
+            {"level": 25, "options": [{"id": "shardcaller_hit_3_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "shardcaller_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -2546,44 +2520,46 @@
         {"level": 5, "options": [{"id": "shardcaller_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_1_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "shardcaller_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_queue_1_b15b", "name": {"ru": "Острый дождь", "en": "Sharp Rain"}, "damage": 0.8, "effect": {"crystals": 1}}]},
         {"level": 25, "options": [{"id": "shardcaller_queue_1_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "shardcaller_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "shardcaller_queue_2",
-      "kind": "active",
-      "weapon": "crystal_wand",
-      "tier": "rare",
-      "role": "heavy",
-      "color": "green",
-      "name": {"ru": "Кристальная тропа", "en": "Crystal Path"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "crystals": 1},
-      "text": {"ru": "тропа ×2,5 через 3 врагов и кристалл во врага", "en": "a path ×2.5 through 3 enemies and a crystal in the enemy"},
-      "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_2_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.75}}]},
-        {"level": 15, "options": [{"id": "shardcaller_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_queue_2_b15b", "name": {"ru": "Цветущая тропа", "en": "Blooming Path"}, "damage": 0.8, "effect": {"grow": 1}}]},
-        {"level": 25, "options": [{"id": "shardcaller_queue_2_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}, {"id": "shardcaller_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "shardcaller_queue_3",
-      "kind": "active",
-      "weapon": "crystal_wand",
-      "tier": "legendary",
-      "role": "fast",
-      "color": "green",
-      "name": {"ru": "Разлом", "en": "Rift"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "crystals": 2},
-      "text": {"ru": "разлом ×3 по всей очереди и 2 кристалла во врага", "en": "a rift ×3 on the whole queue and 2 crystals in the enemy"},
-      "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_3_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
-        {"level": 15, "options": [{"id": "shardcaller_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_queue_3_b15b", "name": {"ru": "Раскол", "en": "Split"}, "damage": 0.8, "effect": {"shatter": 0.5}}]},
-        {"level": 25, "options": [{"id": "shardcaller_queue_3_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "shardcaller_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "shardcaller_queue_2",
+          "kind": "active",
+          "weapon": "crystal_wand",
+          "tier": "rare",
+          "role": "heavy",
+          "color": "green",
+          "name": {"ru": "Кристальная тропа", "en": "Crystal Path"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "crystals": 1},
+          "text": {"ru": "тропа ×2,5 через 3 врагов и кристалл во врага", "en": "a path ×2.5 through 3 enemies and a crystal in the enemy"},
+          "branches": [
+            {"level": 5, "options": [{"id": "shardcaller_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_2_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.75}}]},
+            {"level": 15, "options": [{"id": "shardcaller_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_queue_2_b15b", "name": {"ru": "Цветущая тропа", "en": "Blooming Path"}, "damage": 0.8, "effect": {"grow": 1}}]},
+            {"level": 25, "options": [{"id": "shardcaller_queue_2_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}, {"id": "shardcaller_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "shardcaller_queue_3",
+          "kind": "active",
+          "weapon": "crystal_wand",
+          "tier": "legendary",
+          "role": "heavy",
+          "color": "green",
+          "name": {"ru": "Разлом", "en": "Rift"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "crystals": 2},
+          "text": {"ru": "разлом ×3 по всей очереди и 2 кристалла во врага", "en": "a rift ×3 on the whole queue and 2 crystals in the enemy"},
+          "branches": [
+            {"level": 5, "options": [{"id": "shardcaller_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_queue_3_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
+            {"level": 15, "options": [{"id": "shardcaller_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_queue_3_b15b", "name": {"ru": "Раскол", "en": "Split"}, "damage": 0.8, "effect": {"shatter": 0.5}}]},
+            {"level": 25, "options": [{"id": "shardcaller_queue_3_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "shardcaller_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -2602,42 +2578,44 @@
         {"level": 5, "options": [{"id": "shardcaller_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_1_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "shardcaller_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_auto_1_b15b", "name": {"ru": "Громкая песня", "en": "Loud Song"}, "damage": 0.8, "effect": {"resonance": 15}}]},
         {"level": 25, "options": [{"id": "shardcaller_auto_1_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "shardcaller_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "shardcaller_auto_2",
-      "kind": "active",
-      "weapon": "crystal_wand",
-      "tier": "rare",
-      "color": "green",
-      "name": {"ru": "Растущий кварц", "en": "Growing Quartz"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 10},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "crystals": 1},
-      "text": {"ru": "раз в 6 с кварц бьёт ×3 и сам вонзает кристалл", "en": "every 6 s quartz strikes ×3 and plants a crystal by itself"},
-      "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
-        {"level": 15, "options": [{"id": "shardcaller_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_auto_2_b15b", "name": {"ru": "Кварцевая роща", "en": "Quartz Grove"}, "damage": 0.8, "effect": {"grow": 1}}]},
-        {"level": 25, "options": [{"id": "shardcaller_auto_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "shardcaller_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "shardcaller_auto_3",
-      "kind": "active",
-      "weapon": "crystal_wand",
-      "tier": "mythic",
-      "color": "green",
-      "name": {"ru": "Каменный хор", "en": "Stone Choir"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 10},
-      "cooldownSeconds": 10,
-      "effect": {"type": "strike", "multiplier": 4, "perCrystal": 0.5},
-      "text": {"ru": "раз в 10 с хор ×4 и ещё ×0,5 за каждый кристалл во враге", "en": "every 10 s a choir ×4 and another ×0.5 per crystal in the enemy"},
-      "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_3_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 6.0}}]},
-        {"level": 15, "options": [{"id": "shardcaller_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_auto_3_b15b", "name": {"ru": "Большой хор", "en": "Great Choir"}, "damage": 0.8, "effect": {"perCrystal": 0.8}}]},
-        {"level": 25, "options": [{"id": "shardcaller_auto_3_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 8}}, {"id": "shardcaller_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "shardcaller_auto_2",
+          "kind": "active",
+          "weapon": "crystal_wand",
+          "tier": "rare",
+          "color": "green",
+          "name": {"ru": "Растущий кварц", "en": "Growing Quartz"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 10},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 4.5, "crystals": 1, "resonance": 10},
+          "text": {"ru": "раз в 6 с кварц бьёт ×4,5, сам вонзает кристалл и даёт +10 Резонанса", "en": "every 6 s quartz strikes ×4.5, plants a crystal by itself and gives +10 Resonance"},
+          "branches": [
+            {"level": 5, "options": [{"id": "shardcaller_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
+            {"level": 15, "options": [{"id": "shardcaller_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_auto_2_b15b", "name": {"ru": "Кварцевая роща", "en": "Quartz Grove"}, "damage": 0.8, "effect": {"grow": 1}}]},
+            {"level": 25, "options": [{"id": "shardcaller_auto_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "shardcaller_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "shardcaller_auto_3",
+          "kind": "active",
+          "weapon": "crystal_wand",
+          "tier": "mythic",
+          "color": "green",
+          "name": {"ru": "Каменный хор", "en": "Stone Choir"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 10},
+          "cooldownSeconds": 10,
+          "effect": {"type": "strike", "multiplier": 7.5, "perCrystal": 0.5, "resonance": 10, "crystals": 1},
+          "text": {"ru": "раз в 10 с хор ×7,5 и ещё ×0,5 за каждый кристалл во враге; кристалл во врага и +10 Резонанса", "en": "every 10 s a choir ×7.5 and another ×0.5 per crystal in the enemy; a crystal in the enemy and +10 Resonance"},
+          "branches": [
+            {"level": 5, "options": [{"id": "shardcaller_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_auto_3_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 11}}]},
+            {"level": 15, "options": [{"id": "shardcaller_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_auto_3_b15b", "name": {"ru": "Большой хор", "en": "Great Choir"}, "damage": 0.8, "effect": {"perCrystal": 0.8}}]},
+            {"level": 25, "options": [{"id": "shardcaller_auto_3_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 15}}, {"id": "shardcaller_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -2657,44 +2635,46 @@
         {"level": 5, "options": [{"id": "shardcaller_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_1_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "shardcaller_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_strong_1_b15b", "name": {"ru": "Каменная лавина", "en": "Stone Avalanche"}, "damage": 0.8, "effect": {"crystals": 3}}]},
         {"level": 25, "options": [{"id": "shardcaller_strong_1_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "shardcaller_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "shardcaller_strong_2",
-      "kind": "active",
-      "weapon": "crystal_wand",
-      "tier": "legendary",
-      "role": "heavy",
-      "color": "green",
-      "name": {"ru": "Кристальная тюрьма", "en": "Crystal Prison"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 50},
-      "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 5, "prisonSeconds": 4},
-      "text": {"ru": "удар ×5; 4 с враг получает от него урон ×1,5", "en": "a blow ×5; for 4 s the enemy takes ×1.5 damage from him"},
-      "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_2_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
-        {"level": 15, "options": [{"id": "shardcaller_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_strong_2_b15b", "name": {"ru": "Долгий срок", "en": "Long Sentence"}, "damage": 0.75, "effect": {"prisonSeconds": 6}}]},
-        {"level": 25, "options": [{"id": "shardcaller_strong_2_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "shardcaller_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "shardcaller_strong_3",
-      "kind": "active",
-      "weapon": "crystal_wand",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "green",
-      "name": {"ru": "Сердце горы", "en": "Heart of the Mountain"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 60},
-      "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 12, "bossMultiplier": 2, "heartSeconds": 6},
-      "text": {"ru": "удар ×12, ×24 по боссу; 6 с отряд бьёт на 25% сильнее", "en": "a blow ×12, ×24 against a boss; for 6 s the party hits 25% harder"},
-      "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_3_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
-        {"level": 15, "options": [{"id": "shardcaller_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_strong_3_b15b", "name": {"ru": "Каменное сердце", "en": "Stone Heart"}, "damage": 0.8, "effect": {"heartSeconds": 10}}]},
-        {"level": 25, "options": [{"id": "shardcaller_strong_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 18.0}}, {"id": "shardcaller_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "shardcaller_strong_2",
+          "kind": "active",
+          "weapon": "crystal_wand",
+          "tier": "legendary",
+          "role": "heavy",
+          "color": "green",
+          "name": {"ru": "Кристальная тюрьма", "en": "Crystal Prison"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 50},
+          "cooldownSeconds": 30,
+          "effect": {"type": "strike", "multiplier": 9, "prisonSeconds": 4},
+          "text": {"ru": "удар ×9; 4 с враг получает от него урон ×1,5", "en": "a blow ×9; for 4 s the enemy takes ×1.5 damage from him"},
+          "branches": [
+            {"level": 5, "options": [{"id": "shardcaller_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_2_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
+            {"level": 15, "options": [{"id": "shardcaller_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_strong_2_b15b", "name": {"ru": "Долгий срок", "en": "Long Sentence"}, "damage": 0.75, "effect": {"prisonSeconds": 6}}]},
+            {"level": 25, "options": [{"id": "shardcaller_strong_2_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "shardcaller_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "shardcaller_strong_3",
+          "kind": "active",
+          "weapon": "crystal_wand",
+          "tier": "mythic",
+          "role": "heavy",
+          "color": "green",
+          "name": {"ru": "Сердце горы", "en": "Heart of the Mountain"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 60},
+          "cooldownSeconds": 40,
+          "effect": {"type": "strike", "multiplier": 12, "bossMultiplier": 2, "heartSeconds": 6, "prisonSeconds": 4},
+          "text": {"ru": "удар ×12, ×24 по боссу; 4 с враг получает от него урон ×1,5, 6 с отряд бьёт на 25% сильнее", "en": "a blow ×12, ×24 against a boss; for 4 s the enemy takes ×1.5 damage from him, for 6 s the party hits 25% harder"},
+          "branches": [
+            {"level": 5, "options": [{"id": "shardcaller_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "shardcaller_strong_3_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
+            {"level": 15, "options": [{"id": "shardcaller_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "shardcaller_strong_3_b15b", "name": {"ru": "Каменное сердце", "en": "Stone Heart"}, "damage": 0.8, "effect": {"heartSeconds": 10}}]},
+            {"level": 25, "options": [{"id": "shardcaller_strong_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 18.0}}, {"id": "shardcaller_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -2746,48 +2726,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.003, "per": {"signal": "crystals", "step": 1, "cap": 14}}], "reserve": 15, "party": true},
-      "text": {"ru": "отряд: +8% урона; его кристалл даёт отряду ещё 0,3%", "en": "party: +8% damage; his crystal gives the party another 0.3%"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.08}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.003, "per": {"signal": "crystals", "step": 1, "cap": 14}}, {"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.1}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +8% урона, +12% урона скиллов; его кристалл даёт отряду ещё 0,3%, его взрыв сильнее на 0,1 за кристалл", "en": "party: +8% damage, +12% skill damage; his crystal gives the party another 0.3%, his burst is stronger by 0.1 per crystal"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0036, "per": {"signal": "crystals", "step": 1, "cap": 14}}]}}, {"id": "shardcaller_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "shardcaller_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0033, "per": {"signal": "crystals", "step": 1, "cap": 14}}]}}, {"id": "shardcaller_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "shardcaller_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0039, "per": {"signal": "crystals", "step": 1, "cap": 14}}]}}, {"id": "shardcaller_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
-      ]
-    },
-    {
-      "id": "shardcaller_aura_2",
-      "kind": "aura",
-      "weapon": "crystal_wand",
-      "tier": "common",
-      "color": "green",
-      "name": {"ru": "Звонкий камень", "en": "Ringing Stone"},
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.1}], "reserve": 15, "party": true},
-      "text": {"ru": "отряд: +12% урона скиллов; его взрыв сильнее на 0,1 за кристалл", "en": "party: +12% skill damage; his burst is 0.1 stronger per crystal"},
-      "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.12}]}}, {"id": "shardcaller_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "shardcaller_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.11}]}}, {"id": "shardcaller_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "shardcaller_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.13}]}}, {"id": "shardcaller_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
-      ]
-    },
-    {
-      "id": "shardcaller_aura_3",
-      "kind": "aura",
-      "weapon": "crystal_wand",
-      "tier": "rare",
-      "color": "green",
-      "name": {"ru": "Друза", "en": "Druse"},
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.1}, {"stat": "shellPower", "kind": "flat", "value": 0.1}], "reserve": 20, "party": true},
-      "text": {"ru": "отряд: +10% урона по боссам; его трещина сильнее на 0,1", "en": "party: +10% damage against bosses; his crack is 0.1 stronger"},
-      "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.12}, {"stat": "shellPower", "kind": "flat", "value": 0.12}]}}, {"id": "shardcaller_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "shardcaller_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.11}, {"stat": "shellPower", "kind": "flat", "value": 0.11}]}}, {"id": "shardcaller_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "shardcaller_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.13}, {"stat": "shellPower", "kind": "flat", "value": 0.13}]}}, {"id": "shardcaller_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "shardcaller_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.096}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0036, "per": {"signal": "crystals", "step": 1, "cap": 14}}, {"stat": "attackPower", "kind": "increased", "value": 0.144, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.12}]}}, {"id": "shardcaller_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "shardcaller_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.088}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0033, "per": {"signal": "crystals", "step": 1, "cap": 14}}, {"stat": "attackPower", "kind": "increased", "value": 0.132, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.11}]}}, {"id": "shardcaller_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "shardcaller_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.104}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.0039, "per": {"signal": "crystals", "step": 1, "cap": 14}}, {"stat": "attackPower", "kind": "increased", "value": 0.156, "tags": ["Skill"]}, {"stat": "shardPower", "kind": "flat", "value": 0.13}]}}, {"id": "shardcaller_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -2800,12 +2744,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "gardenPower", "kind": "flat", "value": 0.02}], "reserve": 20, "party": true},
-      "text": {"ru": "отряд: +2 с на бой с боссом; его сад звенит сильнее на 0,02", "en": "party: +2 s for a boss fight; his garden rings 0.02 stronger"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "gardenPower", "kind": "flat", "value": 0.02}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.1}, {"stat": "shellPower", "kind": "flat", "value": 0.1}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +2 с на бой с боссом, +10% урона по боссам; его сад звенит сильнее на 0,02, его трещина сильнее на 0,1", "en": "party: +2 s for a boss fight, +10% damage against bosses; his garden rings stronger by 0.02, his crack is stronger by 0.1"},
       "branches": [
-        {"level": 5, "options": [{"id": "shardcaller_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "gardenPower", "kind": "flat", "value": 0.024}]}}, {"id": "shardcaller_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "shardcaller_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "gardenPower", "kind": "flat", "value": 0.022}]}}, {"id": "shardcaller_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "shardcaller_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "gardenPower", "kind": "flat", "value": 0.026}]}}, {"id": "shardcaller_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "shardcaller_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "gardenPower", "kind": "flat", "value": 0.024}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.12}, {"stat": "shellPower", "kind": "flat", "value": 0.12}]}}, {"id": "shardcaller_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "shardcaller_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "gardenPower", "kind": "flat", "value": 0.022}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.11}, {"stat": "shellPower", "kind": "flat", "value": 0.11}]}}, {"id": "shardcaller_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "shardcaller_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "gardenPower", "kind": "flat", "value": 0.026}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.13}, {"stat": "shellPower", "kind": "flat", "value": 0.13}]}}, {"id": "shardcaller_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -3233,44 +3177,46 @@
         {"level": 5, "options": [{"id": "minstrel_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_1_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
         {"level": 15, "options": [{"id": "minstrel_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_1_b15b", "name": {"ru": "Полный аккорд", "en": "Full Chord"}, "damage": 0.8, "effect": {"lines": 2}}]},
         {"level": 25, "options": [{"id": "minstrel_hit_1_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "minstrel_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "minstrel_hit_2",
-      "kind": "active",
-      "weapon": "enchanted_lute",
-      "tier": "rare",
-      "role": "fast",
-      "color": "red",
-      "name": {"ru": "Пиццикато", "en": "Pizzicato"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 5},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 2.5, "lines": 2},
-      "text": {"ru": "щипок ×2,5 и 2 строки песни", "en": "a pluck ×2.5 and 2 lines of the song"},
-      "branches": [
-        {"level": 5, "options": [{"id": "minstrel_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_2_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
-        {"level": 15, "options": [{"id": "minstrel_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_2_b15b", "name": {"ru": "Двойной щипок", "en": "Double Pluck"}, "damage": 0.8, "effect": {"lines": 3}}]},
-        {"level": 25, "options": [{"id": "minstrel_hit_2_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "minstrel_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "minstrel_hit_3",
-      "kind": "active",
-      "weapon": "enchanted_lute",
-      "tier": "epic",
-      "role": "fast",
-      "color": "red",
-      "name": {"ru": "Высокая нота", "en": "High Note"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 4, "climaxHit": 3},
-      "text": {"ru": "нота ×4 и ещё ×3 в кульминации: припев, гимн, песня для всех или сон врага", "en": "a note ×4 and another ×3 at the climax: a chorus, a hymn, the song for everyone or a sleeping enemy"},
-      "branches": [
-        {"level": 5, "options": [{"id": "minstrel_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_3_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
-        {"level": 15, "options": [{"id": "minstrel_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_3_b15b", "name": {"ru": "Звенящая нота", "en": "Ringing Note"}, "damage": 0.8, "effect": {"climaxHit": 4.5}}]},
-        {"level": 25, "options": [{"id": "minstrel_hit_3_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "minstrel_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "minstrel_hit_2",
+          "kind": "active",
+          "weapon": "enchanted_lute",
+          "tier": "rare",
+          "role": "fast",
+          "color": "red",
+          "name": {"ru": "Пиццикато", "en": "Pizzicato"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 5},
+          "cooldownSeconds": 4,
+          "effect": {"type": "strike", "multiplier": 4, "lines": 2},
+          "text": {"ru": "щипок ×4 и 2 строки песни", "en": "a pluck ×4 and 2 lines of the song"},
+          "branches": [
+            {"level": 5, "options": [{"id": "minstrel_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_2_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
+            {"level": 15, "options": [{"id": "minstrel_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_2_b15b", "name": {"ru": "Двойной щипок", "en": "Double Pluck"}, "damage": 0.8, "effect": {"lines": 3}}]},
+            {"level": 25, "options": [{"id": "minstrel_hit_2_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "minstrel_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "minstrel_hit_3",
+          "kind": "active",
+          "weapon": "enchanted_lute",
+          "tier": "epic",
+          "role": "fast",
+          "color": "red",
+          "name": {"ru": "Высокая нота", "en": "High Note"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 5,
+          "effect": {"type": "strike", "multiplier": 5, "climaxHit": 3, "lines": 2},
+          "text": {"ru": "нота ×5, 2 строки песни и ещё ×3 в кульминации: припев, гимн, песня для всех или сон врага", "en": "a note ×5, 2 lines of the song and another ×3 at the climax: a chorus, a hymn, the song for everyone or a sleeping enemy"},
+          "branches": [
+            {"level": 5, "options": [{"id": "minstrel_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_hit_3_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
+            {"level": 15, "options": [{"id": "minstrel_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_hit_3_b15b", "name": {"ru": "Звенящая нота", "en": "Ringing Note"}, "damage": 0.8, "effect": {"climaxHit": 4.5}}]},
+            {"level": 25, "options": [{"id": "minstrel_hit_3_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "minstrel_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -3290,44 +3236,46 @@
         {"level": 5, "options": [{"id": "minstrel_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_1_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.0}}]},
         {"level": 15, "options": [{"id": "minstrel_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_1_b15b", "name": {"ru": "Долгая трель", "en": "Long Trill"}, "damage": 0.8, "effect": {"notes": 3}}]},
         {"level": 25, "options": [{"id": "minstrel_queue_1_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 4}}, {"id": "minstrel_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "minstrel_queue_2",
-      "kind": "active",
-      "weapon": "enchanted_lute",
-      "tier": "rare",
-      "role": "heavy",
-      "color": "red",
-      "name": {"ru": "Звуковая волна", "en": "Sound Wave"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "lines": 1},
-      "text": {"ru": "волна ×2,5 по 3 врагам очереди и строка песни", "en": "a wave ×2.5 at 3 queued enemies and a line of the song"},
-      "branches": [
-        {"level": 5, "options": [{"id": "minstrel_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_2_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
-        {"level": 15, "options": [{"id": "minstrel_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_2_b15b", "name": {"ru": "Широкая волна", "en": "Wide Wave"}, "damage": 0.8, "effect": {"lines": 2}}]},
-        {"level": 25, "options": [{"id": "minstrel_queue_2_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "minstrel_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "minstrel_queue_3",
-      "kind": "active",
-      "weapon": "enchanted_lute",
-      "tier": "legendary",
-      "role": "fast",
-      "color": "red",
-      "name": {"ru": "Канон", "en": "Canon"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "lines": 1, "notes": 1},
-      "text": {"ru": "канон ×3 по 3 врагам, строка песни и нота колыбельной", "en": "a canon ×3 at 3 enemies, a line of the song and a lullaby note"},
-      "branches": [
-        {"level": 5, "options": [{"id": "minstrel_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_3_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
-        {"level": 15, "options": [{"id": "minstrel_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_3_b15b", "name": {"ru": "Канон в три голоса", "en": "Three-Voice Canon"}, "damage": 0.8, "effect": {"lines": 2, "notes": 2}}]},
-        {"level": 25, "options": [{"id": "minstrel_queue_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "minstrel_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "minstrel_queue_2",
+          "kind": "active",
+          "weapon": "enchanted_lute",
+          "tier": "rare",
+          "role": "heavy",
+          "color": "red",
+          "name": {"ru": "Звуковая волна", "en": "Sound Wave"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "lines": 1, "notes": 2},
+          "text": {"ru": "волна ×2,5 по 3 врагам очереди, строка песни и 2 ноты колыбельной", "en": "a wave ×2.5 at 3 queued enemies, a line of the song and 2 lullaby notes"},
+          "branches": [
+            {"level": 5, "options": [{"id": "minstrel_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_2_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
+            {"level": 15, "options": [{"id": "minstrel_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_2_b15b", "name": {"ru": "Широкая волна", "en": "Wide Wave"}, "damage": 0.8, "effect": {"lines": 2}}]},
+            {"level": 25, "options": [{"id": "minstrel_queue_2_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "minstrel_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "minstrel_queue_3",
+          "kind": "active",
+          "weapon": "enchanted_lute",
+          "tier": "legendary",
+          "role": "heavy",
+          "color": "red",
+          "name": {"ru": "Канон", "en": "Canon"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "lines": 1, "notes": 2},
+          "text": {"ru": "канон ×3 по 3 врагам, строка песни и 2 ноты колыбельной", "en": "a canon ×3 at 3 enemies, a line of the song and 2 lullaby notes"},
+          "branches": [
+            {"level": 5, "options": [{"id": "minstrel_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_queue_3_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
+            {"level": 15, "options": [{"id": "minstrel_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_queue_3_b15b", "name": {"ru": "Канон в три голоса", "en": "Three-Voice Canon"}, "damage": 0.8, "effect": {"lines": 2, "notes": 3}}]},
+            {"level": 25, "options": [{"id": "minstrel_queue_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "minstrel_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -3346,42 +3294,44 @@
         {"level": 5, "options": [{"id": "minstrel_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_1_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
         {"level": 15, "options": [{"id": "minstrel_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_1_b15b", "name": {"ru": "Лихой припляс", "en": "Lively Jig"}, "damage": 0.8, "effect": {"lines": 2}}]},
         {"level": 25, "options": [{"id": "minstrel_auto_1_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "minstrel_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "minstrel_auto_2",
-      "kind": "active",
-      "weapon": "enchanted_lute",
-      "tier": "rare",
-      "color": "red",
-      "name": {"ru": "Струна-эхо", "en": "Echo String"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 10},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3, "notes": 1},
-      "text": {"ru": "раз в 4 с струна ×3 и нота колыбельной", "en": "every 4 s a string ×3 and a lullaby note"},
-      "branches": [
-        {"level": 5, "options": [{"id": "minstrel_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_2_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 4.5}}]},
-        {"level": 15, "options": [{"id": "minstrel_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_2_b15b", "name": {"ru": "Долгое эхо", "en": "Long Echo"}, "damage": 0.8, "effect": {"notes": 2}}]},
-        {"level": 25, "options": [{"id": "minstrel_auto_2_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}, {"id": "minstrel_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "minstrel_auto_3",
-      "kind": "active",
-      "weapon": "enchanted_lute",
-      "tier": "mythic",
-      "color": "red",
-      "name": {"ru": "Бубенцы", "en": "Jingle Bells"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 10},
-      "cooldownSeconds": 8,
-      "effect": {"type": "strike", "multiplier": 4, "hymnSeconds": 8, "hymnPower": 0.1},
-      "text": {"ru": "раз в 8 с бубенцы ×4: ей и отряду +10% урона на 8 с", "en": "every 8 s bells ×4: she and the party deal 10% more damage for 8 s"},
-      "branches": [
-        {"level": 5, "options": [{"id": "minstrel_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_3_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
-        {"level": 15, "options": [{"id": "minstrel_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_3_b15b", "name": {"ru": "Звонкие бубенцы", "en": "Bright Bells"}, "damage": 0.8, "effect": {"hymnPower": 0.15}}]},
-        {"level": 25, "options": [{"id": "minstrel_auto_3_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "minstrel_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "minstrel_auto_2",
+          "kind": "active",
+          "weapon": "enchanted_lute",
+          "tier": "rare",
+          "color": "red",
+          "name": {"ru": "Струна-эхо", "en": "Echo String"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 10},
+          "cooldownSeconds": 4,
+          "effect": {"type": "strike", "multiplier": 3.5, "notes": 1, "lines": 1},
+          "text": {"ru": "раз в 4 с струна ×3,5, строка песни и нота колыбельной", "en": "every 4 s a string ×3.5, a line of the song and a lullaby note"},
+          "branches": [
+            {"level": 5, "options": [{"id": "minstrel_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_2_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 5}}]},
+            {"level": 15, "options": [{"id": "minstrel_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_2_b15b", "name": {"ru": "Долгое эхо", "en": "Long Echo"}, "damage": 0.8, "effect": {"notes": 2}}]},
+            {"level": 25, "options": [{"id": "minstrel_auto_2_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 7}}, {"id": "minstrel_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "minstrel_auto_3",
+          "kind": "active",
+          "weapon": "enchanted_lute",
+          "tier": "mythic",
+          "color": "red",
+          "name": {"ru": "Бубенцы", "en": "Jingle Bells"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 10},
+          "cooldownSeconds": 8,
+          "effect": {"type": "strike", "multiplier": 7, "hymnSeconds": 8, "hymnPower": 0.1, "lines": 1, "notes": 1},
+          "text": {"ru": "раз в 8 с бубенцы ×7, строка песни и нота колыбельной: ей и отряду +10% урона на 8 с", "en": "every 8 s bells ×7, a line of the song and a lullaby note: she and the party deal 10% more damage for 8 s"},
+          "branches": [
+            {"level": 5, "options": [{"id": "minstrel_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_auto_3_b5b", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}]},
+            {"level": 15, "options": [{"id": "minstrel_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_auto_3_b15b", "name": {"ru": "Звонкие бубенцы", "en": "Bright Bells"}, "damage": 0.8, "effect": {"hymnPower": 0.15}}]},
+            {"level": 25, "options": [{"id": "minstrel_auto_3_b25a", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}, {"id": "minstrel_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -3401,44 +3351,46 @@
         {"level": 5, "options": [{"id": "minstrel_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_1_b5b", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}]},
         {"level": 15, "options": [{"id": "minstrel_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_1_b15b", "name": {"ru": "Громкий финал", "en": "Grand Finale"}, "damage": 0.8, "effect": {"finale": 6}}]},
         {"level": 25, "options": [{"id": "minstrel_strong_1_b25a", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}, {"id": "minstrel_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "minstrel_strong_2",
-      "kind": "active",
-      "weapon": "enchanted_lute",
-      "tier": "legendary",
-      "role": "heavy",
-      "color": "red",
-      "name": {"ru": "Гимн", "en": "Anthem"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 50},
-      "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 5, "hymnSeconds": 8, "hymnPower": 0.3},
-      "text": {"ru": "гимн ×5: ей и отряду +30% урона на 8 с", "en": "an anthem ×5: she and the party deal 30% more damage for 8 s"},
-      "branches": [
-        {"level": 5, "options": [{"id": "minstrel_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
-        {"level": 15, "options": [{"id": "minstrel_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_2_b15b", "name": {"ru": "Долгий гимн", "en": "Long Anthem"}, "damage": 0.8, "effect": {"hymnSeconds": 12}}]},
-        {"level": 25, "options": [{"id": "minstrel_strong_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "minstrel_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "minstrel_strong_3",
-      "kind": "active",
-      "weapon": "enchanted_lute",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "red",
-      "name": {"ru": "Соло", "en": "Solo"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 60},
-      "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 8, "soloSeconds": 10},
-      "text": {"ru": "соло ×8: 10 с её удары ×2", "en": "a solo ×8: for 10 s her hits deal ×2"},
-      "branches": [
-        {"level": 5, "options": [{"id": "minstrel_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_3_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 12.0}}]},
-        {"level": 15, "options": [{"id": "minstrel_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_3_b15b", "name": {"ru": "Долгое соло", "en": "Long Solo"}, "damage": 0.8, "effect": {"soloSeconds": 15}}]},
-        {"level": 25, "options": [{"id": "minstrel_strong_3_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 16}}, {"id": "minstrel_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "minstrel_strong_2",
+          "kind": "active",
+          "weapon": "enchanted_lute",
+          "tier": "legendary",
+          "role": "heavy",
+          "color": "red",
+          "name": {"ru": "Гимн", "en": "Anthem"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 50},
+          "cooldownSeconds": 30,
+          "effect": {"type": "strike", "multiplier": 9, "hymnSeconds": 8, "hymnPower": 0.3},
+          "text": {"ru": "гимн ×9: ей и отряду +30% урона на 8 с", "en": "an anthem ×9: she and the party deal 30% more damage for 8 s"},
+          "branches": [
+            {"level": 5, "options": [{"id": "minstrel_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_2_b5b", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}]},
+            {"level": 15, "options": [{"id": "minstrel_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_2_b15b", "name": {"ru": "Долгий гимн", "en": "Long Anthem"}, "damage": 0.8, "effect": {"hymnSeconds": 12}}]},
+            {"level": 25, "options": [{"id": "minstrel_strong_2_b25a", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}, {"id": "minstrel_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "minstrel_strong_3",
+          "kind": "active",
+          "weapon": "enchanted_lute",
+          "tier": "mythic",
+          "role": "heavy",
+          "color": "red",
+          "name": {"ru": "Соло", "en": "Solo"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 60},
+          "cooldownSeconds": 40,
+          "effect": {"type": "strike", "multiplier": 12, "soloSeconds": 10, "hymnSeconds": 8, "hymnPower": 0.3},
+          "text": {"ru": "соло ×12: 10 с её удары ×2, ей и отряду +30% урона на 8 с", "en": "a solo ×12: for 10 s her hits deal ×2, she and the party deal 30% more damage for 8 s"},
+          "branches": [
+            {"level": 5, "options": [{"id": "minstrel_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "minstrel_strong_3_b5b", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 18}}]},
+            {"level": 15, "options": [{"id": "minstrel_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "minstrel_strong_3_b15b", "name": {"ru": "Долгое соло", "en": "Long Solo"}, "damage": 0.8, "effect": {"soloSeconds": 15}}]},
+            {"level": 25, "options": [{"id": "minstrel_strong_3_b25a", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 24}}, {"id": "minstrel_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -3490,30 +3442,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.15}, {"stat": "versePower", "kind": "flat", "value": 0.005}], "reserve": 15, "party": true},
-      "text": {"ru": "отряд: +15% к накоплению ресурса; её куплет на 0,5% сильнее", "en": "party: +15% resource gain; her verse is 0.5% stronger"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.15}, {"stat": "versePower", "kind": "flat", "value": 0.005}, {"stat": "attackPower", "kind": "increased", "value": 0.1, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.5}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +15% к накоплению ресурса, +10% урона в серии ударов; её куплет на 0,5% сильнее, её строка чуть короче", "en": "party: +15% resource gain, +10% damage in a streak of hits; her verse is 0.5% stronger, her line is a little shorter"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.18}, {"stat": "versePower", "kind": "flat", "value": 0.006}]}}, {"id": "minstrel_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "minstrel_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.165}, {"stat": "versePower", "kind": "flat", "value": 0.0055}]}}, {"id": "minstrel_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "minstrel_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.195}, {"stat": "versePower", "kind": "flat", "value": 0.0065}]}}, {"id": "minstrel_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
-      ]
-    },
-    {
-      "id": "minstrel_aura_2",
-      "kind": "aura",
-      "weapon": "enchanted_lute",
-      "tier": "common",
-      "color": "red",
-      "name": {"ru": "Барабан", "en": "Drum"},
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.1, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.5}], "reserve": 15, "party": true},
-      "text": {"ru": "отряд: +10% урона в серии ударов; её строка чуть короче", "en": "party: +10% damage during a series of hits; her line is a bit shorter"},
-      "branches": [
-        {"level": 5, "options": [{"id": "minstrel_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.6}]}}, {"id": "minstrel_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "minstrel_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.11, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.55}]}}, {"id": "minstrel_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "minstrel_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.13, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.65}]}}, {"id": "minstrel_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "minstrel_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.18}, {"stat": "versePower", "kind": "flat", "value": 0.006}, {"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.6}]}}, {"id": "minstrel_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "minstrel_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.165}, {"stat": "versePower", "kind": "flat", "value": 0.0055}, {"stat": "attackPower", "kind": "increased", "value": 0.11, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.55}]}}, {"id": "minstrel_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "minstrel_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "resourceGain", "kind": "increased", "value": 0.195}, {"stat": "versePower", "kind": "flat", "value": 0.0065}, {"stat": "attackPower", "kind": "increased", "value": 0.13, "when": "longStreak"}, {"stat": "lineHits", "kind": "flat", "value": -0.65}]}}, {"id": "minstrel_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -3526,12 +3460,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.15}, {"stat": "verseSeconds", "kind": "flat", "value": 1}], "reserve": 20, "party": true},
-      "text": {"ru": "отряд: аура длится на 15% дольше; её куплет звучит на 1 с дольше", "en": "party: auras last 15% longer; her verse rings 1 s longer"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.15}, {"stat": "verseSeconds", "kind": "flat", "value": 1}, {"stat": "critMultiplier", "kind": "increased", "value": 0.15}, {"stat": "songPower", "kind": "flat", "value": 0.01}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: аура длится на 15% дольше, +15% к урону крита; её куплет звучит на 1 с дольше, её песня на 1% сильнее", "en": "party: an aura lasts 15% longer, +15% critical damage; her verse sounds 1 s longer, her song is 1% stronger"},
       "branches": [
-        {"level": 5, "options": [{"id": "minstrel_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.18}, {"stat": "verseSeconds", "kind": "flat", "value": 1.2}]}}, {"id": "minstrel_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "minstrel_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.165}, {"stat": "verseSeconds", "kind": "flat", "value": 1.1}]}}, {"id": "minstrel_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "minstrel_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.195}, {"stat": "verseSeconds", "kind": "flat", "value": 1.3}]}}, {"id": "minstrel_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "minstrel_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.18}, {"stat": "verseSeconds", "kind": "flat", "value": 1.2}, {"stat": "critMultiplier", "kind": "increased", "value": 0.18}, {"stat": "songPower", "kind": "flat", "value": 0.012}]}}, {"id": "minstrel_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "minstrel_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.165}, {"stat": "verseSeconds", "kind": "flat", "value": 1.1}, {"stat": "critMultiplier", "kind": "increased", "value": 0.165}, {"stat": "songPower", "kind": "flat", "value": 0.011}]}}, {"id": "minstrel_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "minstrel_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "auraDuration", "kind": "increased", "value": 0.195}, {"stat": "verseSeconds", "kind": "flat", "value": 1.3}, {"stat": "critMultiplier", "kind": "increased", "value": 0.195}, {"stat": "songPower", "kind": "flat", "value": 0.013}]}}, {"id": "minstrel_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -3550,24 +3484,6 @@
         {"level": 5, "options": [{"id": "minstrel_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageAfterIdle", "kind": "increased", "value": 0.18}, {"stat": "sleepSeconds", "kind": "flat", "value": 0.36}]}}, {"id": "minstrel_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
         {"level": 15, "options": [{"id": "minstrel_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageAfterIdle", "kind": "increased", "value": 0.165}, {"stat": "sleepSeconds", "kind": "flat", "value": 0.33}]}}, {"id": "minstrel_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
         {"level": 25, "options": [{"id": "minstrel_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageAfterIdle", "kind": "increased", "value": 0.195}, {"stat": "sleepSeconds", "kind": "flat", "value": 0.39}]}}, {"id": "minstrel_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
-      ]
-    },
-    {
-      "id": "minstrel_aura_5",
-      "kind": "aura",
-      "weapon": "enchanted_lute",
-      "tier": "epic",
-      "color": "red",
-      "name": {"ru": "Ритм", "en": "Rhythm"},
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.15}, {"stat": "songPower", "kind": "flat", "value": 0.01}], "reserve": 25, "party": true},
-      "text": {"ru": "отряд: +15% к урону крита; её песня на 1% сильнее", "en": "party: +15% crit damage; her song is 1% stronger"},
-      "branches": [
-        {"level": 5, "options": [{"id": "minstrel_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.18}, {"stat": "songPower", "kind": "flat", "value": 0.012}]}}, {"id": "minstrel_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "minstrel_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.165}, {"stat": "songPower", "kind": "flat", "value": 0.011}]}}, {"id": "minstrel_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "minstrel_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.195}, {"stat": "songPower", "kind": "flat", "value": 0.013}]}}, {"id": "minstrel_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {
@@ -6953,44 +6869,46 @@
         {"level": 5, "options": [{"id": "sandwalker_hit_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_1_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 6}}]},
         {"level": 15, "options": [{"id": "sandwalker_hit_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_hit_1_b15b", "name": {"ru": "Острый серп", "en": "Keen Sickle"}, "damage": 0.8, "effect": {"topHit": 2.5}}]},
         {"level": 25, "options": [{"id": "sandwalker_hit_1_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "sandwalker_hit_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "sandwalker_hit_2",
-      "kind": "active",
-      "weapon": "hourglass_sickle",
-      "tier": "rare",
-      "role": "fast",
-      "color": "white",
-      "name": {"ru": "Песчинка", "en": "Grain of Sand"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 5},
-      "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 2.5, "sand": 8, "pour": 5},
-      "text": {"ru": "песчинка ×2,5, +8 Песка и 5 песчинок в часы", "en": "a grain ×2.5, +8 Sand and 5 grains into the glass"},
-      "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_2_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
-        {"level": 15, "options": [{"id": "sandwalker_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_hit_2_b15b", "name": {"ru": "Горсть песка", "en": "Handful of Sand"}, "damage": 0.8, "effect": {"sand": 12}}]},
-        {"level": 25, "options": [{"id": "sandwalker_hit_2_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "sandwalker_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "sandwalker_hit_3",
-      "kind": "active",
-      "weapon": "hourglass_sickle",
-      "tier": "epic",
-      "role": "fast",
-      "color": "white",
-      "name": {"ru": "Зыбучий шаг", "en": "Quicksand Step"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 5,
-      "effect": {"type": "strike", "multiplier": 4, "afterStep": 4},
-      "text": {"ru": "удар ×4 и ещё ×4 сразу после шага", "en": "a blow ×4 and another ×4 right after a step"},
-      "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_3_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
-        {"level": 15, "options": [{"id": "sandwalker_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_hit_3_b15b", "name": {"ru": "Глубокий шаг", "en": "Deep Step"}, "damage": 0.8, "effect": {"afterStep": 6}}]},
-        {"level": 25, "options": [{"id": "sandwalker_hit_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "sandwalker_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "sandwalker_hit_2",
+          "kind": "active",
+          "weapon": "hourglass_sickle",
+          "tier": "rare",
+          "role": "fast",
+          "color": "white",
+          "name": {"ru": "Песчинка", "en": "Grain of Sand"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 5},
+          "cooldownSeconds": 4,
+          "effect": {"type": "strike", "multiplier": 4, "sand": 8, "pour": 5},
+          "text": {"ru": "песчинка ×4, +8 Песка и 5 песчинок в часы", "en": "a grain ×4, +8 Sand and 5 grains into the glass"},
+          "branches": [
+            {"level": 5, "options": [{"id": "sandwalker_hit_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_2_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
+            {"level": 15, "options": [{"id": "sandwalker_hit_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_hit_2_b15b", "name": {"ru": "Горсть песка", "en": "Handful of Sand"}, "damage": 0.8, "effect": {"sand": 12}}]},
+            {"level": 25, "options": [{"id": "sandwalker_hit_2_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "sandwalker_hit_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "sandwalker_hit_3",
+          "kind": "active",
+          "weapon": "hourglass_sickle",
+          "tier": "epic",
+          "role": "fast",
+          "color": "white",
+          "name": {"ru": "Зыбучий шаг", "en": "Quicksand Step"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 5,
+          "effect": {"type": "strike", "multiplier": 5, "afterStep": 4, "sand": 8, "pour": 5},
+          "text": {"ru": "удар ×5 и ещё ×4 сразу после шага; +8 Песка и 5 песчинок в часы", "en": "a blow ×5 and another ×4 right after a step; +8 Sand and 5 grains into the glass"},
+          "branches": [
+            {"level": 5, "options": [{"id": "sandwalker_hit_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_hit_3_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
+            {"level": 15, "options": [{"id": "sandwalker_hit_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_hit_3_b15b", "name": {"ru": "Глубокий шаг", "en": "Deep Step"}, "damage": 0.8, "effect": {"afterStep": 6}}]},
+            {"level": 25, "options": [{"id": "sandwalker_hit_3_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "sandwalker_hit_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -7010,44 +6928,46 @@
         {"level": 5, "options": [{"id": "sandwalker_queue_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_1_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
         {"level": 15, "options": [{"id": "sandwalker_queue_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_queue_1_b15b", "name": {"ru": "Долгий самум", "en": "Long Simoom"}, "damage": 0.8, "effect": {"timerSeconds": 2}}]},
         {"level": 25, "options": [{"id": "sandwalker_queue_1_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.0}}, {"id": "sandwalker_queue_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "sandwalker_queue_2",
-      "kind": "active",
-      "weapon": "hourglass_sickle",
-      "tier": "rare",
-      "role": "heavy",
-      "color": "white",
-      "name": {"ru": "Дюна", "en": "Dune"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "blindSeconds": 2},
-      "text": {"ru": "дюна ×2,5 по 3 врагам и Ослепление врага на 2 с", "en": "a dune ×2.5 at 3 enemies and a Blind on the enemy for 2 s"},
-      "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_2_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}]},
-        {"level": 15, "options": [{"id": "sandwalker_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_queue_2_b15b", "name": {"ru": "Высокая дюна", "en": "High Dune"}, "damage": 0.8, "effect": {"blindSeconds": 3}}]},
-        {"level": 25, "options": [{"id": "sandwalker_queue_2_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "sandwalker_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "sandwalker_queue_3",
-      "kind": "active",
-      "weapon": "hourglass_sickle",
-      "tier": "legendary",
-      "role": "fast",
-      "color": "white",
-      "name": {"ru": "Пустынный смерч", "en": "Desert Twister"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 20},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "afterStep": 3},
-      "text": {"ru": "смерч ×3 по очереди и ещё ×3 сразу после шага", "en": "a twister ×3 along the queue and another ×3 right after a step"},
-      "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_3_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
-        {"level": 15, "options": [{"id": "sandwalker_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_queue_3_b15b", "name": {"ru": "Смерч за шагом", "en": "Trailing Twister"}, "damage": 0.8, "effect": {"afterStep": 4.5}}]},
-        {"level": 25, "options": [{"id": "sandwalker_queue_3_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "sandwalker_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "sandwalker_queue_2",
+          "kind": "active",
+          "weapon": "hourglass_sickle",
+          "tier": "rare",
+          "role": "heavy",
+          "color": "white",
+          "name": {"ru": "Дюна", "en": "Dune"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 2.5, "queueTargets": 3, "blindSeconds": 2, "timerSeconds": 1},
+          "text": {"ru": "дюна ×2,5 по 3 врагам и Ослепление врага на 2 с; в бою с боссом +1 с к таймеру", "en": "a dune ×2.5 at 3 enemies and a Blind on the enemy for 2 s; +1 s to the boss timer in a boss fight"},
+          "branches": [
+            {"level": 5, "options": [{"id": "sandwalker_queue_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_2_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 5.0}}]},
+            {"level": 15, "options": [{"id": "sandwalker_queue_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_queue_2_b15b", "name": {"ru": "Высокая дюна", "en": "High Dune"}, "damage": 0.8, "effect": {"blindSeconds": 3}}]},
+            {"level": 25, "options": [{"id": "sandwalker_queue_2_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "sandwalker_queue_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "sandwalker_queue_3",
+          "kind": "active",
+          "weapon": "hourglass_sickle",
+          "tier": "legendary",
+          "role": "heavy",
+          "color": "white",
+          "name": {"ru": "Пустынный смерч", "en": "Desert Twister"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 20},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 3, "queueTargets": 3, "afterStep": 3, "timerSeconds": 1, "blindSeconds": 2},
+          "text": {"ru": "смерч ×3 по очереди и ещё ×3 сразу после шага; Ослепление на 2 с, в бою с боссом +1 с к таймеру", "en": "a twister ×3 along the queue and another ×3 right after a step; a Blind for 2 s, +1 s to the boss timer in a boss fight"},
+          "branches": [
+            {"level": 5, "options": [{"id": "sandwalker_queue_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_queue_3_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
+            {"level": 15, "options": [{"id": "sandwalker_queue_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_queue_3_b15b", "name": {"ru": "Смерч за шагом", "en": "Trailing Twister"}, "damage": 0.8, "effect": {"afterStep": 4.5}}]},
+            {"level": 25, "options": [{"id": "sandwalker_queue_3_b25a", "name": {"ru": "Стоп-часы", "en": "Stopped Clock"}, "effect": {"bossTimerStopSeconds": 1.5}}, {"id": "sandwalker_queue_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -7066,42 +6986,44 @@
         {"level": 5, "options": [{"id": "sandwalker_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_1_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
         {"level": 15, "options": [{"id": "sandwalker_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_auto_1_b15b", "name": {"ru": "Ровная струйка", "en": "Steady Trickle"}, "damage": 0.8, "effect": {"pour": 6}}]},
         {"level": 25, "options": [{"id": "sandwalker_auto_1_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "sandwalker_auto_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "sandwalker_auto_2",
-      "kind": "active",
-      "weapon": "hourglass_sickle",
-      "tier": "rare",
-      "color": "white",
-      "name": {"ru": "Попутчик", "en": "Fellow Traveller"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 10},
-      "cooldownSeconds": 6,
-      "effect": {"type": "strike", "multiplier": 2, "stepHit": 0.5},
-      "text": {"ru": "раз в 6 с попутчик ×2 и ещё ×0,5 за каждые 1000 px шага с прошлого раза, до ×5", "en": "every 6 s a fellow traveller ×2 and another ×0.5 per 1000 px of steps since last time, up to ×5"},
-      "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_2_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
-        {"level": 15, "options": [{"id": "sandwalker_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_auto_2_b15b", "name": {"ru": "Дальний путь", "en": "Long Way"}, "damage": 0.8, "effect": {"stepHit": 0.8}}]},
-        {"level": 25, "options": [{"id": "sandwalker_auto_2_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 3.0}}, {"id": "sandwalker_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "sandwalker_auto_3",
-      "kind": "active",
-      "weapon": "hourglass_sickle",
-      "tier": "mythic",
-      "color": "white",
-      "name": {"ru": "Скарабей", "en": "Scarab"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 10},
-      "cooldownSeconds": 15,
-      "effect": {"type": "strike", "multiplier": 6, "pour": 30},
-      "text": {"ru": "раз в 15 с скарабей ×6 и пересыпает 30 песчинок", "en": "every 15 s a scarab ×6 that pours 30 grains"},
-      "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_3_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 12}}]},
-        {"level": 15, "options": [{"id": "sandwalker_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_auto_3_b15b", "name": {"ru": "Золотой скарабей", "en": "Golden Scarab"}, "damage": 0.8, "effect": {"pour": 50}}]},
-        {"level": 25, "options": [{"id": "sandwalker_auto_3_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "sandwalker_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "sandwalker_auto_2",
+          "kind": "active",
+          "weapon": "hourglass_sickle",
+          "tier": "rare",
+          "color": "white",
+          "name": {"ru": "Попутчик", "en": "Fellow Traveller"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 10},
+          "cooldownSeconds": 6,
+          "effect": {"type": "strike", "multiplier": 5, "stepHit": 0.5, "sand": 5, "pour": 3},
+          "text": {"ru": "раз в 6 с попутчик ×5 и ещё ×0,5 за каждые 1000 px шага с прошлого раза, до ×5; +5 Песка и 3 песчинки", "en": "every 6 s a fellow traveller ×5 and another ×0.5 per 1000 px of steps since last time, up to ×5; +5 Sand and 3 grains"},
+          "branches": [
+            {"level": 5, "options": [{"id": "sandwalker_auto_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_2_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
+            {"level": 15, "options": [{"id": "sandwalker_auto_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_auto_2_b15b", "name": {"ru": "Дальний путь", "en": "Long Way"}, "damage": 0.8, "effect": {"stepHit": 0.8}}]},
+            {"level": 25, "options": [{"id": "sandwalker_auto_2_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 7.5}}, {"id": "sandwalker_auto_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "sandwalker_auto_3",
+          "kind": "active",
+          "weapon": "hourglass_sickle",
+          "tier": "mythic",
+          "color": "white",
+          "name": {"ru": "Скарабей", "en": "Scarab"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 10},
+          "cooldownSeconds": 15,
+          "effect": {"type": "strike", "multiplier": 12.5, "pour": 30, "sand": 5},
+          "text": {"ru": "раз в 15 с скарабей ×12,5, пересыпает 30 песчинок и даёт +5 Песка", "en": "every 15 s a scarab ×12.5 that pours 30 grains and gives +5 Sand"},
+          "branches": [
+            {"level": 5, "options": [{"id": "sandwalker_auto_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_auto_3_b5b", "name": {"ru": "По раненому", "en": "At the Wounded"}, "effect": {"lowHpBelow": 0.3, "lowHpMultiplier": 25}}]},
+            {"level": 15, "options": [{"id": "sandwalker_auto_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_auto_3_b15b", "name": {"ru": "Золотой скарабей", "en": "Golden Scarab"}, "damage": 0.8, "effect": {"pour": 50}}]},
+            {"level": 25, "options": [{"id": "sandwalker_auto_3_b25a", "name": {"ru": "Добивание", "en": "Finisher"}, "damage": 0.8, "effect": {"executeBelow": 0.05}}, {"id": "sandwalker_auto_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -7121,44 +7043,46 @@
         {"level": 5, "options": [{"id": "sandwalker_strong_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_1_b5b", "name": {"ru": "Возврат", "en": "Refund"}, "effect": {"killRefundShare": 1}}]},
         {"level": 15, "options": [{"id": "sandwalker_strong_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_strong_1_b15b", "name": {"ru": "Долгая буря", "en": "Long Storm"}, "damage": 0.8, "effect": {"bossTimerStopSeconds": 7}}]},
         {"level": 25, "options": [{"id": "sandwalker_strong_1_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "sandwalker_strong_1_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "sandwalker_strong_2",
-      "kind": "active",
-      "weapon": "hourglass_sickle",
-      "tier": "legendary",
-      "role": "heavy",
-      "color": "white",
-      "name": {"ru": "Время жатвы", "en": "Harvest Time"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 50},
-      "cooldownSeconds": 30,
-      "effect": {"type": "strike", "multiplier": 5, "lowHpBelow": 0.25, "lowHpMultiplier": 20},
-      "text": {"ru": "жатва ×5, по врагу ниже 25% HP ×20", "en": "a harvest ×5, ×20 against an enemy below 25% HP"},
-      "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_2_b5b", "name": {"ru": "По очереди", "en": "Down the Queue"}, "damage": 0.85, "effect": {"queueTargets": 2}}]},
-        {"level": 15, "options": [{"id": "sandwalker_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_strong_2_b15b", "name": {"ru": "Ранняя жатва", "en": "Early Harvest"}, "damage": 0.8, "effect": {"lowHpBelow": 0.35}}]},
-        {"level": 25, "options": [{"id": "sandwalker_strong_2_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "sandwalker_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
-      ]
-    },
-    {
-      "id": "sandwalker_strong_3",
-      "kind": "active",
-      "weapon": "hourglass_sickle",
-      "tier": "mythic",
-      "role": "heavy",
-      "color": "white",
-      "name": {"ru": "Обратный ход", "en": "Reverse Flow"},
-      "tags": ["Strike", "Skill"],
-      "cost": {"resource": 60},
-      "cooldownSeconds": 40,
-      "effect": {"type": "strike", "multiplier": 10, "timerSeconds": 8},
-      "text": {"ru": "удар ×10; в бою с боссом +8 с к таймеру", "en": "a blow ×10; +8 s to the boss timer in a boss fight"},
-      "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_3_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
-        {"level": 15, "options": [{"id": "sandwalker_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_strong_3_b15b", "name": {"ru": "Долгий ход", "en": "Long Reverse"}, "damage": 0.8, "effect": {"timerSeconds": 12}}]},
-        {"level": 25, "options": [{"id": "sandwalker_strong_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 15.0}}, {"id": "sandwalker_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+      ],
+      "evolutions": [
+        {
+          "id": "sandwalker_strong_2",
+          "kind": "active",
+          "weapon": "hourglass_sickle",
+          "tier": "legendary",
+          "role": "heavy",
+          "color": "white",
+          "name": {"ru": "Время жатвы", "en": "Harvest Time"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 50},
+          "cooldownSeconds": 30,
+          "effect": {"type": "strike", "multiplier": 9, "lowHpBelow": 0.25, "lowHpMultiplier": 36, "queueTargets": 3, "bossTimerStopSeconds": 5},
+          "text": {"ru": "жатва ×9 по очереди, по врагу ниже 25% HP ×36; таймер босса стоит 5 с", "en": "a harvest ×9 along the queue, ×36 against an enemy below 25% HP; the boss timer stands still for 5 s"},
+          "branches": [
+            {"level": 5, "options": [{"id": "sandwalker_strong_2_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_2_b5b", "name": {"ru": "По боссу", "en": "Against the Boss"}, "effect": {"bossMultiplier": 1.5}}]},
+            {"level": 15, "options": [{"id": "sandwalker_strong_2_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_strong_2_b15b", "name": {"ru": "Ранняя жатва", "en": "Early Harvest"}, "damage": 0.8, "effect": {"lowHpBelow": 0.35}}]},
+            {"level": 25, "options": [{"id": "sandwalker_strong_2_b25a", "name": {"ru": "Точный", "en": "Precise"}, "effect": {"critChance": 0.3}}, {"id": "sandwalker_strong_2_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        },
+        {
+          "id": "sandwalker_strong_3",
+          "kind": "active",
+          "weapon": "hourglass_sickle",
+          "tier": "mythic",
+          "role": "heavy",
+          "color": "white",
+          "name": {"ru": "Обратный ход", "en": "Reverse Flow"},
+          "tags": ["Strike", "Skill"],
+          "cost": {"resource": 60},
+          "cooldownSeconds": 40,
+          "effect": {"type": "strike", "multiplier": 12, "timerSeconds": 8, "queueTargets": 3},
+          "text": {"ru": "удар ×12 по очереди; в бою с боссом +8 с к таймеру", "en": "a blow ×12 along the queue; +8 s to the boss timer in a boss fight"},
+          "branches": [
+            {"level": 5, "options": [{"id": "sandwalker_strong_3_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "sandwalker_strong_3_b5b", "name": {"ru": "По боссу", "en": "Boss Strike"}, "effect": {"bossMultiplier": 1.5}}]},
+            {"level": 15, "options": [{"id": "sandwalker_strong_3_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"id": "sandwalker_strong_3_b15b", "name": {"ru": "Долгий ход", "en": "Long Reverse"}, "damage": 0.8, "effect": {"timerSeconds": 12}}]},
+            {"level": 25, "options": [{"id": "sandwalker_strong_3_b25a", "name": {"ru": "Из тишины", "en": "From Silence"}, "effect": {"pauseSeconds": 2, "pauseMultiplier": 18}}, {"id": "sandwalker_strong_3_b25b", "name": {"ru": "Даром", "en": "Free"}, "cost": 0.01, "cooldown": 2}]}
+          ]
+        }
       ]
     },
     {
@@ -7210,30 +7134,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "flipPower", "kind": "flat", "value": 0.05}], "reserve": 15, "party": true},
-      "text": {"ru": "отряд: +2 с к таймеру босса; его «верх» на 5% сильнее", "en": "party: +2 s for a boss fight; his top is 5% stronger"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2}, {"stat": "flipPower", "kind": "flat", "value": 0.05}, {"stat": "damageVsNormal", "kind": "increased", "value": 0.1}, {"stat": "caravanPower", "kind": "flat", "value": 0.3}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: +2 с к таймеру босса, +10% урона по обычным врагам; его «верх» на 5% сильнее, его стоянка бьёт на 0,3 сильнее", "en": "party: +2 s to the boss timer, +10% damage against normal enemies; his \"top\" is 5% stronger, his camp hits 0.3 harder"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2.4}, {"stat": "flipPower", "kind": "flat", "value": 0.06}]}}, {"id": "sandwalker_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "sandwalker_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2.2}, {"stat": "flipPower", "kind": "flat", "value": 0.055}]}}, {"id": "sandwalker_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "sandwalker_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2.6}, {"stat": "flipPower", "kind": "flat", "value": 0.065}]}}, {"id": "sandwalker_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
-      ]
-    },
-    {
-      "id": "sandwalker_aura_2",
-      "kind": "aura",
-      "weapon": "hourglass_sickle",
-      "tier": "common",
-      "color": "white",
-      "name": {"ru": "Зной", "en": "Heat"},
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsNormal", "kind": "increased", "value": 0.1}, {"stat": "caravanPower", "kind": "flat", "value": 0.3}], "reserve": 15, "party": true},
-      "text": {"ru": "отряд: +10% урона по обычным врагам; его стоянка бьёт на 0,3 сильнее", "en": "party: +10% damage against regular enemies; his camp strikes 0.3 harder"},
-      "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageVsNormal", "kind": "increased", "value": 0.12}, {"stat": "caravanPower", "kind": "flat", "value": 0.36}]}}, {"id": "sandwalker_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "sandwalker_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageVsNormal", "kind": "increased", "value": 0.11}, {"stat": "caravanPower", "kind": "flat", "value": 0.33}]}}, {"id": "sandwalker_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "sandwalker_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageVsNormal", "kind": "increased", "value": 0.13}, {"stat": "caravanPower", "kind": "flat", "value": 0.39}]}}, {"id": "sandwalker_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "sandwalker_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2.4}, {"stat": "flipPower", "kind": "flat", "value": 0.06}, {"stat": "damageVsNormal", "kind": "increased", "value": 0.12}, {"stat": "caravanPower", "kind": "flat", "value": 0.36}]}}, {"id": "sandwalker_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "sandwalker_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2.2}, {"stat": "flipPower", "kind": "flat", "value": 0.055}, {"stat": "damageVsNormal", "kind": "increased", "value": 0.11}, {"stat": "caravanPower", "kind": "flat", "value": 0.33}]}}, {"id": "sandwalker_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "sandwalker_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "bossTimerSeconds", "kind": "flat", "value": 2.6}, {"stat": "flipPower", "kind": "flat", "value": 0.065}, {"stat": "damageVsNormal", "kind": "increased", "value": 0.13}, {"stat": "caravanPower", "kind": "flat", "value": 0.39}]}}, {"id": "sandwalker_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -7246,12 +7152,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.05}], "reserve": 20, "party": true},
-      "text": {"ru": "отряд: +12% урона в начале боя с боссом; его мираж бьёт на 0,05 сильнее", "en": "party: +12% damage early in a boss fight; his mirage strikes 0.05 harder"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.05}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.1}, {"stat": "mirageSeconds", "kind": "flat", "value": 2}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: +12% урона в начале боя с боссом, +10% урона по боссу; его мираж бьёт на 0,05 сильнее и живёт на 2 с дольше", "en": "party: +12% damage at the start of a boss fight, +10% damage against a boss; his mirage hits 0.05 harder and lives 2 s longer"},
       "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.06}]}}, {"id": "sandwalker_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "sandwalker_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.055}]}}, {"id": "sandwalker_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "sandwalker_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.065}]}}, {"id": "sandwalker_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "sandwalker_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.06}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.12}, {"stat": "mirageSeconds", "kind": "flat", "value": 2.4}]}}, {"id": "sandwalker_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "sandwalker_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.055}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.11}, {"stat": "mirageSeconds", "kind": "flat", "value": 2.2}]}}, {"id": "sandwalker_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "sandwalker_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "when": "bossOpening"}, {"stat": "miragePower", "kind": "flat", "value": 0.065}, {"stat": "damageVsBoss", "kind": "increased", "value": 0.13}, {"stat": "mirageSeconds", "kind": "flat", "value": 2.6}]}}, {"id": "sandwalker_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -7288,24 +7194,6 @@
         {"level": 5, "options": [{"id": "sandwalker_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.18}, {"stat": "campPx", "kind": "flat", "value": -240.0}]}}, {"id": "sandwalker_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
         {"level": 15, "options": [{"id": "sandwalker_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.165}, {"stat": "campPx", "kind": "flat", "value": -220.0}]}}, {"id": "sandwalker_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
         {"level": 25, "options": [{"id": "sandwalker_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "gold", "kind": "increased", "value": 0.195}, {"stat": "campPx", "kind": "flat", "value": -260.0}]}}, {"id": "sandwalker_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
-      ]
-    },
-    {
-      "id": "sandwalker_aura_6",
-      "kind": "aura",
-      "weapon": "hourglass_sickle",
-      "tier": "legendary",
-      "color": "white",
-      "name": {"ru": "Миражная дымка", "en": "Mirage Haze"},
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.1}, {"stat": "mirageSeconds", "kind": "flat", "value": 2}], "reserve": 25, "party": true},
-      "text": {"ru": "отряд: +10% урона по боссу; мираж живёт на 2 с дольше", "en": "party: +10% damage against bosses; a mirage lives 2 s longer"},
-      "branches": [
-        {"level": 5, "options": [{"id": "sandwalker_aura_6_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.12}, {"stat": "mirageSeconds", "kind": "flat", "value": 2.4}]}}, {"id": "sandwalker_aura_6_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "sandwalker_aura_6_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.11}, {"stat": "mirageSeconds", "kind": "flat", "value": 2.2}]}}, {"id": "sandwalker_aura_6_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "sandwalker_aura_6_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damageVsBoss", "kind": "increased", "value": 0.13}, {"stat": "mirageSeconds", "kind": "flat", "value": 2.6}]}}, {"id": "sandwalker_aura_6_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {

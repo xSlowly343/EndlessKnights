@@ -411,24 +411,24 @@ namespace Game.Core.Sim
                 if (native.RepeatAboveCombo > 0 && _state.Combo > native.RepeatAboveCombo)
                     Strike(slot, strike, native, 0);
             }
-            _combat.Runedancer.OnSkillCast(slot.Skill);
-            _combat.Duelist.OnSkillCast(slot.Skill);
-            _combat.Windshot.OnSkillCast(slot.Skill);
-            _combat.Shardcaller.OnSkillCast(slot.Skill);
-            _combat.Sandwalker.OnSkillCast(slot.Skill);
-            _combat.Minstrel.OnSkillCast(slot.Skill);
-            _combat.Dreamcatcher.OnSkillCast(slot.Skill);
-            _combat.Lanternbearer.OnSkillCast(slot.Skill);
-            _combat.Whisperer.OnSkillCast(slot.Skill);
-            _combat.Clockwright.OnSkillCast(slot.Skill);
-            _combat.Alchemist.OnSkillCast(slot.Skill);
-            _combat.Dowser.OnSkillCast(slot.Skill);
-            _combat.Soulbinder.OnSkillCast(slot.Skill);
+            _combat.Runedancer.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Duelist.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Windshot.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Shardcaller.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Sandwalker.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Minstrel.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Dreamcatcher.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Lanternbearer.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Whisperer.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Clockwright.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Alchemist.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Dowser.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Soulbinder.OnSkillCast(slot.Skill, slot.Def);
             _combat.Ghostcaptain.OnSkillCast(slot);
-            _combat.Mothcaller.OnSkillCast(slot.Skill);
-            _combat.Cartomancer.OnSkillCast(slot.Skill);
-            _combat.Herbwitch.OnSkillCast(slot.Skill);
-            _combat.Golemancer.OnSkillCast(slot.Skill);
+            _combat.Mothcaller.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Cartomancer.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Herbwitch.OnSkillCast(slot.Skill, slot.Def);
+            _combat.Golemancer.OnSkillCast(slot.Skill, slot.Def);
             if (skill.Effect is ResourceGainEffect gain)
                 _resource.Gain(gain.Amount);
             if (native.RestoresFocus)

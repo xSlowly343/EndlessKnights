@@ -62,12 +62,12 @@ namespace Game.Core.Sim
             Load(1);
         }
 
-        public void OnSkillCast(SkillSlot slot) => OnSkillCast(slot.Skill, slot.CastPower);
+        public void OnSkillCast(SkillSlot slot) => OnSkillCast(slot.Skill, slot.CastPower, slot.Def);
 
-        public void OnSkillCast(GemDef skill, double castPower)
+        public void OnSkillCast(GemDef skill, double castPower, SkillDef? variant = null)
         {
-            var strike = skill.Skill?.Effect as StrikeEffect;
-            var power = castPower * StrikeMultiplier(skill);
+            var strike = (variant ?? skill.Skill)?.CastStrike;
+            var power = castPower * StrikeMultiplier(strike);
             if (!On)
                 return;
             if (strike != null)
@@ -247,8 +247,8 @@ namespace Game.Core.Sim
             }
         }
 
-        private double StrikeMultiplier(GemDef skill) =>
-            skill.Skill?.Effect is StrikeEffect strike && strike.Multiplier > 0 ? strike.Multiplier : _rules.StrikeFallback;
+        private double StrikeMultiplier(StrikeEffect? strike) =>
+            strike != null && strike.Multiplier > 0 ? strike.Multiplier : _rules.StrikeFallback;
 
         private void TraitHit(double multiplier, double extraCrit = 0)
         {

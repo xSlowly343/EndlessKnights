@@ -238,7 +238,7 @@ namespace Game.Core.Tests.Sim
             var (all, allInput) = Hero(Flat(SandwalkerStats.CaravanPower, 6), Flat(SandwalkerStats.CaravanAll, 1),
                 CoopStatNames.Line("{ 'to': 'party', 'stat': 'gold', 'kind': 'increased', 'value': 0.25, 'after': { 'signal': 'camp', 'seconds': 10 } }"));
             var first = Equip(all, "sandwalker_strong_3");
-            var second = Equip(all, "sandwalker_strong_2");
+            var second = Equip(all, "sandwalker_hit_1");
             all.State.Skills[first].CooldownTicks = 300;
             all.State.Skills[second].CooldownTicks = 200;
             Step(all, allInput, Rules.CampPx);

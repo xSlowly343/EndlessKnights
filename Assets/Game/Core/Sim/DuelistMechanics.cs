@@ -104,18 +104,17 @@ namespace Game.Core.Sim
                 PhantomStrike();
         }
 
-        public void OnSkillCast(GemDef skill)
+        public void OnSkillCast(GemDef skill, SkillDef? variant = null)
         {
             if (!On)
                 return;
-            var strike = skill.Skill?.Effect as StrikeEffect;
+            var strike = (variant ?? skill.Skill)?.CastStrike;
             if (Breach && (Flag(DuelistStats.BreachOnCast) || strike is { Breach: true }))
                 OpenBreach();
-            var touches = strike?.Touches ?? (skill.Skill?.Effect as FlurryEffect)?.Touches ?? 0;
-            if (Touche && touches > 0 && !Flag(DuelistStats.ToucheFlawless))
-                AddMarks(touches);
             if (strike == null)
                 return;
+            if (Touche && strike.Touches > 0 && !Flag(DuelistStats.ToucheFlawless))
+                AddMarks(strike.Touches);
             if (Phantom && strike.PhantomSeconds > 0)
                 S.PhantomSwitchTicks = System.Math.Max(S.PhantomSwitchTicks, Ticks(strike.PhantomSeconds));
             var echo = Positive(DuelistStats.PhantomEcho);

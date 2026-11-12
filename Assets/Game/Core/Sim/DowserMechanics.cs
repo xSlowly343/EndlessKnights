@@ -73,9 +73,9 @@ namespace Game.Core.Sim
                 AddHits(1);
         }
 
-        public void OnSkillCast(GemDef skill)
+        public void OnSkillCast(GemDef skill, SkillDef? variant = null)
         {
-            if (!On || !(skill.Skill?.Effect is StrikeEffect strike))
+            if (!On || !((variant ?? skill.Skill)?.CastStrike is StrikeEffect strike))
                 return;
             if (strike.VeinHits > 0 && VeinHere)
                 AddHits(strike.VeinHits);

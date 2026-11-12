@@ -25,6 +25,7 @@ namespace Game.Core.Content.Gems
         public double CooldownSeconds { get; }
         public double DurationSeconds { get; }
         public SkillEffect Effect { get; }
+        public StrikeEffect? CastStrike => Effect as StrikeEffect ?? (Effect as FlurryEffect)?.Cast;
         public string? Weapon { get; }
         public NativeTrait Native { get; }
         public bool IsPassive =>

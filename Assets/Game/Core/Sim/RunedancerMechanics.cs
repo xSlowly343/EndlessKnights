@@ -85,11 +85,11 @@ namespace Game.Core.Sim
                 TraitHit(WhirlPower * S.WhirlBlades, StatTags.Strike);
         }
 
-        public void OnSkillCast(GemDef skill)
+        public void OnSkillCast(GemDef skill, SkillDef? variant = null)
         {
             if (!On)
                 return;
-            var strike = skill.Skill?.Effect as StrikeEffect;
+            var strike = (variant ?? skill.Skill)?.CastStrike;
             var writes = !Flag(RunedancerStats.RuneCalligrapher);
             if (Dance && writes && Flag(RunedancerStats.RuneOnCast))
                 LayRunes(1);

@@ -99,9 +99,9 @@ namespace Game.Core.Sim
                 ShotStep(paused);
         }
 
-        public void OnSkillCast(GemDef skill)
+        public void OnSkillCast(GemDef skill, SkillDef? variant = null)
         {
-            if (!On || !(skill.Skill?.Effect is StrikeEffect strike))
+            if (!On || !((variant ?? skill.Skill)?.CastStrike is StrikeEffect strike))
                 return;
             if (strike.Tension > 0)
                 _state.PendingResource += strike.Tension;

@@ -79,8 +79,6 @@ namespace Game.Core.Ui
                 parts.Add(Texts.Format("branch.rule.flurry", flurry.Hits, Number(flurry.Multiplier), Number(flurry.Seconds)));
             if (flurry.QueueTargets != plain.QueueTargets)
                 parts.Add(Texts.Format("branch.rule.queue", flurry.QueueTargets));
-            if (flurry.Touches != plain.Touches)
-                parts.Add(Texts.Format("branch.rule.touches", flurry.Touches));
         }
 
         private static string Number(double value) => value.ToString("0.##", CultureInfo.InvariantCulture);

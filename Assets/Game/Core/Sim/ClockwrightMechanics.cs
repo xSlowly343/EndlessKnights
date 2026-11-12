@@ -90,11 +90,11 @@ namespace Game.Core.Sim
             }
         }
 
-        public void OnSkillCast(GemDef skill)
+        public void OnSkillCast(GemDef skill, SkillDef? variant = null)
         {
-            if (!On || !(skill.Skill?.Effect is StrikeEffect strike))
+            if (!On || !((variant ?? skill.Skill)?.CastStrike is StrikeEffect strike))
                 return;
-            if (Gears && !(skill.Skill.Effect is AuraEffect))
+            if (Gears && !((variant ?? skill.Skill!).Effect is AuraEffect))
                 NoteOwnCast();
             if (strike.Wind > 0)
                 _state.PendingResource += strike.Wind;
