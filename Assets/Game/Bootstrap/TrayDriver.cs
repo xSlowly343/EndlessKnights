@@ -6,6 +6,7 @@ using Game.Platform.Windows.Tray;
 using Game.Presentation.Strip;
 using Game.Platform.Windows.Window;
 using UnityEngine;
+using SystemClock = Game.Platform.Windows.Power.SystemClock;
 
 namespace Game.Bootstrap
 {

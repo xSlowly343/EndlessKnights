@@ -31,7 +31,7 @@ namespace Game.Platform.Tests
         [Test]
         public void RightHandButtonEquipsTheSelectedWeapon()
         {
-            var starter = _loop.Weapons.In(WeaponHand.Right)!;
+            var starter = _loop.Weapons.Held!;
             var other = _loop.Weapons.Give(_loop.Data.Weapons.Bases.First(weapon => weapon.Type != starter.Type));
             var navigator = new PanelNavigator();
             navigator.SelectTab(PanelSection.Items);
@@ -42,7 +42,7 @@ namespace Game.Platform.Tests
 
             _panel.TryClick(_panel.CanvasRect.TransformPoint(new Vector3(133f, 95f, 0f)));
 
-            Assert.That(_loop.Weapons.In(WeaponHand.Right), Is.SameAs(other));
+            Assert.That(_loop.Weapons.Held, Is.SameAs(other));
             Assert.That(_loop.Weapons.Bag, Does.Contain(starter));
             Assert.That(_panel.Items.Selected, Is.Null);
         }
