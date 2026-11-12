@@ -538,7 +538,10 @@ namespace Game.Core.Content.Gems
                         node.Field("hits").AsInt(1, 10000),
                         node.Field("seconds").AsNumber(0.1, 3600),
                         node.Field("multiplier").AsNumber(0, 1e6),
-                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0);
+                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0)
+                    {
+                        Touches = node.HasField("touches") ? node.Field("touches").AsInt(0, 100) : 0
+                    };
                 case "inputHits":
                     return new InputHitsEffect(
                         Number(node, "pxPerHit", 1e6),

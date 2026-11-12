@@ -57,6 +57,16 @@ namespace Game.Core.Tests.Sim
             return damage;
         }
 
+        [Test]
+        public void ASeriesOfThrustsLeavesItsMarks()
+        {
+            var (loop, _) = Hero(Flat(DuelistStats.TouchePower, 10));
+
+            Cast(loop, "duelist_strong_2");
+
+            Assert.That(loop.State.Duelist.Marks, Is.EqualTo(2));
+        }
+
         private static void Hits(GameLoop loop, FakeInputSource input, int count)
         {
             for (var i = 0; i < count; i++)

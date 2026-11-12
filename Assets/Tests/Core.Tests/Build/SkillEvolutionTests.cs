@@ -40,7 +40,7 @@ namespace Game.Core.Tests.Build
             Assert.That(Gem("runedancer_hit_3").ProgressId, Is.EqualTo("runedancer_hit_1"));
             Assert.That(Gem("runedancer_hit_3").PowerStat, Is.EqualTo(Gem("runedancer_hit_1").PowerStat));
             Assert.That(Gem("runedancer_aura_2").Evolves, Is.False);
-            Assert.That(Gem("duelist_hit_2").Evolves, Is.False);
+            Assert.That(Gem("duelist_path_1").Evolves, Is.False);
         }
 
         [Test]
@@ -133,13 +133,14 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.Book.Equip(Gem("runedancer_hit_1")), Is.EqualTo(BookResult.AlreadyInBook));
         }
 
-        [Test]
-        public void ChangingTheClassAndBackKeepsTheLevelOfAFamily()
+        [TestCase(HeroClass.Duelist)]
+        [TestCase(HeroClass.Golemancer)]
+        public void ChangingTheClassAndBackKeepsTheLevelOfAFamily(HeroClass other)
         {
             var loop = Runedancer(30);
             loop.State.ProgressOf(Gem("runedancer_hit_1")).Level = 9;
 
-            Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.ChangeClassFree(other), Is.EqualTo(ClassChangeResult.Changed));
             Assert.That(loop.State.GemProgress.Keys.Any(id => id.StartsWith("runedancer_")), Is.False);
             Assert.That(loop.State.Skills.All(slot => loop.State.LevelOf(slot.Skill) == 9 || slot.Skill.Skill!.Role != SkillRole.Fast), Is.True);
 
@@ -149,13 +150,54 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
+        public void AnOldSaveWithARemovedAuraFreesItsPlace()
+        {
+            var state = new GameState { Class = HeroClass.Duelist, HeroLevel = 20 };
+            state.Skills.Add(new SkillSlot(Gem("duelist_hit_1")) { Role = SkillSlotRole.Left });
+            state.Skills.Add(new SkillSlot(Gem("duelist_aura_2")) { Role = SkillSlotRole.Aura });
+            state.GemProgress["duelist_aura_2"] = new GemProgress { Level = 6 };
+            var old = WithChecksum(SaveCodec.Encode(state, Clock).Replace("duelist_aura_2", "duelist_aura_1"));
+
+            var loaded = SaveCodec.Decode(old, TestWorld.Data).State;
+            var loop = new GameLoop(TestWorld.Data, new FakeInputSource(), loaded, new StatSheet());
+
+            Assert.That(loop.State.Skills.Select(slot => slot.Skill.Root.Id), Is.EqualTo(new[] { "duelist_hit_1" }));
+            Assert.That(loop.Book.Equip(Gem("duelist_aura_2")), Is.EqualTo(BookResult.Done));
+            Assert.That(loop.State.LevelOf(Gem("duelist_aura_2")), Is.EqualTo(1));
+        }
+
+        private static string WithChecksum(string text)
+        {
+            var start = text.IndexOf("\"payload\": ") + "\"payload\": ".Length;
+            var payload = text.Substring(start, text.LastIndexOf('}') - start).TrimEnd();
+            using var sha = System.Security.Cryptography.SHA256.Create();
+            var hex = System.BitConverter.ToString(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(payload))).Replace("-", string.Empty).ToLowerInvariant();
+            var at = text.IndexOf("\"checksum\": \"") + "\"checksum\": \"".Length;
+            return text.Substring(0, at) + hex + text.Substring(at + 64);
+        }
+
+        [Test]
+        public void ARankedSkillKeepsItsLevelThroughAClassWithFamilies()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Golemancer, HeroLevel = 30 });
+            loop.Book.GrantStartingGems();
+            loop.State.ProgressOf(Gem("golemancer_hit_2")).Level = 9;
+
+            Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.State.LevelOf(Gem("duelist_hit_1")), Is.EqualTo(9));
+
+            Assert.That(loop.ChangeClassPaid(HeroClass.Golemancer), Is.EqualTo(ClassChangeResult.Changed));
+            Assert.That(loop.State.LevelOf(Gem("golemancer_hit_2")), Is.EqualTo(9));
+        }
+
+        [Test]
         public void AnAuraWithoutAPairInTheNewClassLeavesTheBook()
         {
             var weapons = TestWorld.Data.Weapons;
-            var from = weapons.TypeOf(HeroClass.Duelist);
+            var from = weapons.TypeOf(HeroClass.Golemancer);
             var to = weapons.TypeOf(HeroClass.Runedancer);
             var unpaired = TestWorld.Data.Gems.All.First(gem => gem.Type == SkillType.Aura && gem.Skill!.Weapon == from.Id && weapons.Reforge.Gem(gem, from, to) == null);
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Duelist, HeroLevel = 75 });
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Golemancer, HeroLevel = 75 });
             Assert.That(loop.Book.Equip(unpaired), Is.EqualTo(BookResult.Done));
 
             Assert.That(loop.ChangeClassFree(HeroClass.Runedancer), Is.EqualTo(ClassChangeResult.Changed));

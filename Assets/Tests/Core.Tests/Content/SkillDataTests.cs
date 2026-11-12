@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(116));
+            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(114));
             Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(85));
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Aura && !gem.Locked).Select(gem => gem.Skill!.Effect), Is.All.InstanceOf<AuraEffect>());
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Active).Select(gem => gem.Skill!.Effect), Is.All.Not.InstanceOf<AuraEffect>());
@@ -250,10 +250,10 @@ namespace Game.Core.Tests.Content
         {
             var error = Assert.Throws<ContentException>(() => GameData.Load(name =>
                 name == GemCatalog.FileName
-                    ? TestData.ReadGameDataFile(name).Replace("\r\n", "\n").Replace("\"id\": \"duelist_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"spectral_rapier\"", "\"id\": \"duelist_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"rune_daggers\"")
+                    ? TestData.ReadGameDataFile(name).Replace("\r\n", "\n").Replace("\"id\": \"golemancer_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"seal_ring\"", "\"id\": \"golemancer_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"rune_daggers\"")
                     : TestData.ReadGameDataFile(name)));
 
-            Assert.That(error!.Message, Does.Contain("spectral_rapier: 11 active skills, expected 12"));
+            Assert.That(error!.Message, Does.Contain("seal_ring: 11 active skills, expected 12"));
             Assert.That(error.Message, Does.Contain("rune_daggers: 13 active skills, expected 12"));
         }
     }
