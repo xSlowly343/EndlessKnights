@@ -156,8 +156,13 @@ namespace Game.Core.Build
 
         public void Clear()
         {
-            _ranks.Clear();
+            ReturnPoints();
             _majors.Clear();
+        }
+
+        public void ReturnPoints()
+        {
+            _ranks.Clear();
             PointsSpent = 0;
         }
 

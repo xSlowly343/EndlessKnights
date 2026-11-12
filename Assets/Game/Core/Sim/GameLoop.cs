@@ -702,7 +702,7 @@ namespace Game.Core.Sim
             if (State.Gold < cost)
                 return RefundResult.NotEnoughGold;
             State.Gold -= cost;
-            allocation.Clear();
+            allocation.ReturnPoints();
             RebuildTree();
             return RefundResult.Refunded;
         }

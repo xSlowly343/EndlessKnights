@@ -69,6 +69,32 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void AResetTreeIsRebuiltByTheSharedCode()
+        {
+            var author = Hero(FirstClass, 40);
+            var tree = author.ClassTreeDef!;
+            SpendSome(author);
+            var slot = tree.Majors[0];
+            author.State.ClassTree.RestoreMajor(slot.At, slot.Options[slot.Options.Count - 1].Id);
+            var code = author.ShareBuild();
+            var reader = Hero(FirstClass, 40);
+            foreach (var node in tree.Nodes.Where(n => n.Row == 1).Skip(3).Take(2))
+                for (var i = 0; i < 5; i++)
+                    Assert.That(reader.State.ClassTree.Raise(tree, node.Id), Is.EqualTo(RankResult.Done));
+            reader.State.ClassTree.PointsEarned = 10;
+            reader.State.TreePointsEarned = 10;
+            reader.State.Gold = Game.Core.Math.BigNumber.FromDouble(1e30);
+
+            Assert.That(reader.ImportBuild(code), Is.EqualTo(BuildImportResult.Done));
+            Assert.That(reader.State.ClassTree.PointsSpent, Is.EqualTo(10), "nothing is taken back by the code itself");
+            Assert.That(reader.ResetClassTree(), Is.EqualTo(RefundResult.Refunded));
+            Assert.That(reader.FillTrees(), Is.EqualTo(9));
+
+            Assert.That(reader.State.ClassTree.Ranks, Is.EquivalentTo(author.State.ClassTree.Ranks), "the freed points go by the code");
+            Assert.That(reader.State.ClassTree.Majors, Is.EquivalentTo(author.State.ClassTree.Majors));
+        }
+
+        [Test]
         public void ABrokenOrForeignCodeChangesNothing()
         {
             var author = Hero(FirstClass, 40);
