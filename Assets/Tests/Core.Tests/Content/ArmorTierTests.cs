@@ -163,7 +163,7 @@ namespace Game.Core.Tests.Content
                 loop.Skills.Unequip(0);
             loop.Skills.Equip(TestWorld.Data.Gems["runedancer_hit_1"], role: SkillSlotRole.Left);
             loop.Skills.Equip(TestWorld.Data.Gems["runedancer_auto_1"], role: SkillSlotRole.Auto);
-            loop.Skills.Equip(TestWorld.Data.Gems["runedancer_aura_1"], role: SkillSlotRole.Aura);
+            loop.Skills.Equip(TestWorld.Data.Gems["runedancer_aura_2"], role: SkillSlotRole.Aura);
             loop.State.OwnedGems.Add(TestWorld.Data.Gems["through_stride"]);
             loop.Skills.Equip(TestWorld.Data.Gems["through_stride"], role: SkillSlotRole.Right);
             return loop;
@@ -179,7 +179,7 @@ namespace Game.Core.Tests.Content
             Assert.That(Bonus(loop, "runedancer_hit_1"), Is.EqualTo(2));
             Assert.That(Bonus(loop, "through_stride"), Is.EqualTo(2));
             Assert.That(Bonus(loop, "runedancer_auto_1"), Is.EqualTo(0));
-            Assert.That(Bonus(loop, "runedancer_aura_1"), Is.EqualTo(0));
+            Assert.That(Bonus(loop, "runedancer_aura_2"), Is.EqualTo(0));
         }
 
         [Test]
@@ -197,7 +197,7 @@ namespace Game.Core.Tests.Content
             var loop = LevelHero(CombatStats.ClassSkillLevel, 1);
 
             Assert.That(Bonus(loop, "runedancer_hit_1"), Is.EqualTo(1));
-            Assert.That(Bonus(loop, "runedancer_aura_1"), Is.EqualTo(1));
+            Assert.That(Bonus(loop, "runedancer_aura_2"), Is.EqualTo(1));
             Assert.That(Bonus(loop, "through_stride"), Is.EqualTo(0));
             Assert.That(loop.Skills.LevelPower(TestWorld.Data.Gems["runedancer_hit_1"]),
                 Is.EqualTo(TestWorld.Data.Gems.Levels.EffectMultiplier(1, 1) * loop.Skills.ColorPower(TestWorld.Data.Gems["runedancer_hit_1"])).Within(1e-9));

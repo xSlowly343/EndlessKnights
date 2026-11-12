@@ -72,7 +72,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void SkillPowerOfAnAuraMakesItsEffectStronger()
         {
-            var gem = TestWorld.Data.Gems["runedancer_aura_1"];
+            var gem = TestWorld.Data.Gems["runedancer_aura_2"];
             var (plain, _) = Hero(HeroClass.Runedancer);
             var (strong, _) = Hero(HeroClass.Runedancer, ForSkill(CombatStats.SkillPower, gem.Id, ModifierKind.Increased, 0.5));
 

@@ -817,7 +817,7 @@ namespace Game.Core.Tests.Build
         {
             var loop = Hero();
             var first = Equip(loop, "march", "resonance");
-            var second = Equip(loop, "runedancer_aura_1");
+            var second = Equip(loop, "runedancer_aura_2");
             loop.Book.SetSupport(first, 0, Gem("resonance"));
             loop.Book.SetSupport(second, 0, Gem("resonance"));
 

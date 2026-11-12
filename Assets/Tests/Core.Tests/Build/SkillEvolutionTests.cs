@@ -39,7 +39,7 @@ namespace Game.Core.Tests.Build
             Assert.That(Gem("runedancer_hit_1").Forms.Select(gem => gem.Id), Is.EqualTo(new[] { "runedancer_hit_1", "runedancer_hit_2", "runedancer_hit_3" }));
             Assert.That(Gem("runedancer_hit_3").ProgressId, Is.EqualTo("runedancer_hit_1"));
             Assert.That(Gem("runedancer_hit_3").PowerStat, Is.EqualTo(Gem("runedancer_hit_1").PowerStat));
-            Assert.That(Gem("runedancer_aura_1").Evolves, Is.False);
+            Assert.That(Gem("runedancer_aura_2").Evolves, Is.False);
             Assert.That(Gem("duelist_hit_2").Evolves, Is.False);
         }
 
@@ -146,6 +146,21 @@ namespace Game.Core.Tests.Build
             Assert.That(loop.ChangeClassPaid(HeroClass.Runedancer), Is.EqualTo(ClassChangeResult.Changed));
             Assert.That(loop.State.LevelOf(Gem("runedancer_hit_3")), Is.EqualTo(9));
             Assert.That(loop.State.Skills.Select(slot => slot.Skill.Root).Distinct().Count(), Is.EqualTo(loop.State.Skills.Count));
+        }
+
+        [Test]
+        public void AnAuraWithoutAPairInTheNewClassLeavesTheBook()
+        {
+            var weapons = TestWorld.Data.Weapons;
+            var from = weapons.TypeOf(HeroClass.Duelist);
+            var to = weapons.TypeOf(HeroClass.Runedancer);
+            var unpaired = TestWorld.Data.Gems.All.First(gem => gem.Type == SkillType.Aura && gem.Skill!.Weapon == from.Id && weapons.Reforge.Gem(gem, from, to) == null);
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Duelist, HeroLevel = 75 });
+            Assert.That(loop.Book.Equip(unpaired), Is.EqualTo(BookResult.Done));
+
+            Assert.That(loop.ChangeClassFree(HeroClass.Runedancer), Is.EqualTo(ClassChangeResult.Changed));
+
+            Assert.That(loop.State.Skills.Any(slot => slot.Skill.Skill!.Weapon == from.Id), Is.False);
         }
 
         [Test]

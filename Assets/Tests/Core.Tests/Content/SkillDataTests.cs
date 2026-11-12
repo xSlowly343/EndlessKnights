@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(118));
+            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(116));
             Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(85));
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Aura && !gem.Locked).Select(gem => gem.Skill!.Effect), Is.All.InstanceOf<AuraEffect>());
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Active).Select(gem => gem.Skill!.Effect), Is.All.Not.InstanceOf<AuraEffect>());
@@ -179,7 +179,7 @@ namespace Game.Core.Tests.Content
 
             Assert.That(problems.Where(problem => !problem.StartsWith("nothing")), Is.Empty, "every class has twelve skills and six auras");
             Assert.That(problems, Has.Member("nothing: 0 active skills, expected 12"));
-            Assert.That(problems, Has.Member("nothing: 0 auras, expected 6"));
+            Assert.That(problems, Has.Member("nothing: 0 auras, expected 4"));
         }
 
         [Test]

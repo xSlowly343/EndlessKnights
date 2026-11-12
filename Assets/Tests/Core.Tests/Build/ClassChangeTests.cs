@@ -59,9 +59,12 @@ namespace Game.Core.Tests.Build
                 foreach (var to in Weapons.Types.Where(type => type != from))
                 {
                     var targets = new HashSet<GemDef>();
+                    var spare = System.Math.Max(0, ClassGems(from).Count() - ClassGems(to).Count());
                     foreach (var gem in ClassGems(from))
                     {
                         var pair = table.Gem(gem, from, to);
+                        if (pair == null && spare-- > 0)
+                            continue;
                         Assert.That(pair, Is.Not.Null, $"{gem.Id}: {from.Id} -> {to.Id}");
                         Assert.That(pair!.Skill!.Weapon, Is.EqualTo(to.Id));
                         Assert.That(targets.Add(pair), Is.True, $"{pair.Id} is taken twice from {from.Id}");

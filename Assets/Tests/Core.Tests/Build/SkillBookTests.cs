@@ -82,7 +82,7 @@ namespace Game.Core.Tests.Build
             loop.State.HeroLevel = 75;
             loop.Book.OpenClassSkills(open);
 
-            Assert.That(atStart, Is.EqualTo(5));
+            Assert.That(atStart, Is.EqualTo(4));
             Assert.That(open.Count, Is.EqualTo(SkillRoster.FamiliesPerClass + SkillRoster.AurasPerClass));
             Assert.That(open, Does.Contain(Gem("runedancer_hit_3")).And.Not.Contain(Gem("runedancer_hit_1")), "the bag shows the form of the hero level");
         }

@@ -492,6 +492,8 @@ namespace Game.Core.Sim
                 if (skill.Ascendancy != null)
                     continue;
                 var reforged = reforge.Of(skill);
+                if (SkillBook.IsClassSkill(reforged) && !_book.OfHeroClass(reforged) && !_book.OpenedByWeapon(reforged))
+                    continue;
                 var slot = State.Skills[_skills.Equip(reforged, SkillLoadout.Accepts(role, reforged) ? role : (SkillSlotRole?)null)];
                 slot.StartCooldown((int)System.Math.Round(slot.Skill.Skill!.CooldownSeconds * TicksPerSecond));
                 supports.CopyTo(slot.Supports, 0);

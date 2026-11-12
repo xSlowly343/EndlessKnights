@@ -1514,7 +1514,7 @@
           "kind": "active",
           "weapon": "rune_daggers",
           "tier": "legendary",
-          "role": "fast",
+          "role": "heavy",
           "color": "red",
           "name": {"ru": "Веер кинжалов", "en": "Dagger Fan"},
           "tags": ["Strike", "Skill"],
@@ -1540,8 +1540,8 @@
       "tags": ["Strike", "Skill"],
       "cost": {"resource": 10},
       "cooldownSeconds": 4,
-      "effect": {"type": "strike", "multiplier": 3, "runes": 1},
-      "text": {"ru": "раз в 4 с удар из тени ×3, кладёт руну", "en": "every 4 s a strike from the shadows ×3, lays a rune"},
+      "effect": {"type": "strike", "multiplier": 2.5, "runes": 1, "blades": 1},
+      "text": {"ru": "раз в 4 с удар из тени ×2,5, кладёт руну и вешает кинжал", "en": "every 4 s a strike from the shadow ×2.5, lays a rune and hangs a dagger"},
       "branches": [
         {"level": 5, "options": [{"id": "runedancer_auto_1_b5a", "name": {"ru": "Сильнее", "en": "Stronger"}, "damage": 1.3}, {"id": "runedancer_auto_1_b5b", "name": {"ru": "Шаг из паузы", "en": "Step from a Pause"}, "effect": {"pauseSeconds": 3, "pauseMultiplier": 6}}]},
         {"level": 15, "options": [{"id": "runedancer_auto_1_b15a", "name": {"ru": "Дешевле", "en": "Cheaper"}, "cost": 0.5}, {"name": {"ru": "Вторая руна", "en": "Second Rune"}, "damage": 0.8, "effect": {"runes": 2}, "id": "runedancer_auto_1_b15b"}]},
@@ -1685,24 +1685,6 @@
       "text": {"ru": "удар ×3 и раскручивает вихрь до предела на 6 с", "en": "strike ×3 and spins the whirl to its limit for 6 s"}
     },
     {
-      "id": "runedancer_aura_1",
-      "kind": "aura",
-      "weapon": "rune_daggers",
-      "tier": "common",
-      "color": "red",
-      "name": {"ru": "Шепот рун", "en": "Whisper of Runes"},
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.2}], "reserve": 15, "party": true},
-      "text": {"ru": "отряд: удары +12% урона; у неё каждый удар считается за 1,2 для рун, кинжалов и вихря", "en": "party: hits +12% damage; her hits count as 1.2 for runes, daggers and the whirl"},
-      "branches": [
-        {"level": 5, "options": [{"id": "runedancer_aura_1_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.144, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.24}]}}, {"id": "runedancer_aura_1_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "runedancer_aura_1_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.132, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.22}]}}, {"id": "runedancer_aura_1_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "runedancer_aura_1_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "attackPower", "kind": "increased", "value": 0.156, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.26}]}}, {"id": "runedancer_aura_1_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
-      ]
-    },
-    {
       "id": "runedancer_aura_2",
       "kind": "aura",
       "weapon": "rune_daggers",
@@ -1712,12 +1694,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2}], "reserve": 15, "party": true},
-      "text": {"ru": "отряд: каждый 8-й удар бьёт дважды", "en": "party: every 8th hit strikes twice"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2}, {"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.2}], "reserve": 15, "party": true},
+      "text": {"ru": "отряд: каждый 8-й удар бьёт дважды, удары +12% урона; у неё каждый удар считается за 1,2 для рун, кинжалов и вихря", "en": "party: every 8th hit strikes twice, hits +12% damage; her hits count as 1.2 for runes, daggers and the whirl"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.4}]}}, {"id": "runedancer_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
-        {"level": 15, "options": [{"id": "runedancer_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.2}]}}, {"id": "runedancer_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
-        {"level": 25, "options": [{"id": "runedancer_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.6}]}}, {"id": "runedancer_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
+        {"level": 5, "options": [{"id": "runedancer_aura_2_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.4}, {"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.2}]}}, {"id": "runedancer_aura_2_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 12}}]},
+        {"level": 15, "options": [{"id": "runedancer_aura_2_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.2}, {"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.2}]}}, {"id": "runedancer_aura_2_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 14}}]},
+        {"level": 25, "options": [{"id": "runedancer_aura_2_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "keyBurstEvery", "kind": "flat", "value": 8}, {"stat": "keyBurstMultiplier", "kind": "flat", "value": 2.6}, {"stat": "attackPower", "kind": "increased", "value": 0.12, "tags": ["Strike"]}, {"stat": "traitHitWeight", "kind": "flat", "value": 0.2}]}}, {"id": "runedancer_aura_2_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 10}}]}
       ]
     },
     {
@@ -1730,12 +1712,12 @@
       "tags": ["Aura", "Skill"],
       "cost": {},
       "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.2}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.05, "while": "runeSeal"}], "reserve": 20, "party": true},
-      "text": {"ru": "отряд: проклятия и метки на враге +20% сильнее; пока на враге её печать Слова, враг получает ещё +5% урона", "en": "party: curses and marks on the enemy are 20% stronger; while her Word seal is on the enemy, it takes another 5% damage"},
+      "effect": {"type": "aura", "modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.2}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.05, "while": "runeSeal"}, {"stat": "damagePerAura", "kind": "flat", "value": 0.04}], "reserve": 20, "party": true},
+      "text": {"ru": "отряд: проклятия и метки на враге +20% сильнее, +4% урона за каждую ауру на герое; пока на враге её печать Слова, враг получает ещё +5% урона", "en": "party: curses and marks on the enemy are 20% stronger, +4% damage for every aura on the hero; while her Word seal is on the enemy, it takes another 5% damage"},
       "branches": [
-        {"level": 5, "options": [{"id": "runedancer_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.24}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.06, "while": "runeSeal"}]}}, {"id": "runedancer_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
-        {"level": 15, "options": [{"id": "runedancer_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.22}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.055, "while": "runeSeal"}]}}, {"id": "runedancer_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
-        {"level": 25, "options": [{"id": "runedancer_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.26}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.065, "while": "runeSeal"}]}}, {"id": "runedancer_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
+        {"level": 5, "options": [{"id": "runedancer_aura_3_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.24}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.06, "while": "runeSeal"}, {"stat": "damagePerAura", "kind": "flat", "value": 0.04}]}}, {"id": "runedancer_aura_3_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
+        {"level": 15, "options": [{"id": "runedancer_aura_3_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.22}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.055, "while": "runeSeal"}, {"stat": "damagePerAura", "kind": "flat", "value": 0.04}]}}, {"id": "runedancer_aura_3_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
+        {"level": 25, "options": [{"id": "runedancer_aura_3_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "enemyDebuffEffect", "kind": "increased", "value": 0.26}, {"to": "enemy", "stat": "damageTaken", "kind": "flat", "value": 0.065, "while": "runeSeal"}, {"stat": "damagePerAura", "kind": "flat", "value": 0.04}]}}, {"id": "runedancer_aura_3_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
       ]
     },
     {
@@ -1754,24 +1736,6 @@
         {"level": 5, "options": [{"id": "runedancer_aura_4_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.12}]}}, {"id": "runedancer_aura_4_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 17}}]},
         {"level": 15, "options": [{"id": "runedancer_aura_4_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.11}]}}, {"id": "runedancer_aura_4_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 19}}]},
         {"level": 25, "options": [{"id": "runedancer_aura_4_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "critMultiplier", "kind": "increased", "value": 0.13}]}}, {"id": "runedancer_aura_4_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 15}}]}
-      ]
-    },
-    {
-      "id": "runedancer_aura_5",
-      "kind": "aura",
-      "weapon": "rune_daggers",
-      "tier": "epic",
-      "color": "red",
-      "name": {"ru": "Рунный алфавит", "en": "Rune Alphabet"},
-      "tags": ["Aura", "Skill"],
-      "cost": {},
-      "cooldownSeconds": 0,
-      "effect": {"type": "aura", "modifiers": [{"stat": "damagePerAura", "kind": "flat", "value": 0.04}], "reserve": 25, "party": true},
-      "text": {"ru": "отряд: +4% урона за каждую ауру на герое", "en": "party: +4% damage for every aura on the hero"},
-      "branches": [
-        {"level": 5, "options": [{"id": "runedancer_aura_5_b5a", "name": {"ru": "Ярче", "en": "Brighter"}, "effect": {"modifiers": [{"stat": "damagePerAura", "kind": "flat", "value": 0.048}]}}, {"id": "runedancer_aura_5_b5b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 22}}]},
-        {"level": 15, "options": [{"id": "runedancer_aura_5_b15a", "name": {"ru": "Шире", "en": "Wider"}, "effect": {"modifiers": [{"stat": "damagePerAura", "kind": "flat", "value": 0.044}]}}, {"id": "runedancer_aura_5_b15b", "name": {"ru": "Тише", "en": "Quieter"}, "effect": {"reserve": 24}}]},
-        {"level": 25, "options": [{"id": "runedancer_aura_5_b25a", "name": {"ru": "Сильнее", "en": "Stronger"}, "effect": {"modifiers": [{"stat": "damagePerAura", "kind": "flat", "value": 0.052}]}}, {"id": "runedancer_aura_5_b25b", "name": {"ru": "Легче", "en": "Lighter"}, "effect": {"reserve": 20}}]}
       ]
     },
     {

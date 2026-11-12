@@ -44,7 +44,7 @@ namespace Game.Core.Tests.Sim
             return (loop, input);
         }
 
-        private static readonly string[] RunedancerSkills = { "runedancer_hit_1", "runedancer_strong_1", "runedancer_aura_1", "runedancer_queue_1", "runedancer_auto_1", "runedancer_aura_2", "runedancer_hit_2" };
+        private static readonly string[] RunedancerSkills = { "runedancer_hit_1", "runedancer_strong_1", "runedancer_aura_2", "runedancer_queue_1", "runedancer_auto_1", "runedancer_aura_2", "runedancer_hit_2" };
         private static readonly string[] MinstrelSkills = { "minstrel_hit_1", "minstrel_strong_1", "minstrel_aura_1", "minstrel_queue_1", "minstrel_auto_1", "minstrel_aura_2", "minstrel_hit_2" };
         private static readonly string[] DuelistSkills = { "duelist_hit_1", "duelist_strong_1", "duelist_aura_1", "duelist_queue_1", "duelist_auto_1", "duelist_aura_2", "duelist_hit_2" };
         private static readonly string[] GhostcaptainSkills = { "ghostcaptain_hit_1" };

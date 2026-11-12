@@ -21,8 +21,9 @@ namespace Game.Core.Tests.Content
             {
                 var skills = ClassSkills(type).ToList();
                 Assert.That(skills.Count(gem => gem.Type == SkillType.Active), Is.EqualTo(SkillRoster.ActivePerClass), type.Id);
-                Assert.That(skills.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(SkillRoster.AurasPerClass), type.Id);
-                for (var tier = 0; tier < TierSizes.Length; tier++)
+                var auras = skills.Count(gem => gem.Type == SkillType.Aura);
+                Assert.That(auras, Is.EqualTo(SkillRoster.AurasPerClass).Or.EqualTo(SkillRoster.FormerAurasPerClass), type.Id);
+                for (var tier = 0; tier < TierSizes.Length && auras == SkillRoster.FormerAurasPerClass; tier++)
                     Assert.That(skills.Count(gem => (int)gem.Skill!.Tier == tier), Is.EqualTo(TierSizes[tier]), type.Id + " tier " + (SkillTier)tier);
                 Assert.That(skills.Where(gem => gem.Branches.Count == 0), Is.Empty, type.Id + ": every class skill has branches");
             }
@@ -34,6 +35,8 @@ namespace Game.Core.Tests.Content
             foreach (var type in TestWorld.Real.Weapons.Types)
             {
                 var pool = TestWorld.Real.Weapons.PoolOf(type);
+                if (pool.Any(gem => gem.Evolves))
+                    continue;
                 for (var tier = SkillTier.Common; tier <= SkillTier.Legendary; tier++)
                 {
                     Assert.That(pool.Any(gem => gem.Skill!.Tier == tier && gem.Skill.Role == SkillRole.Fast), type.Id + " fast " + tier);

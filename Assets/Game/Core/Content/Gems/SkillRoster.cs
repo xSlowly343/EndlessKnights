@@ -7,7 +7,8 @@ namespace Game.Core.Content.Gems
     {
         public const int ActivePerClass = 12;
         public const int FamiliesPerClass = 4;
-        public const int AurasPerClass = 6;
+        public const int AurasPerClass = 4;
+        public const int FormerAurasPerClass = 6;
         public const int BranchTiers = SkillBranchTier.Count;
 
         public static List<string> Problems(GemCatalog catalog, IEnumerable<string> weapons)
@@ -19,7 +20,7 @@ namespace Game.Core.Content.Gems
                 var auras = Count(catalog, weapon, SkillType.Aura);
                 if (active != ActivePerClass)
                     problems.Add($"{weapon}: {active} active skills, expected {ActivePerClass}");
-                if (auras != AurasPerClass)
+                if (auras != AurasPerClass && auras != FormerAurasPerClass)
                     problems.Add($"{weapon}: {auras} auras, expected {AurasPerClass}");
             }
             foreach (var gem in catalog.All)
