@@ -1,10 +1,12 @@
 using System;
 using Game.Core.Clock;
 using Game.Core.Content;
+using Game.Core.Content.Gems;
 using Game.Core.Input;
 using Game.Core.Math;
 using Game.Core.Sim;
 using Game.Core.Stats;
+using Game.Core.Ui;
 using Game.Presentation.Battle;
 using UnityEngine;
 
@@ -18,6 +20,7 @@ namespace Game.Bootstrap
         private SkillBarView _skillBar = null!;
         private StripHintView _hint = null!;
         private SkillEffects _effects = null!;
+        private readonly ShowQueue _shows = new ShowQueue(ShowRules.OwnSkills);
         private GameData _data = null!;
         private int _bossTotalTicks = 1;
 
@@ -95,7 +98,7 @@ namespace Game.Bootstrap
                         _view.ShowEnemy(_loop.State.EnemyType == EnemyType.Boss, _loop.State.EnemyType == EnemyType.Guardian);
                         break;
                     case GameEventKind.SkillCast when gameEvent.Gem != null:
-                        _effects.Cast(gameEvent.Gem);
+                        OfferShow(gameEvent.Gem);
                         break;
                     case GameEventKind.BossFailed:
                         _view.Retreat();
@@ -106,6 +109,23 @@ namespace Game.Bootstrap
                 }
             }
             events.Clear();
+            PlayShows();
+        }
+
+        private void OfferShow(GemDef gem)
+        {
+            if (gem.Skill?.Effect is AuraEffect)
+                _effects.Cast(gem);
+            else
+                _shows.Offer(gem, 0, SkillShowKind.CastByHand(_loop.State.Skills, gem), Time.unscaledTime);
+        }
+
+        private void PlayShows()
+        {
+            var now = (double)Time.unscaledTime;
+            while (_shows.TryTake(now, out var cue))
+                _effects.Cast(cue.Gem, cue.Size);
+            _view.DimStrikes(_shows.UrgentBusy(now));
         }
 
         private void ShowState()

@@ -8,6 +8,7 @@ namespace Game.Presentation.Battle
         private const int Flights = 2;
         private const int Bursts = 3;
         private const float FlightEase = 0.85f;
+        private const float TierGrowth = 0.25f;
 
         public const float FlightSeconds = 0.15f;
 
@@ -18,17 +19,22 @@ namespace Game.Presentation.Battle
         private readonly SpriteRenderer[] _bursts = new SpriteRenderer[Bursts];
         private readonly float[] _flightAge = new float[Flights];
         private readonly float[] _burstAge = new float[Bursts];
+        private readonly int[] _flightTier = new int[Flights];
+        private readonly float _scale;
         private readonly Vector3 _from;
         private readonly Vector3 _groundFrom;
         private readonly float _groundY;
         private readonly float _pixel;
         private readonly float _depth;
         private Color _color = Color.white;
+        private float _opacity = 1f;
+        private float _dim = 1f;
         private StrikeArt _art;
 
         public HeroStrike(string name, Vector2 feet, float scale, int flightSortingOrder, int burstSortingOrder, float depth, Transform parent)
         {
             _depth = depth;
+            _scale = scale;
             _art = HeroModel.Strike(HeroModel.DefaultLook);
             _pixel = scale / StripSpace.PixelsPerUnit;
             _groundY = feet.y;
@@ -47,7 +53,7 @@ namespace Game.Presentation.Battle
             }
         }
 
-        public float Opacity => _color.a;
+        public float Opacity => _opacity;
 
         public bool SlashShown => _slash.enabled;
 
@@ -76,7 +82,15 @@ namespace Game.Presentation.Battle
 
         public void UseOpacity(float opacity)
         {
-            _color.a = Mathf.Clamp01(opacity);
+            _opacity = Mathf.Clamp01(opacity);
+            Recolor();
+        }
+
+        public void UseDim(float dim)
+        {
+            if (_dim == dim)
+                return;
+            _dim = Mathf.Clamp01(dim);
             Recolor();
         }
 
@@ -93,7 +107,13 @@ namespace Game.Presentation.Battle
                 _slash.sprite = sprite;
         }
 
-        public void Launch() => _flightAge[Oldest(_flightAge)] = 0f;
+        public void Launch(int tier = 1)
+        {
+            var slot = Oldest(_flightAge);
+            _flightAge[slot] = 0f;
+            _flightTier[slot] = tier;
+            Resize(_crescents[slot], tier);
+        }
 
         public void Animate(float delta, Vector2 target)
         {
@@ -111,6 +131,7 @@ namespace Game.Presentation.Battle
                     var slot = Oldest(_burstAge);
                     _burstAge[slot] = 0f;
                     _bursts[slot].transform.position = burstTarget;
+                    Resize(_bursts[slot], _flightTier[i]);
                 }
                 else
                 {
@@ -148,8 +169,15 @@ namespace Game.Presentation.Battle
                 renderer.sprite = sprite;
         }
 
+        private void Resize(SpriteRenderer renderer, int tier)
+        {
+            var size = _scale * (1f + TierGrowth * Mathf.Max(0, tier - 1));
+            renderer.transform.localScale = new Vector3(size, size, 1f);
+        }
+
         private void Recolor()
         {
+            _color.a = _opacity * _dim;
             _slash.color = _color;
             for (var i = 0; i < Flights; i++)
                 _crescents[i].color = _color;

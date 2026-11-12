@@ -192,7 +192,9 @@ namespace Game.Core.Sim
 
         public long Week => System.Math.Max(0, State.Day) / Rules.BurrowDays;
 
-        public bool BurrowReady => State.BurrowWeek != Week;
+        public int BurrowTries => 1 + (int)_companions.TreeStat(MenagerieStat.BurrowTries);
+
+        public bool BurrowReady => State.BurrowWeek != Week || State.BurrowRuns < BurrowTries;
 
         public double Power(string companion)
         {
@@ -224,6 +226,7 @@ namespace Game.Core.Sim
                 }
                 run.Power += Power(party[i]);
             }
+            State.BurrowRuns = State.BurrowWeek == Week ? State.BurrowRuns + 1 : 1;
             State.BurrowWeek = Week;
             var floors = Rules.Floors;
             for (var i = 0; i < floors.Count && run.Power >= floors[i].Power; i++)

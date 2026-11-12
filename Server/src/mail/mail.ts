@@ -19,7 +19,7 @@ interface MailLetter {
 }
 
 const MailCollection = "mail";
-const MailListLimit = 50;
+const MailListLimit = 100;
 
 function mailSend(nk: nkruntime.Nakama, userId: string, letter: MailLetter): boolean {
     try {

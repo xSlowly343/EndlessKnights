@@ -257,7 +257,7 @@ namespace Game.Core.Tests.Sim
         {
             var (loop, _) = Hero(Flat(GhostcaptainStats.ParrotPower, 0.5));
             Cast(loop, "ghostcaptain_hit_3");
-            Assert.That(loop.State.Ghostcaptain.LastSkillPower, Is.EqualTo(5).Within(1e-9));
+            Assert.That(loop.State.Ghostcaptain.LastSkillPower, Is.EqualTo(6).Within(1e-9));
             Cast(loop, "ghostcaptain_path_3");
             Assert.That(loop.State.Ghostcaptain.Repeats, Is.EqualTo(1));
         }

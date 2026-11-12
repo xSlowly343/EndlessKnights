@@ -55,6 +55,8 @@ namespace Game.Core.Content.Gems
             ["circle"] = ArmOn.Circle
         };
 
+        private const string EvolutionsField = "evolutions";
+
         private readonly Dictionary<string, GemDef> _byId;
         private readonly Dictionary<int, GemDef> _byNetId;
         private readonly Dictionary<string, string> _formerIds;
@@ -100,18 +102,29 @@ namespace Game.Core.Content.Gems
             var netIds = new Dictionary<int, string>();
             var formerIds = new Dictionary<string, string>(StringComparer.Ordinal);
             var paths = new HashSet<string>(StringComparer.Ordinal);
+            var forms = new List<ContentNode>();
             foreach (var node in root.Field("gems").Items())
             {
-                var gem = ReadGem(node);
-                ReadFormerIds(node, gem.Id, formerIds);
-                if (!ids.Add(gem.Id))
-                    throw node.Field("id").Error($"gem id '{gem.Id}' is used twice");
-                if (netIds.TryGetValue(gem.NetId, out var clash))
-                    throw node.Field("id").Error($"gem id '{gem.Id}' has the same network hash as '{clash}', rename one of them");
-                netIds.Add(gem.NetId, gem.Id);
-                if (gem.Ascendancy != null && !paths.Add(gem.Ascendancy))
-                    throw node.Field("ascendancy").Error($"path '{gem.Ascendancy}' already has a skill");
-                gems.Add(gem);
+                forms.Clear();
+                forms.Add(node);
+                if (node.HasField(EvolutionsField))
+                    forms.AddRange(node.Field(EvolutionsField).Items());
+                var first = gems.Count;
+                foreach (var form in forms)
+                {
+                    var gem = ReadGem(form);
+                    ReadFormerIds(form, gem.Id, formerIds);
+                    if (!ids.Add(gem.Id))
+                        throw form.Field("id").Error($"gem id '{gem.Id}' is used twice");
+                    if (netIds.TryGetValue(gem.NetId, out var clash))
+                        throw form.Field("id").Error($"gem id '{gem.Id}' has the same network hash as '{clash}', rename one of them");
+                    netIds.Add(gem.NetId, gem.Id);
+                    if (gem.Ascendancy != null && !paths.Add(gem.Ascendancy))
+                        throw form.Field("ascendancy").Error($"path '{gem.Ascendancy}' already has a skill");
+                    gems.Add(gem);
+                }
+                if (forms.Count > 1)
+                    BindForms(gems.GetRange(first, forms.Count), forms);
             }
             foreach (var former in formerIds)
             {
@@ -120,6 +133,25 @@ namespace Game.Core.Content.Gems
             }
             BindToSkills(gems, root.Field("gems"));
             return new GemCatalog(gems, GemLevels.Read(root.Field("levels")), formerIds);
+        }
+
+        private static void BindForms(List<GemDef> forms, List<ContentNode> nodes)
+        {
+            for (var i = 0; i < forms.Count; i++)
+            {
+                var form = forms[i];
+                if (form.Type != SkillType.Active || form.Skill?.Weapon == null || form.Ascendancy != null || form.Locked)
+                    throw nodes[i].Error("only an open active skill of a class evolves");
+                if (i == 0)
+                    continue;
+                if (nodes[i].HasField(EvolutionsField))
+                    throw nodes[i].Field(EvolutionsField).Error("an evolution lists no evolutions of its own, add it to the first form");
+                if (form.Skill!.Weapon != forms[0].Skill!.Weapon)
+                    throw nodes[i].Field("weapon").Error($"an evolution of '{forms[0].Id}' keeps its weapon '{forms[0].Skill!.Weapon}'");
+                if (form.Skill.Tier <= forms[i - 1].Skill!.Tier)
+                    throw nodes[i].Field("tier").Error($"an evolution has a higher tier than the form before it, '{forms[i - 1].Id}'");
+            }
+            forms[0].EvolveInto(forms);
         }
 
         private static void ReadFormerIds(ContentNode node, string id, Dictionary<string, string> formerIds)
@@ -333,6 +365,139 @@ namespace Game.Core.Content.Gems
             return new SkillDef(resource, node.Field("cooldownSeconds").AsNumber(0, 3600), duration, effect, weapon, native, family, armOn, tier, role);
         }
 
+        private static StrikeEffect ReadStrike(ContentNode node, double multiplier)
+        {
+            return new StrikeEffect(
+                multiplier,
+                node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
+                node.HasField("skipCurrent") && node.Field("skipCurrent").AsBool(),
+                node.HasField("killRefundShare") ? node.Field("killRefundShare").AsNumber(0, 1) : 0,
+                Number(node, "queueMultiplier", 1e6),
+                Number(node, "executeBelow", 1),
+                node.HasField("coinFlip") && node.Field("coinFlip").AsBool(),
+                Number(node, "critChance", 1),
+                node.HasField("arrow") && node.Field("arrow").AsBool())
+            {
+                LowHpBelow = Number(node, "lowHpBelow", 1),
+                LowHpMultiplier = Number(node, "lowHpMultiplier", 1e6),
+                BossMultiplier = Number(node, "bossMultiplier", 1000),
+                LastKeyHit = node.HasField("lastKeyHit") && node.Field("lastKeyHit").AsBool(),
+                PauseSeconds = Number(node, "pauseSeconds", 3600),
+                PauseMultiplier = Number(node, "pauseMultiplier", 1e6),
+                BossTimerStopSeconds = Number(node, "bossTimerStopSeconds", 600),
+                Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null,
+                ConsumeMinion = node.HasField("consumeMinion") && node.Field("consumeMinion").AsBool(),
+                BurnStacks = Number(node, "burnStacks", 1000),
+                Runes = node.HasField("runes") ? node.Field("runes").AsInt(0, 100) : 0,
+                Word = node.HasField("word") && node.Field("word").AsBool(),
+                Blades = node.HasField("blades") ? node.Field("blades").AsInt(0, 100) : 0,
+                BladeRain = node.HasField("bladeRain") && node.Field("bladeRain").AsBool(),
+                WhirlSeconds = Number(node, "whirlSeconds", 600),
+                Breach = node.HasField("breach") && node.Field("breach").AsBool(),
+                Touches = node.HasField("touches") ? node.Field("touches").AsInt(0, 100) : 0,
+                PhantomSeconds = Number(node, "phantomSeconds", 600),
+                Tension = Number(node, "tension", 1000),
+                Gusts = node.HasField("gusts") ? node.Field("gusts").AsInt(0, 100) : 0,
+                CalmSeconds = Number(node, "calmSeconds", 600),
+                Shot = node.HasField("shot") && node.Field("shot").AsBool(),
+                Crystals = node.HasField("crystals") ? node.Field("crystals").AsInt(0, 100) : 0,
+                Shatter = Number(node, "shatter", 100),
+                Grow = node.HasField("grow") ? node.Field("grow").AsInt(0, 100) : 0,
+                Crack = node.HasField("crack") && node.Field("crack").AsBool(),
+                PrisonSeconds = Number(node, "prisonSeconds", 600),
+                HeartSeconds = Number(node, "heartSeconds", 600),
+                Resonance = Number(node, "resonance", 1000),
+                PerCrystal = Number(node, "perCrystal", 100),
+                Sand = Number(node, "sand", 1000),
+                Pour = node.HasField("pour") ? node.Field("pour").AsInt(0, 100_000) : 0,
+                Camp = node.HasField("camp") && node.Field("camp").AsBool(),
+                Mirages = node.HasField("mirages") ? node.Field("mirages").AsInt(0, 100) : 0,
+                TopHit = Number(node, "topHit", 100),
+                AfterStep = Number(node, "afterStep", 100),
+                StepHit = Number(node, "stepHit", 100),
+                BlindSeconds = Number(node, "blindSeconds", 600),
+                TimerSeconds = Number(node, "timerSeconds", 600),
+                Lines = node.HasField("lines") ? node.Field("lines").AsInt(0, 100) : 0,
+                Notes = node.HasField("notes") ? node.Field("notes").AsInt(0, 100) : 0,
+                Tune = node.HasField("tune") && node.Field("tune").AsBool(),
+                ClimaxHit = Number(node, "climaxHit", 100),
+                Finale = Number(node, "finale", 100),
+                HymnSeconds = Number(node, "hymnSeconds", 600),
+                HymnPower = Number(node, "hymnPower", 10),
+                SoloSeconds = Number(node, "soloSeconds", 600),
+                Dream = Number(node, "dream", 1000),
+                CaughtHit = Number(node, "caughtHit", 100),
+                Nets = node.HasField("nets") ? node.Field("nets").AsInt(0, 100) : 0,
+                AlbumAdd = node.HasField("album") ? node.Field("album").AsInt(0, 1000) : 0,
+                Bait = node.HasField("bait") ? node.Field("bait").AsInt(0, 100_000) : 0,
+                DozeSeconds = Number(node, "dozeSeconds", 600),
+                LucidSeconds = Number(node, "lucidSeconds", 600),
+                LitHit = Number(node, "litHit", 100),
+                Oil = Number(node, "oil", 1000),
+                Light = Number(node, "light", 1),
+                Fireflies = node.HasField("fireflies") ? node.Field("fireflies").AsInt(0, 100) : 0,
+                Flash = node.HasField("flash") && node.Field("flash").AsBool(),
+                GlowSeconds = Number(node, "glowSeconds", 600),
+                GlowPerOil = Number(node, "glowPerOil", 1),
+                Curse = Number(node, "curse", 10),
+                CurseSeconds = Number(node, "curseSeconds", 600),
+                CurseHit = Number(node, "curseHit", 1000),
+                ExtendCurse = Number(node, "extendCurse", 600),
+                Whisper = Number(node, "whisper", 1000),
+                Knots = node.HasField("knots") ? node.Field("knots").AsInt(0, 7) : 0,
+                Seventh = node.HasField("seventh") && node.Field("seventh").AsBool(),
+                NameHits = node.HasField("nameHits") ? node.Field("nameHits").AsInt(0, 100_000) : 0,
+                Hush = node.HasField("hush") ? node.Field("hush").AsInt(0, 100) : 0,
+                Wind = Number(node, "wind", 1000),
+                WindHit = Number(node, "windHit", 1000),
+                HoldSeconds = Number(node, "holdSeconds", 600),
+                CutCooldowns = Number(node, "cutCooldowns", 600),
+                WindBurst = Number(node, "windBurst", 100),
+                Rewind = node.HasField("rewind") && node.Field("rewind").AsBool(),
+                GearTick = node.HasField("gearTick") && node.Field("gearTick").AsBool(),
+                Reagents = node.HasField("reagents") ? node.Field("reagents").AsInt(0, 10) : 0,
+                Flask = node.HasField("flask") && node.Field("flask").AsBool(),
+                Layers = node.HasField("layers") ? node.Field("layers").AsInt(0, 20) : 0,
+                Elixir = node.HasField("elixir") && node.Field("elixir").AsBool(),
+                Corrode = Number(node, "corrode", 10),
+                CorrodeSeconds = Number(node, "corrodeSeconds", 600),
+                VeinHits = Number(node, "veinHits", 1000),
+                Luck = Number(node, "luck", 1),
+                Nuggets = node.HasField("nuggets") ? node.Field("nuggets").AsInt(0, 100) : 0,
+                GoldHit = Number(node, "goldHit", 1000),
+                VeinGold = Number(node, "veinGold", 1000),
+                Souls = node.HasField("souls") ? node.Field("souls").AsInt(0, 16) : 0,
+                SpiritsHit = Number(node, "spiritsHit", 1000),
+                ReleaseAll = node.HasField("releaseAll") && node.Field("releaseAll").AsBool(),
+                Lend = node.HasField("lend") && node.Field("lend").AsBool(),
+                Breathe = node.HasField("breathe") && node.Field("breathe").AsBool(),
+                Cannons = node.HasField("cannons") ? node.Field("cannons").AsInt(0, 20) : 0,
+                Volley = node.HasField("volley") && node.Field("volley").AsBool(),
+                Sailors = node.HasField("sailors") ? node.Field("sailors").AsInt(0, 100) : 0,
+                CrewHit = Number(node, "crewHit", 1000),
+                ParrotRepeat = node.HasField("parrotRepeat") && node.Field("parrotRepeat").AsBool(),
+                Moths = node.HasField("moths") ? node.Field("moths").AsInt(0, 200) : 0,
+                SwarmHit = Number(node, "swarmHit", 1000),
+                Wake = node.HasField("wake") && node.Field("wake").AsBool(),
+                Cards = node.HasField("cards") ? node.Field("cards").AsInt(0, 20) : 0,
+                Arcana = node.HasField("arcana") && node.Field("arcana").AsBool(),
+                Reveal = node.HasField("reveal") && node.Field("reveal").AsBool(),
+                HandHit = Number(node, "handHit", 1000),
+                Forecast = node.HasField("forecast") && node.Field("forecast").AsBool(),
+                Seeds = node.HasField("seeds") ? node.Field("seeds").AsInt(0, 20) : 0,
+                Bloom = node.HasField("bloom") && node.Field("bloom").AsBool(),
+                Venom = Number(node, "venom", 1000),
+                VenomBurst = Number(node, "venomBurst", 100),
+                Drink = node.HasField("drink") && node.Field("drink").AsBool(),
+                SealHits = node.HasField("sealHits") ? node.Field("sealHits").AsInt(0, 1000) : 0,
+                GolemHit = Number(node, "golemHit", 1000),
+                GolemSeconds = Number(node, "golemSeconds", 600),
+                CompleteSeal = node.HasField("seal") && node.Field("seal").AsBool(),
+                GolemRunes = node.HasField("golemRunes") ? node.Field("golemRunes").AsInt(0, 100) : 0,
+                Golemlings = node.HasField("golemlings") ? node.Field("golemlings").AsInt(0, 20) : 0
+            };
+        }
+
         private static SkillEffect ReadEffect(ContentNode node, double durationSeconds)
         {
             var typeNode = node.Field("type");
@@ -341,135 +506,7 @@ namespace Game.Core.Content.Gems
                 case "chainHits":
                     return new ChainHitsEffect(node.Field("hits").AsInt(1, 100000), node.Field("nextEnemyShare").AsNumber(0, 100));
                 case "strike":
-                    return new StrikeEffect(
-                        node.Field("multiplier").AsNumber(0, 1e6),
-                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0,
-                        node.HasField("skipCurrent") && node.Field("skipCurrent").AsBool(),
-                        node.HasField("killRefundShare") ? node.Field("killRefundShare").AsNumber(0, 1) : 0,
-                        Number(node, "queueMultiplier", 1e6),
-                        Number(node, "executeBelow", 1),
-                        node.HasField("coinFlip") && node.Field("coinFlip").AsBool(),
-                        Number(node, "critChance", 1),
-                        node.HasField("arrow") && node.Field("arrow").AsBool())
-                    {
-                        LowHpBelow = Number(node, "lowHpBelow", 1),
-                        LowHpMultiplier = Number(node, "lowHpMultiplier", 1e6),
-                        BossMultiplier = Number(node, "bossMultiplier", 1000),
-                        LastKeyHit = node.HasField("lastKeyHit") && node.Field("lastKeyHit").AsBool(),
-                        PauseSeconds = Number(node, "pauseSeconds", 3600),
-                        PauseMultiplier = Number(node, "pauseMultiplier", 1e6),
-                        BossTimerStopSeconds = Number(node, "bossTimerStopSeconds", 600),
-                        Stacks = node.HasField("stacks") ? ReadCastStacks(node.Field("stacks")) : null,
-                        ConsumeMinion = node.HasField("consumeMinion") && node.Field("consumeMinion").AsBool(),
-                        BurnStacks = Number(node, "burnStacks", 1000),
-                        Runes = node.HasField("runes") ? node.Field("runes").AsInt(0, 100) : 0,
-                        Word = node.HasField("word") && node.Field("word").AsBool(),
-                        Blades = node.HasField("blades") ? node.Field("blades").AsInt(0, 100) : 0,
-                        BladeRain = node.HasField("bladeRain") && node.Field("bladeRain").AsBool(),
-                        WhirlSeconds = Number(node, "whirlSeconds", 600),
-                        Breach = node.HasField("breach") && node.Field("breach").AsBool(),
-                        Touches = node.HasField("touches") ? node.Field("touches").AsInt(0, 100) : 0,
-                        PhantomSeconds = Number(node, "phantomSeconds", 600),
-                        Tension = Number(node, "tension", 1000),
-                        Gusts = node.HasField("gusts") ? node.Field("gusts").AsInt(0, 100) : 0,
-                        CalmSeconds = Number(node, "calmSeconds", 600),
-                        Shot = node.HasField("shot") && node.Field("shot").AsBool(),
-                        Crystals = node.HasField("crystals") ? node.Field("crystals").AsInt(0, 100) : 0,
-                        Shatter = Number(node, "shatter", 100),
-                        Grow = node.HasField("grow") ? node.Field("grow").AsInt(0, 100) : 0,
-                        Crack = node.HasField("crack") && node.Field("crack").AsBool(),
-                        PrisonSeconds = Number(node, "prisonSeconds", 600),
-                        HeartSeconds = Number(node, "heartSeconds", 600),
-                        Resonance = Number(node, "resonance", 1000),
-                        PerCrystal = Number(node, "perCrystal", 100),
-                        Sand = Number(node, "sand", 1000),
-                        Pour = node.HasField("pour") ? node.Field("pour").AsInt(0, 100_000) : 0,
-                        Camp = node.HasField("camp") && node.Field("camp").AsBool(),
-                        Mirages = node.HasField("mirages") ? node.Field("mirages").AsInt(0, 100) : 0,
-                        TopHit = Number(node, "topHit", 100),
-                        AfterStep = Number(node, "afterStep", 100),
-                        StepHit = Number(node, "stepHit", 100),
-                        BlindSeconds = Number(node, "blindSeconds", 600),
-                        TimerSeconds = Number(node, "timerSeconds", 600),
-                        Lines = node.HasField("lines") ? node.Field("lines").AsInt(0, 100) : 0,
-                        Notes = node.HasField("notes") ? node.Field("notes").AsInt(0, 100) : 0,
-                        Tune = node.HasField("tune") && node.Field("tune").AsBool(),
-                        ClimaxHit = Number(node, "climaxHit", 100),
-                        Finale = Number(node, "finale", 100),
-                        HymnSeconds = Number(node, "hymnSeconds", 600),
-                        HymnPower = Number(node, "hymnPower", 10),
-                        SoloSeconds = Number(node, "soloSeconds", 600),
-                        Dream = Number(node, "dream", 1000),
-                        CaughtHit = Number(node, "caughtHit", 100),
-                        Nets = node.HasField("nets") ? node.Field("nets").AsInt(0, 100) : 0,
-                        AlbumAdd = node.HasField("album") ? node.Field("album").AsInt(0, 1000) : 0,
-                        Bait = node.HasField("bait") ? node.Field("bait").AsInt(0, 100_000) : 0,
-                        DozeSeconds = Number(node, "dozeSeconds", 600),
-                        LucidSeconds = Number(node, "lucidSeconds", 600),
-                        LitHit = Number(node, "litHit", 100),
-                        Oil = Number(node, "oil", 1000),
-                        Light = Number(node, "light", 1),
-                        Fireflies = node.HasField("fireflies") ? node.Field("fireflies").AsInt(0, 100) : 0,
-                        Flash = node.HasField("flash") && node.Field("flash").AsBool(),
-                        GlowSeconds = Number(node, "glowSeconds", 600),
-                        GlowPerOil = Number(node, "glowPerOil", 1),
-                        Curse = Number(node, "curse", 10),
-                        CurseSeconds = Number(node, "curseSeconds", 600),
-                        CurseHit = Number(node, "curseHit", 1000),
-                        ExtendCurse = Number(node, "extendCurse", 600),
-                        Whisper = Number(node, "whisper", 1000),
-                        Knots = node.HasField("knots") ? node.Field("knots").AsInt(0, 7) : 0,
-                        Seventh = node.HasField("seventh") && node.Field("seventh").AsBool(),
-                        NameHits = node.HasField("nameHits") ? node.Field("nameHits").AsInt(0, 100_000) : 0,
-                        Hush = node.HasField("hush") ? node.Field("hush").AsInt(0, 100) : 0,
-                        Wind = Number(node, "wind", 1000),
-                        WindHit = Number(node, "windHit", 1000),
-                        HoldSeconds = Number(node, "holdSeconds", 600),
-                        CutCooldowns = Number(node, "cutCooldowns", 600),
-                        WindBurst = Number(node, "windBurst", 100),
-                        Rewind = node.HasField("rewind") && node.Field("rewind").AsBool(),
-                        GearTick = node.HasField("gearTick") && node.Field("gearTick").AsBool(),
-                        Reagents = node.HasField("reagents") ? node.Field("reagents").AsInt(0, 10) : 0,
-                        Flask = node.HasField("flask") && node.Field("flask").AsBool(),
-                        Layers = node.HasField("layers") ? node.Field("layers").AsInt(0, 20) : 0,
-                        Elixir = node.HasField("elixir") && node.Field("elixir").AsBool(),
-                        Corrode = Number(node, "corrode", 10),
-                        CorrodeSeconds = Number(node, "corrodeSeconds", 600),
-                        VeinHits = Number(node, "veinHits", 1000),
-                        Luck = Number(node, "luck", 1),
-                        Nuggets = node.HasField("nuggets") ? node.Field("nuggets").AsInt(0, 100) : 0,
-                        GoldHit = Number(node, "goldHit", 1000),
-                        VeinGold = Number(node, "veinGold", 1000),
-                        Souls = node.HasField("souls") ? node.Field("souls").AsInt(0, 16) : 0,
-                        SpiritsHit = Number(node, "spiritsHit", 1000),
-                        ReleaseAll = node.HasField("releaseAll") && node.Field("releaseAll").AsBool(),
-                        Lend = node.HasField("lend") && node.Field("lend").AsBool(),
-                        Breathe = node.HasField("breathe") && node.Field("breathe").AsBool(),
-                        Cannons = node.HasField("cannons") ? node.Field("cannons").AsInt(0, 20) : 0,
-                        Volley = node.HasField("volley") && node.Field("volley").AsBool(),
-                        Sailors = node.HasField("sailors") ? node.Field("sailors").AsInt(0, 100) : 0,
-                        CrewHit = Number(node, "crewHit", 1000),
-                        ParrotRepeat = node.HasField("parrotRepeat") && node.Field("parrotRepeat").AsBool(),
-                        Moths = node.HasField("moths") ? node.Field("moths").AsInt(0, 200) : 0,
-                        SwarmHit = Number(node, "swarmHit", 1000),
-                        Wake = node.HasField("wake") && node.Field("wake").AsBool(),
-                        Cards = node.HasField("cards") ? node.Field("cards").AsInt(0, 20) : 0,
-                        Arcana = node.HasField("arcana") && node.Field("arcana").AsBool(),
-                        Reveal = node.HasField("reveal") && node.Field("reveal").AsBool(),
-                        HandHit = Number(node, "handHit", 1000),
-                        Forecast = node.HasField("forecast") && node.Field("forecast").AsBool(),
-                        Seeds = node.HasField("seeds") ? node.Field("seeds").AsInt(0, 20) : 0,
-                        Bloom = node.HasField("bloom") && node.Field("bloom").AsBool(),
-                        Venom = Number(node, "venom", 1000),
-                        VenomBurst = Number(node, "venomBurst", 100),
-                        Drink = node.HasField("drink") && node.Field("drink").AsBool(),
-                        SealHits = node.HasField("sealHits") ? node.Field("sealHits").AsInt(0, 1000) : 0,
-                        GolemHit = Number(node, "golemHit", 1000),
-                        GolemSeconds = Number(node, "golemSeconds", 600),
-                        CompleteSeal = node.HasField("seal") && node.Field("seal").AsBool(),
-                        GolemRunes = node.HasField("golemRunes") ? node.Field("golemRunes").AsInt(0, 100) : 0,
-                        Golemlings = node.HasField("golemlings") ? node.Field("golemlings").AsInt(0, 20) : 0
-                    };
+                    return ReadStrike(node, node.Field("multiplier").AsNumber(0, 1e6));
                 case "aura":
                     return new AuraEffect(
                         ModifierReader.ReadList(node.Field("modifiers")),
@@ -506,7 +543,10 @@ namespace Game.Core.Content.Gems
                         node.Field("hits").AsInt(1, 10000),
                         node.Field("seconds").AsNumber(0.1, 3600),
                         node.Field("multiplier").AsNumber(0, 1e6),
-                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0);
+                        node.HasField("queueTargets") ? node.Field("queueTargets").AsInt(0, Sim.GameState.QueueDepth) : 0)
+                    {
+                        Cast = node.HasField("cast") ? ReadStrike(node.Field("cast"), 0) : null
+                    };
                 case "inputHits":
                     return new InputHitsEffect(
                         Number(node, "pxPerHit", 1e6),

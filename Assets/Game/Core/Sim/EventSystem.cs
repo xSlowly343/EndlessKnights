@@ -42,6 +42,7 @@ namespace Game.Core.Sim
         public EventWindow? ShopWindow => _day == long.MinValue ? null : _rules.ShopWindowAt(_day);
         public bool Active => _window != null;
         public System.Action<string>? BossWon { get; set; }
+        public System.Action<string>? CompanionEarned { get; set; }
         public bool FightInside => State.FightInside;
         public int FightsLeftToday => System.Math.Max(0, _rules.BossPerDay - (State.BossDay == _day ? State.BossFightsToday : 0));
 
@@ -244,6 +245,9 @@ namespace Game.Core.Sim
                 if (!events.GoalsDone.Contains(goals[i].Id) && Progress(goals[i].Kind) >= goals[i].Target)
                     events.GoalsDone.Add(goals[i].Id);
             }
+            var companion = _window?.Event.Companion ?? string.Empty;
+            if (companion.Length > 0 && events.GoalsDone.Count >= _rules.CompanionGoals)
+                CompanionEarned?.Invoke(companion);
         }
 
         private void LeaveFight()

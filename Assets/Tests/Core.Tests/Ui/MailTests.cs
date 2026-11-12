@@ -97,5 +97,37 @@ namespace Game.Core.Tests.Ui
             Assert.That(MailText.Arrived(Rift("rift-1")), Is.EqualTo("Новое письмо: Итоги Разлома"));
             Assert.That(MailText.Taken(Rift("rift-1")), Does.StartWith("Получено: Осколки +200"));
         }
+
+        [Test]
+        public void AHundredLettersTurnPageByPage()
+        {
+            var first = MailText.Page(100, 5, 0);
+            var last = MailText.Page(100, 5, 99);
+            var odd = MailText.Page(13, 5, 2);
+
+            Assert.That(first.Pages, Is.EqualTo(20));
+            Assert.That(first.Count, Is.EqualTo(5));
+            Assert.That(first.HasPrevious, Is.False);
+            Assert.That(first.HasNext, Is.True);
+            Assert.That(first.Label, Is.EqualTo("1 из 20"));
+            Assert.That(last.Index, Is.EqualTo(19), "a page past the end is the last one");
+            Assert.That(last.First, Is.EqualTo(95));
+            Assert.That(last.HasNext, Is.False);
+            Assert.That(odd.First, Is.EqualTo(10));
+            Assert.That(odd.Count, Is.EqualTo(3));
+            Assert.That(MailText.Page(13, 5, -4).Index, Is.Zero);
+        }
+
+        [Test]
+        public void AnEmptyBoxIsOnePageWithoutTurns()
+        {
+            var page = MailText.Page(0, 6, 3);
+
+            Assert.That(page.Pages, Is.EqualTo(1));
+            Assert.That(page.Index, Is.Zero);
+            Assert.That(page.Count, Is.Zero);
+            Assert.That(page.HasPrevious || page.HasNext, Is.False);
+            Assert.That(MailText.Page(4, 0, 0).Count, Is.EqualTo(1), "a panel too short for a row still shows one");
+        }
     }
 }

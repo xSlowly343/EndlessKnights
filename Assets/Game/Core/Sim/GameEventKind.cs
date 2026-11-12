@@ -77,6 +77,8 @@ namespace Game.Core.Sim
         WispCaught,
         WispEscaped,
         DungeonKeySalvaged,
-        DungeonKeysMerged
+        DungeonKeysMerged,
+        StripPlaceChanged,
+        StripFightChanged
     }
 }

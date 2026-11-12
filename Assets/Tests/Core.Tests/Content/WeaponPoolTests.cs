@@ -9,36 +9,34 @@ namespace Game.Core.Tests.Content
 {
     public class WeaponPoolTests
     {
-        private static readonly int[] TierSizes = { 5, 5, 3, 3, 2 };
-
         private static IEnumerable<GemDef> ClassSkills(WeaponType type) =>
             TestWorld.Real.Gems.All.Where(gem => gem.Skill?.Weapon == type.Id && gem.Ascendancy == null);
 
         [Test]
-        public void EveryPoolHoldsTwelveSkillsAndSixAurasSplitFiveFiveThreeThreeTwo()
+        public void EveryPoolHoldsFourFamiliesOfThreeFormsAndFourAuras()
         {
             foreach (var type in TestWorld.Real.Weapons.Types)
             {
                 var skills = ClassSkills(type).ToList();
+                var families = skills.Where(gem => gem.Type == SkillType.Active && gem.Root == gem).ToList();
+                Assert.That(families, Has.Count.EqualTo(SkillRoster.FamiliesPerClass), type.Id);
+                Assert.That(families.Select(root => root.Forms.Count), Is.All.EqualTo(SkillRoster.FormsPerFamily), type.Id);
                 Assert.That(skills.Count(gem => gem.Type == SkillType.Active), Is.EqualTo(SkillRoster.ActivePerClass), type.Id);
                 Assert.That(skills.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(SkillRoster.AurasPerClass), type.Id);
-                for (var tier = 0; tier < TierSizes.Length; tier++)
-                    Assert.That(skills.Count(gem => (int)gem.Skill!.Tier == tier), Is.EqualTo(TierSizes[tier]), type.Id + " tier " + (SkillTier)tier);
                 Assert.That(skills.Where(gem => gem.Branches.Count == 0), Is.Empty, type.Id + ": every class skill has branches");
             }
         }
 
         [Test]
-        public void EveryTierOfAPoolHasAFastAndAHeavySkillToRoll()
+        public void EveryFamilyKeepsOneRoleAndEveryClassHasAFastAndAHeavyFamily()
         {
             foreach (var type in TestWorld.Real.Weapons.Types)
             {
-                var pool = TestWorld.Real.Weapons.PoolOf(type);
-                for (var tier = SkillTier.Common; tier <= SkillTier.Legendary; tier++)
-                {
-                    Assert.That(pool.Any(gem => gem.Skill!.Tier == tier && gem.Skill.Role == SkillRole.Fast), type.Id + " fast " + tier);
-                    Assert.That(pool.Any(gem => gem.Skill!.Tier == tier && gem.Skill.Role == SkillRole.Heavy), type.Id + " heavy " + tier);
-                }
+                var families = ClassSkills(type).Where(gem => gem.Type == SkillType.Active && gem.Root == gem).ToList();
+                foreach (var root in families)
+                    Assert.That(root.Forms.Select(form => form.Skill!.Role).Distinct().Count(), Is.EqualTo(1), root.Id);
+                Assert.That(families.Any(root => root.Skill!.Role == SkillRole.Fast), type.Id + " fast");
+                Assert.That(families.Any(root => root.Skill!.Role == SkillRole.Heavy), type.Id + " heavy");
             }
         }
 

@@ -1,0 +1,633 @@
+{
+ "frames": [
+  {
+   "filename": "phoenix-rise 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 1",
+   "frame": {
+    "x": 124,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 2",
+   "frame": {
+    "x": 248,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 3",
+   "frame": {
+    "x": 372,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 4",
+   "frame": {
+    "x": 496,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 5",
+   "frame": {
+    "x": 0,
+    "y": 80,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 6",
+   "frame": {
+    "x": 124,
+    "y": 80,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 7",
+   "frame": {
+    "x": 248,
+    "y": 80,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 8",
+   "frame": {
+    "x": 372,
+    "y": 80,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 9",
+   "frame": {
+    "x": 496,
+    "y": 80,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 10",
+   "frame": {
+    "x": 0,
+    "y": 160,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 11",
+   "frame": {
+    "x": 124,
+    "y": 160,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 12",
+   "frame": {
+    "x": 248,
+    "y": 160,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 13",
+   "frame": {
+    "x": 372,
+    "y": 160,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 14",
+   "frame": {
+    "x": 496,
+    "y": 160,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 15",
+   "frame": {
+    "x": 0,
+    "y": 240,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 16",
+   "frame": {
+    "x": 124,
+    "y": 240,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 17",
+   "frame": {
+    "x": 248,
+    "y": 240,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 18",
+   "frame": {
+    "x": 372,
+    "y": 240,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 19",
+   "frame": {
+    "x": 496,
+    "y": 240,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 20",
+   "frame": {
+    "x": 0,
+    "y": 320,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 21",
+   "frame": {
+    "x": 124,
+    "y": 320,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 22",
+   "frame": {
+    "x": 248,
+    "y": 320,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 23",
+   "frame": {
+    "x": 372,
+    "y": 320,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 24",
+   "frame": {
+    "x": 496,
+    "y": 320,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 25",
+   "frame": {
+    "x": 0,
+    "y": 400,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-rise 26",
+   "frame": {
+    "x": 124,
+    "y": 400,
+    "w": 124,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 80
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "phoenix-rise.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 620,
+   "h": 480
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "phoenix-rise",
+    "from": 0,
+    "to": 26,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/phoenix-rise",
+   "name": "Phoenix rise",
+   "fps": 30,
+   "loop": false,
+   "frames": 27,
+   "frameSize": [
+    124,
+    80
+   ],
+   "pivot": [
+    66,
+    64
+   ],
+   "columns": 5
+  }
+ }
+}

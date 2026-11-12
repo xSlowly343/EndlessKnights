@@ -1,0 +1,677 @@
+{
+ "frames": [
+  {
+   "filename": "golem-fist 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 1",
+   "frame": {
+    "x": 116,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 2",
+   "frame": {
+    "x": 232,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 3",
+   "frame": {
+    "x": 348,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 4",
+   "frame": {
+    "x": 464,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 5",
+   "frame": {
+    "x": 0,
+    "y": 66,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 6",
+   "frame": {
+    "x": 116,
+    "y": 66,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 7",
+   "frame": {
+    "x": 232,
+    "y": 66,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 8",
+   "frame": {
+    "x": 348,
+    "y": 66,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 9",
+   "frame": {
+    "x": 464,
+    "y": 66,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 10",
+   "frame": {
+    "x": 0,
+    "y": 132,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 11",
+   "frame": {
+    "x": 116,
+    "y": 132,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 12",
+   "frame": {
+    "x": 232,
+    "y": 132,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 13",
+   "frame": {
+    "x": 348,
+    "y": 132,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 14",
+   "frame": {
+    "x": 464,
+    "y": 132,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 15",
+   "frame": {
+    "x": 0,
+    "y": 198,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 16",
+   "frame": {
+    "x": 116,
+    "y": 198,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 17",
+   "frame": {
+    "x": 232,
+    "y": 198,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 18",
+   "frame": {
+    "x": 348,
+    "y": 198,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 19",
+   "frame": {
+    "x": 464,
+    "y": 198,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 20",
+   "frame": {
+    "x": 0,
+    "y": 264,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 21",
+   "frame": {
+    "x": 116,
+    "y": 264,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 22",
+   "frame": {
+    "x": 232,
+    "y": 264,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 23",
+   "frame": {
+    "x": 348,
+    "y": 264,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 24",
+   "frame": {
+    "x": 464,
+    "y": 264,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 25",
+   "frame": {
+    "x": 0,
+    "y": 330,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 26",
+   "frame": {
+    "x": 116,
+    "y": 330,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 27",
+   "frame": {
+    "x": 232,
+    "y": 330,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "golem-fist 28",
+   "frame": {
+    "x": 348,
+    "y": 330,
+    "w": 116,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 66
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "golem-fist.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 580,
+   "h": 396
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "golem-fist",
+    "from": 0,
+    "to": 28,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/golem-fist",
+   "name": "Golem fist",
+   "fps": 30,
+   "loop": false,
+   "frames": 29,
+   "frameSize": [
+    116,
+    66
+   ],
+   "pivot": [
+    72,
+    54
+   ],
+   "columns": 5
+  }
+ }
+}

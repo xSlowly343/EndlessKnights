@@ -155,9 +155,9 @@ namespace Game.Core.Sim
             AddBait(1);
         }
 
-        public void OnSkillCast(GemDef skill)
+        public void OnSkillCast(GemDef skill, SkillDef? variant = null)
         {
-            if (!On || !(skill.Skill?.Effect is StrikeEffect strike))
+            if (!On || !((variant ?? skill.Skill)?.CastStrike is StrikeEffect strike))
                 return;
             if (Bait && Flag(DreamcatcherStats.BaitByCast))
                 AddBait(_rules.BaitPerCast);

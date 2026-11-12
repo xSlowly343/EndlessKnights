@@ -1,0 +1,633 @@
+{
+ "frames": [
+  {
+   "filename": "wolf-bite 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 1",
+   "frame": {
+    "x": 116,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 2",
+   "frame": {
+    "x": 232,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 3",
+   "frame": {
+    "x": 348,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 4",
+   "frame": {
+    "x": 464,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 5",
+   "frame": {
+    "x": 0,
+    "y": 78,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 6",
+   "frame": {
+    "x": 116,
+    "y": 78,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 7",
+   "frame": {
+    "x": 232,
+    "y": 78,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 8",
+   "frame": {
+    "x": 348,
+    "y": 78,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 9",
+   "frame": {
+    "x": 464,
+    "y": 78,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 10",
+   "frame": {
+    "x": 0,
+    "y": 156,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 11",
+   "frame": {
+    "x": 116,
+    "y": 156,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 12",
+   "frame": {
+    "x": 232,
+    "y": 156,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 13",
+   "frame": {
+    "x": 348,
+    "y": 156,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 14",
+   "frame": {
+    "x": 464,
+    "y": 156,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 15",
+   "frame": {
+    "x": 0,
+    "y": 234,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 16",
+   "frame": {
+    "x": 116,
+    "y": 234,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 17",
+   "frame": {
+    "x": 232,
+    "y": 234,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 18",
+   "frame": {
+    "x": 348,
+    "y": 234,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 19",
+   "frame": {
+    "x": 464,
+    "y": 234,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 20",
+   "frame": {
+    "x": 0,
+    "y": 312,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 21",
+   "frame": {
+    "x": 116,
+    "y": 312,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 22",
+   "frame": {
+    "x": 232,
+    "y": 312,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 23",
+   "frame": {
+    "x": 348,
+    "y": 312,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 24",
+   "frame": {
+    "x": 464,
+    "y": 312,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 25",
+   "frame": {
+    "x": 0,
+    "y": 390,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-bite 26",
+   "frame": {
+    "x": 116,
+    "y": 390,
+    "w": 116,
+    "h": 78
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 78
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 78
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "wolf-bite.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 580,
+   "h": 468
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "wolf-bite",
+    "from": 0,
+    "to": 26,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/wolf-bite",
+   "name": "Wolf bite",
+   "fps": 30,
+   "loop": false,
+   "frames": 27,
+   "frameSize": [
+    116,
+    78
+   ],
+   "pivot": [
+    64,
+    46
+   ],
+   "columns": 5
+  }
+ }
+}

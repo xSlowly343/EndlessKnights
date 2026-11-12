@@ -42,8 +42,9 @@ namespace Game.Core.Content
     public sealed class SeasonalEvent
     {
         public SeasonalEvent(string id, string nameRu, string nameEn, int month, int day, string tokenRu, string tokenEn, string bossRu, string bossEn,
-            string guestBiome, IReadOnlyList<EventShopItem> shop, string clanEmblem)
+            string guestBiome, IReadOnlyList<EventShopItem> shop, string clanEmblem, string companion = "")
         {
+            Companion = companion;
             Id = id;
             NameRu = nameRu;
             NameEn = nameEn;
@@ -70,6 +71,7 @@ namespace Game.Core.Content
         public string GuestBiome { get; }
         public IReadOnlyList<EventShopItem> Shop { get; }
         public string ClanEmblem { get; }
+        public string Companion { get; }
     }
 
     public readonly struct EventWindow
@@ -118,6 +120,7 @@ namespace Game.Core.Content
         public int ChampionTop { get; private set; }
         public string ChampionFrame { get; private set; } = string.Empty;
         public IReadOnlyList<EventGoal> Goals { get; private set; } = Array.Empty<EventGoal>();
+        public int CompanionGoals { get; private set; }
         public long GoalTokens { get; private set; }
         public long GoalPassPoints { get; private set; }
         public long AllGoalsCrystals { get; private set; }
@@ -203,6 +206,7 @@ namespace Game.Core.Content
                 goals.Add(new EventGoal(node.Field("id").AsString(), kind, node.Field("target").AsLong(1)));
             }
             rules.Goals = goals;
+            rules.CompanionGoals = root.Field("companionGoals").AsInt(1, goals.Count);
             var events = new List<SeasonalEvent>();
             foreach (var node in root.Field("events").Items())
             {
@@ -221,10 +225,23 @@ namespace Game.Core.Content
                 var bossName = node.Field("boss");
                 events.Add(new SeasonalEvent(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(),
                     node.Field("month").AsInt(1, 12), node.Field("day").AsInt(1, 31), token.Field("ru").AsString(), token.Field("en").AsString(),
-                    bossName.Field("ru").AsString(), bossName.Field("en").AsString(), node.Field("guestBiome").AsString(), shop, emblem));
+                    bossName.Field("ru").AsString(), bossName.Field("en").AsString(), node.Field("guestBiome").AsString(), shop, emblem,
+                    node.HasField("companion") ? node.Field("companion").AsString() : string.Empty));
             }
             rules.Events = events;
             return rules;
+        }
+
+        public void CheckCompanions(CompanionRules companions)
+        {
+            foreach (var seasonal in Events)
+            {
+                if (seasonal.Companion.Length == 0)
+                    continue;
+                var companion = companions.Companion(seasonal.Companion);
+                if (companion == null || companion.Source != "event")
+                    throw new ContentException(FileName, "events." + seasonal.Id + ".companion", $"'{seasonal.Companion}' is not an event companion");
+            }
         }
 
         private static void Reward(CosmeticCatalog cosmetics, string id, ContentNode node, bool clan)

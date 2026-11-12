@@ -205,6 +205,7 @@ namespace Game.Core.Content.Gems
         public double Multiplier { get; }
         public int QueueTargets { get; }
         public int HitsPerTick { get; }
+        public StrikeEffect? Cast { get; set; }
     }
 
     public sealed class KeyRepeatEffect : SkillEffect

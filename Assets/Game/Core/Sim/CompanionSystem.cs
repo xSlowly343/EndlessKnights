@@ -606,7 +606,7 @@ namespace Game.Core.Sim
                 return CompanionResult.Full;
             if (dish ? !_state.Cooking.Meals.Remove(food) : !_camp.Take(food, 1))
                 return CompanionResult.NoFood;
-            var experience = (dish ? _rules.DishExperience : kind!.Experience) * (IsFavourite(companion, food) ? _rules.FavouriteMultiplier : 1)
+            var experience = (dish ? _rules.DishExperience : kind!.Experience) * (IsFavourite(companion, food) ? _rules.FavouriteMultiplier + TreeStat(MenagerieStat.FavouriteFood) : 1)
                 * (1 + AlbumBonus(AlbumBonusKind.FoodExperience) + TreeStat(MenagerieStat.FoodExperience) + Bonus(companion, CompanionStat.FoodExperience));
             experience = System.Math.Min(experience, left);
             var progress = Progress(companion);
@@ -718,6 +718,15 @@ namespace Game.Core.Sim
                 FinishColossus(expedition.Companion);
         }
 
+        private void RollTripSpark()
+        {
+            var chance = TreeStat(MenagerieStat.TripSpark);
+            if (chance <= 0 || _state.Rng.NextDouble() >= chance)
+                return;
+            State.Sparks++;
+            _events.Add(GameEvent.ForStage(GameEventKind.CompanionSpark, _state.Tick, State.Sparks));
+        }
+
         private void TripDone(Expedition expedition, string companion)
         {
             var planned = expedition.Planned > 0 ? expedition.Planned : expedition.Hours * ExpeditionSystem.SecondsPerHour;
@@ -728,6 +737,7 @@ namespace Game.Core.Sim
             NoteTripCircle(expedition, companion);
             NoteTripHours(expedition.Hours * share * System.Math.Max(0, 1 + Bonus(companion, CompanionStat.TripSouls)));
             Progress(companion).Trips++;
+            RollTripSpark();
             AddBond(companion, _rules.Bond.TripPoints);
             var progress = Progress(companion);
             if (progress.Story < StoryUnlocked(companion))
@@ -778,8 +788,8 @@ namespace Game.Core.Sim
         }
 
         private double TreeLoot(TravelStat stat) =>
-            stat == TravelStat.Items ? TreeStat(MenagerieStat.TripItems) + TreeStat(MenagerieStat.TripLoot)
-            : stat == TravelStat.Shards ? TreeStat(MenagerieStat.TripShards) + TreeStat(MenagerieStat.TripLoot)
+            stat == TravelStat.Items ? TreeStat(MenagerieStat.TripItems) + TreeStat(MenagerieStat.TripLoot) + PerCompanion()
+            : stat == TravelStat.Shards ? TreeStat(MenagerieStat.TripShards) + TreeStat(MenagerieStat.TripLoot) + PerCompanion()
             : stat == TravelStat.Rare ? TreeStat(MenagerieStat.TripRare) : 0;
 
         private static TreatStat TreatStatOf(TravelStat stat) =>
@@ -806,7 +816,8 @@ namespace Game.Core.Sim
             if (stat == TravelStat.Rare)
                 return System.Math.Max(main, System.Math.Max(partner, third));
             var rules = _rules.Pack;
-            return (main + partner + third - 2) * rules.Loot * (OneFamily(expedition) ? 1 + rules.FamilyBonus : 1);
+            return (main + partner + third - 2) * rules.Loot * (1 + TreeStat(MenagerieStat.PackLoot))
+                * (OneFamily(expedition) ? 1 + rules.FamilyBonus + TreeStat(MenagerieStat.PackFamily) : 1);
         }
 
         public bool OneFamily(Expedition expedition)
@@ -935,7 +946,40 @@ namespace Game.Core.Sim
 
         public double TreeStat(MenagerieStat stat) => Tree?.Stat(stat) ?? 0;
 
-        public int StarPrice(int price) => (int)System.Math.Ceiling(price * System.Math.Max(0, 1 - TreeStat(MenagerieStat.StarCost)) - 1e-9);
+        public int StarPrice(string companion, int price) =>
+            (int)System.Math.Ceiling(price * System.Math.Max(0, 1 - TreeStat(MenagerieStat.StarCost) - (Devoted(companion) ? TreeStat(MenagerieStat.DevotedStarCost) : 0)) - 1e-9);
+
+        public bool Devoted(string companion) => Hearts(companion) >= _rules.Bond.MaxHearts;
+
+        private double HeartsStat(string companion, MenagerieStat fromHearts, int hearts, MenagerieStat devoted)
+        {
+            var early = TreeStat(fromHearts);
+            var late = TreeStat(devoted);
+            if (early <= 0 && late <= 0)
+                return 0;
+            var have = Hearts(companion);
+            return (have >= hearts ? early : 0) + (have >= _rules.Bond.MaxHearts ? late : 0);
+        }
+
+        public int Collected
+        {
+            get
+            {
+                var known = 0;
+                for (var i = 0; i < _rules.Companions.Count; i++)
+                {
+                    if (Known(_rules.Companions[i].Id))
+                        known++;
+                }
+                return known;
+            }
+        }
+
+        private double PerCompanion()
+        {
+            var each = TreeStat(MenagerieStat.PerCompanion);
+            return each <= 0 ? 0 : each * Collected;
+        }
 
         public int StarsOf(string companion) => State.Progress.TryGetValue(companion, out var progress) ? progress.Stars : 0;
 
@@ -961,14 +1005,14 @@ namespace Game.Core.Sim
             if (cost == null)
                 return CompanionResult.MaxStars;
             var progress = Progress(companion);
-            if (souls ? State.Souls < StarPrice(cost.Souls) : progress.OwnSparks < StarPrice(cost.Sparks))
+            if (souls ? State.Souls < StarPrice(companion, cost.Souls) : progress.OwnSparks < StarPrice(companion, cost.Sparks))
                 return CompanionResult.NoSouls;
             var chance = TreeStat(MenagerieStat.FreeStar);
             var free = chance > 0 && _state.Rng.NextDouble() < chance;
             if (!free && souls)
-                State.Souls -= StarPrice(cost.Souls);
+                State.Souls -= StarPrice(companion, cost.Souls);
             else if (!free)
-                progress.OwnSparks -= StarPrice(cost.Sparks);
+                progress.OwnSparks -= StarPrice(companion, cost.Sparks);
             progress.Stars++;
             ApplyPerks();
             _events.Add(GameEvent.ForStage(GameEventKind.CompanionEvolved, _state.Tick, progress.Stage));
@@ -1052,7 +1096,7 @@ namespace Game.Core.Sim
         public double TraitFactor(string companion)
         {
             var def = _rules.Companion(companion);
-            var factor = (def == null ? 1 : _rules.RarityFactor(def.Rarity)) * (IsColossus(companion) ? 1 + _rules.Colossus.Numbers : 1) * StarFactor(companion) * (1 + TreeStat(MenagerieStat.OwnTraits)) * (1 + CircleTraits(companion)) * System.Math.Max(0, 1 + Bonus(companion, CompanionStat.OwnTraits));
+            var factor = (def == null ? 1 : _rules.RarityFactor(def.Rarity)) * (IsColossus(companion) ? 1 + _rules.Colossus.Numbers : 1) * StarFactor(companion) * (1 + TreeStat(MenagerieStat.OwnTraits)) * (1 + HeartsStat(companion, MenagerieStat.HeartsTraits, _rules.Menagerie.HeartsForTraits, MenagerieStat.DevotedTraits)) * (1 + CircleTraits(companion)) * System.Math.Max(0, 1 + Bonus(companion, CompanionStat.OwnTraits));
             if (State.Progress.TryGetValue(companion, out var progress) && progress.Coat.Length > 0)
                 factor *= 1 + (_rules.Coat(progress.Coat)?.TraitBonus ?? 0);
             return factor;
@@ -1474,7 +1518,7 @@ namespace Game.Core.Sim
                 progress.Student = string.Empty;
                 return;
             }
-            Gain(student, experience * _rules.Pack.MentorShare);
+            Gain(student, experience * (_rules.Pack.MentorShare + TreeStat(MenagerieStat.MentorShare)));
             if (LevelOf(student) >= _rules.Pack.StudentMaxLevel)
                 progress.Student = string.Empty;
         }
@@ -1891,7 +1935,7 @@ namespace Game.Core.Sim
             {
                 var companion = State.Home[i];
                 var multiplier = Stage(companion).HomeMultiplier * (1 + Talent(companion, TalentEffect.HomeTraits)) * StarFactor(companion)
-                    * (1 + (FormOf(companion)?.Home ?? 0) + GearStat(companion, CompanionGearStat.HomeTraits) + TreeStat(MenagerieStat.HomeTraits) + Bonus(companion, CompanionStat.HomeTraits));
+                    * (1 + (FormOf(companion)?.Home ?? 0) + GearStat(companion, CompanionGearStat.HomeTraits) + TreeStat(MenagerieStat.HomeTraits) + PerCompanion() + Bonus(companion, CompanionStat.HomeTraits));
                 HomeOwnPerks(companion, multiplier);
                 BranchPerks(companion, multiplier);
                 if (!State.Progress.TryGetValue(companion, out var progress))
@@ -1915,7 +1959,8 @@ namespace Game.Core.Sim
             var top = MaxLevelOf(companion);
             if (progress.Level >= top)
                 return;
-            var gained = experience * (1 + AllExperienceBonus() + MasteryExperience(companion) + GearStat(companion, CompanionGearStat.Experience) + TreeStat(MenagerieStat.AllExperience));
+            var gained = experience * (1 + AllExperienceBonus() + MasteryExperience(companion) + GearStat(companion, CompanionGearStat.Experience) + TreeStat(MenagerieStat.AllExperience)
+                + HeartsStat(companion, MenagerieStat.HeartsExperience, _rules.Menagerie.HeartsForExperience, MenagerieStat.DevotedExperience));
             progress.Experience += gained;
             Tree?.AddExperience(gained);
             var levelBefore = progress.Level;

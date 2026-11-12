@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "glass-shard 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 44
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-shard 1",
+   "frame": {
+    "x": 124,
+    "y": 0,
+    "w": 124,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 44
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-shard 2",
+   "frame": {
+    "x": 0,
+    "y": 44,
+    "w": 124,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 44
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-shard 3",
+   "frame": {
+    "x": 124,
+    "y": 44,
+    "w": 124,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 44
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-shard 4",
+   "frame": {
+    "x": 0,
+    "y": 88,
+    "w": 124,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 44
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-shard 5",
+   "frame": {
+    "x": 124,
+    "y": 88,
+    "w": 124,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 44
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-shard 6",
+   "frame": {
+    "x": 0,
+    "y": 132,
+    "w": 124,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 44
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-shard 7",
+   "frame": {
+    "x": 124,
+    "y": 132,
+    "w": 124,
+    "h": 44
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 44
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 44
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "glass-shard.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 248,
+   "h": 176
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "glass-shard",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/glass-shard",
+   "name": "Glass shard",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    124,
+    44
+   ],
+   "pivot": [
+    102,
+    22
+   ],
+   "columns": 2
+  }
+ }
+}

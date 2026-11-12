@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "ink-stroke 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-stroke 1",
+   "frame": {
+    "x": 124,
+    "y": 0,
+    "w": 124,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-stroke 2",
+   "frame": {
+    "x": 0,
+    "y": 54,
+    "w": 124,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-stroke 3",
+   "frame": {
+    "x": 124,
+    "y": 54,
+    "w": 124,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-stroke 4",
+   "frame": {
+    "x": 0,
+    "y": 108,
+    "w": 124,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-stroke 5",
+   "frame": {
+    "x": 124,
+    "y": 108,
+    "w": 124,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-stroke 6",
+   "frame": {
+    "x": 0,
+    "y": 162,
+    "w": 124,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-stroke 7",
+   "frame": {
+    "x": 124,
+    "y": 162,
+    "w": 124,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 54
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "ink-stroke.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 248,
+   "h": 216
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "ink-stroke",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/ink-stroke",
+   "name": "Ink stroke",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    124,
+    54
+   ],
+   "pivot": [
+    102,
+    27
+   ],
+   "columns": 2
+  }
+ }
+}

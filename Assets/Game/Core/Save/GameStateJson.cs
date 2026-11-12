@@ -138,6 +138,7 @@ namespace Game.Core.Save
                     ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)), ("masterpieces", JsonValue.Of(state.Forge.Masterpieces)), ("salvageOre", JsonValue.Of(state.Forge.SalvageOre)), ("guestHammers", JsonValue.Of(state.Forge.GuestHammers)))),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
+                ("recap", WriteRecap(state)),
                 ("atlas", WriteIds(state.Atlas)),
                 ("resonance", WriteLevels(state.Resonance)),
                 ("spirits", WriteLevels(state.Spirits)),
@@ -443,6 +444,8 @@ namespace Game.Core.Save
                 ReadSlates(node.Field("slates"), slates, state.Slates);
             if (node.HasField("chronicle"))
                 ReadChronicle(node.Field("chronicle"), state.Chronicle);
+            if (node.HasField("recap"))
+                ReadRecap(node.Field("recap"), state.Recap);
             if (node.HasField("atlas"))
                 ReadIds(node.Field("atlas"), state.Atlas);
             if (node.HasField("resonance"))
@@ -542,6 +545,64 @@ namespace Game.Core.Save
             ReadIds(node.Field("nodes"), bonus.Nodes);
             bonus.AnsweredUnixMs = (long)ReadCount(node.Field("answeredUnixMs"));
             bonus.SeenUnixMs = (long)ReadCount(node.Field("seenUnixMs"));
+        }
+
+        private static JsonValue WriteRecap(GameState state)
+        {
+            var recap = state.Recap;
+            var days = new JsonValue[recap.Days.Count];
+            for (var i = 0; i < days.Length; i++)
+                days[i] = WriteRecapDay(recap.Days[i], 0, 0);
+            return Object(
+                ("day", JsonValue.Of(recap.Day)),
+                ("start", WriteRecapDay(recap.Start, state.Kills, state.BossKills)),
+                ("days", JsonValue.Array(days)),
+                ("shownDay", JsonValue.Of(recap.ShownDay)),
+                ("shownWeek", JsonValue.Of(recap.ShownWeek)));
+        }
+
+        private static JsonValue WriteRecapDay(RecapDay day, long killsNow, long bossesNow) => Object(
+            ("day", JsonValue.Of(day.Day)),
+            ("keys", JsonValue.Of(day.Keys)),
+            ("clicks", JsonValue.Of(day.Clicks)),
+            ("mouseMeters", JsonValue.Of(day.MouseMeters)),
+            ("playSeconds", JsonValue.Of(day.PlaySeconds)),
+            ("kills", JsonValue.Of(day.Kills - killsNow)),
+            ("bosses", JsonValue.Of(day.Bosses - bossesNow)),
+            ("stages", JsonValue.Of(day.Stages)),
+            ("recordStage", JsonValue.Of(day.RecordStage)),
+            ("prestiges", JsonValue.Of(day.Prestiges)),
+            ("levels", JsonValue.Of(day.Levels)));
+
+        private static void ReadRecap(ContentNode node, RecapState recap)
+        {
+            recap.Day = node.Field("day").AsLong();
+            ReadRecapDay(node.Field("start"), recap.Start);
+            foreach (var item in node.Field("days").Items())
+            {
+                if (recap.Days.Count >= RecapState.DaysKept)
+                    break;
+                var day = new RecapDay();
+                ReadRecapDay(item, day);
+                recap.Days.Add(day);
+            }
+            recap.ShownDay = node.Field("shownDay").AsLong();
+            recap.ShownWeek = node.Field("shownWeek").AsLong();
+        }
+
+        private static void ReadRecapDay(ContentNode node, RecapDay day)
+        {
+            day.Day = node.Field("day").AsLong();
+            day.Keys = node.Field("keys").AsNumber(0, double.MaxValue);
+            day.Clicks = node.Field("clicks").AsNumber(0, double.MaxValue);
+            day.MouseMeters = node.Field("mouseMeters").AsNumber(0, double.MaxValue);
+            day.PlaySeconds = node.Field("playSeconds").AsNumber(0, double.MaxValue);
+            day.Kills = node.Field("kills").AsLong();
+            day.Bosses = node.Field("bosses").AsLong();
+            day.Stages = node.Field("stages").AsLong();
+            day.RecordStage = node.Field("recordStage").AsLong();
+            day.Prestiges = node.Field("prestiges").AsLong();
+            day.Levels = node.Field("levels").AsLong();
         }
 
         private static JsonValue WriteChronicle(ChronicleState chronicle)
@@ -884,7 +945,7 @@ namespace Game.Core.Save
                 ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)), ("soulTrialWeek", JsonValue.Of(companions.SoulTrialWeek)), ("soulTreeWeek", JsonValue.Of(companions.SoulTreeWeek)), ("essence", JsonValue.Of(companions.Essence)), ("quickBiteSeconds", JsonValue.Of(companions.QuickBiteSeconds)), ("quickBiteFactor", JsonValue.Of(companions.QuickBiteFactor)), ("sureForge", JsonValue.Of(companions.SureForge)), ("xpBoostSeconds", JsonValue.Of(companions.XpBoostSeconds)), ("xpBoost", JsonValue.Of(companions.XpBoost)), ("hostEssenceDays", WriteNumberMap(companions.HostEssenceDays)),
                 ("gear", WriteCompanionGear(companions.Gear)), ("nextGearId", JsonValue.Of(companions.NextGearId)),
                 ("boardDay", JsonValue.Of(companions.BoardDay)), ("board", WriteIdList(companions.Board)), ("boardDone", WriteIdList(companions.BoardDone)), ("rerolls", JsonValue.Of(companions.Rerolls)),
-                ("helper", OptionalText(companions.Helper)), ("helpGuild", OptionalText(companions.HelpGuild)), ("helpSeconds", JsonValue.Of(companions.HelpSeconds)), ("burrowWeek", JsonValue.Of(companions.BurrowWeek)),
+                ("helper", OptionalText(companions.Helper)), ("helpGuild", OptionalText(companions.HelpGuild)), ("helpSeconds", JsonValue.Of(companions.HelpSeconds)), ("burrowWeek", JsonValue.Of(companions.BurrowWeek)), ("burrowRuns", JsonValue.Of(companions.BurrowRuns)),
                 ("tree", WriteTreeRanks(companions.TreeRanks)), ("treeMajors", WriteTreeMajors(companions.TreeMajors)), ("menagerieLevel", JsonValue.Of(companions.MenagerieLevel)),
                 ("menagerieExperience", JsonValue.Of(companions.MenagerieExperience)), ("treeResetDay", JsonValue.Of(companions.TreeResetDay)), ("rewindDay", JsonValue.Of(companions.RewindDay)), ("progress", JsonValue.Array(list)));
         }
@@ -1038,6 +1099,7 @@ namespace Game.Core.Save
             companions.HelpGuild = ReadOptionalText(node, "helpGuild");
             companions.HelpSeconds = node.HasField("helpSeconds") ? node.Field("helpSeconds").AsNumber(0, 1e9) : 0;
             companions.BurrowWeek = node.HasField("burrowWeek") ? node.Field("burrowWeek").AsLong() : -1;
+            companions.BurrowRuns = node.HasField("burrowRuns") ? node.Field("burrowRuns").AsInt(0) : 1;
             ReadTree(node, companions);
             companions.Owned.Clear();
             if (node.HasField("owned"))
@@ -1083,7 +1145,11 @@ namespace Game.Core.Save
             var reputation = new JsonValue[guilds.Count];
             for (var i = 0; i < reputation.Length; i++)
                 reputation[i] = Object(("guild", JsonValue.Of(guilds[i])), ("value", JsonValue.Of(town.Reputation[guilds[i]])));
-            return Object(("day", JsonValue.Of(town.Day)), ("orders", JsonValue.Array(orders)), ("reputation", JsonValue.Array(reputation)), ("done", JsonValue.Of(town.Done)), ("redrawDay", JsonValue.Of(town.RedrawDay)), ("gifts", WriteIds(town.Gifts)));
+            var offers = new JsonValue[town.Offers.Count];
+            for (var i = 0; i < offers.Length; i++)
+                offers[i] = Object(("nonce", JsonValue.Of(town.Offers[i].Nonce)), ("item", JsonValue.Of(town.Offers[i].Item)), ("amount", JsonValue.Of(town.Offers[i].Amount)), ("price", JsonValue.Of(town.Offers[i].Price)));
+            return Object(("day", JsonValue.Of(town.Day)), ("orders", JsonValue.Array(orders)), ("reputation", JsonValue.Array(reputation)), ("done", JsonValue.Of(town.Done)), ("redrawDay", JsonValue.Of(town.RedrawDay)), ("gifts", WriteIds(town.Gifts)),
+                ("offers", JsonValue.Array(offers)), ("deliveries", WriteIds(town.Deliveries)), ("offerSeq", JsonValue.Of(town.OfferSeq)));
         }
 
         private static void ReadTown(ContentNode node, TownState town)
@@ -1100,6 +1166,17 @@ namespace Game.Core.Save
                 foreach (var item in node.Field("gifts").Items())
                     town.Gifts.Add(item.AsString());
             }
+            if (node.HasField("offers"))
+            {
+                foreach (var item in node.Field("offers").Items())
+                    town.Offers.Add(new TownOffer { Nonce = item.Field("nonce").AsString(), Item = item.Field("item").AsString(), Amount = item.Field("amount").AsInt(1), Price = item.Field("price").AsInt(1) });
+            }
+            if (node.HasField("deliveries"))
+            {
+                foreach (var item in node.Field("deliveries").Items())
+                    town.Deliveries.Add(item.AsString());
+            }
+            town.OfferSeq = node.HasField("offerSeq") ? node.Field("offerSeq").AsLong(0) : 0;
         }
 
         private static JsonValue WriteDecor(DecorState decor)
@@ -1310,7 +1387,7 @@ namespace Game.Core.Save
             return Object(
                 ("mode", JsonValue.Of(peaceful.Mode == PeacefulMode.Camp ? "camp" : "battle")),
                 ("activity", OptionalText(peaceful.Activity)),
-                ("place", JsonValue.Of(peaceful.Place == PeacefulPlace.Hideout ? "hideout" : "refuge")),
+                ("place", JsonValue.Of(PeacefulPlaces.Key(peaceful.Place))),
                 ("presets", WriteIdList(presets)),
                 ("scheduledBy", OptionalText(peaceful.ScheduledBy)),
                 ("work", JsonValue.Array(work)),
@@ -1325,7 +1402,7 @@ namespace Game.Core.Save
         {
             peaceful.Mode = node.Field("mode").AsString() == "camp" ? PeacefulMode.Camp : PeacefulMode.Battle;
             peaceful.Activity = ReadOptionalText(node, "activity");
-            peaceful.Place = node.HasField("place") && node.Field("place").AsString() == "hideout" ? PeacefulPlace.Hideout : PeacefulPlace.Refuge;
+            peaceful.Place = node.HasField("place") ? PeacefulPlaces.Parse(node.Field("place").AsString()) : PeacefulPlace.Refuge;
             foreach (var item in node.Field("presets").Items())
                 peaceful.Presets.Add(item.AsString());
             peaceful.ScheduledBy = ReadOptionalText(node, "scheduledBy");
@@ -2250,13 +2327,17 @@ namespace Game.Core.Save
                 if (!gems.TryGet(id, out var gem))
                     continue;
                 var item = node.Field(id);
-                var progress = state.ProgressOf(gem);
-                progress.Level = item.Field("level").AsInt(1, gems.Levels.Max);
-                progress.Experience = item.Field("experience").AsNumber(0, 1e15);
+                var progress = new GemProgress
+                {
+                    Level = item.Field("level").AsInt(1, gems.Levels.Max),
+                    Experience = item.Field("experience").AsNumber(0, 1e15)
+                };
                 if (item.HasField("rebirths"))
                     progress.Rebirths = item.Field("rebirths").AsInt(0, 100);
                 if (item.HasField("branches"))
                     ReadBranches(item.Field("branches"), gem, progress);
+                if (!state.GemProgress.TryGetValue(gem.ProgressId, out var kept) || progress.AheadOf(kept))
+                    state.GemProgress[gem.ProgressId] = progress;
             }
         }
 

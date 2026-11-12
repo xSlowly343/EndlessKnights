@@ -95,7 +95,7 @@ namespace Game.Core.Tests.Ui
             var generic = Texts.Get("branch.effect");
             var data = System.Text.Json.JsonDocument.Parse(TestData.ReadGameDataFile("skills.json")).RootElement.GetProperty("gems");
             var rules = 0;
-            foreach (var item in data.EnumerateArray().Where(item => item.TryGetProperty("branches", out _)))
+            foreach (var item in data.EnumerateArray().SelectMany(item => item.TryGetProperty("evolutions", out var forms) ? forms.EnumerateArray().Prepend(item) : new[] { item }).Where(item => item.TryGetProperty("branches", out _)))
             {
                 var gem = TestWorld.Real.Gems[item.GetProperty("id").GetString()!];
                 if (gem.Skill?.Effect is not (StrikeEffect or FlurryEffect))
@@ -178,6 +178,28 @@ namespace Game.Core.Tests.Ui
             Assert.That(places[1].Empty, Is.True);
             var secondOption = BranchTexts.Name(Gem("duelist_hit_1").Branches[0].Options[1]);
             Assert.That(AllyLoadoutView.Branches(places[0]), Is.EqualTo(secondOption + " · — · —"));
+        }
+
+        [Test]
+        public void TheSkillWindowTellsWhenTheSkillEvolves()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, HeroLevel = 20 });
+            loop.Book.GrantStartingGems();
+            var window = new SkillWindowModel(loop);
+
+            window.Show(loop.Book.RowOf(Gem("runedancer_hit_1")));
+
+            Assert.That(window.Skill, Is.SameAs(Gem("runedancer_hit_2")));
+            Assert.That(window.NextForm, Is.SameAs(Gem("runedancer_hit_3")));
+            Assert.That(window.NextFormLevel, Is.EqualTo(30));
+            Assert.That(BranchTexts.Evolves(window.NextForm!, window.NextFormLevel), Is.EqualTo("на 30-м уровне героя станет «Огненная буква»"));
+
+            loop.State.HeroLevel = 30;
+            loop.Tick();
+            window.Refresh();
+
+            Assert.That(window.Skill, Is.SameAs(Gem("runedancer_hit_3")));
+            Assert.That(window.NextForm, Is.Null);
         }
     }
 }

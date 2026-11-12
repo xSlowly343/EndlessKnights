@@ -305,7 +305,7 @@ namespace Game.Core.Tests.Sim
         public void SweetBaitGrowsWithSkillsAndTheGuideSpiritGivesResource()
         {
             var (loop, input) = Hero(Flat(DreamcatcherStats.SpiritLoot, 1), Flat(DreamcatcherStats.BaitByCast, 1), Flat(DreamcatcherStats.SpiritGift, 1));
-            Cast(loop, "dreamcatcher_hit_2");
+            Cast(loop, "dreamcatcher_strong_1");
             Assert.That(loop.State.Dreamcatcher.Bait, Is.EqualTo(Rules.BaitPerCast));
 
             var pending = loop.State.PendingResource;
@@ -330,7 +330,7 @@ namespace Game.Core.Tests.Sim
 
             Wait(loop, 6);
             Cast(loop, "dreamcatcher_strong_3");
-            Assert.That(loop.Combat.Dreamcatcher.DamageTaken(), Is.EqualTo(1 + Rules.LucidPower).Within(1e-9));
+            Assert.That(loop.Combat.Dreamcatcher.DamageTaken(), Is.EqualTo((1 + Rules.LucidPower) * Rules.DozeMultiplier).Within(1e-9));
         }
 
         [Test]

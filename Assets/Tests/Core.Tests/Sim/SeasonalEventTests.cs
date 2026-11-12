@@ -55,6 +55,58 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void EveryEventCompanionComesFromExactlyOneEvent()
+        {
+            var eventCompanions = TestWorld.Data.Companions.Companions.Where(c => c.Source == "event" && c.Unlock?.Kind == UnlockKind.Server).Select(c => c.Id).ToList();
+            var given = Rules.Events.Where(e => e.Companion.Length > 0).Select(e => e.Companion).ToList();
+
+            Assert.That(given, Is.EquivalentTo(eventCompanions));
+            Assert.That(Rules.Events.First(e => e.Id == "flood_tide").Companion, Is.EqualTo("bloom_hare"));
+            Assert.That(Rules.Events.First(e => e.Id == "long_night").Companion, Is.EqualTo("star_kitten"));
+            Assert.That(Rules.CompanionGoals, Is.EqualTo(4));
+        }
+
+        [Test]
+        public void FourEventGoalsBringTheCompanionOfTheEvent()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            loop.SetLocalDay(EventRules.DayOf(2027, 4, 15));
+            Assert.That(loop.SeasonalEvents.Window!.Value.Event.Id, Is.EqualTo("flood_tide"));
+            var events = loop.State.Events;
+            events.Guests = 300;
+            events.BossFights = 5;
+            events.BossWins = 3;
+            loop.Tick();
+            Assert.That(loop.Companions.Known("bloom_hare"), Is.False, "three goals are not enough");
+
+            events.DailyQuests = 5;
+            loop.Events.Clear();
+            loop.Tick();
+
+            Assert.That(loop.Companions.Known("bloom_hare"), Is.True);
+            Assert.That(loop.Events.CountOf(GameEventKind.CompanionHatched), Is.EqualTo(1));
+            loop.Events.Clear();
+            loop.Tick();
+            Assert.That(loop.Events.CountOf(GameEventKind.CompanionHatched), Is.Zero, "only once");
+            Assert.That(loop.Companions.Known("star_kitten"), Is.False);
+        }
+
+        [Test]
+        public void AnEventWithoutACompanionGivesNone()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            loop.SetLocalDay(PumpkinDay);
+            var events = loop.State.Events;
+            events.Guests = 300;
+            events.BossFights = 5;
+            events.BossWins = 3;
+            events.DailyQuests = 5;
+            loop.Tick();
+
+            Assert.That(loop.Companions.Known("bloom_hare") || loop.Companions.Known("star_kitten"), Is.False);
+        }
+
+        [Test]
         public void EveryFifthEnemyIsAGuestAndPaysATokenOnlyDuringTheEvent()
         {
             var input = new FakeInputSource();

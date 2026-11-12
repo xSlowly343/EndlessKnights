@@ -83,6 +83,7 @@ namespace Game.Presentation.Ui
         private MailPanel _mailPanel = null!;
         private PartyPanel _partyPanel = null!;
         private PartySearchPanel _partySearchPanel = null!;
+        private const int HeroLookSubTab = 2;
         private SettingsPanel _settingsPanel = null!;
         private ConsentCard _consent = null!;
         private UiButton _preset = null!;
@@ -102,6 +103,7 @@ namespace Game.Presentation.Ui
         private UiButton _close = null!;
         private UiButton _wide = null!;
         private UiButton _claim = null!;
+        private UiButton _share = null!;
         private TextMeshProUGUI _currency = null!;
         private TextMeshProUGUI _placeholder = null!;
         private TextMeshProUGUI _reportTitle = null!;
@@ -131,6 +133,7 @@ namespace Game.Presentation.Ui
         public event Action? WidePressed;
         public event Action<int>? SubTabPressed;
         public event Action? ClaimPressed;
+        public event Action? SharePressed;
         public event Action? ConsentAccepted;
         public event Action? ConsentDeclined;
 
@@ -211,8 +214,17 @@ namespace Game.Presentation.Ui
             StartTween(startPx, _shownFrame.HeightPx);
         }
 
-        public void ShowReport(string title, IReadOnlyList<string> lines, string? action = null)
+        public bool IsShareShown => _share.Rect.gameObject.activeSelf;
+
+        public Vector2 WorldPointOfShare => _share.Rect.TransformPoint(_share.Rect.rect.center);
+
+        public void ShowReport(string title, IReadOnlyList<string> lines, string? action = null, string? share = null)
         {
+            _share.Show(share != null);
+            _share.Text = share ?? string.Empty;
+            var claimShiftPx = share != null ? (ClaimWidthPx + MarginPx) / 2f : 0f;
+            UiElements.Anchor(_claim.Rect, new Vector2(0.5f, 0f), new Vector2(claimShiftPx, MarginPx), new Vector2(ClaimWidthPx, ClaimHeightPx));
+            UiElements.Anchor(_share.Rect, new Vector2(0.5f, 0f), new Vector2(-claimShiftPx, MarginPx), new Vector2(ClaimWidthPx, ClaimHeightPx));
             var startPx = IsOpen ? _heightPx : CollapsedHeightPx;
             _showingCard = true;
             _showingConsent = false;
@@ -280,7 +292,7 @@ namespace Game.Presentation.Ui
                 return TryClickConsent(worldPoint);
             if (_showingCard)
                 return TryClickReport(worldPoint);
-            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _partySearchPanel.TryClick(worldPoint) || _mailPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint))
+            if (TryClickHeader(worldPoint) || TryClickRows(worldPoint) || _heroPanel.TryClick(worldPoint) || _itemsPanel.TryClick(worldPoint) || _partyPanel.TryClick(worldPoint) || _partySearchPanel.TryClick(worldPoint) || _mailPanel.TryClick(worldPoint) || _settingsPanel.TryClick(worldPoint) || _statsPanel.TryClick(worldPoint))
                 return true;
             if (_preset.Contains(worldPoint))
             {
@@ -329,6 +341,11 @@ namespace Game.Presentation.Ui
 
         private bool TryClickReport(Vector2 worldPoint)
         {
+            if (IsShareShown && _share.Contains(worldPoint))
+            {
+                SharePressed?.Invoke();
+                return true;
+            }
             if (_claim.Contains(worldPoint))
             {
                 ClaimPressed?.Invoke();
@@ -593,8 +610,10 @@ namespace Game.Presentation.Ui
             _statsPanel.Show(statsShown);
             var mailShown = !navigator.ShowingMore && navigator.Active == PanelSection.Mail;
             _mailPanel.Show(mailShown, _shownFrame.ContentPx);
-            var settingsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Settings;
-            _settingsPanel.Show(settingsShown, _shownFrame.HasSubTabs ? navigator.SubTab : 0, _shownFrame.ContentPx);
+            var lookShown = !navigator.ShowingMore && navigator.Active == PanelSection.Hero && heroSubTab == HeroLookSubTab;
+            var settingsShown = lookShown || (!navigator.ShowingMore && navigator.Active == PanelSection.Settings);
+            var settingsTab = lookShown ? SettingsScreen.LookTab : _shownFrame.HasSubTabs ? navigator.SubTab : 0;
+            _settingsPanel.Show(settingsShown, settingsTab, _shownFrame.ContentPx);
             var placeholder = !navigator.ShowingMore && !_subclassShown && !_bookShown && !heroShown && !itemsShown && !partyShown && !partySearchShown && !statsShown && !mailShown && !settingsShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)
@@ -842,6 +861,9 @@ namespace Game.Presentation.Ui
             }
             _claim = Button("Claim", body, new Vector2(0.5f, 0f), new Vector2(0f, MarginPx), new Vector2(ClaimWidthPx, ClaimHeightPx), _theme.Success, ButtonRadiusPx, _theme.BoldFont, TitleSizePx);
             _claim.Label!.color = Color.white;
+            _share = Button("Share", body, new Vector2(0.5f, 0f), new Vector2(0f, MarginPx), new Vector2(ClaimWidthPx, ClaimHeightPx), _theme.Accent, ButtonRadiusPx, _theme.BoldFont, TitleSizePx);
+            _share.Label!.color = Color.white;
+            _share.Show(false);
             return (RectTransform)body.parent;
         }
 

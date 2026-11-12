@@ -57,6 +57,33 @@ namespace Game.Core.Tests.Sim
             return damage;
         }
 
+        [Test]
+        public void ASeriesOfThrustsLeavesItsMarks()
+        {
+            var (loop, _) = Hero(Flat(DuelistStats.TouchePower, 10));
+
+            Cast(loop, "duelist_strong_2");
+
+            Assert.That(loop.State.Duelist.Marks, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ABranchOfASkillChangesWhatTheClassMechanicGets()
+        {
+            var (loop, _) = Hero(Flat(DuelistStats.TouchePower, 10));
+            var thrust = TestWorld.Data.Gems["duelist_hit_1"];
+            var slot = loop.Skills.Equip(thrust, role: SkillSlotRole.Left);
+            loop.State.ProgressOf(thrust).Level = 15;
+            var window = new Game.Core.Ui.SkillWindowModel(loop);
+            window.Show(slot);
+            Assert.That(window.Choose(1, 1), Is.EqualTo(Game.Core.Build.BranchResult.Done));
+            loop.State.Resource = 100;
+
+            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
+
+            Assert.That(loop.State.Duelist.Marks, Is.EqualTo(2));
+        }
+
         private static void Hits(GameLoop loop, FakeInputSource input, int count)
         {
             for (var i = 0; i < count; i++)
