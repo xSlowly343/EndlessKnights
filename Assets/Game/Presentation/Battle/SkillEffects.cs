@@ -1,4 +1,5 @@
 using Game.Core.Content.Gems;
+using Game.Core.Ui;
 using Game.Presentation.Strip;
 using Game.Presentation.Ui;
 using TMPro;
@@ -15,6 +16,7 @@ namespace Game.Presentation.Battle
         private const float TrailHeightPx = 3f;
         private const float RingStartPx = 20f;
         private const float RingEndPx = 90f;
+        private const float SmallRingEndPx = 40f;
         private const float WaveAlpha = 0.35f;
         private const float GlowPulseSpeed = 4f;
         private const float GlowAlpha = 0.35f;
@@ -41,6 +43,7 @@ namespace Game.Presentation.Battle
         private float _nameAge = NameSeconds;
         private Color _glowColor;
         private bool _glowing;
+        private float _ringEndPx = RingEndPx;
 
         public static SkillEffects Create()
         {
@@ -50,9 +53,15 @@ namespace Game.Presentation.Battle
             return effects;
         }
 
-        public void Cast(GemDef gem)
+        public void Cast(GemDef gem, ShowSize size = ShowSize.Full)
         {
             _color = GemColors.Of(gem.Color);
+            if (size == ShowSize.Small)
+            {
+                _ringEndPx = SmallRingEndPx;
+                _ringAge = 0f;
+                return;
+            }
             _name.text = gem.NameRu;
             _nameAge = 0f;
             if (gem.Skill?.Effect is AuraEffect)
@@ -60,6 +69,7 @@ namespace Game.Presentation.Battle
                 _waveAge = 0f;
                 return;
             }
+            _ringEndPx = RingEndPx;
             _trailAge = 0f;
             _ringAge = 0f;
         }
@@ -122,7 +132,7 @@ namespace Game.Presentation.Battle
             _ringAge += delta;
             if (!Fade(_ring, _ringAge, RingSeconds, 0.8f))
                 return;
-            var size = StripSpace.Units(Mathf.Lerp(RingStartPx, RingEndPx, _ringAge / RingSeconds));
+            var size = StripSpace.Units(Mathf.Lerp(RingStartPx, _ringEndPx, _ringAge / RingSeconds));
             _ring.transform.localScale = new Vector3(size, size, 1f);
         }
 
