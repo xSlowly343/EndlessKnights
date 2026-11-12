@@ -83,6 +83,14 @@ namespace Game.Core.Tests.Party
                     Run(1);
                 return done();
             }
+
+            public bool RunUntilTick(System.Func<bool> done, double seconds)
+            {
+                var ticks = seconds * GameLoop.TicksPerSecond;
+                for (var tick = 0; tick < ticks && !done(); tick++)
+                    Run(1.0 / GameLoop.TicksPerSecond);
+                return done();
+            }
         }
 
         private static DungeonKey KeyAt(int tier, long stage, params string[] modifiers) => new DungeonKey(tier, modifiers, stage, Rules.KeyAttempts);
@@ -244,7 +252,7 @@ namespace Game.Core.Tests.Party
             leader.Loop.State.Dungeons.Keys.Add(KeyAt(2, 300, "hurry"));
             rig.Run(8);
             Assert.That(leader.Client.ProposeDungeon(leader.Client.PartyKey(leader.Client.OwnSlot, 0)), Is.True);
-            Assert.That(rig.RunUntil(() => rig.Host.Encounter.World == PartyWorld.Dungeon && rig.Host.Encounter.EnemyKind == PartyEnemyKind.Boss, 600), Is.True);
+            Assert.That(rig.RunUntilTick(() => rig.Host.Encounter.World == PartyWorld.Dungeon && rig.Host.Encounter.EnemyKind == PartyEnemyKind.Boss, 600), Is.True);
 
             Rules.TryGetModifier("hurry", out var hurry);
             var ticks = Rules.BossTimerSeconds * hurry!.BossTimer * GameLoop.TicksPerSecond;

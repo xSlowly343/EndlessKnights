@@ -81,6 +81,26 @@ namespace Game.Core.Tests.Party
 
             public void Run(double seconds, bool typing = true) => RunEach(seconds, typing, typing);
 
+            public void CatchUp()
+            {
+                for (var attempt = 0; attempt < 20 && AnyRunningAhead(); attempt++)
+                {
+                    Host.Encounter.ApplyDamage(0, Host.Encounter.EnemyId, Host.Encounter.BarFull);
+                    Run(1, false);
+                }
+                Assert.That(AnyRunningAhead(), Is.False, "every client waits on the host's enemy");
+            }
+
+            private bool AnyRunningAhead()
+            {
+                foreach (var player in Players)
+                {
+                    if (player.Client.RunningAhead)
+                        return true;
+                }
+                return false;
+            }
+
             public void RunEach(double seconds, bool firstTyping, bool othersTyping)
             {
                 var ticks = (int)System.Math.Round(seconds * GameLoop.TicksPerSecond);
@@ -502,6 +522,7 @@ namespace Game.Core.Tests.Party
             var rig = new Rig(5, 40);
             rig.Run(5);
             rig.Run(1, false);
+            rig.CatchUp();
             var player = rig.Players[0];
             var killsBefore = rig.Host.Kills;
             var enemy = rig.Host.Encounter.EnemyId;
@@ -709,11 +730,13 @@ namespace Game.Core.Tests.Party
         {
             var rig = new Rig(5, 40);
             rig.Run(5);
+            rig.Run(1, false);
+            rig.CatchUp();
             var gem = TestWorld.Data.Gems.All[0];
             var owner = rig.Players[1].Client.OwnSlot;
             rig.Host.Encounter.ApplyEnemyEffect(gem.NetId, 0.15, 8, owner);
 
-            rig.Run(1);
+            rig.Run(1, false);
 
             var badges = new Game.Core.Ui.EnemyBadge[Game.Core.Party.Wire.ShownEffect.MaxShown];
             Assert.That(Game.Core.Ui.PartyStripMarks.FillBadges(rig.Players[0].Client, TestWorld.Data.Gems, badges), Is.EqualTo(1));
