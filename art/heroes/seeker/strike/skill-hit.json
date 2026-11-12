@@ -1,0 +1,325 @@
+{
+ "frames": [
+  {
+   "filename": "skill-hit 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 1",
+   "frame": {
+    "x": 152,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 2",
+   "frame": {
+    "x": 304,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 3",
+   "frame": {
+    "x": 0,
+    "y": 84,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 4",
+   "frame": {
+    "x": 152,
+    "y": 84,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 5",
+   "frame": {
+    "x": 304,
+    "y": 84,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 6",
+   "frame": {
+    "x": 0,
+    "y": 168,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 7",
+   "frame": {
+    "x": 152,
+    "y": 168,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 8",
+   "frame": {
+    "x": 304,
+    "y": 168,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 9",
+   "frame": {
+    "x": 0,
+    "y": 252,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 10",
+   "frame": {
+    "x": 152,
+    "y": 252,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 11",
+   "frame": {
+    "x": 304,
+    "y": 252,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-hit 12",
+   "frame": {
+    "x": 0,
+    "y": 336,
+    "w": 152,
+    "h": 84
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 152,
+    "h": 84
+   },
+   "sourceSize": {
+    "w": 152,
+    "h": 84
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "skill-hit.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 456,
+   "h": 420
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "skill-hit",
+    "from": 0,
+    "to": 12,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/skill-hit",
+   "name": "Skill hit",
+   "fps": 30,
+   "loop": false,
+   "frames": 13,
+   "frameSize": [
+    152,
+    84
+   ],
+   "pivot": [
+    116,
+    68
+   ],
+   "columns": 3
+  }
+ }
+}

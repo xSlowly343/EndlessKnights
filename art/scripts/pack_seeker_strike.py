@@ -140,16 +140,43 @@ def pack_effect(source, prefix):
             "pivot": [data["pivot"][0] - left, data["pivot"][1] - top], "fps": data["fps"]}
 
 
+TIER_SUFFIXES = (("flash", "Flash"), ("flash2", "Flash2"))
+SKILLS = [
+    {"id": "hit", "source": "skill-hit", "prefix": "Skill_Hit"},
+    {"id": "queue", "source": "skill-queue", "prefix": "Skill_Queue"},
+    {"id": "auto", "source": "skill-auto", "prefix": "Skill_Auto"},
+    {"id": "strong", "source": "skill-strong", "prefix": "Skill_Strong", "impactSeconds": 0.18},
+    {"id": "spark", "source": "skill-spark", "prefix": "Skill_Spark"},
+    {"id": "wave", "source": "aura-wave", "prefix": "Aura_Wave"},
+]
+
+
+def pack_tiers(strike, burst):
+    prefix = strike["burst"][1].rsplit("_", 1)[0]
+    return [pack_effect(f"{strike['id']}-{source}", f"{prefix}_{name}") for source, name in TIER_SUFFIXES] + [burst]
+
+
+def pack_skills():
+    skills = {}
+    for skill in SKILLS:
+        sheet = pack_effect(skill["source"], skill["prefix"])
+        if "impactSeconds" in skill:
+            sheet["impactSeconds"] = skill["impactSeconds"]
+        skills[skill["id"]] = sheet
+    return skills
+
+
 def main():
     split_attack()
     strikes = []
     for strike in STRIKES:
+        burst = pack_effect(*strike["burst"])
         strikes.append({
             "look": strike["look"], "id": strike["id"], "path": strike["path"], "arcPx": strike["arcPx"],
             "burstAt": strike["burstAt"], "slash": strike["slash"],
-            "flight": pack_effect(*strike["flight"]), "burst": pack_effect(*strike["burst"]),
+            "flight": pack_effect(*strike["flight"]), "burst": burst, "tiers": pack_tiers(strike, burst),
         })
-    MANIFEST.write_text(json.dumps({"version": 1, "strikes": strikes}, indent=2) + "\n")
+    MANIFEST.write_text(json.dumps({"version": 1, "strikes": strikes, "skills": pack_skills()}, indent=2) + "\n")
 
 
 if __name__ == "__main__":

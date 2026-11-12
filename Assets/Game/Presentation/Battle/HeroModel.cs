@@ -20,6 +20,9 @@ namespace Game.Presentation.Battle
         private const string SlashFile = "Seeker_Void_Attack1Slash_90x50_8f";
         private const string GroundPath = "ground";
         private const string GroundBurst = "ground";
+        private const string TiersField = "tiers";
+        private const string SkillsField = "skills";
+        private const string ImpactField = "impactSeconds";
 
         private static readonly Vector2 IdleFeet = new Vector2(15f, 28f);
         private static readonly Vector2 AttackFeet = new Vector2(16f, 38f);
@@ -84,12 +87,7 @@ namespace Game.Presentation.Battle
 
         private static StrikeArt? LoadStrike(int look)
         {
-            if (!_strikeSheetsRead)
-            {
-                _strikeSheets = ContentNode.Root(Resources.Load<TextAsset>(Folder + StrikesFile).text, StrikesFile + ".json");
-                _strikeSheetsRead = true;
-            }
-            foreach (var node in _strikeSheets.Field("strikes").Items())
+            foreach (var node in StrikeSheets().Field("strikes").Items())
             {
                 if (node.Field("look").AsInt(0) != look)
                     continue;
@@ -101,9 +99,51 @@ namespace Game.Presentation.Battle
                     Sheet(node.Field("burst")),
                     node.Field("path").AsString() == GroundPath,
                     (float)node.Field("arcPx").AsNumber(),
-                    node.Field("burstAt").AsString() == GroundBurst);
+                    node.Field("burstAt").AsString() == GroundBurst,
+                    Tiers(node));
             }
             return null;
+        }
+
+        public static HeroClip? SkillSheet(string id)
+        {
+            var node = SkillNode(id);
+            return node.HasValue ? Sheet(node.Value) : null;
+        }
+
+        public static float SkillImpactSeconds(string id)
+        {
+            var node = SkillNode(id);
+            return node.HasValue && node.Value.HasField(ImpactField) ? (float)node.Value.Field(ImpactField).AsNumber() : 0f;
+        }
+
+        private static ContentNode? SkillNode(string id)
+        {
+            var sheets = StrikeSheets();
+            if (!sheets.HasField(SkillsField) || !sheets.Field(SkillsField).HasField(id))
+                return null;
+            return sheets.Field(SkillsField).Field(id);
+        }
+
+        private static HeroClip[]? Tiers(ContentNode strike)
+        {
+            if (!strike.HasField(TiersField))
+                return null;
+            var nodes = strike.Field(TiersField).Items();
+            var tiers = new HeroClip[nodes.Count];
+            for (var i = 0; i < tiers.Length; i++)
+                tiers[i] = Sheet(nodes[i]);
+            return tiers;
+        }
+
+        private static ContentNode StrikeSheets()
+        {
+            if (!_strikeSheetsRead)
+            {
+                _strikeSheets = ContentNode.Root(Resources.Load<TextAsset>(Folder + StrikesFile).text, StrikesFile + ".json");
+                _strikeSheetsRead = true;
+            }
+            return _strikeSheets;
         }
 
         private static HeroClip Sheet(ContentNode node)

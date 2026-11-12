@@ -1,0 +1,259 @@
+{
+ "frames": [
+  {
+   "filename": "skill-auto 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-auto 1",
+   "frame": {
+    "x": 96,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-auto 2",
+   "frame": {
+    "x": 192,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-auto 3",
+   "frame": {
+    "x": 0,
+    "y": 80,
+    "w": 96,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-auto 4",
+   "frame": {
+    "x": 96,
+    "y": 80,
+    "w": 96,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-auto 5",
+   "frame": {
+    "x": 192,
+    "y": 80,
+    "w": 96,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-auto 6",
+   "frame": {
+    "x": 0,
+    "y": 160,
+    "w": 96,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-auto 7",
+   "frame": {
+    "x": 96,
+    "y": 160,
+    "w": 96,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-auto 8",
+   "frame": {
+    "x": 192,
+    "y": 160,
+    "w": 96,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "skill-auto 9",
+   "frame": {
+    "x": 0,
+    "y": 240,
+    "w": 96,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 96,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 96,
+    "h": 80
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "skill-auto.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 288,
+   "h": 320
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "skill-auto",
+    "from": 0,
+    "to": 9,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/skill-auto",
+   "name": "Skill auto",
+   "fps": 30,
+   "loop": false,
+   "frames": 10,
+   "frameSize": [
+    96,
+    80
+   ],
+   "pivot": [
+    52,
+    62
+   ],
+   "columns": 3
+  }
+ }
+}

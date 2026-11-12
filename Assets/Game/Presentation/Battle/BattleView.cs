@@ -16,6 +16,8 @@ namespace Game.Presentation.Battle
         private const float ShakeUnits = 0.18f;
         private const float CritShakeSeconds = 0.12f;
         private const float CritShakeUnits = 0.25f;
+        private const float HeavyShakeSeconds = 0.2f;
+        private const float HeavyShakeUnits = 0.3f;
         private const float BossBlinkSeconds = 10f;
         private const float BarSmoothing = 18f;
         private const float GoldBumpSeconds = 0.15f;
@@ -138,6 +140,7 @@ namespace Game.Presentation.Battle
         private float _idleAge;
         private float _attackAge = float.MaxValue;
         private float _critShakeAge = CritShakeSeconds;
+        private float _heavyShakeAge = HeavyShakeSeconds;
         private float _goldBumpAge = GoldBumpSeconds;
         private float _retreatAge = RetreatSeconds;
         private float _shownHp = 1f;
@@ -252,6 +255,10 @@ namespace Game.Presentation.Battle
             var spread = new Vector2(Random.Range(-NumbersSpreadX, NumbersSpreadX), Random.Range(0f, NumbersSpreadY));
             _numbers.Show(amount, crit, origin + spread);
         }
+
+        public bool HeavyShaking => _heavyShakeAge >= 0f && _heavyShakeAge < HeavyShakeSeconds;
+
+        public void ShakeHeavy(float delaySeconds) => _heavyShakeAge = -Mathf.Max(0f, delaySeconds);
 
         public void DimStrikes(bool dimmed)
         {
@@ -547,12 +554,24 @@ namespace Game.Presentation.Battle
 
         private bool Attacking => _attackAge < HeroModel.Attack.Duration;
 
+        private Vector3 ShakeOffset()
+        {
+            if (HeavyShaking)
+            {
+                var reach = HeavyShakeUnits * (1f - _heavyShakeAge / HeavyShakeSeconds);
+                return new Vector3(Random.Range(-reach, reach) * 0.5f, Random.Range(-reach, reach), 0f);
+            }
+            return _critShakeAge < CritShakeSeconds
+                ? new Vector3(Random.Range(-CritShakeUnits, CritShakeUnits), Random.Range(-CritShakeUnits, CritShakeUnits), 0f)
+                : Vector3.zero;
+        }
+
         private void AnimateEffects(float delta)
         {
             _critShakeAge += delta;
-            _scene.localPosition = _critShakeAge < CritShakeSeconds
-                ? new Vector3(Random.Range(-CritShakeUnits, CritShakeUnits), Random.Range(-CritShakeUnits, CritShakeUnits), 0f)
-                : Vector3.zero;
+            if (_heavyShakeAge < HeavyShakeSeconds)
+                _heavyShakeAge += delta;
+            _scene.localPosition = ShakeOffset();
 
             _goldBumpAge += delta;
             var bump = _goldBumpAge < GoldBumpSeconds ? 1f + 0.25f * Mathf.Sin(_goldBumpAge / GoldBumpSeconds * Mathf.PI) : 1f;

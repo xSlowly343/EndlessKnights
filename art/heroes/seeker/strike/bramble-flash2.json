@@ -1,0 +1,281 @@
+{
+ "frames": [
+  {
+   "filename": "bramble-flash2 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-flash2 1",
+   "frame": {
+    "x": 104,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-flash2 2",
+   "frame": {
+    "x": 208,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-flash2 3",
+   "frame": {
+    "x": 312,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-flash2 4",
+   "frame": {
+    "x": 0,
+    "y": 92,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-flash2 5",
+   "frame": {
+    "x": 104,
+    "y": 92,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-flash2 6",
+   "frame": {
+    "x": 208,
+    "y": 92,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-flash2 7",
+   "frame": {
+    "x": 312,
+    "y": 92,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-flash2 8",
+   "frame": {
+    "x": 0,
+    "y": 184,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-flash2 9",
+   "frame": {
+    "x": 104,
+    "y": 184,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bramble-flash2 10",
+   "frame": {
+    "x": 208,
+    "y": 184,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "bramble-flash2.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 416,
+   "h": 276
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "bramble-flash2",
+    "from": 0,
+    "to": 10,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/bramble-flash2",
+   "name": "Bramble double flash",
+   "fps": 30,
+   "loop": false,
+   "frames": 11,
+   "frameSize": [
+    104,
+    92
+   ],
+   "pivot": [
+    58,
+    72
+   ],
+   "columns": 4
+  }
+ }
+}

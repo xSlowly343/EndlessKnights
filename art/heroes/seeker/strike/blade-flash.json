@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "blade-flash 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-flash 1",
+   "frame": {
+    "x": 104,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-flash 2",
+   "frame": {
+    "x": 208,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-flash 3",
+   "frame": {
+    "x": 0,
+    "y": 92,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-flash 4",
+   "frame": {
+    "x": 104,
+    "y": 92,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-flash 5",
+   "frame": {
+    "x": 208,
+    "y": 92,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-flash 6",
+   "frame": {
+    "x": 0,
+    "y": 184,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-flash 7",
+   "frame": {
+    "x": 104,
+    "y": 184,
+    "w": 104,
+    "h": 92
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 104,
+    "h": 92
+   },
+   "sourceSize": {
+    "w": 104,
+    "h": 92
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "blade-flash.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 312,
+   "h": 276
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "blade-flash",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/blade-flash",
+   "name": "Blade flash",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    104,
+    92
+   ],
+   "pivot": [
+    58,
+    58
+   ],
+   "columns": 3
+  }
+ }
+}

@@ -122,5 +122,72 @@ namespace Game.Platform.Tests
             Assert.That(HeroModel.Strike(1).ArcPx, Is.GreaterThan(0f));
             Assert.That(HeroModel.Strike(5).RunsOnGround && HeroModel.Strike(5).BurstsOnGround, Is.True);
         }
+
+        [Test]
+        public void EveryStrikeHasAShortFlashADoubleFlashAndTheLongBurst()
+        {
+            for (var look = 0; look <= 24; look++)
+            {
+                var art = HeroModel.Strike(look);
+                Assert.That(art.HasTiers, Is.True, "look " + look);
+                Assert.That(art.BurstOf(1).Duration, Is.InRange(0.2f, 0.25f), "look " + look);
+                Assert.That(art.BurstOf(2).Duration, Is.GreaterThan(art.BurstOf(1).Duration).And.LessThan(art.Burst.Duration), "look " + look);
+                Assert.That(art.BurstOf(3), Is.SameAs(art.Burst), "look " + look);
+                Assert.That(art.BurstOf(9), Is.SameAs(art.Burst));
+                Assert.That(art.BurstOf(0), Is.SameAs(art.BurstOf(1)));
+            }
+        }
+
+        [Test]
+        public void TheBurstSheetFollowsTheSwingTierAndKeepsItsSize()
+        {
+            var art = _strike.Art;
+            var target = new Vector2(28f, 5f);
+            var burst = _scene.transform.Find("Strike burst 0");
+
+            _strike.Launch(1);
+            _strike.Animate(HeroStrike.FlightSeconds, target);
+            Assert.That(_strike.Bursting, Is.EqualTo(1));
+            _strike.Animate(art.BurstOf(1).Duration, target);
+            Assert.That(_strike.Bursting, Is.Zero, "the first tier is the short flash");
+
+            _strike.Launch(3);
+            _strike.Animate(HeroStrike.FlightSeconds, target);
+            _strike.Animate(art.BurstOf(1).Duration, target);
+            Assert.That(_strike.Bursting, Is.EqualTo(1), "the third tier plays the long burst");
+            Assert.That(burst.localScale.x, Is.EqualTo(3f), "a tier picks a sheet instead of growing the sprite");
+        }
+
+        [Test]
+        public void AShortFlashDoesNotCutALongBurstThatIsStillPlaying()
+        {
+            var art = _strike.Art;
+            var target = new Vector2(28f, 5f);
+
+            _strike.Launch(3);
+            _strike.Animate(HeroStrike.FlightSeconds, target);
+            _strike.Launch(1);
+            _strike.Animate(HeroStrike.FlightSeconds, target);
+            _strike.Animate(art.BurstOf(1).Duration - HeroStrike.FlightSeconds + 0.01f, target);
+            Assert.That(_strike.Bursting, Is.EqualTo(1), "the flash is over, the long burst is not");
+            _strike.Launch(1);
+            _strike.Animate(HeroStrike.FlightSeconds, target);
+
+            Assert.That(_strike.Bursting, Is.EqualTo(2), "the finished flash gives its place, the long burst goes on");
+        }
+
+        [Test]
+        public void SkillFamiliesHaveTheirSheets()
+        {
+            foreach (var id in new[] { "hit", "queue", "auto", "strong", "spark", "wave" })
+                Assert.That(HeroModel.SkillSheet(id), Is.Not.Null, id);
+            Assert.That(HeroModel.SkillSheet("hit")!.Duration, Is.EqualTo(0.4f).Within(0.02f));
+            Assert.That(HeroModel.SkillSheet("queue")!.Duration, Is.EqualTo(0.5f).Within(0.02f));
+            Assert.That(HeroModel.SkillSheet("auto")!.Duration, Is.EqualTo(0.3f).Within(0.02f));
+            Assert.That(HeroModel.SkillSheet("strong")!.Duration, Is.InRange(0.7f, 0.8f));
+            Assert.That(HeroModel.SkillSheet("spark")!.Duration, Is.EqualTo(0.2f).Within(0.02f));
+            Assert.That(HeroModel.SkillImpactSeconds("strong"), Is.GreaterThan(0f));
+            Assert.That(HeroModel.SkillSheet("nothing"), Is.Null);
+        }
     }
 }
