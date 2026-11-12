@@ -19,6 +19,7 @@ namespace Game.Bootstrap
         private RawInputService? _rawInput;
         private InputDebugOverlay _inputDebug = null!;
         private PanelModeDriver? _panelMode;
+        private FullscreenDriver? _fullscreen;
         private ClockStamp? _suspended;
         private TrayMenuState _state = TrayMenuState.Default;
 
@@ -27,7 +28,7 @@ namespace Game.Bootstrap
 
         public TrayMenuState State => _state;
 
-        public static TrayDriver Attach(GameObject host, TrayIcon tray, WindowController window, ClickThroughDriver clickThrough, FramePacingDriver framePacing, TaskbarDockDriver dock, RawInputService? rawInput, InputDebugOverlay inputDebug, PanelModeDriver? panelMode = null)
+        public static TrayDriver Attach(GameObject host, TrayIcon tray, WindowController window, ClickThroughDriver clickThrough, FramePacingDriver framePacing, TaskbarDockDriver dock, RawInputService? rawInput, InputDebugOverlay inputDebug, PanelModeDriver? panelMode = null, FullscreenDriver? fullscreen = null)
         {
             var driver = host.AddComponent<TrayDriver>();
             driver._tray = tray;
@@ -38,11 +39,19 @@ namespace Game.Bootstrap
             driver._rawInput = rawInput;
             driver._inputDebug = inputDebug;
             driver._panelMode = panelMode;
+            driver._fullscreen = fullscreen;
+            if (fullscreen != null)
+            {
+                fullscreen.HiddenByHandChanged += tray.ShowHidden;
+                fullscreen.Shown += dock.ForceRedock;
+            }
             tray.ShowState(driver._state);
             clickThrough.Changed += driver.SyncClickThrough;
             inputDebug.SetVisible(driver._state.ShowInputDebug);
             return driver;
         }
+
+        public bool UseHideHotKey(bool enabled) => _tray.UseHideHotKey(enabled);
 
         public void UseState(TrayMenuState state)
         {
@@ -65,8 +74,14 @@ namespace Game.Bootstrap
                 Application.Quit();
                 return;
             }
+            if (command == TrayCommand.ToggleHidden)
+            {
+                _fullscreen?.ToggleHidden();
+                return;
+            }
             if (command == TrayCommand.TogglePanel)
             {
+                _fullscreen?.SetHiddenByHand(false);
                 _panelMode?.Toggle();
                 return;
             }

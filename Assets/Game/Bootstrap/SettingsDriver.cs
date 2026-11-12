@@ -25,6 +25,7 @@ namespace Game.Bootstrap
         private ChangeLog? _changeLog;
         private bool _firstRun;
         private PanelCanvas? _panels;
+        private FullscreenDriver? _fullscreen;
 
         public GameSettings Settings { get; private set; } = new GameSettings();
 
@@ -35,6 +36,7 @@ namespace Game.Bootstrap
             var problems = new List<string>();
             driver._firstRun = !driver._store.Exists;
             driver.Settings = driver._store.Load(problems);
+            driver.Settings.Paused = false;
             if (driver._firstRun)
                 PrivacyPolicy.Accept(driver.Settings);
             foreach (var problem in problems)
@@ -43,7 +45,7 @@ namespace Game.Bootstrap
             return driver;
         }
 
-        public void Bind(PanelCanvas panels, PanelModeDriver? panelMode, TaskbarDockDriver? dock, TrayDriver? tray, BattleView? battle, GameLoop? loop, NotificationDriver? notifications, ChangeLog? changeLog)
+        public void Bind(PanelCanvas panels, PanelModeDriver? panelMode, TaskbarDockDriver? dock, TrayDriver? tray, BattleView? battle, GameLoop? loop, NotificationDriver? notifications, ChangeLog? changeLog, FullscreenDriver? fullscreen = null)
         {
             _changeLog = changeLog;
             _panels = panels;
@@ -54,6 +56,7 @@ namespace Game.Bootstrap
             _dock = dock;
             _tray = tray;
             _battle = battle;
+            _fullscreen = fullscreen;
             ApplyStrikeOpacity();
             HeroModel.UseCosmetics(loop?.Cosmetics);
             SettingsScreen.UseLooks(loop == null ? null : new HeroLookChooser(loop.Cosmetics));
@@ -74,6 +77,8 @@ namespace Game.Bootstrap
                 _tray.UseState(TrayStateOf(Settings));
                 _tray.StateChanged += OnTrayChanged;
             }
+            _fullscreen?.UseAutoHide(Settings.AutoHideFullscreen);
+            ApplyHideHotKey(false);
             var showWhatsNew = WhatsNew.ShowOnStart(Settings, _changeLog, _firstRun);
             Save();
             if (showWhatsNew)
@@ -128,6 +133,8 @@ namespace Game.Bootstrap
                     ShowWhatsNew();
                     return;
                 case SettingId.Coupon:
+                    if (_loop == null)
+                        _panels?.ShowNotice(CouponText.Offline);
                     return;
                 case SettingId.BuildCopy:
                     CopyBuild();
@@ -137,6 +144,12 @@ namespace Game.Bootstrap
                     return;
                 case SettingId.ResetPosition:
                     _dock?.UseOffset((int)Settings.StripOffset);
+                    break;
+                case SettingId.AutoHideFullscreen:
+                    _fullscreen?.UseAutoHide(Settings.AutoHideFullscreen);
+                    break;
+                case SettingId.HideHotKey:
+                    ApplyHideHotKey(true);
                     break;
                 case SettingId.Paused:
                 case SettingId.AlwaysOnTop:
@@ -177,7 +190,7 @@ namespace Game.Bootstrap
 
         private void OnTrayChanged(TrayMenuState state)
         {
-            Settings.Paused = state.Paused;
+            Settings.Paused = false;
             Settings.ClickThrough = state.ClickThrough;
             Settings.AlwaysOnTop = state.AlwaysOnTop;
             Settings.FrameRate = state.FrameRate;
@@ -213,6 +226,15 @@ namespace Game.Bootstrap
             }
         }
 
+        private void ApplyHideHotKey(bool tellWhenBusy)
+        {
+            if (_tray == null)
+                return;
+            var registered = _tray.UseHideHotKey(Settings.HideHotKey);
+            if (!registered && tellWhenBusy)
+                _panels?.ShowNotice(Texts.Get("settings.hideHotKeyBusy"));
+        }
+
         private void ApplyStrikeOpacity() => _battle?.UseStrikeOpacity((float)Settings.HeroStrikeOpacity, (float)Settings.AllyStrikeOpacity);
 
         private void ApplyLook()
@@ -228,6 +250,6 @@ namespace Game.Bootstrap
         }
 
         private static TrayMenuState TrayStateOf(GameSettings settings) =>
-            new TrayMenuState(settings.Paused, settings.ClickThrough, settings.AlwaysOnTop, settings.FrameRate, settings.ShowInputDebug);
+            new TrayMenuState(false, settings.ClickThrough, settings.AlwaysOnTop, settings.FrameRate, settings.ShowInputDebug);
     }
 }

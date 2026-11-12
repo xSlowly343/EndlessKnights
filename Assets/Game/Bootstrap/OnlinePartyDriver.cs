@@ -189,8 +189,10 @@ namespace Game.Bootstrap
 
         private void OnSetting(SettingId id)
         {
-            if (id == SettingId.Coupon)
-                RedeemCoupon(Coupon.Normalize(GUIUtility.systemCopyBuffer));
+            if (id != SettingId.Coupon)
+                return;
+            var typed = SettingsScreen.CouponCode;
+            RedeemCoupon(typed.Length > 0 ? Coupon.Normalize(typed.Text) : Coupon.Normalize(GUIUtility.systemCopyBuffer));
         }
 
         private void RedeemCoupon(string code)
@@ -212,6 +214,8 @@ namespace Game.Bootstrap
                     _mainThread.Enqueue(() =>
                     {
                         _panels.ShowNotice(CouponText.Result(status));
+                        if (status != CouponText.Busy && SettingsScreen.CouponCode.Clear())
+                            _panels.Settings.Refresh();
                         if (status == CouponText.Done)
                             _sinceMail = MailSeconds;
                     });

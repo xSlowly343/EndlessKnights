@@ -30,6 +30,7 @@ namespace Game.Core.Ui
             new[]
             {
                 new SettingGroup("window", new[] { SettingId.AlwaysOnTop, SettingId.ResetPosition }),
+                new SettingGroup("hiding", new[] { SettingId.AutoHideFullscreen, SettingId.HideHotKey }),
                 new SettingGroup("picture", new[] { SettingId.FrameRate, SettingId.CompanionStrip }),
             },
             new[]
@@ -106,7 +107,7 @@ namespace Game.Core.Ui
         public static SettingKind KindOf(SettingId id) => id switch
         {
             SettingId.Paused or SettingId.AlwaysOnTop or SettingId.ClickThrough or SettingId.CountKeys or SettingId.CountMouseMovement
-                or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug => SettingKind.Toggle,
+                or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug or SettingId.AutoHideFullscreen or SettingId.HideHotKey => SettingKind.Toggle,
             SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew or SettingId.Coupon or SettingId.BuildCopy or SettingId.BuildPaste => SettingKind.Action,
             SettingId.Language or SettingId.FrameRate or SettingId.NumberFormat or SettingId.CompanionStrip => SettingKind.Segments,
             SettingId.MasterVolume or SettingId.MusicVolume or SettingId.HitVolume or SettingId.SkillVolume or SettingId.InterfaceVolume
@@ -116,8 +117,12 @@ namespace Game.Core.Ui
 
         public static string Hint(SettingId id) => Texts.Get("settings.hint." + Key(id));
 
+        public static CouponEntry CouponCode { get; } = new CouponEntry();
+
         public static string HintLine(SettingId id, GameSettings settings)
         {
+            if (id == SettingId.Coupon && CouponCode.Length > 0)
+                return Texts.Format("settings.couponTyped", CouponCode.Display);
             var preview = Preview(id, settings);
             return preview.Length > 0 ? Texts.Format("settings.preview", preview) : Hint(id);
         }
@@ -266,7 +271,8 @@ namespace Game.Core.Ui
         public static string ActionLabel(SettingId id) => Texts.Get(id switch
         {
             SettingId.ResetPosition => "settings.reset",
-            SettingId.Coupon or SettingId.BuildPaste => "settings.paste",
+            SettingId.Coupon => CouponCode.Length > 0 ? "settings.apply" : "settings.paste",
+            SettingId.BuildPaste => "settings.paste",
             SettingId.BuildCopy => "settings.copy",
             _ => "settings.open"
         });
@@ -276,6 +282,8 @@ namespace Game.Core.Ui
             SettingId.Paused => settings.Paused,
             SettingId.AlwaysOnTop => settings.AlwaysOnTop,
             SettingId.ClickThrough => settings.ClickThrough,
+            SettingId.AutoHideFullscreen => settings.AutoHideFullscreen,
+            SettingId.HideHotKey => settings.HideHotKey,
             SettingId.CountKeys => settings.CountKeys,
             SettingId.CountMouseMovement => settings.CountMouseMovement,
             SettingId.CountClicks => settings.CountClicks,
@@ -309,6 +317,12 @@ namespace Game.Core.Ui
                     return true;
                 case SettingId.ClickThrough:
                     settings.ClickThrough = !settings.ClickThrough;
+                    return true;
+                case SettingId.AutoHideFullscreen:
+                    settings.AutoHideFullscreen = !settings.AutoHideFullscreen;
+                    return true;
+                case SettingId.HideHotKey:
+                    settings.HideHotKey = !settings.HideHotKey;
                     return true;
                 case SettingId.ResetPosition:
                     settings.StripOffset = 0;

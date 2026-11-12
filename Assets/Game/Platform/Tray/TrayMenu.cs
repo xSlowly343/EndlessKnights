@@ -69,11 +69,13 @@ namespace Game.Platform.Windows.Tray
     {
         private static readonly TrayCommand[] FrameRateCommands = { TrayCommand.FrameRate30, TrayCommand.FrameRate60, TrayCommand.FrameRate144 };
 
-        public static IReadOnlyList<TrayMenuItem> Items(TrayMenuState state)
+        public const string HideHotKeyText = "Ctrl+Alt+H";
+
+        public static IReadOnlyList<TrayMenuItem> Items(TrayMenuState state, bool stripHidden = false)
         {
             var items = new List<TrayMenuItem>
             {
-                TrayMenuItem.Toggle(TrayCommand.TogglePause, "Пауза", state.Paused),
+                TrayMenuItem.Toggle(TrayCommand.ToggleHidden, "Скрыть полоску\t" + HideHotKeyText, stripHidden),
                 TrayMenuItem.Toggle(TrayCommand.ToggleClickThrough, "Клики насквозь", state.ClickThrough),
                 TrayMenuItem.Toggle(TrayCommand.ToggleAlwaysOnTop, "Поверх всех окон", state.AlwaysOnTop),
                 TrayMenuItem.Toggle(TrayCommand.ToggleInputDebug, "Отладка ввода", state.ShowInputDebug),

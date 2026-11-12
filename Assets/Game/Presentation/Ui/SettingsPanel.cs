@@ -79,6 +79,7 @@ namespace Game.Presentation.Ui
         public event Action<SettingId>? Changed;
 
         public bool IsShown => _root.gameObject.activeSelf;
+        public int Tab => _tab;
         public int ShownRows => _shown.Count;
         public string VersionText => _version.text;
         public bool ResetShown => _resetTab.Rect.gameObject.activeSelf;
@@ -153,6 +154,12 @@ namespace Game.Presentation.Ui
                 return true;
             }
             return false;
+        }
+
+        public void Press(SettingId id)
+        {
+            Changed?.Invoke(id);
+            Refresh();
         }
 
         public string ValueOf(int row) => _rows[row].Value;

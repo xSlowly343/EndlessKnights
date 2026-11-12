@@ -147,6 +147,33 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
+        public void TheWindowTabHidesTheStripByKeyAndInFullscreenWindows()
+        {
+            Texts.UseLanguage("ru");
+            var settings = new GameSettings();
+            var rows = SettingsScreen.Rows(1);
+
+            Assert.That(rows, Does.Contain(SettingId.AutoHideFullscreen).And.Contain(SettingId.HideHotKey));
+            Assert.That(SettingsScreen.KindOf(SettingId.AutoHideFullscreen), Is.EqualTo(SettingKind.Toggle));
+            Assert.That(settings.AutoHideFullscreen, Is.False, "the strip stays above borderless games until asked");
+            Assert.That(settings.HideHotKey, Is.True);
+            Assert.That(SettingsScreen.Label(SettingId.HideHotKey), Does.Contain("Ctrl+Alt+H"));
+            Assert.That(SettingsScreen.Hint(SettingId.AutoHideFullscreen), Is.Not.Empty);
+
+            Assert.That(SettingsScreen.Change(SettingId.AutoHideFullscreen, settings, 1), Is.True);
+            Assert.That(SettingsScreen.Change(SettingId.HideHotKey, settings, 1), Is.True);
+            Assert.That(settings.AutoHideFullscreen, Is.True);
+            Assert.That(settings.HideHotKey, Is.False);
+            Assert.That(SettingsScreen.AnyChanged(1, settings), Is.True);
+
+            var changed = new System.Collections.Generic.List<SettingId>();
+            SettingsScreen.ResetTab(1, settings, changed);
+            Assert.That(changed, Does.Contain(SettingId.AutoHideFullscreen).And.Contain(SettingId.HideHotKey));
+            Assert.That(settings.AutoHideFullscreen, Is.False);
+            Assert.That(settings.HideHotKey, Is.True);
+        }
+
+        [Test]
         public void NothingAboutInputOrPauseIsLeftInTheMenu()
         {
             var shown = Enumerable.Range(0, SettingsScreen.TabCount + 1).SelectMany(SettingsScreen.Rows).ToList();

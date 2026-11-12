@@ -95,6 +95,26 @@ namespace Game.Platform.Windows.Window
             NativeMethods.ShowWindow(_window, hidden ? NativeMethods.SwHide : NativeMethods.SwShowNoActivate);
         }
 
+        public bool ForegroundCoversOwnMonitor()
+        {
+            var foreground = NativeMethods.GetForegroundWindow();
+            if (foreground == IntPtr.Zero || foreground == _window || foreground == NativeMethods.GetShellWindow() || foreground == NativeMethods.GetDesktopWindow())
+                return false;
+            if (FullscreenDetector.IsShellClass(ClassNameOf(foreground)))
+                return false;
+            if (!NativeMethods.GetWindowRect(foreground, out var other) || !NativeMethods.GetWindowRect(_window, out var own))
+                return false;
+            var monitor = NativeMethods.MonitorFromRect(ref other, NativeMethods.MonitorDefaultToNearest);
+            if (monitor != NativeMethods.MonitorFromRect(ref own, NativeMethods.MonitorDefaultToNearest))
+                return false;
+            var info = new NativeMethods.MonitorInfo { Size = (uint)System.Runtime.InteropServices.Marshal.SizeOf<NativeMethods.MonitorInfo>() };
+            if (!NativeMethods.GetMonitorInfo(monitor, ref info))
+                return false;
+            return FullscreenDetector.Covers(
+                new ScreenRect(other.Left, other.Top, other.Right, other.Bottom),
+                new ScreenRect(info.Monitor.Left, info.Monitor.Top, info.Monitor.Right, info.Monitor.Bottom));
+        }
+
         public bool TryGetBounds(out ScreenRect bounds)
         {
             var found = NativeMethods.GetWindowRect(_window, out var rect);
@@ -149,11 +169,13 @@ namespace Game.Platform.Windows.Window
             return false;
         }
 
-        private static bool IsUnityWindow(IntPtr window)
+        private static bool IsUnityWindow(IntPtr window) => ClassNameOf(window) == UnityWindowClass;
+
+        private static string ClassNameOf(IntPtr window)
         {
             var className = new char[64];
             var length = NativeMethods.GetClassName(window, className, className.Length);
-            return length > 0 && new string(className, 0, length) == UnityWindowClass;
+            return length > 0 ? new string(className, 0, length) : string.Empty;
         }
     }
 }

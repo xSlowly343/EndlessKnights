@@ -31,6 +31,8 @@ namespace Game.Core.Ui
         HeroStrike,
         Coupon,
         BuildCopy,
-        BuildPaste
+        BuildPaste,
+        AutoHideFullscreen,
+        HideHotKey
     }
 }

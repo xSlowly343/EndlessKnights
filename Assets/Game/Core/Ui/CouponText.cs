@@ -5,6 +5,7 @@ namespace Game.Core.Ui
     public static class CouponText
     {
         public const string Done = "done";
+        public const string Busy = "busy";
 
         public static string Empty => Texts.Get("coupon.empty");
 
