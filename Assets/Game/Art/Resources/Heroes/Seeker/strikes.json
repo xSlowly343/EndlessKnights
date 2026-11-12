@@ -29,7 +29,42 @@
           27
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Void_Flash_30x30_7f",
+          "width": 30,
+          "height": 30,
+          "frames": 7,
+          "pivot": [
+            15,
+            15
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Void_Flash2_40x36_10f",
+          "width": 40,
+          "height": 36,
+          "frames": 10,
+          "pivot": [
+            22,
+            18
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Void_Burst_80x54_17f",
+          "width": 80,
+          "height": 54,
+          "frames": 17,
+          "pivot": [
+            32,
+            27
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 1,
@@ -59,7 +94,42 @@
           68
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Star_Flash_32x41_7f",
+          "width": 32,
+          "height": 41,
+          "frames": 7,
+          "pivot": [
+            16,
+            30
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Star_Flash2_44x45_10f",
+          "width": 44,
+          "height": 45,
+          "frames": 10,
+          "pivot": [
+            25,
+            31
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Star_Burst_75x83_17f",
+          "width": 75,
+          "height": 83,
+          "frames": 17,
+          "pivot": [
+            39,
+            68
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 2,
@@ -89,7 +159,42 @@
           41
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Moth_Flash_39x34_7f",
+          "width": 39,
+          "height": 34,
+          "frames": 7,
+          "pivot": [
+            20,
+            19
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Moth_Flash2_42x43_10f",
+          "width": 42,
+          "height": 43,
+          "frames": 10,
+          "pivot": [
+            22,
+            25
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Moth_Burst_66x64_17f",
+          "width": 66,
+          "height": 64,
+          "frames": 17,
+          "pivot": [
+            31,
+            41
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 3,
@@ -119,7 +224,42 @@
           41
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Cog_Flash_30x33_7f",
+          "width": 30,
+          "height": 33,
+          "frames": 7,
+          "pivot": [
+            15,
+            22
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Cog_Flash2_41x35_10f",
+          "width": 41,
+          "height": 35,
+          "frames": 10,
+          "pivot": [
+            22,
+            22
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Cog_Burst_81x51_18f",
+          "width": 81,
+          "height": 51,
+          "frames": 18,
+          "pivot": [
+            32,
+            41
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 4,
@@ -149,7 +289,42 @@
           28
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Card_Flash_32x30_7f",
+          "width": 32,
+          "height": 30,
+          "frames": 7,
+          "pivot": [
+            16,
+            15
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Card_Flash2_45x45_10f",
+          "width": 45,
+          "height": 45,
+          "frames": 10,
+          "pivot": [
+            24,
+            22
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Card_Burst_68x53_18f",
+          "width": 68,
+          "height": 53,
+          "frames": 18,
+          "pivot": [
+            36,
+            28
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 5,
@@ -179,7 +354,42 @@
           60
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Bramble_Flash_30x32_7f",
+          "width": 30,
+          "height": 32,
+          "frames": 7,
+          "pivot": [
+            15,
+            21
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Bramble_Flash2_41x39_10f",
+          "width": 41,
+          "height": 39,
+          "frames": 10,
+          "pivot": [
+            22,
+            26
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Bramble_Burst_64x61_17f",
+          "width": 64,
+          "height": 61,
+          "frames": 17,
+          "pivot": [
+            32,
+            60
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 6,
@@ -209,7 +419,42 @@
           29
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Rift_Flash_30x30_7f",
+          "width": 30,
+          "height": 30,
+          "frames": 7,
+          "pivot": [
+            15,
+            15
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Rift_Flash2_39x35_10f",
+          "width": 39,
+          "height": 35,
+          "frames": 10,
+          "pivot": [
+            22,
+            17
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Rift_Burst_58x58_17f",
+          "width": 58,
+          "height": 58,
+          "frames": 17,
+          "pivot": [
+            21,
+            29
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 7,
@@ -239,7 +484,42 @@
           28
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Koi_Flash_34x31_7f",
+          "width": 34,
+          "height": 31,
+          "frames": 7,
+          "pivot": [
+            17,
+            20
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Koi_Flash2_48x39_10f",
+          "width": 48,
+          "height": 39,
+          "frames": 10,
+          "pivot": [
+            29,
+            25
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Koi_Burst_67x45_16f",
+          "width": 67,
+          "height": 45,
+          "frames": 16,
+          "pivot": [
+            32,
+            28
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 8,
@@ -269,7 +549,42 @@
           45
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Chord_Flash_31x36_7f",
+          "width": 31,
+          "height": 36,
+          "frames": 7,
+          "pivot": [
+            16,
+            21
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Chord_Flash2_41x44_10f",
+          "width": 41,
+          "height": 44,
+          "frames": 10,
+          "pivot": [
+            23,
+            26
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Chord_Burst_87x87_18f",
+          "width": 87,
+          "height": 87,
+          "frames": 18,
+          "pivot": [
+            43,
+            45
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 9,
@@ -299,7 +614,42 @@
           61
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Phoenix_Flash_30x36_7f",
+          "width": 30,
+          "height": 36,
+          "frames": 7,
+          "pivot": [
+            15,
+            25
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Phoenix_Flash2_44x44_10f",
+          "width": 44,
+          "height": 44,
+          "frames": 10,
+          "pivot": [
+            25,
+            30
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Phoenix_Burst_83x77_26f",
+          "width": 83,
+          "height": 77,
+          "frames": 26,
+          "pivot": [
+            45,
+            61
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 10,
@@ -329,7 +679,42 @@
           57
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Glacier_Flash_30x32_7f",
+          "width": 30,
+          "height": 32,
+          "frames": 7,
+          "pivot": [
+            15,
+            21
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Glacier_Flash2_44x39_10f",
+          "width": 44,
+          "height": 39,
+          "frames": 10,
+          "pivot": [
+            25,
+            25
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Glacier_Burst_97x71_26f",
+          "width": 97,
+          "height": 71,
+          "frames": 26,
+          "pivot": [
+            48,
+            57
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 11,
@@ -359,7 +744,42 @@
           58
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Thunder_Flash_30x50_7f",
+          "width": 30,
+          "height": 50,
+          "frames": 7,
+          "pivot": [
+            15,
+            39
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Thunder_Flash2_45x59_10f",
+          "width": 45,
+          "height": 59,
+          "frames": 10,
+          "pivot": [
+            26,
+            45
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Thunder_Burst_73x70_25f",
+          "width": 73,
+          "height": 70,
+          "frames": 25,
+          "pivot": [
+            38,
+            58
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 12,
@@ -389,7 +809,42 @@
           43
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Blade_Flash_48x51_7f",
+          "width": 48,
+          "height": 51,
+          "frames": 7,
+          "pivot": [
+            31,
+            34
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Blade_Flash2_50x55_10f",
+          "width": 50,
+          "height": 55,
+          "frames": 10,
+          "pivot": [
+            32,
+            35
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Blade_Burst_84x76_24f",
+          "width": 84,
+          "height": 76,
+          "frames": 24,
+          "pivot": [
+            42,
+            43
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 13,
@@ -419,7 +874,42 @@
           42
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Wolf_Flash_30x38_7f",
+          "width": 30,
+          "height": 38,
+          "frames": 7,
+          "pivot": [
+            15,
+            19
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Wolf_Flash2_39x40_10f",
+          "width": 39,
+          "height": 40,
+          "frames": 10,
+          "pivot": [
+            22,
+            20
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Wolf_Burst_83x73_26f",
+          "width": 83,
+          "height": 73,
+          "frames": 26,
+          "pivot": [
+            45,
+            42
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 14,
@@ -449,7 +939,42 @@
           30
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Ink_Flash_34x32_7f",
+          "width": 34,
+          "height": 32,
+          "frames": 7,
+          "pivot": [
+            19,
+            15
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Ink_Flash2_39x40_10f",
+          "width": 39,
+          "height": 40,
+          "frames": 10,
+          "pivot": [
+            22,
+            22
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Ink_Burst_70x64_25f",
+          "width": 70,
+          "height": 64,
+          "frames": 25,
+          "pivot": [
+            35,
+            30
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 15,
@@ -479,7 +1004,42 @@
           40
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Glass_Flash_30x35_7f",
+          "width": 30,
+          "height": 35,
+          "frames": 7,
+          "pivot": [
+            15,
+            15
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Glass_Flash2_39x41_10f",
+          "width": 39,
+          "height": 41,
+          "frames": 10,
+          "pivot": [
+            22,
+            20
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Glass_Burst_95x75_27f",
+          "width": 95,
+          "height": 75,
+          "frames": 27,
+          "pivot": [
+            52,
+            40
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 16,
@@ -509,7 +1069,42 @@
           42
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Firework_Flash_37x42_7f",
+          "width": 37,
+          "height": 42,
+          "frames": 7,
+          "pivot": [
+            20,
+            19
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Firework_Flash2_49x50_10f",
+          "width": 49,
+          "height": 50,
+          "frames": 10,
+          "pivot": [
+            31,
+            26
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Firework_Burst_78x75_29f",
+          "width": 78,
+          "height": 75,
+          "frames": 29,
+          "pivot": [
+            42,
+            42
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 17,
@@ -539,7 +1134,42 @@
           50
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Bone_Flash_30x30_7f",
+          "width": 30,
+          "height": 30,
+          "frames": 7,
+          "pivot": [
+            15,
+            19
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Bone_Flash2_43x36_10f",
+          "width": 43,
+          "height": 36,
+          "frames": 10,
+          "pivot": [
+            24,
+            23
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Bone_Burst_73x61_28f",
+          "width": 73,
+          "height": 61,
+          "frames": 28,
+          "pivot": [
+            41,
+            50
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 18,
@@ -569,7 +1199,42 @@
           36
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Bat_Flash_36x30_7f",
+          "width": 36,
+          "height": 30,
+          "frames": 7,
+          "pivot": [
+            20,
+            15
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Bat_Flash2_44x36_10f",
+          "width": 44,
+          "height": 36,
+          "frames": 10,
+          "pivot": [
+            27,
+            18
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Bat_Burst_79x63_27f",
+          "width": 79,
+          "height": 63,
+          "frames": 27,
+          "pivot": [
+            48,
+            36
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 19,
@@ -599,7 +1264,42 @@
           53
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Golem_Flash_33x37_7f",
+          "width": 33,
+          "height": 37,
+          "frames": 7,
+          "pivot": [
+            16,
+            27
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Golem_Flash2_47x50_10f",
+          "width": 47,
+          "height": 50,
+          "frames": 10,
+          "pivot": [
+            28,
+            38
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Golem_Burst_99x64_28f",
+          "width": 99,
+          "height": 64,
+          "frames": 28,
+          "pivot": [
+            61,
+            53
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 20,
@@ -629,7 +1329,42 @@
           49
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Serpent_Flash_36x35_7f",
+          "width": 36,
+          "height": 35,
+          "frames": 7,
+          "pivot": [
+            21,
+            24
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Serpent_Flash2_49x39_10f",
+          "width": 49,
+          "height": 39,
+          "frames": 10,
+          "pivot": [
+            30,
+            26
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Serpent_Burst_79x60_27f",
+          "width": 79,
+          "height": 60,
+          "frames": 27,
+          "pivot": [
+            54,
+            49
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 21,
@@ -659,7 +1394,42 @@
           40
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Samurai_Flash_47x30_7f",
+          "width": 47,
+          "height": 30,
+          "frames": 7,
+          "pivot": [
+            20,
+            15
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Samurai_Flash2_54x38_10f",
+          "width": 54,
+          "height": 38,
+          "frames": 10,
+          "pivot": [
+            25,
+            17
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Samurai_Burst_87x71_25f",
+          "width": 87,
+          "height": 71,
+          "frames": 25,
+          "pivot": [
+            47,
+            40
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 22,
@@ -689,7 +1459,42 @@
           42
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Raven_Flash_30x30_7f",
+          "width": 30,
+          "height": 30,
+          "frames": 7,
+          "pivot": [
+            15,
+            15
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Raven_Flash2_39x35_10f",
+          "width": 39,
+          "height": 35,
+          "frames": 10,
+          "pivot": [
+            22,
+            17
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Raven_Burst_85x64_27f",
+          "width": 85,
+          "height": 64,
+          "frames": 27,
+          "pivot": [
+            56,
+            42
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 23,
@@ -719,7 +1524,42 @@
           51
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Vine_Flash_30x34_7f",
+          "width": 30,
+          "height": 34,
+          "frames": 7,
+          "pivot": [
+            15,
+            23
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Vine_Flash2_40x39_10f",
+          "width": 40,
+          "height": 39,
+          "frames": 10,
+          "pivot": [
+            21,
+            26
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Vine_Burst_64x62_28f",
+          "width": 64,
+          "height": 62,
+          "frames": 28,
+          "pivot": [
+            45,
+            51
+          ],
+          "fps": 30
+        }
+      ]
     },
     {
       "look": 24,
@@ -749,7 +1589,111 @@
           57
         ],
         "fps": 30
-      }
+      },
+      "tiers": [
+        {
+          "file": "Seeker_Guardian_Flash_30x55_7f",
+          "width": 30,
+          "height": 55,
+          "frames": 7,
+          "pivot": [
+            15,
+            44
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Guardian_Flash2_45x64_10f",
+          "width": 45,
+          "height": 64,
+          "frames": 10,
+          "pivot": [
+            26,
+            50
+          ],
+          "fps": 30
+        },
+        {
+          "file": "Seeker_Guardian_Burst_76x68_28f",
+          "width": 76,
+          "height": 68,
+          "frames": 28,
+          "pivot": [
+            47,
+            57
+          ],
+          "fps": 30
+        }
+      ]
     }
-  ]
+  ],
+  "skills": {
+    "hit": {
+      "file": "Skill_Hit_127x42_12f",
+      "width": 127,
+      "height": 42,
+      "frames": 12,
+      "pivot": [
+        104,
+        36
+      ],
+      "fps": 30
+    },
+    "queue": {
+      "file": "Skill_Queue_94x33_15f",
+      "width": 94,
+      "height": 33,
+      "frames": 15,
+      "pivot": [
+        64,
+        30
+      ],
+      "fps": 30
+    },
+    "auto": {
+      "file": "Skill_Auto_36x36_9f",
+      "width": 36,
+      "height": 36,
+      "frames": 9,
+      "pivot": [
+        18,
+        32
+      ],
+      "fps": 30
+    },
+    "strong": {
+      "file": "Skill_Strong_89x76_23f",
+      "width": 89,
+      "height": 76,
+      "frames": 23,
+      "pivot": [
+        47,
+        57
+      ],
+      "fps": 30,
+      "impactSeconds": 0.18
+    },
+    "spark": {
+      "file": "Skill_Spark_36x36_6f",
+      "width": 36,
+      "height": 36,
+      "frames": 6,
+      "pivot": [
+        18,
+        32
+      ],
+      "fps": 30
+    },
+    "wave": {
+      "file": "Aura_Wave_268x32_15f",
+      "width": 268,
+      "height": 32,
+      "frames": 15,
+      "pivot": [
+        134,
+        20
+      ],
+      "fps": 30
+    }
+  }
 }

@@ -115,7 +115,7 @@ namespace Game.Bootstrap
         private void OfferShow(GemDef gem)
         {
             if (gem.Skill?.Effect is AuraEffect)
-                _effects.Cast(gem);
+                _effects.Cast(gem, _view.StrikeTarget);
             else
                 _shows.Offer(gem, 0, SkillShowKind.CastByHand(_loop.State.Skills, gem), Time.unscaledTime);
         }
@@ -124,8 +124,15 @@ namespace Game.Bootstrap
         {
             var now = (double)Time.unscaledTime;
             while (_shows.TryTake(now, out var cue))
-                _effects.Cast(cue.Gem, cue.Size);
+                Show(cue);
             _view.DimStrikes(_shows.UrgentBusy(now));
+        }
+
+        private void Show(ShowCue cue)
+        {
+            _effects.Cast(cue.Gem, _view.StrikeTarget, cue.Size);
+            if (cue.Size == ShowSize.Full && SkillShowFamilies.Of(cue.Gem) == SkillShowFamily.Strong)
+                _view.ShakeHeavy(SkillEffects.HeavyImpactSeconds);
         }
 
         private void ShowState()

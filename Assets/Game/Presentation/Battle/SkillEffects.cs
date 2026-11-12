@@ -9,41 +9,40 @@ namespace Game.Presentation.Battle
 {
     public sealed class SkillEffects : MonoBehaviour
     {
-        private const float TrailSeconds = 0.18f;
-        private const float RingSeconds = 0.35f;
-        private const float WaveSeconds = 0.4f;
+        private const float SheetScale = 3f;
         private const float NameSeconds = 0.9f;
-        private const float TrailHeightPx = 3f;
-        private const float RingStartPx = 20f;
-        private const float RingEndPx = 90f;
-        private const float SmallRingEndPx = 40f;
-        private const float WaveAlpha = 0.35f;
+        private const float WhiteMix = 0.2f;
         private const float GlowPulseSpeed = 4f;
         private const float GlowAlpha = 0.35f;
         private const float NameRisePx = 10f;
+        private const int WaveSortingOrder = 8;
+        private const int CastSortingOrder = 21;
         private const int NameSortingOrder = 26;
+        private const string SparkSheet = "spark";
+        private const string WaveSheet = "wave";
 
+        private static readonly string[] FamilySheets = { "hit", "queue", "auto", "strong" };
         private static readonly Vector2 HeroCentre = StripSpace.AtPx(85f, 117f);
-        private static readonly Vector2 EnemyCentre = StripSpace.AtPx(416f, 108f);
+        private static readonly Vector2 HeroFeet = StripSpace.AtPx(85f, 150f);
+        private static readonly float GroundY = StripSpace.AtPx(0f, 150f).y;
         private static readonly Vector2 GlowSize = new Vector2(StripSpace.Units(78f), StripSpace.Units(90f));
-        private static readonly Vector2 WaveCentre = StripSpace.AtPx(240f, 113f);
-        private static readonly Vector2 WaveSize = new Vector2(StripSpace.Width, StripSpace.Units(74f));
         private static readonly Vector2 NamePosition = StripSpace.AtPx(240f, 60f);
 
-        private SpriteRenderer _trail = null!;
-        private SpriteRenderer _ring = null!;
-        private SpriteRenderer _wave = null!;
+        private readonly HeroClip?[] _families = new HeroClip?[SkillShowFamilies.Count];
+        private SheetPlayer _cast = null!;
+        private SheetPlayer _spark = null!;
+        private SheetPlayer _wave = null!;
+        private HeroClip? _sparkClip;
+        private HeroClip? _waveClip;
         private SpriteRenderer _glow = null!;
         private TextMeshProUGUI _name = null!;
         private Vector2 _namePx;
         private Color _color = Color.white;
-        private float _trailAge = TrailSeconds;
-        private float _ringAge = RingSeconds;
-        private float _waveAge = WaveSeconds;
         private float _nameAge = NameSeconds;
         private Color _glowColor;
         private bool _glowing;
-        private float _ringEndPx = RingEndPx;
+
+        public static float HeavyImpactSeconds => HeroModel.SkillImpactSeconds(FamilySheets[(int)SkillShowFamily.Strong]);
 
         public static SkillEffects Create()
         {
@@ -53,25 +52,28 @@ namespace Game.Presentation.Battle
             return effects;
         }
 
-        public void Cast(GemDef gem, ShowSize size = ShowSize.Full)
+        public bool CastShown => _cast.Playing;
+
+        public bool SparkShown => _spark.Playing;
+
+        public bool WaveShown => _wave.Playing;
+
+        public void Cast(GemDef gem, Vector2 target, ShowSize size = ShowSize.Full)
         {
             _color = GemColors.Of(gem.Color);
+            var tint = Color.Lerp(_color, Color.white, WhiteMix);
+            var ground = new Vector2(target.x, GroundY);
             if (size == ShowSize.Small)
             {
-                _ringEndPx = SmallRingEndPx;
-                _ringAge = 0f;
+                _spark.Play(_sparkClip, ground, tint);
                 return;
             }
             _name.text = gem.NameRu;
             _nameAge = 0f;
             if (gem.Skill?.Effect is AuraEffect)
-            {
-                _waveAge = 0f;
-                return;
-            }
-            _ringEndPx = RingEndPx;
-            _trailAge = 0f;
-            _ringAge = 0f;
+                _wave.Play(_waveClip, HeroFeet, tint);
+            else
+                _cast.Play(_families[(int)SkillShowFamilies.Of(gem)], ground, tint);
         }
 
         public void ShowAura(bool active, GemColor color)
@@ -83,26 +85,18 @@ namespace Game.Presentation.Battle
 
         private void Build()
         {
-            var length = EnemyCentre.x - HeroCentre.x;
-            var trailCentre = (HeroCentre + EnemyCentre) / 2f;
-            var angle = Mathf.Atan2(EnemyCentre.y - HeroCentre.y, length) * Mathf.Rad2Deg;
-            _trail = ShapeSprites.Create("SkillTrail", ShapeSprites.Square, Color.clear, trailCentre, new Vector2(length, StripSpace.Units(TrailHeightPx)), 20, transform);
-            _trail.transform.rotation = Quaternion.Euler(0f, 0f, angle);
-            _ring = ShapeSprites.Create("SkillRing", ShapeSprites.Circle, Color.clear, EnemyCentre, Vector2.one * StripSpace.Units(RingStartPx), 21, transform);
-            _wave = ShapeSprites.Create("SkillWave", ShapeSprites.Square, Color.clear, WaveCentre, WaveSize, 8, transform);
+            for (var family = 0; family < _families.Length; family++)
+                _families[family] = HeroModel.SkillSheet(FamilySheets[family]);
+            _sparkClip = HeroModel.SkillSheet(SparkSheet);
+            _waveClip = HeroModel.SkillSheet(WaveSheet);
+            _wave = new SheetPlayer("SkillWave", SheetScale, WaveSortingOrder, transform);
+            _cast = new SheetPlayer("SkillCast", SheetScale, CastSortingOrder, transform);
+            _spark = new SheetPlayer("SkillSpark", SheetScale, CastSortingOrder, transform);
             _glow = ShapeSprites.Create("AuraGlow", ShapeSprites.Circle, Color.clear, HeroCentre, GlowSize, 9, transform);
             var canvas = StripCanvas.Create("SkillName", NameSortingOrder, transform);
             _name = UiElements.Label("Name", canvas, UiTheme.Load().BoldFont, 14f, Color.white, TextAlignmentOptions.Center);
             _namePx = StripCanvas.PxOf(NamePosition);
             StripCanvas.Place(_name.rectTransform, _namePx.x, StripSpace.BaseHeightPx - _namePx.y, new Vector2(300f, 22f), new Vector2(0.5f, 0.5f));
-            HideAll();
-        }
-
-        private void HideAll()
-        {
-            _trail.gameObject.SetActive(false);
-            _ring.gameObject.SetActive(false);
-            _wave.gameObject.SetActive(false);
             _glow.gameObject.SetActive(false);
             _name.gameObject.SetActive(false);
         }
@@ -110,36 +104,11 @@ namespace Game.Presentation.Battle
         private void Update()
         {
             var delta = Time.unscaledDeltaTime;
-            AnimateTrail(delta);
-            AnimateRing(delta);
-            AnimateWave(delta);
+            _cast.Animate(delta);
+            _spark.Animate(delta);
+            _wave.Animate(delta);
             AnimateGlow();
             AnimateName(delta);
-        }
-
-        private void AnimateTrail(float delta)
-        {
-            _trailAge += delta;
-            if (!Fade(_trail, _trailAge, TrailSeconds, 1f))
-                return;
-            var thickness = StripSpace.Units(TrailHeightPx) * (1f - _trailAge / TrailSeconds * 0.6f);
-            var scale = _trail.transform.localScale;
-            _trail.transform.localScale = new Vector3(scale.x, thickness, 1f);
-        }
-
-        private void AnimateRing(float delta)
-        {
-            _ringAge += delta;
-            if (!Fade(_ring, _ringAge, RingSeconds, 0.8f))
-                return;
-            var size = StripSpace.Units(Mathf.Lerp(RingStartPx, _ringEndPx, _ringAge / RingSeconds));
-            _ring.transform.localScale = new Vector3(size, size, 1f);
-        }
-
-        private void AnimateWave(float delta)
-        {
-            _waveAge += delta;
-            Fade(_wave, _waveAge, WaveSeconds, WaveAlpha);
         }
 
         private void AnimateGlow()
@@ -166,19 +135,6 @@ namespace Game.Presentation.Battle
             color.a = 1f - progress * progress;
             _name.color = color;
             _name.rectTransform.anchoredPosition = _namePx + new Vector2(0f, NameRisePx * progress);
-        }
-
-        private bool Fade(SpriteRenderer sprite, float age, float seconds, float startAlpha)
-        {
-            var visible = age < seconds;
-            if (sprite.gameObject.activeSelf != visible)
-                sprite.gameObject.SetActive(visible);
-            if (!visible)
-                return false;
-            var color = _color;
-            color.a = startAlpha * (1f - age / seconds);
-            sprite.color = color;
-            return true;
         }
     }
 }

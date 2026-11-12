@@ -20,6 +20,7 @@ namespace Game.Presentation.Battle
         private readonly float[] _flightAge = new float[Flights];
         private readonly float[] _burstAge = new float[Bursts];
         private readonly int[] _flightTier = new int[Flights];
+        private readonly HeroClip[] _burstClip = new HeroClip[Bursts];
         private readonly float _scale;
         private readonly Vector3 _from;
         private readonly Vector3 _groundFrom;
@@ -50,6 +51,7 @@ namespace Game.Presentation.Battle
             {
                 _bursts[i] = Create(name + " burst " + i, _art.Burst, _from, scale, burstSortingOrder, parent);
                 _burstAge[i] = float.MaxValue;
+                _burstClip[i] = _art.Burst;
             }
         }
 
@@ -59,7 +61,19 @@ namespace Game.Presentation.Battle
 
         public int Flying => Count(_flightAge, FlightSeconds);
 
-        public int Bursting => Count(_burstAge, _art.Burst.Duration);
+        public int Bursting
+        {
+            get
+            {
+                var count = 0;
+                for (var i = 0; i < Bursts; i++)
+                {
+                    if (_burstAge[i] < _burstClip[i].Duration)
+                        count++;
+                }
+                return count;
+            }
+        }
 
         public StrikeArt Art => _art;
 
@@ -76,6 +90,7 @@ namespace Game.Presentation.Battle
             for (var i = 0; i < Bursts; i++)
             {
                 _burstAge[i] = float.MaxValue;
+                _burstClip[i] = art.Burst;
                 _bursts[i].enabled = false;
             }
         }
@@ -130,8 +145,9 @@ namespace Game.Presentation.Battle
                 {
                     var slot = Oldest(_burstAge);
                     _burstAge[slot] = 0f;
+                    _burstClip[slot] = _art.BurstOf(_flightTier[i]);
                     _bursts[slot].transform.position = burstTarget;
-                    Resize(_bursts[slot], _flightTier[i]);
+                    Resize(_bursts[slot], _art.HasTiers ? 1 : _flightTier[i]);
                 }
                 else
                 {
@@ -144,12 +160,15 @@ namespace Game.Presentation.Battle
             }
             for (var i = 0; i < Bursts; i++)
             {
-                if (_burstAge[i] >= _art.Burst.Duration)
+                var clip = _burstClip[i];
+                if (_burstAge[i] >= clip.Duration)
                     continue;
-                Show(_bursts[i], _art.Burst, _burstAge[i]);
+                Show(_bursts[i], clip, _burstAge[i]);
                 _burstAge[i] += delta;
-                if (_burstAge[i] >= _art.Burst.Duration)
-                    _bursts[i].enabled = false;
+                if (_burstAge[i] < clip.Duration)
+                    continue;
+                _bursts[i].enabled = false;
+                _burstAge[i] = float.MaxValue;
             }
         }
 
