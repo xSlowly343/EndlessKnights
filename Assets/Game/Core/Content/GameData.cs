@@ -184,7 +184,7 @@ namespace Game.Core.Content
             var digs = DigRules.Load(readFile(DigRules.FileName), camp, stages.Biomes);
             var museum = MuseumRules.Load(readFile(MuseumRules.FileName), fishing, garden, cooking, alchemy, expeditions, digs);
             var decor = DecorRules.Load(readFile(DecorRules.FileName), camp);
-            var town = TownRules.Load(readFile(TownRules.FileName), alchemy, garden, stages.Biomes);
+            var town = TownRules.Load(readFile(TownRules.FileName), alchemy, garden, stages.Biomes, companions.Treats);
             var characterIds = new List<string>();
             foreach (var character in characters.All)
                 characterIds.Add(character.Id);

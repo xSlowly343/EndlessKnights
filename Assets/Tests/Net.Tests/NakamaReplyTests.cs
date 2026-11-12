@@ -317,6 +317,29 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheTreatMarketIsReadFromTheServer()
+        {
+            Assert.That(MarketReply.ListPayload(string.Empty), Is.EqualTo("{}"));
+            Assert.That(MarketReply.ListPayload("treat_bone_broth"), Is.EqualTo("{\"item\":\"treat_bone_broth\"}"));
+            Assert.That(MarketReply.SellPayload("d7n1", "treat_bone_broth", 3, 4), Is.EqualTo("{\"nonce\":\"d7n1\",\"item\":\"treat_bone_broth\",\"amount\":3,\"price\":4}"));
+            Assert.That(MarketReply.LotPayload("ann_d7n1"), Is.EqualTo("{\"lot\":\"ann_d7n1\"}"));
+            var reply = MarketReply.From(NakamaJson.Parse("{\"now\":2000,\"currency\":\"friendship\",\"balance\":80,\"fee\":0.1,\"maxLots\":5,\"paid\":20,"
+                + "\"lots\":[{\"id\":\"bob_b1\",\"seller\":\"bob\",\"sellerName\":\"Bob\",\"item\":\"treat_bone_broth\",\"amount\":5,\"price\":4,\"at\":1000,\"until\":9000}],"
+                + "\"mine\":[{\"id\":\"ann_a1\",\"seller\":\"ann\",\"sellerName\":\"Ann\",\"item\":\"treat_herb_cookie\",\"amount\":2,\"price\":3,\"at\":500,\"until\":1500}],"
+                + "\"inbox\":[{\"id\":\"bob_b0_900\",\"item\":\"treat_bone_broth\",\"amount\":1,\"reason\":\"bought\",\"at\":1900}]}"));
+            Assert.That(reply.Balance, Is.EqualTo(80));
+            Assert.That(reply.Currency, Is.EqualTo("friendship"));
+            Assert.That(reply.Paid, Is.EqualTo(20));
+            Assert.That(reply.Lots[0].Total, Is.EqualTo(20));
+            Assert.That(reply.Lots[0].SellerName, Is.EqualTo("Bob"));
+            Assert.That(reply.Expired(reply.Lots[0]), Is.False);
+            Assert.That(reply.Expired(reply.Mine[0]), Is.True);
+            Assert.That(reply.Inbox[0].Bought, Is.True);
+            Assert.That(reply.Inbox[0].Amount, Is.EqualTo(1));
+            Assert.That(MarketReply.From(NakamaJson.Parse("{}")).Lots, Is.Empty);
+        }
+
+        [Test]
         public void TheTownGatesAreReadFromTheServer()
         {
             Assert.That(TownReply.GiftPayload("bob", "herb_windwort", 3), Is.EqualTo("{\"to\":\"bob\",\"item\":\"herb_windwort\",\"amount\":3}"));

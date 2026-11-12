@@ -1135,7 +1135,11 @@ namespace Game.Core.Save
             var reputation = new JsonValue[guilds.Count];
             for (var i = 0; i < reputation.Length; i++)
                 reputation[i] = Object(("guild", JsonValue.Of(guilds[i])), ("value", JsonValue.Of(town.Reputation[guilds[i]])));
-            return Object(("day", JsonValue.Of(town.Day)), ("orders", JsonValue.Array(orders)), ("reputation", JsonValue.Array(reputation)), ("done", JsonValue.Of(town.Done)), ("redrawDay", JsonValue.Of(town.RedrawDay)), ("gifts", WriteIds(town.Gifts)));
+            var offers = new JsonValue[town.Offers.Count];
+            for (var i = 0; i < offers.Length; i++)
+                offers[i] = Object(("nonce", JsonValue.Of(town.Offers[i].Nonce)), ("item", JsonValue.Of(town.Offers[i].Item)), ("amount", JsonValue.Of(town.Offers[i].Amount)), ("price", JsonValue.Of(town.Offers[i].Price)));
+            return Object(("day", JsonValue.Of(town.Day)), ("orders", JsonValue.Array(orders)), ("reputation", JsonValue.Array(reputation)), ("done", JsonValue.Of(town.Done)), ("redrawDay", JsonValue.Of(town.RedrawDay)), ("gifts", WriteIds(town.Gifts)),
+                ("offers", JsonValue.Array(offers)), ("deliveries", WriteIds(town.Deliveries)), ("offerSeq", JsonValue.Of(town.OfferSeq)));
         }
 
         private static void ReadTown(ContentNode node, TownState town)
@@ -1152,6 +1156,17 @@ namespace Game.Core.Save
                 foreach (var item in node.Field("gifts").Items())
                     town.Gifts.Add(item.AsString());
             }
+            if (node.HasField("offers"))
+            {
+                foreach (var item in node.Field("offers").Items())
+                    town.Offers.Add(new TownOffer { Nonce = item.Field("nonce").AsString(), Item = item.Field("item").AsString(), Amount = item.Field("amount").AsInt(1), Price = item.Field("price").AsInt(1) });
+            }
+            if (node.HasField("deliveries"))
+            {
+                foreach (var item in node.Field("deliveries").Items())
+                    town.Deliveries.Add(item.AsString());
+            }
+            town.OfferSeq = node.HasField("offerSeq") ? node.Field("offerSeq").AsLong(0) : 0;
         }
 
         private static JsonValue WriteDecor(DecorState decor)
