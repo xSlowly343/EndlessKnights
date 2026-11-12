@@ -399,7 +399,28 @@ test("looks kept for the pass, events and drops are relayed like the rest", () =
   const relayed = host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 20);
   assert.deepStrictEqual(Array.from(new Uint8Array(relayed[0].data)), [20, 1, 24, 0, 16]);
   host.outbox.length = 0;
-  host.receive("user-b", look(25, 0, 17));
+  host.receive("user-b", look(33, 0, 25));
+  assert.strictEqual(host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 20).length, 0);
+});
+
+test("living cloaks and summoned strikes go to the party as a look number and nothing else", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.join("user-b", "12");
+  host.tick();
+  for (const [cloak, strike] of [[25, 17], [28, 21], [32, 24]]) {
+    host.outbox.length = 0;
+    host.receive("user-b", look(cloak, 0, strike));
+    const relayed = host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 20);
+    assert.strictEqual(relayed.length, 1);
+    assert.deepStrictEqual(Array.from(new Uint8Array(relayed[0].data)), [20, 1, cloak, 0, strike]);
+  }
+  const living = party.CosmeticServerRules.items.filter((item) => item.slot === "heroCloak" && item.look >= 25);
+  assert.strictEqual(living.length, 8);
+  assert.ok(living.every((item) => item.price === 0 && item.source !== "shop" && item.source !== "starter"));
+  host.outbox.length = 0;
+  host.receive("user-b", look(32, 0, 25));
+  host.receive("user-b", look(33, 0, 24));
   assert.strictEqual(host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 20).length, 0);
 });
 

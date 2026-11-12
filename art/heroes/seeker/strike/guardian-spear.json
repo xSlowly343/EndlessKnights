@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "guardian-spear 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 50
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 50
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 50
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-spear 1",
+   "frame": {
+    "x": 124,
+    "y": 0,
+    "w": 124,
+    "h": 50
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 50
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 50
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-spear 2",
+   "frame": {
+    "x": 0,
+    "y": 50,
+    "w": 124,
+    "h": 50
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 50
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 50
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-spear 3",
+   "frame": {
+    "x": 124,
+    "y": 50,
+    "w": 124,
+    "h": 50
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 50
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 50
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-spear 4",
+   "frame": {
+    "x": 0,
+    "y": 100,
+    "w": 124,
+    "h": 50
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 50
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 50
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-spear 5",
+   "frame": {
+    "x": 124,
+    "y": 100,
+    "w": 124,
+    "h": 50
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 50
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 50
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-spear 6",
+   "frame": {
+    "x": 0,
+    "y": 150,
+    "w": 124,
+    "h": 50
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 50
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 50
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-spear 7",
+   "frame": {
+    "x": 124,
+    "y": 150,
+    "w": 124,
+    "h": 50
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 50
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 50
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "guardian-spear.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 248,
+   "h": 200
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "guardian-spear",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/guardian-spear",
+   "name": "Guardian spear",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    124,
+    50
+   ],
+   "pivot": [
+    104,
+    30
+   ],
+   "columns": 2
+  }
+ }
+}

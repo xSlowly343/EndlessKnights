@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "serpent-wave 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 122,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 122,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 122,
+    "h": 40
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-wave 1",
+   "frame": {
+    "x": 122,
+    "y": 0,
+    "w": 122,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 122,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 122,
+    "h": 40
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-wave 2",
+   "frame": {
+    "x": 0,
+    "y": 40,
+    "w": 122,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 122,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 122,
+    "h": 40
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-wave 3",
+   "frame": {
+    "x": 122,
+    "y": 40,
+    "w": 122,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 122,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 122,
+    "h": 40
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-wave 4",
+   "frame": {
+    "x": 0,
+    "y": 80,
+    "w": 122,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 122,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 122,
+    "h": 40
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-wave 5",
+   "frame": {
+    "x": 122,
+    "y": 80,
+    "w": 122,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 122,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 122,
+    "h": 40
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-wave 6",
+   "frame": {
+    "x": 0,
+    "y": 120,
+    "w": 122,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 122,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 122,
+    "h": 40
+   },
+   "duration": 33
+  },
+  {
+   "filename": "serpent-wave 7",
+   "frame": {
+    "x": 122,
+    "y": 120,
+    "w": 122,
+    "h": 40
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 122,
+    "h": 40
+   },
+   "sourceSize": {
+    "w": 122,
+    "h": 40
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "serpent-wave.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 244,
+   "h": 160
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "serpent-wave",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/serpent-wave",
+   "name": "Serpent wave",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    122,
+    40
+   ],
+   "pivot": [
+    100,
+    32
+   ],
+   "columns": 2
+  }
+ }
+}

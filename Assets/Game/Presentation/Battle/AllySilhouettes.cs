@@ -156,7 +156,7 @@ namespace Game.Presentation.Battle
                     Swing(i);
                 if (i < _count)
                 {
-                    var sprite = _swingAge[i] < HeroModel.Attack.Duration ? _skins[i].Attack.SpriteAt(_swingAge[i]) : _skins[i].Idle.SpriteAt(time + _phase[i]);
+                    var sprite = _swingAge[i] < HeroModel.Attack.Duration ? _skins[i].AttackAt(time).SpriteAt(_swingAge[i]) : _skins[i].IdleAt(time).SpriteAt(time + _phase[i]);
                     if (_bodies[i].sprite != sprite)
                         _bodies[i].sprite = sprite;
                 }

@@ -1,0 +1,677 @@
+{
+ "frames": [
+  {
+   "filename": "guardian-descent 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 1",
+   "frame": {
+    "x": 116,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 2",
+   "frame": {
+    "x": 232,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 3",
+   "frame": {
+    "x": 348,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 4",
+   "frame": {
+    "x": 464,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 5",
+   "frame": {
+    "x": 0,
+    "y": 70,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 6",
+   "frame": {
+    "x": 116,
+    "y": 70,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 7",
+   "frame": {
+    "x": 232,
+    "y": 70,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 8",
+   "frame": {
+    "x": 348,
+    "y": 70,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 9",
+   "frame": {
+    "x": 464,
+    "y": 70,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 10",
+   "frame": {
+    "x": 0,
+    "y": 140,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 11",
+   "frame": {
+    "x": 116,
+    "y": 140,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 12",
+   "frame": {
+    "x": 232,
+    "y": 140,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 13",
+   "frame": {
+    "x": 348,
+    "y": 140,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 14",
+   "frame": {
+    "x": 464,
+    "y": 140,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 15",
+   "frame": {
+    "x": 0,
+    "y": 210,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 16",
+   "frame": {
+    "x": 116,
+    "y": 210,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 17",
+   "frame": {
+    "x": 232,
+    "y": 210,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 18",
+   "frame": {
+    "x": 348,
+    "y": 210,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 19",
+   "frame": {
+    "x": 464,
+    "y": 210,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 20",
+   "frame": {
+    "x": 0,
+    "y": 280,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 21",
+   "frame": {
+    "x": 116,
+    "y": 280,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 22",
+   "frame": {
+    "x": 232,
+    "y": 280,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 23",
+   "frame": {
+    "x": 348,
+    "y": 280,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 24",
+   "frame": {
+    "x": 464,
+    "y": 280,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 25",
+   "frame": {
+    "x": 0,
+    "y": 350,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 26",
+   "frame": {
+    "x": 116,
+    "y": 350,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 27",
+   "frame": {
+    "x": 232,
+    "y": 350,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  },
+  {
+   "filename": "guardian-descent 28",
+   "frame": {
+    "x": 348,
+    "y": 350,
+    "w": 116,
+    "h": 70
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 70
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 70
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "guardian-descent.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 580,
+   "h": 420
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "guardian-descent",
+    "from": 0,
+    "to": 28,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/guardian-descent",
+   "name": "Guardian descent",
+   "fps": 30,
+   "loop": false,
+   "frames": 29,
+   "frameSize": [
+    116,
+    70
+   ],
+   "pivot": [
+    72,
+    58
+   ],
+   "columns": 5
+  }
+ }
+}

@@ -48,6 +48,22 @@ STRIKES = [
      "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#5a5ae8"},
     {"look": 16, "id": "firework", "flight": ("firework-rocket", "Seeker_Firework_Flight"), "burst": ("firework-bloom", "Seeker_Firework_Burst"),
      "path": "line", "arcPx": 16, "burstAt": "body", "slash": "#ff4ab4"},
+    {"look": 17, "id": "bone", "flight": ("bone-crawl", "Seeker_Bone_Flight"), "burst": ("bone-grasp", "Seeker_Bone_Burst"),
+     "path": "ground", "arcPx": 0, "burstAt": "ground", "slash": "#e4dcc8"},
+    {"look": 18, "id": "bat", "flight": ("bat-flight", "Seeker_Bat_Flight"), "burst": ("bat-swarm", "Seeker_Bat_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#9a48ec"},
+    {"look": 19, "id": "golem", "flight": ("golem-rubble", "Seeker_Golem_Flight"), "burst": ("golem-fist", "Seeker_Golem_Burst"),
+     "path": "line", "arcPx": 10, "burstAt": "ground", "slash": "#e8a218"},
+    {"look": 20, "id": "serpent", "flight": ("serpent-wave", "Seeker_Serpent_Flight"), "burst": ("serpent-strike", "Seeker_Serpent_Burst"),
+     "path": "ground", "arcPx": 0, "burstAt": "ground", "slash": "#2ac8a0"},
+    {"look": 21, "id": "samurai", "flight": ("samurai-dash", "Seeker_Samurai_Flight"), "burst": ("samurai-iai", "Seeker_Samurai_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "body", "slash": "#ff4a3a"},
+    {"look": 22, "id": "raven", "flight": ("raven-dive", "Seeker_Raven_Flight"), "burst": ("raven-omen", "Seeker_Raven_Burst"),
+     "path": "line", "arcPx": 12, "burstAt": "body", "slash": "#2cb4d8"},
+    {"look": 23, "id": "vine", "flight": ("vine-seed", "Seeker_Vine_Flight"), "burst": ("vine-maw", "Seeker_Vine_Burst"),
+     "path": "line", "arcPx": 6, "burstAt": "ground", "slash": "#8cd040"},
+    {"look": 24, "id": "guardian", "flight": ("guardian-spear", "Seeker_Guardian_Flight"), "burst": ("guardian-descent", "Seeker_Guardian_Burst"),
+     "path": "line", "arcPx": 0, "burstAt": "ground", "slash": "#ffd84a"},
 ]
 
 

@@ -1,0 +1,655 @@
+{
+ "frames": [
+  {
+   "filename": "raven-omen 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 1",
+   "frame": {
+    "x": 116,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 2",
+   "frame": {
+    "x": 232,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 3",
+   "frame": {
+    "x": 348,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 4",
+   "frame": {
+    "x": 464,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 5",
+   "frame": {
+    "x": 0,
+    "y": 76,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 6",
+   "frame": {
+    "x": 116,
+    "y": 76,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 7",
+   "frame": {
+    "x": 232,
+    "y": 76,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 8",
+   "frame": {
+    "x": 348,
+    "y": 76,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 9",
+   "frame": {
+    "x": 464,
+    "y": 76,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 10",
+   "frame": {
+    "x": 0,
+    "y": 152,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 11",
+   "frame": {
+    "x": 116,
+    "y": 152,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 12",
+   "frame": {
+    "x": 232,
+    "y": 152,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 13",
+   "frame": {
+    "x": 348,
+    "y": 152,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 14",
+   "frame": {
+    "x": 464,
+    "y": 152,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 15",
+   "frame": {
+    "x": 0,
+    "y": 228,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 16",
+   "frame": {
+    "x": 116,
+    "y": 228,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 17",
+   "frame": {
+    "x": 232,
+    "y": 228,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 18",
+   "frame": {
+    "x": 348,
+    "y": 228,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 19",
+   "frame": {
+    "x": 464,
+    "y": 228,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 20",
+   "frame": {
+    "x": 0,
+    "y": 304,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 21",
+   "frame": {
+    "x": 116,
+    "y": 304,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 22",
+   "frame": {
+    "x": 232,
+    "y": 304,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 23",
+   "frame": {
+    "x": 348,
+    "y": 304,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 24",
+   "frame": {
+    "x": 464,
+    "y": 304,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 25",
+   "frame": {
+    "x": 0,
+    "y": 380,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 26",
+   "frame": {
+    "x": 116,
+    "y": 380,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-omen 27",
+   "frame": {
+    "x": 232,
+    "y": 380,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "raven-omen.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 580,
+   "h": 456
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "raven-omen",
+    "from": 0,
+    "to": 27,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/raven-omen",
+   "name": "Raven omen",
+   "fps": 30,
+   "loop": false,
+   "frames": 28,
+   "frameSize": [
+    116,
+    76
+   ],
+   "pivot": [
+    74,
+    46
+   ],
+   "columns": 5
+  }
+ }
+}

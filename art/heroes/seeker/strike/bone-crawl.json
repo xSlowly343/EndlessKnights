@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "bone-crawl 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 36
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 36
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 36
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-crawl 1",
+   "frame": {
+    "x": 112,
+    "y": 0,
+    "w": 112,
+    "h": 36
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 36
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 36
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-crawl 2",
+   "frame": {
+    "x": 0,
+    "y": 36,
+    "w": 112,
+    "h": 36
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 36
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 36
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-crawl 3",
+   "frame": {
+    "x": 112,
+    "y": 36,
+    "w": 112,
+    "h": 36
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 36
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 36
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-crawl 4",
+   "frame": {
+    "x": 0,
+    "y": 72,
+    "w": 112,
+    "h": 36
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 36
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 36
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-crawl 5",
+   "frame": {
+    "x": 112,
+    "y": 72,
+    "w": 112,
+    "h": 36
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 36
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 36
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-crawl 6",
+   "frame": {
+    "x": 0,
+    "y": 108,
+    "w": 112,
+    "h": 36
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 36
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 36
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-crawl 7",
+   "frame": {
+    "x": 112,
+    "y": 108,
+    "w": 112,
+    "h": 36
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 36
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 36
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "bone-crawl.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 224,
+   "h": 144
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "bone-crawl",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/bone-crawl",
+   "name": "Bone crawl",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    112,
+    36
+   ],
+   "pivot": [
+    92,
+    30
+   ],
+   "columns": 2
+  }
+ }
+}
