@@ -43,6 +43,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Expeditions.Send("camp_dog", "green_hills", 1), Is.EqualTo(ExpeditionResult.Done));
             Assert.That(loop.Expeditions.Send("camp_dog", "green_hills", 2), Is.EqualTo(ExpeditionResult.CompanionBusy));
             loop.State.RecordStage = 100;
+            loop.State.Camp.Tier = 1;
             Assert.That(loop.Expeditions.Send("camp_crow", "sand_ruins", 2), Is.EqualTo(ExpeditionResult.Done));
             Assert.That(ExpeditionView.Companions(loop.Expeditions).All(c => c.Busy), Is.True);
         }

@@ -23,6 +23,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = TestWorld.RealLoop();
             loop.State.RecordStage = 300;
+            loop.State.Camp.Tier = 3;
             loop.Tick();
             loop.Camp.SetGuilds(new[] { "smiths" });
             loop.CampLevels.Apply();

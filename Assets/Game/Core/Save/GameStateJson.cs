@@ -144,6 +144,7 @@ namespace Game.Core.Save
                 ("spirits", WriteLevels(state.Spirits)),
                 ("gear", WriteWorn(state.Gear)),
                 ("gatesCleared", WriteStages(state.GatesCleared)),
+                ("openedFeatures", WriteFeatures(state.OpenedFeatures)),
                 ("mentorPerks", Object(
                     ("coopPoints", JsonValue.Of(state.MentorCoopPoints)),
                     ("coopHelp", JsonValue.Of(state.ServerCoopHelpPoints)),
@@ -459,6 +460,14 @@ namespace Game.Core.Save
             {
                 foreach (var item in node.Field("gatesCleared").Items())
                     state.GatesCleared.Add(item.AsLong(1));
+            }
+            if (node.HasField("openedFeatures"))
+            {
+                foreach (var item in node.Field("openedFeatures").Items())
+                {
+                    if (UnlockRules.FeatureNames.TryGetValue(item.AsString(), out var feature))
+                        state.OpenedFeatures.Add(feature);
+                }
             }
             if (node.HasField("mentorPerks"))
             {
@@ -1866,6 +1875,17 @@ namespace Game.Core.Save
                 modifiers.Add(item.AsString());
             return new DungeonKey(node.Field("tier").AsInt(1), modifiers, node.HasField("stage") ? node.Field("stage").AsLong(0) : 0,
                 node.HasField("attempts") ? node.Field("attempts").AsInt(1) : 0, node.HasField("rift") ? node.Field("rift").AsLong(0) : 0);
+        }
+
+        private static JsonValue WriteFeatures(HashSet<Feature> opened)
+        {
+            var names = new List<string>();
+            foreach (var pair in UnlockRules.FeatureNames)
+            {
+                if (opened.Contains(pair.Value))
+                    names.Add(pair.Key);
+            }
+            return WriteIdList(names);
         }
 
         private static JsonValue WriteStages(HashSet<long> stages)

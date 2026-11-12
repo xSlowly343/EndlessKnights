@@ -27,6 +27,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var loop = TestWorld.RealLoop(input);
             loop.State.RecordStage = 120;
+            loop.State.Camp.Tier = 2;
             loop.Tick();
             loop.Camp.SetGuilds(new[] { "diggers" });
             return (loop, input);

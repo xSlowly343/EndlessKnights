@@ -20,6 +20,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(input);
             loop.State.Class = heroClass;
             loop.State.RecordStage = 101;
+            loop.State.Camp.Tier = 2;
             loop.Tick();
             loop.Camp.SetGuilds(new[] { "cooks" });
             return (loop, input);
@@ -69,6 +70,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input);
             loop.State.RecordStage = 101;
+            loop.State.Camp.Tier = 2;
             loop.Tick();
             Assert.That(loop.Cooking.Cook("fish_soup"), Is.EqualTo(CookingResult.Closed));
             loop.Camp.SetGuilds(new[] { "cooks" });

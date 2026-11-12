@@ -21,8 +21,9 @@ namespace Game.Core.Content
 
     public sealed class CampTier
     {
-        public CampTier(string id, string nameRu, string nameEn, long fromRecord, IReadOnlyDictionary<string, int> slots)
+        public CampTier(string id, string nameRu, string nameEn, long fromRecord, IReadOnlyDictionary<string, int> slots, UnlockCondition? requires = null)
         {
+            Requires = requires ?? UnlockCondition.None;
             Id = id;
             NameRu = nameRu;
             NameEn = nameEn;
@@ -34,6 +35,7 @@ namespace Game.Core.Content
         public string NameRu { get; }
         public string NameEn { get; }
         public long FromRecord { get; }
+        public UnlockCondition Requires { get; }
         public IReadOnlyDictionary<string, int> Slots { get; }
 
         public int SlotsOf(string building) => Slots.TryGetValue(building, out var count) ? count : 0;
@@ -46,17 +48,6 @@ namespace Game.Core.Content
 
         public IReadOnlyList<CampBuilding> Buildings { get; private set; } = Array.Empty<CampBuilding>();
         public IReadOnlyList<CampTier> Tiers { get; private set; } = Array.Empty<CampTier>();
-
-        public int TierAt(long record)
-        {
-            var tier = 0;
-            for (var i = 0; i < Tiers.Count; i++)
-            {
-                if (record >= Tiers[i].FromRecord)
-                    tier = i;
-            }
-            return tier;
-        }
 
         public CampBuilding? Building(string id)
         {
@@ -104,7 +95,8 @@ namespace Game.Core.Content
                     slots[building] = slotsNode.Field(building).AsInt(0, 100);
                 }
                 var name = node.Field("name");
-                tiers.Add(new CampTier(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), from, slots));
+                tiers.Add(new CampTier(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), from, slots,
+                    node.HasField("requires") ? UnlockCondition.Read(node.Field("requires")) : null));
             }
             if (tiers.Count == 0)
                 throw root.Field("tiers").Error("at least one tier is required");
