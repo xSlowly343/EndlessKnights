@@ -1,0 +1,633 @@
+{
+ "frames": [
+  {
+   "filename": "glacier-bloom 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 1",
+   "frame": {
+    "x": 120,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 2",
+   "frame": {
+    "x": 240,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 3",
+   "frame": {
+    "x": 360,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 4",
+   "frame": {
+    "x": 480,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 5",
+   "frame": {
+    "x": 0,
+    "y": 76,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 6",
+   "frame": {
+    "x": 120,
+    "y": 76,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 7",
+   "frame": {
+    "x": 240,
+    "y": 76,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 8",
+   "frame": {
+    "x": 360,
+    "y": 76,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 9",
+   "frame": {
+    "x": 480,
+    "y": 76,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 10",
+   "frame": {
+    "x": 0,
+    "y": 152,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 11",
+   "frame": {
+    "x": 120,
+    "y": 152,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 12",
+   "frame": {
+    "x": 240,
+    "y": 152,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 13",
+   "frame": {
+    "x": 360,
+    "y": 152,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 14",
+   "frame": {
+    "x": 480,
+    "y": 152,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 15",
+   "frame": {
+    "x": 0,
+    "y": 228,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 16",
+   "frame": {
+    "x": 120,
+    "y": 228,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 17",
+   "frame": {
+    "x": 240,
+    "y": 228,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 18",
+   "frame": {
+    "x": 360,
+    "y": 228,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 19",
+   "frame": {
+    "x": 480,
+    "y": 228,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 20",
+   "frame": {
+    "x": 0,
+    "y": 304,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 21",
+   "frame": {
+    "x": 120,
+    "y": 304,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 22",
+   "frame": {
+    "x": 240,
+    "y": 304,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 23",
+   "frame": {
+    "x": 360,
+    "y": 304,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 24",
+   "frame": {
+    "x": 480,
+    "y": 304,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 25",
+   "frame": {
+    "x": 0,
+    "y": 380,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glacier-bloom 26",
+   "frame": {
+    "x": 120,
+    "y": 380,
+    "w": 120,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 76
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "glacier-bloom.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 600,
+   "h": 456
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "glacier-bloom",
+    "from": 0,
+    "to": 26,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/glacier-bloom",
+   "name": "Glacier bloom",
+   "fps": 30,
+   "loop": false,
+   "frames": 27,
+   "frameSize": [
+    120,
+    76
+   ],
+   "pivot": [
+    60,
+    62
+   ],
+   "columns": 5
+  }
+ }
+}

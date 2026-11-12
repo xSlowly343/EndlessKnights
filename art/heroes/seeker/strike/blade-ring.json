@@ -1,0 +1,589 @@
+{
+ "frames": [
+  {
+   "filename": "blade-ring 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 1",
+   "frame": {
+    "x": 108,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 2",
+   "frame": {
+    "x": 216,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 3",
+   "frame": {
+    "x": 324,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 4",
+   "frame": {
+    "x": 432,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 5",
+   "frame": {
+    "x": 0,
+    "y": 88,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 6",
+   "frame": {
+    "x": 108,
+    "y": 88,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 7",
+   "frame": {
+    "x": 216,
+    "y": 88,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 8",
+   "frame": {
+    "x": 324,
+    "y": 88,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 9",
+   "frame": {
+    "x": 432,
+    "y": 88,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 10",
+   "frame": {
+    "x": 0,
+    "y": 176,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 11",
+   "frame": {
+    "x": 108,
+    "y": 176,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 12",
+   "frame": {
+    "x": 216,
+    "y": 176,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 13",
+   "frame": {
+    "x": 324,
+    "y": 176,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 14",
+   "frame": {
+    "x": 432,
+    "y": 176,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 15",
+   "frame": {
+    "x": 0,
+    "y": 264,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 16",
+   "frame": {
+    "x": 108,
+    "y": 264,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 17",
+   "frame": {
+    "x": 216,
+    "y": 264,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 18",
+   "frame": {
+    "x": 324,
+    "y": 264,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 19",
+   "frame": {
+    "x": 432,
+    "y": 264,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 20",
+   "frame": {
+    "x": 0,
+    "y": 352,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 21",
+   "frame": {
+    "x": 108,
+    "y": 352,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 22",
+   "frame": {
+    "x": 216,
+    "y": 352,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 23",
+   "frame": {
+    "x": 324,
+    "y": 352,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-ring 24",
+   "frame": {
+    "x": 432,
+    "y": 352,
+    "w": 108,
+    "h": 88
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 88
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 88
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "blade-ring.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 540,
+   "h": 440
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "blade-ring",
+    "from": 0,
+    "to": 24,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/blade-ring",
+   "name": "Blade ring",
+   "fps": 30,
+   "loop": false,
+   "frames": 25,
+   "frameSize": [
+    108,
+    88
+   ],
+   "pivot": [
+    62,
+    48
+   ],
+   "columns": 5
+  }
+ }
+}

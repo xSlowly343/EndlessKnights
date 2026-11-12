@@ -48,6 +48,49 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void ACloakPatternPaintsEachFrameByItsOwnCloak()
+        {
+            var cloak = new Color32(81, 51, 115, 255);
+            var light = new Color32(142, 99, 149, 255);
+            var steel = new Color32(85, 85, 85, 255);
+            var none = new Color32(0, 0, 0, 0);
+            Color32[] Sheet() => new[]
+            {
+                none, none, none, none, none, none,
+                none, cloak, none, cloak, cloak, cloak,
+                none, light, none, cloak, cloak, cloak,
+                none, cloak, none, cloak, steel, cloak,
+                none, none, none, none, none, none
+            };
+            Color navy = new Color32(42, 58, 106, 255);
+            Color gold = new Color32(240, 192, 64, 255);
+
+            var trim = Sheet();
+            HeroPalette.Recolor(trim, 6, 3, new CloakPaint(navy, gold, CloakPattern.Trim), null);
+            Assert.That(trim[7].r, Is.GreaterThan(trim[7].b), "a cloak one pixel wide is all edge");
+            Assert.That(trim[9].r, Is.GreaterThan(trim[9].b), "the second frame starts its own edge");
+            Assert.That(trim[16].b, Is.GreaterThan(trim[16].r), "a pixel walled in by cloak and steel keeps the first colour");
+            Assert.That(trim[22], Is.EqualTo(steel));
+
+            var gradient = Sheet();
+            HeroPalette.Recolor(gradient, 6, 3, new CloakPaint(navy, gold, CloakPattern.Gradient), null);
+            Assert.That(gradient[21].b, Is.GreaterThan(gradient[21].r), "the top row of the sheet is the first colour");
+            Assert.That(gradient[9].r, Is.GreaterThan(gradient[9].b), "the bottom row is the second");
+
+            var duotone = Sheet();
+            HeroPalette.Recolor(duotone, 6, 3, new CloakPaint(navy, gold, CloakPattern.Duotone), null);
+            Assert.That(duotone[13].r, Is.GreaterThan(duotone[13].b), "highlights take the second colour");
+            Assert.That(duotone[7].b, Is.GreaterThan(duotone[7].r));
+
+            var plain = Sheet();
+            HeroPalette.Recolor(plain, 6, 3, new CloakPaint(navy, gold, CloakPattern.Plain), null);
+            Assert.That((int)plain[7].r, Is.EqualTo(42).Within(1));
+            Assert.That((int)plain[7].b, Is.EqualTo(106).Within(1));
+            Assert.That(CloakPaint.PatternOf("stars"), Is.EqualTo(CloakPattern.Stars));
+            Assert.That(CloakPaint.PatternOf(string.Empty), Is.EqualTo(CloakPattern.Plain));
+        }
+
+        [Test]
         public void TheDefaultLookKeepsTheOriginalSheetsAndOthersGetTheirOwn()
         {
             Assert.That(HeroModel.Skin(default), Is.SameAs(HeroModel.Skin(default)));

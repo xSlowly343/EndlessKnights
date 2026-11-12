@@ -5,7 +5,7 @@ namespace Game.Core.Content
 {
     public sealed class CosmeticDef
     {
-        public CosmeticDef(string id, string slot, string nameRu, string nameEn, long price, string source, string hero, string weaponType, bool clan, string achievement, int look = 0, string color = "")
+        public CosmeticDef(string id, string slot, string nameRu, string nameEn, long price, string source, string hero, string weaponType, bool clan, string achievement, int look = 0, string color = "", string pattern = "", string color2 = "")
         {
             Id = id;
             Slot = slot;
@@ -19,6 +19,8 @@ namespace Game.Core.Content
             Achievement = achievement;
             Look = look;
             Color = color;
+            Pattern = pattern;
+            Color2 = color2;
         }
 
         public string Id { get; }
@@ -33,6 +35,8 @@ namespace Game.Core.Content
         public string Achievement { get; }
         public int Look { get; }
         public string Color { get; }
+        public string Pattern { get; }
+        public string Color2 { get; }
         public bool Starter => Source == CosmeticCatalog.StarterSource;
         public bool ForSale => Source == CosmeticCatalog.ShopSource && Price > 0;
 
@@ -51,6 +55,7 @@ namespace Game.Core.Content
         public const int MaxLook = byte.MaxValue;
         public static readonly IReadOnlyList<string> Sources = new[] { ShopSource, "pass", "drop", "reward", "event", StarterSource };
         public static readonly IReadOnlyList<string> LookSlots = new[] { CloakSlot, EyesSlot, StrikeSlot };
+        public static readonly IReadOnlyList<string> CloakPatterns = new[] { "gradient", "trim", "duotone", "stripes", "stars" };
 
         private readonly Dictionary<string, CosmeticDef> _byId;
 
@@ -119,6 +124,11 @@ namespace Game.Core.Content
                     throw node.Field("look").Error($"look {look} is used twice in slot '{slot}'");
                 if (IsLookSlot(slot) != node.HasField("look"))
                     throw node.Field("slot").Error($"cosmetic '{id}': only hero looks carry a look number");
+                var pattern = node.HasField("pattern") ? node.Field("pattern").AsString() : string.Empty;
+                if (pattern.Length > 0 && (slot != CloakSlot || !((IList<string>)CloakPatterns).Contains(pattern)))
+                    throw node.Field("pattern").Error($"cosmetic '{id}': unknown cloak pattern '{pattern}'");
+                if ((pattern.Length > 0) != node.HasField("color2"))
+                    throw node.Field("slot").Error($"cosmetic '{id}': a cloak pattern and its second colour go together");
                 var name = node.Field("name");
                 all.Add(new CosmeticDef(id, slot, name.Field("ru").AsString(), name.Field("en").AsString(), price, source,
                     node.HasField("hero") ? node.Field("hero").AsString() : string.Empty,
@@ -126,7 +136,9 @@ namespace Game.Core.Content
                     node.HasField("clan") && node.Field("clan").AsBool(),
                     node.HasField("achievement") ? node.Field("achievement").AsString() : string.Empty,
                     look,
-                    node.HasField("color") ? node.Field("color").AsString() : string.Empty));
+                    node.HasField("color") ? node.Field("color").AsString() : string.Empty,
+                    pattern,
+                    node.HasField("color2") ? node.Field("color2").AsString() : string.Empty));
             }
             return new CosmeticCatalog(all, slots, root.Field("crystalsPerDollar").AsInt(1), root.Field("weeklyDiscount").AsNumber(0, 0.9), root.Field("bundleDiscount").AsNumber(0, 0.9));
         }

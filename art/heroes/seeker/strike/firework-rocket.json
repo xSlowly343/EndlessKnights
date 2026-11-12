@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "firework-rocket 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-rocket 1",
+   "frame": {
+    "x": 120,
+    "y": 0,
+    "w": 120,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-rocket 2",
+   "frame": {
+    "x": 0,
+    "y": 56,
+    "w": 120,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-rocket 3",
+   "frame": {
+    "x": 120,
+    "y": 56,
+    "w": 120,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-rocket 4",
+   "frame": {
+    "x": 0,
+    "y": 112,
+    "w": 120,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-rocket 5",
+   "frame": {
+    "x": 120,
+    "y": 112,
+    "w": 120,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-rocket 6",
+   "frame": {
+    "x": 0,
+    "y": 168,
+    "w": 120,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 56
+   },
+   "duration": 33
+  },
+  {
+   "filename": "firework-rocket 7",
+   "frame": {
+    "x": 120,
+    "y": 168,
+    "w": 120,
+    "h": 56
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 56
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 56
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "firework-rocket.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 240,
+   "h": 224
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "firework-rocket",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/firework-rocket",
+   "name": "Firework rocket",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    120,
+    56
+   ],
+   "pivot": [
+    98,
+    26
+   ],
+   "columns": 2
+  }
+ }
+}

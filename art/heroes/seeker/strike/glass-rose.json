@@ -1,0 +1,655 @@
+{
+ "frames": [
+  {
+   "filename": "glass-rose 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 1",
+   "frame": {
+    "x": 114,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 2",
+   "frame": {
+    "x": 228,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 3",
+   "frame": {
+    "x": 342,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 4",
+   "frame": {
+    "x": 456,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 5",
+   "frame": {
+    "x": 0,
+    "y": 80,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 6",
+   "frame": {
+    "x": 114,
+    "y": 80,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 7",
+   "frame": {
+    "x": 228,
+    "y": 80,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 8",
+   "frame": {
+    "x": 342,
+    "y": 80,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 9",
+   "frame": {
+    "x": 456,
+    "y": 80,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 10",
+   "frame": {
+    "x": 0,
+    "y": 160,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 11",
+   "frame": {
+    "x": 114,
+    "y": 160,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 12",
+   "frame": {
+    "x": 228,
+    "y": 160,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 13",
+   "frame": {
+    "x": 342,
+    "y": 160,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 14",
+   "frame": {
+    "x": 456,
+    "y": 160,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 15",
+   "frame": {
+    "x": 0,
+    "y": 240,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 16",
+   "frame": {
+    "x": 114,
+    "y": 240,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 17",
+   "frame": {
+    "x": 228,
+    "y": 240,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 18",
+   "frame": {
+    "x": 342,
+    "y": 240,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 19",
+   "frame": {
+    "x": 456,
+    "y": 240,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 20",
+   "frame": {
+    "x": 0,
+    "y": 320,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 21",
+   "frame": {
+    "x": 114,
+    "y": 320,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 22",
+   "frame": {
+    "x": 228,
+    "y": 320,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 23",
+   "frame": {
+    "x": 342,
+    "y": 320,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 24",
+   "frame": {
+    "x": 456,
+    "y": 320,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 25",
+   "frame": {
+    "x": 0,
+    "y": 400,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 26",
+   "frame": {
+    "x": 114,
+    "y": 400,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  },
+  {
+   "filename": "glass-rose 27",
+   "frame": {
+    "x": 228,
+    "y": 400,
+    "w": 114,
+    "h": 80
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 114,
+    "h": 80
+   },
+   "sourceSize": {
+    "w": 114,
+    "h": 80
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "glass-rose.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 570,
+   "h": 480
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "glass-rose",
+    "from": 0,
+    "to": 27,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/glass-rose",
+   "name": "Glass rose",
+   "fps": 30,
+   "loop": false,
+   "frames": 28,
+   "frameSize": [
+    114,
+    80
+   ],
+   "pivot": [
+    58,
+    44
+   ],
+   "columns": 5
+  }
+ }
+}
