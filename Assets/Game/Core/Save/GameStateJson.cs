@@ -1378,7 +1378,7 @@ namespace Game.Core.Save
             return Object(
                 ("mode", JsonValue.Of(peaceful.Mode == PeacefulMode.Camp ? "camp" : "battle")),
                 ("activity", OptionalText(peaceful.Activity)),
-                ("place", JsonValue.Of(peaceful.Place == PeacefulPlace.Hideout ? "hideout" : "refuge")),
+                ("place", JsonValue.Of(PeacefulPlaces.Key(peaceful.Place))),
                 ("presets", WriteIdList(presets)),
                 ("scheduledBy", OptionalText(peaceful.ScheduledBy)),
                 ("work", JsonValue.Array(work)),
@@ -1393,7 +1393,7 @@ namespace Game.Core.Save
         {
             peaceful.Mode = node.Field("mode").AsString() == "camp" ? PeacefulMode.Camp : PeacefulMode.Battle;
             peaceful.Activity = ReadOptionalText(node, "activity");
-            peaceful.Place = node.HasField("place") && node.Field("place").AsString() == "hideout" ? PeacefulPlace.Hideout : PeacefulPlace.Refuge;
+            peaceful.Place = node.HasField("place") ? PeacefulPlaces.Parse(node.Field("place").AsString()) : PeacefulPlace.Refuge;
             foreach (var item in node.Field("presets").Items())
                 peaceful.Presets.Add(item.AsString());
             peaceful.ScheduledBy = ReadOptionalText(node, "scheduledBy");

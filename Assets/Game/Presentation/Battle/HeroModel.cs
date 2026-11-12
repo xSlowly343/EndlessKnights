@@ -57,9 +57,16 @@ namespace Game.Presentation.Battle
                 return skin;
             var cloak = PaintOf(look.Cloak);
             var eyes = ColorOf(CosmeticCatalog.EyesSlot, look.Eyes);
-            skin = new HeroSkin(
-                Clip(Texture(IdleFile, 30, cloak, eyes), 30, 30, 24, IdleFeet, Repeat(0.1f, 24), true),
-                Clip(Texture(AttackFile, 90, cloak, eyes), 90, 50, 8, AttackFeet, AttackSeconds, false));
+            var phases = cloak.HasValue && cloak.Value.Animated ? cloak.Value.Frames : 1;
+            var idle = new HeroClip[phases];
+            var attack = new HeroClip[phases];
+            for (var i = 0; i < phases; i++)
+            {
+                var phase = (float)i / phases;
+                idle[i] = Clip(Texture(IdleFile, 30, cloak, eyes, phase), 30, 30, 24, IdleFeet, Repeat(0.1f, 24), true);
+                attack[i] = Clip(Texture(AttackFile, 90, cloak, eyes, phase), 90, 50, 8, AttackFeet, AttackSeconds, false);
+            }
+            skin = new HeroSkin(idle, attack, cloak.HasValue ? cloak.Value.Seconds : 0f);
             Skins.Add(key, skin);
             return skin;
         }
@@ -89,7 +96,7 @@ namespace Game.Presentation.Battle
                 Color? slash = look != DefaultLook && ColorUtility.TryParseHtmlString(node.Field("slash").AsString(), out var parsed) ? parsed : (Color?)null;
                 return new StrikeArt(
                     look,
-                    Clip(Texture(SlashFile, 90, null, slash), 90, 50, 8, AttackFeet, AttackSeconds, false),
+                    Clip(Texture(SlashFile, 90, null, slash, 0f), 90, 50, 8, AttackFeet, AttackSeconds, false),
                     Sheet(node.Field("flight")),
                     Sheet(node.Field("burst")),
                     node.Field("path").AsString() == GroundPath,
@@ -125,10 +132,11 @@ namespace Game.Presentation.Battle
             if (item == null || !ColorUtility.TryParseHtmlString(item.Color, out var first))
                 return null;
             var second = ColorUtility.TryParseHtmlString(item.Color2, out var parsed) ? parsed : first;
-            return new CloakPaint(first, second, CloakPaint.PatternOf(item.Pattern));
+            var third = ColorUtility.TryParseHtmlString(item.Color3, out var extra) ? extra : second;
+            return new CloakPaint(first, second, third, CloakPaint.PatternOf(item.Pattern), item.Frames, (float)item.Seconds);
         }
 
-        private static Texture2D Texture(string file, int cellWidth, CloakPaint? cloak, Color? glow)
+        private static Texture2D Texture(string file, int cellWidth, CloakPaint? cloak, Color? glow, float phase)
         {
             var source = Resources.Load<Texture2D>(Folder + file);
             source.filterMode = FilterMode.Point;
@@ -136,7 +144,7 @@ namespace Game.Presentation.Battle
                 return source;
             var pixels = source.GetPixels32();
             if (cloak.HasValue)
-                HeroPalette.Recolor(pixels, source.width, cellWidth, cloak.Value, glow);
+                HeroPalette.Recolor(pixels, source.width, cellWidth, cloak.Value, glow, phase);
             else
                 HeroPalette.Recolor(pixels, null, glow);
             var texture = new Texture2D(source.width, source.height, TextureFormat.RGBA32, false) { filterMode = FilterMode.Point, wrapMode = TextureWrapMode.Clamp };

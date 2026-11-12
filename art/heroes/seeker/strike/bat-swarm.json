@@ -1,0 +1,655 @@
+{
+ "frames": [
+  {
+   "filename": "bat-swarm 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 1",
+   "frame": {
+    "x": 112,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 2",
+   "frame": {
+    "x": 224,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 3",
+   "frame": {
+    "x": 336,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 4",
+   "frame": {
+    "x": 448,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 5",
+   "frame": {
+    "x": 0,
+    "y": 76,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 6",
+   "frame": {
+    "x": 112,
+    "y": 76,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 7",
+   "frame": {
+    "x": 224,
+    "y": 76,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 8",
+   "frame": {
+    "x": 336,
+    "y": 76,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 9",
+   "frame": {
+    "x": 448,
+    "y": 76,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 10",
+   "frame": {
+    "x": 0,
+    "y": 152,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 11",
+   "frame": {
+    "x": 112,
+    "y": 152,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 12",
+   "frame": {
+    "x": 224,
+    "y": 152,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 13",
+   "frame": {
+    "x": 336,
+    "y": 152,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 14",
+   "frame": {
+    "x": 448,
+    "y": 152,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 15",
+   "frame": {
+    "x": 0,
+    "y": 228,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 16",
+   "frame": {
+    "x": 112,
+    "y": 228,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 17",
+   "frame": {
+    "x": 224,
+    "y": 228,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 18",
+   "frame": {
+    "x": 336,
+    "y": 228,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 19",
+   "frame": {
+    "x": 448,
+    "y": 228,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 20",
+   "frame": {
+    "x": 0,
+    "y": 304,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 21",
+   "frame": {
+    "x": 112,
+    "y": 304,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 22",
+   "frame": {
+    "x": 224,
+    "y": 304,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 23",
+   "frame": {
+    "x": 336,
+    "y": 304,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 24",
+   "frame": {
+    "x": 448,
+    "y": 304,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 25",
+   "frame": {
+    "x": 0,
+    "y": 380,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 26",
+   "frame": {
+    "x": 112,
+    "y": 380,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bat-swarm 27",
+   "frame": {
+    "x": 224,
+    "y": 380,
+    "w": 112,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 76
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "bat-swarm.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 560,
+   "h": 456
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "bat-swarm",
+    "from": 0,
+    "to": 27,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/bat-swarm",
+   "name": "Bat swarm",
+   "fps": 30,
+   "loop": false,
+   "frames": 28,
+   "frameSize": [
+    112,
+    76
+   ],
+   "pivot": [
+    70,
+    44
+   ],
+   "columns": 5
+  }
+ }
+}

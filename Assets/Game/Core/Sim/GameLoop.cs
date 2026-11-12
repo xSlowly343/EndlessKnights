@@ -86,6 +86,7 @@ namespace Game.Core.Sim
         private readonly CompanionSystem _companions;
         private readonly NestSystem _nest;
         private readonly CompanionStrip _strip;
+        private readonly StripScene _scene;
         private readonly CompanionGearSystem _companionGear;
         private readonly CompanionWorkSystem _companionWork;
         private readonly CompanionAbilitySystem _companionAbilities;
@@ -184,6 +185,7 @@ namespace Game.Core.Sim
             _companionWork = new CompanionWorkSystem(state, _camp, _companions, _expeditions);
             _menagerie = new MenagerieTreeSystem(_companions);
             _strip = new CompanionStrip(state, _companions, _expeditions, _peaceful, Events);
+            _scene = new StripScene(data.Panel.Scene, state, _peaceful, Events);
             _forge = new ForgeSystem(data.Forge, state, data.Stages, _camp, _peaceful, _weapons, _gear, Events);
             _mount = new MountSystem(data.Combat.Mount, state, data.Stages, hero);
             _facets = new FacetSystem(data.Combat.Facets, state, hero);
@@ -297,6 +299,7 @@ namespace Game.Core.Sim
         public CompanionSystem Companions => _companions;
         public NestSystem Nest => _nest;
         public CompanionStrip Strip => _strip;
+        public StripScene Scene => _scene;
         public CompanionGearSystem CompanionGear => _companionGear;
         public CompanionWorkSystem CompanionWork => _companionWork;
         public CompanionAbilitySystem CompanionAbilities => _companionAbilities;
@@ -1031,6 +1034,7 @@ namespace Game.Core.Sim
             _dungeons.UseData(data);
             _seasonal.UseData(data);
             _peaceful.UseRules(data.Peaceful);
+            _scene.UseRules(data.Panel.Scene);
             _camp.UseRules(data.Camp);
             _garden.UseRules(data.Garden);
             _alchemy.UseRules(data.Alchemy);
@@ -1196,6 +1200,7 @@ namespace Game.Core.Sim
             _colossus.NoteGuardians(firstEvent);
             _nest.NoteGuardians(firstEvent);
             _strip.Tick(firstEvent, LastInput.HasAnyInput);
+            _scene.Tick();
             _forge.NoteKills(firstEvent);
             _artifacts.TickAwakening();
             _bestiary.Tick(firstEvent);
@@ -1220,6 +1225,7 @@ namespace Game.Core.Sim
             _artifacts.SkipAwakening();
             _achievements.Tick();
             _strip.Tick(firstEvent, LastInput.HasAnyInput);
+            _scene.Tick();
             State.Tick++;
             Hook?.AfterTick();
         }

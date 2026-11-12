@@ -1,0 +1,677 @@
+{
+ "frames": [
+  {
+   "filename": "bone-grasp 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 1",
+   "frame": {
+    "x": 112,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 2",
+   "frame": {
+    "x": 224,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 3",
+   "frame": {
+    "x": 336,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 4",
+   "frame": {
+    "x": 448,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 5",
+   "frame": {
+    "x": 0,
+    "y": 66,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 6",
+   "frame": {
+    "x": 112,
+    "y": 66,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 7",
+   "frame": {
+    "x": 224,
+    "y": 66,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 8",
+   "frame": {
+    "x": 336,
+    "y": 66,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 9",
+   "frame": {
+    "x": 448,
+    "y": 66,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 10",
+   "frame": {
+    "x": 0,
+    "y": 132,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 11",
+   "frame": {
+    "x": 112,
+    "y": 132,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 12",
+   "frame": {
+    "x": 224,
+    "y": 132,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 13",
+   "frame": {
+    "x": 336,
+    "y": 132,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 14",
+   "frame": {
+    "x": 448,
+    "y": 132,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 15",
+   "frame": {
+    "x": 0,
+    "y": 198,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 16",
+   "frame": {
+    "x": 112,
+    "y": 198,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 17",
+   "frame": {
+    "x": 224,
+    "y": 198,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 18",
+   "frame": {
+    "x": 336,
+    "y": 198,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 19",
+   "frame": {
+    "x": 448,
+    "y": 198,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 20",
+   "frame": {
+    "x": 0,
+    "y": 264,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 21",
+   "frame": {
+    "x": 112,
+    "y": 264,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 22",
+   "frame": {
+    "x": 224,
+    "y": 264,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 23",
+   "frame": {
+    "x": 336,
+    "y": 264,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 24",
+   "frame": {
+    "x": 448,
+    "y": 264,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 25",
+   "frame": {
+    "x": 0,
+    "y": 330,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 26",
+   "frame": {
+    "x": 112,
+    "y": 330,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 27",
+   "frame": {
+    "x": 224,
+    "y": 330,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  },
+  {
+   "filename": "bone-grasp 28",
+   "frame": {
+    "x": 336,
+    "y": 330,
+    "w": 112,
+    "h": 66
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 112,
+    "h": 66
+   },
+   "sourceSize": {
+    "w": 112,
+    "h": 66
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "bone-grasp.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 560,
+   "h": 396
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "bone-grasp",
+    "from": 0,
+    "to": 28,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/bone-grasp",
+   "name": "Bone grasp",
+   "fps": 30,
+   "loop": false,
+   "frames": 29,
+   "frameSize": [
+    112,
+    66
+   ],
+   "pivot": [
+    70,
+    54
+   ],
+   "columns": 5
+  }
+ }
+}

@@ -510,6 +510,246 @@
         ],
         "fps": 30
       }
+    },
+    {
+      "look": 17,
+      "id": "bone",
+      "path": "ground",
+      "arcPx": 0,
+      "burstAt": "ground",
+      "slash": "#e4dcc8",
+      "flight": {
+        "file": "Seeker_Bone_Flight_73x30_8f",
+        "width": 73,
+        "height": 30,
+        "frames": 8,
+        "pivot": [
+          64,
+          26
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Bone_Burst_73x61_28f",
+        "width": 73,
+        "height": 61,
+        "frames": 28,
+        "pivot": [
+          41,
+          50
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 18,
+      "id": "bat",
+      "path": "line",
+      "arcPx": 0,
+      "burstAt": "body",
+      "slash": "#9a48ec",
+      "flight": {
+        "file": "Seeker_Bat_Flight_93x43_8f",
+        "width": 93,
+        "height": 43,
+        "frames": 8,
+        "pivot": [
+          80,
+          22
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Bat_Burst_79x63_27f",
+        "width": 79,
+        "height": 63,
+        "frames": 27,
+        "pivot": [
+          48,
+          36
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 19,
+      "id": "golem",
+      "path": "line",
+      "arcPx": 10,
+      "burstAt": "ground",
+      "slash": "#e8a218",
+      "flight": {
+        "file": "Seeker_Golem_Flight_91x34_8f",
+        "width": 91,
+        "height": 34,
+        "frames": 8,
+        "pivot": [
+          81,
+          16
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Golem_Burst_99x64_28f",
+        "width": 99,
+        "height": 64,
+        "frames": 28,
+        "pivot": [
+          61,
+          53
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 20,
+      "id": "serpent",
+      "path": "ground",
+      "arcPx": 0,
+      "burstAt": "ground",
+      "slash": "#2ac8a0",
+      "flight": {
+        "file": "Seeker_Serpent_Flight_101x32_8f",
+        "width": 101,
+        "height": 32,
+        "frames": 8,
+        "pivot": [
+          88,
+          25
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Serpent_Burst_79x60_27f",
+        "width": 79,
+        "height": 60,
+        "frames": 27,
+        "pivot": [
+          54,
+          49
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 21,
+      "id": "samurai",
+      "path": "line",
+      "arcPx": 0,
+      "burstAt": "body",
+      "slash": "#ff4a3a",
+      "flight": {
+        "file": "Seeker_Samurai_Flight_75x33_8f",
+        "width": 75,
+        "height": 33,
+        "frames": 8,
+        "pivot": [
+          68,
+          17
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Samurai_Burst_87x71_25f",
+        "width": 87,
+        "height": 71,
+        "frames": 25,
+        "pivot": [
+          47,
+          40
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 22,
+      "id": "raven",
+      "path": "line",
+      "arcPx": 12,
+      "burstAt": "body",
+      "slash": "#2cb4d8",
+      "flight": {
+        "file": "Seeker_Raven_Flight_102x42_8f",
+        "width": 102,
+        "height": 42,
+        "frames": 8,
+        "pivot": [
+          84,
+          21
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Raven_Burst_85x64_27f",
+        "width": 85,
+        "height": 64,
+        "frames": 27,
+        "pivot": [
+          56,
+          42
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 23,
+      "id": "vine",
+      "path": "line",
+      "arcPx": 6,
+      "burstAt": "ground",
+      "slash": "#8cd040",
+      "flight": {
+        "file": "Seeker_Vine_Flight_100x34_8f",
+        "width": 100,
+        "height": 34,
+        "frames": 8,
+        "pivot": [
+          84,
+          17
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Vine_Burst_64x62_28f",
+        "width": 64,
+        "height": 62,
+        "frames": 28,
+        "pivot": [
+          45,
+          51
+        ],
+        "fps": 30
+      }
+    },
+    {
+      "look": 24,
+      "id": "guardian",
+      "path": "line",
+      "arcPx": 0,
+      "burstAt": "ground",
+      "slash": "#ffd84a",
+      "flight": {
+        "file": "Seeker_Guardian_Flight_109x43_8f",
+        "width": 109,
+        "height": 43,
+        "frames": 8,
+        "pivot": [
+          94,
+          24
+        ],
+        "fps": 30
+      },
+      "burst": {
+        "file": "Seeker_Guardian_Burst_76x68_28f",
+        "width": 76,
+        "height": 68,
+        "frames": 28,
+        "pivot": [
+          47,
+          57
+        ],
+        "fps": 30
+      }
     }
   ]
 }
