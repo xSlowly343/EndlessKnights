@@ -24,7 +24,15 @@ namespace Game.Core.Sim
         public double QuietSeconds { get; set; }
         public bool TeaOffered { get; set; }
         public long UnsentActions { get; set; }
+        public Dictionary<string, long> UnsentGains { get; } = new Dictionary<string, long>(System.StringComparer.Ordinal);
         public double ActionCarry { get; set; }
         public PeacefulWork HideoutWork { get; } = new PeacefulWork();
+
+        public void Gain(string resource, long amount)
+        {
+            if (amount <= 0)
+                return;
+            UnsentGains[resource] = (UnsentGains.TryGetValue(resource, out var unsent) ? unsent : 0) + amount;
+        }
     }
 }

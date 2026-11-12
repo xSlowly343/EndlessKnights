@@ -315,6 +315,7 @@ namespace Game.Core.Sim
                 var count = (long)System.Math.Floor(place.Items[i].PerHour * hours * (_companions?.StatOf(expedition, TravelStat.Items) ?? trait.ItemMultiplier) * (_companions?.HerbOf(expedition, place.Items[i].Item) ?? 1) * level * (1 + _state.Perk(MuseumPerk.ExpeditionLoot)) * _state.PeacefulBonus.YieldFactor);
                 expedition.Items[i] = count;
                 _camp.Add(place.Items[i].Item, count);
+                _state.Peaceful.Gain(TownResource.Finds, count);
             }
             expedition.Shards = (long)System.Math.Floor(place.ShardsPerHour * hours * (_companions?.StatOf(expedition, TravelStat.Shards) ?? trait.ShardsMultiplier) * level * (1 + _state.Perk(MuseumPerk.ExpeditionShards)) * _state.PeacefulBonus.YieldFactor);
             _state.Drops.Shards += expedition.Shards;
@@ -323,6 +324,7 @@ namespace Game.Core.Sim
             {
                 expedition.Rare = place.Rare;
                 _camp.Add(place.Rare, 1);
+                _state.Peaceful.Gain(TownResource.Finds, 1);
                 State.Finds.Add(place.Rare);
             }
             _companions?.Extras(expedition, place);

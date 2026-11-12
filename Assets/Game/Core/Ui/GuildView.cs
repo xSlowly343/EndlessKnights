@@ -24,6 +24,27 @@ namespace Game.Core.Ui
         public List<GuildLine> Guilds { get; } = new List<GuildLine>();
     }
 
+    public sealed class TownBoardLine
+    {
+        public string Guild { get; internal set; } = string.Empty;
+        public string Name { get; internal set; } = string.Empty;
+        public long Votes { get; internal set; }
+        public bool Yours { get; internal set; }
+        public string Text { get; internal set; } = string.Empty;
+    }
+
+    public sealed class TownQuestLine
+    {
+        public string Resource { get; internal set; } = string.Empty;
+        public string Name { get; internal set; } = string.Empty;
+        public long Stock { get; internal set; }
+        public long Need { get; internal set; }
+        public long Yours { get; internal set; }
+        public long LeftToday { get; internal set; }
+        public bool Done { get; internal set; }
+        public string Text { get; internal set; } = string.Empty;
+    }
+
     public static class GuildView
     {
         public static List<DistrictLine> Districts(GuildSystem guilds)
@@ -61,9 +82,79 @@ namespace Game.Core.Ui
             return lines;
         }
 
-        public static string Project(GuildRules rules, string guild, long progress, long target) =>
-            guild.Length == 0 ? Texts.Get("guild.project.done")
-            : Texts.Format("guild.project", Name(rules, guild), progress, target);
+        public static string Sign(GuildRules rules, TownBoard board, double secondsSinceReply)
+        {
+            switch (board.Phase)
+            {
+                case TownBoardPhase.Vote:
+                    return Texts.Format("guild.sign.vote", TimeLeft(board.SecondsLeft(secondsSinceReply)));
+                case TownBoardPhase.Gather:
+                    return Texts.Format("guild.sign.gather", Name(rules, board.Project));
+                case TownBoardPhase.Opening:
+                    return Texts.Format("guild.sign.opening", Name(rules, board.Project), TimeLeft(board.SecondsLeft(secondsSinceReply)));
+                default:
+                    return Texts.Get("guild.project.done");
+            }
+        }
+
+        public static List<TownBoardLine> Board(GuildRules rules, TownBoard board)
+        {
+            var lines = new List<TownBoardLine>(board.Candidates.Count);
+            foreach (var candidate in board.Candidates)
+            {
+                var yours = candidate.Guild == board.Vote;
+                lines.Add(new TownBoardLine
+                {
+                    Guild = candidate.Guild,
+                    Name = Name(rules, candidate.Guild),
+                    Votes = candidate.Votes,
+                    Yours = yours,
+                    Text = Texts.Format(yours ? "guild.board.yours" : "guild.board.candidate", Name(rules, candidate.Guild), candidate.Votes)
+                });
+            }
+            return lines;
+        }
+
+        public static List<TownQuestLine> Quest(GuildRules rules, TownBoard board)
+        {
+            var lines = new List<TownQuestLine>(board.Stocks.Count);
+            if (board.Phase == TownBoardPhase.Done)
+                return lines;
+            foreach (var stock in board.Stocks)
+            {
+                if (stock.Need == 0 && board.Phase != TownBoardPhase.Vote)
+                    continue;
+                var resource = rules.Resource(stock.Resource);
+                var name = resource == null ? stock.Resource : Texts.Pick(resource.NameRu, resource.NameEn);
+                lines.Add(new TownQuestLine
+                {
+                    Resource = stock.Resource,
+                    Name = name,
+                    Stock = stock.Stock,
+                    Need = stock.Need,
+                    Yours = stock.Yours,
+                    LeftToday = stock.LeftToday,
+                    Done = stock.Need > 0 && stock.Gathered,
+                    Text = stock.Need > 0 ? Texts.Format("guild.quest.need", name, System.Math.Min(stock.Stock, stock.Need), stock.Need, stock.Yours)
+                        : Texts.Format("guild.quest.stock", name, stock.Stock, stock.Yours)
+                });
+            }
+            return lines;
+        }
+
+        public static string QuestTitle(GuildRules rules, TownBoard board) =>
+            board.Phase == TownBoardPhase.Vote ? Texts.Get("guild.quest.early")
+            : board.Phase == TownBoardPhase.Gather ? Texts.Format("guild.quest.title", Name(rules, board.Project))
+            : board.Phase == TownBoardPhase.Opening ? Texts.Get("guild.quest.next")
+            : string.Empty;
+
+        public static string TimeLeft(double seconds)
+        {
+            var hours = (long)System.Math.Floor(seconds / 3600);
+            if (hours < 24)
+                return OfflineReport.Duration(seconds);
+            return hours % 24 == 0 ? Texts.Format("unit.days", hours / 24) : Texts.Format("unit.daysHours", hours / 24, hours % 24);
+        }
 
         public static string Forecast(ObservatoryForecast forecast, FishingRules fishing, GardenRules garden)
         {
