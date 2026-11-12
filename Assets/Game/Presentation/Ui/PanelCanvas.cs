@@ -83,6 +83,7 @@ namespace Game.Presentation.Ui
         private MailPanel _mailPanel = null!;
         private PartyPanel _partyPanel = null!;
         private PartySearchPanel _partySearchPanel = null!;
+        private const int HeroLookSubTab = 2;
         private SettingsPanel _settingsPanel = null!;
         private ConsentCard _consent = null!;
         private UiButton _preset = null!;
@@ -593,8 +594,10 @@ namespace Game.Presentation.Ui
             _statsPanel.Show(statsShown);
             var mailShown = !navigator.ShowingMore && navigator.Active == PanelSection.Mail;
             _mailPanel.Show(mailShown, _shownFrame.ContentPx);
-            var settingsShown = !navigator.ShowingMore && navigator.Active == PanelSection.Settings;
-            _settingsPanel.Show(settingsShown, _shownFrame.HasSubTabs ? navigator.SubTab : 0, _shownFrame.ContentPx);
+            var lookShown = !navigator.ShowingMore && navigator.Active == PanelSection.Hero && heroSubTab == HeroLookSubTab;
+            var settingsShown = lookShown || (!navigator.ShowingMore && navigator.Active == PanelSection.Settings);
+            var settingsTab = lookShown ? SettingsScreen.LookTab : _shownFrame.HasSubTabs ? navigator.SubTab : 0;
+            _settingsPanel.Show(settingsShown, settingsTab, _shownFrame.ContentPx);
             var placeholder = !navigator.ShowingMore && !_subclassShown && !_bookShown && !heroShown && !itemsShown && !partyShown && !partySearchShown && !statsShown && !mailShown && !settingsShown;
             _placeholder.gameObject.SetActive(placeholder);
             if (placeholder)

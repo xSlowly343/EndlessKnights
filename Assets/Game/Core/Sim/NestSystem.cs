@@ -266,6 +266,12 @@ namespace Game.Core.Sim
             }
         }
 
+        public void GiveEventCompanion(string companion)
+        {
+            if (!_companions.Known(companion))
+                Reward(companion);
+        }
+
         private void Reward(string companion)
         {
             if (_companions.Grant(companion))

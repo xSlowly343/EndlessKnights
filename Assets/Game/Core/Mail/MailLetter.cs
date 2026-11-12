@@ -10,6 +10,7 @@ namespace Game.Core.Mail
         public const string ChestKind = "chest";
         public const string TournamentKind = "tournament";
         public const string FairKind = "fair";
+        public const string CouponKind = "coupon";
 
         public MailLetter(string id, string kind, long atUnixMs, int place, int of, long depth, string title, RiftReward reward, bool claimed)
         {

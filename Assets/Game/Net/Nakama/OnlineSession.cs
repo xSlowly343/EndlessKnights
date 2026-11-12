@@ -50,6 +50,7 @@ namespace Game.Net.Nakama
 
         public PartyDirectory Directory => new PartyDirectory(_client, _session);
         public MailDirectory Mail => new MailDirectory(_client, _session);
+        public CouponDirectory Coupons => new CouponDirectory(_client, _session);
         public GhostDirectory Ghosts => new GhostDirectory(_client, _session);
         public HelpDirectory Help => new HelpDirectory(_client, _session);
 

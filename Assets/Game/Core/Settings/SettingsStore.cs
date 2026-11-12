@@ -14,6 +14,7 @@ namespace Game.Core.Settings
         public string Directory { get; }
         public string MainPath => Path.Combine(Directory, SettingsCodec.FileName);
         public string BackupPath => MainPath + ".bak";
+        public bool Exists => File.Exists(MainPath) || File.Exists(BackupPath);
 
         public void Write(GameSettings settings) => AtomicFile.Write(MainPath, SettingsCodec.Encode(settings), BackupPath);
 

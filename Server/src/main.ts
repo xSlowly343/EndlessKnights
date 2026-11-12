@@ -58,6 +58,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("coop_wallet", coopWalletRpc);
     initializer.registerRpc("quest_party_claim", questPartyClaimRpc);
     initializer.registerRpc("mail_claim", mailClaimRpc);
+    initializer.registerRpc("coupon_redeem", couponRedeemRpc);
+    initializer.registerRpc("coupon_put", couponPutRpc);
     initializer.registerRpc("help_settings", helpSettingsRpc);
     initializer.registerRpc("help_call", helpCallRpc);
     initializer.registerRpc("help_invites", helpInvitesRpc);

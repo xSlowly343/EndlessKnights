@@ -201,6 +201,7 @@ namespace Game.Core.Sim
                 _mount.NoteSalvage(drop);
             };
             _seasonal.BossWon = eventId => _drops.GiveEventPiece(eventId);
+            _seasonal.CompanionEarned = companion => Nest.GiveEventCompanion(companion);
             _museum = new MuseumSystem(data.Museum, state, hero, _alchemy, Events);
             _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
             _hideout.Decor = _decor;
@@ -497,6 +498,24 @@ namespace Game.Core.Sim
         }
 
         public ClassTree? ClassTreeDef => State.ClassChosen ? _data.ClassTreeOf(State.ClassName) : null;
+
+        public string ShareBuild() => ClassTreeDef is { } tree ? BuildCode.Encode(tree, State.ClassTree, State.Skills) : string.Empty;
+
+        public SharedBuild? ReadBuild(string? code) => BuildCode.Decode(code, _data.ClassTreeOf, _data.Gems);
+
+        public BuildImportResult ImportBuild(string? code)
+        {
+            if (ReadBuild(code) is not { } build)
+                return BuildImportResult.BadCode;
+            if (ClassTreeDef is not { } tree)
+                return BuildImportResult.NoClass;
+            if (build.TreeId != tree.Id)
+                return BuildImportResult.OtherClass;
+            BuildCode.UseAsPlan(build, tree, State.ClassTree);
+            FillTrees();
+            RebuildTree();
+            return BuildImportResult.Done;
+        }
 
         public double ClassAttribute => _classAttribute.Points;
 

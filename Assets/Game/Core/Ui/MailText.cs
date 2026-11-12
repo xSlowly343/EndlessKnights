@@ -36,6 +36,7 @@ namespace Game.Core.Ui
             MailLetter.ChestKind => "mail.chest.title",
             MailLetter.TournamentKind => "mail.tournament.title",
             MailLetter.FairKind => "mail.fair.title",
+            MailLetter.CouponKind => "mail.coupon.title",
             _ => "mail.title"
         });
 
@@ -47,6 +48,7 @@ namespace Game.Core.Ui
             MailLetter.ChestKind => Texts.Format("mail.chest.body", ChestName(letter.Title, chests)),
             MailLetter.TournamentKind => Texts.Format("mail.tournament.body", TournamentView.FormatName(tournaments, letter.Title), letter.Place, letter.Of, letter.Depth),
             MailLetter.FairKind => Texts.Format("mail.fair.body", ContestName(letter.Title, fair), letter.Place, letter.Of, letter.Depth),
+            MailLetter.CouponKind => Texts.Format("mail.coupon.body", letter.Title),
             _ => string.Empty
         };
 

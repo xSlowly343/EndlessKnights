@@ -37,6 +37,7 @@ namespace Game.Bootstrap
         private float _sinceMail = MailSeconds;
         private bool _loadingMail;
         private bool _claimingLetter;
+        private bool _redeemingCoupon;
         private int _matchGeneration;
         private bool _busy;
         private PartySearchFilters _filters = null!;
@@ -73,6 +74,7 @@ namespace Game.Bootstrap
             panels.Party.RiftRequested += driver.MoveWorld;
             panels.Mail.ClaimRequested += driver.Claim;
             panels.Mail.Opened += () => driver._sinceMail = MailSeconds;
+            panels.Settings.Changed += driver.OnSetting;
             driver._filters = new PartySearchFilters(data.Party.Search, settings.Language);
             panels.PartySearch.UseFilters(driver._filters);
             panels.PartySearch.QuickRequested += () => driver.OnAction(PartyAction.QuickMatch);
@@ -183,6 +185,46 @@ namespace Game.Bootstrap
             _panels.Mail.ShowRows(MailText.Rows(_mailBox.Letters, _data.Chests, _data.Tournaments));
             if (_notifications != null)
                 _notifications.Marks.UnreadMail = _mailBox.Unread;
+        }
+
+        private void OnSetting(SettingId id)
+        {
+            if (id == SettingId.Coupon)
+                RedeemCoupon(Coupon.Normalize(GUIUtility.systemCopyBuffer));
+        }
+
+        private void RedeemCoupon(string code)
+        {
+            if (_redeemingCoupon)
+                return;
+            if (code.Length == 0 || _session == null)
+            {
+                _panels.ShowNotice(code.Length == 0 ? CouponText.Empty : CouponText.Offline);
+                return;
+            }
+            _redeemingCoupon = true;
+            var coupons = _session.Coupons;
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var status = await coupons.RedeemAsync(code).ConfigureAwait(false);
+                    _mainThread.Enqueue(() =>
+                    {
+                        _panels.ShowNotice(CouponText.Result(status));
+                        if (status == CouponText.Done)
+                            _sinceMail = MailSeconds;
+                    });
+                }
+                catch (NakamaException)
+                {
+                    _mainThread.Enqueue(() => _panels.ShowNotice(CouponText.Failed));
+                }
+                finally
+                {
+                    _mainThread.Enqueue(() => _redeemingCoupon = false);
+                }
+            });
         }
 
         private void Claim(string id)
