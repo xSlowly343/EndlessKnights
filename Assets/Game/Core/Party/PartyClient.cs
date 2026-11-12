@@ -162,13 +162,15 @@ namespace Game.Core.Party
         public ShownEffect EnemyEffect(int index)
         {
             var effect = _state.Effect(index);
-            if (!InParty || !effect.Active || _state.EnemyId != _localEnemyId)
+            if (!InParty || !effect.Active || !FacesHostEnemy)
                 return default;
             effect.TicksLeft = (int)System.Math.Max(0, effect.TicksLeft - (_tick - _stateArrivalTick));
             return effect;
         }
 
         public bool InParty => Status == PartyLink.Linked || Status == PartyLink.NoSignal;
+
+        private bool FacesHostEnemy => _state.EnemyId == _localEnemyId || (_guessed && _localEnemyId == _state.EnemyId + 1);
 
         public PartyWorld World => _state.World;
         public bool IsLeader { get; set; }
