@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "strip": { "switchSeconds": 0.6 },
   "unlocks": [
     { "section": "items", "stage": 50 },
     { "section": "party", "stage": 100 },

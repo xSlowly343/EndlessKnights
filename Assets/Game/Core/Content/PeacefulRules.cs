@@ -12,7 +12,9 @@ namespace Game.Core.Content
     public enum PeacefulPlace
     {
         Refuge,
-        Hideout
+        Hideout,
+        Town,
+        ClanCamp
     }
 
     public sealed class PeacefulActivity
