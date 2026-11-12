@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <NoWarn>CS0067;CS0649;CS0169;CS0414;CS0618;CS8618;CS8600;CS8601;CS8602;CS8603;CS8604;CS8625;CS8765;CS8767;NU1701</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="UnityEngine.Modules" Version="2021.3.33" />
+    <PackageReference Include="Unity3D.UnityEngine.UI" Version="2020.3.21" />
+    <Compile Include="Stubs/*.cs" />
+    <Compile Include="../../../Assets/Game/Platform/**/*.cs" />
+    <Compile Include="../../../Assets/Game/Presentation/**/*.cs" />
+    <Compile Include="../../../Assets/Game/Bootstrap/**/*.cs" />
+    <Compile Include="../../../Assets/Tests/Platform.Tests/**/*.cs" />
+    <PackageReference Include="NUnit" Version="3.14.0" />
+    <ProjectReference Include="../Game.Core/Game.Core.csproj" />
+    <ProjectReference Include="../Game.Net/Game.Net.csproj" />
+  </ItemGroup>
+</Project>

@@ -15,12 +15,15 @@ namespace Game.Presentation.Ui
         private const float RowHeightPx = 52f;
         private const float ColumnWidthPx = 150f;
         private const float RadiusPx = 8f;
+        private const float RecapButtonHeightPx = 34f;
 
         private readonly UiTheme _theme;
         private readonly RectTransform _root;
         private readonly List<TextMeshProUGUI[]> _rows = new List<TextMeshProUGUI[]>();
         private readonly TextMeshProUGUI _sessionTitle;
         private readonly TextMeshProUGUI _allTimeTitle;
+        private readonly UiButton _dayRecap;
+        private readonly UiButton _weekRecap;
 
         private StatsPanel(RectTransform content, UiTheme theme)
         {
@@ -31,12 +34,35 @@ namespace Game.Presentation.Ui
             _allTimeTitle = HeaderCell(new Vector2(PaddingPx + labelWidth + ColumnWidthPx, -GapPx));
             for (var i = 0; i < InputStatsView.RowCount; i++)
                 _rows.Add(BuildRow(i, labelWidth));
+            var buttonsTop = HeaderTopPx + InputStatsView.RowCount * (RowHeightPx + GapPx) + GapPx;
+            var buttonWidth = (Width() - GapPx) / 2f;
+            _dayRecap = RecapButton("DayRecap", new Vector2(PaddingPx, -buttonsTop), buttonWidth);
+            _weekRecap = RecapButton("WeekRecap", new Vector2(PaddingPx + buttonWidth + GapPx, -buttonsTop), buttonWidth);
             _root.gameObject.SetActive(false);
         }
 
         public static StatsPanel Create(RectTransform content, UiTheme theme) => new StatsPanel(content, theme);
 
+        public event System.Action<bool>? RecapRequested;
+
         public bool IsShown => _root.gameObject.activeSelf;
+
+        public Vector2 WorldPointOfRecap(bool weekly)
+        {
+            var rect = (weekly ? _weekRecap : _dayRecap).Rect;
+            return rect.TransformPoint(rect.rect.center);
+        }
+
+        public bool TryClick(Vector2 worldPoint)
+        {
+            if (!IsShown)
+                return false;
+            var day = _dayRecap.Contains(worldPoint);
+            if (!day && !_weekRecap.Contains(worldPoint))
+                return false;
+            RecapRequested?.Invoke(!day);
+            return true;
+        }
 
         public void Show(bool shown) => _root.gameObject.SetActive(shown);
 
@@ -48,6 +74,8 @@ namespace Game.Presentation.Ui
                 return;
             _sessionTitle.text = InputStatsView.SessionTitle;
             _allTimeTitle.text = InputStatsView.AllTimeTitle;
+            _dayRecap.Text = RecapView.DayButton;
+            _weekRecap.Text = RecapView.WeekButton;
             var rows = InputStatsView.Rows(loop.SessionInput, loop.State.TotalInput, loop.State.StartedUnixMs, NumberDisplay.Settings.ThousandsSeparator);
             for (var i = 0; i < _rows.Count && i < rows.Count; i++)
             {
@@ -65,6 +93,15 @@ namespace Game.Presentation.Ui
             var label = UiElements.Label("Label", row.rectTransform, _theme.TextFont, 13f, _theme.TextDim, TextAlignmentOptions.MidlineLeft);
             UiElements.Anchor(label.rectTransform, new Vector2(0f, 0.5f), new Vector2(12f, 0f), new Vector2(labelWidth - 12f, RowHeightPx));
             return new[] { label, Value(row.rectTransform, labelWidth), Value(row.rectTransform, labelWidth + ColumnWidthPx) };
+        }
+
+        private UiButton RecapButton(string name, Vector2 position, float width)
+        {
+            var back = UiElements.Raise(UiElements.Fill(name, _root, _theme.Accent, RadiusPx));
+            UiElements.Anchor(back.rectTransform, new Vector2(0f, 1f), position, new Vector2(width, RecapButtonHeightPx));
+            var label = UiElements.Label(name + "Text", back.rectTransform, _theme.BoldFont, 13f, Color.white, TextAlignmentOptions.Center);
+            UiElements.Stretch(label.rectTransform);
+            return new UiButton(back, label);
         }
 
         private TextMeshProUGUI HeaderCell(Vector2 position)

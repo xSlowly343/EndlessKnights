@@ -28,5 +28,17 @@
     "maxAmount": 10,
     "inbox": 30,
     "items": ["herb_knockbloom", "herb_windwort", "herb_clickweed", "herb_hushbell", "herb_stormfern", "herb_moonmoss", "ruin_shard", "ice_crystal", "ember_coal", "sky_feather"]
+  },
+  "market": {
+    "currency": "friendship",
+    "items": ["treat_dried_crucian", "treat_roach_crisps", "treat_sandeel_jerky", "treat_ember_minnow_bites", "treat_cloud_dace_flakes", "treat_herb_cookie", "treat_windwort_biscuit", "treat_bone_broth", "treat_sand_bone_chew", "treat_ice_bone_chew"],
+    "maxLots": 5,
+    "maxAmount": 10,
+    "minPrice": 1,
+    "maxPrice": 20,
+    "days": 3,
+    "fee": 0.1,
+    "shown": 50,
+    "inbox": 30
   }
 }

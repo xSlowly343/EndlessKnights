@@ -28,6 +28,8 @@ namespace Game.Core.Tests.Settings
             ClickThrough = false,
             ShowInputDebug = false,
             Paused = true,
+            AutoHideFullscreen = true,
+            HideHotKey = false,
             StripOffset = 312.5,
             StripScale = 1.5,
             NumberFormat = new NumberFormatSettings(NumberFormat.Engineering, 3, ",", "."),

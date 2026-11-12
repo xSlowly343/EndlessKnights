@@ -7,6 +7,8 @@ namespace Game.Core.Settings
         public int FrameRate { get; set; } = 60;
         public bool AlwaysOnTop { get; set; } = true;
         public bool ClickThrough { get; set; } = true;
+        public bool AutoHideFullscreen { get; set; }
+        public bool HideHotKey { get; set; } = true;
         public bool ShowInputDebug { get; set; } = true;
         public bool Paused { get; set; }
         public double StripOffset { get; set; }

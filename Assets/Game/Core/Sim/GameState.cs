@@ -133,6 +133,7 @@ namespace Game.Core.Sim
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }
         public ChronicleState Chronicle { get; } = new ChronicleState();
+        public RecapState Recap { get; } = new RecapState();
         public List<string> Atlas { get; } = new List<string>();
         public Dictionary<string, int> Resonance { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
         public Dictionary<string, int> Spirits { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);

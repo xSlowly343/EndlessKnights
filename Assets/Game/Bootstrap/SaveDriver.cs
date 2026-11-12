@@ -6,6 +6,7 @@ using Game.Core.Save;
 using Game.Core.Sim;
 using Game.Platform.Windows.Power;
 using UnityEngine;
+using SystemClock = Game.Platform.Windows.Power.SystemClock;
 
 namespace Game.Bootstrap
 {

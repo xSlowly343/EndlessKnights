@@ -203,6 +203,7 @@ namespace Game.Core.Sim
                 _mount.NoteSalvage(drop);
             };
             _seasonal.BossWon = eventId => _drops.GiveEventPiece(eventId);
+            _seasonal.CompanionEarned = companion => Nest.GiveEventCompanion(companion);
             _museum = new MuseumSystem(data.Museum, state, hero, _alchemy, Events);
             _decor = new DecorSystem(data.Decor, state, _camp, _garden, _forge, _expeditions);
             _hideout.Decor = _decor;
@@ -388,12 +389,15 @@ namespace Game.Core.Sim
             return false;
         }
 
+        private RecapSystem? _recap;
+
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue(EventCapacity);
 
         public const int EventCapacity = 4096;
         public InputSnapshot LastInput { get; private set; }
         public InputStats SessionInput { get; } = new InputStats();
+        public RecapSystem Recap => _recap ??= new RecapSystem(State);
         public double MetersPerPixel { get; set; } = InputStats.DefaultMetersPerPixel;
         public bool Paused { get; set; }
         public InputPermissions Permissions { get; set; } = InputPermissions.All;
@@ -500,6 +504,24 @@ namespace Game.Core.Sim
         }
 
         public ClassTree? ClassTreeDef => State.ClassChosen ? _data.ClassTreeOf(State.ClassName) : null;
+
+        public string ShareBuild() => ClassTreeDef is { } tree ? BuildCode.Encode(tree, State.ClassTree, State.Skills) : string.Empty;
+
+        public SharedBuild? ReadBuild(string? code) => BuildCode.Decode(code, _data.ClassTreeOf, _data.Gems);
+
+        public BuildImportResult ImportBuild(string? code)
+        {
+            if (ReadBuild(code) is not { } build)
+                return BuildImportResult.BadCode;
+            if (ClassTreeDef is not { } tree)
+                return BuildImportResult.NoClass;
+            if (build.TreeId != tree.Id)
+                return BuildImportResult.OtherClass;
+            BuildCode.UseAsPlan(build, tree, State.ClassTree);
+            FillTrees();
+            RebuildTree();
+            return BuildImportResult.Done;
+        }
 
         public double ClassAttribute => _classAttribute.Points;
 
@@ -683,7 +705,7 @@ namespace Game.Core.Sim
             if (State.Gold < cost)
                 return RefundResult.NotEnoughGold;
             State.Gold -= cost;
-            allocation.Clear();
+            allocation.ReturnPoints();
             RebuildTree();
             return RefundResult.Refunded;
         }
@@ -751,6 +773,7 @@ namespace Game.Core.Sim
             _drops.SetDay(day);
             _quests.SetDay(day);
             _chronicle.SetDay(day);
+            Recap.SetDay(day);
             _seasonal.SetDay(day);
             _town.SetDay(day);
             _companions.SetDay(day);

@@ -32,6 +32,8 @@ namespace Game.Core.Settings
                 ["frameRate"] = JsonValue.Of(settings.FrameRate),
                 ["alwaysOnTop"] = JsonValue.Of(settings.AlwaysOnTop),
                 ["clickThrough"] = JsonValue.Of(settings.ClickThrough),
+                ["autoHideFullscreen"] = JsonValue.Of(settings.AutoHideFullscreen),
+                ["hideHotKey"] = JsonValue.Of(settings.HideHotKey),
                 ["showInputDebug"] = JsonValue.Of(settings.ShowInputDebug),
                 ["paused"] = JsonValue.Of(settings.Paused),
                 ["stripOffset"] = JsonValue.Of(settings.StripOffset),
@@ -92,6 +94,8 @@ namespace Game.Core.Settings
             settings.FrameRate = Read(root, "frameRate", node => Pick(node, node.AsInt(), FrameRates), settings.FrameRate, problems);
             settings.AlwaysOnTop = Read(root, "alwaysOnTop", node => node.AsBool(), settings.AlwaysOnTop, problems);
             settings.ClickThrough = Read(root, "clickThrough", node => node.AsBool(), settings.ClickThrough, problems);
+            settings.AutoHideFullscreen = Read(root, "autoHideFullscreen", node => node.AsBool(), settings.AutoHideFullscreen, problems);
+            settings.HideHotKey = Read(root, "hideHotKey", node => node.AsBool(), settings.HideHotKey, problems);
             settings.ShowInputDebug = Read(root, "showInputDebug", node => node.AsBool(), settings.ShowInputDebug, problems);
             settings.Paused = Read(root, "paused", node => node.AsBool(), settings.Paused, problems);
             settings.StripOffset = Read(root, "stripOffset", node => node.AsNumber(-1e6, 1e6), settings.StripOffset, problems);

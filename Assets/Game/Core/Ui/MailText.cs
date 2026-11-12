@@ -24,8 +24,36 @@ namespace Game.Core.Ui
         public string Button => Texts.Get(Claimed ? "mail.claimed" : "mail.claim");
     }
 
+    public readonly struct MailPage
+    {
+        public MailPage(int index, int pages, int first, int count)
+        {
+            Index = index;
+            Pages = pages;
+            First = first;
+            Count = count;
+        }
+
+        public int Index { get; }
+        public int Pages { get; }
+        public int First { get; }
+        public int Count { get; }
+        public bool HasPrevious => Index > 0;
+        public bool HasNext => Index < Pages - 1;
+        public string Label => Texts.Format("mail.page", Index + 1, Pages);
+    }
+
     public static class MailText
     {
+        public static MailPage Page(int letters, int perPage, int wanted)
+        {
+            var size = System.Math.Max(1, perPage);
+            var pages = System.Math.Max(1, (System.Math.Max(0, letters) + size - 1) / size);
+            var index = System.Math.Clamp(wanted, 0, pages - 1);
+            var first = index * size;
+            return new MailPage(index, pages, first, System.Math.Clamp(letters - first, 0, size));
+        }
+
         public static string Empty => Texts.Get("mail.empty");
 
         public static string Title(MailLetter letter) => Texts.Get(letter.Kind switch
@@ -36,6 +64,7 @@ namespace Game.Core.Ui
             MailLetter.ChestKind => "mail.chest.title",
             MailLetter.TournamentKind => "mail.tournament.title",
             MailLetter.FairKind => "mail.fair.title",
+            MailLetter.CouponKind => "mail.coupon.title",
             _ => "mail.title"
         });
 
@@ -47,6 +76,7 @@ namespace Game.Core.Ui
             MailLetter.ChestKind => Texts.Format("mail.chest.body", ChestName(letter.Title, chests)),
             MailLetter.TournamentKind => Texts.Format("mail.tournament.body", TournamentView.FormatName(tournaments, letter.Title), letter.Place, letter.Of, letter.Depth),
             MailLetter.FairKind => Texts.Format("mail.fair.body", ContestName(letter.Title, fair), letter.Place, letter.Of, letter.Depth),
+            MailLetter.CouponKind => Texts.Format("mail.coupon.body", letter.Title),
             _ => string.Empty
         };
 

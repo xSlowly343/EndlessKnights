@@ -16,14 +16,68 @@ namespace Game.Core.Ui
 
         private static readonly NumberFormat[] Formats = { NumberFormat.Letters, NumberFormat.Scientific, NumberFormat.Engineering, NumberFormat.Full };
 
-        private static readonly SettingId[][] Tabs =
+        public const int SliderSteps = 20;
+        public const int LookTab = 4;
+
+        private static readonly SettingGroup[][] TabGroups =
         {
-            new[] { SettingId.Language, SettingId.AlwaysOnTop, SettingId.ResetPosition, SettingId.FrameRate, SettingId.NumberFormat, SettingId.Decimals, SettingId.HeroStrikeOpacity, SettingId.AllyStrikeOpacity, SettingId.CompanionStrip, SettingId.InputConsent, SettingId.WhatsNew },
-            new[] { SettingId.MasterVolume, SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume },
-            new[] { SettingId.HeroCloak, SettingId.HeroEyes, SettingId.HeroStrike },
+            new[]
+            {
+                new SettingGroup("numbers", new[] { SettingId.Language, SettingId.NumberFormat, SettingId.Decimals }),
+                new SettingGroup("strikes", new[] { SettingId.HeroStrikeOpacity, SettingId.AllyStrikeOpacity }),
+                new SettingGroup("build", new[] { SettingId.BuildCopy, SettingId.BuildPaste }),
+            },
+            new[]
+            {
+                new SettingGroup("window", new[] { SettingId.AlwaysOnTop, SettingId.ResetPosition }),
+                new SettingGroup("hiding", new[] { SettingId.AutoHideFullscreen, SettingId.HideHotKey }),
+                new SettingGroup("picture", new[] { SettingId.FrameRate, SettingId.CompanionStrip }),
+            },
+            new[]
+            {
+                new SettingGroup("volume", new[] { SettingId.MasterVolume }),
+                new SettingGroup("volumeKinds", new[] { SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume }),
+            },
+            new[]
+            {
+                new SettingGroup("about", new[] { SettingId.WhatsNew, SettingId.InputConsent, SettingId.Coupon }),
+            },
+            new[]
+            {
+                new SettingGroup("look", new[] { SettingId.HeroCloak, SettingId.HeroEyes, SettingId.HeroStrike }),
+            },
         };
 
-        public static int TabCount => Tabs.Length;
+        private static readonly SettingId[][] Tabs = Flatten(TabGroups);
+        private static readonly GameSettings Defaults = new GameSettings();
+
+        public static int TabCount => LookTab;
+
+        public static int MaxGroups
+        {
+            get
+            {
+                var max = 0;
+                foreach (var tab in TabGroups)
+                    max = System.Math.Max(max, tab.Length);
+                return max;
+            }
+        }
+
+        public static IReadOnlyList<SettingGroup> Groups(int tab) => TabGroups[System.Math.Clamp(tab, 0, TabGroups.Length - 1)];
+
+        private static SettingId[][] Flatten(SettingGroup[][] tabs)
+        {
+            var flat = new SettingId[tabs.Length][];
+            for (var i = 0; i < tabs.Length; i++)
+            {
+                var rows = new List<SettingId>();
+                foreach (var group in tabs[i])
+                    rows.AddRange(group.Rows);
+                flat[i] = rows.ToArray();
+            }
+            return flat;
+        }
 
         public static HeroLookChooser? Looks { get; private set; }
 
@@ -53,20 +107,183 @@ namespace Game.Core.Ui
         public static SettingKind KindOf(SettingId id) => id switch
         {
             SettingId.Paused or SettingId.AlwaysOnTop or SettingId.ClickThrough or SettingId.CountKeys or SettingId.CountMouseMovement
-                or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug => SettingKind.Toggle,
-            SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew => SettingKind.Action,
+                or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug or SettingId.AutoHideFullscreen or SettingId.HideHotKey => SettingKind.Toggle,
+            SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew or SettingId.Coupon or SettingId.BuildCopy or SettingId.BuildPaste => SettingKind.Action,
+            SettingId.Language or SettingId.FrameRate or SettingId.NumberFormat or SettingId.CompanionStrip => SettingKind.Segments,
+            SettingId.MasterVolume or SettingId.MusicVolume or SettingId.HitVolume or SettingId.SkillVolume or SettingId.InterfaceVolume
+                or SettingId.NotificationVolume or SettingId.HeroStrikeOpacity or SettingId.AllyStrikeOpacity => SettingKind.Slider,
             _ => SettingKind.Choice
         };
 
+        public static string Hint(SettingId id) => Texts.Get("settings.hint." + Key(id));
+
+        public static CouponEntry CouponCode { get; } = new CouponEntry();
+
+        public static string HintLine(SettingId id, GameSettings settings)
+        {
+            if (id == SettingId.Coupon && CouponCode.Length > 0)
+                return Texts.Format("settings.couponTyped", CouponCode.Display);
+            var preview = Preview(id, settings);
+            return preview.Length > 0 ? Texts.Format("settings.preview", preview) : Hint(id);
+        }
+
+        public static double PreviewAlpha(SettingId id, GameSettings settings) =>
+            id == SettingId.HeroStrikeOpacity || id == SettingId.AllyStrikeOpacity ? VolumeOf(id, settings) : -1;
+
+        public static string IconKey(SettingId id) => Key(id);
+
+        public static bool AnyChanged(int tab, GameSettings settings)
+        {
+            if (!CanReset(tab))
+                return false;
+            foreach (var id in Rows(tab))
+                if (!IsDefault(id, settings))
+                    return true;
+            return false;
+        }
+
+        public static int OptionCount(SettingId id) => id switch
+        {
+            SettingId.Language => Languages.Count,
+            SettingId.FrameRate => FrameRates.Count,
+            SettingId.NumberFormat => Formats.Length,
+            SettingId.CompanionStrip => SettingsCodec.CompanionStripModes.Length,
+            _ => 0
+        };
+
+        public static string OptionLabel(SettingId id, int option) => id switch
+        {
+            SettingId.Language => Texts.Get("settings.language.short." + Languages[option]),
+            SettingId.FrameRate => FrameRates[option].ToString(System.Globalization.CultureInfo.InvariantCulture),
+            SettingId.NumberFormat => Texts.Get("settings.format.short." + FormatKey(Formats[option])),
+            SettingId.CompanionStrip => Texts.Get("settings.companionStrip." + SettingsCodec.CompanionStripModes[option]),
+            _ => string.Empty
+        };
+
+        public static int Selected(SettingId id, GameSettings settings) => id switch
+        {
+            SettingId.Language => IndexOf(Languages, settings.Language),
+            SettingId.FrameRate => IndexOf(FrameRates, settings.FrameRate),
+            SettingId.NumberFormat => System.Array.IndexOf(Formats, settings.NumberFormat.Format),
+            SettingId.CompanionStrip => IndexOf(SettingsCodec.CompanionStripModes, settings.CompanionStrip),
+            _ => -1
+        };
+
+        public static bool Select(SettingId id, GameSettings settings, int option)
+        {
+            if (option < 0 || option >= OptionCount(id) || option == Selected(id, settings))
+                return false;
+            switch (id)
+            {
+                case SettingId.Language:
+                    settings.Language = Languages[option];
+                    return true;
+                case SettingId.FrameRate:
+                    settings.FrameRate = FrameRates[option];
+                    return true;
+                case SettingId.NumberFormat:
+                    var number = settings.NumberFormat;
+                    settings.NumberFormat = new NumberFormatSettings(Formats[option], number.Decimals, number.ThousandsSeparator, number.DecimalSeparator);
+                    return true;
+                case SettingId.CompanionStrip:
+                    settings.CompanionStrip = SettingsCodec.CompanionStripModes[option];
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        public static double Fraction(SettingId id, GameSettings settings) => KindOf(id) == SettingKind.Slider ? VolumeOf(id, settings) : 0;
+
+        public static bool SetFraction(SettingId id, GameSettings settings, double fraction)
+        {
+            if (KindOf(id) != SettingKind.Slider)
+                return false;
+            var snapped = System.Math.Round(System.Math.Clamp(fraction, 0, 1) * SliderSteps, System.MidpointRounding.AwayFromZero) / SliderSteps;
+            return SetVolume(id, settings, snapped);
+        }
+
+        public static string Preview(SettingId id, GameSettings settings) => id switch
+        {
+            SettingId.NumberFormat or SettingId.Decimals => NumberFormatter.Format(PreviewNumber, settings.NumberFormat),
+            _ => string.Empty
+        };
+
+        public static bool IsDefault(SettingId id, GameSettings settings) => KindOf(id) switch
+        {
+            SettingKind.Toggle => IsOn(id, settings) == IsOn(id, Defaults),
+            SettingKind.Action => true,
+            SettingKind.Slider => System.Math.Abs(VolumeOf(id, settings) - VolumeOf(id, Defaults)) < 1e-9,
+            SettingKind.Segments => Selected(id, settings) == Selected(id, Defaults),
+            _ => id != SettingId.Decimals || settings.NumberFormat.Decimals == Defaults.NumberFormat.Decimals
+        };
+
+        public static bool CanReset(int tab) => tab >= 0 && tab < LookTab && tab != AboutTab;
+
+        public static void ResetTab(int tab, GameSettings settings, List<SettingId> changed)
+        {
+            if (!CanReset(tab))
+                return;
+            foreach (var id in Rows(tab))
+            {
+                if (IsDefault(id, settings))
+                    continue;
+                switch (KindOf(id))
+                {
+                    case SettingKind.Toggle:
+                        Change(id, settings, 1);
+                        break;
+                    case SettingKind.Slider:
+                        SetVolume(id, settings, VolumeOf(id, Defaults));
+                        break;
+                    case SettingKind.Segments:
+                        Select(id, settings, Selected(id, Defaults));
+                        break;
+                    default:
+                        var number = settings.NumberFormat;
+                        settings.NumberFormat = new NumberFormatSettings(number.Format, Defaults.NumberFormat.Decimals, number.ThousandsSeparator, number.DecimalSeparator);
+                        break;
+                }
+                changed.Add(id);
+            }
+        }
+
+        public static string ResetLabel => Texts.Get("settings.resetTab");
+
+        public static string GroupTitle(SettingGroup group) => Texts.Get("settings.group." + group.Key);
+
+        public static string Credits => Texts.Get("settings.credits");
+
+        public const int AboutTab = 3;
+
+        private static readonly BigNumber PreviewNumber = BigNumber.FromDouble(1234567.891);
+
+        private static int IndexOf<T>(IReadOnlyList<T> options, T value)
+        {
+            for (var i = 0; i < options.Count; i++)
+                if (EqualityComparer<T>.Default.Equals(options[i], value))
+                    return i;
+            return -1;
+        }
+
         public static string Label(SettingId id) => Texts.Get("settings." + Key(id));
 
-        public static string ActionLabel(SettingId id) => Texts.Get(id == SettingId.ResetPosition ? "settings.reset" : "settings.open");
+        public static string ActionLabel(SettingId id) => Texts.Get(id switch
+        {
+            SettingId.ResetPosition => "settings.reset",
+            SettingId.Coupon => CouponCode.Length > 0 ? "settings.apply" : "settings.paste",
+            SettingId.BuildPaste => "settings.paste",
+            SettingId.BuildCopy => "settings.copy",
+            _ => "settings.open"
+        });
 
         public static bool IsOn(SettingId id, GameSettings settings) => id switch
         {
             SettingId.Paused => settings.Paused,
             SettingId.AlwaysOnTop => settings.AlwaysOnTop,
             SettingId.ClickThrough => settings.ClickThrough,
+            SettingId.AutoHideFullscreen => settings.AutoHideFullscreen,
+            SettingId.HideHotKey => settings.HideHotKey,
             SettingId.CountKeys => settings.CountKeys,
             SettingId.CountMouseMovement => settings.CountMouseMovement,
             SettingId.CountClicks => settings.CountClicks,
@@ -100,6 +317,12 @@ namespace Game.Core.Ui
                     return true;
                 case SettingId.ClickThrough:
                     settings.ClickThrough = !settings.ClickThrough;
+                    return true;
+                case SettingId.AutoHideFullscreen:
+                    settings.AutoHideFullscreen = !settings.AutoHideFullscreen;
+                    return true;
+                case SettingId.HideHotKey:
+                    settings.HideHotKey = !settings.HideHotKey;
                     return true;
                 case SettingId.ResetPosition:
                     settings.StripOffset = 0;
@@ -135,6 +358,9 @@ namespace Game.Core.Ui
                     return true;
                 case SettingId.InputConsent:
                 case SettingId.WhatsNew:
+                case SettingId.Coupon:
+                case SettingId.BuildCopy:
+                case SettingId.BuildPaste:
                     return true;
                 case SettingId.HeroCloak:
                 case SettingId.HeroEyes:
@@ -147,9 +373,9 @@ namespace Game.Core.Ui
 
         public static string Note(int tab) => tab switch
         {
-            0 => Texts.Get("settings.credits"),
-            1 => Texts.Get("settings.soundNote"),
-            2 => Texts.Get("settings.lookNote"),
+            2 => Texts.Get("settings.soundNote"),
+            AboutTab => Texts.Get("settings.credits"),
+            LookTab => Texts.Get("settings.lookNote"),
             _ => string.Empty
         };
 
@@ -182,7 +408,12 @@ namespace Game.Core.Ui
             var before = VolumeOf(id, settings);
             var steps = (int)System.Math.Round(before * VolumeSteps);
             var after = System.Math.Clamp(steps + step, 0, VolumeSteps) / (double)VolumeSteps;
-            if (System.Math.Abs(after - before) < 1e-9)
+            return SetVolume(id, settings, after);
+        }
+
+        private static bool SetVolume(SettingId id, GameSettings settings, double after)
+        {
+            if (System.Math.Abs(after - VolumeOf(id, settings)) < 1e-9)
                 return false;
             switch (id)
             {

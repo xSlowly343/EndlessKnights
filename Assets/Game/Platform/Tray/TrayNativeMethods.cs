@@ -21,6 +21,19 @@ namespace Game.Platform.Windows.Tray
         public const uint TpmRightButton = 0x0002;
         public const uint TpmBottomAlign = 0x0020;
         public const long WsPopup = 0x80000000L;
+        public const uint WmHotKey = 0x0312;
+        public const uint ModAlt = 0x0001;
+        public const uint ModControl = 0x0002;
+        public const uint ModNoRepeat = 0x4000;
+        public const uint KeyH = 0x48;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool RegisterHotKey(IntPtr window, int id, uint modifiers, uint virtualKey);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool UnregisterHotKey(IntPtr window, int id);
 
         public delegate IntPtr WindowProcedure(IntPtr window, uint message, IntPtr wParam, IntPtr lParam);
 
