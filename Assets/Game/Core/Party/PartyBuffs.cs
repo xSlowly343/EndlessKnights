@@ -309,7 +309,11 @@ namespace Game.Core.Party
             }
         }
 
-        private bool Strongest(int slot, AllyAura aura)
+        public const int NoAlly = -1;
+
+        public double Receiving => PartyRole.Receiving(_hero);
+
+        public int StrongerAlly(int slot, AllyAura aura)
         {
             for (var other = 0; other < _allies.Length; other++)
             {
@@ -321,11 +325,13 @@ namespace Game.Core.Party
                     if (!auras[i].Active || auras[i].Gem!.NetId != aura.Gem!.NetId)
                         continue;
                     if (auras[i].Strength > aura.Strength || (auras[i].Strength == aura.Strength && other < slot))
-                        return false;
+                        return other;
                 }
             }
-            return true;
+            return NoAlly;
         }
+
+        private bool Strongest(int slot, AllyAura aura) => StrongerAlly(slot, aura) == NoAlly;
 
         private double OwnStrength(GemDef gem)
         {

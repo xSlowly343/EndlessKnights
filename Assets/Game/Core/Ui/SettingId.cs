@@ -33,6 +33,7 @@ namespace Game.Core.Ui
         BuildCopy,
         BuildPaste,
         AutoHideFullscreen,
-        HideHotKey
+        HideHotKey,
+        AuraShow
     }
 }

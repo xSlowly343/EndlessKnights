@@ -24,7 +24,7 @@ namespace Game.Core.Ui
             new[]
             {
                 new SettingGroup("numbers", new[] { SettingId.Language, SettingId.NumberFormat, SettingId.Decimals }),
-                new SettingGroup("strikes", new[] { SettingId.HeroStrikeOpacity, SettingId.AllyStrikeOpacity }),
+                new SettingGroup("strikes", new[] { SettingId.HeroStrikeOpacity, SettingId.AllyStrikeOpacity, SettingId.AuraShow }),
                 new SettingGroup("build", new[] { SettingId.BuildCopy, SettingId.BuildPaste }),
             },
             new[]
@@ -109,7 +109,7 @@ namespace Game.Core.Ui
             SettingId.Paused or SettingId.AlwaysOnTop or SettingId.ClickThrough or SettingId.CountKeys or SettingId.CountMouseMovement
                 or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug or SettingId.AutoHideFullscreen or SettingId.HideHotKey => SettingKind.Toggle,
             SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew or SettingId.Coupon or SettingId.BuildCopy or SettingId.BuildPaste => SettingKind.Action,
-            SettingId.Language or SettingId.FrameRate or SettingId.NumberFormat or SettingId.CompanionStrip => SettingKind.Segments,
+            SettingId.Language or SettingId.FrameRate or SettingId.NumberFormat or SettingId.CompanionStrip or SettingId.AuraShow => SettingKind.Segments,
             SettingId.MasterVolume or SettingId.MusicVolume or SettingId.HitVolume or SettingId.SkillVolume or SettingId.InterfaceVolume
                 or SettingId.NotificationVolume or SettingId.HeroStrikeOpacity or SettingId.AllyStrikeOpacity => SettingKind.Slider,
             _ => SettingKind.Choice
@@ -148,6 +148,7 @@ namespace Game.Core.Ui
             SettingId.FrameRate => FrameRates.Count,
             SettingId.NumberFormat => Formats.Length,
             SettingId.CompanionStrip => SettingsCodec.CompanionStripModes.Length,
+            SettingId.AuraShow => SettingsCodec.AuraShowModes.Length,
             _ => 0
         };
 
@@ -157,6 +158,7 @@ namespace Game.Core.Ui
             SettingId.FrameRate => FrameRates[option].ToString(System.Globalization.CultureInfo.InvariantCulture),
             SettingId.NumberFormat => Texts.Get("settings.format.short." + FormatKey(Formats[option])),
             SettingId.CompanionStrip => Texts.Get("settings.companionStrip." + SettingsCodec.CompanionStripModes[option]),
+            SettingId.AuraShow => Texts.Get("settings.auraShow." + SettingsCodec.AuraShowModes[option]),
             _ => string.Empty
         };
 
@@ -166,6 +168,7 @@ namespace Game.Core.Ui
             SettingId.FrameRate => IndexOf(FrameRates, settings.FrameRate),
             SettingId.NumberFormat => System.Array.IndexOf(Formats, settings.NumberFormat.Format),
             SettingId.CompanionStrip => IndexOf(SettingsCodec.CompanionStripModes, settings.CompanionStrip),
+            SettingId.AuraShow => IndexOf(SettingsCodec.AuraShowModes, settings.AuraShow),
             _ => -1
         };
 
@@ -187,6 +190,9 @@ namespace Game.Core.Ui
                     return true;
                 case SettingId.CompanionStrip:
                     settings.CompanionStrip = SettingsCodec.CompanionStripModes[option];
+                    return true;
+                case SettingId.AuraShow:
+                    settings.AuraShow = SettingsCodec.AuraShowModes[option];
                     return true;
                 default:
                     return false;
@@ -309,6 +315,9 @@ namespace Game.Core.Ui
                 case SettingId.CompanionStrip:
                     settings.CompanionStrip = Cycle(SettingsCodec.CompanionStripModes, settings.CompanionStrip, step);
                     return true;
+                case SettingId.AuraShow:
+                    settings.AuraShow = Cycle(SettingsCodec.AuraShowModes, settings.AuraShow, step);
+                    return true;
                 case SettingId.Paused:
                     settings.Paused = !settings.Paused;
                     return true;
@@ -396,6 +405,7 @@ namespace Game.Core.Ui
         {
             SettingId.Language => LanguageName(settings.Language),
             SettingId.CompanionStrip => Texts.Get("settings.companionStrip." + settings.CompanionStrip),
+            SettingId.AuraShow => Texts.Get("settings.auraShow." + settings.AuraShow),
             SettingId.FrameRate => Texts.Format("settings.fps", settings.FrameRate),
             SettingId.NumberFormat => Texts.Get("settings.format." + FormatKey(settings.NumberFormat.Format)),
             SettingId.Decimals => settings.NumberFormat.Decimals.ToString(System.Globalization.CultureInfo.InvariantCulture),
