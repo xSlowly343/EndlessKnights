@@ -27,7 +27,7 @@ namespace Game.Core.Tests.Content
         {
             var gems = GemCatalog.Load(RealFile());
 
-            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(106));
+            Assert.That(gems.All.Count(gem => gem.Type == SkillType.Aura), Is.EqualTo(82));
             Assert.That(gems.All.Count(gem => gem.Type == SkillType.Support), Is.EqualTo(85));
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Aura && !gem.Locked).Select(gem => gem.Skill!.Effect), Is.All.InstanceOf<AuraEffect>());
             Assert.That(gems.All.Where(gem => gem.Type == SkillType.Active).Select(gem => gem.Skill!.Effect), Is.All.Not.InstanceOf<AuraEffect>());
@@ -171,14 +171,14 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void TheRosterNamesClassesWithoutTwelveSkillsAndSixAuras()
+        public void TheRosterNamesClassesWithoutFourFamiliesAndFourAuras()
         {
             var gems = GemCatalog.Load(RealFile());
 
             var problems = SkillRoster.Problems(gems, TestWorld.Real.Weapons.Types.Select(type => type.Id).Append("nothing"));
 
-            Assert.That(problems.Where(problem => !problem.StartsWith("nothing")), Is.Empty, "every class has twelve skills and six auras");
-            Assert.That(problems, Has.Member("nothing: 0 active skills, expected 12"));
+            Assert.That(problems.Where(problem => !problem.StartsWith("nothing")), Is.Empty, "every class has four families of three forms and four auras");
+            Assert.That(problems, Has.Member("nothing: 0 skill families, expected 4"));
             Assert.That(problems, Has.Member("nothing: 0 auras, expected 4"));
         }
 
@@ -246,15 +246,15 @@ namespace Game.Core.Tests.Content
         }
 
         [Test]
-        public void TheGameDoesNotLoadAClassWithoutTwelveSkills()
+        public void TheGameDoesNotLoadAClassWithoutFourAuras()
         {
             var error = Assert.Throws<ContentException>(() => GameData.Load(name =>
                 name == GemCatalog.FileName
-                    ? TestData.ReadGameDataFile(name).Replace("\r\n", "\n").Replace("\"id\": \"golemancer_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"seal_ring\"", "\"id\": \"golemancer_auto_3\",\n      \"kind\": \"active\",\n      \"weapon\": \"rune_daggers\"")
+                    ? TestData.ReadGameDataFile(name).Replace("\r\n", "\n").Replace("\"id\": \"golemancer_aura_2\",\n      \"kind\": \"aura\",\n      \"weapon\": \"seal_ring\"", "\"id\": \"golemancer_aura_2\",\n      \"kind\": \"aura\",\n      \"weapon\": \"rune_daggers\"")
                     : TestData.ReadGameDataFile(name)));
 
-            Assert.That(error!.Message, Does.Contain("seal_ring: 11 active skills, expected 12"));
-            Assert.That(error.Message, Does.Contain("rune_daggers: 13 active skills, expected 12"));
+            Assert.That(error!.Message, Does.Contain("seal_ring: 3 auras, expected 4"));
+            Assert.That(error.Message, Does.Contain("rune_daggers: 5 auras, expected 4"));
         }
     }
 }

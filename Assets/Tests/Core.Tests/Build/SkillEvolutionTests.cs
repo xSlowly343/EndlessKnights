@@ -66,6 +66,49 @@ namespace Game.Core.Tests.Build
                 _ => throw new System.InvalidOperationException("a form deals damage by a strike or a flurry")
             };
 
+        private static readonly string[] Fed =
+        {
+            "bait", "dream", "nets", "dozeSeconds", "light", "oil", "fireflies", "knots", "curse", "wind", "reagents", "layers", "corrode",
+            "veinHits", "luck", "nuggets", "veinGold", "souls", "cannons", "sailors", "moths", "cards", "arcana", "seeds", "venom", "sealHits",
+            "golemSeconds", "cutCooldowns"
+        };
+
+        [TestCase("dreamcatcher")]
+        [TestCase("lanternbearer")]
+        [TestCase("whisperer")]
+        [TestCase("clockwright")]
+        [TestCase("alchemist")]
+        [TestCase("dowser")]
+        [TestCase("soulbinder")]
+        [TestCase("ghostcaptain")]
+        [TestCase("mothcaller")]
+        [TestCase("cartomancer")]
+        [TestCase("herbwitch")]
+        [TestCase("golemancer")]
+        public void AFormKeepsWhatThePreviousFormFeeds(string character)
+        {
+            var gems = System.Text.Json.JsonDocument.Parse(TestData.ReadGameDataFile(GemCatalog.FileName)).RootElement.GetProperty("gems");
+            var families = gems.EnumerateArray().Where(gem => gem.GetProperty("id").GetString()!.StartsWith(character + "_", System.StringComparison.Ordinal) && gem.TryGetProperty("evolutions", out _)).ToList();
+            Assert.That(families, Has.Count.EqualTo(SkillRoster.FamiliesPerClass));
+            foreach (var family in families)
+            {
+                var before = family.GetProperty("effect");
+                foreach (var form in family.GetProperty("evolutions").EnumerateArray())
+                {
+                    var after = form.GetProperty("effect");
+                    foreach (var field in Fed.Where(field => before.TryGetProperty(field, out _)))
+                    {
+                        Assert.That(after.TryGetProperty(field, out var kept), form.GetProperty("id").GetString() + " keeps " + field);
+                        Assert.That(Amount(kept), Is.GreaterThanOrEqualTo(Amount(before.GetProperty(field))), form.GetProperty("id").GetString() + " " + field);
+                    }
+                    before = after;
+                }
+            }
+        }
+
+        private static double Amount(System.Text.Json.JsonElement value) =>
+            value.ValueKind == System.Text.Json.JsonValueKind.True ? 1 : value.GetDouble();
+
         [Test]
         public void TheSkillInTheSlotEvolvesWhenTheHeroReachesTheLevelOfTheNextForm()
         {
@@ -200,32 +243,40 @@ namespace Game.Core.Tests.Build
         }
 
         [Test]
-        public void ARankedSkillKeepsItsLevelThroughAClassWithFamilies()
+        public void EveryClassSkillPairsWithTheSameFormOfEveryOtherClass()
+        {
+            var weapons = TestWorld.Data.Weapons;
+            foreach (var from in weapons.Types)
+            {
+                var skills = TestWorld.Data.Gems.All.Where(gem => gem.Skill?.Weapon == from.Id && gem.Ascendancy == null).ToList();
+                foreach (var to in weapons.Types.Where(type => type != from))
+                {
+                    foreach (var gem in skills)
+                    {
+                        var pair = weapons.Reforge.Gem(gem, from, to);
+                        Assert.That(pair, Is.Not.Null, gem.Id + " > " + to.Id);
+                        Assert.That(pair!.Type, Is.EqualTo(gem.Type), gem.Id + " > " + to.Id);
+                        Assert.That(pair.Root.Forms.ToList().IndexOf(pair), Is.EqualTo(gem.Root.Forms.ToList().IndexOf(gem)), gem.Id + " > " + pair.Id);
+                        Assert.That(weapons.Reforge.Gem(gem.Root, from, to), Is.SameAs(pair.Root), gem.Id + " > " + pair.Id);
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void ChangingTheClassMovesTheLevelOfAFamilyToOneFamily()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Golemancer, HeroLevel = 30 });
             loop.Book.GrantStartingGems();
             loop.State.ProgressOf(Gem("golemancer_hit_2")).Level = 9;
 
-            Assert.That(loop.ChangeClassFree(HeroClass.Duelist), Is.EqualTo(ClassChangeResult.Changed));
-            Assert.That(loop.State.LevelOf(Gem("duelist_hit_1")), Is.EqualTo(9));
+            Assert.That(loop.ChangeClassFree(HeroClass.Dreamcatcher), Is.EqualTo(ClassChangeResult.Changed));
+
+            Assert.That(loop.State.LevelOf(Gem("dreamcatcher_hit_1")), Is.EqualTo(9));
+            Assert.That(loop.State.GemProgress.Count(pair => pair.Value.Level == 9), Is.EqualTo(1));
 
             Assert.That(loop.ChangeClassPaid(HeroClass.Golemancer), Is.EqualTo(ClassChangeResult.Changed));
-            Assert.That(loop.State.LevelOf(Gem("golemancer_hit_2")), Is.EqualTo(9));
-        }
-
-        [Test]
-        public void AnAuraWithoutAPairInTheNewClassLeavesTheBook()
-        {
-            var weapons = TestWorld.Data.Weapons;
-            var from = weapons.TypeOf(HeroClass.Golemancer);
-            var to = weapons.TypeOf(HeroClass.Runedancer);
-            var unpaired = TestWorld.Data.Gems.All.First(gem => gem.Type == SkillType.Aura && gem.Skill!.Weapon == from.Id && weapons.Reforge.Gem(gem, from, to) == null);
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Golemancer, HeroLevel = 75 });
-            Assert.That(loop.Book.Equip(unpaired), Is.EqualTo(BookResult.Done));
-
-            Assert.That(loop.ChangeClassFree(HeroClass.Runedancer), Is.EqualTo(ClassChangeResult.Changed));
-
-            Assert.That(loop.State.Skills.Any(slot => slot.Skill.Skill!.Weapon == from.Id), Is.False);
+            Assert.That(loop.State.LevelOf(Gem("golemancer_hit_3")), Is.EqualTo(9));
         }
 
         [Test]

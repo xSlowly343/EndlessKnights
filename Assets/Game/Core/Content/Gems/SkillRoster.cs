@@ -5,10 +5,10 @@ namespace Game.Core.Content.Gems
 {
     public static class SkillRoster
     {
-        public const int ActivePerClass = 12;
         public const int FamiliesPerClass = 4;
+        public const int FormsPerFamily = 3;
+        public const int ActivePerClass = FamiliesPerClass * FormsPerFamily;
         public const int AurasPerClass = 4;
-        public const int FormerAurasPerClass = 6;
         public const int BranchTiers = SkillBranchTier.Count;
 
         public static List<string> Problems(GemCatalog catalog, IEnumerable<string> weapons)
@@ -16,11 +16,19 @@ namespace Game.Core.Content.Gems
             var problems = new List<string>();
             foreach (var weapon in weapons)
             {
-                var active = Count(catalog, weapon, SkillType.Active);
+                var families = 0;
+                foreach (var gem in catalog.All)
+                {
+                    if (gem.Type != SkillType.Active || gem.Skill?.Weapon != weapon || gem.Ascendancy != null || !ReferenceEquals(gem.Root, gem))
+                        continue;
+                    families++;
+                    if (gem.Forms.Count != FormsPerFamily)
+                        problems.Add($"{gem.Id}: {gem.Forms.Count} forms, expected {FormsPerFamily}");
+                }
                 var auras = Count(catalog, weapon, SkillType.Aura);
-                if (active != ActivePerClass)
-                    problems.Add($"{weapon}: {active} active skills, expected {ActivePerClass}");
-                if (auras != AurasPerClass && auras != FormerAurasPerClass)
+                if (families != FamiliesPerClass)
+                    problems.Add($"{weapon}: {families} skill families, expected {FamiliesPerClass}");
+                if (auras != AurasPerClass)
                     problems.Add($"{weapon}: {auras} auras, expected {AurasPerClass}");
             }
             foreach (var gem in catalog.All)

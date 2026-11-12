@@ -51,8 +51,7 @@ namespace Game.Core.Build
             {
                 if (!gems.TryGet(id, out var gem) || ReferenceEquals(Of(gem), gem))
                     continue;
-                foreach (var form in gem.Forms)
-                    moved.Add(new KeyValuePair<string, GemProgress>(Of(form).ProgressId, progress[id].Copy()));
+                moved.Add(new KeyValuePair<string, GemProgress>(Of(gem).ProgressId, progress[id]));
                 progress.Remove(id);
             }
             foreach (var pair in moved)

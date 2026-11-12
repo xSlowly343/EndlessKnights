@@ -3,6 +3,6 @@
   "duelist": ["duelist_hit_1", "duelist_strong_1", "duelist_queue_1"],
   "windshot": ["windshot_hit_1", "through_stride", "windshot_strong_1"],
   "shardcaller": ["shardcaller_hit_1", "through_stride", "shardcaller_strong_1"],
-  "lanternbearer": ["lanternbearer_hit_1", "lanternbearer_aura_2", "lanternbearer_aura_1"],
-  "whisperer": ["whisperer_hit_1", "whisperer_hit_2", "through_stride"]
+  "lanternbearer": ["lanternbearer_hit_1", "lanternbearer_aura_1", "lanternbearer_aura_3"],
+  "whisperer": ["whisperer_hit_1", "whisperer_queue_1", "through_stride"]
 }

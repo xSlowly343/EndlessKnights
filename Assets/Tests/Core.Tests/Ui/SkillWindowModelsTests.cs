@@ -95,7 +95,7 @@ namespace Game.Core.Tests.Ui
             var generic = Texts.Get("branch.effect");
             var data = System.Text.Json.JsonDocument.Parse(TestData.ReadGameDataFile("skills.json")).RootElement.GetProperty("gems");
             var rules = 0;
-            foreach (var item in data.EnumerateArray().Where(item => item.TryGetProperty("branches", out _)))
+            foreach (var item in data.EnumerateArray().SelectMany(item => item.TryGetProperty("evolutions", out var forms) ? forms.EnumerateArray().Prepend(item) : new[] { item }).Where(item => item.TryGetProperty("branches", out _)))
             {
                 var gem = TestWorld.Real.Gems[item.GetProperty("id").GetString()!];
                 if (gem.Skill?.Effect is not (StrikeEffect or FlurryEffect))

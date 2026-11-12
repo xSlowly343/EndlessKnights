@@ -43,14 +43,13 @@ namespace Game.Core.Tests.Build
             Assert.That(rules.SkillUnlockLevel(SkillTier.Mythic), Is.EqualTo(75));
         }
 
-        [TestCase("golemancer_hit_2", 15)]
         [TestCase("runedancer_strong_1", 30)]
         [TestCase("duelist_strong_1", 30)]
-        [TestCase("golemancer_strong_2", 50)]
-        [TestCase("golemancer_strong_3", 75)]
+        [TestCase("dreamcatcher_strong_1", 30)]
+        [TestCase("golemancer_strong_1", 30)]
         public void ClassSkillOpensAtTheHeroLevelOfItsRank(string id, int level)
         {
-            var heroClass = id.StartsWith("duelist") ? HeroClass.Duelist : id.StartsWith("golemancer") ? HeroClass.Golemancer : HeroClass.Runedancer;
+            var heroClass = System.Enum.Parse<HeroClass>(id.Substring(0, id.IndexOf('_')), true);
             var loop = TestWorld.Loop(state: new GameState { Class = heroClass, HeroLevel = level - 1 });
 
             Assert.That(loop.Book.SkillOpen(Gem(id)), Is.False);
