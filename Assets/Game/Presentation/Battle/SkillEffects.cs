@@ -14,9 +14,11 @@ namespace Game.Presentation.Battle
         private const float WhiteMix = 0.2f;
         private const float GlowPulseSpeed = 4f;
         private const float GlowAlpha = 0.35f;
+        private const float AllyAlpha = 0.5f;
         private const float NameRisePx = 10f;
         private const int WaveSortingOrder = 8;
         private const int CastSortingOrder = 21;
+        private const int AllyCastSortingOrder = 19;
         private const int NameSortingOrder = 26;
         private const string SparkSheet = "spark";
         private const string WaveSheet = "wave";
@@ -37,6 +39,8 @@ namespace Game.Presentation.Battle
         private SpriteRenderer _glow = null!;
         private TextMeshProUGUI _name = null!;
         private Vector2 _namePx;
+        private SheetPlayer _allyCast = null!;
+        private SheetPlayer _allySpark = null!;
         private Color _color = Color.white;
         private float _nameAge = NameSeconds;
         private Color _glowColor;
@@ -57,6 +61,17 @@ namespace Game.Presentation.Battle
         public bool SparkShown => _spark.Playing;
 
         public bool WaveShown => _wave.Playing;
+
+        public void CastAlly(GemDef gem, Vector2 target, ShowSize size)
+        {
+            var tint = Color.Lerp(GemColors.Of(gem.Color), Color.white, WhiteMix);
+            tint.a = AllyAlpha;
+            var ground = new Vector2(target.x, GroundY);
+            if (size == ShowSize.Small)
+                _allySpark.Play(_sparkClip, ground, tint);
+            else
+                _allyCast.Play(_families[(int)SkillShowFamilies.Of(gem)], ground, tint);
+        }
 
         public void Cast(GemDef gem, Vector2 target, ShowSize size = ShowSize.Full)
         {
@@ -92,6 +107,8 @@ namespace Game.Presentation.Battle
             _wave = new SheetPlayer("SkillWave", SheetScale, WaveSortingOrder, transform);
             _cast = new SheetPlayer("SkillCast", SheetScale, CastSortingOrder, transform);
             _spark = new SheetPlayer("SkillSpark", SheetScale, CastSortingOrder, transform);
+            _allyCast = new SheetPlayer("AllySkillCast", SheetScale, AllyCastSortingOrder, transform);
+            _allySpark = new SheetPlayer("AllySkillSpark", SheetScale, AllyCastSortingOrder, transform);
             _glow = ShapeSprites.Create("AuraGlow", ShapeSprites.Circle, Color.clear, HeroCentre, GlowSize, 9, transform);
             var canvas = StripCanvas.Create("SkillName", NameSortingOrder, transform);
             _name = UiElements.Label("Name", canvas, UiTheme.Load().BoldFont, 14f, Color.white, TextAlignmentOptions.Center);

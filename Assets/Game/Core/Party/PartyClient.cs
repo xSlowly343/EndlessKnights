@@ -49,6 +49,9 @@ namespace Game.Core.Party
         private readonly int[] _reactionSerial = new int[PartyRules.MaxSlots];
         private readonly double[] _allyShares = new double[PartyRules.MaxSlots];
         private readonly int[] _allyHits = new int[PartyRules.MaxSlots];
+        private readonly PartyCastMessage[] _allyCasts = new PartyCastMessage[MaxAllyCasts];
+        private int _firstAllyCast;
+        private int _allyCastCount;
         private long _lastSentReactionTick = PartyEncounter.Never;
         private int _contributionKills;
         private const double KeysSeconds = 2;
@@ -79,6 +82,7 @@ namespace Game.Core.Party
         public const int NoReaction = -1;
         private const double MaxAllyShares = 1000;
         private const int MaxAllyHits = 1000;
+        private const int MaxAllyCasts = 8;
         private const double AllyRateBlend = 0.5;
         private const int TraitTimerResendTicks = 10;
         private const double TraitTimerSeconds = 1.5;
@@ -157,6 +161,24 @@ namespace Game.Core.Party
             var hits = _allyHits[slot];
             _allyHits[slot] = 0;
             return hits;
+        }
+
+        public bool TakeAllyCast(out int slot, out GemDef gem)
+        {
+            while (_allyCastCount > 0)
+            {
+                var cast = _allyCasts[_firstAllyCast];
+                _firstAllyCast = (_firstAllyCast + 1) % MaxAllyCasts;
+                _allyCastCount--;
+                if (_loop.Data.Gems.TryGetByNetId(cast.GemNetId, out gem))
+                {
+                    slot = cast.Slot;
+                    return true;
+                }
+            }
+            slot = 0;
+            gem = null!;
+            return false;
         }
 
         public ShownEffect EnemyEffect(int index)
@@ -295,6 +317,8 @@ namespace Game.Core.Party
                 _allyShares[slot] = 0;
                 _allyHits[slot] = 0;
             }
+            _firstAllyCast = 0;
+            _allyCastCount = 0;
             LastBossKill = default;
             _total = 0;
             _sentTotal = 0;
@@ -376,6 +400,10 @@ namespace Game.Core.Party
                 case PartyMessageKind.PartyLook when PartyCodec.TryDecode(_in, length, out PartyLookMessage look):
                     if (InParty && look.Slot < PartyRules.MaxSlots && look.Slot != _ownSlot)
                         _allyLooks[look.Slot] = look.Look;
+                    break;
+                case PartyMessageKind.PartyCast when PartyCodec.TryDecode(_in, length, out PartyCastMessage cast):
+                    if (InParty && cast.Slot < PartyRules.MaxSlots && cast.Slot != _ownSlot)
+                        StoreAllyCast(cast);
                     break;
                 case PartyMessageKind.PartyResource when PartyCodec.TryDecode(_in, length, out PartyResourceMessage resource):
                     if (InParty && resource.Slot != _ownSlot)
@@ -1004,6 +1032,17 @@ namespace Game.Core.Party
             synergy.OwnFighting = _ownSlot < 0 || Roster.Presence(_ownSlot) == PartyPresence.Fighting;
         }
 
+        private void StoreAllyCast(in PartyCastMessage cast)
+        {
+            if (_allyCastCount == MaxAllyCasts)
+            {
+                _firstAllyCast = (_firstAllyCast + 1) % MaxAllyCasts;
+                _allyCastCount--;
+            }
+            _allyCasts[(_firstAllyCast + _allyCastCount) % MaxAllyCasts] = cast;
+            _allyCastCount++;
+        }
+
         private void WatchCasts()
         {
             var events = _loop.Events;
@@ -1018,7 +1057,15 @@ namespace Game.Core.Party
                 if (gameEvent.Kind != GameEventKind.SkillCast || gameEvent.Gem?.Skill == null)
                     continue;
                 ShareCurse(gameEvent.Gem);
+                ShareCast(gameEvent.Gem);
             }
+        }
+
+        private void ShareCast(GemDef gem)
+        {
+            if (gem.Skill?.Effect is AuraEffect || _ownSlot < 0 || Status != PartyLink.Linked)
+                return;
+            SendToHost(PartyCodec.Encode(_out, new PartyCastMessage { GemNetId = gem.NetId }));
         }
 
         private void ShareTraitTimer()
