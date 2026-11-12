@@ -2307,13 +2307,17 @@ namespace Game.Core.Save
                 if (!gems.TryGet(id, out var gem))
                     continue;
                 var item = node.Field(id);
-                var progress = state.ProgressOf(gem);
-                progress.Level = item.Field("level").AsInt(1, gems.Levels.Max);
-                progress.Experience = item.Field("experience").AsNumber(0, 1e15);
+                var progress = new GemProgress
+                {
+                    Level = item.Field("level").AsInt(1, gems.Levels.Max),
+                    Experience = item.Field("experience").AsNumber(0, 1e15)
+                };
                 if (item.HasField("rebirths"))
                     progress.Rebirths = item.Field("rebirths").AsInt(0, 100);
                 if (item.HasField("branches"))
                     ReadBranches(item.Field("branches"), gem, progress);
+                if (!state.GemProgress.TryGetValue(gem.ProgressId, out var kept) || progress.AheadOf(kept))
+                    state.GemProgress[gem.ProgressId] = progress;
             }
         }
 

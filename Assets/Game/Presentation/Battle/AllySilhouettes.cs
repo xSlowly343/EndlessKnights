@@ -23,7 +23,6 @@ namespace Game.Presentation.Battle
         private const float EdgePx = 4f;
         private const float SwingGapSeconds = 0.34f;
         private const float RestingSwingAge = 100f;
-        private const int MaxQueuedSwings = 2;
         private const float FadedAlpha = 0.45f;
         private const int BodySortingOrder = 9;
         private const float StrikeDepth = 0.5f;
@@ -41,7 +40,8 @@ namespace Game.Presentation.Battle
         private readonly HeroStrike[] _strikes = new HeroStrike[StripAllies.MaxShown];
         private readonly HeroSkin[] _skins = new HeroSkin[StripAllies.MaxShown];
         private readonly float[] _swingAge = new float[StripAllies.MaxShown];
-        private readonly int[] _queuedSwings = new int[StripAllies.MaxShown];
+        private readonly AllySlashTurns _turns = new AllySlashTurns(StripAllies.MaxShown);
+        private readonly bool[] _ready = new bool[StripAllies.MaxShown];
         private readonly BigNumber[] _queuedDamage = new BigNumber[StripAllies.MaxShown];
         private readonly BigNumber[] _flyingDamage = new BigNumber[StripAllies.MaxShown];
         private readonly Image[] _marks = new Image[StripAllies.MaxShown];
@@ -91,8 +91,8 @@ namespace Game.Presentation.Battle
             if (index < 0 || index >= _count)
                 return;
             if (hits > 0)
-                _queuedSwings[index] = Mathf.Min(MaxQueuedSwings, _queuedSwings[index] + hits);
-            if (_queuedSwings[index] > 0)
+                _turns.Hit(index, hits);
+            if (_turns.Pending(index) > 0)
                 _queuedDamage[index] += damage;
             else if (_strikes[index].Flying > 0)
                 _flyingDamage[index] += damage;
@@ -106,6 +106,12 @@ namespace Game.Presentation.Battle
         {
             for (var i = 0; i < _strikes.Length; i++)
                 _strikes[i].UseOpacity(opacity);
+        }
+
+        public void UseStrikeDim(float dim)
+        {
+            for (var i = 0; i < _strikes.Length; i++)
+                _strikes[i].UseDim(dim);
         }
 
         public string ReactionShown(int index) => _bubbles[index].gameObject.activeSelf ? _bubbleTexts[index].text : string.Empty;
@@ -152,8 +158,12 @@ namespace Game.Presentation.Battle
             {
                 if (_swingAge[i] < RestingSwingAge)
                     _swingAge[i] += delta;
-                if (_queuedSwings[i] > 0 && _swingAge[i] >= SwingGapSeconds)
-                    Swing(i);
+                _ready[i] = _swingAge[i] >= SwingGapSeconds;
+            }
+            if (_turns.TryTake(time, _ready, out var turn, out var tier))
+                Swing(turn, tier);
+            for (var i = 0; i < StripAllies.MaxShown; i++)
+            {
                 if (i < _count)
                 {
                     var sprite = _swingAge[i] < HeroModel.Attack.Duration ? _skins[i].AttackAt(time).SpriteAt(_swingAge[i]) : _skins[i].IdleAt(time).SpriteAt(time + _phase[i]);
@@ -172,14 +182,12 @@ namespace Game.Presentation.Battle
             }
         }
 
-        private void Swing(int index)
+        private void Swing(int index, int tier)
         {
-            var amount = _queuedSwings[index] == 1 ? _queuedDamage[index] : _queuedDamage[index] * (1.0 / _queuedSwings[index]);
-            _queuedSwings[index]--;
-            _queuedDamage[index] -= amount;
-            _flyingDamage[index] += amount;
+            _flyingDamage[index] += _queuedDamage[index];
+            _queuedDamage[index] = BigNumber.Zero;
             _swingAge[index] = HeroModel.StrikeSeconds;
-            _strikes[index].Launch();
+            _strikes[index].Launch(tier);
         }
 
         private void Land(int index, BigNumber amount)
@@ -191,7 +199,7 @@ namespace Game.Presentation.Battle
         private void Rest(int index)
         {
             _swingAge[index] = RestingSwingAge;
-            _queuedSwings[index] = 0;
+            _turns.Clear(index);
             _queuedDamage[index] = BigNumber.Zero;
             _flyingDamage[index] = BigNumber.Zero;
         }

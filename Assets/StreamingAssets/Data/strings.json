@@ -1709,6 +1709,7 @@
     "stat.supportLevel": { "ru": "к уровню поддержек", "en": "to the level of supports" },
     "stat.extraAuraSlots": { "ru": "слот ауры", "en": "aura slot" },
     "branch.opens": { "ru": "с {0}-го уровня скилла", "en": "from skill level {0}" },
+    "skill.evolves": { "ru": "на {0}-м уровне героя станет «{1}»", "en": "becomes {1} at hero level {0}" },
     "branch.free": { "ru": "бесплатно", "en": "free" },
     "branch.cost": { "ru": "смена: {0} золота", "en": "change: {0} gold" },
     "branch.damage": { "ru": "урон ×{0}", "en": "damage ×{0}" },

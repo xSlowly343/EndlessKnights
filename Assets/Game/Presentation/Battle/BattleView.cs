@@ -60,6 +60,7 @@ namespace Game.Presentation.Battle
         private const int FighterSortingOrder = 10;
         private const int StrikeSortingOrder = 11;
         private const float StrikeDepthIntoEnemy = 0.25f;
+        private const float SkillStrikeDim = 0.5f;
 
         private static readonly Vector2 HeroFeet = StripSpace.AtPx(85f, 150f);
         private static readonly float EnemyX = StripSpace.Units(416f);
@@ -99,6 +100,8 @@ namespace Game.Presentation.Battle
         private Transform _scene = null!;
         private SpriteRenderer _hero = null!;
         private HeroStrike _strike = null!;
+        private readonly SlashGate _slashes = new SlashGate();
+        private int _strikeTier = 1;
         private HeroSkin _skin = null!;
         private HeroLook _look;
         private bool _struck = true;
@@ -240,16 +243,28 @@ namespace Game.Presentation.Battle
         public void Hit(BigNumber amount, bool crit)
         {
             _flashAge = 0f;
+            _slashes.Hit();
             if (!Attacking || HeroModel.Attack.FrameAt(_attackAge) >= HeroModel.AttackCancelFrame)
-            {
-                _attackAge = HeroModel.StrikeSeconds;
-                _struck = false;
-            }
+                StartSlash();
             if (crit)
                 _critShakeAge = 0f;
             var origin = _enemyScale > EnemySize ? BossNumbersOrigin : NumbersOrigin;
             var spread = new Vector2(Random.Range(-NumbersSpreadX, NumbersSpreadX), Random.Range(0f, NumbersSpreadY));
             _numbers.Show(amount, crit, origin + spread);
+        }
+
+        public void DimStrikes(bool dimmed)
+        {
+            var dim = dimmed ? SkillStrikeDim : 1f;
+            _strike.UseDim(dim);
+            _allies.UseStrikeDim(dim);
+        }
+
+        private void StartSlash()
+        {
+            _strikeTier = Mathf.Max(1, _slashes.Take());
+            _attackAge = HeroModel.StrikeSeconds;
+            _struck = false;
         }
 
         public void ShowAllyHit(BigNumber amount, Color color)
@@ -516,13 +531,15 @@ namespace Game.Presentation.Battle
             _idleAge = Mathf.Repeat(_idleAge + delta, HeroModel.Idle.Duration);
             if (_attackAge < float.MaxValue)
                 _attackAge += delta;
+            if (!Attacking && _slashes.Pending > 0)
+                StartSlash();
             var sprite = Attacking ? _skin.AttackAt(Time.unscaledTime).SpriteAt(_attackAge) : _skin.IdleAt(Time.unscaledTime).SpriteAt(_idleAge);
             if (_hero.sprite != sprite)
                 _hero.sprite = sprite;
             if (!_struck && _attackAge >= HeroModel.StrikeSeconds)
             {
                 _struck = true;
-                _strike.Launch();
+                _strike.Launch(_strikeTier);
             }
             _strike.ShowSlash(_attackAge);
             _strike.Animate(delta, StrikeTarget);

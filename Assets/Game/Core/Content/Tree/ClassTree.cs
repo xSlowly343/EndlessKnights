@@ -130,8 +130,13 @@ namespace Game.Core.Content.Tree
         {
             foreach (var modifier in modifiers)
             {
-                if (modifier.Stat.IsForSkill && !gems.TryGet(modifier.Stat.SkillId, out _))
-                    throw new ContentException(Common ? ClassTreeLoader.CommonFileNameOf(Id) : ClassTreeLoader.FileNameOf(Id), owner, $"unknown skill '{modifier.Stat.SkillId}'");
+                if (!modifier.Stat.IsForSkill)
+                    continue;
+                var file = Common ? ClassTreeLoader.CommonFileNameOf(Id) : ClassTreeLoader.FileNameOf(Id);
+                if (!gems.TryGet(modifier.Stat.SkillId, out var skill))
+                    throw new ContentException(file, owner, $"unknown skill '{modifier.Stat.SkillId}'");
+                if (skill.ProgressId != modifier.Stat.SkillId)
+                    throw new ContentException(file, owner, $"'{modifier.Stat.SkillId}' is an evolution, name its first form '{skill.ProgressId}'");
             }
         }
 

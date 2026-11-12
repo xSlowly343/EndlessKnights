@@ -85,9 +85,9 @@ namespace Game.Core.Sim
             SendFireflies(1);
         }
 
-        public void OnSkillCast(GemDef skill)
+        public void OnSkillCast(GemDef skill, SkillDef? variant = null)
         {
-            if (!On || !(skill.Skill?.Effect is StrikeEffect strike))
+            if (!On || !((variant ?? skill.Skill)?.CastStrike is StrikeEffect strike))
                 return;
             if (strike.LitHit > 0 && Light && S.Light > 0)
                 TraitHit(strike.LitHit * S.Light);

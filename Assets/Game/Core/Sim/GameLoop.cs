@@ -240,6 +240,7 @@ namespace Game.Core.Sim
             _skills.Levels = data.Gems.Levels;
             _gemExperience = new GemExperienceSystem(data.Gems.Levels, state, hero, _skills, Events);
             _skills.RefreshBranches();
+            _book.Evolve();
             _treeLayer = new ModifierLayer(hero);
             _partyBuffs = new PartyBuffs(data.Party.Buffs, state, hero);
             _synergy = new SynergySystem(data.Synergy, state, hero);
@@ -477,6 +478,7 @@ namespace Game.Core.Sim
             RebuildTree();
             SyncPathSkill();
             PutOnSkills(equipped, reforge);
+            _book.Evolve();
             return ClassChangeResult.Changed;
         }
 
@@ -497,6 +499,8 @@ namespace Game.Core.Sim
                 if (skill.Ascendancy != null)
                     continue;
                 var reforged = reforge.Of(skill);
+                if (SkillBook.IsClassSkill(reforged) && !_book.OfHeroClass(reforged) && !_book.OpenedByWeapon(reforged))
+                    continue;
                 var slot = State.Skills[_skills.Equip(reforged, SkillLoadout.Accepts(role, reforged) ? role : (SkillSlotRole?)null)];
                 slot.StartCooldown((int)System.Math.Round(slot.Skill.Skill!.CooldownSeconds * TicksPerSecond));
                 supports.CopyTo(slot.Supports, 0);
@@ -660,7 +664,7 @@ namespace Game.Core.Sim
 
         public BigNumber BranchChangeCost(GemDef skill, int tier)
         {
-            var chosen = State.GemProgress.TryGetValue(skill.Id, out var progress) && tier >= 0 && tier < progress.Branches.Length
+            var chosen = State.GemProgress.TryGetValue(skill.ProgressId, out var progress) && tier >= 0 && tier < progress.Branches.Length
                 ? progress.Branches[tier]
                 : SkillBranches.NoChoice;
             if (chosen == SkillBranches.NoChoice || ClassTreeResetFree || ClassTreeDef is not { } tree)
@@ -1164,6 +1168,7 @@ namespace Game.Core.Sim
             _combat.NotePause(idleTicksBefore, input.HasInput);
             _resource.Tick(input);
             _weapons.ApplyBuiltInSupports(State.Skills);
+            _book.Evolve();
             _book.TrimSockets();
             _skills.Tick(input, idleTicksBefore);
             _skills.CastFromButtons(input);

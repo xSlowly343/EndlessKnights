@@ -127,17 +127,19 @@ namespace Game.Core.Sim.Headless
             AddClassSkills(aura: true, onlyFirst: true);
             foreach (var gem in _loop.State.OwnedGems)
             {
-                if (gem.Kind == GemKind.Skill && Usable(gem) && _loop.Book.FreeCopies(gem) > 0)
+                if (gem.Kind == GemKind.Skill && Usable(gem) && Available(gem))
                     Add(gem);
             }
             AddClassSkills(aura: true, onlyFirst: false);
             _loop.Book.OpenCommonSkills(_loop.Data.Gems.All, _common);
             foreach (var gem in _common)
             {
-                if (Usable(gem) && _loop.Book.FreeCopies(gem) > 0)
+                if (Usable(gem) && Available(gem))
                     Add(gem);
             }
         }
+
+        private bool Available(GemDef skill) => _loop.Book.FreeCopies(skill) > 0 || _loop.Book.RowOf(skill) != SkillLoadout.NoSlot;
 
         private void AddClassSkills(bool aura, bool onlyFirst)
         {

@@ -51,6 +51,7 @@ namespace Game.Core.Sim.Headless
                 if (placed != BookResult.Done)
                     throw new System.InvalidOperationException($"{support.Id} cannot be socketed: {placed}");
             }
+            loop.State.HeroLevel = loop.Book.UnlockLevel(host);
             var damage = BigNumber.Zero;
             var ticks = (long)System.Math.Round(seconds * GameLoop.TicksPerSecond);
             for (var tick = 0L; tick < ticks; tick++)
