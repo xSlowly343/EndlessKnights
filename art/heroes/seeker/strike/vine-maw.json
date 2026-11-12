@@ -1,0 +1,655 @@
+{
+ "frames": [
+  {
+   "filename": "vine-maw 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 1",
+   "frame": {
+    "x": 116,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 2",
+   "frame": {
+    "x": 232,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 3",
+   "frame": {
+    "x": 348,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 4",
+   "frame": {
+    "x": 464,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 5",
+   "frame": {
+    "x": 0,
+    "y": 68,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 6",
+   "frame": {
+    "x": 116,
+    "y": 68,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 7",
+   "frame": {
+    "x": 232,
+    "y": 68,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 8",
+   "frame": {
+    "x": 348,
+    "y": 68,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 9",
+   "frame": {
+    "x": 464,
+    "y": 68,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 10",
+   "frame": {
+    "x": 0,
+    "y": 136,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 11",
+   "frame": {
+    "x": 116,
+    "y": 136,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 12",
+   "frame": {
+    "x": 232,
+    "y": 136,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 13",
+   "frame": {
+    "x": 348,
+    "y": 136,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 14",
+   "frame": {
+    "x": 464,
+    "y": 136,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 15",
+   "frame": {
+    "x": 0,
+    "y": 204,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 16",
+   "frame": {
+    "x": 116,
+    "y": 204,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 17",
+   "frame": {
+    "x": 232,
+    "y": 204,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 18",
+   "frame": {
+    "x": 348,
+    "y": 204,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 19",
+   "frame": {
+    "x": 464,
+    "y": 204,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 20",
+   "frame": {
+    "x": 0,
+    "y": 272,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 21",
+   "frame": {
+    "x": 116,
+    "y": 272,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 22",
+   "frame": {
+    "x": 232,
+    "y": 272,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 23",
+   "frame": {
+    "x": 348,
+    "y": 272,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 24",
+   "frame": {
+    "x": 464,
+    "y": 272,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 25",
+   "frame": {
+    "x": 0,
+    "y": 340,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 26",
+   "frame": {
+    "x": 116,
+    "y": 340,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-maw 27",
+   "frame": {
+    "x": 232,
+    "y": 340,
+    "w": 116,
+    "h": 68
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 68
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 68
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "vine-maw.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 580,
+   "h": 408
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "vine-maw",
+    "from": 0,
+    "to": 27,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/vine-maw",
+   "name": "Vine maw",
+   "fps": 30,
+   "loop": false,
+   "frames": 28,
+   "frameSize": [
+    116,
+    68
+   ],
+   "pivot": [
+    74,
+    56
+   ],
+   "columns": 5
+  }
+ }
+}

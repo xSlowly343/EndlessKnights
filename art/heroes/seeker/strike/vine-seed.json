@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "vine-seed 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-seed 1",
+   "frame": {
+    "x": 120,
+    "y": 0,
+    "w": 120,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-seed 2",
+   "frame": {
+    "x": 0,
+    "y": 46,
+    "w": 120,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-seed 3",
+   "frame": {
+    "x": 120,
+    "y": 46,
+    "w": 120,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-seed 4",
+   "frame": {
+    "x": 0,
+    "y": 92,
+    "w": 120,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-seed 5",
+   "frame": {
+    "x": 120,
+    "y": 92,
+    "w": 120,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-seed 6",
+   "frame": {
+    "x": 0,
+    "y": 138,
+    "w": 120,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "vine-seed 7",
+   "frame": {
+    "x": 120,
+    "y": 138,
+    "w": 120,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 46
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "vine-seed.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 240,
+   "h": 184
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "vine-seed",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/vine-seed",
+   "name": "Vine seed",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    120,
+    46
+   ],
+   "pivot": [
+    100,
+    24
+   ],
+   "columns": 2
+  }
+ }
+}
