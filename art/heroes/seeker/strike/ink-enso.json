@@ -1,0 +1,633 @@
+{
+ "frames": [
+  {
+   "filename": "ink-enso 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 1",
+   "frame": {
+    "x": 100,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 2",
+   "frame": {
+    "x": 200,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 3",
+   "frame": {
+    "x": 300,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 4",
+   "frame": {
+    "x": 400,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 5",
+   "frame": {
+    "x": 0,
+    "y": 76,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 6",
+   "frame": {
+    "x": 100,
+    "y": 76,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 7",
+   "frame": {
+    "x": 200,
+    "y": 76,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 8",
+   "frame": {
+    "x": 300,
+    "y": 76,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 9",
+   "frame": {
+    "x": 400,
+    "y": 76,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 10",
+   "frame": {
+    "x": 0,
+    "y": 152,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 11",
+   "frame": {
+    "x": 100,
+    "y": 152,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 12",
+   "frame": {
+    "x": 200,
+    "y": 152,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 13",
+   "frame": {
+    "x": 300,
+    "y": 152,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 14",
+   "frame": {
+    "x": 400,
+    "y": 152,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 15",
+   "frame": {
+    "x": 0,
+    "y": 228,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 16",
+   "frame": {
+    "x": 100,
+    "y": 228,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 17",
+   "frame": {
+    "x": 200,
+    "y": 228,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 18",
+   "frame": {
+    "x": 300,
+    "y": 228,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 19",
+   "frame": {
+    "x": 400,
+    "y": 228,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 20",
+   "frame": {
+    "x": 0,
+    "y": 304,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 21",
+   "frame": {
+    "x": 100,
+    "y": 304,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 22",
+   "frame": {
+    "x": 200,
+    "y": 304,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 23",
+   "frame": {
+    "x": 300,
+    "y": 304,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 24",
+   "frame": {
+    "x": 400,
+    "y": 304,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 25",
+   "frame": {
+    "x": 0,
+    "y": 380,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "ink-enso 26",
+   "frame": {
+    "x": 100,
+    "y": 380,
+    "w": 100,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 100,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 100,
+    "h": 76
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "ink-enso.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 500,
+   "h": 456
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "ink-enso",
+    "from": 0,
+    "to": 26,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/ink-enso",
+   "name": "Ink enso",
+   "fps": 30,
+   "loop": false,
+   "frames": 27,
+   "frameSize": [
+    100,
+    76
+   ],
+   "pivot": [
+    56,
+    42
+   ],
+   "columns": 5
+  }
+ }
+}

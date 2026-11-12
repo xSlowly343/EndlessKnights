@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "phoenix-glide 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 60
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 60
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 60
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-glide 1",
+   "frame": {
+    "x": 120,
+    "y": 0,
+    "w": 120,
+    "h": 60
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 60
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 60
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-glide 2",
+   "frame": {
+    "x": 0,
+    "y": 60,
+    "w": 120,
+    "h": 60
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 60
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 60
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-glide 3",
+   "frame": {
+    "x": 120,
+    "y": 60,
+    "w": 120,
+    "h": 60
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 60
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 60
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-glide 4",
+   "frame": {
+    "x": 0,
+    "y": 120,
+    "w": 120,
+    "h": 60
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 60
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 60
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-glide 5",
+   "frame": {
+    "x": 120,
+    "y": 120,
+    "w": 120,
+    "h": 60
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 60
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 60
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-glide 6",
+   "frame": {
+    "x": 0,
+    "y": 180,
+    "w": 120,
+    "h": 60
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 60
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 60
+   },
+   "duration": 33
+  },
+  {
+   "filename": "phoenix-glide 7",
+   "frame": {
+    "x": 120,
+    "y": 180,
+    "w": 120,
+    "h": 60
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 60
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 60
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "phoenix-glide.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 240,
+   "h": 240
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "phoenix-glide",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/phoenix-glide",
+   "name": "Phoenix glide",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    120,
+    60
+   ],
+   "pivot": [
+    94,
+    30
+   ],
+   "columns": 2
+  }
+ }
+}
