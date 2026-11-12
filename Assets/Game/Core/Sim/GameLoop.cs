@@ -151,7 +151,7 @@ namespace Game.Core.Sim
             _atlas = new AtlasSystem(data.Atlas, state, hero);
             _resonance = new ResonanceSystem(data.Resonance, state, hero);
             _spirits = new SpiritSystem(data.Spirits, state, _combat);
-            _unlocks = new Unlocks(data.Unlocks, state);
+            _unlocks = new Unlocks(data.Unlocks, state, Events);
             _artifacts.Unlocks = _unlocks;
             _atlas.Unlocks = _unlocks;
             _resonance.Unlocks = _unlocks;
@@ -166,7 +166,8 @@ namespace Game.Core.Sim
             _seasonal = new EventSystem(data, state, _stage, Events);
             _peaceful = new PeacefulSystem(data.Peaceful, state, Events);
             _talents = new TalentSystem(data.Talents, state);
-            _camp = new CampSystem(data.Camp, state, Events);
+            _camp = new CampSystem(data.Camp, state, Events) { Unlocks = _unlocks };
+            _unlocks.Camp = _camp;
             _clanCamp = new ClanCampSystem(data.ClanCamp, state, hero, _camp);
             _hideout = new HideoutSystem(data.Hideout, data.ClanCamp, data.Garden, state, _camp);
             _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden);
@@ -1109,6 +1110,7 @@ namespace Game.Core.Sim
             RefreshPeacefulBonus();
             _peaceful.Tick(LastInput, MetersPerPixel);
             _camp.Tick();
+            _unlocks.Tick();
             _colossus.Tick();
             _garden.Tick();
             _alchemy.Tick();

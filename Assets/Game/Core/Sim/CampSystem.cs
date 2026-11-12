@@ -21,11 +21,17 @@ namespace Game.Core.Sim
         public CampTier Tier => _rules.Tiers[System.Math.Min(State.Tier, _rules.Tiers.Count - 1)];
         public CampTier? NextTier => State.Tier + 1 < _rules.Tiers.Count ? _rules.Tiers[State.Tier + 1] : null;
 
+        public Unlocks? Unlocks { get; set; }
+
         public void UseRules(CampRules rules) => _rules = rules;
+
+        public bool Reached(CampTier tier) => _state.RecordStage >= tier.FromRecord && (Unlocks == null || Unlocks.Met(tier.Requires));
 
         public void Tick()
         {
-            var tier = _rules.TierAt(_state.RecordStage);
+            var tier = State.Tier;
+            while (tier + 1 < _rules.Tiers.Count && Reached(_rules.Tiers[tier + 1]))
+                tier++;
             if (tier <= State.Tier)
                 return;
             State.Tier = tier;

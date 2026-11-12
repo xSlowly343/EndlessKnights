@@ -100,6 +100,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input, new GameState(1));
             loop.State.RecordStage = 51;
+            loop.State.Camp.Tier = 1;
             loop.Tick();
             loop.SetLocalDay(100);
             loop.Camp.SetGuilds(new[] { "smiths" });

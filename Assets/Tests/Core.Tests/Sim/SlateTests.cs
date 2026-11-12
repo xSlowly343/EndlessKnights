@@ -92,7 +92,7 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void SlatesWaitForTheirStage()
+        public void SlatesWaitForADungeonOfTheirTier()
         {
             var loop = TestWorld.Loop(state: new GameState { RecordStage = 100 });
             Assert.That(TestWorld.Data.Unlocks.For(Feature.Slates).Stage, Is.Zero);
@@ -103,8 +103,11 @@ namespace Game.Core.Tests.Sim
 
             Assert.That(real.Slates.Open, Is.False);
             Assert.That(real.Slates.Bag, Is.Empty);
-            Assert.That(TestWorld.Real.Unlocks.For(Feature.Slates).Stage, Is.EqualTo(150));
+            Assert.That(TestWorld.Real.Unlocks.For(Feature.Slates).Lowest(UnlockNeedKind.DungeonTier), Is.EqualTo(5));
             Assert.That(loop.Slates.Open, Is.True);
+
+            real.State.Dungeons.BestTier = 5;
+            Assert.That(real.Slates.Open, Is.True);
         }
 
         [Test]

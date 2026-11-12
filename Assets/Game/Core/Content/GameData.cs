@@ -205,6 +205,7 @@ namespace Game.Core.Content
             var commonTrees = new Dictionary<string, ClassTree>(StringComparer.Ordinal);
             foreach (var treeId in treeTemplates.CommonTrees)
                 commonTrees[treeId] = ClassTreeLoader.LoadCommon(treeTemplates, treeId, readFile(ClassTreeLoader.CommonFileNameOf(treeId)));
+            unlocks.CheckBuildings(camp, hideout);
             return new GameData(stages, enemies, inputCaps, combat, gems, skillBook, treePoints, ascendancy, prestige, artifacts, party, tutorial, strings, synergy, rift, weapons, items, drops, panel, changeLog, chronicle, atlas, resonance, spirits) { Characters = characters, Unlocks = unlocks, Slates = slates, Quests = quests, Achievements = achievements, Bestiary = bestiary, Cosmetics = cosmetics, SeasonPass = seasonPass, Chests = chests, Tournaments = tournaments, ClanCamp = clanCamp, Guilds = guilds, Talents = talents, Hideout = hideout, CampLevels = campLevels, Apprentices = apprentices, CampModules = campModules, Digs = digs, Fair = fair, Caravan = caravan, Distill = distill, Colossus = colossus, Events = seasonalEvents, Peaceful = peaceful, Camp = camp, Garden = garden, Alchemy = alchemy, Expeditions = expeditions, Companions = companions, Town = town, Fishing = fishing, Cooking = cooking, Forge = forge, Museum = museum, Decor = decor, Dungeons = dungeons, Raid = raid, ClanTree = clanTree, Mentor = mentor, TreeTemplates = treeTemplates, ClassTrees = classTrees, CommonTrees = commonTrees };
         }
     }

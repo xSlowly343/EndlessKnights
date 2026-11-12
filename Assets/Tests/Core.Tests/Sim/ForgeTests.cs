@@ -26,6 +26,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input);
             loop.State.RecordStage = 51;
+            loop.State.Camp.Tier = 1;
             loop.Tick();
             loop.Camp.SetGuilds(new[] { "smiths" });
             return (loop, input);
@@ -71,6 +72,7 @@ namespace Game.Core.Tests.Sim
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input);
             loop.State.RecordStage = 51;
+            loop.State.Camp.Tier = 1;
             loop.Tick();
             loop.State.Drops.Gear.Add(Coif());
             Assert.That(loop.Forge.SmeltGear(0), Is.EqualTo(ForgeResult.Closed));

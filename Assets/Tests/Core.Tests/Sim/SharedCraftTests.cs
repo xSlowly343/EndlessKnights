@@ -14,6 +14,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = TestWorld.Loop(input);
             loop.State.RecordStage = 51;
+            loop.State.Camp.Tier = 1;
             loop.Tick();
             loop.Camp.SetGuilds(new[] { "smiths" });
             var hideout = loop.Hideout;

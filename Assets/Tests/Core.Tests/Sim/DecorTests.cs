@@ -31,6 +31,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Decor.Place(2, "decor_lantern"), Is.EqualTo(DecorResult.Done), "moving keeps one of each");
             Assert.That(DecorView.Street(loop.Decor).Select(s => s.Decor), Is.EqualTo(new[] { "", "", "decor_lantern", "" }));
             loop.State.RecordStage = 101;
+            loop.State.Camp.Tier = 2;
             loop.Tick();
             Assert.That(loop.Decor.Spots, Is.EqualTo(Rules.SpotsOf("outpost")));
         }
@@ -57,6 +58,7 @@ namespace Game.Core.Tests.Sim
             var loop = Camp();
             Assert.That(loop.Decor.SetTheme("ice_peak"), Is.EqualTo(DecorResult.BiomeClosed));
             loop.State.RecordStage = 250;
+            loop.State.Camp.Tier = 3;
             Assert.That(loop.Decor.SetTheme("ice_peak"), Is.EqualTo(DecorResult.Done));
             Assert.That(loop.State.Decor.Theme, Is.EqualTo("ice_peak"));
         }
@@ -82,6 +84,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Decor.Guest(GuestAct.Water, 5), Is.True, "a wrong bed waters the first growing one");
             Assert.That(loop.State.Garden.Beds[0].Grown, Is.GreaterThanOrEqualTo(Rules.WaterSeconds));
             loop.State.RecordStage = 51;
+            loop.State.Camp.Tier = 1;
             loop.Tick();
             loop.Camp.SetGuilds(new[] { "smiths" });
             Assert.That(loop.Decor.Guest(GuestAct.Hammer, -1), Is.True);

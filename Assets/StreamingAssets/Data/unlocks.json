@@ -2,13 +2,23 @@
   "version": 1,
   "features": {
     "artifacts": { "prestiges": 1 },
-    "resonance": { "stage": 300 },
-    "spirits": { "stage": 1000 },
-    "atlas": { "stage": 2500 },
-    "chronicle": { "stage": 5000 },
-    "setCraft": { "stage": 10000 },
     "dungeons": { "stage": 150 },
-    "slates": { "stage": 150 }
+    "slates": { "dungeonTier": 5 },
+    "resonance": { "stage": 1000 },
+    "spirits": { "anyOf": [
+      { "stage": 2000, "campBuilding": { "bonfire": 2 } },
+      { "stage": 5000 }
+    ] },
+    "atlas": { "anyOf": [
+      { "stage": 2500, "dungeonTier": 8 },
+      { "stage": 5000 }
+    ] },
+    "chronicle": { "stage": 5000, "dungeonTier": 9 },
+    "setCraft": { "anyOf": [
+      { "stage": 10000, "hideoutBuilding": { "shared_forge": 1 } },
+      { "stage": 10000, "campBuilding": { "forge": 2 } },
+      { "stage": 20000 }
+    ] }
   },
   "artifactGroups": [0, 5000, 20000, 45000, 75000]
 }

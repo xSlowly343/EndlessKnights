@@ -280,6 +280,7 @@ namespace Game.Core.Sim
         public bool PauseCritArmed { get; set; }
         public long CritsTowardBurst { get; set; }
         public HashSet<long> GatesCleared { get; } = new HashSet<long>();
+        public HashSet<Feature> OpenedFeatures { get; } = new HashSet<Feature>();
         public int MentorCoopPoints { get; set; }
         public int ServerCoopHelpPoints { get; set; }
         public int CoopHelpPoints => System.Math.Max(MentorCoopPoints, ServerCoopHelpPoints);

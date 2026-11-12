@@ -37,6 +37,7 @@ namespace Game.Core.Sim
         PeacefulActivityChanged,
         TeaPauseSuggested,
         CampTierReached,
+        FeatureOpened,
         PlantReady,
         MutationFound,
         PotionBrewed,

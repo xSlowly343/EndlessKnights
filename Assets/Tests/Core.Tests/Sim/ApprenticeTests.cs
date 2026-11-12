@@ -24,6 +24,7 @@ namespace Game.Core.Tests.Sim
         {
             var loop = TestWorld.Loop(new FakeInputSource());
             loop.State.RecordStage = 300;
+            loop.State.Camp.Tier = 3;
             loop.Tick();
             loop.State.Town.Reputation["gardeners"] = TestWorld.Real.Guilds.Levels[Rules.MinGuildLevel - 1];
             return loop;
