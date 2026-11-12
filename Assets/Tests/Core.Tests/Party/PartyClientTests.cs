@@ -726,17 +726,37 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AClientRunningAheadStillShowsTheEffectsOfTheHostEnemy()
+        {
+            var rig = new Rig(5, 40);
+            var player = rig.Players[0];
+            for (var attempt = 0; attempt < 30 && !player.Client.RunningAhead; attempt++)
+            {
+                rig.Run(1);
+                rig.Run(1, false);
+            }
+            Assert.That(player.Client.RunningAhead, Is.True, "nobody hits, so the client keeps waiting ahead of the host");
+            var gem = TestWorld.Data.Gems.All[0];
+            rig.Host.Encounter.ApplyEnemyEffect(gem.NetId, 0.15, 8, rig.Players[1].Client.OwnSlot);
+
+            rig.Run(1, false);
+
+            var badges = new Game.Core.Ui.EnemyBadge[Game.Core.Party.Wire.ShownEffect.MaxShown];
+            Assert.That(player.Client.RunningAhead, Is.True);
+            Assert.That(Game.Core.Ui.PartyStripMarks.FillBadges(player.Client, TestWorld.Data.Gems, badges), Is.EqualTo(1));
+            Assert.That(badges[0].GemColor, Is.EqualTo(gem.Color));
+        }
+
+        [Test]
         public void AnEnemyEffectShowsAsABadgeInItsOwnersColour()
         {
             var rig = new Rig(5, 40);
             rig.Run(5);
-            rig.Run(1, false);
-            rig.CatchUp();
             var gem = TestWorld.Data.Gems.All[0];
             var owner = rig.Players[1].Client.OwnSlot;
             rig.Host.Encounter.ApplyEnemyEffect(gem.NetId, 0.15, 8, owner);
 
-            rig.Run(1, false);
+            rig.Run(1);
 
             var badges = new Game.Core.Ui.EnemyBadge[Game.Core.Party.Wire.ShownEffect.MaxShown];
             Assert.That(Game.Core.Ui.PartyStripMarks.FillBadges(rig.Players[0].Client, TestWorld.Data.Gems, badges), Is.EqualTo(1));
