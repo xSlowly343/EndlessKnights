@@ -219,6 +219,26 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void QuietMidnightKeepsTheWind()
+        {
+            var (loop, _) = Hero();
+            loop.State.HeroLevel = 75;
+            var midnight = TestWorld.Data.Gems["clockwright_strong_3"];
+            var slot = loop.Skills.Equip(midnight, role: SkillSlotRole.Right);
+            loop.State.ProgressOf(midnight).Level = 5;
+            var window = new Game.Core.Ui.SkillWindowModel(loop);
+            window.Show(slot);
+            Assert.That(window.Choose(0, 1), Is.EqualTo(Game.Core.Build.BranchResult.Done));
+            loop.State.Resource = 100;
+            var bursts = loop.State.Clockwright.Bursts;
+
+            Assert.That(loop.Skills.TryCast(slot), Is.EqualTo(CastResult.Cast));
+
+            Assert.That(loop.State.Clockwright.Bursts, Is.EqualTo(bursts));
+            Assert.That(loop.State.Resource, Is.GreaterThan(50));
+        }
+
+        [Test]
         public void HerOwnCooldownsAreTwiceAsLong()
         {
             var (gears, _) = Hero(Flat(ClockwrightStats.GearPower, 2));

@@ -106,6 +106,17 @@ namespace Game.Core.Tests.Build
             }
         }
 
+        [TestCase("lanternbearer_hit_1", 3)]
+        [TestCase("clockwright_hit_1", 3)]
+        public void TheFastFamilyKeepsTheStrikeThatGrowsWithWhatSheGathers(string id, double rider)
+        {
+            foreach (var form in Gem(id).Forms)
+            {
+                var strike = (StrikeEffect)form.Skill!.Effect;
+                Assert.That(System.Math.Max(strike.LitHit, strike.WindHit), Is.GreaterThanOrEqualTo(rider), form.Id);
+            }
+        }
+
         private static double Amount(System.Text.Json.JsonElement value) =>
             value.ValueKind == System.Text.Json.JsonValueKind.True ? 1 : value.GetDouble();
 
