@@ -149,6 +149,144 @@ namespace Game.Core.Tests.Sim
             Assert.That(done, Is.EqualTo(pets + 1));
         }
 
+        private static GameLoop FullTree(params string[] majors)
+        {
+            var loop = Camp();
+            loop.State.RecordStage = 60;
+            for (var node = 1; node <= TestWorld.Data.Companions.Menagerie.Nodes.Count; node++)
+                loop.State.Companions.TreeRanks[node] = MenagerieTreeRules.MaxRank;
+            foreach (var major in majors)
+                loop.State.Companions.TreeMajors[int.Parse(major.Substring("menagerie_m".Length, major.LastIndexOf('_') - "menagerie_m".Length))] = major;
+            loop.Menagerie.Recalculate();
+            loop.Menagerie.Changed();
+            return loop;
+        }
+
+        private static void GiveHearts(GameLoop loop, string companion, int hearts) =>
+            loop.Companions.Progress(companion).Bond = TestWorld.Data.Companions.Bond.PointsTo(hearts);
+
+        [Test]
+        public void TheLinesOfHeartsLettersSparksAndThePackCarryTheNumbersOfTheDesign()
+        {
+            var tree = FullTree("menagerie_m90_3", "menagerie_m140_3").Menagerie;
+
+            Assert.That(tree.Stat(MenagerieStat.FavouriteFood), Is.EqualTo(0.1).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.HeartsExperience), Is.EqualTo(0.06).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.HeartsTraits), Is.EqualTo(0.01).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.DevotedTraits), Is.EqualTo(0.06).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.DevotedExperience), Is.EqualTo(0.03).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.DevotedStarCost), Is.EqualTo(0.02).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.MentorShare), Is.EqualTo(0.2).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.ChoiceLetters), Is.EqualTo(0.05 + 0.09).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.LetterBond), Is.EqualTo(1));
+            Assert.That(tree.Stat(MenagerieStat.Sparks), Is.EqualTo(0.02 + 0.06).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.RepeatSpark), Is.EqualTo(0.15).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.TripSpark), Is.EqualTo(0.03).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.PerCompanion), Is.EqualTo(0.002).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.PackLoot), Is.EqualTo(0.09).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.PackFamily), Is.EqualTo(0.03).Within(1e-9));
+            Assert.That(tree.Stat(MenagerieStat.BurrowTries), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void HeartsStrengthenTraitsAndCheapenStarsOnlyForCompanionsThatHaveThem()
+        {
+            var plain = Camp();
+            var loop = FullTree();
+            var rules = TestWorld.Data.Companions;
+            var own = 1 + loop.Menagerie.Stat(MenagerieStat.OwnTraits);
+            foreach (var world in new[] { plain, loop })
+            {
+                GiveHearts(world, "camp_dog", rules.Bond.MaxHearts);
+                GiveHearts(world, "camp_crow", rules.Menagerie.HeartsForTraits);
+            }
+
+            Assert.That(loop.Companions.TraitFactor("camp_dog") / plain.Companions.TraitFactor("camp_dog"), Is.EqualTo(own * 1.07).Within(1e-9));
+            Assert.That(loop.Companions.TraitFactor("camp_crow") / plain.Companions.TraitFactor("camp_crow"), Is.EqualTo(own * 1.01).Within(1e-9));
+            var cut = loop.Menagerie.Stat(MenagerieStat.StarCost);
+            Assert.That(loop.Companions.Devoted("camp_dog"), Is.True);
+            Assert.That(loop.Companions.StarPrice("camp_crow", 1000), Is.EqualTo((int)System.Math.Ceiling(1000 * (1 - cut) - 1e-9)));
+            Assert.That(loop.Companions.StarPrice("camp_dog", 1000), Is.EqualTo((int)System.Math.Ceiling(1000 * (1 - cut - 0.02) - 1e-9)));
+        }
+
+        [Test]
+        public void AnAnsweredLetterBondsAndTripsStrikeSparks()
+        {
+            var loop = FullTree();
+            loop.Expeditions.Send("camp_dog", "green_hills", 8);
+            var trip = loop.State.Expeditions.Active[0];
+            trip.Choice = true;
+            var bond = loop.Companions.Progress("camp_dog").Bond;
+
+            Assert.That(loop.Expeditions.Answer(0, true), Is.EqualTo(ExpeditionResult.Done));
+            Assert.That(loop.Companions.Progress("camp_dog").Bond, Is.GreaterThanOrEqualTo(bond + 1));
+
+            var plain = Camp();
+            plain.Expeditions.Send("camp_dog", "green_hills", 8);
+            foreach (var world in new[] { loop, plain })
+            {
+                var done = world.State.Expeditions.Active[0];
+                done.Elapsed = done.Planned;
+                for (var i = 0; i < 600; i++)
+                    world.Companions.TripDone(done);
+            }
+            Assert.That(loop.State.Companions.Sparks, Is.InRange(6, 40), "about three trips in a hundred");
+            Assert.That(plain.State.Companions.Sparks, Is.Zero);
+        }
+
+        [Test]
+        public void TheBurrowOpensTwiceAWeekAndEveryCollectedCompanionAddsToTheLoot()
+        {
+            var loop = FullTree("menagerie_m140_3");
+            var party = new[] { "camp_dog" };
+            Assert.That(loop.CompanionWork.BurrowTries, Is.EqualTo(2));
+            Assert.That(loop.CompanionWork.Burrow(party, out _), Is.EqualTo(WorkResult.Done));
+            Assert.That(loop.CompanionWork.Burrow(party, out _), Is.EqualTo(WorkResult.Done));
+            Assert.That(loop.CompanionWork.Burrow(party, out _), Is.EqualTo(WorkResult.TooSoon));
+            loop.SetLocalDay(100 + 7);
+            Assert.That(loop.CompanionWork.BurrowReady, Is.True);
+
+            var plain = Camp();
+            Assert.That(plain.CompanionWork.Burrow(party, out _), Is.EqualTo(WorkResult.Done));
+            Assert.That(plain.CompanionWork.Burrow(party, out _), Is.EqualTo(WorkResult.TooSoon));
+
+            var without = FullTree();
+            var trip = new Expedition { Companion = "camp_dog", Biome = "green_hills" };
+            var collected = loop.Companions.Collected;
+            Assert.That(collected, Is.GreaterThan(0));
+            var tree = loop.Menagerie;
+            var baseLoot = 1 + tree.Stat(MenagerieStat.TripItems) + tree.Stat(MenagerieStat.TripLoot);
+            Assert.That(loop.Companions.StatOf(trip, TravelStat.Items) / without.Companions.StatOf(trip, TravelStat.Items),
+                Is.EqualTo((baseLoot + 0.002 * collected) / baseLoot).Within(1e-9));
+        }
+
+        [Test]
+        public void ThePackAndTheMentorGainFromTheTree()
+        {
+            var loop = FullTree("menagerie_m90_3");
+            var plain = Camp();
+            plain.State.RecordStage = 60;
+            foreach (var world in new[] { loop, plain })
+            {
+                world.Companions.Grant("egg_boarlet");
+                world.Companions.Grant("hills_piglet");
+                world.Companions.Progress("camp_dog").Stars = 1;
+            }
+            Assert.That(loop.Companions.TakeStudent("camp_dog", "camp_crow"), Is.EqualTo(CompanionResult.Done));
+            Assert.That(plain.Companions.TakeStudent("camp_dog", "camp_crow"), Is.EqualTo(CompanionResult.Done));
+            var pack = new Expedition { Companion = "camp_dog", Partner = "egg_boarlet", Third = "hills_piglet", Biome = "green_hills" };
+            var rules = TestWorld.Data.Companions.Pack;
+            Assert.That(loop.Companions.OneFamily(pack), Is.True);
+
+            double Sum(GameLoop world) => world.Companions.TravelMultiplier("camp_dog", TravelStat.Shards) + world.Companions.TravelMultiplier("egg_boarlet", TravelStat.Shards)
+                + world.Companions.TravelMultiplier("hills_piglet", TravelStat.Shards) - 2;
+            var tree = loop.Menagerie;
+            var treeLoot = 1 + tree.Stat(MenagerieStat.TripShards) + tree.Stat(MenagerieStat.TripLoot);
+            var expected = Sum(loop) * rules.Loot * 1.09 * (1 + rules.FamilyBonus + 0.03) * treeLoot / (Sum(plain) * rules.Loot * (1 + rules.FamilyBonus));
+            Assert.That(loop.Companions.StatOf(pack, TravelStat.Shards) / plain.Companions.StatOf(pack, TravelStat.Shards), Is.EqualTo(expected).Within(1e-9));
+            Assert.That(rules.MentorShare + tree.Stat(MenagerieStat.MentorShare), Is.EqualTo(0.5).Within(1e-9), "the student gets half instead of thirty per cent");
+        }
+
         [Test]
         public void TheBarGivesPassivesAndMajorTalentsSwapFreely()
         {

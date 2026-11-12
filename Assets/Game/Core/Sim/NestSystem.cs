@@ -169,6 +169,9 @@ namespace Game.Core.Sim
                 _companions.Progress(_companions.SparkHeir(companion)).OwnSparks++;
             }
             State.Sparks++;
+            var extra = _companions.TreeStat(MenagerieStat.Sparks) + _companions.TreeStat(MenagerieStat.RepeatSpark);
+            if (extra > 0 && _state.Rng.NextDouble() < extra)
+                State.Sparks++;
             _events.Add(GameEvent.ForStage(GameEventKind.CompanionSpark, _state.Tick, State.Sparks));
         }
 

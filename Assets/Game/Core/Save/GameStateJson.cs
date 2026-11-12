@@ -936,7 +936,7 @@ namespace Game.Core.Save
                 ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)), ("soulTrialWeek", JsonValue.Of(companions.SoulTrialWeek)), ("soulTreeWeek", JsonValue.Of(companions.SoulTreeWeek)), ("essence", JsonValue.Of(companions.Essence)), ("quickBiteSeconds", JsonValue.Of(companions.QuickBiteSeconds)), ("quickBiteFactor", JsonValue.Of(companions.QuickBiteFactor)), ("sureForge", JsonValue.Of(companions.SureForge)), ("xpBoostSeconds", JsonValue.Of(companions.XpBoostSeconds)), ("xpBoost", JsonValue.Of(companions.XpBoost)), ("hostEssenceDays", WriteNumberMap(companions.HostEssenceDays)),
                 ("gear", WriteCompanionGear(companions.Gear)), ("nextGearId", JsonValue.Of(companions.NextGearId)),
                 ("boardDay", JsonValue.Of(companions.BoardDay)), ("board", WriteIdList(companions.Board)), ("boardDone", WriteIdList(companions.BoardDone)), ("rerolls", JsonValue.Of(companions.Rerolls)),
-                ("helper", OptionalText(companions.Helper)), ("helpGuild", OptionalText(companions.HelpGuild)), ("helpSeconds", JsonValue.Of(companions.HelpSeconds)), ("burrowWeek", JsonValue.Of(companions.BurrowWeek)),
+                ("helper", OptionalText(companions.Helper)), ("helpGuild", OptionalText(companions.HelpGuild)), ("helpSeconds", JsonValue.Of(companions.HelpSeconds)), ("burrowWeek", JsonValue.Of(companions.BurrowWeek)), ("burrowRuns", JsonValue.Of(companions.BurrowRuns)),
                 ("tree", WriteTreeRanks(companions.TreeRanks)), ("treeMajors", WriteTreeMajors(companions.TreeMajors)), ("menagerieLevel", JsonValue.Of(companions.MenagerieLevel)),
                 ("menagerieExperience", JsonValue.Of(companions.MenagerieExperience)), ("treeResetDay", JsonValue.Of(companions.TreeResetDay)), ("rewindDay", JsonValue.Of(companions.RewindDay)), ("progress", JsonValue.Array(list)));
         }
@@ -1090,6 +1090,7 @@ namespace Game.Core.Save
             companions.HelpGuild = ReadOptionalText(node, "helpGuild");
             companions.HelpSeconds = node.HasField("helpSeconds") ? node.Field("helpSeconds").AsNumber(0, 1e9) : 0;
             companions.BurrowWeek = node.HasField("burrowWeek") ? node.Field("burrowWeek").AsLong() : -1;
+            companions.BurrowRuns = node.HasField("burrowRuns") ? node.Field("burrowRuns").AsInt(0) : 1;
             ReadTree(node, companions);
             companions.Owned.Clear();
             if (node.HasField("owned"))
