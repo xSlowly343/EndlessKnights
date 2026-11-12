@@ -209,15 +209,15 @@ namespace Game.Core.Sim
 
         public GemProgress ProgressOf(GemDef gem)
         {
-            if (!GemProgress.TryGetValue(gem.Id, out var progress))
+            if (!GemProgress.TryGetValue(gem.ProgressId, out var progress))
             {
                 progress = new GemProgress();
-                GemProgress.Add(gem.Id, progress);
+                GemProgress.Add(gem.ProgressId, progress);
             }
             return progress;
         }
 
-        public int LevelOf(GemDef gem) => GemProgress.TryGetValue(gem.Id, out var progress) ? progress.Level : 1;
+        public int LevelOf(GemDef gem) => GemProgress.TryGetValue(gem.ProgressId, out var progress) ? progress.Level : 1;
         public BigNumber[] QueueDamage { get; } = new BigNumber[QueueDepth];
         public BigNumber PierceDamage { get; set; }
 

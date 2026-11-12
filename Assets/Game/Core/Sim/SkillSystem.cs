@@ -218,6 +218,17 @@ namespace Game.Core.Sim
             }
         }
 
+        public void Reshape(int index, GemDef form)
+        {
+            var slot = _state.Skills[index];
+            RemoveAura(slot);
+            ClearStacks(slot);
+            DropStanding(slot);
+            slot.Skill = form;
+            slot.Buckets = form.Skill?.Effect is DistanceStacksEffect distance ? new double[distance.WindowSeconds] : null;
+            ApplyBranches(slot);
+        }
+
         public void RefreshBranches()
         {
             foreach (var slot in _state.Skills)
@@ -242,7 +253,7 @@ namespace Game.Core.Sim
         }
 
         public int ComboOf(GemDef gem) =>
-            _state.GemProgress.TryGetValue(gem.Id, out var progress) ? SkillBranches.ComboOf(gem.Branches, progress.Branches, progress.Level) : SkillBranches.Plain;
+            _state.GemProgress.TryGetValue(gem.ProgressId, out var progress) ? SkillBranches.ComboOf(gem.Branches, progress.Branches, progress.Level) : SkillBranches.Plain;
 
         public bool IsNative(int index) => index >= 0 && index < _state.Skills.Count && IsNative(_state.Skills[index]);
 

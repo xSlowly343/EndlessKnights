@@ -1,5 +1,5 @@
 {
-  "runedancer": ["runedancer_hit_1", "runedancer_strong_1", "runedancer_strong_2"],
+  "runedancer": ["runedancer_hit_1", "runedancer_strong_1", "runedancer_queue_1"],
   "duelist": ["duelist_hit_1", "duelist_strong_1", "duelist_strong_2"],
   "windshot": ["windshot_hit_1", "through_stride", "windshot_strong_2"],
   "shardcaller": ["shardcaller_hit_1", "through_stride", "shardcaller_strong_1"],

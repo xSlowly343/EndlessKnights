@@ -6,6 +6,7 @@ namespace Game.Core.Content.Gems
     public static class SkillRoster
     {
         public const int ActivePerClass = 12;
+        public const int FamiliesPerClass = 4;
         public const int AurasPerClass = 6;
         public const int BranchTiers = SkillBranchTier.Count;
 

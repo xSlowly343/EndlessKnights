@@ -40,6 +40,8 @@ namespace Game.Core.Content.Gems
             DurationStat = StatId.ForSkill(Sim.CombatStats.SkillDurationSeconds, id);
             Ascendancy = ascendancy;
             Locked = locked;
+            Root = this;
+            Forms = new[] { this };
         }
 
         public static SkillType TypeOf(GemKind kind, SkillDef? skill) => kind switch
@@ -61,8 +63,8 @@ namespace Game.Core.Content.Gems
 
         public string Id { get; }
         public int NetId { get; }
-        public StatId PowerStat { get; }
-        public StatId DurationStat { get; }
+        public StatId PowerStat { get; private set; }
+        public StatId DurationStat { get; private set; }
         public GemKind Kind { get; }
         public GemColor Color { get; }
         public string NameRu { get; }
@@ -83,6 +85,21 @@ namespace Game.Core.Content.Gems
         public int Socket { get; }
         public string? ForSkill { get; }
         public string? ForPath { get; internal set; }
+        public GemDef Root { get; private set; }
+        public IReadOnlyList<GemDef> Forms { get; private set; }
+        public string ProgressId => Root.Id;
+        public bool Evolves => Forms.Count > 1;
+
+        internal void EvolveInto(IReadOnlyList<GemDef> forms)
+        {
+            foreach (var form in forms)
+            {
+                form.Root = this;
+                form.Forms = forms;
+                form.PowerStat = PowerStat;
+                form.DurationStat = DurationStat;
+            }
+        }
 
         public SkillDef? VariantOf(int combo) => _variants == null || combo == SkillBranches.Plain ? null : _variants[combo];
 

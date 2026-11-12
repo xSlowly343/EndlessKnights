@@ -54,7 +54,61 @@ namespace Game.Core.Build
         public bool OpenedByWeapon(GemDef skill) => _state.Weapons.Opens(skill.Id);
 
         public bool SkillOpen(GemDef skill) =>
-            IsClassSkill(skill) && !skill.Locked && (OfHeroClass(skill) || OpenedByWeapon(skill)) && _state.HeroLevel >= UnlockLevel(skill);
+            IsClassSkill(skill) && !skill.Locked && _state.HeroLevel >= UnlockLevel(skill)
+            && (OfHeroClass(skill) ? ReferenceEquals(FormOf(skill), skill) : OpenedByWeapon(skill));
+
+        public GemDef FormOf(GemDef skill)
+        {
+            var forms = skill.Forms;
+            var form = forms[0];
+            for (var i = 1; i < forms.Count; i++)
+            {
+                if (_state.HeroLevel >= UnlockLevel(forms[i]))
+                    form = forms[i];
+            }
+            return form;
+        }
+
+        public GemDef? NextFormOf(GemDef skill)
+        {
+            var forms = skill.Forms;
+            for (var i = 1; i < forms.Count; i++)
+            {
+                if (_state.HeroLevel < UnlockLevel(forms[i]))
+                    return forms[i];
+            }
+            return null;
+        }
+
+        public void Evolve()
+        {
+            for (var index = _state.Skills.Count - 1; index >= 0; index--)
+            {
+                var slot = _state.Skills[index];
+                if (!slot.Skill.Evolves || slot.Active || !OfHeroClass(slot.Skill))
+                    continue;
+                if (FamilyRow(slot.Skill) != index)
+                {
+                    _skills.Unequip(index);
+                    continue;
+                }
+                var form = FormOf(slot.Skill);
+                if (ReferenceEquals(form, slot.Skill))
+                    continue;
+                _skills.Reshape(index, form);
+                KeepFittingSupports(slot);
+            }
+        }
+
+        private int FamilyRow(GemDef skill)
+        {
+            for (var index = 0; index < _state.Skills.Count; index++)
+            {
+                if (ReferenceEquals(_state.Skills[index].Skill.Root, skill.Root))
+                    return index;
+            }
+            return SkillLoadout.NoSlot;
+        }
 
         public void ClassSkills(List<GemDef> into)
         {
@@ -164,16 +218,16 @@ namespace Game.Core.Build
             }
         }
 
-        public int RebirthsOf(GemDef gem) => _state.GemProgress.TryGetValue(gem.Id, out var progress) ? progress.Rebirths : 0;
+        public int RebirthsOf(GemDef gem) => _state.GemProgress.TryGetValue(gem.ProgressId, out var progress) ? progress.Rebirths : 0;
 
         public bool CanRebirth(GemDef gem, int maxLevel) =>
-            _state.GemProgress.TryGetValue(gem.Id, out var progress) && progress.Level >= maxLevel && progress.Rebirths < _rules.SocketRebirths;
+            _state.GemProgress.TryGetValue(gem.ProgressId, out var progress) && progress.Level >= maxLevel && progress.Rebirths < _rules.SocketRebirths;
 
         public bool Rebirth(GemDef gem, int maxLevel)
         {
             if (!CanRebirth(gem, maxLevel))
                 return false;
-            var progress = _state.GemProgress[gem.Id];
+            var progress = _state.GemProgress[gem.ProgressId];
             progress.Rebirths++;
             progress.Level = 1;
             progress.Experience = 0;
@@ -282,13 +336,15 @@ namespace Game.Core.Build
                 return BookResult.WaitsForMechanic;
             if (IsClassSkill(skill) && !OfHeroClass(skill) && !OpenedByWeapon(skill))
                 return BookResult.WrongClass;
+            if (IsClassSkill(skill) && OfHeroClass(skill))
+                skill = FormOf(skill);
             if ((IsClassSkill(skill) || IsCommonSkill(skill)) && _state.HeroLevel < UnlockLevel(skill))
                 return BookResult.LevelTooLow;
             if (!IsClassSkill(skill) && !IsCommonSkill(skill) && FreeCopies(skill) <= 0)
                 return BookResult.NotOwned;
             if (skill.Ascendancy != null && skill.Ascendancy != _state.Ascendancy.Subclass)
                 return BookResult.WrongPath;
-            if (RowOf(skill) >= 0)
+            if (FamilyRow(skill) >= 0)
                 return BookResult.AlreadyInBook;
             var role = FreeRoleFor(skill);
             if (role == null)
@@ -297,7 +353,7 @@ namespace Game.Core.Build
             return BookResult.Done;
         }
 
-        public int RowOf(GemDef skill) => SkillLoadout.RowOf(_state.Skills, skill);
+        public int RowOf(GemDef skill) => skill.Evolves ? FamilyRow(skill) : SkillLoadout.RowOf(_state.Skills, skill);
 
         public BookResult Unequip(int index)
         {
@@ -309,6 +365,7 @@ namespace Game.Core.Build
 
         public void ForgetLegacyGems()
         {
+            Evolve();
             var path = _state.Ascendancy.Subclass;
             _state.OwnedGems.RemoveAll(gem => gem.Kind != GemKind.Skill || gem.Ascendancy == null || gem.Ascendancy != path);
             for (var i = _state.Skills.Count - 1; i >= 0; i--)

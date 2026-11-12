@@ -30,14 +30,14 @@ namespace Game.Core.Tests.Sim
 
         private static int SlotOf(GameLoop loop, string gemId)
         {
-            var index = loop.State.Skills.FindIndex(slot => slot.Skill.Id == gemId);
+            var gem = TestWorld.Data.Gems[gemId];
+            var index = loop.State.Skills.FindIndex(slot => slot.Skill.Root == gem.Root);
             if (index >= 0)
                 return index;
-            var gem = TestWorld.Data.Gems[gemId];
             if (!loop.State.OwnedGems.Contains(gem))
                 loop.State.OwnedGems.Add(gem);
             Assert.That(loop.Book.Equip(gem), Is.EqualTo(Game.Core.Build.BookResult.Done), gemId);
-            return loop.State.Skills.FindIndex(slot => slot.Skill.Id == gemId);
+            return loop.State.Skills.FindIndex(slot => slot.Skill.Root == gem.Root);
         }
 
         private static double CastDamage(GameLoop loop, string gemId)
@@ -95,7 +95,7 @@ namespace Game.Core.Tests.Sim
             var (loop, _) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ResourcePerFastSkill, ModifierKind.Flat, 5));
             var index = SlotOf(loop, "runedancer_hit_1");
             loop.State.Resource = 50;
-            var cost = TestWorld.Data.Gems["runedancer_hit_1"].Skill!.ResourceCost;
+            var cost = loop.State.Skills[index].Skill.Skill!.ResourceCost;
 
             Assert.That(loop.Skills.TryCast(index), Is.EqualTo(CastResult.Cast));
 
@@ -108,8 +108,10 @@ namespace Game.Core.Tests.Sim
             var (plain, _) = Hero(HeroClass.Runedancer);
             var (loop, _) = Hero(HeroClass.Runedancer, new Modifier(CombatStats.ResourcePerFastSkill, ModifierKind.Flat, 5));
 
-            CastDamage(plain, "runedancer_queue_1");
-            CastDamage(loop, "runedancer_queue_1");
+            plain.Book.Unequip(SlotOf(plain, "runedancer_hit_1"));
+            loop.Book.Unequip(SlotOf(loop, "runedancer_hit_1"));
+            CastDamage(plain, "runedancer_strong_1");
+            CastDamage(loop, "runedancer_strong_1");
 
             Assert.That(loop.State.Resource, Is.EqualTo(plain.State.Resource).Within(1e-9));
         }

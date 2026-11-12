@@ -43,13 +43,14 @@ namespace Game.Core.Tests.Build
             Assert.That(rules.SkillUnlockLevel(SkillTier.Mythic), Is.EqualTo(75));
         }
 
-        [TestCase("runedancer_hit_2", 15)]
+        [TestCase("duelist_hit_2", 15)]
         [TestCase("runedancer_strong_1", 30)]
-        [TestCase("runedancer_strong_2", 50)]
-        [TestCase("runedancer_strong_3", 75)]
+        [TestCase("duelist_strong_2", 50)]
+        [TestCase("duelist_strong_3", 75)]
         public void ClassSkillOpensAtTheHeroLevelOfItsRank(string id, int level)
         {
-            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, HeroLevel = level - 1 });
+            var heroClass = id.StartsWith("duelist") ? HeroClass.Duelist : HeroClass.Runedancer;
+            var loop = TestWorld.Loop(state: new GameState { Class = heroClass, HeroLevel = level - 1 });
 
             Assert.That(loop.Book.SkillOpen(Gem(id)), Is.False);
             Assert.That(loop.Book.Equip(Gem(id)), Is.EqualTo(BookResult.LevelTooLow));
@@ -82,7 +83,8 @@ namespace Game.Core.Tests.Build
             loop.Book.OpenClassSkills(open);
 
             Assert.That(atStart, Is.EqualTo(5));
-            Assert.That(open.Count, Is.EqualTo(SkillRoster.ActivePerClass + SkillRoster.AurasPerClass));
+            Assert.That(open.Count, Is.EqualTo(SkillRoster.FamiliesPerClass + SkillRoster.AurasPerClass));
+            Assert.That(open, Does.Contain(Gem("runedancer_hit_3")).And.Not.Contain(Gem("runedancer_hit_1")), "the bag shows the form of the hero level");
         }
 
         [Test]

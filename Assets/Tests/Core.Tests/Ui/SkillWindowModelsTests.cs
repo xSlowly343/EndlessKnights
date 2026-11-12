@@ -179,5 +179,27 @@ namespace Game.Core.Tests.Ui
             var secondOption = BranchTexts.Name(Gem("duelist_hit_1").Branches[0].Options[1]);
             Assert.That(AllyLoadoutView.Branches(places[0]), Is.EqualTo(secondOption + " · — · —"));
         }
+
+        [Test]
+        public void TheSkillWindowTellsWhenTheSkillEvolves()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, HeroLevel = 20 });
+            loop.Book.GrantStartingGems();
+            var window = new SkillWindowModel(loop);
+
+            window.Show(loop.Book.RowOf(Gem("runedancer_hit_1")));
+
+            Assert.That(window.Skill, Is.SameAs(Gem("runedancer_hit_2")));
+            Assert.That(window.NextForm, Is.SameAs(Gem("runedancer_hit_3")));
+            Assert.That(window.NextFormLevel, Is.EqualTo(30));
+            Assert.That(BranchTexts.Evolves(window.NextForm!, window.NextFormLevel), Is.EqualTo("на 30-м уровне героя станет «Огненная буква»"));
+
+            loop.State.HeroLevel = 30;
+            loop.Tick();
+            window.Refresh();
+
+            Assert.That(window.Skill, Is.SameAs(Gem("runedancer_hit_3")));
+            Assert.That(window.NextForm, Is.Null);
+        }
     }
 }

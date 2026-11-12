@@ -51,17 +51,15 @@ namespace Game.Core.Build
             {
                 if (!gems.TryGet(id, out var gem) || ReferenceEquals(Of(gem), gem))
                     continue;
-                moved.Add(new KeyValuePair<string, GemProgress>(Of(gem).Id, progress[id]));
+                foreach (var form in gem.Forms)
+                    moved.Add(new KeyValuePair<string, GemProgress>(Of(form).ProgressId, progress[id].Copy()));
                 progress.Remove(id);
             }
             foreach (var pair in moved)
             {
-                if (!progress.TryGetValue(pair.Key, out var kept) || Ahead(pair.Value, kept))
+                if (!progress.TryGetValue(pair.Key, out var kept) || pair.Value.AheadOf(kept))
                     progress[pair.Key] = pair.Value;
             }
         }
-
-        private static bool Ahead(GemProgress a, GemProgress b) =>
-            a.Rebirths != b.Rebirths ? a.Rebirths > b.Rebirths : a.Level != b.Level ? a.Level > b.Level : a.Experience > b.Experience;
     }
 }

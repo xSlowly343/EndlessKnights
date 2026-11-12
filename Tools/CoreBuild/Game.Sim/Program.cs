@@ -134,7 +134,7 @@ namespace Game.Sim
             var parts = new List<string>();
             foreach (var slot in state.Skills)
             {
-                var progress = state.GemProgress.TryGetValue(slot.Skill.Id, out var found) ? found : null;
+                var progress = state.GemProgress.TryGetValue(slot.Skill.ProgressId, out var found) ? found : null;
                 var branches = progress == null ? "---" : string.Concat(System.Array.ConvertAll(progress.Branches, b => b < 0 ? "-" : b.ToString(CultureInfo.InvariantCulture)));
                 parts.Add(string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", slot.Skill.Id, progress?.Level ?? 1, branches));
             }

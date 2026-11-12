@@ -55,6 +55,8 @@ namespace Game.Core.Content.Gems
             ["circle"] = ArmOn.Circle
         };
 
+        private const string EvolutionsField = "evolutions";
+
         private readonly Dictionary<string, GemDef> _byId;
         private readonly Dictionary<int, GemDef> _byNetId;
         private readonly Dictionary<string, string> _formerIds;
@@ -100,18 +102,29 @@ namespace Game.Core.Content.Gems
             var netIds = new Dictionary<int, string>();
             var formerIds = new Dictionary<string, string>(StringComparer.Ordinal);
             var paths = new HashSet<string>(StringComparer.Ordinal);
+            var forms = new List<ContentNode>();
             foreach (var node in root.Field("gems").Items())
             {
-                var gem = ReadGem(node);
-                ReadFormerIds(node, gem.Id, formerIds);
-                if (!ids.Add(gem.Id))
-                    throw node.Field("id").Error($"gem id '{gem.Id}' is used twice");
-                if (netIds.TryGetValue(gem.NetId, out var clash))
-                    throw node.Field("id").Error($"gem id '{gem.Id}' has the same network hash as '{clash}', rename one of them");
-                netIds.Add(gem.NetId, gem.Id);
-                if (gem.Ascendancy != null && !paths.Add(gem.Ascendancy))
-                    throw node.Field("ascendancy").Error($"path '{gem.Ascendancy}' already has a skill");
-                gems.Add(gem);
+                forms.Clear();
+                forms.Add(node);
+                if (node.HasField(EvolutionsField))
+                    forms.AddRange(node.Field(EvolutionsField).Items());
+                var first = gems.Count;
+                foreach (var form in forms)
+                {
+                    var gem = ReadGem(form);
+                    ReadFormerIds(form, gem.Id, formerIds);
+                    if (!ids.Add(gem.Id))
+                        throw form.Field("id").Error($"gem id '{gem.Id}' is used twice");
+                    if (netIds.TryGetValue(gem.NetId, out var clash))
+                        throw form.Field("id").Error($"gem id '{gem.Id}' has the same network hash as '{clash}', rename one of them");
+                    netIds.Add(gem.NetId, gem.Id);
+                    if (gem.Ascendancy != null && !paths.Add(gem.Ascendancy))
+                        throw form.Field("ascendancy").Error($"path '{gem.Ascendancy}' already has a skill");
+                    gems.Add(gem);
+                }
+                if (forms.Count > 1)
+                    BindForms(gems.GetRange(first, forms.Count), forms);
             }
             foreach (var former in formerIds)
             {
@@ -120,6 +133,25 @@ namespace Game.Core.Content.Gems
             }
             BindToSkills(gems, root.Field("gems"));
             return new GemCatalog(gems, GemLevels.Read(root.Field("levels")), formerIds);
+        }
+
+        private static void BindForms(List<GemDef> forms, List<ContentNode> nodes)
+        {
+            for (var i = 0; i < forms.Count; i++)
+            {
+                var form = forms[i];
+                if (form.Type != SkillType.Active || form.Skill?.Weapon == null || form.Ascendancy != null || form.Locked)
+                    throw nodes[i].Error("only an open active skill of a class evolves");
+                if (i == 0)
+                    continue;
+                if (nodes[i].HasField(EvolutionsField))
+                    throw nodes[i].Field(EvolutionsField).Error("an evolution lists no evolutions of its own, add it to the first form");
+                if (form.Skill!.Weapon != forms[0].Skill!.Weapon)
+                    throw nodes[i].Field("weapon").Error($"an evolution of '{forms[0].Id}' keeps its weapon '{forms[0].Skill!.Weapon}'");
+                if (form.Skill.Tier <= forms[i - 1].Skill!.Tier)
+                    throw nodes[i].Field("tier").Error($"an evolution has a higher tier than the form before it, '{forms[i - 1].Id}'");
+            }
+            forms[0].EvolveInto(forms);
         }
 
         private static void ReadFormerIds(ContentNode node, string id, Dictionary<string, string> formerIds)

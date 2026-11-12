@@ -107,6 +107,22 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void TheBotKeepsACommonSkillInASpareSlotInsteadOfSwappingItEveryTime()
+        {
+            var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, HeroLevel = 20, RecordStage = 200 });
+            loop.Book.GrantStartingGems();
+            var bot = new BotLoadout(loop);
+
+            bot.Arrange();
+            var first = loop.State.Skills.Select(slot => slot.Skill.Id).ToList();
+            bot.Arrange();
+
+            Assert.That(loop.State.Skills.Select(slot => slot.Skill.Id), Is.EqualTo(first));
+            Assert.That(first.Count(id => id.StartsWith("runedancer_") && !id.Contains("aura")), Is.EqualTo(3), "three families are open at level 20");
+            Assert.That(first, Does.Contain("lull"));
+        }
+
+        [Test]
         public void BotChoosesABranchOnEveryTierItsSkillsReached()
         {
             var simulation = new PlayerSimulation(TestWorld.Real, new BotProfile(6, 1), HeroClass.Runedancer);
@@ -117,7 +133,7 @@ namespace Game.Core.Tests.Sim
             var reached = 0;
             foreach (var slot in state.Skills)
             {
-                var progress = state.GemProgress[slot.Skill.Id];
+                var progress = state.GemProgress[slot.Skill.ProgressId];
                 for (var tier = 0; tier < slot.Skill.Branches.Count; tier++)
                 {
                     if (progress.Level < slot.Skill.Branches[tier].Level)
