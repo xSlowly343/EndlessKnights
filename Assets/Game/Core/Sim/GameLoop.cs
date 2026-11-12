@@ -386,12 +386,15 @@ namespace Game.Core.Sim
             return false;
         }
 
+        private RecapSystem? _recap;
+
         public GameState State { get; }
         public EventQueue Events { get; } = new EventQueue(EventCapacity);
 
         public const int EventCapacity = 4096;
         public InputSnapshot LastInput { get; private set; }
         public InputStats SessionInput { get; } = new InputStats();
+        public RecapSystem Recap => _recap ??= new RecapSystem(State);
         public double MetersPerPixel { get; set; } = InputStats.DefaultMetersPerPixel;
         public bool Paused { get; set; }
         public InputPermissions Permissions { get; set; } = InputPermissions.All;
@@ -767,6 +770,7 @@ namespace Game.Core.Sim
             _drops.SetDay(day);
             _quests.SetDay(day);
             _chronicle.SetDay(day);
+            Recap.SetDay(day);
             _seasonal.SetDay(day);
             _town.SetDay(day);
             _companions.SetDay(day);

@@ -138,6 +138,7 @@ namespace Game.Core.Save
                     ("heat", JsonValue.Of(state.Forge.Heat)), ("smelted", JsonValue.Of(state.Forge.Smelted)), ("tempered", JsonValue.Of(state.Forge.Tempered)), ("masterpieces", JsonValue.Of(state.Forge.Masterpieces)), ("salvageOre", JsonValue.Of(state.Forge.SalvageOre)), ("guestHammers", JsonValue.Of(state.Forge.GuestHammers)))),
                 ("slates", WriteSlates(state.Slates)),
                 ("chronicle", WriteChronicle(state.Chronicle)),
+                ("recap", WriteRecap(state)),
                 ("atlas", WriteIds(state.Atlas)),
                 ("resonance", WriteLevels(state.Resonance)),
                 ("spirits", WriteLevels(state.Spirits)),
@@ -442,6 +443,8 @@ namespace Game.Core.Save
                 ReadSlates(node.Field("slates"), slates, state.Slates);
             if (node.HasField("chronicle"))
                 ReadChronicle(node.Field("chronicle"), state.Chronicle);
+            if (node.HasField("recap"))
+                ReadRecap(node.Field("recap"), state.Recap);
             if (node.HasField("atlas"))
                 ReadIds(node.Field("atlas"), state.Atlas);
             if (node.HasField("resonance"))
@@ -533,6 +536,64 @@ namespace Game.Core.Save
             ReadIds(node.Field("nodes"), bonus.Nodes);
             bonus.AnsweredUnixMs = (long)ReadCount(node.Field("answeredUnixMs"));
             bonus.SeenUnixMs = (long)ReadCount(node.Field("seenUnixMs"));
+        }
+
+        private static JsonValue WriteRecap(GameState state)
+        {
+            var recap = state.Recap;
+            var days = new JsonValue[recap.Days.Count];
+            for (var i = 0; i < days.Length; i++)
+                days[i] = WriteRecapDay(recap.Days[i], 0, 0);
+            return Object(
+                ("day", JsonValue.Of(recap.Day)),
+                ("start", WriteRecapDay(recap.Start, state.Kills, state.BossKills)),
+                ("days", JsonValue.Array(days)),
+                ("shownDay", JsonValue.Of(recap.ShownDay)),
+                ("shownWeek", JsonValue.Of(recap.ShownWeek)));
+        }
+
+        private static JsonValue WriteRecapDay(RecapDay day, long killsNow, long bossesNow) => Object(
+            ("day", JsonValue.Of(day.Day)),
+            ("keys", JsonValue.Of(day.Keys)),
+            ("clicks", JsonValue.Of(day.Clicks)),
+            ("mouseMeters", JsonValue.Of(day.MouseMeters)),
+            ("playSeconds", JsonValue.Of(day.PlaySeconds)),
+            ("kills", JsonValue.Of(day.Kills - killsNow)),
+            ("bosses", JsonValue.Of(day.Bosses - bossesNow)),
+            ("stages", JsonValue.Of(day.Stages)),
+            ("recordStage", JsonValue.Of(day.RecordStage)),
+            ("prestiges", JsonValue.Of(day.Prestiges)),
+            ("levels", JsonValue.Of(day.Levels)));
+
+        private static void ReadRecap(ContentNode node, RecapState recap)
+        {
+            recap.Day = node.Field("day").AsLong();
+            ReadRecapDay(node.Field("start"), recap.Start);
+            foreach (var item in node.Field("days").Items())
+            {
+                if (recap.Days.Count >= RecapState.DaysKept)
+                    break;
+                var day = new RecapDay();
+                ReadRecapDay(item, day);
+                recap.Days.Add(day);
+            }
+            recap.ShownDay = node.Field("shownDay").AsLong();
+            recap.ShownWeek = node.Field("shownWeek").AsLong();
+        }
+
+        private static void ReadRecapDay(ContentNode node, RecapDay day)
+        {
+            day.Day = node.Field("day").AsLong();
+            day.Keys = node.Field("keys").AsNumber(0, double.MaxValue);
+            day.Clicks = node.Field("clicks").AsNumber(0, double.MaxValue);
+            day.MouseMeters = node.Field("mouseMeters").AsNumber(0, double.MaxValue);
+            day.PlaySeconds = node.Field("playSeconds").AsNumber(0, double.MaxValue);
+            day.Kills = node.Field("kills").AsLong();
+            day.Bosses = node.Field("bosses").AsLong();
+            day.Stages = node.Field("stages").AsLong();
+            day.RecordStage = node.Field("recordStage").AsLong();
+            day.Prestiges = node.Field("prestiges").AsLong();
+            day.Levels = node.Field("levels").AsLong();
         }
 
         private static JsonValue WriteChronicle(ChronicleState chronicle)

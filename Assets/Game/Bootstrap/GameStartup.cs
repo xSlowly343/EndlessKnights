@@ -109,6 +109,7 @@ namespace Game.Bootstrap
                 notifications = NotificationDriver.Attach(host, dock, panelMode, panels, battle);
                 if (save != null)
                     ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
+                RecapDriver.Attach(host, battle.Loop, panelMode, panels, notifications);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
                 TelemetryDriver.Attach(host, battle.Loop, settings.Settings);
                 OnlinePartyDriver.Attach(host, battle.Loop, data.Current, panels, settings.Settings, notifications, battle.View);

@@ -102,6 +102,26 @@ namespace Game.Platform.Tests
         }
 
         [Test]
+        public void AReportWithAShareButtonKeepsBothButtonsApart()
+        {
+            var claimed = false;
+            var shared = false;
+            _panel.ClaimPressed += () => claimed = true;
+            _panel.SharePressed += () => shared = true;
+            _panel.ShowReport("Итог дня · 11.11.2026", new[] { "Время в игре: 3 ч 12 мин" }, "Понятно", "Картинка в буфер");
+            _panel.Place(0f, true);
+            Canvas.ForceUpdateCanvases();
+
+            Assert.That(_panel.IsShareShown, Is.True);
+            _panel.TryClick(_panel.WorldPointOfShare);
+            Assert.That(shared, Is.True);
+            Assert.That(claimed, Is.False);
+
+            _panel.ShowReport("Пока тебя не было", new[] { "Золото: +10" });
+            Assert.That(_panel.IsShareShown, Is.False);
+        }
+
+        [Test]
         public void LockedTabShowsALockAndFreePointsPutADotOnTheTree()
         {
             var marks = new PanelMarks(PanelUnlocks.Load(@"{ ""version"": 1, ""unlocks"": [ { ""section"": ""party"", ""stage"": 10 } ] }"));
