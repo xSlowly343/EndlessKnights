@@ -12,15 +12,18 @@ namespace Game.Platform.Windows.Tray
         public const string WindowClassName = "RiftWardenTray";
         private const uint IconId = 1;
         private const uint CallbackMessage = TrayNativeMethods.WmApp + 1;
+        private const int HideHotKeyId = 1;
 
         private static readonly TrayNativeMethods.WindowProcedure Procedure = HandleMessage;
         private static readonly Queue<TrayCommand> PendingCommands = new Queue<TrayCommand>();
         private static readonly Queue<SystemEvent> PendingSystemEvents = new Queue<SystemEvent>();
         private static TrayMenuState _menuState = TrayMenuState.Default;
         private static bool _classRegistered;
+        private static bool _stripHidden;
 
         private readonly IntPtr _window;
         private bool _disposed;
+        private bool _hotKeyRegistered;
 
         private TrayIcon(IntPtr window)
         {
@@ -73,6 +76,30 @@ namespace Game.Platform.Windows.Tray
             _menuState = state;
         }
 
+        public void ShowHidden(bool hidden)
+        {
+            _stripHidden = hidden;
+        }
+
+        public bool HideHotKeyRegistered => _hotKeyRegistered;
+
+        public bool UseHideHotKey(bool enabled)
+        {
+            if (enabled == _hotKeyRegistered)
+                return true;
+            if (!enabled)
+            {
+                TrayNativeMethods.UnregisterHotKey(_window, HideHotKeyId);
+                _hotKeyRegistered = false;
+                return true;
+            }
+            _hotKeyRegistered = TrayNativeMethods.RegisterHotKey(_window, HideHotKeyId,
+                TrayNativeMethods.ModControl | TrayNativeMethods.ModAlt | TrayNativeMethods.ModNoRepeat, TrayNativeMethods.KeyH);
+            if (!_hotKeyRegistered)
+                Debug.LogWarning($"Tray: RegisterHotKey failed, error {Marshal.GetLastWin32Error()}");
+            return _hotKeyRegistered;
+        }
+
         public bool TryTakeCommand(out TrayCommand command)
         {
             if (PendingCommands.Count == 0)
@@ -100,6 +127,7 @@ namespace Game.Platform.Windows.Tray
             if (_disposed)
                 return;
             _disposed = true;
+            UseHideHotKey(false);
             var data = NotifyData(_window);
             TrayNativeMethods.Shell_NotifyIcon(TrayNativeMethods.NimDelete, ref data);
             TrayNativeMethods.WTSUnRegisterSessionNotification(_window);
@@ -134,6 +162,13 @@ namespace Game.Platform.Windows.Tray
                 return IntPtr.Zero;
             }
 
+            if (message == TrayNativeMethods.WmHotKey)
+            {
+                if (wParam.ToInt64() == HideHotKeyId)
+                    PendingCommands.Enqueue(TrayCommand.ToggleHidden);
+                return IntPtr.Zero;
+            }
+
             if (message == TrayNativeMethods.WmCommand)
             {
                 var id = (int)(wParam.ToInt64() & 0xFFFF);
@@ -151,7 +186,7 @@ namespace Game.Platform.Windows.Tray
         private static void ShowMenu(IntPtr window)
         {
             var menu = TrayNativeMethods.CreatePopupMenu();
-            foreach (var item in TrayMenu.Items(_menuState))
+            foreach (var item in TrayMenu.Items(_menuState, _stripHidden))
             {
                 if (item.IsSeparator)
                 {

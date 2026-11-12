@@ -533,7 +533,7 @@ namespace Game.Presentation.Battle
                 _attackAge += delta;
             if (!Attacking && _slashes.Pending > 0)
                 StartSlash();
-            var sprite = Attacking ? _skin.Attack.SpriteAt(_attackAge) : _skin.Idle.SpriteAt(_idleAge);
+            var sprite = Attacking ? _skin.AttackAt(Time.unscaledTime).SpriteAt(_attackAge) : _skin.IdleAt(Time.unscaledTime).SpriteAt(_idleAge);
             if (_hero.sprite != sprite)
                 _hero.sprite = sprite;
             if (!_struck && _attackAge >= HeroModel.StrikeSeconds)

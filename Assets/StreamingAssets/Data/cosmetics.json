@@ -145,6 +145,14 @@
     {"id": "cloak_magma", "slot": "heroCloak", "name": {"ru": "Магмовый плащ", "en": "Magma Cloak"}, "price": 0, "source": "event", "look": 22, "color": "#3a1414", "pattern": "duotone", "color2": "#ff7a2a"},
     {"id": "cloak_tiger", "slot": "heroCloak", "name": {"ru": "Тигровый плащ", "en": "Tiger Cloak"}, "price": 0, "source": "pass", "look": 23, "color": "#d98a2a", "pattern": "stripes", "color2": "#2a1a14"},
     {"id": "cloak_starry", "slot": "heroCloak", "name": {"ru": "Плащ звёздного неба", "en": "Starry Sky Cloak"}, "price": 0, "source": "pass", "look": 24, "color": "#1a1f4a", "pattern": "stars", "color2": "#fff4c0"},
+    {"id": "cloak_pearl", "slot": "heroCloak", "name": {"ru": "Перламутровый плащ", "en": "Pearl Cloak"}, "price": 0, "source": "pass", "look": 25, "color": "#e8a8d0", "pattern": "pearl", "color2": "#8ae0d0", "color3": "#b0a8f0", "frames": 12, "seconds": 2.4},
+    {"id": "cloak_polar", "slot": "heroCloak", "name": {"ru": "Плащ полярной ночи", "en": "Polar Night Cloak"}, "price": 0, "source": "event", "look": 26, "color": "#2ad890", "pattern": "aurora", "color2": "#8a4ae0", "color3": "#1a2a5a", "frames": 12, "seconds": 3.2},
+    {"id": "cloak_cinder", "slot": "heroCloak", "name": {"ru": "Плащ тлеющих углей", "en": "Smouldering Cloak"}, "price": 0, "source": "event", "look": 27, "color": "#2a1a1a", "pattern": "embers", "color2": "#ff6a1a", "color3": "#ffe08a", "frames": 8, "seconds": 1.6},
+    {"id": "cloak_starfall", "slot": "heroCloak", "name": {"ru": "Плащ звездопада", "en": "Starfall Cloak"}, "price": 0, "source": "pass", "look": 28, "color": "#141a44", "pattern": "twinkle", "color2": "#fff4c0", "color3": "#9ad8ff", "frames": 16, "seconds": 3.2},
+    {"id": "cloak_tempest", "slot": "heroCloak", "name": {"ru": "Плащ грозового фронта", "en": "Thunderhead Cloak"}, "price": 0, "source": "drop", "look": 29, "color": "#2a3048", "pattern": "lightning", "color2": "#f0f8ff", "color3": "#7a8cff", "frames": 16, "seconds": 2.8},
+    {"id": "cloak_hoarfrost", "slot": "heroCloak", "name": {"ru": "Плащ живого инея", "en": "Hoarfrost Cloak"}, "price": 0, "source": "event", "look": 30, "color": "#2a5a9a", "pattern": "frost", "color2": "#e8f8ff", "color3": "#ffffff", "frames": 16, "seconds": 4},
+    {"id": "cloak_mirror", "slot": "heroCloak", "name": {"ru": "Плащ зыбкой Изнанки", "en": "Rippling Void Cloak"}, "price": 0, "source": "drop", "look": 31, "color": "#3a1c68", "pattern": "ripple", "color2": "#c84af0", "color3": "#5ad8f0", "frames": 10, "seconds": 2},
+    {"id": "cloak_brocade", "slot": "heroCloak", "name": {"ru": "Плащ золотого шитья", "en": "Gold Brocade Cloak"}, "price": 0, "source": "pass", "look": 32, "color": "#5a1420", "pattern": "thread", "color2": "#e8b030", "color3": "#fff6c4", "frames": 12, "seconds": 3},
     {"id": "eyes_void", "slot": "heroEyes", "name": {"ru": "Глаза Изнанки", "en": "Void Eyes"}, "price": 0, "source": "starter", "look": 0, "color": "#6ffd92"},
     {"id": "eyes_ember", "slot": "heroEyes", "name": {"ru": "Глаза-угли", "en": "Ember Eyes"}, "price": 200, "source": "shop", "look": 1, "color": "#ff9a3c"},
     {"id": "eyes_gold", "slot": "heroEyes", "name": {"ru": "Золотые глаза", "en": "Golden Eyes"}, "price": 200, "source": "shop", "look": 2, "color": "#ffe066"},
@@ -169,6 +177,14 @@
     {"id": "strike_wolf", "slot": "heroStrike", "name": {"ru": "Призрачный волк", "en": "Spirit Wolf"}, "price": 0, "source": "drop", "look": 13},
     {"id": "strike_ink", "slot": "heroStrike", "name": {"ru": "Росчерк туши", "en": "Ink Stroke"}, "price": 0, "source": "drop", "look": 14},
     {"id": "strike_glass", "slot": "heroStrike", "name": {"ru": "Витраж", "en": "Stained Glass"}, "price": 0, "source": "pass", "look": 15},
-    {"id": "strike_firework", "slot": "heroStrike", "name": {"ru": "Фейерверк", "en": "Firework"}, "price": 0, "source": "event", "look": 16}
+    {"id": "strike_firework", "slot": "heroStrike", "name": {"ru": "Фейерверк", "en": "Firework"}, "price": 0, "source": "event", "look": 16},
+    {"id": "strike_bone", "slot": "heroStrike", "name": {"ru": "Костяная рука", "en": "Bone Hand"}, "price": 0, "source": "drop", "look": 17},
+    {"id": "strike_bat", "slot": "heroStrike", "name": {"ru": "Рой летучих мышей", "en": "Bat Swarm"}, "price": 0, "source": "drop", "look": 18},
+    {"id": "strike_golem", "slot": "heroStrike", "name": {"ru": "Кулак голема", "en": "Golem Fist"}, "price": 0, "source": "pass", "look": 19},
+    {"id": "strike_serpent", "slot": "heroStrike", "name": {"ru": "Морской змей", "en": "Sea Serpent"}, "price": 0, "source": "event", "look": 20},
+    {"id": "strike_samurai", "slot": "heroStrike", "name": {"ru": "Дух-самурай", "en": "Spirit Samurai"}, "price": 0, "source": "pass", "look": 21},
+    {"id": "strike_raven", "slot": "heroStrike", "name": {"ru": "Ворон-вестник", "en": "Herald Raven"}, "price": 0, "source": "drop", "look": 22},
+    {"id": "strike_vine", "slot": "heroStrike", "name": {"ru": "Лоза-хищник", "en": "Vine Predator"}, "price": 0, "source": "event", "look": 23},
+    {"id": "strike_guardian", "slot": "heroStrike", "name": {"ru": "Небесный страж", "en": "Sky Guardian"}, "price": 0, "source": "pass", "look": 24}
   ]
 }

@@ -164,6 +164,10 @@ class FakeNakama {
   }
 
   storageDelete(keys) {
+    for (const key of keys) {
+      const existing = this.storage.get(this.key(key));
+      if (key.version && (!existing || existing.version !== key.version)) throw new Error("storage delete rejected - version check failed");
+    }
     for (const key of keys) this.storage.delete(this.key(key));
   }
 

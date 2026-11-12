@@ -35,12 +35,12 @@ namespace Game.Core.Ui
 
         private static int SubTabCount(PanelSection section) => section switch
         {
-            PanelSection.Hero => 2,
+            PanelSection.Hero => 3,
             PanelSection.Book => 2,
             PanelSection.Tree => 3,
             PanelSection.Items => 3,
             PanelSection.Party => 4,
-            PanelSection.Settings => 3,
+            PanelSection.Settings => 4,
             _ => 0,
         };
 

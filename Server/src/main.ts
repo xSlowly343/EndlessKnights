@@ -58,6 +58,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("coop_wallet", coopWalletRpc);
     initializer.registerRpc("quest_party_claim", questPartyClaimRpc);
     initializer.registerRpc("mail_claim", mailClaimRpc);
+    initializer.registerRpc("coupon_redeem", couponRedeemRpc);
+    initializer.registerRpc("coupon_put", couponPutRpc);
     initializer.registerRpc("help_settings", helpSettingsRpc);
     initializer.registerRpc("help_call", helpCallRpc);
     initializer.registerRpc("help_invites", helpInvitesRpc);
@@ -130,6 +132,11 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("chat_remove", chatRemoveRpc);
     initializer.registerRpc("town_gift_send", townGiftSendRpc);
     initializer.registerRpc("town_gift_claim", townGiftClaimRpc);
+    initializer.registerRpc("market_list", marketListRpc);
+    initializer.registerRpc("market_sell", marketSellRpc);
+    initializer.registerRpc("market_buy", marketBuyRpc);
+    initializer.registerRpc("market_cancel", marketCancelRpc);
+    initializer.registerRpc("market_claim", marketClaimRpc);
     initializer.registerRpc("camp_publish", campPublishRpc);
     initializer.registerRpc("camp_visit", campVisitRpc);
     initializer.registerRpc("camp_guest", campGuestRpc);

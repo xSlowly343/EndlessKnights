@@ -12,12 +12,15 @@ namespace Game.Core.Ui
 
         private readonly long[] _stages;
 
-        private PanelUnlocks(long[] stages)
+        private PanelUnlocks(long[] stages, StripSceneRules scene)
         {
             _stages = stages;
+            Scene = scene;
         }
 
-        public static PanelUnlocks AllOpen => new PanelUnlocks(FirstStage());
+        public static PanelUnlocks AllOpen => new PanelUnlocks(FirstStage(), StripSceneRules.Instant);
+
+        public StripSceneRules Scene { get; }
 
         public long StageFor(PanelSection section) => _stages[(int)section];
 
@@ -43,7 +46,7 @@ namespace Game.Core.Ui
                     throw item.Field("stage").Error($"'{name.AsString()}' opens with the menu button and must be open from stage 1");
                 stages[(int)section] = stage;
             }
-            return new PanelUnlocks(stages);
+            return new PanelUnlocks(stages, root.HasField("strip") ? StripSceneRules.Load(root.Field("strip")) : StripSceneRules.Instant);
         }
 
         private static long[] FirstStage() => Enumerable.Repeat(1L, PanelSections.All.Count).ToArray();

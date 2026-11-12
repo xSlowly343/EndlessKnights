@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "raven-dive 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-dive 1",
+   "frame": {
+    "x": 120,
+    "y": 0,
+    "w": 120,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-dive 2",
+   "frame": {
+    "x": 0,
+    "y": 54,
+    "w": 120,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-dive 3",
+   "frame": {
+    "x": 120,
+    "y": 54,
+    "w": 120,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-dive 4",
+   "frame": {
+    "x": 0,
+    "y": 108,
+    "w": 120,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-dive 5",
+   "frame": {
+    "x": 120,
+    "y": 108,
+    "w": 120,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-dive 6",
+   "frame": {
+    "x": 0,
+    "y": 162,
+    "w": 120,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 54
+   },
+   "duration": 33
+  },
+  {
+   "filename": "raven-dive 7",
+   "frame": {
+    "x": 120,
+    "y": 162,
+    "w": 120,
+    "h": 54
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 54
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 54
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "raven-dive.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 240,
+   "h": 216
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "raven-dive",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/raven-dive",
+   "name": "Raven dive",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    120,
+    54
+   ],
+   "pivot": [
+    100,
+    28
+   ],
+   "columns": 2
+  }
+ }
+}

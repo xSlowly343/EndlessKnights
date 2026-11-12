@@ -159,7 +159,7 @@ namespace Game.Core.Sim.Rift
 
         public void OnBossDefeated(EnemyType type, long stageBefore)
         {
-            if (!Inside)
+            if (!Inside || _state.Dungeons.Inside)
                 return;
             var shards = type == EnemyType.Guardian ? _rules.GuardianShards : _rules.BossShards;
             _state.Rift.Shards += BigNumber.FromDouble(shards);

@@ -73,16 +73,27 @@ namespace Game.Platform.Tests
         {
             var state = new TrayMenuState(paused: true, clickThrough: false, alwaysOnTop: true, frameRate: 144, showInputDebug: false);
 
-            var items = TrayMenu.Items(state);
+            var items = TrayMenu.Items(state, stripHidden: true);
             var commands = items.Where(item => !item.IsSeparator).ToList();
 
             Assert.That(commands.Select(item => item.Command), Is.EqualTo(new[]
             {
-                TrayCommand.TogglePause, TrayCommand.ToggleClickThrough, TrayCommand.ToggleAlwaysOnTop, TrayCommand.ToggleInputDebug,
+                TrayCommand.ToggleHidden, TrayCommand.ToggleClickThrough, TrayCommand.ToggleAlwaysOnTop, TrayCommand.ToggleInputDebug,
                 TrayCommand.FrameRate30, TrayCommand.FrameRate60, TrayCommand.FrameRate144, TrayCommand.TogglePanel, TrayCommand.Exit
             }));
             Assert.That(commands.Select(item => item.IsChecked), Is.EqualTo(new[] { true, false, true, false, false, false, true, false, false }));
             Assert.That(items.Count(item => item.IsSeparator), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void TheMenuHasNoPauseAndNamesTheHideHotKey()
+        {
+            var items = TrayMenu.Items(TrayMenuState.Default);
+
+            Assert.That(items.Any(item => item.Command == TrayCommand.TogglePause), Is.False);
+            var hide = items.First(item => item.Command == TrayCommand.ToggleHidden);
+            Assert.That(hide.Text, Does.Contain(TrayMenu.HideHotKeyText));
+            Assert.That(hide.IsChecked, Is.False);
         }
     }
 }

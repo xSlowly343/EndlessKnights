@@ -94,7 +94,7 @@ namespace Game.Core.Tests.Sim
                 Assert.That(items.Where(c => c.Starter).All(c => c.Price == 0 && !c.ForSale), Is.True, slot);
             }
             Assert.That(Catalog.All.Where(c => c.Slot == CosmeticCatalog.CloakSlot || c.Slot == CosmeticCatalog.EyesSlot).All(c => c.Color.Length == 7 && c.Color[0] == '#'), Is.True);
-            Assert.That(Catalog.All.Count(c => c.Slot == CosmeticCatalog.StrikeSlot), Is.EqualTo(17), "the void crescent, eight from the shop and eight for the pass, events and drops");
+            Assert.That(Catalog.All.Count(c => c.Slot == CosmeticCatalog.StrikeSlot), Is.EqualTo(25), "the void crescent, eight from the shop and sixteen for the pass, events and drops");
             Assert.That(Catalog.All.Where(c => !CosmeticCatalog.IsLookSlot(c.Slot)).All(c => c.Look == 0), Is.True);
             Assert.Throws<ContentException>(() => CosmeticCatalog.Load(TestData.ReadGameDataFile(CosmeticCatalog.FileName).Replace("\"source\": \"starter\", \"look\": 4,", "\"source\": \"starter\", \"look\": 0,")));
         }
@@ -104,8 +104,8 @@ namespace Game.Core.Tests.Sim
         {
             var cloaks = Catalog.All.Where(c => c.Slot == CosmeticCatalog.CloakSlot).ToList();
             var patterned = cloaks.Where(c => c.Pattern.Length > 0).ToList();
-            Assert.That(patterned.Count, Is.EqualTo(8));
-            Assert.That(patterned.Select(c => c.Pattern).Distinct(), Is.EquivalentTo(CosmeticCatalog.CloakPatterns));
+            Assert.That(patterned.Count, Is.EqualTo(16));
+            Assert.That(patterned.Select(c => c.Pattern).Distinct(), Is.EquivalentTo(CosmeticCatalog.CloakPatterns.Concat(CosmeticCatalog.LivingCloakPatterns)));
             Assert.That(patterned.All(c => c.Color2.Length == 7 && c.Color2[0] == '#'), Is.True);
             Assert.That(cloaks.Where(c => c.Pattern.Length == 0).All(c => c.Color2.Length == 0), Is.True);
             Assert.That(Catalog.All.Where(c => c.Slot != CosmeticCatalog.CloakSlot).All(c => c.Pattern.Length == 0), Is.True);
@@ -114,6 +114,30 @@ namespace Game.Core.Tests.Sim
             var json = TestData.ReadGameDataFile(CosmeticCatalog.FileName);
             Assert.Throws<ContentException>(() => CosmeticCatalog.Load(json.Replace("\"pattern\": \"trim\", \"color2\": \"#f0c040\"", "\"pattern\": \"plaid\", \"color2\": \"#f0c040\"")));
             Assert.Throws<ContentException>(() => CosmeticCatalog.Load(json.Replace(", \"pattern\": \"trim\", \"color2\": \"#f0c040\"", ", \"color2\": \"#f0c040\"")));
+        }
+
+        [Test]
+        public void LivingCloaksCarryAThirdColourAndALoopTheLoaderChecks()
+        {
+            var cloaks = Catalog.All.Where(c => c.Slot == CosmeticCatalog.CloakSlot).ToList();
+            var living = cloaks.Where(c => c.Living).ToList();
+            Assert.That(living.Select(c => c.Pattern), Is.EquivalentTo(CosmeticCatalog.LivingCloakPatterns), "one cloak for each living pattern");
+            Assert.That(living.Select(c => c.Look), Is.EquivalentTo(Enumerable.Range(25, 8)));
+            Assert.That(living.All(c => c.Color3.Length == 7 && c.Color3[0] == '#'), Is.True);
+            Assert.That(living.All(c => c.Frames >= CosmeticCatalog.MinCloakFrames && c.Frames <= CosmeticCatalog.MaxCloakFrames), Is.True);
+            Assert.That(living.All(c => c.Seconds >= CosmeticCatalog.MinCloakSeconds && c.Seconds <= CosmeticCatalog.MaxCloakSeconds), Is.True);
+            Assert.That(living.All(c => !c.ForSale && !c.Starter), Is.True, "living cloaks are kept for the pass, events and drops");
+            Assert.That(Catalog.All.Where(c => !c.Living).All(c => c.Color3.Length == 0 && c.Frames == 0 && c.Seconds == 0), Is.True);
+            Assert.That(Catalog.ByLook(CosmeticCatalog.CloakSlot, 28)!.Frames, Is.EqualTo(16));
+            Assert.That(Catalog.ByLook(CosmeticCatalog.CloakSlot, 25)!.Seconds, Is.EqualTo(2.4).Within(0.001));
+            var json = TestData.ReadGameDataFile(CosmeticCatalog.FileName);
+            const string pearl = "\"pattern\": \"pearl\", \"color2\": \"#8ae0d0\", \"color3\": \"#b0a8f0\", \"frames\": 12, \"seconds\": 2.4";
+            Assert.That(json, Does.Contain(pearl));
+            Assert.Throws<ContentException>(() => CosmeticCatalog.Load(json.Replace(pearl, pearl.Replace("\"frames\": 12", "\"frames\": 40"))), "too many frames");
+            Assert.Throws<ContentException>(() => CosmeticCatalog.Load(json.Replace(pearl, pearl.Replace("\"seconds\": 2.4", "\"seconds\": 0.1"))), "too fast a loop");
+            Assert.Throws<ContentException>(() => CosmeticCatalog.Load(json.Replace(pearl, pearl.Replace(", \"color3\": \"#b0a8f0\"", string.Empty))), "no third colour");
+            Assert.Throws<ContentException>(() => CosmeticCatalog.Load(json.Replace(pearl, pearl.Replace(", \"frames\": 12", string.Empty))), "no frame count");
+            Assert.Throws<ContentException>(() => CosmeticCatalog.Load(json.Replace(pearl, pearl.Replace("\"pearl\"", "\"trim\""))), "a still pattern with a loop");
         }
 
         [Test]
@@ -170,7 +194,7 @@ namespace Game.Core.Tests.Sim
             try
             {
                 SettingsScreen.UseLooks(new HeroLookChooser(loop.Cosmetics));
-                Assert.That(SettingsScreen.Rows(2), Is.EqualTo(new[] { SettingId.HeroCloak, SettingId.HeroEyes, SettingId.HeroStrike }));
+                Assert.That(SettingsScreen.Rows(SettingsScreen.LookTab), Is.EqualTo(new[] { SettingId.HeroCloak, SettingId.HeroEyes, SettingId.HeroStrike }));
                 Assert.That(SettingsScreen.Value(SettingId.HeroEyes, settings), Is.EqualTo("Глаза Изнанки"));
                 Assert.That(SettingsScreen.Change(SettingId.HeroEyes, settings, -1), Is.True);
                 Assert.That(SettingsScreen.Value(SettingId.HeroEyes, settings), Is.EqualTo("Розовые глаза · примерка, 200 крист."));

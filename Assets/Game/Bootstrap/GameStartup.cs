@@ -82,6 +82,7 @@ namespace Game.Bootstrap
             ErrorReportDriver.Attach(host, settings.Settings);
             var panels = PanelCanvas.Create();
             var panelMode = PanelModeDriver.Attach(host, dock, panels, menuButton);
+            CouponEntryDriver.Attach(host, panels, window);
             var router = StripPointerRouter.Attach(host, pointer, window, camera, focusButton, dock, menuButton, panels);
             BattleView? battleView = null;
             GameLoop? loop = null;
@@ -108,19 +109,20 @@ namespace Game.Bootstrap
                 notifications = NotificationDriver.Attach(host, dock, panelMode, panels, battle);
                 if (save != null)
                     ReportOffline(battle, panelMode, save.AwayTime(Game.Platform.Windows.Power.SystemClock.Read()).Seconds);
+                RecapDriver.Attach(host, battle.Loop, panelMode, panels, notifications);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
                 TelemetryDriver.Attach(host, battle.Loop, settings.Settings);
                 OnlinePartyDriver.Attach(host, battle.Loop, data.Current, panels, settings.Settings, notifications, battle.View);
             }
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer, panels, focusButton);
             FocusModeDriver.Attach(host, window, clickThrough);
-            FullscreenDriver.Attach(focusButton.gameObject, window);
+            var fullscreen = FullscreenDriver.Attach(focusButton.gameObject, window);
 
             var tray = TrayIcon.Create(Application.productName);
-            var trayDriver = tray != null ? TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug, panelMode) : null;
+            var trayDriver = tray != null ? TrayDriver.Attach(focusButton.gameObject, tray, window, clickThrough, framePacing, dock, rawInput, inputDebug, panelMode, fullscreen) : null;
             if (trayDriver != null && wokenBattle != null)
                 trayDriver.Woke += seconds => ReportOffline(wokenBattle, panelMode, seconds);
-            settings.Bind(panels, panelMode, dock, trayDriver, battleView, loop, notifications, data?.Current.ChangeLog);
+            settings.Bind(panels, panelMode, dock, trayDriver, battleView, loop, notifications, data?.Current.ChangeLog, fullscreen);
         }
 
         private static void ReportOffline(BattleDriver battle, PanelModeDriver panelMode, double awaySeconds)

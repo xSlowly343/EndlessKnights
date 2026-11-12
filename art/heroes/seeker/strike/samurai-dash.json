@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "samurai-dash 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 118,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 118,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 118,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-dash 1",
+   "frame": {
+    "x": 118,
+    "y": 0,
+    "w": 118,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 118,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 118,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-dash 2",
+   "frame": {
+    "x": 0,
+    "y": 46,
+    "w": 118,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 118,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 118,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-dash 3",
+   "frame": {
+    "x": 118,
+    "y": 46,
+    "w": 118,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 118,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 118,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-dash 4",
+   "frame": {
+    "x": 0,
+    "y": 92,
+    "w": 118,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 118,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 118,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-dash 5",
+   "frame": {
+    "x": 118,
+    "y": 92,
+    "w": 118,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 118,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 118,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-dash 6",
+   "frame": {
+    "x": 0,
+    "y": 138,
+    "w": 118,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 118,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 118,
+    "h": 46
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-dash 7",
+   "frame": {
+    "x": 118,
+    "y": 138,
+    "w": 118,
+    "h": 46
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 118,
+    "h": 46
+   },
+   "sourceSize": {
+    "w": 118,
+    "h": 46
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "samurai-dash.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 236,
+   "h": 184
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "samurai-dash",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/samurai-dash",
+   "name": "Samurai dash",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    118,
+    46
+   ],
+   "pivot": [
+    98,
+    26
+   ],
+   "columns": 2
+  }
+ }
+}

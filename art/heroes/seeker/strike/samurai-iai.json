@@ -1,0 +1,611 @@
+{
+ "frames": [
+  {
+   "filename": "samurai-iai 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 1",
+   "frame": {
+    "x": 116,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 2",
+   "frame": {
+    "x": 232,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 3",
+   "frame": {
+    "x": 348,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 4",
+   "frame": {
+    "x": 464,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 5",
+   "frame": {
+    "x": 0,
+    "y": 76,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 6",
+   "frame": {
+    "x": 116,
+    "y": 76,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 7",
+   "frame": {
+    "x": 232,
+    "y": 76,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 8",
+   "frame": {
+    "x": 348,
+    "y": 76,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 9",
+   "frame": {
+    "x": 464,
+    "y": 76,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 10",
+   "frame": {
+    "x": 0,
+    "y": 152,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 11",
+   "frame": {
+    "x": 116,
+    "y": 152,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 12",
+   "frame": {
+    "x": 232,
+    "y": 152,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 13",
+   "frame": {
+    "x": 348,
+    "y": 152,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 14",
+   "frame": {
+    "x": 464,
+    "y": 152,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 15",
+   "frame": {
+    "x": 0,
+    "y": 228,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 16",
+   "frame": {
+    "x": 116,
+    "y": 228,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 17",
+   "frame": {
+    "x": 232,
+    "y": 228,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 18",
+   "frame": {
+    "x": 348,
+    "y": 228,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 19",
+   "frame": {
+    "x": 464,
+    "y": 228,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 20",
+   "frame": {
+    "x": 0,
+    "y": 304,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 21",
+   "frame": {
+    "x": 116,
+    "y": 304,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 22",
+   "frame": {
+    "x": 232,
+    "y": 304,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 23",
+   "frame": {
+    "x": 348,
+    "y": 304,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 24",
+   "frame": {
+    "x": 464,
+    "y": 304,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  },
+  {
+   "filename": "samurai-iai 25",
+   "frame": {
+    "x": 0,
+    "y": 380,
+    "w": 116,
+    "h": 76
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 116,
+    "h": 76
+   },
+   "sourceSize": {
+    "w": 116,
+    "h": 76
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "samurai-iai.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 580,
+   "h": 456
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "samurai-iai",
+    "from": 0,
+    "to": 25,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/samurai-iai",
+   "name": "Samurai iai",
+   "fps": 30,
+   "loop": false,
+   "frames": 26,
+   "frameSize": [
+    116,
+    76
+   ],
+   "pivot": [
+    74,
+    44
+   ],
+   "columns": 5
+  }
+ }
+}
