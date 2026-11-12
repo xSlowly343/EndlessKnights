@@ -1,0 +1,633 @@
+{
+ "frames": [
+  {
+   "filename": "thunder-strike 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 1",
+   "frame": {
+    "x": 108,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 2",
+   "frame": {
+    "x": 216,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 3",
+   "frame": {
+    "x": 324,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 4",
+   "frame": {
+    "x": 432,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 5",
+   "frame": {
+    "x": 0,
+    "y": 74,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 6",
+   "frame": {
+    "x": 108,
+    "y": 74,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 7",
+   "frame": {
+    "x": 216,
+    "y": 74,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 8",
+   "frame": {
+    "x": 324,
+    "y": 74,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 9",
+   "frame": {
+    "x": 432,
+    "y": 74,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 10",
+   "frame": {
+    "x": 0,
+    "y": 148,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 11",
+   "frame": {
+    "x": 108,
+    "y": 148,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 12",
+   "frame": {
+    "x": 216,
+    "y": 148,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 13",
+   "frame": {
+    "x": 324,
+    "y": 148,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 14",
+   "frame": {
+    "x": 432,
+    "y": 148,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 15",
+   "frame": {
+    "x": 0,
+    "y": 222,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 16",
+   "frame": {
+    "x": 108,
+    "y": 222,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 17",
+   "frame": {
+    "x": 216,
+    "y": 222,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 18",
+   "frame": {
+    "x": 324,
+    "y": 222,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 19",
+   "frame": {
+    "x": 432,
+    "y": 222,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 20",
+   "frame": {
+    "x": 0,
+    "y": 296,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 21",
+   "frame": {
+    "x": 108,
+    "y": 296,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 22",
+   "frame": {
+    "x": 216,
+    "y": 296,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 23",
+   "frame": {
+    "x": 324,
+    "y": 296,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 24",
+   "frame": {
+    "x": 432,
+    "y": 296,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 25",
+   "frame": {
+    "x": 0,
+    "y": 370,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  },
+  {
+   "filename": "thunder-strike 26",
+   "frame": {
+    "x": 108,
+    "y": 370,
+    "w": 108,
+    "h": 74
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 108,
+    "h": 74
+   },
+   "sourceSize": {
+    "w": 108,
+    "h": 74
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "thunder-strike.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 540,
+   "h": 444
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "thunder-strike",
+    "from": 0,
+    "to": 26,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/thunder-strike",
+   "name": "Thunder strike",
+   "fps": 30,
+   "loop": false,
+   "frames": 27,
+   "frameSize": [
+    108,
+    74
+   ],
+   "pivot": [
+    54,
+    62
+   ],
+   "columns": 5
+  }
+ }
+}

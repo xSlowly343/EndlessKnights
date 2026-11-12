@@ -389,6 +389,20 @@ test("a hero look is relayed to the others with the sender slot, unknown looks a
   assert.strictEqual(host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 20).length, 0);
 });
 
+test("looks kept for the pass, events and drops are relayed like the rest", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  host.join("user-a", "11");
+  host.join("user-b", "12");
+  host.tick();
+  host.outbox.length = 0;
+  host.receive("user-b", look(24, 0, 16));
+  const relayed = host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 20);
+  assert.deepStrictEqual(Array.from(new Uint8Array(relayed[0].data)), [20, 1, 24, 0, 16]);
+  host.outbox.length = 0;
+  host.receive("user-b", look(25, 0, 17));
+  assert.strictEqual(host.outbox.filter((packet) => new DataView(packet.data).getUint8(0) === 20).length, 0);
+});
+
 test("starter looks cannot be bought", () => {
   const rules = party.CosmeticServerRules;
   for (const slot of ["heroCloak", "heroEyes", "heroStrike"]) {

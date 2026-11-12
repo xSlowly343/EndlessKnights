@@ -94,9 +94,26 @@ namespace Game.Core.Tests.Sim
                 Assert.That(items.Where(c => c.Starter).All(c => c.Price == 0 && !c.ForSale), Is.True, slot);
             }
             Assert.That(Catalog.All.Where(c => c.Slot == CosmeticCatalog.CloakSlot || c.Slot == CosmeticCatalog.EyesSlot).All(c => c.Color.Length == 7 && c.Color[0] == '#'), Is.True);
-            Assert.That(Catalog.All.Count(c => c.Slot == CosmeticCatalog.StrikeSlot), Is.EqualTo(9), "the void crescent and eight more");
+            Assert.That(Catalog.All.Count(c => c.Slot == CosmeticCatalog.StrikeSlot), Is.EqualTo(17), "the void crescent, eight from the shop and eight for the pass, events and drops");
             Assert.That(Catalog.All.Where(c => !CosmeticCatalog.IsLookSlot(c.Slot)).All(c => c.Look == 0), Is.True);
             Assert.Throws<ContentException>(() => CosmeticCatalog.Load(TestData.ReadGameDataFile(CosmeticCatalog.FileName).Replace("\"source\": \"starter\", \"look\": 4,", "\"source\": \"starter\", \"look\": 0,")));
+        }
+
+        [Test]
+        public void PatternedCloaksCarryAKnownPatternAndASecondColour()
+        {
+            var cloaks = Catalog.All.Where(c => c.Slot == CosmeticCatalog.CloakSlot).ToList();
+            var patterned = cloaks.Where(c => c.Pattern.Length > 0).ToList();
+            Assert.That(patterned.Count, Is.EqualTo(8));
+            Assert.That(patterned.Select(c => c.Pattern).Distinct(), Is.EquivalentTo(CosmeticCatalog.CloakPatterns));
+            Assert.That(patterned.All(c => c.Color2.Length == 7 && c.Color2[0] == '#'), Is.True);
+            Assert.That(cloaks.Where(c => c.Pattern.Length == 0).All(c => c.Color2.Length == 0), Is.True);
+            Assert.That(Catalog.All.Where(c => c.Slot != CosmeticCatalog.CloakSlot).All(c => c.Pattern.Length == 0), Is.True);
+            Assert.That(Catalog.All.Where(c => CosmeticCatalog.IsLookSlot(c.Slot) && c.Look > 10 && c.Slot == CosmeticCatalog.CloakSlot).All(c => !c.ForSale && !c.Starter), Is.True, "new cloaks are kept for the pass, events and drops");
+            Assert.That(Catalog.All.Where(c => c.Slot == CosmeticCatalog.StrikeSlot && c.Look > 8).All(c => !c.ForSale && !c.Starter), Is.True);
+            var json = TestData.ReadGameDataFile(CosmeticCatalog.FileName);
+            Assert.Throws<ContentException>(() => CosmeticCatalog.Load(json.Replace("\"pattern\": \"trim\", \"color2\": \"#f0c040\"", "\"pattern\": \"plaid\", \"color2\": \"#f0c040\"")));
+            Assert.Throws<ContentException>(() => CosmeticCatalog.Load(json.Replace(", \"pattern\": \"trim\", \"color2\": \"#f0c040\"", ", \"color2\": \"#f0c040\"")));
         }
 
         [Test]

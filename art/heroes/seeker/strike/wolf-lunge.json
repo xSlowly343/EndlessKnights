@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "wolf-lunge 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-lunge 1",
+   "frame": {
+    "x": 124,
+    "y": 0,
+    "w": 124,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-lunge 2",
+   "frame": {
+    "x": 0,
+    "y": 52,
+    "w": 124,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-lunge 3",
+   "frame": {
+    "x": 124,
+    "y": 52,
+    "w": 124,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-lunge 4",
+   "frame": {
+    "x": 0,
+    "y": 104,
+    "w": 124,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-lunge 5",
+   "frame": {
+    "x": 124,
+    "y": 104,
+    "w": 124,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-lunge 6",
+   "frame": {
+    "x": 0,
+    "y": 156,
+    "w": 124,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 52
+   },
+   "duration": 33
+  },
+  {
+   "filename": "wolf-lunge 7",
+   "frame": {
+    "x": 124,
+    "y": 156,
+    "w": 124,
+    "h": 52
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 124,
+    "h": 52
+   },
+   "sourceSize": {
+    "w": 124,
+    "h": 52
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "wolf-lunge.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 248,
+   "h": 208
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "wolf-lunge",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/wolf-lunge",
+   "name": "Wolf lunge",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    124,
+    52
+   ],
+   "pivot": [
+    100,
+    28
+   ],
+   "columns": 2
+  }
+ }
+}

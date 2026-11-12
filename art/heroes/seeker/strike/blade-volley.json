@@ -1,0 +1,215 @@
+{
+ "frames": [
+  {
+   "filename": "blade-volley 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-volley 1",
+   "frame": {
+    "x": 120,
+    "y": 0,
+    "w": 120,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-volley 2",
+   "frame": {
+    "x": 0,
+    "y": 48,
+    "w": 120,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-volley 3",
+   "frame": {
+    "x": 120,
+    "y": 48,
+    "w": 120,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-volley 4",
+   "frame": {
+    "x": 0,
+    "y": 96,
+    "w": 120,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-volley 5",
+   "frame": {
+    "x": 120,
+    "y": 96,
+    "w": 120,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-volley 6",
+   "frame": {
+    "x": 0,
+    "y": 144,
+    "w": 120,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 48
+   },
+   "duration": 33
+  },
+  {
+   "filename": "blade-volley 7",
+   "frame": {
+    "x": 120,
+    "y": 144,
+    "w": 120,
+    "h": 48
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 120,
+    "h": 48
+   },
+   "sourceSize": {
+    "w": 120,
+    "h": 48
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "blade-volley.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 240,
+   "h": 192
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "blade-volley",
+    "from": 0,
+    "to": 7,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/blade-volley",
+   "name": "Blade volley",
+   "fps": 30,
+   "loop": false,
+   "frames": 8,
+   "frameSize": [
+    120,
+    48
+   ],
+   "pivot": [
+    98,
+    24
+   ],
+   "columns": 2
+  }
+ }
+}
