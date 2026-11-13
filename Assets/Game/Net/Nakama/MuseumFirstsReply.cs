@@ -54,23 +54,47 @@ namespace Game.Net.Nakama
             From(NakamaJson.Parse(await client.RpcAsync(session, "museum_firsts", string.Empty, cancel).ConfigureAwait(false)));
     }
 
+    public sealed class StreetWalker
+    {
+        public StreetWalker(string name, string place, IReadOnlyList<string> ties)
+        {
+            Name = name;
+            Place = place;
+            Ties = ties;
+        }
+
+        public string Name { get; }
+        public string Place { get; }
+        public IReadOnlyList<string> Ties { get; }
+    }
+
     public sealed class TownStreetReply
     {
+        public const string Town = "town";
+        public const string Hideout = "hideout";
+        public const string ClanCamp = "clanCamp";
+
         private TownStreetReply(JsonValue json)
         {
             var walkers = new List<string>();
+            var people = new List<StreetWalker>();
             foreach (var item in NakamaJson.Items(json, "walkers"))
+            {
                 walkers.Add(NakamaJson.Text(item, "name"));
+                people.Add(new StreetWalker(NakamaJson.Text(item, "name"), NakamaJson.Text(item, "place"), CosmeticsMineView.Ids(item, "ties")));
+            }
             Walkers = walkers;
+            People = people;
         }
 
         public IReadOnlyList<string> Walkers { get; }
+        public IReadOnlyList<StreetWalker> People { get; }
 
         public static TownStreetReply From(JsonValue json) => new TownStreetReply(json);
 
-        public static string Payload(bool here) => NakamaJson.Object(("here", here ? "true" : "false"));
+        public static string Payload(bool here, string place) => NakamaJson.Object(("here", here ? "true" : "false"), ("place", NakamaJson.Quote(place)));
 
-        public static async Task<TownStreetReply> MarkAsync(NakamaClient client, NakamaSession session, bool here, CancellationToken cancel = default) =>
-            From(NakamaJson.Parse(await client.RpcAsync(session, "town_street", Payload(here), cancel).ConfigureAwait(false)));
+        public static async Task<TownStreetReply> MarkAsync(NakamaClient client, NakamaSession session, bool here, string place, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "town_street", Payload(here, place), cancel).ConfigureAwait(false)));
     }
 }

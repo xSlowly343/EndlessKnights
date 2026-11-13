@@ -42,11 +42,11 @@ test("the street shows friends, the clan and the party who are in the town now",
   const nk = world("ann", "bob", "cid", "eve");
   nk.addFriends("ann", "bob");
   nk.addFriends("ann", "cid");
-  server.townStreet(nk, "bob", true, now);
-  server.townStreet(nk, "cid", true, now - server.TownServerRules.streetSeconds * 1000 - 1);
-  server.townStreet(nk, "eve", true, now);
-  assert.deepStrictEqual(plain(server.townStreet(nk, "ann", true, now)).walkers.map((w) => w.name), ["bob"], "cid left long ago, eve is a stranger");
-  server.townStreet(nk, "bob", false, now + 1);
-  assert.deepStrictEqual(plain(server.townStreet(nk, "ann", true, now + 2)).walkers, []);
-  assert.throws(() => server.townStreet(nk, "ann", "yes", now), /bad request/);
+  server.townStreet(nk, "bob", true, "hideout", now);
+  server.townStreet(nk, "cid", true, "town", now - server.TownServerRules.streetSeconds * 1000 - 1);
+  server.townStreet(nk, "eve", true, "town", now);
+  assert.deepStrictEqual(plain(server.townStreet(nk, "ann", true, "town", now)).walkers.map((w) => [w.name, w.place, w.ties.join()]), [["bob", "hideout", "friend"]], "cid left long ago, eve is a stranger");
+  server.townStreet(nk, "bob", false, null, now + 1);
+  assert.deepStrictEqual(plain(server.townStreet(nk, "ann", true, "town", now + 2)).walkers, []);
+  assert.throws(() => server.townStreet(nk, "ann", "yes", "town", now), /bad request/);
 });

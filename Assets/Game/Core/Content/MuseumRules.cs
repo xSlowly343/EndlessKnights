@@ -157,6 +157,16 @@ namespace Game.Core.Content
 
         public static bool TryPerk(string name, out MuseumPerk perk) => PerkNames.TryGetValue(name, out perk);
 
+        public static string NameOf(MuseumPerk perk)
+        {
+            foreach (var pair in PerkNames)
+            {
+                if (pair.Value == perk)
+                    return pair.Key;
+            }
+            return string.Empty;
+        }
+
         public static double MaxOf(MuseumPerk perk) => perk == MuseumPerk.HookWindow ? MaxSecondsPerk : MaxPerk;
         public static int PerkCount => PerkNames.Count;
 

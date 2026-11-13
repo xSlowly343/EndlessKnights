@@ -484,7 +484,14 @@ namespace Game.Net.Tests
             var vote = TownBuildReply.From(NakamaJson.Parse("{\"built\":[\"gardeners\",\"fishers\"],\"round\":2,\"phase\":\"vote\",\"voteEnds\":9000000,"
                 + "\"candidates\":[{\"project\":\"smiths\",\"votes\":31},{\"project\":\"gardeners:2\",\"votes\":4}],\"vote\":\"smiths\",\"project\":\"\",\"opensAt\":0,\"now\":1800000,"
                 + "\"resources\":[{\"id\":\"labour\",\"stock\":3200,\"need\":0,\"yours\":1500,\"sentToday\":4800,\"dailyCap\":5000}],\"accepted\":{\"labour\":1200},"
-                + "\"points\":4100,\"rank\":2,\"top\":[{\"rank\":1,\"name\":\"Mira\",\"points\":9000},{\"rank\":2,\"name\":\"Kay\",\"points\":4100}]}"));
+                + "\"points\":4100,\"rank\":2,\"top\":[{\"rank\":1,\"name\":\"Mira\",\"points\":9000},{\"rank\":2,\"name\":\"Kay\",\"points\":4100}],"
+                + "\"week\":{\"week\":2913,\"goal\":60000,\"total\":61000,\"done\":true,\"yours\":4000,\"minLabour\":3000,\"framed\":true,\"decor\":\"banners\",\"frame\":\"frame_edge_banner\",\"decorations\":[\"lanterns\",\"banners\"]}}"));
+            Assert.That(vote.Board.Week.Done, Is.True);
+            Assert.That(vote.Board.Week.Framed, Is.True);
+            Assert.That(vote.Board.Week.Goal, Is.EqualTo(60000));
+            Assert.That(vote.Board.Week.Yours, Is.EqualTo(4000));
+            Assert.That(vote.Board.Week.Decor, Is.EqualTo("banners"));
+            Assert.That(vote.Board.Week.Decorations, Is.EqualTo(new[] { "lanterns", "banners" }));
             Assert.That(vote.Board.Points, Is.EqualTo(4100));
             Assert.That(vote.Board.Rank, Is.EqualTo(2));
             Assert.That(vote.Board.Top.Count, Is.EqualTo(2));
@@ -514,6 +521,7 @@ namespace Game.Net.Tests
             Assert.That(opening.Accepted, Is.Empty);
             Assert.That(opening.Board.Points, Is.Zero, "a reply of an older server has no builders");
             Assert.That(opening.Board.Top, Is.Empty);
+            Assert.That(opening.Board.Week.Goal, Is.Zero, "a reply of an older server has no weekly rebuild");
         }
 
         [Test]
@@ -731,8 +739,11 @@ namespace Game.Net.Tests
             var reply = MuseumFirstsReply.From(NakamaJson.Parse("{\"reported\":[\"fish_hills_roach\"],\"won\":[\"fish_hills_roach\"],\"firsts\":[{\"id\":\"fish_hills_roach\",\"name\":\"\",\"mine\":true,\"at\":5}]}"));
             Assert.That(reply.Won, Is.EqualTo(new[] { "fish_hills_roach" }));
             Assert.That(reply.Firsts.Single().Mine, Is.True);
-            Assert.That(TownStreetReply.Payload(true), Is.EqualTo("{\"here\":true}"));
-            Assert.That(TownStreetReply.From(NakamaJson.Parse("{\"walkers\":[{\"userId\":\"b\",\"name\":\"Bob\"}]}")).Walkers, Is.EqualTo(new[] { "Bob" }));
+            Assert.That(TownStreetReply.Payload(true, TownStreetReply.Hideout), Is.EqualTo("{\"here\":true,\"place\":\"hideout\"}"));
+            var street = TownStreetReply.From(NakamaJson.Parse("{\"walkers\":[{\"userId\":\"b\",\"name\":\"Bob\",\"place\":\"hideout\",\"ties\":[\"party\",\"friend\"]}]}"));
+            Assert.That(street.Walkers, Is.EqualTo(new[] { "Bob" }));
+            Assert.That(street.People.Single().Place, Is.EqualTo(TownStreetReply.Hideout));
+            Assert.That(street.People.Single().Ties, Is.EqualTo(new[] { "party", "friend" }));
         }
 
         [Test]

@@ -73,6 +73,34 @@ namespace Game.Core.Sim
         public long Points { get; }
     }
 
+    public sealed class TownWeek
+    {
+        public TownWeek(long week, long goal, long total, bool done, long yours, long minLabour, bool framed, string decor, IReadOnlyList<string> decorations)
+        {
+            Week = week;
+            Goal = goal;
+            Total = total;
+            Done = done;
+            Yours = yours;
+            MinLabour = minLabour;
+            Framed = framed;
+            Decor = decor;
+            Decorations = decorations;
+        }
+
+        public static TownWeek None { get; } = new TownWeek(0, 0, 0, false, 0, 0, false, string.Empty, new string[0]);
+
+        public long Week { get; }
+        public long Goal { get; }
+        public long Total { get; }
+        public bool Done { get; }
+        public long Yours { get; }
+        public long MinLabour { get; }
+        public bool Framed { get; }
+        public string Decor { get; }
+        public IReadOnlyList<string> Decorations { get; }
+    }
+
     public sealed class TownBoard
     {
         private static readonly TownBuilder[] NoBuilders = new TownBuilder[0];
@@ -105,6 +133,13 @@ namespace Game.Core.Sim
         public long Points { get; private set; }
         public int Rank { get; private set; }
         public IReadOnlyList<TownBuilder> Top { get; private set; } = NoBuilders;
+        public TownWeek Week { get; private set; } = TownWeek.None;
+
+        public TownBoard WithWeek(TownWeek week)
+        {
+            Week = week;
+            return this;
+        }
 
         public IReadOnlyList<TownRole> Roles { get; private set; } = System.Array.Empty<TownRole>();
 

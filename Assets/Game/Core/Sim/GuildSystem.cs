@@ -23,8 +23,10 @@ namespace Game.Core.Sim
         private readonly GardenRules _garden;
         private readonly EventQueue _events;
         private GuildRules _rules;
+        private const int RefreshTicks = 10;
         private int _openSites = -1;
         private long _seenKills;
+        private long _forecastDay = long.MinValue;
 
         public GuildSystem(GuildRules rules, GameState state, StageTable stages, FishingRules fishing, GardenRules garden, EventQueue events)
         {
@@ -35,6 +37,7 @@ namespace Game.Core.Sim
             _garden = garden;
             _events = events;
             _seenKills = state.Kills;
+            Refresh();
         }
 
         public GuildRules Rules => _rules;
@@ -44,6 +47,8 @@ namespace Game.Core.Sim
         {
             _rules = rules;
             _openSites = -1;
+            _forecastDay = long.MinValue;
+            Refresh();
         }
 
         public bool SiteOpen(TownSiteDef site) => _state.RecordStage >= site.FromStage;
@@ -65,6 +70,8 @@ namespace Game.Core.Sim
         {
             WatchSites();
             GatherAtSites();
+            if (_state.Tick % RefreshTicks == 0)
+                Refresh();
             for (var i = firstEvent; i < _events.Count; i++)
                 _state.Peaceful.Gain(ResourceOf(_events[i].Kind), 1);
         }
@@ -116,6 +123,55 @@ namespace Game.Core.Sim
 
         public bool Built(string guild) => _state.Camp.Guilds.Contains(guild);
 
+        public bool PerkOpen(GuildDef guild, GuildPerk perk) =>
+            Built(guild.Id) && (perk.Level > 0 ? Level(guild.Id) >= perk.Level : HallLevel(guild.Id) >= perk.Hall);
+
+        public void Refresh()
+        {
+            ApplyPerks();
+            WatchForecast();
+        }
+
+        private void ApplyPerks()
+        {
+            var perks = _state.GuildPerks;
+            for (var i = 0; i < perks.Length; i++)
+                perks[i] = 0;
+            var guilds = _rules.Guilds;
+            for (var g = 0; g < guilds.Count; g++)
+            {
+                var guild = guilds[g];
+                for (var p = 0; p < guild.Perks.Count; p++)
+                {
+                    var perk = guild.Perks[p];
+                    if (PerkOpen(guild, perk))
+                        perks[(int)perk.Perk] += perk.Value;
+                }
+            }
+        }
+
+        private void WatchForecast()
+        {
+            var forecast = _state.Forecast;
+            var day = _state.Town.Day;
+            if (day < 0 || !ObservatoryOpen)
+            {
+                forecast.Clear();
+                _forecastDay = long.MinValue;
+                return;
+            }
+            if (day == _forecastDay)
+                return;
+            _forecastDay = day;
+            var today = Forecast(day);
+            var bonus = _rules.Observatory;
+            forecast.Fish = today.Fish;
+            forecast.Plant = today.Plant;
+            forecast.FishWeight = bonus.FishWeight;
+            forecast.PlantGrow = bonus.PlantGrow;
+            forecast.PlantMutation = bonus.PlantMutation;
+        }
+
         public int HallLevel(string building)
         {
             var def = _rules.Building(building);
@@ -128,9 +184,10 @@ namespace Game.Core.Sim
             {
                 if (_state.Perk(MuseumPerk.ForecastSight) > 0)
                     return true;
-                foreach (var district in _rules.Districts)
+                var districts = _rules.Districts;
+                for (var i = 0; i < districts.Count; i++)
                 {
-                    if (district.Observatory && DistrictOpen(district))
+                    if (districts[i].Observatory && DistrictOpen(districts[i]))
                         return true;
                 }
                 return false;

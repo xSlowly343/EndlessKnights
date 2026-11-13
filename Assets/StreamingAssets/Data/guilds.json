@@ -2,14 +2,90 @@
   "version": 1,
   "levels": [0, 30, 80, 150, 250, 400, 600, 850, 1150, 1500],
   "guilds": [
-    { "id": "gardeners", "name": { "ru": "Гильдия садоводов", "en": "Gardeners' Guild" }, "master": "herbwitch", "district": "gates" },
-    { "id": "alchemists", "name": { "ru": "Гильдия алхимиков", "en": "Alchemists' Guild" }, "master": "alchemist", "district": "gates" },
-    { "id": "diggers", "name": { "ru": "Гильдия раскопщиков", "en": "Diggers' Guild" }, "master": "dowser", "district": "sand_bazaar" },
-    { "id": "fishers", "name": { "ru": "Гильдия рыбаков", "en": "Fishers' Guild" }, "master": "ghostcaptain", "district": "ice_harbor" },
-    { "id": "smiths", "name": { "ru": "Гильдия кузнецов", "en": "Smiths' Guild" }, "master": "golemancer", "district": "smith_row" },
-    { "id": "cooks", "name": { "ru": "Гильдия поваров", "en": "Cooks' Guild" }, "master": "minstrel", "district": "sky_square" },
-    { "id": "distillers", "name": { "ru": "Гильдия перегонщиков", "en": "Distillers' Guild" }, "master": "lanternbearer", "district": "sky_square" }
+    { "id": "gardeners", "name": { "ru": "Гильдия садоводов", "en": "Gardeners' Guild" }, "master": "herbwitch", "district": "gates",
+      "perks": [
+        { "level": 3, "perk": "growFaster", "value": 0.05 },
+        { "level": 5, "perk": "seedBack", "value": 0.04 },
+        { "level": 7, "perk": "mutationChance", "value": 0.02 },
+        { "level": 10, "perk": "growFaster", "value": 0.05 },
+        { "hall": 2, "perk": "mutationChance", "value": 0.01 },
+        { "hall": 3, "perk": "seedBack", "value": 0.04 }
+      ]
+    },
+    { "id": "alchemists", "name": { "ru": "Гильдия алхимиков", "en": "Alchemists' Guild" }, "master": "alchemist", "district": "gates",
+      "perks": [
+        { "level": 3, "perk": "stirFaster", "value": 0.05 },
+        { "level": 5, "perk": "finePotion", "value": 0.03 },
+        { "level": 7, "perk": "doublePotion", "value": 0.03 },
+        { "level": 10, "perk": "finePotion", "value": 0.04 },
+        { "hall": 2, "perk": "stirFaster", "value": 0.05 },
+        { "hall": 3, "perk": "doublePotion", "value": 0.03 }
+      ]
+    },
+    { "id": "diggers", "name": { "ru": "Гильдия раскопщиков", "en": "Diggers' Guild" }, "master": "dowser", "district": "sand_bazaar",
+      "perks": [
+        { "level": 3, "perk": "lighterBrush", "value": 0.05 },
+        { "level": 5, "perk": "moreBones", "value": 0.05 },
+        { "level": 7, "perk": "lighterBrush", "value": 0.05 },
+        { "level": 10, "perk": "moreBones", "value": 0.08 },
+        { "hall": 2, "perk": "lighterBrush", "value": 0.04 },
+        { "hall": 3, "perk": "moreBones", "value": 0.05 }
+      ]
+    },
+    { "id": "fishers", "name": { "ru": "Гильдия рыбаков", "en": "Fishers' Guild" }, "master": "ghostcaptain", "district": "ice_harbor",
+      "perks": [
+        { "level": 3, "perk": "biteFaster", "value": 0.04 },
+        { "level": 5, "perk": "reelEasier", "value": 0.04 },
+        { "level": 7, "perk": "legendChance", "value": 0.005 },
+        { "level": 10, "perk": "bottleChance", "value": 0.01 },
+        { "hall": 2, "perk": "biteFaster", "value": 0.04 },
+        { "hall": 3, "perk": "reelEasier", "value": 0.04 }
+      ]
+    },
+    { "id": "smiths", "name": { "ru": "Гильдия кузнецов", "en": "Smiths' Guild" }, "master": "golemancer", "district": "smith_row",
+      "perks": [
+        { "level": 3, "perk": "fewerHammers", "value": 0.05 },
+        { "level": 5, "perk": "widerZone", "value": 0.04 },
+        { "level": 7, "perk": "slowerCooling", "value": 0.05 },
+        { "level": 10, "perk": "temperStep", "value": 0.05 },
+        { "hall": 2, "perk": "moreOre", "value": 0.05 },
+        { "hall": 3, "perk": "fewerHammers", "value": 0.05 }
+      ]
+    },
+    { "id": "cooks", "name": { "ru": "Гильдия поваров", "en": "Cooks' Guild" }, "master": "minstrel", "district": "sky_square",
+      "perks": [
+        { "level": 3, "perk": "fewerChops", "value": 0.05 },
+        { "level": 5, "perk": "mealLonger", "value": 0.05 },
+        { "level": 7, "perk": "ingredientBack", "value": 0.04 },
+        { "level": 10, "perk": "doubleMeal", "value": 0.04 },
+        { "hall": 2, "perk": "fewerChops", "value": 0.05 },
+        { "hall": 3, "perk": "mealLonger", "value": 0.05 }
+      ]
+    },
+    { "id": "distillers", "name": { "ru": "Гильдия перегонщиков", "en": "Distillers' Guild" }, "master": "lanternbearer", "district": "sky_square",
+      "perks": [
+        { "level": 3, "perk": "slowerPressure", "value": 0.05 },
+        { "level": 5, "perk": "slowerPressure", "value": 0.04 },
+        { "level": 7, "perk": "finePotion", "value": 0.02 },
+        { "level": 10, "perk": "slowerPressure", "value": 0.05 },
+        { "hall": 2, "perk": "slowerPressure", "value": 0.04 },
+        { "hall": 3, "perk": "stirFaster", "value": 0.04 }
+      ]
+    }
   ],
+  "weekly": {
+    "perPlayer": 15000,
+    "minGoal": 60000,
+    "minLabour": 3000,
+    "rewards": [
+      { "decor": "lanterns", "name": { "ru": "Фонари на столбах", "en": "Lanterns on Posts" }, "frame": "frame_edge_lantern" },
+      { "decor": "banners", "name": { "ru": "Флаги над Воротами", "en": "Banners over the Gates" }, "frame": "frame_edge_banner" },
+      { "decor": "flowerbeds", "name": { "ru": "Клумбы у колодца", "en": "Flowerbeds by the Well" }, "frame": "frame_edge_bloom" },
+      { "decor": "garlands", "name": { "ru": "Гирлянды над улицей", "en": "Garlands over the Street" }, "frame": "frame_edge_garland" }
+    ]
+  },
+  "trial": { "seconds": 120, "stage": 30, "heroLevel": 12 },
+  "observatory": { "fishWeight": 3, "plantGrow": 0.25, "plantMutation": 0.05 },
   "districts": [
     { "id": "gates", "name": { "ru": "Ворота", "en": "The Gates" } },
     { "id": "green_market", "name": { "ru": "Зелёный рынок", "en": "Green Market" }, "biome": "green_hills" },

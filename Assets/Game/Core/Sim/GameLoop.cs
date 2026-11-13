@@ -58,6 +58,7 @@ namespace Game.Core.Sim
         private readonly TournamentSystem _tournament;
         private readonly ClanCampSystem _clanCamp;
         private readonly GuildSystem _guilds;
+        private MasterTrial? _trial;
         private readonly TalentSystem _talents;
         private readonly HideoutSystem _hideout;
         private readonly CampLevelSystem _campLevels;
@@ -329,6 +330,37 @@ namespace Game.Core.Sim
         public TournamentSystem Tournament => _tournament;
         public ClanCampSystem ClanCamp => _clanCamp;
         public GuildSystem Guilds => _guilds;
+        public MasterTrial MasterTrial => _trial ??= new MasterTrial(_data);
+        private bool TrialRunning => _trial != null && _trial.Active;
+
+        public MasterTrialResult StartMasterTrial(string building)
+        {
+            if (!_peaceful.InCamp || _peaceful.State.Place != PeacefulPlace.Town)
+                return MasterTrialResult.NotInTown;
+            if (TrialRunning)
+                return MasterTrialResult.Busy;
+            var def = _data.Guilds.Building(building);
+            if (def == null || !HeroClassNames.ByName.TryGetValue(def.Master, out var master))
+                return MasterTrialResult.NoMaster;
+            if (!State.Camp.Guilds.Contains(def.ProjectIds[0]))
+                return MasterTrialResult.NotBuilt;
+            MasterTrial.Start(master, def.Id, (ulong)State.Tick + 1);
+            return MasterTrialResult.Started;
+        }
+
+        public void StopMasterTrial()
+        {
+            if (!TrialRunning)
+                return;
+            Events.Add(GameEvent.ForStage(GameEventKind.MasterTrialEnded, State.Tick, _trial!.Kills));
+            _trial.Stop();
+        }
+
+        private void StepMasterTrial()
+        {
+            if (TrialRunning && _trial!.Step(LastInput))
+                StopMasterTrial();
+        }
         public TalentSystem Talents => _talents;
         public HideoutSystem Hideout => _hideout;
         public CampLevelSystem CampLevels => _campLevels;
@@ -1145,7 +1177,7 @@ namespace Game.Core.Sim
             State.TotalInput.PlaySeconds += TickSeconds;
             _talents.Tick();
             RefreshPeacefulBonus();
-            _peaceful.Tick(LastInput, MetersPerPixel);
+            _peaceful.Tick(TrialRunning ? InputSnapshot.Empty : LastInput, MetersPerPixel);
             _camp.Tick();
             _unlocks.Tick();
             _colossus.Tick();
@@ -1162,8 +1194,11 @@ namespace Game.Core.Sim
             _forge.Tick();
             _museum.Tick();
             RebuildOnMuseum();
+            if (TrialRunning && (!_peaceful.InCamp || _peaceful.State.Place != PeacefulPlace.Town))
+                StopMasterTrial();
             if (_peaceful.InCamp)
             {
+                StepMasterTrial();
                 CampTick(firstEvent);
                 return;
             }

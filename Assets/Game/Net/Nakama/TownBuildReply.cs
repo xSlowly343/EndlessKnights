@@ -38,7 +38,7 @@ namespace Game.Net.Nakama
                 top.Add(new TownBuilder((int)NakamaJson.Number(item, "rank"), NakamaJson.Text(item, "name"), (long)NakamaJson.Number(item, "points")));
             Board = new TownBoard(TownBoard.PhaseOf(NakamaJson.Text(json, "phase")), (int)NakamaJson.Number(json, "round"), (long)NakamaJson.Number(json, "voteEnds"),
                 (long)NakamaJson.Number(json, "opensAt"), (long)NakamaJson.Number(json, "now"), NakamaJson.Text(json, "project"), NakamaJson.Text(json, "vote"),
-                voted, candidates, stocks).WithBuilders((long)NakamaJson.Number(json, "points"), (int)NakamaJson.Number(json, "rank"), top).WithRoles(Roles(json));
+                voted, candidates, stocks).WithBuilders((long)NakamaJson.Number(json, "points"), (int)NakamaJson.Number(json, "rank"), top).WithRoles(Roles(json)).WithWeek(WeekOf(NakamaJson.Field(json, "week")));
         }
 
         private static IReadOnlyList<TownRole> Roles(JsonValue json)
@@ -54,6 +54,17 @@ namespace Game.Net.Nakama
         public IReadOnlyDictionary<string, long> Accepted { get; }
 
         public static TownBuildReply From(JsonValue json) => new TownBuildReply(json);
+
+        private static TownWeek WeekOf(JsonValue? week)
+        {
+            if (week == null || week.Kind != JsonKind.Object)
+                return TownWeek.None;
+            var done = NakamaJson.Field(week, "done");
+            var framed = NakamaJson.Field(week, "framed");
+            return new TownWeek((long)NakamaJson.Number(week, "week"), (long)NakamaJson.Number(week, "goal"), (long)NakamaJson.Number(week, "total"),
+                done != null && done.Kind == JsonKind.Boolean && done.Boolean, (long)NakamaJson.Number(week, "yours"), (long)NakamaJson.Number(week, "minLabour"),
+                framed != null && framed.Kind == JsonKind.Boolean && framed.Boolean, NakamaJson.Text(week, "decor"), CosmeticsMineView.Ids(week, "decorations"));
+        }
 
         public static string AddPayload(IReadOnlyDictionary<string, long> gains)
         {

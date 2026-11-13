@@ -78,6 +78,7 @@ const TownBuildMaxSteps = 64;
 const TownBuildPointsPerDay = 1000;
 const TownBuildMailKind = "town";
 const TownBuildLevelMark = ":";
+const TownBuildLabourId = "labour";
 
 function townBuildProjectId(building: string, level: number): string {
     return level <= 1 ? building : building + TownBuildLevelMark + level;
@@ -419,7 +420,8 @@ function townBuildView(nk: nkruntime.Nakama, userId: string, value: TownBuildVal
             room: Math.max(0, Math.min(resource.dailyCap - (mine.sent[resource.id] || 0), Math.floor(townBuildPaceRoom(mine, resource, nowUnixMs))))
         })),
         accepted: accepted,
-        roles: counting ? townRoleTop(nk, value.round) : []
+        roles: counting ? townRoleTop(nk, value.round) : [],
+        week: townWeekView(nk, userId, value.days, nowUnixMs)
     };
 }
 
@@ -496,6 +498,7 @@ function townBuildState(nk: nkruntime.Nakama, logger: nkruntime.Logger, userId: 
         }
     }
     townBuildSettle(nk, logger, userId, value, nowUnixMs);
+    townWeekAdd(nk, logger, userId, 0, value.days, nowUnixMs);
     return townBuildView(nk, userId, value, townBuildMineRead(nk, userId, walletDayOf(nowUnixMs), value.round).value, {}, nowUnixMs);
 }
 
@@ -525,6 +528,7 @@ function townBuildAdd(nk: nkruntime.Nakama, logger: nkruntime.Logger, userId: st
         townBuildAdvance(value, logger, nowUnixMs);
         try {
             nk.storageWrite([{ collection: TownCollection, key: TownGuildsKey, userId: PartySystemUser, value: value as any, version: stored.version, permissionRead: 0, permissionWrite: 0 }]);
+            townWeekAdd(nk, logger, userId, taken.accepted[TownBuildLabourId] || 0, value.days, nowUnixMs);
             return townBuildView(nk, userId, value, taken.mine, taken.accepted, nowUnixMs);
         } catch (error) {
             continue;

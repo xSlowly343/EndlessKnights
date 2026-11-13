@@ -29,6 +29,14 @@ namespace Game.Core.Ui
         public string Text { get; internal set; } = string.Empty;
     }
 
+    public sealed class GuildPerkLine
+    {
+        public int Level { get; internal set; }
+        public int Hall { get; internal set; }
+        public bool Open { get; internal set; }
+        public string Text { get; internal set; } = string.Empty;
+    }
+
     public sealed class TownStageLine
     {
         public string Id { get; internal set; } = string.Empty;
@@ -353,6 +361,75 @@ namespace Game.Core.Ui
                 Text = next == null ? Texts.Format("guild.stage.last", name, built)
                     : Texts.Format("guild.stage.next", name, built, Texts.Pick(next.NameRu, next.NameEn), next.Built - built)
             };
+        }
+
+        public static List<GuildPerkLine> Perks(GuildSystem guilds, string guildId)
+        {
+            var guild = guilds.Rules.Guild(guildId);
+            var lines = new List<GuildPerkLine>();
+            if (guild == null)
+                return lines;
+            foreach (var perk in guild.Perks)
+            {
+                var effect = Texts.Format("perk." + MuseumRules.NameOf(perk.Perk), Percent(perk.Value));
+                lines.Add(new GuildPerkLine
+                {
+                    Level = perk.Level,
+                    Hall = perk.Hall,
+                    Open = guilds.PerkOpen(guild, perk),
+                    Text = perk.Level > 0 ? Texts.Format("guild.perk.level", perk.Level, effect) : Texts.Format("guild.perk.hall", perk.Hall, effect)
+                });
+            }
+            return lines;
+        }
+
+        public static string ForecastBonus(GuildRules rules) =>
+            Texts.Format("guild.forecast.bonus", rules.Observatory.FishWeight.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture), Percent(rules.Observatory.PlantGrow), Percent(rules.Observatory.PlantMutation));
+
+        private static string Percent(double value) => (value * 100).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);
+
+        public static string TrialOffer(GuildRules rules, string building)
+        {
+            var def = rules.Building(building);
+            return def == null ? string.Empty : Texts.Format("guild.trial.offer", MasterName(def.Master), TimeLeft(rules.Trial.Seconds));
+        }
+
+        public static string TrialStatus(MasterTrial trial) =>
+            trial.Active ? Texts.Format("guild.trial.running", Texts.Get("class." + HeroClassNames.Of(trial.Master)), TimeLeft(trial.SecondsLeft), trial.Kills, Game.Core.Math.NumberFormatter.Format(trial.Damage, Game.Core.Math.NumberDisplay.Settings)) : string.Empty;
+
+        public static string TrialResult(MasterTrialResult result) => result switch
+        {
+            MasterTrialResult.NotInTown => Texts.Get("guild.trial.notInTown"),
+            MasterTrialResult.NotBuilt => Texts.Get("guild.trial.notBuilt"),
+            MasterTrialResult.Busy => Texts.Get("guild.trial.busy"),
+            MasterTrialResult.NoMaster => Texts.Get("guild.trial.noMaster"),
+            _ => string.Empty
+        };
+
+        public static string TrialEnded(long kills) => Texts.Format("guild.trial.ended", kills);
+
+        public static string Week(GuildRules rules, TownWeek week)
+        {
+            if (week.Goal <= 0)
+                return string.Empty;
+            var decor = DecorName(rules, week.Decor);
+            if (week.Done)
+                return Texts.Format(week.Framed ? "guild.week.doneFramed" : "guild.week.done", decor, week.Total, week.Yours, week.MinLabour);
+            return Texts.Format(week.Yours >= week.MinLabour ? "guild.week.enough" : "guild.week.gather", System.Math.Min(week.Total, week.Goal), week.Goal, week.Yours, week.MinLabour, decor);
+        }
+
+        public static List<string> Decorations(GuildRules rules, TownWeek week)
+        {
+            var names = new List<string>(week.Decorations.Count);
+            foreach (var id in week.Decorations)
+                names.Add(DecorName(rules, id));
+            return names;
+        }
+
+        private static string DecorName(GuildRules rules, string id)
+        {
+            var decor = rules.Decor(id);
+            return decor == null ? id : Texts.Pick(decor.NameRu, decor.NameEn);
         }
 
         public static string MasterSays(GuildRules rules, TownBoard board, long day)
