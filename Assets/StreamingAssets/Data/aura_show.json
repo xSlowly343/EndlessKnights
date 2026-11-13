@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "warnSeconds": 3,
+  "themes": [
+    { "id": "calm", "stats": ["damageAfterIdle", "sleepSeconds", "calmPenalty", "hushParty"] },
+    { "id": "hunt", "stats": ["damageVsBoss", "bossTimerSeconds", "bossTimerSpeed", "bossGold"] },
+    { "id": "fortune", "stats": ["gold", "itemQuantity", "itemRarity", "gemExperience", "spiritLoot", "campSand", "campPx", "netTrophy", "artelNuggets", "luckPower"] },
+    { "id": "hex", "stats": ["curseEffect", "curseSeconds", "damageTaken", "enemyDebuffEffect", "dotDamage", "cursesOnEnemy", "shellCrack", "knotPower", "layerHits"] },
+    { "id": "edge", "stats": ["critChance", "critMultiplier", "critEvery", "cullThreshold", "toucheExecute"] },
+    { "id": "flow", "stats": ["resourceGain", "skillCooldown", "auraDuration", "auraEffect", "overkillCarry"] },
+    { "id": "might", "stats": ["keyBurstEvery", "keyBurstMultiplier", "damageLongStreak", "damagePerAura", "firstHitsBonus", "focusMultiplier", "damageVsNormal", "damageVsStunned"] },
+    { "id": "kin", "stats": [] }
+  ],
+  "ignoredStats": ["attackPower"],
+  "kinSuffixes": ["Power", "Seconds", "Hits", "Px", "Drain", "Spend"],
+  "fallback": "might",
+  "gems": {
+    "blade_on_watch": "edge",
+    "dreamcatcher_aura_4": "calm",
+    "mothcaller_aura_6": "calm",
+    "minstrel_aura_6": "hunt",
+    "soulbinder_aura_1": "kin",
+    "windshot_aura_2": "kin"
+  }
+}
