@@ -258,7 +258,7 @@ namespace Game.Core.Sim
                 multiplier *= 1 + perTemper * _state.WornTemperPercent;
             var perCollection = _hero.Value(CombatStats.DamagePerMuseumCollection, 0, tags);
             if (perCollection > 0)
-                multiplier *= 1 + perCollection * _state.Museum.Done.Count;
+                multiplier *= 1 + perCollection * _state.MuseumCollectionsInPlay;
             var perKind = _hero.Value(CombatStats.DamagePerInputKind, 0, tags);
             if (perKind > 0)
                 multiplier *= 1 + perKind * RecentInputKinds();

@@ -30,7 +30,7 @@ namespace Game.Core.Party
 
         public bool Present => _present;
         public GhostSnapshot Ghost => _ghost;
-        public bool Fighting => _present && !_stage.Linked;
+        public bool Fighting => _present && !_stage.Linked && !_state.Rift.Inside;
         public BigNumber Damage { get; private set; }
         public long BossesHelped { get; private set; }
 
