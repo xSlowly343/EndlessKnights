@@ -1,5 +1,6 @@
 using Game.Core.Content;
 using Game.Core.Input;
+using Game.Core.Math;
 using Game.Core.Save;
 using Game.Core.Sim;
 using Game.Core.Stats;
@@ -76,6 +77,75 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Scene.Fight, Is.EqualTo(StripFight.Enemy));
             Assert.That(loop.Scene.Activity, Is.Empty);
             Assert.That(loop.Events.CountOf(GameEventKind.StripPlaceChanged), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void InTheTownAndTheClanCampTheFightGoesOnInTheBackgroundAtATenthOfTheDamage()
+        {
+            var rules = TestWorld.Real.Peaceful;
+            Assert.That(rules.BackgroundDamageShare, Is.EqualTo(0.1));
+            Assert.That(rules.FightsInBackground(PeacefulPlace.Town), Is.True);
+            Assert.That(rules.FightsInBackground(PeacefulPlace.ClanCamp), Is.True);
+            Assert.That(rules.FightsInBackground(PeacefulPlace.Refuge), Is.False);
+            Assert.That(rules.FightsInBackground(PeacefulPlace.Hideout), Is.False);
+
+            foreach (var place in new[] { PeacefulPlace.Town, PeacefulPlace.ClanCamp })
+            {
+                var input = new FakeInputSource();
+                var loop = Hero(input);
+                loop.Peaceful.Enter(place);
+                var kills = loop.State.Kills;
+                var actions = loop.Guilds.UnsentActions;
+                for (var i = 0; i < 20; i++)
+                {
+                    input.PressKeys(3);
+                    loop.Tick();
+                }
+                Assert.That(loop.State.Kills, Is.GreaterThan(kills), "the fight goes on");
+                Assert.That(loop.Guilds.UnsentActions, Is.EqualTo(actions + 60), "and the keys still work for the town");
+                Assert.That(loop.Scene.Fight, Is.EqualTo(StripFight.None), "the strip shows the town");
+                Assert.That(loop.Scene.BackgroundFight, Is.EqualTo(StripFight.Enemy));
+                Assert.That(loop.State.DamageScale, Is.EqualTo(0.1));
+                loop.Peaceful.Leave();
+                loop.Tick();
+                Assert.That(loop.State.DamageScale, Is.EqualTo(1));
+                Assert.That(loop.Scene.BackgroundFight, Is.EqualTo(StripFight.None));
+            }
+
+            var quietInput = new FakeInputSource();
+            var quiet = Hero(quietInput);
+            quiet.Peaceful.Enter(PeacefulPlace.Refuge);
+            var before = quiet.State.Kills;
+            for (var i = 0; i < 20; i++)
+            {
+                quietInput.PressKeys(3);
+                quiet.Tick();
+            }
+            Assert.That(quiet.State.Kills, Is.EqualTo(before), "the refuge still pauses the fight");
+            Assert.That(quiet.Scene.BackgroundFight, Is.EqualTo(StripFight.None));
+        }
+
+        [Test]
+        public void ABackgroundHitIsATenthOfTheSameHitInBattle()
+        {
+            BigNumber Dealt(bool inTown)
+            {
+                var input = new FakeInputSource();
+                var state = new GameState(6) { Class = HeroClass.Runedancer, Stage = 300, HighestStage = 300, RecordStage = 300 };
+                var loop = TestWorld.Loop(input, state);
+                loop.Tick();
+                if (inTown)
+                    loop.Peaceful.Enter(PeacefulPlace.Town);
+                var before = loop.State.TotalDamage;
+                input.PressKeys(1);
+                loop.Tick();
+                return loop.State.TotalDamage - before;
+            }
+
+            var battle = Dealt(false);
+            var town = Dealt(true);
+            Assert.That(battle.Sign, Is.GreaterThan(0));
+            Assert.That((town / battle).ToDouble(), Is.EqualTo(0.1).Within(1e-9));
         }
 
         [Test]

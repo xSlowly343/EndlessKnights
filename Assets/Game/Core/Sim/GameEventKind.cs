@@ -79,6 +79,7 @@ namespace Game.Core.Sim
         DungeonKeySalvaged,
         DungeonKeysMerged,
         StripPlaceChanged,
-        StripFightChanged
+        StripFightChanged,
+        TownSiteOpened
     }
 }

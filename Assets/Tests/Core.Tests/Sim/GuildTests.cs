@@ -231,6 +231,147 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void SitesOpenAsTheHeroClearsTheWayAndGatherWhileTheHeroFights()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            var sites = loop.Guilds.Rules.Sites;
+            Assert.That(sites.Count, Is.GreaterThanOrEqualTo(8));
+            loop.State.RecordStage = sites[0].FromStage - 1;
+            loop.Tick();
+            Assert.That(loop.Guilds.NextSite, Is.SameAs(sites[0]));
+            var lines = GuildView.Sites(loop.Guilds);
+            Assert.That(lines.Count, Is.EqualTo(sites.Count));
+            Assert.That(lines[0].Open, Is.False);
+            Assert.That(lines[0].Text, Is.EqualTo($"Лесосека («Древесина»): откроется на этапе {sites[0].FromStage}"));
+            loop.State.Kills += 1000;
+            loop.Tick();
+            Assert.That(loop.Guilds.Unsent(TownResource.Wood), Is.Zero, "a closed site gathers nothing");
+
+            loop.Events.Clear();
+            loop.State.RecordStage = sites[1].FromStage;
+            loop.Tick();
+            Assert.That(loop.Events.CountOf(GameEventKind.TownSiteOpened), Is.EqualTo(2));
+            Assert.That(GuildView.SiteOpened(Rules, 0), Is.EqualTo("Путь расчищен: у Кромки заработал промысел «Лесосека» — добывает «Древесина»"));
+            Assert.That(GuildView.Sites(loop.Guilds)[0].Text, Is.EqualTo("Лесосека: добывает «Древесина», пока вы сражаетесь"));
+            Assert.That(loop.Guilds.NextSite, Is.SameAs(sites[2]));
+
+            var herbs = loop.Guilds.Unsent(TownResource.Herbs);
+            var wood = loop.Guilds.Unsent(TownResource.Wood);
+            loop.State.Kills += 1000;
+            loop.Tick();
+            Assert.That(loop.Guilds.Unsent(TownResource.Wood) - wood, Is.EqualTo(1000 * sites[0].PerKill).Within(1));
+            Assert.That(loop.Guilds.Unsent(TownResource.Herbs) - herbs, Is.EqualTo(1000 * sites[1].PerKill).Within(1), "the meadow adds to the herbs of the garden");
+            Assert.That(loop.Guilds.Unsent(TownResource.Stone), Is.Zero);
+
+            loop.Events.Clear();
+            loop.Tick();
+            Assert.That(loop.Events.CountOf(GameEventKind.TownSiteOpened), Is.Zero, "a site opens once");
+            var saved = TestWorld.Loop(new FakeInputSource(), new GameState(1) { RecordStage = sites[3].FromStage, Kills = 5000 });
+            saved.Tick();
+            saved.Tick();
+            Assert.That(saved.Events.CountOf(GameEventKind.TownSiteOpened), Is.Zero, "sites of a loaded save do not open again");
+            Assert.That(saved.Guilds.Unsent(TownResource.Wood), Is.Zero, "kills made before the sites existed are not gathered");
+            var copy = GameStateJson.Read(new ContentNode(GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Peaceful.SiteKills, Is.EqualTo(loop.State.Peaceful.SiteKills), "the save remembers how many kills the sites have counted");
+        }
+
+        [Test]
+        public void SitesGatherWithoutAllocations()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            loop.State.RecordStage = Rules.Sites[Rules.Sites.Count - 1].FromStage;
+            loop.Tick();
+            loop.State.Kills += 100_000;
+            loop.Guilds.Tick(loop.Events.Count);
+            var before = System.GC.GetAllocatedBytesForCurrentThread();
+            for (var i = 0; i < 1000; i++)
+            {
+                loop.State.Kills += 37;
+                loop.Guilds.Tick(loop.Events.Count);
+            }
+            Assert.That(System.GC.GetAllocatedBytesForCurrentThread() - before, Is.Zero);
+        }
+
+        [Test]
+        public void WhatTheHallsMakeCountsForTheTown()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            loop.Tick();
+            loop.Events.Clear();
+            var made = new[]
+            {
+                (GameEventKind.FishCaught, TownResource.Fish), (GameEventKind.DishCooked, TownResource.Dishes), (GameEventKind.PotionBrewed, TownResource.Potions),
+                (GameEventKind.ItemSmelted, TownResource.Metalwork), (GameEventKind.ItemTempered, TownResource.Metalwork), (GameEventKind.FindDug, TownResource.Relics),
+                (GameEventKind.TinctureDistilled, TownResource.Tinctures)
+            };
+            foreach (var (kind, _) in made)
+                loop.Events.Add(GameEvent.ForStage(kind, loop.State.Tick, 0));
+            loop.Events.Add(GameEvent.ForStage(GameEventKind.FishBite, loop.State.Tick, 0));
+            loop.Guilds.Tick(0);
+            Assert.That(loop.Guilds.Unsent(TownResource.Metalwork), Is.EqualTo(2));
+            foreach (var (_, resource) in made)
+                Assert.That(loop.Guilds.Unsent(resource), Is.GreaterThan(0), resource);
+            Assert.That(loop.State.Peaceful.UnsentGains.Count, Is.EqualTo(6));
+            foreach (var resource in Rules.Resources)
+            {
+                if (resource.Kind == TownResourceKind.Craft)
+                    Assert.That(resource.Guild, Is.Not.Empty, resource.Id);
+                Assert.That(resource.PointsPerUnit * resource.DailyCap, Is.EqualTo(TownResource.PointsPerDay).Within(1e-9), "a full day of any resource is worth the same");
+            }
+        }
+
+        [Test]
+        public void TheBoardShowsYourPartTheRewardTiersAndTheBestBuilders()
+        {
+            var tiers = Rules.Rewards;
+            Assert.That(tiers.Count, Is.EqualTo(4));
+            Assert.That(Rules.TierAt(tiers[0].Points - 1), Is.Null);
+            Assert.That(Rules.TierAt(tiers[1].Points), Is.SameAs(tiers[1]));
+            Assert.That(Rules.TierAfter(tiers[3].Points), Is.Null);
+            var board = Board(TownBoardPhase.Gather, "smiths", string.Empty, 0, 0, 0);
+            Assert.That(board.Top, Is.Empty);
+            Assert.That(GuildView.Reward(Rules, board), Is.EqualTo($"Ваш вклад: 0 очков. До ступени «Подсобник» ещё {tiers[0].Points}"));
+            board.WithBuilders(tiers[1].Points + 500, 2, new[] { new TownBuilder(1, "Mira", 90000), new TownBuilder(2, "You", tiers[1].Points + 500) });
+            Assert.That(GuildView.Reward(Rules, board), Is.EqualTo($"Ваш вклад: {tiers[1].Points + 500} очков — «Строитель». До ступени «Мастер стройки» ещё {tiers[2].Points - tiers[1].Points - 500}"));
+            board.WithBuilders(tiers[3].Points, 1, board.Top);
+            Assert.That(GuildView.Reward(Rules, board), Is.EqualTo($"Ваш вклад: {tiers[3].Points} очков — «Зодчий», высшая ступень"));
+            Assert.That(GuildView.RewardOf(tiers[0]), Is.EqualTo($"«Подсобник» — от {tiers[0].Points} очков: Осколков {tiers[0].Shards}"));
+            Assert.That(GuildView.RewardOf(tiers[3]), Is.EqualTo($"«Зодчий» — от {tiers[3].Points} очков: Осколков {tiers[3].Shards}, Знаков дружбы {tiers[3].Friendship}"));
+            var top = GuildView.Top(board);
+            Assert.That(top[0].Text, Is.EqualTo("1. Mira — 90000 (вы)"));
+            Assert.That(top[1].Yours, Is.False);
+            Assert.That(GuildView.Reward(Rules, Board(TownBoardPhase.Done, string.Empty, string.Empty, 0, 0, 0)), Is.Empty);
+            Assert.That(GuildView.KindName(TownResourceKind.Raw), Is.EqualTo("Сырьё промыслов"));
+
+            var thanks = new Game.Core.Mail.MailLetter("town-build-1", Game.Core.Mail.MailLetter.TownKind, 0, 3, 0, 15500, "smiths", new Game.Core.Content.Rift.RiftReward(40, 0, 2), false);
+            Assert.That(MailText.Title(thanks), Is.EqualTo("Кромка благодарит"));
+            Assert.That(MailText.Body(thanks, guilds: Rules), Is.EqualTo("Построено: «Гильдия кузнецов». Ваш вклад — 15500 очков, место 3 среди строителей"));
+        }
+
+        [Test]
+        public void BrokenSitesResourcesAndRewardsAreRejected()
+        {
+            var json = TestData.ReadGameDataFile(GuildRules.FileName);
+            var biomes = TestWorld.Real.Stages.Biomes;
+            var characters = new List<string>();
+            foreach (var character in TestWorld.Real.Characters.All)
+                characters.Add(character.Id);
+            void Rejected(string from, string to, string why)
+            {
+                Assert.That(json, Does.Contain(from), why);
+                Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace(from, to), biomes, characters), why);
+            }
+
+            Rejected("\"resource\": \"wood\", \"fromStage\": 10", "\"resource\": \"fish\", \"fromStage\": 10", "a site cannot gather what a hall makes");
+            Rejected("\"resource\": \"stone\", \"fromStage\": 60", "\"resource\": \"stone\", \"fromStage\": 20", "sites open in order");
+            Rejected("\"resource\": \"riftdust\"", "\"resource\": \"wood\"", "raw material nobody gathers");
+            Rejected("\"id\": \"salt\", \"kind\": \"raw\"", "\"id\": \"salt\", \"kind\": \"gift\"", "an unknown kind");
+            Rejected("\"guild\": \"cooks\", \"name\"", "\"guild\": \"bakers\", \"name\"", "an unknown guild");
+            Rejected("\"points\": 15000", "\"points\": 3000", "tiers grow");
+            Rejected("\"finds\": 4, \"fish\": 4", "\"finds\": 4, \"dishes\": 4", "a hall is not built from its own goods");
+        }
+
+        [Test]
         public void ExpeditionFindsCountForTheTown()
         {
             var loop = TestWorld.Loop(new FakeInputSource());

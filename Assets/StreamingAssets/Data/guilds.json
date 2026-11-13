@@ -28,16 +28,48 @@
     "activeDays": 7,
     "minPlayers": 2,
     "resources": [
-      { "id": "labour", "name": { "ru": "Труд", "en": "Labour" }, "dailyCap": 5000 },
-      { "id": "herbs", "name": { "ru": "Травы", "en": "Herbs" }, "dailyCap": 300 },
-      { "id": "finds", "name": { "ru": "Находки", "en": "Finds" }, "dailyCap": 200 }
+      { "id": "labour", "kind": "labour", "name": { "ru": "Труд", "en": "Labour" }, "dailyCap": 5000 },
+      { "id": "wood", "kind": "raw", "name": { "ru": "Древесина", "en": "Wood" }, "dailyCap": 400 },
+      { "id": "stone", "kind": "raw", "name": { "ru": "Камень", "en": "Stone" }, "dailyCap": 300 },
+      { "id": "ore", "kind": "raw", "name": { "ru": "Руда", "en": "Ore" }, "dailyCap": 200 },
+      { "id": "clay", "kind": "raw", "name": { "ru": "Глина", "en": "Clay" }, "dailyCap": 200 },
+      { "id": "salt", "kind": "raw", "name": { "ru": "Соль", "en": "Salt" }, "dailyCap": 150 },
+      { "id": "coal", "kind": "raw", "name": { "ru": "Уголь", "en": "Coal" }, "dailyCap": 150 },
+      { "id": "skyglass", "kind": "raw", "name": { "ru": "Небесное стекло", "en": "Skyglass" }, "dailyCap": 100 },
+      { "id": "riftdust", "kind": "raw", "name": { "ru": "Пыль Изнанки", "en": "Rift Dust" }, "dailyCap": 50 },
+      { "id": "herbs", "kind": "produce", "name": { "ru": "Травы", "en": "Herbs" }, "dailyCap": 300 },
+      { "id": "finds", "kind": "produce", "name": { "ru": "Находки", "en": "Finds" }, "dailyCap": 200 },
+      { "id": "fish", "kind": "produce", "guild": "fishers", "name": { "ru": "Рыба", "en": "Fish" }, "dailyCap": 60 },
+      { "id": "relics", "kind": "produce", "guild": "diggers", "name": { "ru": "Древности", "en": "Relics" }, "dailyCap": 30 },
+      { "id": "potions", "kind": "craft", "guild": "alchemists", "name": { "ru": "Зелья", "en": "Potions" }, "dailyCap": 20 },
+      { "id": "metalwork", "kind": "craft", "guild": "smiths", "name": { "ru": "Поковки", "en": "Metalwork" }, "dailyCap": 30 },
+      { "id": "dishes", "kind": "craft", "guild": "cooks", "name": { "ru": "Блюда", "en": "Dishes" }, "dailyCap": 20 },
+      { "id": "tinctures", "kind": "craft", "guild": "distillers", "name": { "ru": "Настойки", "en": "Tinctures" }, "dailyCap": 20 }
+    ],
+    "sites": [
+      { "id": "logging", "name": { "ru": "Лесосека", "en": "Logging Camp" }, "resource": "wood", "fromStage": 10, "perKill": 0.05 },
+      { "id": "meadow", "name": { "ru": "Луговой сбор", "en": "Meadow Gatherers" }, "resource": "herbs", "fromStage": 25, "perKill": 0.02 },
+      { "id": "quarry", "name": { "ru": "Каменоломня", "en": "Quarry" }, "resource": "stone", "fromStage": 60, "perKill": 0.04 },
+      { "id": "mine", "name": { "ru": "Пещерный рудник", "en": "Cave Mine" }, "resource": "ore", "fromStage": 110, "perKill": 0.025 },
+      { "id": "clay_pit", "name": { "ru": "Глиняный карьер", "en": "Clay Pit" }, "resource": "clay", "fromStage": 180, "perKill": 0.025 },
+      { "id": "salt_works", "name": { "ru": "Соляная варница", "en": "Salt Works" }, "resource": "salt", "fromStage": 300, "perKill": 0.02 },
+      { "id": "coal_pits", "name": { "ru": "Угольные ямы", "en": "Coal Pits" }, "resource": "coal", "fromStage": 550, "perKill": 0.02 },
+      { "id": "sky_gleaners", "name": { "ru": "Сборщики небесного стекла", "en": "Skyglass Gleaners" }, "resource": "skyglass", "fromStage": 1050, "perKill": 0.012 },
+      { "id": "rift_panners", "name": { "ru": "Старатели Изнанки", "en": "Rift Panners" }, "resource": "riftdust", "fromStage": 20000, "perKill": 0.006 }
     ],
     "needs": [
-      { "guild": "fishers", "perPlayerDay": { "labour": 1500, "herbs": 8, "finds": 6 } },
-      { "guild": "smiths", "perPlayerDay": { "labour": 1800, "herbs": 6, "finds": 10 } },
-      { "guild": "cooks", "perPlayerDay": { "labour": 1500, "herbs": 14, "finds": 4 } },
-      { "guild": "diggers", "perPlayerDay": { "labour": 2000, "herbs": 6, "finds": 8 } },
-      { "guild": "distillers", "perPlayerDay": { "labour": 1500, "herbs": 12, "finds": 8 } }
-    ]
+      { "guild": "fishers", "perPlayerDay": { "labour": 1500, "wood": 40, "stone": 10, "herbs": 8, "finds": 6 } },
+      { "guild": "smiths", "perPlayerDay": { "labour": 1800, "wood": 20, "stone": 30, "ore": 20, "coal": 4, "finds": 10 } },
+      { "guild": "cooks", "perPlayerDay": { "labour": 1500, "wood": 20, "clay": 15, "salt": 6, "herbs": 14, "finds": 4, "fish": 4, "potions": 1 } },
+      { "guild": "diggers", "perPlayerDay": { "labour": 2000, "wood": 30, "stone": 20, "clay": 10, "herbs": 6, "finds": 8, "metalwork": 1 } },
+      { "guild": "distillers", "perPlayerDay": { "labour": 1500, "ore": 8, "clay": 15, "skyglass": 2, "herbs": 12, "finds": 8, "potions": 2, "dishes": 1 } }
+    ],
+    "rewards": [
+      { "id": "helper", "name": { "ru": "Подсобник", "en": "Helper" }, "points": 3000, "shards": 5, "friendship": 0 },
+      { "id": "builder", "name": { "ru": "Строитель", "en": "Builder" }, "points": 15000, "shards": 15, "friendship": 2 },
+      { "id": "foreman", "name": { "ru": "Мастер стройки", "en": "Foreman" }, "points": 50000, "shards": 30, "friendship": 5 },
+      { "id": "architect", "name": { "ru": "Зодчий", "en": "Architect" }, "points": 150000, "shards": 60, "friendship": 10 }
+    ],
+    "top": { "size": 10, "shards": 25 }
   }
 }

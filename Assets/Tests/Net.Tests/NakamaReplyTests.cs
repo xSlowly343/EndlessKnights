@@ -483,7 +483,13 @@ namespace Game.Net.Tests
             Assert.That(TownBuildReply.VotePayload("smiths"), Is.EqualTo("{\"guild\":\"smiths\"}"));
             var vote = TownBuildReply.From(NakamaJson.Parse("{\"startBuilt\":[\"gardeners\",\"alchemists\"],\"built\":[\"fishers\"],\"round\":2,\"phase\":\"vote\",\"voteEnds\":9000000,"
                 + "\"candidates\":[{\"guild\":\"smiths\",\"votes\":31},{\"guild\":\"cooks\",\"votes\":4}],\"vote\":\"smiths\",\"project\":\"\",\"opensAt\":0,\"now\":1800000,"
-                + "\"resources\":[{\"id\":\"labour\",\"stock\":3200,\"need\":0,\"yours\":1500,\"sentToday\":4800,\"dailyCap\":5000}],\"accepted\":{\"labour\":1200}}"));
+                + "\"resources\":[{\"id\":\"labour\",\"stock\":3200,\"need\":0,\"yours\":1500,\"sentToday\":4800,\"dailyCap\":5000}],\"accepted\":{\"labour\":1200},"
+                + "\"points\":4100,\"rank\":2,\"top\":[{\"rank\":1,\"name\":\"Mira\",\"points\":9000},{\"rank\":2,\"name\":\"Kay\",\"points\":4100}]}"));
+            Assert.That(vote.Board.Points, Is.EqualTo(4100));
+            Assert.That(vote.Board.Rank, Is.EqualTo(2));
+            Assert.That(vote.Board.Top.Count, Is.EqualTo(2));
+            Assert.That(vote.Board.Top[0].Name, Is.EqualTo("Mira"));
+            Assert.That(vote.Board.Top[1].Points, Is.EqualTo(4100));
             Assert.That(vote.Built, Is.EqualTo(new[] { "gardeners", "alchemists", "fishers" }));
             Assert.That(vote.Board.Built, Is.EqualTo(new[] { "fishers" }));
             Assert.That(vote.Board.Phase, Is.EqualTo(Game.Core.Sim.TownBoardPhase.Vote));
@@ -505,6 +511,8 @@ namespace Game.Net.Tests
             Assert.That(opening.Board.SecondsLeft(0), Is.EqualTo(3600));
             Assert.That(opening.Board.Gathered, Is.True);
             Assert.That(opening.Accepted, Is.Empty);
+            Assert.That(opening.Board.Points, Is.Zero, "a reply of an older server has no builders");
+            Assert.That(opening.Board.Top, Is.Empty);
         }
 
         [Test]

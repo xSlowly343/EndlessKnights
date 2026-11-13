@@ -171,7 +171,7 @@ namespace Game.Core.Sim
             _unlocks.Camp = _camp;
             _clanCamp = new ClanCampSystem(data.ClanCamp, state, hero, _camp);
             _hideout = new HideoutSystem(data.Hideout, data.ClanCamp, data.Garden, state, _camp);
-            _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden);
+            _guilds = new GuildSystem(data.Guilds, state, data.Stages, data.Fishing, data.Garden, Events);
             _campLevels = new CampLevelSystem(data.CampLevels, state, _camp, _guilds);
             _apprentices = new ApprenticeSystem(data.Apprentices, state, _camp, _guilds);
             _modules = new CampModuleSystem(data.CampModules, state, _camp, _campLevels, Events, data.Forge.Building);
@@ -1156,7 +1156,8 @@ namespace Game.Core.Sim
             _forge.Tick();
             _museum.Tick();
             RebuildOnMuseum();
-            if (_peaceful.InCamp)
+            State.DamageScale = _peaceful.DamageShare;
+            if (_peaceful.FightPaused)
             {
                 CampTick(firstEvent);
                 return;
@@ -1204,6 +1205,7 @@ namespace Game.Core.Sim
             _apprentices.BattleTick();
             _modules.NoteBosses(firstEvent);
             _digs.NoteGuardians(firstEvent);
+            _guilds.Tick(firstEvent);
             _colossus.NoteGuardians(firstEvent);
             _nest.NoteGuardians(firstEvent);
             _strip.Tick(firstEvent, LastInput.HasAnyInput);
@@ -1230,6 +1232,7 @@ namespace Game.Core.Sim
             _seasonal.Tick(firstEvent);
             _seasonPass.Tick();
             _artifacts.SkipAwakening();
+            _guilds.Tick(firstEvent);
             _achievements.Tick();
             _strip.Tick(firstEvent, LastInput.HasAnyInput);
             _scene.Tick();

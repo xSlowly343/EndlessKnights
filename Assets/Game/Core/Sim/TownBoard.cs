@@ -44,8 +44,24 @@ namespace Game.Core.Sim
         public bool Gathered => Stock >= Need;
     }
 
+    public readonly struct TownBuilder
+    {
+        public TownBuilder(int rank, string name, long points)
+        {
+            Rank = rank;
+            Name = name;
+            Points = points;
+        }
+
+        public int Rank { get; }
+        public string Name { get; }
+        public long Points { get; }
+    }
+
     public sealed class TownBoard
     {
+        private static readonly TownBuilder[] NoBuilders = new TownBuilder[0];
+
         public TownBoard(TownBoardPhase phase, int round, long voteEndsUnixMs, long opensAtUnixMs, long serverUnixMs, string project, string vote,
             IReadOnlyList<string> built, IReadOnlyList<TownCandidate> candidates, IReadOnlyList<TownStock> stocks)
         {
@@ -71,6 +87,17 @@ namespace Game.Core.Sim
         public IReadOnlyList<string> Built { get; }
         public IReadOnlyList<TownCandidate> Candidates { get; }
         public IReadOnlyList<TownStock> Stocks { get; }
+        public long Points { get; private set; }
+        public int Rank { get; private set; }
+        public IReadOnlyList<TownBuilder> Top { get; private set; } = NoBuilders;
+
+        public TownBoard WithBuilders(long points, int rank, IReadOnlyList<TownBuilder> top)
+        {
+            Points = points;
+            Rank = rank;
+            Top = top;
+            return this;
+        }
 
         public bool CanVote => Phase == TownBoardPhase.Vote;
 
