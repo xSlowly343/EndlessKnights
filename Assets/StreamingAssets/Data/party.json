@@ -122,6 +122,15 @@
       "rejoinHours": 24,
       "kickedRejoinHours": 8
     },
+    "treasury": {
+      "currency": "friendship",
+      "minDonation": 1,
+      "nodes": 50,
+      "maxVotes": 3,
+      "freeResetDays": 7,
+      "resetFeeShare": 0.1,
+      "resetVoteHours": 24
+    },
     "unlocks": [
       { "level": 5, "kind": "mascot" },
       { "level": 10, "kind": "colossus" },

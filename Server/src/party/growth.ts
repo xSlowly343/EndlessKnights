@@ -17,7 +17,18 @@ interface PartyGrowthRules {
     reportSlackSeconds: number;
     rejoinHours: number;
     kickedRejoinHours: number;
+    treasury: PartyTreasuryRules;
     unlocks: PartyGrowthUnlock[];
+}
+
+interface PartyTreasuryRules {
+    currency: string;
+    minDonation: number;
+    nodes: number;
+    maxVotes: number;
+    freeResetMs: number;
+    resetFeeShare: number;
+    resetVoteMs: number;
 }
 
 interface PartyGrowthMember {
@@ -96,6 +107,11 @@ function partyGrowthView(partyId: string, value: PartyGrowthValue, userId: strin
         partyId: partyId, experience: Math.floor(value.experience), level: level.level, into: Math.floor(level.into), need: level.need,
         members: members, joinedAt: member && member.joined ? member.joined : 0
     };
+}
+
+function partyGrowthOpened(nk: nkruntime.Nakama, partyId: string, kind: string): boolean {
+    const level = partyGrowthLevel(partyGrowthRead(nk, partyId).value.experience).level;
+    return PartyGrowthServerRules.unlocks.some((unlock) => unlock.kind === kind && unlock.level <= level);
 }
 
 function partyGrowthMine(nk: nkruntime.Nakama, userId: string): { [key: string]: any } {
