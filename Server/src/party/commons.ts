@@ -23,6 +23,9 @@ interface HideoutCommonsRules {
     stations: { [station: string]: string };
     brewsPerDay: number;
     recipes: string[];
+    pot: string;
+    dishesPerDay: number;
+    dishes: string[];
 }
 
 interface HideoutBed {
@@ -443,4 +446,28 @@ function hideoutForBuild(value: HideoutValue): { points: number; items: { [item:
         points += each * value.storage[item];
     }
     return { points: points, items: items };
+}
+
+function hideoutCooked(nk: nkruntime.Nakama, userId: string, dish: unknown, nowUnixMs: number): { [key: string]: any } {
+    const rules = hideoutCommons();
+    if (typeof dish !== "string" || rules.dishes.indexOf(dish) < 0)
+        throw new Error("bad request");
+    return hideoutUpdate(nk, userId, (hideout, meta) => {
+        if (!(hideout.buildings[rules.pot] > 0))
+            throw new Error("the party pot is not built");
+        if (hideoutHere(hideout, meta.members, nowUnixMs).indexOf(userId) < 0)
+            throw new Error("cook in the hideout");
+        const day = walletDayOf(nowUnixMs);
+        const cooked = hideout.dishes[userId] && hideout.dishes[userId].day === day ? hideout.dishes[userId].count : 0;
+        if (cooked >= rules.dishesPerDay)
+            throw new Error("the daily pot limit is reached");
+        hideout.dishes[userId] = { day: day, count: cooked + 1 };
+        for (const id of meta.members)
+            if (id !== userId)
+                hideoutOwe(hideout, id, "dish:" + dish, 1);
+    }, nowUnixMs);
+}
+
+function hideoutCookedRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(hideoutCooked(nk, partyCaller(ctx), partyRequest(payload).dish, Date.now()));
 }

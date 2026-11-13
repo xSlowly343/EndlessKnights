@@ -103,6 +103,14 @@ namespace Game.Core.Sim
             return CookingResult.Done;
         }
 
+        public bool AddMeal(string dishId)
+        {
+            if (_rules.Dish(dishId) == null || State.Meals.Count >= _rules.MealsKept)
+                return false;
+            State.Meals.Add(dishId);
+            return true;
+        }
+
         public void Tick()
         {
             if (!Busy || !_peaceful.InCamp || _peaceful.Activity != Activity)
@@ -125,6 +133,8 @@ namespace Game.Core.Sim
             if (State.Chops < chops || State.Plates < dish.Plates)
                 return;
             State.Meals.Add(dish.Id);
+            if (_peaceful.InHideout && _state.Hideout.PotBuilt)
+                State.SharedDishes.Add(dish.Id);
             if (State.Meals.Count < _rules.MealsKept && _state.Rng.NextDouble() < _state.Perk(MuseumPerk.DoubleMeal))
                 State.Meals.Add(dish.Id);
             State.Book.Add(dish.Id);

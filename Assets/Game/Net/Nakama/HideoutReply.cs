@@ -213,6 +213,11 @@ namespace Game.Net.Nakama
 
         public static string BrewedPayload(string recipe, bool fine) => NakamaJson.Object(("recipe", NakamaJson.Quote(recipe)), ("fine", fine ? "true" : "false"));
 
+        public static string CookedPayload(string dish) => NakamaJson.Object(("dish", NakamaJson.Quote(dish)));
+
+        public static async Task<HideoutReply> CookedAsync(NakamaClient client, NakamaSession session, string dish, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_cooked", CookedPayload(dish), cancel).ConfigureAwait(false)));
+
         public static async Task<HideoutReply> BrewedAsync(NakamaClient client, NakamaSession session, string recipe, bool fine, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_brewed", BrewedPayload(recipe, fine), cancel).ConfigureAwait(false)));
 

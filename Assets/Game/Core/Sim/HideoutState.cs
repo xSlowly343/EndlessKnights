@@ -170,6 +170,7 @@ namespace Game.Core.Sim
         public TrophyHall Trophies { get; } = new TrophyHall();
         public double PierRareBoost { get; set; }
         public bool DummyBuilt { get; set; }
+        public bool PotBuilt { get; set; }
         public List<SharedBed> Beds { get; } = new List<SharedBed>();
         public Dictionary<string, long> Owed { get; } = new Dictionary<string, long>(System.StringComparer.Ordinal);
         public bool StorageBuilt { get; set; }

@@ -170,6 +170,7 @@ namespace Game.Core.Content
         }
 
         public HideoutStorage Storage { get; }
+        public string Pot { get; private set; } = string.Empty;
         public int PresenceSeconds { get; }
         public int CornerDecor { get; }
         public int FrozenDays { get; }
@@ -295,7 +296,12 @@ namespace Game.Core.Content
             var pierRareBoost = places.Field("pierRareBoost").AsNumber(0, 1);
             if (!ids.Contains(CornerBuilding))
                 throw root.Field("buildings").Error($"the hideout needs the '{CornerBuilding}' building");
-            return new HideoutRules(presence, cornerDecor, frozenDays, crafts, dummy, pier, trophyHall, pierRareBoost, tiers, buildings, levelTiers, LoadStorage(root.Field("storage")));
+            var pot = craftsNode.Field("pot");
+            pot.Field("dishesPerDay").AsInt(1, 100);
+            return new HideoutRules(presence, cornerDecor, frozenDays, crafts, dummy, pier, trophyHall, pierRareBoost, tiers, buildings, levelTiers, LoadStorage(root.Field("storage")))
+            {
+                Pot = Known(pot.Field("building"), ids)
+            };
         }
 
         private static HideoutStorage LoadStorage(ContentNode node)

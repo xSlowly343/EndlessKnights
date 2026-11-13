@@ -668,3 +668,22 @@ test("the leader orders the party's street, so neighbours count for the party", 
   assert.throws(() => call("ann", "hideoutStreetRpc", { order: street.slice(1).concat(["moat"]) }), /bad request/);
   assert.deepStrictEqual(call("ann", "hideoutStreetRpc", { order: street }).street, street);
 });
+
+test("a dish cooked at the party pot reaches everyone in the party, a few times a day", () => {
+  const { nk, call } = world("ann", "bob", "cid");
+  party(call, ["ann", "bob", "cid"]);
+  const rules = server.HideoutServerRules;
+  const dish = rules.dishes[0];
+  at(nk, "ann", true, now);
+  assert.throws(() => server.hideoutCooked(nk, "ann", dish, now), /pot is not built/);
+  built(nk, "ann", { [rules.pot]: 1 });
+  assert.throws(() => server.hideoutCooked(nk, "ann", "mud_pie", now), /bad request/);
+  assert.throws(() => server.hideoutCooked(nk, "bob", dish, now), /cook in the hideout/);
+  server.hideoutCooked(nk, "ann", dish, now);
+  assert.deepStrictEqual(plain(server.hideoutClaim(nk, "bob", undefined, now)).items, { ["dish:" + dish]: 1 });
+  assert.deepStrictEqual(plain(server.hideoutClaim(nk, "cid", undefined, now)).items, { ["dish:" + dish]: 1 }, "also those who are away");
+  assert.deepStrictEqual(plain(server.hideoutClaim(nk, "ann", undefined, now)).items, {}, "the cook keeps their own dish");
+  for (let i = 1; i < rules.dishesPerDay; i++)
+    server.hideoutCooked(nk, "ann", dish, now + i);
+  assert.throws(() => server.hideoutCooked(nk, "ann", dish, now + 100), /daily pot limit/);
+});

@@ -81,6 +81,7 @@ interface HideoutValue {
     stations: { [id: string]: HideoutStation };
     modules: { [id: string]: number };
     street: string[];
+    dishes: { [userId: string]: { day: number; count: number } };
 }
 
 interface HideoutChronicle {
@@ -99,7 +100,7 @@ const HideoutMaxCornerText = 40;
 const HideoutCornerBuilding = "corner";
 
 function hideoutEmpty(): HideoutValue {
-    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {}, crafting: {}, brews: {}, pets: {}, petted: {}, warmed: {}, farTrip: null, farTrips: { day: 0, count: 0 }, order: null, claims: {}, stations: {}, modules: {}, street: [] };
+    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {}, crafting: {}, brews: {}, pets: {}, petted: {}, warmed: {}, farTrip: null, farTrips: { day: 0, count: 0 }, order: null, claims: {}, stations: {}, modules: {}, street: [], dishes: {} };
 }
 
 function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutValue; version: string } {
@@ -139,6 +140,7 @@ function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutVal
     value.stations = stored.stations || {};
     value.modules = stored.modules || {};
     value.street = stored.street || [];
+    value.dishes = stored.dishes || {};
     return { value: value, version: objects[0].version };
 }
 

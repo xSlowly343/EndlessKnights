@@ -38,6 +38,7 @@ namespace Game.Core.Sim
         public CompanionSystem? Companions { get; set; }
         public NestSystem? Nest { get; set; }
         public CampLevelSystem? Stations { get; set; }
+        public CookingSystem? Kitchen { get; set; }
         public int CornerDecor => _rules.CornerDecorAt(State.Tier);
         public bool CornerOpen => State.Tier > 0 && State.HasCorner;
         public IReadOnlyList<string> Corner => _state.Decor.Corner;
@@ -77,6 +78,7 @@ namespace Game.Core.Sim
             hideout.MyWants.AddRange(myWants);
             hideout.PierRareBoost = LevelOf(_rules.Pier) > 0 ? _rules.PierRareBoost : 0;
             hideout.DummyBuilt = LevelOf(_rules.Dummy) > 0;
+            hideout.PotBuilt = LevelOf(_rules.Pot) > 0;
             hideout.Trophies.Built = LevelOf(_rules.TrophyHall) > 0;
             Fill(hideout.Forge, _rules.Crafts.ForgeBuilding, hideout.Forge.Partners);
             Fill(hideout.Cauldron, _rules.Crafts.CauldronBuilding, hideout.Cauldron.Partners);
@@ -206,6 +208,14 @@ namespace Game.Core.Sim
             return brews;
         }
 
+        public List<string> TakeSharedDishes()
+        {
+            var dishes = new List<string>(_state.Cooking.SharedDishes);
+            _state.Cooking.SharedDishes.Clear();
+            return dishes;
+        }
+
+        public const string DishPrefix = "dish:";
         public const string PotionPrefix = "potion:";
         public const string FineSuffix = ":fine";
         public const string CompanionPetPrefix = "companion_pet:";
@@ -328,6 +338,12 @@ namespace Game.Core.Sim
             {
                 if (pair.Value <= 0 || ReceiveCompanion(pair.Key, pair.Value))
                     continue;
+                if (pair.Key.StartsWith(DishPrefix, System.StringComparison.Ordinal))
+                {
+                    for (var i = 0; i < pair.Value; i++)
+                        Kitchen?.AddMeal(pair.Key.Substring(DishPrefix.Length));
+                    continue;
+                }
                 if (!pair.Key.StartsWith(PotionPrefix, System.StringComparison.Ordinal))
                 {
                     _camp.Add(pair.Key, pair.Value);

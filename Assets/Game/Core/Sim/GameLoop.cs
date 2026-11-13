@@ -212,6 +212,7 @@ namespace Game.Core.Sim
             _chronicle.Companions = _companions;
             _hideout.Nest = _nest;
             _hideout.Stations = _campLevels;
+            _hideout.Kitchen = _cooking;
             _museum.Companions = _companions;
             _forge.Shared = data.Hideout.Crafts;
             _alchemy.Shared = data.Hideout.Crafts;

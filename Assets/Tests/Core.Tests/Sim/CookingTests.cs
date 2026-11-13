@@ -87,6 +87,36 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void ADishCookedAtThePartyPotIsSentToThePartyAndOneFromThePartyLandsOnTheShelf()
+        {
+            var (loop, input) = Cook();
+            var dish = Rules.Dish("carp_pie")!;
+            var hideout = loop.Hideout;
+            hideout.Use(4, 2, 0, 0, 0, 0, System.Array.Empty<string>());
+            hideout.UseBuild(new System.Collections.Generic.Dictionary<string, int> { [hideout.Rules.Pot] = 1 }, System.Array.Empty<string>(), string.Empty, 0, 0, 0, 0, 0, false,
+                new System.Collections.Generic.Dictionary<string, int>(), System.Array.Empty<string>());
+            loop.Peaceful.SetPlace(PeacefulPlace.Hideout);
+            Stock(loop, dish);
+            loop.Cooking.Cook(dish.Id);
+            Prepare(loop, input, dish);
+            Assert.That(loop.State.Cooking.Meals, Is.EqualTo(new[] { dish.Id }), "the cook keeps the dish");
+            Assert.That(hideout.TakeSharedDishes(), Is.EqualTo(new[] { dish.Id }), "and the party pot shares it");
+            Assert.That(hideout.TakeSharedDishes(), Is.Empty);
+
+            hideout.Receive(new System.Collections.Generic.Dictionary<string, long> { [HideoutSystem.DishPrefix + "carp_pie"] = 1, [HideoutSystem.DishPrefix + "mud_pie"] = 1 });
+            Assert.That(loop.State.Cooking.Meals, Is.EqualTo(new[] { dish.Id, dish.Id }), "an unknown dish is dropped");
+            while (loop.Cooking.AddMeal(dish.Id)) { }
+            Assert.That(loop.State.Cooking.Meals.Count, Is.EqualTo(Rules.MealsKept), "the shelf keeps its limit");
+
+            hideout.Leave();
+            Stock(loop, dish);
+            loop.State.Cooking.Meals.Clear();
+            loop.Cooking.Cook(dish.Id);
+            Prepare(loop, input, dish);
+            Assert.That(hideout.TakeSharedDishes(), Is.Empty, "no party, no party pot");
+        }
+
+        [Test]
         public void KeysChopClicksPlateAndTheMealLastsHoursOfBattle()
         {
             var (loop, input) = Cook();

@@ -112,6 +112,7 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("hideout_module_make", hideoutModuleMakeRpc);
     initializer.registerRpc("hideout_module_install", hideoutModuleInstallRpc);
     initializer.registerRpc("hideout_street", hideoutStreetRpc);
+    initializer.registerRpc("hideout_cooked", hideoutCookedRpc);
     initializer.registerRpc("name_consent", consentRpc);
     initializer.registerRpc("hideout_brewed", hideoutBrewedRpc);
     initializer.registerRpc("hideout_order_redraw", hideoutOrderRedrawRpc);
