@@ -61,7 +61,7 @@ namespace Game.Core.Sim
         {
             if (!_items.TryGetSet(setId, out var set))
                 return CraftResult.UnknownSet;
-            if (set.Event != null)
+            if (!set.Ordinary)
                 return CraftResult.NotCraftable;
             if (Unlocks?.IsOpen(Feature.SetCraft) == false)
                 return CraftResult.Locked;

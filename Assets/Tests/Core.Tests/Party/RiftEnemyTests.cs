@@ -78,6 +78,7 @@ namespace Game.Core.Tests.Party
             var synergy = TestWorld.Data.Synergy;
             var start = new DateTimeOffset(2026, 10, 27, 12, 0, 0, TimeSpan.Zero).ToUnixTimeMilliseconds();
             long riftId = 0;
+            long windowId = 0;
             for (var week = 0; week < 200 && riftId == 0; week++)
             {
                 foreach (var offset in new[] { 0L, 4L })
@@ -87,10 +88,15 @@ namespace Game.Core.Tests.Party
                         continue;
                     var picked = rift.ModifiersFor(window.Value.Id);
                     if (picked.Count == 2 && Has(picked, "regeneration") && Has(picked, "horde"))
+                    {
                         riftId = window.Value.Id + 60;
+                        windowId = window.Value.Id;
+                    }
                 }
             }
             Assert.That(riftId, Is.Not.Zero, "a window with regeneration and a horde");
+            var keyed = rift.KeyedModifier(windowId)!.Id;
+            double Share(string id) => id == keyed ? 1 - rift.WindowSet.SoftenShare : 1;
 
             var network = new LoopbackNetwork(3, 1, 1, 0, 4096);
             var host = new PartyHost(new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 5), network.Connect(HostId), TestWorld.Data.Party, rift, synergy)
@@ -105,9 +111,9 @@ namespace Game.Core.Tests.Party
             host.Encounter.SwitchWorld(PartyWorld.Rift, riftId);
             host.Tick();
 
-            Assert.That(host.Encounter.EnemyRegen, Is.EqualTo(0.01).Within(1e-12));
-            Assert.That(host.Encounter.ExtraStageEnemies, Is.EqualTo(0.5).Within(1e-12));
-            Assert.That(host.Encounter.EnemiesOnStage, Is.EqualTo((int)System.Math.Floor(TestWorld.Data.Stages.EnemiesOnStage(1) * 1.5)));
+            Assert.That(host.Encounter.EnemyRegen, Is.EqualTo(0.01 * Share("regeneration")).Within(1e-12));
+            Assert.That(host.Encounter.ExtraStageEnemies, Is.EqualTo(0.5 * Share("horde")).Within(1e-12));
+            Assert.That(host.Encounter.EnemiesOnStage, Is.EqualTo((int)System.Math.Floor(TestWorld.Data.Stages.EnemiesOnStage(1) * (1 + 0.5 * Share("horde")))));
 
             var blighter = network.Connect(11);
             blighter.Send(HostId, buffer, PartyCodec.Encode(buffer, new HelloMessage { HeroClass = (byte)HeroClass.Herbwitch, Stage = 5 }));
@@ -115,7 +121,7 @@ namespace Game.Core.Tests.Party
             host.Tick();
 
             Assert.That(host.Encounter.EnemyRegen, Is.Zero, "a blighter in the party stops the regeneration");
-            Assert.That(host.Encounter.ExtraStageEnemies, Is.EqualTo(0.5).Within(1e-12), "nothing stops a horde");
+            Assert.That(host.Encounter.ExtraStageEnemies, Is.EqualTo(0.5 * Share("horde")).Within(1e-12), "nothing stops a horde");
 
             host.Encounter.SwitchWorld(PartyWorld.Home, 0);
             host.Tick();

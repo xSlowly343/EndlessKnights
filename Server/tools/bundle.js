@@ -124,6 +124,8 @@ const riftRules = {
     extraEnemies: statSum(modifier.modifiers, "stageEnemies", "increased")
   })),
   modifiersPerWindow: rift.modifiersPerWindow,
+  softenShare: rift.windowSet.softenShare || 0,
+  keyed: rift.modifiers.map((modifier) => (rift.windowSet.keys || []).some((key) => key.modifier === modifier.id)),
   partyJoinMs: Math.round(rift.party.joinMinutes * 60 * 1000),
   partyDurationMs: Math.round(rift.party.durationHours * 3600 * 1000),
   boardUpdateMs: Math.round(rift.board.updateMinutes * 60 * 1000),

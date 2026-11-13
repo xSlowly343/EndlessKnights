@@ -31,6 +31,8 @@ namespace Game.Core.Sim.Rift
         private int _roles = -1;
 
         public SlateSystem? Slates { get; set; }
+        public GearSystem? Gear { get; set; }
+        private RiftModifier? _keyed;
 
         public RiftSystem(GameData data, GameState state, StatSheet hero, StageSystem stage, ArtifactSystem artifacts, SynergySystem synergy)
         {
@@ -244,19 +246,54 @@ namespace Game.Core.Sim.Rift
             if (riftId == _modifiersFor)
                 return;
             _modifiersFor = riftId;
-            _windowModifiers = riftId == 0 ? System.Array.Empty<RiftModifier>() : _rules.ModifiersFor(WindowAt(riftId * 1000)?.Id ?? riftId);
+            var windowId = WindowAt(riftId * 1000)?.Id ?? riftId;
+            _windowModifiers = riftId == 0 ? System.Array.Empty<RiftModifier>() : _rules.ModifiersFor(windowId);
+            _keyed = riftId == 0 ? null : _rules.KeyedModifier(windowId);
             _unlessMasks = new int[_windowModifiers.Count];
             for (var i = 0; i < _windowModifiers.Count; i++)
                 _unlessMasks[i] = _synergyRules.RoleMaskOf(_windowModifiers[i].UnlessRoles);
         }
 
+        public RiftModifier? KeyedModifier => _keyed;
+
+        public bool KeyHeld
+        {
+            get
+            {
+                if (!Inside || _keyed == null || Gear == null)
+                    return false;
+                foreach (var set in _rules.WindowSet.KeysOf(_keyed.Id))
+                {
+                    if (Gear.Collected(set))
+                        return true;
+                }
+                return false;
+            }
+        }
+
+        public void Refresh()
+        {
+            _roles = -1;
+            Tick();
+        }
+
         private void Rebuild()
         {
             _buffer.Clear();
+            var softened = KeyHeld ? _keyed : null;
+            var share = 1 - _rules.WindowSet.SoftenShare;
             for (var i = 0; i < _windowModifiers.Count; i++)
             {
-                if (ModifierActive(i))
-                    _buffer.AddRange(_windowModifiers[i].Modifiers);
+                if (!ModifierActive(i))
+                    continue;
+                var modifiers = _windowModifiers[i].Modifiers;
+                if (!ReferenceEquals(_windowModifiers[i], softened))
+                {
+                    _buffer.AddRange(modifiers);
+                    continue;
+                }
+                foreach (var modifier in modifiers)
+                    _buffer.Add(modifier.WithValue(modifier.Value * share));
             }
             _layer.Set(_buffer);
         }

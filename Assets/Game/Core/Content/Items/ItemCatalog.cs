@@ -95,7 +95,7 @@ namespace Game.Core.Content.Items
         {
             foreach (var set in Sets)
             {
-                if (set.Rarity == rarity && set.Event == null && string.Equals(set.Theme, theme, StringComparison.Ordinal))
+                if (set.Rarity == rarity && set.Ordinary && string.Equals(set.Theme, theme, StringComparison.Ordinal))
                     return set;
             }
             return null;
@@ -153,12 +153,12 @@ namespace Game.Core.Content.Items
             var best = ItemRarity.Simple;
             foreach (var set in Sets)
             {
-                if (set.Event == null && set.Has(slot) && set.Rarity <= rarity && set.Rarity > best)
+                if (set.Ordinary && set.Has(slot) && set.Rarity <= rarity && set.Rarity > best)
                     best = set.Rarity;
             }
             foreach (var set in Sets)
             {
-                if (set.Event == null && set.Has(slot) && set.Rarity == best)
+                if (set.Ordinary && set.Has(slot) && set.Rarity == best)
                     candidates.Add(set);
             }
             return candidates.Count == 0 ? null : candidates[rng.NextInt(0, candidates.Count)];
@@ -530,6 +530,7 @@ namespace Game.Core.Content.Items
                 Primary = node.HasField("primary") ? ModifierReader.ReadList(node.Field("primary")) : System.Array.Empty<Modifier>(),
                 PerRaritySet = node.HasField("perRaritySet") ? ModifierReader.ReadList(node.Field("perRaritySet")) : System.Array.Empty<Modifier>(),
                 Event = node.HasField("event") ? node.Field("event").AsString() : null,
+                RiftOnly = node.HasField("riftOnly") && node.Field("riftOnly").AsBool(),
                 PerMuseumCollection = node.HasField("perMuseumCollection") ? ModifierReader.ReadList(node.Field("perMuseumCollection")) : System.Array.Empty<Modifier>(),
                 Echo = node.HasField("echo") ? ModifierReader.ReadList(node.Field("echo")) : System.Array.Empty<Modifier>()
             };

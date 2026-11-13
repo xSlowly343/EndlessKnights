@@ -40,7 +40,19 @@
     { "feature": "resonance", "stage": 200 }, { "feature": "spirits", "stage": 300 }, { "feature": "atlas", "stage": 400 },
     { "feature": "chronicle", "stage": 600 }, { "feature": "setCraft", "stage": 800 }
   ],
-  "windowSet": { "rarity": "rare", "itemLevel": 1 },
+  "windowSet": {
+    "rarity": "rare",
+    "itemLevel": 1,
+    "softenShare": 0.5,
+    "keys": [
+      { "modifier": "stone_skin", "sets": ["rift_key_stonebreaker", "rift_key_stone_choir"] },
+      { "modifier": "regeneration", "sets": ["rift_key_cauterizer", "rift_key_ash_shepherd"] },
+      { "modifier": "colossus_shield", "sets": ["rift_key_shieldbreaker", "rift_key_seal_keeper"] },
+      { "modifier": "horde", "sets": ["rift_key_horde_reaper", "rift_key_horde_banner"] },
+      { "modifier": "silence", "sets": ["rift_key_silent_voice", "rift_key_quiet_round"] },
+      { "modifier": "eclipse", "sets": ["rift_key_eclipse_catcher", "rift_key_moon_watch"] }
+    ]
+  },
   "gifts": {
     "every": 1000,
     "offer": 3,

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Game.Core.Content.Synergy;
+using Game.Core.Math;
 using Game.Core.Stats;
 
 namespace Game.Core.Content.Rift
@@ -75,6 +76,33 @@ namespace Game.Core.Content.Rift
             return result;
         }
 
+        public const ulong KeyModifierIndex = 4097;
+        public const ulong KeySetIndex = 4098;
+
+        public RiftModifier? KeyedModifier(long windowId)
+        {
+            var picked = ModifiersFor(windowId);
+            if (picked.Count == 0)
+                return null;
+            var start = (int)(SplitMix.At(unchecked((ulong)windowId), KeyModifierIndex) % (ulong)picked.Count);
+            for (var i = 0; i < picked.Count; i++)
+            {
+                var modifier = picked[(start + i) % picked.Count];
+                if (WindowSet.KeysOf(modifier.Id).Count > 0)
+                    return modifier;
+            }
+            return null;
+        }
+
+        public string? KeySet(long windowId)
+        {
+            var modifier = KeyedModifier(windowId);
+            if (modifier == null)
+                return null;
+            var sets = WindowSet.KeysOf(modifier.Id);
+            return sets[(int)(SplitMix.At(unchecked((ulong)windowId), KeySetIndex) % (ulong)sets.Count)];
+        }
+
         public bool TryGetModifier(string id, out RiftModifier modifier)
         {
             foreach (var candidate in Modifiers)
@@ -132,6 +160,12 @@ namespace Game.Core.Content.Rift
             var modifiers = new List<RiftModifier>();
             foreach (var node in root.Field("modifiers").Items())
                 modifiers.Add(new RiftModifier(node.Field("id").AsString(), Strings(node, "unlessRoles"), ModifierReader.ReadList(node.Field("modifiers"))));
+            var windowSet = RiftWindowSetRules.Read(root.Field("windowSet"));
+            foreach (var modifier in windowSet.Keys.Keys)
+            {
+                if (!modifiers.Exists(m => m.Id == modifier))
+                    throw root.Field("windowSet").Field("keys").Error($"unknown modifier '{modifier}'");
+            }
             var perWindow = root.Field("modifiersPerWindow").AsInt(0, 10);
             if (perWindow > modifiers.Count)
                 throw root.Field("modifiersPerWindow").Error($"there are only {modifiers.Count} modifiers");
@@ -146,7 +180,7 @@ namespace Game.Core.Content.Rift
             {
                 Ladder = ReadLadder(root),
                 Gifts = RiftGiftRules.Read(root.Field("gifts")),
-                WindowSet = RiftWindowSetRules.Read(root.Field("windowSet"))
+                WindowSet = windowSet
             };
         }
 

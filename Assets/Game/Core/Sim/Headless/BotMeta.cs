@@ -53,7 +53,7 @@ namespace Game.Core.Sim.Headless
             SetDef? best = null;
             foreach (var set in _loop.Data.Items.Sets)
             {
-                if (set.Event != null || set.Rarity > ceiling || _loop.Gear.Collected(set))
+                if (!set.Ordinary || set.Rarity > ceiling || _loop.Gear.Collected(set))
                     continue;
                 if (best == null || set.Rarity > best.Rarity || (set.Rarity == best.Rarity && _loop.Gear.CollectedPieces(set) > _loop.Gear.CollectedPieces(best)))
                     best = set;

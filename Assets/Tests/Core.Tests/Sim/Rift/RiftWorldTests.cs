@@ -7,6 +7,9 @@ using Game.Core.Content.Rift;
 using Game.Core.Math;
 using Game.Core.Save;
 using Game.Core.Sim;
+using Game.Core.Stats;
+using Game.Core.Ui;
+using Game.Core.Text;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Sim.Rift
@@ -257,8 +260,135 @@ namespace Game.Core.Tests.Sim.Rift
             Assert.That(set.Rarity, Is.EqualTo(Rules.WindowSet.Rarity));
             Assert.That(loop.State.Gear.Worn.Count(item => item != null && item.Set?.Id == setId), Is.GreaterThan(0));
 
-            var picks = Enumerable.Range(0, 20).Select(week => Game.Core.Sim.Rift.RiftWindowSet.For(TestWorld.Data.Items, Rules.WindowSet, 1_000_000 + week * 7 * 86400)?.Id).Distinct().Count();
+            var picks = Enumerable.Range(0, 20).Select(week => Game.Core.Sim.Rift.RiftWindowSet.For(TestWorld.Data.Items, Rules, 1_000_000 + week * 7 * 86400)?.Id).Distinct().Count();
             Assert.That(picks, Is.GreaterThan(1), "windows differ");
+        }
+
+        [Test]
+        public void TwelveRiftKeysOpenEveryModifierTwice()
+        {
+            var keys = Rules.WindowSet.Keys;
+            Assert.That(keys.Count, Is.EqualTo(Rules.Modifiers.Count));
+            Assert.That(keys.Values.All(sets => sets.Count == 2), Is.True);
+            var riftOnly = TestWorld.Data.Items.Sets.Where(set => set.RiftOnly).ToList();
+            Assert.That(riftOnly.Count, Is.EqualTo(12));
+            Assert.That(riftOnly.All(set => set.Rarity == Rules.WindowSet.Rarity), Is.True);
+            Assert.That(riftOnly.All(set => set.Pieces.Count == 4), Is.True, "four armour pieces, no weapon");
+            Assert.That(riftOnly.SelectMany(set => set.Bonus).All(line => line.When != ModifierCondition.Always), Is.True, "every bonus line is conditional");
+            Assert.That(Rules.WindowSet.SoftenShare, Is.EqualTo(0.5));
+        }
+
+        [Test]
+        public void TheWindowKeyIsPickedLikeOnTheServer()
+        {
+            Assert.That(Rules.KeyedModifier(1761570000)!.Id, Is.EqualTo("eclipse"));
+            Assert.That(Rules.KeyedModifier(1761915600)!.Id, Is.EqualTo("regeneration"));
+            Assert.That(Rules.KeyedModifier(1762174800)!.Id, Is.EqualTo("silence"));
+            Assert.That(Rules.KeyedModifier(1762520400)!.Id, Is.EqualTo("colossus_shield"));
+            Assert.That(Rules.KeyedModifier(1762779600)!.Id, Is.EqualTo("colossus_shield"));
+        }
+
+        [Test]
+        public void TheWindowSetIsAKeyToOneOfTheWindowModifiers()
+        {
+            var loop = InRift();
+            Assert.That(TestWorld.Data.Items.TryGetSet(loop.State.Rift.WindowSet, out var set), Is.True);
+            Assert.That(set.RiftOnly, Is.True);
+            var keyed = loop.Rift.KeyedModifier;
+            Assert.That(keyed, Is.Not.Null);
+            Assert.That(loop.Rift.WindowModifiers, Has.Member(keyed));
+            Assert.That(Rules.WindowSet.KeysOf(keyed!.Id), Has.Member(set.Id));
+            Assert.That(loop.State.Gear.Worn.Count(item => item?.Set == set), Is.EqualTo(4));
+            Assert.That(loop.Gear.Collected(set), Is.True, "the set goes into the Rift hero's collection");
+            Assert.That(RiftLoadingText.Lines(loop), Has.Some.Contains(Texts.Get("rift.key." + set.Id)));
+
+            var week = Enumerable.Range(0, 30).Select(i => Game.Core.Sim.Rift.RiftWindowSet.For(TestWorld.Data.Items, Rules, 1_761_570_000L + i * 3 * 86400)!.Id).Distinct().Count();
+            Assert.That(week, Is.GreaterThan(4), "windows hand out different keys");
+        }
+
+        [Test]
+        public void RiftSetsNeverDropNorCraftAndNeverReachTheHomeCollection()
+        {
+            var items = TestWorld.Data.Items;
+            var rng = new Rng(7);
+            foreach (var slot in new[] { ItemSlot.Helmet, ItemSlot.Chest, ItemSlot.Gloves, ItemSlot.Boots })
+            {
+                for (var i = 0; i < 300; i++)
+                    Assert.That(items.PickSet(slot, ItemRarity.Rift, rng)?.RiftOnly ?? false, Is.False);
+            }
+            var key = items.Sets.First(set => set.RiftOnly);
+            Assert.That(items.SetOf(key.Theme!, key.Rarity), Is.Null);
+            var home = TestWorld.Loop();
+            Assert.That(home.Drops.CraftSetPiece(key.Id), Is.EqualTo(CraftResult.NotCraftable));
+
+            var loop = InRift();
+            Assert.That(loop.Drops.CraftSetPiece(loop.State.Rift.WindowSet), Is.EqualTo(CraftResult.NotCraftable));
+            loop.Rift.Leave();
+            Assert.That(loop.State.SetCollection.Any(piece => piece.StartsWith("rift_key_", StringComparison.Ordinal)), Is.False);
+        }
+
+        [Test]
+        public void TheHomeCollectionAndForgeMasteryStayHome()
+        {
+            var loop = TestWorld.Loop();
+            var home = TestWorld.Data.Items.Sets.First(set => set.Ordinary && !set.Peaceful && set.Rarity == ItemRarity.Rift && !set.Jewelry);
+            foreach (var piece in home.Pieces)
+                loop.State.SetCollection.Add(SetDef.PieceKey(home.Id, piece));
+            loop.State.Drops.CraftSpent = 1_000_000;
+            loop.Gear.Rebuild();
+            Assert.That(loop.Gear.Collected(home), Is.True);
+            var homeMastery = loop.Gear.MasteryLevel;
+            Assert.That(homeMastery, Is.GreaterThan(TestWorld.Data.Items.MasteryLevel(0)));
+
+            Assert.That(loop.Rift.Enter(Inside), Is.EqualTo(Game.Core.Sim.Rift.RiftEntry.Entered));
+            Assert.That(loop.Gear.Collected(home), Is.False, "home sets do not work in the Rift");
+            Assert.That(loop.Gear.MasteryLevel, Is.EqualTo(TestWorld.Data.Items.MasteryLevel(0)), "the Rift forge has its own mastery");
+            Assert.That(loop.State.SetCollection.All(piece => piece.StartsWith(loop.State.Rift.WindowSet, StringComparison.Ordinal)), Is.True);
+
+            loop.Rift.Leave();
+            Assert.That(loop.Gear.Collected(home), Is.True);
+            Assert.That(loop.Gear.MasteryLevel, Is.EqualTo(homeMastery));
+            var clock = ClockStamp.First(new ClockReading(Inside, 1000, 1));
+            Assert.That(loop.Rift.Enter(Inside), Is.EqualTo(Game.Core.Sim.Rift.RiftEntry.Entered));
+            var restored = SaveCodec.Decode(SaveCodec.Encode(loop.State, clock), TestWorld.Data).State;
+            Assert.That(restored.Rift.OtherHero!.SetCollection.Count, Is.EqualTo(home.Pieces.Count));
+            Assert.That(restored.Rift.OtherHero!.Drops.CraftSpent, Is.EqualTo(1_000_000));
+        }
+
+        [Test]
+        public void TheKeySoftensItsModifierByHalf()
+        {
+            var loop = InRift();
+            var keyed = loop.Rift.KeyedModifier!;
+            var index = loop.Rift.WindowModifiers.ToList().IndexOf(keyed);
+            Assume.That(loop.Rift.ModifierActive(index), Is.True);
+            Assert.That(loop.Rift.KeyHeld, Is.True);
+            foreach (var modifier in keyed.Modifiers)
+                Assert.That(loop.Rift.Modifiers, Has.Member(modifier.WithValue(modifier.Value * 0.5)));
+
+            loop.State.SetCollection.Clear();
+            loop.Rift.Refresh();
+            Assert.That(loop.Rift.KeyHeld, Is.False);
+            foreach (var modifier in keyed.Modifiers)
+                Assert.That(loop.Rift.Modifiers, Has.Member(modifier));
+        }
+
+        [Test]
+        public void SoloAndShieldedBossAreConditions()
+        {
+            var loop = TestWorld.Loop();
+            loop.Tick();
+            Assert.That((loop.Hero.Conditions & ModifierConditions.Bit(ModifierCondition.Solo)) != 0, Is.True);
+            loop.State.PartyAllies = 1;
+            loop.Tick();
+            Assert.That((loop.Hero.Conditions & ModifierConditions.Bit(ModifierCondition.Solo)) != 0, Is.False);
+
+            loop.State.PartyAllies = 0;
+            loop.State.EnemyHp = BigNumber.FromDouble(150);
+            loop.State.EnemyShieldFloor = BigNumber.FromDouble(100);
+            Assert.That((loop.Conditions.Current() & ModifierConditions.Bit(ModifierCondition.BossShielded)) != 0, Is.True);
+            loop.State.EnemyHp = BigNumber.FromDouble(90);
+            Assert.That((loop.Conditions.Current() & ModifierConditions.Bit(ModifierCondition.BossShielded)) != 0, Is.False);
         }
 
         [Test]

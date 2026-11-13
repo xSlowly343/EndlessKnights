@@ -344,29 +344,34 @@ test("rift enemies regenerate and come in hordes until a party role lifts them",
   const rules = party.RiftServerRules;
   const start = Date.UTC(2026, 9, 27, 13);
   let riftId = 0;
+  let windowId = 0;
   for (let day = 0; day < 1400 && riftId === 0; day++) {
     const window = party.riftWindowAt(rules, start + day * 86400000);
     if (!window)
       continue;
     const picked = party.riftModifiersFor(rules, window.id);
-    if (picked.indexOf("regeneration") >= 0 && picked.indexOf("horde") >= 0)
+    if (picked.indexOf("regeneration") >= 0 && picked.indexOf("horde") >= 0) {
       riftId = window.id + 60;
+      windowId = window.id;
+    }
   }
   assert.ok(riftId > 0, "a window with regeneration and a horde");
+  const keyed = party.riftKeyedModifier(rules, windowId);
+  const share = (id) => id === keyed ? 1 - rules.softenShare : 1;
   const host = new party.PartyHost(party.PartyServerRules, "5");
   host.join("user-a", "11");
   host.tick(riftId * 1000);
   host.encounter.switchWorld(1, riftId);
   host.tick(riftId * 1000);
   const regeneration = rules.enemies[rules.modifiers.indexOf("regeneration")];
-  assert.ok(Math.abs(host.encounter.enemyRegen - regeneration.regen) < 1e-12);
-  assert.ok(Math.abs(host.encounter.extraStageEnemies - 0.5) < 1e-12);
+  assert.ok(Math.abs(host.encounter.enemyRegen - regeneration.regen * share("regeneration")) < 1e-12);
+  assert.ok(Math.abs(host.encounter.extraStageEnemies - 0.5 * share("horde")) < 1e-12);
   assert.strictEqual(regeneration.unless, 1 << rules.roles.indexOf("blighter"), "a blighter lifts the regeneration");
   host.join("user-b", "12");
   host.encounter.setHeroClass(1, 16);
   host.tick(riftId * 1000);
   assert.strictEqual(host.encounter.enemyRegen, 0, "a blighter in the party stops the regeneration");
-  assert.ok(Math.abs(host.encounter.extraStageEnemies - 0.5) < 1e-12);
+  assert.ok(Math.abs(host.encounter.extraStageEnemies - 0.5 * share("horde")) < 1e-12);
   host.encounter.switchWorld(0, 0);
   host.tick(riftId * 1000);
   assert.strictEqual(host.encounter.extraStageEnemies, 0);
@@ -453,4 +458,36 @@ test("starter looks cannot be bought", () => {
     assert.ok(starters.some((item) => item.look === 0), slot + " has a default look");
     assert.ok(starters.every((item) => item.price === 0));
   }
+});
+
+test("the window key softens its own modifier for the whole party by the same pick as the client", () => {
+  const rules = party.RiftServerRules;
+  assert.ok(rules.softenShare > 0);
+  assert.strictEqual(rules.keyed.filter(Boolean).length, rules.modifiers.length, "every modifier has keys");
+  const start = Date.UTC(2026, 9, 27, 13);
+  let found = 0;
+  for (let day = 0; day < 60; day++) {
+    const window = party.riftWindowAt(rules, start + day * 86400000);
+    if (!window)
+      continue;
+    const keyed = party.riftKeyedModifier(rules, window.id);
+    assert.ok(party.riftModifiersFor(rules, window.id).indexOf(keyed) >= 0, "the key opens one of the window modifiers");
+    const host = new party.PartyHost(party.PartyServerRules, "5");
+    host.join("user-a", "11");
+    host.tick(window.id * 1000);
+    host.encounter.switchWorld(1, window.id);
+    host.tick(window.id * 1000);
+    let regen = 0, shield = 0, extra = 0;
+    for (const id of party.riftModifiersFor(rules, window.id)) {
+      const enemy = rules.enemies[rules.modifiers.indexOf(id)];
+      const share = id === keyed ? 1 - rules.softenShare : 1;
+      regen += enemy.regen * share;
+      shield += enemy.shield * share;
+      extra += enemy.extraEnemies * share;
+    }
+    assert.ok(Math.abs(host.encounter.enemyRegen - regen) < 1e-12);
+    assert.ok(Math.abs(host.encounter.extraStageEnemies - extra) < 1e-12);
+    found++;
+  }
+  assert.ok(found > 0);
 });

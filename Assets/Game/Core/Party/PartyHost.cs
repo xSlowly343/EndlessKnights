@@ -274,6 +274,8 @@ namespace Game.Core.Party
             Broadcast(PartyCodec.Encode(_out, new FocusRelayMessage { From = (byte)slot, To = (byte)target, Focus = (float)bonus }));
         }
 
+        private RiftModifier? _riftKeyed;
+
         private void UpdateRiftEnemies()
         {
             if (_encounter.World != PartyWorld.Rift || _rift == null)
@@ -289,9 +291,10 @@ namespace Game.Core.Party
             {
                 if ((_riftUnless[i] & roles) != 0)
                     continue;
-                regen += _riftModifiers[i].EnemyRegen;
-                shield += _riftModifiers[i].BossShield;
-                extra += _riftModifiers[i].ExtraStageEnemies;
+                var share = ReferenceEquals(_riftModifiers[i], _riftKeyed) ? 1 - _rift!.WindowSet.SoftenShare : 1;
+                regen += _riftModifiers[i].EnemyRegen * share;
+                shield += _riftModifiers[i].BossShield * share;
+                extra += _riftModifiers[i].ExtraStageEnemies * share;
             }
             _encounter.SetRiftEnemy(regen, shield, extra);
         }
@@ -301,6 +304,7 @@ namespace Game.Core.Party
             _riftEnemyFor = _encounter.RiftId;
             var window = _rift!.Schedule.WindowAt(_encounter.RiftId * 1000)?.Id ?? _encounter.RiftId;
             _riftModifiers = _rift.ModifiersFor(window);
+            _riftKeyed = _rift.KeyedModifier(window);
             _riftUnless = new int[_riftModifiers.Count];
             for (var i = 0; i < _riftModifiers.Count; i++)
                 _riftUnless[i] = _synergy?.RoleMaskOf(_riftModifiers[i].UnlessRoles) ?? 0;

@@ -255,7 +255,8 @@ namespace Game.Core.Sim
             _synergy = new SynergySystem(data.Synergy, state, hero);
             _conditions = new ConditionSystem(state, hero, _combat, _skills, _focus) { Stages = data.Stages, Forge = data.Forge };
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
-            _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates, BeforeLeave = _dungeons.Retreat, HeroSwapped = OnHeroSwapped };
+            _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates, Gear = _gear, BeforeLeave = _dungeons.Retreat, HeroSwapped = OnHeroSwapped };
+            _rift.Refresh();
             _drops.Rift = data.Rift;
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events, hero);
             _clanTree = new ClanTreeBonus(data.ClanTree, hero, state.ClanBonus);
@@ -1137,15 +1138,17 @@ namespace Game.Core.Sim
         private void WearWindowSet()
         {
             var rift = State.Rift;
-            var set = RiftWindowSet.For(_data.Items, _data.Rift.WindowSet, rift.WindowId);
+            var set = RiftWindowSet.For(_data.Items, _data.Rift, rift.WindowId);
             if (set == null)
                 return;
             rift.WindowSet = set.Id;
             foreach (var piece in RiftWindowSet.Roll(_data.Items, set, _data.Rift.WindowSet, rift.WindowId))
             {
                 State.Drops.Gear.Add(piece);
+                _gear.NoteFound(piece);
                 _gear.Equip(piece);
             }
+            _rift.Refresh();
         }
 
         private void MuteHomeOnly()

@@ -44,6 +44,8 @@ namespace Game.Core.Stats
         FateGold,
         FateGems,
         BelowRecord,
-        AllTempered
+        AllTempered,
+        Solo,
+        BossShielded
     }
 }
