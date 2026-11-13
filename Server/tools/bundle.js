@@ -511,7 +511,10 @@ const townBuildRules = {
   openMs: guilds.build.openHours * 3600000,
   activeDays: guilds.build.activeDays,
   minPlayers: guilds.build.minPlayers,
-  resources: guilds.build.resources.map((resource) => ({ id: resource.id, dailyCap: resource.dailyCap })),
+  resources: guilds.build.resources.map((resource) => ({ id: resource.id, dailyCap: resource.dailyCap, guild: resource.guild || "" })),
+  rewards: guilds.build.rewards.map((tier) => ({ id: tier.id, points: tier.points, shards: tier.shards, friendship: tier.friendship })),
+  topSize: guilds.build.top.size,
+  topShards: guilds.build.top.shards,
   needs: Object.fromEntries(guilds.build.needs.map((need) => [need.guild, need.perPlayerDay])),
   keptDays: 8
 };

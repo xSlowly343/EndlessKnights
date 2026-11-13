@@ -1394,6 +1394,7 @@ namespace Game.Core.Save
                 ("teaPause", JsonValue.Of(peaceful.TeaPause)),
                 ("unsentActions", JsonValue.Of(peaceful.UnsentActions)),
                 ("unsentGains", WriteGains(peaceful.UnsentGains)),
+                ("siteKills", JsonValue.Of(peaceful.SiteKills)),
                 ("battleSeconds", JsonValue.Of(peaceful.BattleSeconds)),
                 ("quietSeconds", JsonValue.Of(peaceful.QuietSeconds)),
                 ("teaOffered", JsonValue.Of(peaceful.TeaOffered)));
@@ -1434,6 +1435,7 @@ namespace Game.Core.Save
                 foreach (var item in node.Field("unsentGains").Items())
                     peaceful.UnsentGains[item.Field("resource").AsString()] = item.Field("count").AsLong(0);
             }
+            peaceful.SiteKills = node.HasField("siteKills") ? node.Field("siteKills").AsLong(0) : 0;
             peaceful.BattleSeconds = node.Field("battleSeconds").AsNumber(0, double.MaxValue);
             peaceful.QuietSeconds = node.Field("quietSeconds").AsNumber(0, double.MaxValue);
             peaceful.TeaOffered = node.Field("teaOffered").AsBool();

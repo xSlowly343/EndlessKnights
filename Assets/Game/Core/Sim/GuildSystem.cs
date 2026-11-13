@@ -21,21 +21,94 @@ namespace Game.Core.Sim
         private readonly StageTable _stages;
         private readonly FishingRules _fishing;
         private readonly GardenRules _garden;
+        private readonly EventQueue _events;
         private GuildRules _rules;
+        private int _openSites = -1;
+        private long _seenKills;
 
-        public GuildSystem(GuildRules rules, GameState state, StageTable stages, FishingRules fishing, GardenRules garden)
+        public GuildSystem(GuildRules rules, GameState state, StageTable stages, FishingRules fishing, GardenRules garden, EventQueue events)
         {
             _rules = rules;
             _state = state;
             _stages = stages;
             _fishing = fishing;
             _garden = garden;
+            _events = events;
+            _seenKills = state.Kills;
         }
 
         public GuildRules Rules => _rules;
         public long UnsentActions => _state.Peaceful.UnsentActions;
 
-        public void UseRules(GuildRules rules) => _rules = rules;
+        public void UseRules(GuildRules rules)
+        {
+            _rules = rules;
+            _openSites = -1;
+        }
+
+        public bool SiteOpen(TownSiteDef site) => _state.RecordStage >= site.FromStage;
+
+        public TownSiteDef? NextSite
+        {
+            get
+            {
+                foreach (var site in _rules.Sites)
+                {
+                    if (!SiteOpen(site))
+                        return site;
+                }
+                return null;
+            }
+        }
+
+        public void Tick(int firstEvent)
+        {
+            WatchSites();
+            GatherAtSites();
+            for (var i = firstEvent; i < _events.Count; i++)
+                _state.Peaceful.Gain(ResourceOf(_events[i].Kind), 1);
+        }
+
+        public static string ResourceOf(GameEventKind kind) => kind switch
+        {
+            GameEventKind.PotionBrewed => TownResource.Potions,
+            GameEventKind.FishCaught => TownResource.Fish,
+            GameEventKind.ItemSmelted => TownResource.Metalwork,
+            GameEventKind.ItemTempered => TownResource.Metalwork,
+            GameEventKind.DishCooked => TownResource.Dishes,
+            GameEventKind.FindDug => TownResource.Relics,
+            GameEventKind.TinctureDistilled => TownResource.Tinctures,
+            _ => string.Empty
+        };
+
+        private void WatchSites()
+        {
+            var open = 0;
+            while (open < _rules.Sites.Count && SiteOpen(_rules.Sites[open]))
+                open++;
+            if (_openSites >= 0)
+            {
+                for (var i = _openSites; i < open; i++)
+                    _events.Add(GameEvent.ForStage(GameEventKind.TownSiteOpened, _state.Tick, i));
+            }
+            _openSites = open;
+        }
+
+        private void GatherAtSites()
+        {
+            var fresh = _state.Kills - _seenKills;
+            _seenKills = _state.Kills;
+            if (fresh <= 0)
+                return;
+            var seen = _state.Peaceful.SiteKills;
+            var kills = seen + fresh;
+            _state.Peaceful.SiteKills = kills;
+            for (var i = 0; i < _openSites; i++)
+            {
+                var site = _rules.Sites[i];
+                _state.Peaceful.Gain(site.Resource, (long)(System.Math.Floor(kills * site.PerKill) - System.Math.Floor(seen * site.PerKill)));
+            }
+        }
 
         public bool DistrictOpen(DistrictDef district) => district.Biome.Length == 0 || BiomeCleared(district.Biome);
 

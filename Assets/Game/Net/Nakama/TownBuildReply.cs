@@ -35,9 +35,12 @@ namespace Game.Net.Nakama
                 }
             }
             Accepted = accepted;
+            var top = new List<TownBuilder>();
+            foreach (var item in NakamaJson.Items(json, "top"))
+                top.Add(new TownBuilder((int)NakamaJson.Number(item, "rank"), NakamaJson.Text(item, "name"), (long)NakamaJson.Number(item, "points")));
             Board = new TownBoard(TownBoard.PhaseOf(NakamaJson.Text(json, "phase")), (int)NakamaJson.Number(json, "round"), (long)NakamaJson.Number(json, "voteEnds"),
                 (long)NakamaJson.Number(json, "opensAt"), (long)NakamaJson.Number(json, "now"), NakamaJson.Text(json, "project"), NakamaJson.Text(json, "vote"),
-                voted, candidates, stocks);
+                voted, candidates, stocks).WithBuilders((long)NakamaJson.Number(json, "points"), (int)NakamaJson.Number(json, "rank"), top);
         }
 
         public IReadOnlyList<string> Built { get; }

@@ -66,6 +66,18 @@ namespace Game.Core.Content
         public double OfflineGoldShare { get; private set; }
         public double TeaBattleMinutes { get; private set; }
         public double TeaIdleMinutes { get; private set; }
+        public double BackgroundDamageShare { get; private set; }
+        public IReadOnlyList<PeacefulPlace> BackgroundPlaces { get; private set; } = Array.Empty<PeacefulPlace>();
+
+        public bool FightsInBackground(PeacefulPlace place)
+        {
+            for (var i = 0; i < BackgroundPlaces.Count; i++)
+            {
+                if (BackgroundPlaces[i] == place)
+                    return true;
+            }
+            return false;
+        }
 
         public int IndexOf(string activity)
         {
@@ -118,8 +130,24 @@ namespace Game.Core.Content
                 presets.Add(new PeacefulPreset(node.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), mask, from, to, mode));
             }
             var tea = root.Field("teaPause");
+            var places = new List<PeacefulPlace>();
+            var share = 0.0;
+            if (root.HasField("backgroundFight"))
+            {
+                var background = root.Field("backgroundFight");
+                share = background.Field("damageShare").AsNumber(0, 1);
+                foreach (var node in background.Field("places").Items())
+                {
+                    var place = PeacefulPlaces.Parse(node.AsString());
+                    if (PeacefulPlaces.Key(place) != node.AsString())
+                        throw node.Error($"unknown place '{node.AsString()}'");
+                    places.Add(place);
+                }
+            }
             return new PeacefulRules
             {
+                BackgroundDamageShare = share,
+                BackgroundPlaces = places,
                 Activities = activities,
                 Presets = presets,
                 OfflineGoldShare = root.Field("offlineGoldShare").AsNumber(0, 1),

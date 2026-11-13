@@ -65,11 +65,14 @@ namespace Game.Core.Ui
             MailLetter.TournamentKind => "mail.tournament.title",
             MailLetter.FairKind => "mail.fair.title",
             MailLetter.CouponKind => "mail.coupon.title",
+            MailLetter.TownKind => "mail.town.title",
             _ => "mail.title"
         });
 
-        public static string Body(MailLetter letter, ChestCatalog? chests = null, TournamentRules? tournaments = null, FairRules? fair = null) => letter.Kind switch
+        public static string Body(MailLetter letter, ChestCatalog? chests = null, TournamentRules? tournaments = null, FairRules? fair = null, GuildRules? guilds = null) => letter.Kind switch
         {
+            MailLetter.TownKind => letter.Place > 0 ? Texts.Format("mail.town.bodyTop", HallName(letter.Title, guilds), letter.Depth, letter.Place)
+                : Texts.Format("mail.town.body", HallName(letter.Title, guilds), letter.Depth),
             MailLetter.RiftKind => Texts.Format("mail.rift.body", letter.Place, letter.Of, letter.Depth, PartyCardText.Title(letter.Title)),
             MailLetter.MentorKind => Texts.Format("mail.mentor.body", letter.Depth),
             MailLetter.RiftDepthKind => Texts.Format("mail.riftDepth.body", letter.Depth, PartyCardText.Title(letter.Title)),
@@ -93,6 +96,8 @@ namespace Game.Core.Ui
                 parts.Add(Texts.Format("rift.reward.friendship", letter.Reward.Friendship));
             return string.Join(" · ", parts);
         }
+
+        private static string HallName(string id, GuildRules? guilds) => guilds?.Guild(id) is GuildDef guild ? Texts.Pick(guild.NameRu, guild.NameEn) : id;
 
         private static string ContestName(string id, FairRules? fair) => fair?.Contest(id) is FairContest contest ? Texts.Pick(contest.NameRu, contest.NameEn) : id;
 

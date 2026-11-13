@@ -11,6 +11,7 @@
     { "id": "meditation", "name": { "ru": "Созерцание", "en": "Meditation" } }
   ],
   "offlineGoldShare": 0.3,
+  "backgroundFight": { "places": ["town", "clanCamp"], "damageShare": 0.1 },
   "teaPause": { "battleMinutes": 30, "idleMinutes": 5 },
   "presets": [
     { "id": "weekday_calls", "name": { "ru": "Будни 10–12 — Лагерь", "en": "Weekdays 10–12 — Camp" }, "days": [1, 2, 3, 4, 5], "fromMinute": 600, "toMinute": 720, "mode": "camp" },

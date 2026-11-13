@@ -88,18 +88,46 @@ test("when the vote ends the sign names the winner and the resources it needs", 
   assert.strictEqual(view.phase, "gather");
   assert.strictEqual(view.project, winner);
   assert.deepStrictEqual(view.candidates, []);
-  for (const entry of view.resources)
-    assert.strictEqual(entry.need, Math.round((rules.needs[winner][entry.id] || 0) * rules.minPlayers * rules.gatherDays), entry.id);
+  const stands = (guild) => guild === "" || rules.startBuilt.includes(guild);
+  for (const entry of view.resources) {
+    const rule = rules.resources.find((known) => known.id === entry.id);
+    assert.strictEqual(entry.need, stands(rule.guild) ? Math.round((rules.needs[winner][entry.id] || 0) * rules.minPlayers * rules.gatherDays) : 0, entry.id);
+  }
 });
 
-test("a tie goes to the building listed first and an empty vote still picks one", () => {
+test("a hall never needs what only a hall that is not built yet can make", () => {
+  const gated = rules.resources.filter((entry) => entry.guild !== "" && !rules.startBuilt.includes(entry.guild));
+  assert.ok(gated.length > 0);
+  for (const guild of rules.order) {
+    const before = plain(server.townBuildNeed({ built: [], days: {} }, guild, 100));
+    const after = plain(server.townBuildNeed({ built: plain(rules.order), days: {} }, guild, 100));
+    for (const entry of gated) {
+      assert.strictEqual(before[entry.id], undefined, guild + " " + entry.id);
+      if (rules.needs[guild][entry.id] > 0)
+        assert.ok(after[entry.id] > 0, guild + " " + entry.id);
+    }
+    assert.ok(Object.keys(before).length > 0, guild);
+  }
+});
+
+test("a tie goes to the building listed first and an empty vote goes on until somebody votes", () => {
   const tied = world(2);
   vote(tied.nk, "p0", rules.order[3]);
   vote(tied.nk, "p1", rules.order[1]);
   assert.strictEqual(state(tied.nk, "p0", now + rules.voteMs).project, rules.order[1]);
   const empty = world(1);
   state(empty.nk, "p0");
-  assert.strictEqual(state(empty.nk, "p0", now + rules.voteMs).project, rules.order[0]);
+  let view = state(empty.nk, "p0", now + rules.voteMs);
+  assert.strictEqual(view.phase, "vote");
+  assert.strictEqual(view.project, "");
+  assert.strictEqual(view.round, 1);
+  assert.strictEqual(view.voteEnds, now + 2 * rules.voteMs);
+  view = state(empty.nk, "p0", now + 4.5 * rules.voteMs);
+  assert.strictEqual(view.voteEnds, now + 5 * rules.voteMs, "a long silence is skipped in one step");
+  vote(empty.nk, "p0", rules.order[2], now + 4.6 * rules.voteMs);
+  view = state(empty.nk, "p0", now + 5 * rules.voteMs);
+  assert.strictEqual(view.phase, "gather");
+  assert.strictEqual(view.project, rules.order[2]);
 });
 
 test("what a player gathers counts for the town during the vote too, capped per day", () => {
@@ -131,7 +159,7 @@ test("what a player gathers counts for the town during the vote too, capped per 
 
 test("resources gathered in advance start the countdown the moment the vote ends", () => {
   const { nk } = world(1);
-  state(nk, "p0");
+  vote(nk, "p0", rules.order[0]);
   fill(nk, { resources: plain(rules.resources).map((entry) => ({ id: entry.id, need: 1e12 })) });
   const view = state(nk, "p0", now + rules.voteMs + 5000);
   assert.strictEqual(view.phase, "build");
@@ -142,7 +170,7 @@ test("resources gathered in advance start the countdown the moment the vote ends
 
 test("the last delivery starts the countdown, then the hall opens and a new vote begins", () => {
   const { nk } = world(1);
-  state(nk, "p0");
+  vote(nk, "p0", rules.order[0]);
   const chosen = now + rules.voteMs;
   let view = state(nk, "p0", chosen);
   assert.strictEqual(view.phase, "gather");
@@ -177,20 +205,63 @@ test("the need grows with the players who gathered in the last days", () => {
   for (let i = 1; i <= rules.activeDays; i++)
     days[String(100 - i)] = 200;
   const guild = rules.order[0];
-  const need = plain(server.townBuildNeed(guild, days, 100));
+  const need = plain(server.townBuildNeed({ built: plain(rules.order), days: days }, guild, 100));
   for (const id of Object.keys(rules.needs[guild]))
     assert.strictEqual(need[id], rules.needs[guild][id] * 200 * rules.gatherDays);
   assert.strictEqual(server.townBuildPlayers({}, 100), rules.minPlayers);
 });
 
-test("a town left alone catches up through every missed step", () => {
+test("a town left alone finishes the hall it voted for and then waits for the next vote", () => {
   const { nk } = world(1);
-  state(nk, "p0");
+  vote(nk, "p0", rules.order[1]);
   fill(nk, { resources: rules.resources.map((entry) => ({ id: entry.id, need: 1e12 })) });
-  const view = state(nk, "p0", now + 1000 * day);
-  assert.strictEqual(view.phase, "done");
-  assert.deepStrictEqual(view.built, plain(rules.order));
-  assert.deepStrictEqual(view.candidates, []);
+  const at = now + 1000 * day;
+  const view = state(nk, "p0", at);
+  assert.strictEqual(view.phase, "vote");
+  assert.strictEqual(view.round, 2);
+  assert.deepStrictEqual(view.built, [rules.order[1]]);
+  assert.ok(view.voteEnds > at && view.voteEnds <= at + rules.voteMs);
+});
+
+test("builders earn points, the board shows the best of them and the town thanks them by mail when the hall opens", () => {
+  const { nk } = world(3);
+  const letter = (user) => nk.storageRead([{ collection: "mail", key: "town-build-1", userId: user }])[0];
+  const full = {};
+  for (const entry of rules.resources.slice(0, 3))
+    full[entry.id] = entry.dailyCap;
+  vote(nk, "p0", rules.order[0]);
+  let view = add(nk, "p0", full);
+  assert.strictEqual(view.points, 3000, "a full day of one resource is 1000 points");
+  assert.strictEqual(view.rank, 1);
+  add(nk, "p1", { [rules.resources[0].id]: rules.resources[0].dailyCap / 2 });
+  view = add(nk, "p0", full, now + day);
+  assert.strictEqual(view.points, 6000);
+  assert.deepStrictEqual(view.top, [{ rank: 1, name: "p0", points: 6000 }, { rank: 2, name: "p1", points: 500 }]);
+  assert.strictEqual(state(nk, "p1", now + day).rank, 2);
+  assert.strictEqual(state(nk, "p2", now + day).rank, 0);
+  assert.strictEqual(letter("p0"), undefined, "nothing is sent while the hall is not open");
+
+  fill(nk, { resources: rules.resources.map((entry) => ({ id: entry.id, need: 1e12 })) });
+  const opened = now + rules.voteMs + rules.openMs + 1000;
+  view = state(nk, "p0", opened);
+  assert.strictEqual(view.round, 2);
+  assert.strictEqual(view.points, 0);
+  assert.deepStrictEqual(view.top, []);
+  const tier = rules.rewards.filter((entry) => entry.points <= 6000).pop();
+  const sent = plain(letter("p0").value);
+  assert.strictEqual(sent.kind, "town");
+  assert.strictEqual(sent.title, rules.order[0]);
+  assert.strictEqual(sent.depth, 6000);
+  assert.strictEqual(sent.place, 1);
+  assert.deepStrictEqual(sent.reward, { shards: tier.shards + rules.topShards, ingots: 0, friendship: tier.friendship });
+  state(nk, "p1", opened);
+  state(nk, "p2", opened);
+  assert.strictEqual(letter("p1"), undefined, "below the first tier there is no letter");
+  assert.strictEqual(letter("p2"), undefined);
+  const version = letter("p0").version;
+  add(nk, "p0", full, opened);
+  state(nk, "p0", opened + day);
+  assert.strictEqual(letter("p0").version, version, "one letter per hall");
 });
 
 test("when every hall is built the town stops counting and a record of the old format starts a vote", () => {

@@ -177,6 +177,7 @@ namespace Game.Core.Sim
         public double WishShare { get; set; }
         public BigNumber TotalDamage { get; set; }
         public DamageWindow DamageWindow { get; } = new DamageWindow();
+        public double DamageScale { get; set; } = 1;
         public double BossTimerRate { get; set; } = 1;
         public bool BossTimerBonusUsed { get; set; }
         public bool FocusRefill { get; set; }

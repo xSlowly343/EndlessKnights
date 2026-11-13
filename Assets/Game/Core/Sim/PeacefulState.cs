@@ -13,6 +13,8 @@ namespace Game.Core.Sim
 
     public sealed class PeacefulState
     {
+        private const int GainCapacity = 32;
+
         public PeacefulMode Mode { get; set; }
         public PeacefulPlace Place { get; set; }
         public string Activity { get; set; } = string.Empty;
@@ -24,13 +26,14 @@ namespace Game.Core.Sim
         public double QuietSeconds { get; set; }
         public bool TeaOffered { get; set; }
         public long UnsentActions { get; set; }
-        public Dictionary<string, long> UnsentGains { get; } = new Dictionary<string, long>(System.StringComparer.Ordinal);
+        public Dictionary<string, long> UnsentGains { get; } = new Dictionary<string, long>(GainCapacity, System.StringComparer.Ordinal);
+        public long SiteKills { get; set; }
         public double ActionCarry { get; set; }
         public PeacefulWork HideoutWork { get; } = new PeacefulWork();
 
         public void Gain(string resource, long amount)
         {
-            if (amount <= 0)
+            if (amount <= 0 || resource.Length == 0)
                 return;
             UnsentGains[resource] = (UnsentGains.TryGetValue(resource, out var unsent) ? unsent : 0) + amount;
         }

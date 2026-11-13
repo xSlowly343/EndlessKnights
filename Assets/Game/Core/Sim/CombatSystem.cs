@@ -167,7 +167,7 @@ namespace Game.Core.Sim
         }
 
         public BigNumber SkillDamage(double baseDamage, double multiplier, StatTags tags) =>
-            _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * multiplier;
+            _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * _state.DamageScale);
 
         public void NotePause(long idleTicksBefore, bool hasInput)
         {
@@ -448,7 +448,7 @@ namespace Game.Core.Sim
             if (source == DamageSource.Strike)
                 multiplier *= _state.SupportKeyBonus;
             LastHitCrit = false;
-            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken() * FractureTaken() * PillarMultiplier() * DefenseGain(tags) * ElementMultiplier(tags) * (1 + TempoBonus));
+            var damage = _hero.Compute(CombatStats.Damage, BigNumber.FromDouble(baseDamage), tags) * (multiplier * _state.DamageScale * ConditionMultiplier(tags) * StunnedMultiplier(tags) * MarkedMultiplier(tags) * _shardcaller.DamageTaken() * _sandwalker.DamageTaken() * _minstrel.DamageTaken(source) * _dreamcatcher.DamageTaken() * _lanternbearer.DamageTaken() * _whisperer.DamageTaken() * _alchemist.DamageTaken() * _soulbinder.DamageTaken() * _ghostcaptain.DamageTaken() * _cartomancer.DamageTaken() * FractureTaken() * PillarMultiplier() * DefenseGain(tags) * ElementMultiplier(tags) * (1 + TempoBonus));
             if (damage.Sign <= 0)
                 return;
             _state.HitsOnEnemy++;
