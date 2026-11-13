@@ -659,6 +659,23 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ThePartyColossusIsReadWithTierHpTheWeeklyTableAndWhatWasAccepted()
+        {
+            Assert.That(PartyColossusReply.ReportPayload(120.5, 0, 3600), Is.EqualTo("{\"points\":120.5,\"offlinePoints\":0,\"offlineSeconds\":3600}"));
+            var reply = PartyColossusReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"tier\":3,\"hp\":7000,\"hpFull\":31537.5,\"ceiling\":10,\"waiting\":false,\"kills\":2,\"shares\":[{\"userId\":\"a\",\"name\":\"Ann\",\"points\":900,\"share\":0.75}],\"yours\":900,\"reportSeconds\":300,\"accepted\":{\"live\":400,\"offline\":100,\"killed\":[2]}}"));
+            Assert.That(reply.Opened, Is.True);
+            Assert.That(reply.Tier, Is.EqualTo(3));
+            Assert.That(reply.HpShare, Is.EqualTo(7000 / 31537.5).Within(1e-12));
+            Assert.That(reply.Kills, Is.EqualTo(2));
+            Assert.That(reply.Shares[0].Name, Is.EqualTo("Ann"));
+            Assert.That(reply.Shares[0].Share, Is.EqualTo(0.75));
+            Assert.That(reply.ReportSeconds, Is.EqualTo(300));
+            Assert.That(reply.Accepted!.Live, Is.EqualTo(400));
+            Assert.That(reply.Accepted.Killed, Is.EqualTo(new[] { 2 }));
+            Assert.That(PartyColossusReply.From(NakamaJson.Parse("{\"accepted\":null}")).Accepted, Is.Null);
+        }
+
+        [Test]
         public void TheRiftShopIsReadPerRiftWithItsSparksAndWindowCounts()
         {
             Assert.That(RiftShopReply.ViewPayload(1793102400), Is.EqualTo("{\"riftId\":1793102400}"));

@@ -259,6 +259,7 @@ namespace Game.Core.Sim
             _clanTree = new ClanTreeBonus(data.ClanTree, hero, state.ClanBonus);
             _mentor = new MentorBonus(data.Mentor, hero, _levels, state);
             _partyGrowth = new PartyGrowthLayer(data.Party.Growth, hero);
+            PartyColossus = new PartyColossusMeter(data.Party.Growth.Colossus);
             _homeOnly = new[] { _clanTree.Layer, _mentor.Layer, _alchemy.Layer, _museum.Layer, _cooking.Layer, _clanCamp.Layer, _gates.Layer, _chronicle.Layer };
             MuteHomeOnly();
             RebuildTree();
@@ -294,6 +295,32 @@ namespace Game.Core.Sim
         public GhostSystem Ghost => _ghost;
         public PartyActivityMeter PartyActivity { get; } = new PartyActivityMeter();
         public PartyGrowthLayer PartyGrowth => _partyGrowth;
+        public PartyColossusMeter PartyColossus { get; }
+        public bool AtPartyColossus => _stage.AtColossus;
+        private bool ColossusCounts => _partyGrowth.InParty && _partyColossusOpen;
+        private bool _partyColossusOpen;
+
+        public void SetPartyColossusOpen(bool open)
+        {
+            _partyColossusOpen = open;
+            if (!open)
+                LeavePartyColossus();
+        }
+
+        public bool EnterPartyColossus()
+        {
+            if (!ColossusCounts || _rift.Inside || _dungeons.Inside || _peaceful.InCamp)
+                return false;
+            return _stage.EnterColossus();
+        }
+
+        public void LeavePartyColossus() => _stage.LeaveColossus();
+
+        private void NotePartyColossus()
+        {
+            var active = State.IdleTicks <= _data.Party.Contribution.ActiveInputSeconds * TicksPerSecond;
+            PartyColossus.Note(State.TotalDamage, _data.Stages, State.RecordStage, _stage.AtColossus, active, ColossusCounts, _partyGrowth.ColossusPower);
+        }
         public RaidTally Raid => _raid;
         public ClanTreeBonus ClanTree => _clanTree;
         public MentorBonus Mentor => _mentor;
@@ -881,6 +908,7 @@ namespace Game.Core.Sim
         public void ApplyOffline(OfflineResult result)
         {
             _drops.ApplyOffline(result);
+            PartyColossus.NoteOffline(result, _data.Stages, State.RecordStage, ColossusCounts, _partyGrowth.ColossusPower);
             OfflineCalculator.Apply(State, result);
             AddIdleSeconds(result.AwaySeconds);
             RefreshPeacefulBonus();
@@ -1160,6 +1188,7 @@ namespace Game.Core.Sim
             _clanTree.UseCatalog(data.ClanTree);
             _mentor.UseRules(data.Mentor);
             _partyGrowth.UseRules(data.Party.Growth);
+            PartyColossus.UseRules(data.Party.Growth.Colossus);
             _rift.UseData(data);
             RebuildTree();
             SyncPathSkill();
@@ -1343,6 +1372,7 @@ namespace Game.Core.Sim
             _achievements.Tick();
             _dps.Tick(_combat.LastTickDamage);
             State.DamageWindow.Record(State.TotalDamage);
+            NotePartyColossus();
             State.Tick++;
             if (Permissions.Consent)
                 _tutorial.Tick(LastInput, Events, firstEvent);

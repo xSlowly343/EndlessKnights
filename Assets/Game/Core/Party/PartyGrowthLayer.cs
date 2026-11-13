@@ -11,6 +11,7 @@ namespace Game.Core.Party
         public static readonly StatId TrialPowerStat = new StatId("trialPower");
         public static readonly StatId TrialTries = new StatId("trialTries");
         public static readonly StatId TrialCarry = new StatId("trialCarry");
+        public static readonly StatId ColossusDamage = new StatId("colossusDamage");
 
         private readonly ModifierLayer _layer;
         private readonly List<Modifier> _sources = new List<Modifier>();
@@ -42,6 +43,7 @@ namespace Game.Core.Party
         public IReadOnlyList<int> TrialBest => _trialBest;
         public double Seals { get; private set; }
         public double TrialPower { get; private set; } = 1;
+        public double ColossusPower { get; private set; } = 1;
 
         public void SetTrials(IReadOnlyList<int> bestTiers)
         {
@@ -114,13 +116,14 @@ namespace Game.Core.Party
             PartyTreeBonus.Build(_rules.Tree, _treeLevels, _treeMajors, Members, _tree);
             Seals = _rules.Trials.SealIncrease(_trialBest) * Scale(TrialSeals);
             TrialPower = InParty ? Scale(TrialPowerStat) : 1;
+            ColossusPower = InParty ? Scale(ColossusDamage) : 1;
             if (Share > 0)
             {
                 foreach (var source in _sources)
                     _applied.Add(source.WithValue(source.Value * Share));
                 foreach (var line in _tree)
                 {
-                    if (!IsTrialLine(line))
+                    if (!IsPartyOnlyLine(line))
                         _applied.Add(line.WithValue(line.Value * Share));
                 }
                 if (Seals > 0)
@@ -147,8 +150,8 @@ namespace Game.Core.Party
             return System.Math.Max(0, (1 + increased) * more);
         }
 
-        private static bool IsTrialLine(Modifier line) =>
-            line.Stat == TrialSeals || line.Stat == TrialPowerStat || line.Stat == TrialTries || line.Stat == TrialCarry;
+        private static bool IsPartyOnlyLine(Modifier line) =>
+            line.Stat == TrialSeals || line.Stat == TrialPowerStat || line.Stat == TrialTries || line.Stat == TrialCarry || line.Stat == ColossusDamage;
 
         private double CapDamage()
         {

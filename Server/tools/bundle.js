@@ -549,6 +549,16 @@ const partyGrowthRules = {
     majors: growth.tree.majors.map((slot) => ({ at: slot.at, options: slot.options.map((option) => option.id) }))
   },
   trials: partyTrialServerRules(growth),
+  colossus: {
+    hpBase: growth.colossus.hp.base,
+    hpGrowth: growth.colossus.hp.growth,
+    ceilingBase: growth.colossus.ceilingBase,
+    ceilingStep: growth.colossus.ceilingStep,
+    maxPointsPerSecond: growth.colossus.maxPointsPerSecond,
+    maxOfflinePointsPerSecond: growth.colossus.maxOfflinePointsPerSecond,
+    reportSeconds: growth.colossus.reportSeconds,
+    experiencePerPercent: growth.colossus.experiencePerPercent
+  },
   unlocks: growth.unlocks.map((unlock) => ({ level: unlock.level, kind: unlock.kind }))
 };
 

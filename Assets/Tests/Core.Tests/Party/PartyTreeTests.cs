@@ -77,7 +77,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void LinesThatWaitForTheirMechanicGiveNothingYet()
         {
-            Assert.That(Build(Levels((6, 5)), 4), Is.Empty, "the Colossus comes with 13.45");
+            Assert.That(Build(Levels((30, 5)), 4), Is.Empty, "the mascot comes with 13.48");
             Assert.That(Build(Levels((19, 5)), 4), Is.Empty, "a cheaper price is the server's business");
         }
 

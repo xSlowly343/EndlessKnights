@@ -20,6 +20,7 @@ interface PartyGrowthRules {
     treasury: PartyTreasuryRules;
     tree: PartyTreeRules;
     trials: PartyTrialRules;
+    colossus: PartyColossusRules;
     unlocks: PartyGrowthUnlock[];
 }
 

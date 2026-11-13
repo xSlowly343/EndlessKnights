@@ -71,9 +71,31 @@ namespace Game.Core.Sim
         private double WithTraitSlow(double rate) =>
             _state.TraitTimerSlow == 0 ? rate : System.Math.Max(0, rate * (1 - System.Math.Min(1, _state.TraitTimerSlow)));
 
+        public bool AtColossus { get; private set; }
+
+        public bool EnterColossus()
+        {
+            if (Linked || AtColossus)
+                return false;
+            AtColossus = true;
+            var stage = System.Math.Max(1, _state.RecordStage);
+            Spawn(BossFor(BiomeRotation.Current(_stages, _state, _state.Stage), stage), EnemyType.Boss, _stages.BossHp(stage));
+            _state.BossTicksLeft = int.MaxValue;
+            _state.BossTimerCarry = 0;
+            return true;
+        }
+
+        public void LeaveColossus()
+        {
+            if (!AtColossus)
+                return;
+            AtColossus = false;
+            SpawnNext();
+        }
+
         public void Tick()
         {
-            if (Linked)
+            if (Linked || AtColossus)
                 return;
             TickGolden();
             TickOddities();
@@ -120,6 +142,11 @@ namespace Game.Core.Sim
 
         public void OnEnemyKilled()
         {
+            if (AtColossus)
+            {
+                _state.EnemyHp = _state.EnemyMaxHp;
+                return;
+            }
             if (Linked)
             {
                 _state.EnemyHp = _state.EnemyMaxHp * StaggerHpShare;
@@ -165,6 +192,8 @@ namespace Game.Core.Sim
 
         public void Link(bool asGuest = false)
         {
+            if (AtColossus)
+                LeaveColossus();
             Linked = true;
             LinkedAsGuest = asGuest;
             LinkedGateBoss = false;
