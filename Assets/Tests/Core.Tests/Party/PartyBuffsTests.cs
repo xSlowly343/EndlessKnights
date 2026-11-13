@@ -143,6 +143,29 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void AlliesSeeEachOthersSkillCasts()
+        {
+            var rig = new Rig(2);
+            var caster = rig.Members[0];
+            var friend = rig.Members[1];
+            while (caster.Loop.State.Skills.Count > 0)
+                caster.Loop.Skills.Unequip(0);
+            caster.Equip("runedancer_hit_1");
+            rig.Run(5);
+            var casterSlot = friend.Client.Roster.SlotOf(10UL);
+            var left = caster.Loop.State.Skills[SkillLoadout.IndexOf(caster.Loop.State.Skills, SkillSlotRole.Left)].Skill;
+
+            caster.Loop.RequestCast(SkillLoadout.IndexOf(caster.Loop.State.Skills, SkillSlotRole.Left));
+            rig.Run(3);
+
+            Assert.That(friend.Client.TakeAllyCast(out var slot, out var gem), Is.True);
+            Assert.That(slot, Is.EqualTo(casterSlot));
+            Assert.That(gem, Is.SameAs(left));
+            Assert.That(friend.Client.TakeAllyCast(out _, out _), Is.False);
+            Assert.That(caster.Client.TakeAllyCast(out _, out _), Is.False, "the own cast is not an ally cast");
+        }
+
+        [Test]
         public void MembersSeeTheHordeAndTheColossusShieldOfTheHost()
         {
             var rift = TestWorld.Data.Rift;

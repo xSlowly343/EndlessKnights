@@ -146,6 +146,27 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
+        public void ThreeAllyCastsInARowNeverOverlap()
+        {
+            var rules = ShowRules.PartySkills;
+            var queue = new ShowQueue(rules);
+            queue.Offer(Auto, 1, false, 0);
+            queue.Offer(Heavy, 2, false, 0);
+            queue.Offer(Gem("runedancer_hit_1"), 3, false, 0);
+
+            Assert.That(queue.TryTake(0, out var first), Is.True);
+            Assert.That(first.Size, Is.EqualTo(ShowSize.Small), "the third cast pushes the oldest out to the small version");
+            Assert.That(first.Source, Is.EqualTo(1));
+            Assert.That(queue.TryTake(0, out var second), Is.True);
+            Assert.That(second.Size, Is.EqualTo(ShowSize.Full));
+            Assert.That(second.Source, Is.EqualTo(2));
+            Assert.That(queue.TryTake(rules.FullSeconds + rules.GapSeconds - 0.01, out _), Is.False, "one full show at a time");
+            Assert.That(queue.TryTake(rules.FullSeconds + rules.GapSeconds, out var third), Is.True);
+            Assert.That(third.Size, Is.EqualTo(ShowSize.Full));
+            Assert.That(third.Source, Is.EqualTo(3));
+        }
+
+        [Test]
         public void ASkillIsCastByHandWhenItStandsOnAMouseButton()
         {
             var loop = TestWorld.Loop(state: new GameState { Class = HeroClass.Runedancer, HeroLevel = 30 });
