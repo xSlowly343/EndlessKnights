@@ -240,5 +240,14 @@ namespace Game.Core.Tests.Party
             loop.SetPartyStanding(false, 0, 0, Now);
             Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(before).Within(1e-9));
         }
+
+        [Test]
+        public void TheOvercritMaskMultipliesOvercritDamage()
+        {
+            var (loop, _) = Member();
+            var before = loop.Combat.OvercritMultiplier(StatTags.Strike);
+            loop.SetPartyRelics(new Dictionary<string, int> { ["overcrit_mask"] = 30 });
+            Assert.That(loop.Combat.OvercritMultiplier(StatTags.Strike) / before, Is.EqualTo(System.Math.Pow(1.005, 30)).Within(1e-9));
+        }
     }
 }

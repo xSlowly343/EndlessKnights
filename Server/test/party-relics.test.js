@@ -143,3 +143,12 @@ test("every member with more than 10% of last week's colossus damage gets 5 frie
   const wallet = server.walletRead(nk, "ann").value;
   assert.strictEqual(wallet.today.colossus_share, 5);
 });
+
+test("Colossus Trap gives one more trophy for every kill at its third level", () => {
+  const { nk, partyId } = party("ann", "bob");
+  server.partyTreasuryChange(nk, partyId, (value) => {
+    value.levels = { "44": 3 };
+  });
+  nearlyDead(nk, partyId, 1);
+  assert.strictEqual(kill(nk, "ann", now).trophies, 2);
+});

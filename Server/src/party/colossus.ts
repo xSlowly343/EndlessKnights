@@ -18,6 +18,7 @@ interface PartyColossusRules {
     relics: { id: string; stat: string; value: number; works: boolean }[];
     treeTrophies: PartyTrialTreeLine[];
     treeTrophyChance: PartyTrialTreeLine[];
+    treeTrophyFlat: PartyTrialTreeLine[];
     treeSigns: PartyTrialTreeLine[];
     soften: PartyTrialTreeLine[];
     switchOff: PartyTrialTreeLine[];
@@ -89,6 +90,7 @@ interface PartyColossusSituation {
     leader: boolean;
     trophyBonus: number;
     trophyChance: number;
+    trophyFlat: number;
     signsBonus: number;
 }
 
@@ -286,6 +288,7 @@ function partyColossusSituation(nk: nkruntime.Nakama, partyId: string, userId: s
         noHeal: partyTrialTreeValue(levels, partyColossusRules().noHeal) > 0,
         trophyBonus: partyTrialTreeValue(levels, partyColossusRules().treeTrophies),
         trophyChance: partyTrialTreeValue(levels, partyColossusRules().treeTrophyChance),
+        trophyFlat: partyTrialTreeValue(levels, partyColossusRules().treeTrophyFlat),
         signsBonus: partyTrialTreeValue(levels, partyColossusRules().treeSigns),
         leader: !!group && partyMetaOf(group).leader === userId
     };
@@ -398,7 +401,7 @@ function partyColossusReward(value: PartyColossusValue, situation: PartyColossus
     const greedy = partyColossusActive(value, situation).indexOf("greedy") >= 0;
     const multiplier = Math.max(0, 1 + trophyBonus + situation.trophyBonus + partyColossusRelicLevel(value, "colossusTrophies") + (greedy ? partyColossusFactor(value, situation, "greedy", "trophies", 0) : 0));
     const random = partyColossusSeed(situation.partyId + ":trophy:" + value.kills);
-    const extra = random() < situation.trophyChance ? 1 : 0;
+    const extra = (random() < situation.trophyChance ? 1 : 0) + situation.trophyFlat;
     const exact = base * multiplier * partyColossusFactor(value, situation, "limitArmor", "reward", 1) + extra + value.trophyCarry;
     const trophies = Math.floor(exact + 1e-9);
     value.trophyCarry = Math.max(0, exact - trophies);

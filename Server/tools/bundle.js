@@ -583,6 +583,7 @@ const partyGrowthRules = {
     relics: growth.colossus.relics.map((relic) => ({ id: relic.id, stat: relic.stat, value: relic.value, works: !relic.waits })),
     treeTrophies: partyTrialTreeLines(growth, "colossusTrophies").concat(partyTrialTreeLines(growth, "colossusLoot")),
     treeTrophyChance: partyTrialTreeLines(growth, "colossusTrophyChance"),
+    treeTrophyFlat: partyTrialTreeLines(growth, "colossusTrophyFlat"),
     treeSigns: partyTrialTreeLines(growth, "signsColossus"),
     soften: partyTrialTreeLines(growth, "colossusHardship"),
     switchOff: partyTrialTreeLines(growth, "colossusHardshipOff"),

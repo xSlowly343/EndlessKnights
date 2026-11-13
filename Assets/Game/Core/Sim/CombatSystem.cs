@@ -691,7 +691,8 @@ namespace Game.Core.Sim
         public double Overcrit(StatTags tags) => System.Math.Min(1, System.Math.Max(0, RawCritChance(tags) - 1));
 
         public double OvercritMultiplier(StatTags tags) =>
-            CritMultiplier(tags) * System.Math.Max(0, 1 + _hero.Value(CombatStats.OvercritMultiplier, 0, tags | StatTags.Crit));
+            CritMultiplier(tags) * System.Math.Max(0, 1 + _hero.Value(CombatStats.OvercritMultiplier, 0, tags | StatTags.Crit))
+            * System.Math.Max(0, _hero.Value(CombatStats.OvercritDamage, 1, tags | StatTags.Crit));
 
         private double RawCritChance(StatTags tags)
         {
