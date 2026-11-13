@@ -2,7 +2,7 @@
 
 Прочитай: CLAUDE.md; docs/pixelfx-uses.md; docs/peaceful-world.md (рыбалка, сад, кузница, кухня, алхимия, раскопки, Лагерь, Кромка); docs/ui-screens.md (какие окна собраны); модели ядра: FishingSystem, GardenSystem, ForgeSystem, CookingSystem, AlchemySystem, DigSystem и их View.
 
-Задача (ветка task/pixelfx-peaceful, номер в roadmap поставь сам):
+Задача (ветка task/pixelfx-peaceful, задача roadmap 17.78):
 1. Перечень эффектов по активностям (поклёвка и всплеск, круги на воде, рост и полив, искры молота и закалка, пар и бульканье, пузыри зелий, пыль раскопок) — согласуй с Сергеем (🧑).
 2. Листы, вид, превью Сергею; замер CPU — [R].
 
