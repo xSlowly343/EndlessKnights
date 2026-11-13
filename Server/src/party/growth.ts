@@ -15,6 +15,7 @@ interface PartyGrowthRules {
     dailyMinutesPerMember: number;
     firstReportSeconds: number;
     reportSlackSeconds: number;
+    rejoinHours: number;
     unlocks: PartyGrowthUnlock[];
 }
 
@@ -23,11 +24,13 @@ interface PartyGrowthMember {
     minutes: number;
     at: number;
     carry: number;
+    joined?: number;
 }
 
 interface PartyGrowthValue {
     experience: number;
     members: { [userId: string]: PartyGrowthMember };
+    left: { [userId: string]: number };
 }
 
 declare const PartyGrowthServerRules: PartyGrowthRules;
@@ -54,9 +57,9 @@ function partyGrowthLevel(experience: number): { level: number; into: number; ne
 function partyGrowthRead(nk: nkruntime.Nakama, partyId: string): { value: PartyGrowthValue; version: string } {
     const objects = nk.storageRead([{ collection: PartyGrowthCollection, key: partyId, userId: PartySystemUser }]);
     if (objects.length === 0)
-        return { value: { experience: 0, members: {} }, version: "*" };
+        return { value: { experience: 0, members: {}, left: {} }, version: "*" };
     const value = objects[0].value as PartyGrowthValue;
-    return { value: { experience: value.experience || 0, members: value.members || {} }, version: objects[0].version };
+    return { value: { experience: value.experience || 0, members: value.members || {}, left: value.left || {} }, version: objects[0].version };
 }
 
 function partyGrowthChange<T>(nk: nkruntime.Nakama, partyId: string, change: (value: PartyGrowthValue) => T): T {
@@ -85,16 +88,41 @@ function partyGrowthAdd(nk: nkruntime.Nakama, partyId: string, amount: number): 
     }
 }
 
-function partyGrowthView(partyId: string, value: PartyGrowthValue): { [key: string]: any } {
+function partyGrowthView(partyId: string, value: PartyGrowthValue, userId: string, members: number): { [key: string]: any } {
     const level = partyGrowthLevel(value.experience);
-    return { partyId: partyId, experience: Math.floor(value.experience), level: level.level, into: Math.floor(level.into), need: level.need };
+    const member = value.members[userId];
+    return {
+        partyId: partyId, experience: Math.floor(value.experience), level: level.level, into: Math.floor(level.into), need: level.need,
+        members: members, joinedAt: member && member.joined ? member.joined : 0
+    };
 }
 
 function partyGrowthMine(nk: nkruntime.Nakama, userId: string): { [key: string]: any } {
     const group = partyGroupOfUser(nk, userId);
     if (!group)
         throw new Error("not in a party");
-    return partyGrowthView(group.id, partyGrowthRead(nk, group.id).value);
+    return partyGrowthView(group.id, partyGrowthRead(nk, group.id).value, userId, partyMetaOf(group).members.length);
+}
+
+function partyGrowthJoined(nk: nkruntime.Nakama, partyId: string, userId: string, nowUnixMs: number): void {
+    partyGrowthChange(nk, partyId, (value) => {
+        const member = value.members[userId] || { day: 0, minutes: 0, at: 0, carry: 0 };
+        member.joined = nowUnixMs;
+        value.members[userId] = member;
+        delete value.left[userId];
+    });
+}
+
+function partyGrowthLeft(nk: nkruntime.Nakama, partyId: string, userId: string, nowUnixMs: number): void {
+    partyGrowthChange(nk, partyId, (value) => {
+        delete value.members[userId];
+        value.left[userId] = nowUnixMs;
+    });
+}
+
+function partyGrowthMayRejoin(nk: nkruntime.Nakama, partyId: string, userId: string, nowUnixMs: number): boolean {
+    const left = partyGrowthRead(nk, partyId).value.left[userId];
+    return !left || nowUnixMs - left >= PartyGrowthServerRules.rejoinHours * 3600000;
 }
 
 function partyGrowthMinutes(member: PartyGrowthMember, activeSeconds: number, nowUnixMs: number): number {
@@ -123,7 +151,7 @@ function partyGrowthReport(nk: nkruntime.Nakama, userId: string, activeSeconds: 
         const member = value.members[userId] || { day: 0, minutes: 0, at: 0, carry: 0 };
         value.members[userId] = member;
         value.experience += partyGrowthMinutes(member, activeSeconds, nowUnixMs) * PartyGrowthServerRules.perActiveMinute;
-        return partyGrowthView(group.id, value);
+        return partyGrowthView(group.id, value, userId, partyMetaOf(group).members.length);
     });
 }
 

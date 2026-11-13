@@ -590,12 +590,14 @@ namespace Game.Net.Tests
         public void ThePartyLevelIsReadFromTheServer()
         {
             Assert.That(PartyGrowthReply.ReportPayload(360), Is.EqualTo("{\"activeSeconds\":360}"));
-            var reply = PartyGrowthReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"experience\":1460,\"level\":5,\"into\":100,\"need\":490}"));
+            var reply = PartyGrowthReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"experience\":1460,\"level\":5,\"into\":100,\"need\":490,\"members\":3,\"joinedAt\":1763000000000}"));
             Assert.That(reply.PartyId, Is.EqualTo("g1"));
             Assert.That(reply.Experience, Is.EqualTo(1460));
             Assert.That(reply.Level, Is.EqualTo(5));
             Assert.That(reply.Into, Is.EqualTo(100));
             Assert.That(reply.Need, Is.EqualTo(490));
+            Assert.That(reply.Members, Is.EqualTo(3));
+            Assert.That(reply.JoinedAt, Is.EqualTo(1763000000000));
         }
 
         [Test]

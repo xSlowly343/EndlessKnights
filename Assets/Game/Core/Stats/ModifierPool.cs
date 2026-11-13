@@ -7,6 +7,7 @@ namespace Game.Core.Stats
         Artifact,
         Echo,
         World,
-        Party
+        Party,
+        PartyGrowth
     }
 }

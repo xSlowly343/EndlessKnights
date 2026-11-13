@@ -68,3 +68,19 @@ test("bosses and guardians together and plain adds raise the party, outside a pa
   assert.throws(() => server.partyGrowthReport(lone.nk, "cat", 60, now), /not in a party/);
   assert.throws(() => server.partyGrowthReport(nk, "ann", -5, now), /bad request/);
 });
+
+test("the server tells when you joined and how many are in the party, and you cannot come back within a day", () => {
+  const { nk, call, partyId } = party("ann", "bob", "cat");
+  const view = call("bob", "partyGrowthRpc");
+  assert.strictEqual(view.members, 3, "members, not who is online");
+  assert.ok(view.joinedAt > 0);
+  const code = call("ann", "partyMineRpc").party.code;
+  call("cat", "partyLeaveRpc", {});
+  assert.ok(server.partyGrowthRead(nk, partyId).value.left.cat > 0);
+  assert.throws(() => call("cat", "partyJoinRpc", { code: code }), /less than a day ago/);
+  const record = server.partyGrowthRead(nk, partyId);
+  record.value.left.cat -= rules.rejoinHours * 3600000;
+  nk.storageWrite([{ collection: "party_growth", key: partyId, userId: "00000000-0000-0000-0000-000000000000", value: record.value, permissionRead: 0, permissionWrite: 0 }]);
+  call("cat", "partyJoinRpc", { code: code });
+  assert.strictEqual(call("cat", "partyGrowthRpc").members, 3, "after a day the way back is open");
+});

@@ -48,6 +48,7 @@ namespace Game.Core.Party
     public sealed class PartyGrowthRules
     {
         public static readonly PartyGrowthRules None = new PartyGrowthRules(1, 1, 0, 0, System.Array.Empty<PartyUnlock>());
+        private static readonly double[] FullShare = { 1 };
 
         private static readonly Dictionary<string, PartyUnlockKind> Kinds = new Dictionary<string, PartyUnlockKind>
         {
@@ -78,6 +79,13 @@ namespace Game.Core.Party
         public double LevelStep { get; }
         public double PerActiveMinute { get; }
         public IReadOnlyList<PartyUnlock> Unlocks { get; }
+        public double DamageCap { get; private set; } = double.PositiveInfinity;
+        public double PeacefulCap { get; private set; } = double.PositiveInfinity;
+        public IReadOnlyList<double> NewcomerShares { get; private set; } = FullShare;
+        public double RejoinHours { get; private set; }
+
+        public double NewcomerShare(int daysInParty) =>
+            NewcomerShares[System.Math.Min(System.Math.Max(0, daysInParty), NewcomerShares.Count - 1)];
 
         public double Need(int level) => level >= MaxLevel ? 0 : LevelBase + LevelStep * (level - 1);
 
@@ -148,8 +156,24 @@ namespace Game.Core.Party
                 unlocks.Add(new PartyUnlock(level, kind));
             }
             var experience = node.Field("experience");
-            return new PartyGrowthRules(maxLevel, node.Field("levelBase").AsNumber(1, 1e9), node.Field("levelStep").AsNumber(0, 1e9),
+            var rules = new PartyGrowthRules(maxLevel, node.Field("levelBase").AsNumber(1, 1e9), node.Field("levelStep").AsNumber(0, 1e9),
                 experience.Field("perActiveMinute").AsNumber(0, 1000), unlocks);
+            if (node.HasField("basket"))
+                ReadBasket(node.Field("basket"), rules);
+            return rules;
+        }
+
+        private static void ReadBasket(ContentNode basket, PartyGrowthRules rules)
+        {
+            var shares = new List<double>();
+            foreach (var item in basket.Field("newcomerShares").Items())
+                shares.Add(item.AsNumber(0, 1));
+            if (shares.Count == 0 || shares[shares.Count - 1] != 1)
+                throw basket.Field("newcomerShares").Error("the last newcomer share must be 1");
+            rules.DamageCap = basket.Field("damageCap").AsNumber(1, 1000);
+            rules.PeacefulCap = basket.Field("peacefulCap").AsNumber(1, 1000);
+            rules.NewcomerShares = shares;
+            rules.RejoinHours = basket.Field("rejoinHours").AsNumber(0, 24 * 30);
         }
     }
 }
