@@ -35,6 +35,7 @@
     "unlockCost": { "curve": "exp", "base": 2, "rate": 1.15 },
     "levelCost": { "curve": "exp", "base": 1, "rate": 1.25 }
   },
+  "ladder": [{ "feature": "artifacts", "stage": 10 }, { "feature": "dungeons", "stage": 25 }],
   "modifiersPerWindow": 2,
   "modifiers": [
     { "id": "stone_skin", "unlessRoles": ["herald"], "modifiers": [{ "stat": "attackPower", "kind": "more", "value": -0.5 }] },

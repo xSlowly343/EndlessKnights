@@ -121,6 +121,7 @@ namespace Game.Core.Sim.Rift
             var rift = _state.Rift;
             if (rift.WindowId != riftId)
                 rift.StartWindow(riftId, endUnixMs);
+            _state.Peaceful.Mode = PeacefulMode.Battle;
             var riftProgress = rift.OtherWorld ?? new StageProgress();
             rift.OtherWorld = StageProgress.Capture(_state);
             rift.Inside = true;
@@ -169,13 +170,31 @@ namespace Game.Core.Sim.Rift
             Slates?.OnRiftBoss();
         }
 
+        public EventQueue? Events { get; set; }
+
+        public bool IsOpen(RiftFeature feature) => Inside && _state.HighestStage >= _rules.StageOf(feature);
+
+        public long OpensAt(RiftFeature feature) => _rules.StageOf(feature);
+
         public void Tick()
         {
+            if (Inside)
+                NoteOpened();
             var roles = Inside ? _synergy.PartyRoles : 0;
             if (roles == _roles)
                 return;
             _roles = roles;
             Rebuild();
+        }
+
+        private void NoteOpened()
+        {
+            foreach (var feature in RiftFeatures.All)
+            {
+                if (!IsOpen(feature) || !_state.Rift.Opened.Add(RiftFeatures.Key(feature)))
+                    continue;
+                Events?.Add(GameEvent.ForStage(GameEventKind.RiftFeatureOpened, _state.Tick, (long)feature));
+            }
         }
 
         public System.Action? BeforeLeave { get; set; }

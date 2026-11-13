@@ -2096,6 +2096,7 @@ namespace Game.Core.Save
                 ("deepest", JsonValue.Of(rift.Deepest)),
                 ("supply", OptionalText(rift.Supply)),
                 ("supplyWindow", JsonValue.Of(rift.SupplyWindow)),
+                ("opened", WriteIdList(Sorted(rift.Opened))),
                 ("artifacts", JsonValue.Array(WriteArtifacts(rift.Artifacts))),
                 ("otherWorld", rift.OtherWorld == null ? JsonValue.Null() : WriteProgress(rift.OtherWorld)));
 
@@ -2128,6 +2129,11 @@ namespace Game.Core.Save
             rift.Deepest = node.Field("deepest").AsLong(1);
             rift.Supply = ReadOptionalText(node, "supply");
             rift.SupplyWindow = node.HasField("supplyWindow") ? node.Field("supplyWindow").AsLong(0) : 0;
+            if (node.HasField("opened"))
+            {
+                foreach (var item in node.Field("opened").Items())
+                    rift.Opened.Add(item.AsString());
+            }
             ReadArtifacts(node.Field("artifacts"), rift.Artifacts);
             var other = node.Field("otherWorld");
             rift.OtherWorld = other.IsNull ? null : ReadProgress(other);

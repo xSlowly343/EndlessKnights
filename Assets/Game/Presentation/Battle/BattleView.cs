@@ -59,6 +59,7 @@ namespace Game.Presentation.Battle
         private const float GoldWidthPx = 90f;
 
         private const float HeroScale = 3f;
+        private const float PortalTextFromTopPx = 22f;
         private const int FighterSortingOrder = 10;
         private const int StrikeSortingOrder = 11;
         private const float StrikeDepthIntoEnemy = 0.25f;
@@ -101,6 +102,12 @@ namespace Game.Presentation.Battle
 
         private Transform _scene = null!;
         private SpriteRenderer _hero = null!;
+        private TransitionView _transition = null!;
+        private StripTransition? _sceneTransition;
+        private TextMeshProUGUI _portalText = null!;
+        private TransitionPhase _portalPhaseShown;
+        private float _heroAlphaShown = 1f;
+        private float _heroScaleShown = 1f;
         private HeroStrike _strike = null!;
         private readonly SlashGate _slashes = new SlashGate();
         private int _strikeTier = 1;
@@ -348,6 +355,10 @@ namespace Game.Presentation.Battle
             _noticeText.gameObject.SetActive(false);
             _allies = AllySilhouettes.Create(_scene, texts, _theme, FighterSortingOrder, StrikeSortingOrder);
             _allies.StrikeLanded += ShowAllyHit;
+            _transition = TransitionView.Create(_scene);
+            _portalText = Label("Portal", texts, _theme.BoldFont, 12f, NoticeColor, TextAlignmentOptions.Center);
+            StripCanvas.Place(_portalText.rectTransform, StripSpace.BaseWidthPx / 2f, PortalTextFromTopPx, new Vector2(320f, 18f), new Vector2(0.5f, 0.5f));
+            _portalText.gameObject.SetActive(false);
             _numbers = DamageNumbers.Create();
             _numbers.transform.SetParent(transform, false);
             _coins = CoinBurst.Create(CoinTarget);
@@ -495,8 +506,35 @@ namespace Game.Presentation.Battle
             AnimateEnemy(delta);
             AnimateHero(delta);
             _allies.Animate(Time.unscaledTime, delta, StrikeTarget);
+            AnimateTransition(delta);
             _marks.Animate(delta);
             AnimateEffects(delta);
+        }
+
+        public void ShowTransition(StripTransition transition) => _sceneTransition = transition;
+
+        private void AnimateTransition(float delta)
+        {
+            if (_sceneTransition == null)
+                return;
+            var transition = _sceneTransition;
+            _transition.Show(transition, Time.unscaledTime, delta);
+            if (_transition.HeroAlpha != _heroAlphaShown)
+            {
+                _heroAlphaShown = _transition.HeroAlpha;
+                _hero.color = new Color(1f, 1f, 1f, _heroAlphaShown);
+            }
+            if (_transition.HeroScale != _heroScaleShown)
+            {
+                _heroScaleShown = _transition.HeroScale;
+                _hero.transform.localScale = new Vector3(HeroScale * _heroScaleShown, HeroScale * _heroScaleShown, 1f);
+            }
+            if (transition.Phase == _portalPhaseShown)
+                return;
+            _portalPhaseShown = transition.Phase;
+            var caption = TransitionTexts.Caption(transition);
+            _portalText.text = caption;
+            _portalText.gameObject.SetActive(caption.Length > 0);
         }
 
         private void AnimateBars(float delta)

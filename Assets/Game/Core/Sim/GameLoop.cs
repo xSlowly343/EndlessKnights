@@ -252,7 +252,8 @@ namespace Game.Core.Sim
             _synergy = new SynergySystem(data.Synergy, state, hero);
             _conditions = new ConditionSystem(state, hero, _combat, _skills, _focus) { Stages = data.Stages, Forge = data.Forge };
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
-            _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates, BeforeLeave = _dungeons.Retreat };
+            _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates, BeforeLeave = _dungeons.Retreat, Events = Events };
+            _drops.Rift = data.Rift;
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events, hero);
             _clanTree = new ClanTreeBonus(data.ClanTree, hero, state.ClanBonus);
             _mentor = new MentorBonus(data.Mentor, hero, _levels, state);
@@ -1037,6 +1038,7 @@ namespace Game.Core.Sim
         public void UseData(GameData data)
         {
             _data = data;
+            _drops.Rift = data.Rift;
             _inputRules.UseCaps(data.InputCaps);
             _focus.UseRules(data.Combat.Focus);
             _resource.UseRules(data.Combat.Resources);

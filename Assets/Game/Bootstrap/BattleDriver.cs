@@ -2,6 +2,7 @@ using System;
 using Game.Core.Clock;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
+using Game.Core.Content.Rift;
 using Game.Core.Input;
 using Game.Core.Math;
 using Game.Core.Sim;
@@ -48,6 +49,7 @@ namespace Game.Bootstrap
             driver._skillBar.SlotClicked += driver._loop.RequestCast;
             driver._bossTotalTicks = System.Math.Max(1, driver._loop.State.BossTicksLeft);
             driver._view.ShowEnemy(driver._loop.State.EnemyType == EnemyType.Boss, driver._loop.State.EnemyType == EnemyType.Guardian);
+            driver._view.ShowTransition(driver._loop.Scene.Transition);
             return driver;
         }
 
@@ -102,6 +104,9 @@ namespace Game.Bootstrap
                         break;
                     case GameEventKind.BossFailed:
                         _view.Retreat();
+                        break;
+                    case GameEventKind.RiftFeatureOpened:
+                        _view.ShowNotice(TransitionTexts.FeatureOpened((RiftFeature)gameEvent.Stage));
                         break;
                     case GameEventKind.LevelUp:
                         LeveledUp?.Invoke(gameEvent.Stage);

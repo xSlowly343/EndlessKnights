@@ -12,6 +12,7 @@ namespace Game.Core.Sim.Rift
         public BigNumber Shards { get; set; }
         public long Deepest { get; set; } = 1;
         public string Supply { get; set; } = string.Empty;
+        public HashSet<string> Opened { get; } = new HashSet<string>(System.StringComparer.Ordinal);
         public long SupplyWindow { get; set; }
         public Dictionary<string, int> Artifacts { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
 
@@ -23,6 +24,7 @@ namespace Game.Core.Sim.Rift
             Shards = BigNumber.Zero;
             Deepest = 1;
             Artifacts.Clear();
+            Opened.Clear();
         }
 
         public void EndWindow()

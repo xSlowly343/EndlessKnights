@@ -282,6 +282,7 @@ namespace Game.Core.Tests.Sim
             var (loop, input) = Hero(300, power);
             var window = loop.Rift.Rules.Schedule.Next(0);
             Assert.That(loop.Rift.Enter(window.StartUnixMs + 1), Is.EqualTo(Game.Core.Sim.Rift.RiftEntry.Entered));
+            loop.State.HighestStage = loop.Rift.Rules.StageOf(Game.Core.Content.Rift.RiftFeature.Dungeons);
             return (loop, input);
         }
 

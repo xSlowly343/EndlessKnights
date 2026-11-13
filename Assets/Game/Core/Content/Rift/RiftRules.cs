@@ -58,6 +58,9 @@ namespace Game.Core.Content.Rift
         public ExponentialCurve UnlockCost { get; }
         public ExponentialCurve LevelCost { get; }
         public int ModifiersPerWindow { get; }
+        public IReadOnlyDictionary<RiftFeature, long> Ladder { get; private set; } = new Dictionary<RiftFeature, long>();
+
+        public long StageOf(RiftFeature feature) => Ladder.TryGetValue(feature, out var stage) ? stage : 1;
         public IReadOnlyList<RiftModifier> Modifiers { get; }
 
         public IReadOnlyList<RiftModifier> ModifiersFor(long windowId)
@@ -136,7 +139,27 @@ namespace Game.Core.Content.Rift
                 shards.Field("boss").AsLong(0, 1000), shards.Field("guardian").AsLong(0, 1000),
                 ExponentialCurve.Read(artifacts.Field("unlockCost")), ExponentialCurve.Read(artifacts.Field("levelCost")),
                 perWindow, modifiers,
-                (long)System.Math.Round(party.Field("joinMinutes").AsNumber(1, 1440) * 60_000), (long)System.Math.Round(party.Field("durationHours").AsNumber(1, 168) * 3_600_000), RiftBoardRules.Read(root.Field("board")), RiftMilestoneRules.Read(root.Field("milestones")));
+                (long)System.Math.Round(party.Field("joinMinutes").AsNumber(1, 1440) * 60_000), (long)System.Math.Round(party.Field("durationHours").AsNumber(1, 168) * 3_600_000), RiftBoardRules.Read(root.Field("board")), RiftMilestoneRules.Read(root.Field("milestones")))
+            {
+                Ladder = ReadLadder(root)
+            };
+        }
+
+        private static IReadOnlyDictionary<RiftFeature, long> ReadLadder(ContentNode root)
+        {
+            var ladder = new Dictionary<RiftFeature, long>();
+            if (!root.HasField("ladder"))
+                return ladder;
+            foreach (var step in root.Field("ladder").Items())
+            {
+                var name = step.Field("feature").AsString();
+                if (!RiftFeatures.TryParse(name, out var feature))
+                    throw step.Field("feature").Error($"unknown rift feature '{name}'");
+                if (ladder.ContainsKey(feature))
+                    throw step.Field("feature").Error($"rift feature '{name}' is listed twice");
+                ladder[feature] = step.Field("stage").AsLong(1);
+            }
+            return ladder;
         }
 
         private static IReadOnlyList<string> Strings(ContentNode node, string field)
