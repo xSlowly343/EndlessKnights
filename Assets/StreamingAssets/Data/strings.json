@@ -1162,6 +1162,8 @@
     "rift.gift.wide_sweep": { "ru": "Широкий взмах: дальность мыши +30%", "en": "Wide sweep: +30% mouse reach" },
     "rift.gift.gem_scholar": { "ru": "Знаток гемов: опыт гемов +50%", "en": "Gem scholar: +50% gem experience" },
     "rift.gift.offered": { "ru": "Дар Разлома: выбери один из трёх", "en": "A Rift gift: pick one of three" },
+    "rift.gift.number": { "ru": "Дар №{0}", "en": "Gift #{0}" },
+    "rift.gift.next": { "ru": "Следующий дар — на этапе {0}", "en": "The next gift comes at stage {0}" },
     "battle.stageBoss": { "ru": "Этап {0} · БОСС", "en": "Stage {0} · BOSS" },
     "battle.retreat": { "ru": "Отступление", "en": "Retreat" },
     "battle.seconds": { "ru": "{0} с", "en": "{0} s" },
