@@ -60,6 +60,7 @@ namespace Game.Core.Content.Items
         public IReadOnlyList<PerkValue> Perks { get; }
         public string? Event { get; internal set; }
         public bool RiftOnly { get; internal set; }
+        public bool CarriedToRift { get; internal set; }
         public bool Ordinary => Event == null && !RiftOnly;
         public IReadOnlyList<Modifier> PerMuseumCollection { get; internal set; } = System.Array.Empty<Modifier>();
         public IReadOnlyList<Modifier> Echo { get; internal set; } = System.Array.Empty<Modifier>();
