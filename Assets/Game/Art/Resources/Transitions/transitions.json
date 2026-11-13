@@ -1,0 +1,634 @@
+{
+  "version": 1,
+  "places": {
+    "home": {
+      "veil": "#1B2236",
+      "portalOpen": {
+        "file": "Portal_Battle_Open_32x44_12f",
+        "width": 32,
+        "height": 44,
+        "frames": 12,
+        "pivot": [
+          16,
+          43
+        ],
+        "fps": 24
+      },
+      "portalIdle": {
+        "file": "Portal_Battle_Idle_32x44_8f",
+        "width": 32,
+        "height": 44,
+        "frames": 8,
+        "pivot": [
+          16,
+          43
+        ],
+        "fps": 12,
+        "loops": true
+      },
+      "portalClose": {
+        "file": "Portal_Battle_Close_32x44_10f",
+        "width": 32,
+        "height": 44,
+        "frames": 10,
+        "pivot": [
+          16,
+          43
+        ],
+        "fps": 24
+      },
+      "stepIn": {
+        "file": "Portal_Battle_StepIn_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "arrive": {
+        "file": "Portal_Battle_Arrive_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "allyOut": {
+        "file": "Portal_Battle_AllyOut_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      },
+      "allyIn": {
+        "file": "Portal_Battle_AllyIn_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      }
+    },
+    "hideout": {
+      "veil": "#2A1C12",
+      "portalOpen": {
+        "file": "Portal_Hideout_Open_32x44_12f",
+        "width": 32,
+        "height": 44,
+        "frames": 12,
+        "pivot": [
+          16,
+          43
+        ],
+        "fps": 24
+      },
+      "portalIdle": {
+        "file": "Portal_Hideout_Idle_32x44_8f",
+        "width": 32,
+        "height": 44,
+        "frames": 8,
+        "pivot": [
+          16,
+          43
+        ],
+        "fps": 12,
+        "loops": true
+      },
+      "portalClose": {
+        "file": "Portal_Hideout_Close_32x44_10f",
+        "width": 32,
+        "height": 44,
+        "frames": 10,
+        "pivot": [
+          16,
+          43
+        ],
+        "fps": 24
+      },
+      "stepIn": {
+        "file": "Portal_Hideout_StepIn_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "arrive": {
+        "file": "Portal_Hideout_Arrive_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "allyOut": {
+        "file": "Portal_Hideout_AllyOut_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      },
+      "allyIn": {
+        "file": "Portal_Hideout_AllyIn_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      }
+    },
+    "town": {
+      "veil": "#10222A",
+      "portalOpen": {
+        "file": "Portal_Town_Open_36x46_12f",
+        "width": 36,
+        "height": 46,
+        "frames": 12,
+        "pivot": [
+          18,
+          45
+        ],
+        "fps": 24
+      },
+      "portalIdle": {
+        "file": "Portal_Town_Idle_36x46_8f",
+        "width": 36,
+        "height": 46,
+        "frames": 8,
+        "pivot": [
+          18,
+          45
+        ],
+        "fps": 12,
+        "loops": true
+      },
+      "portalClose": {
+        "file": "Portal_Town_Close_36x46_10f",
+        "width": 36,
+        "height": 46,
+        "frames": 10,
+        "pivot": [
+          18,
+          45
+        ],
+        "fps": 24
+      },
+      "stepIn": {
+        "file": "Portal_Town_StepIn_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "arrive": {
+        "file": "Portal_Town_Arrive_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "allyOut": {
+        "file": "Portal_Town_AllyOut_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      },
+      "allyIn": {
+        "file": "Portal_Town_AllyIn_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      }
+    },
+    "clanCamp": {
+      "veil": "#2A1414",
+      "portalOpen": {
+        "file": "Portal_ClanCamp_Open_32x44_12f",
+        "width": 32,
+        "height": 44,
+        "frames": 12,
+        "pivot": [
+          16,
+          43
+        ],
+        "fps": 24
+      },
+      "portalIdle": {
+        "file": "Portal_ClanCamp_Idle_32x44_8f",
+        "width": 32,
+        "height": 44,
+        "frames": 8,
+        "pivot": [
+          16,
+          43
+        ],
+        "fps": 12,
+        "loops": true
+      },
+      "portalClose": {
+        "file": "Portal_ClanCamp_Close_32x44_10f",
+        "width": 32,
+        "height": 44,
+        "frames": 10,
+        "pivot": [
+          16,
+          43
+        ],
+        "fps": 24
+      },
+      "stepIn": {
+        "file": "Portal_ClanCamp_StepIn_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "arrive": {
+        "file": "Portal_ClanCamp_Arrive_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "allyOut": {
+        "file": "Portal_ClanCamp_AllyOut_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      },
+      "allyIn": {
+        "file": "Portal_ClanCamp_AllyIn_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      }
+    },
+    "dungeon": {
+      "veil": "#0C1410",
+      "portalOpen": {
+        "file": "Portal_Dungeon_Open_48x28_12f",
+        "width": 48,
+        "height": 28,
+        "frames": 12,
+        "pivot": [
+          24,
+          27
+        ],
+        "fps": 24
+      },
+      "portalIdle": {
+        "file": "Portal_Dungeon_Idle_48x28_8f",
+        "width": 48,
+        "height": 28,
+        "frames": 8,
+        "pivot": [
+          24,
+          27
+        ],
+        "fps": 12,
+        "loops": true
+      },
+      "portalClose": {
+        "file": "Portal_Dungeon_Close_48x28_10f",
+        "width": 48,
+        "height": 28,
+        "frames": 10,
+        "pivot": [
+          24,
+          27
+        ],
+        "fps": 24
+      },
+      "stepIn": {
+        "file": "Portal_Dungeon_StepIn_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "arrive": {
+        "file": "Portal_Dungeon_Arrive_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "allyOut": {
+        "file": "Portal_Dungeon_AllyOut_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      },
+      "allyIn": {
+        "file": "Portal_Dungeon_AllyIn_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      }
+    },
+    "eventFight": {
+      "veil": "#24102A",
+      "portalOpen": {
+        "file": "Portal_Event_Open_36x48_12f",
+        "width": 36,
+        "height": 48,
+        "frames": 12,
+        "pivot": [
+          18,
+          47
+        ],
+        "fps": 24
+      },
+      "portalIdle": {
+        "file": "Portal_Event_Idle_36x48_8f",
+        "width": 36,
+        "height": 48,
+        "frames": 8,
+        "pivot": [
+          18,
+          47
+        ],
+        "fps": 12,
+        "loops": true
+      },
+      "portalClose": {
+        "file": "Portal_Event_Close_36x48_10f",
+        "width": 36,
+        "height": 48,
+        "frames": 10,
+        "pivot": [
+          18,
+          47
+        ],
+        "fps": 24
+      },
+      "stepIn": {
+        "file": "Portal_Event_StepIn_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "arrive": {
+        "file": "Portal_Event_Arrive_32x40_10f",
+        "width": 32,
+        "height": 40,
+        "frames": 10,
+        "pivot": [
+          16,
+          39
+        ],
+        "fps": 24
+      },
+      "allyOut": {
+        "file": "Portal_Event_AllyOut_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      },
+      "allyIn": {
+        "file": "Portal_Event_AllyIn_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      }
+    },
+    "rift": {
+      "veil": "#0A0614",
+      "portalOpen": {
+        "file": "Portal_Rift_Open_72x56_16f",
+        "width": 72,
+        "height": 56,
+        "frames": 16,
+        "pivot": [
+          36,
+          55
+        ],
+        "fps": 24
+      },
+      "portalIdle": {
+        "file": "Portal_Rift_Idle_72x56_12f",
+        "width": 72,
+        "height": 56,
+        "frames": 12,
+        "pivot": [
+          36,
+          55
+        ],
+        "fps": 12,
+        "loops": true
+      },
+      "portalClose": {
+        "file": "Portal_Rift_Close_72x56_12f",
+        "width": 72,
+        "height": 56,
+        "frames": 12,
+        "pivot": [
+          36,
+          55
+        ],
+        "fps": 24
+      },
+      "stepIn": {
+        "file": "Portal_Rift_StepIn_40x44_12f",
+        "width": 40,
+        "height": 44,
+        "frames": 12,
+        "pivot": [
+          20,
+          43
+        ],
+        "fps": 24
+      },
+      "arrive": {
+        "file": "Portal_Rift_Arrive_40x44_12f",
+        "width": 40,
+        "height": 44,
+        "frames": 12,
+        "pivot": [
+          20,
+          43
+        ],
+        "fps": 24
+      },
+      "allyOut": {
+        "file": "Portal_Rift_AllyOut_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      },
+      "allyIn": {
+        "file": "Portal_Rift_AllyIn_24x32_10f",
+        "width": 24,
+        "height": 32,
+        "frames": 10,
+        "pivot": [
+          12,
+          31
+        ],
+        "fps": 24
+      },
+      "loading": {
+        "file": "Portal_Rift_Loading_160x60_24f",
+        "width": 160,
+        "height": 60,
+        "frames": 24,
+        "pivot": [
+          80,
+          30
+        ],
+        "fps": 12,
+        "loops": true
+      }
+    }
+  },
+  "riftSky": {
+    "sky": {
+      "file": "RiftSky_Sky_160x26_16f",
+      "width": 160,
+      "height": 26,
+      "frames": 16,
+      "pivot": [
+        80,
+        0
+      ],
+      "fps": 8,
+      "loops": true
+    },
+    "edgeLeft": {
+      "file": "RiftSky_EdgeLeft_14x60_12f",
+      "width": 14,
+      "height": 60,
+      "frames": 12,
+      "pivot": [
+        0,
+        30
+      ],
+      "fps": 10,
+      "loops": true
+    },
+    "edgeRight": {
+      "file": "RiftSky_EdgeRight_14x60_12f",
+      "width": 14,
+      "height": 60,
+      "frames": 12,
+      "pivot": [
+        14,
+        30
+      ],
+      "fps": 10,
+      "loops": true
+    },
+    "motes": {
+      "file": "RiftSky_Motes_160x60_24f",
+      "width": 160,
+      "height": 60,
+      "frames": 24,
+      "pivot": [
+        80,
+        30
+      ],
+      "fps": 12,
+      "loops": true
+    }
+  }
+}

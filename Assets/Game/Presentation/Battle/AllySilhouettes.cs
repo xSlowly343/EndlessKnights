@@ -1,5 +1,6 @@
 using Game.Core.Math;
 using Game.Core.Party;
+using Game.Core.Sim;
 using Game.Core.Ui;
 using Game.Presentation.Strip;
 using Game.Presentation.Ui;
@@ -30,6 +31,10 @@ namespace Game.Presentation.Battle
         private const int BodySortingOrder = 9;
         private const float StrikeDepth = 0.5f;
         private const float DefaultStrikeOpacity = 0.5f;
+        private const float PortalScale = 2f;
+        private const float PortalBehindPx = 6f;
+        private const int PortalSortingOrder = 8;
+        private const float TickSeconds = 1f / GameLoop.TicksPerSecond;
 
         private static readonly float[] CentresPx = { 49f, 29f, 10f };
         private static readonly Color BubbleFill = new Color32(0x1B, 0x22, 0x36, 0xEB);
@@ -56,6 +61,9 @@ namespace Game.Presentation.Battle
         private readonly TextMeshProUGUI[] _bubbleTexts = new TextMeshProUGUI[StripAllies.MaxShown];
         private readonly StripAlly[] _shown = new StripAlly[StripAllies.MaxShown];
         private readonly float[] _phase = { 0f, 0.31f, 0.57f };
+        private readonly AllyPortals _portals = new AllyPortals(StripAllies.MaxShown);
+        private readonly SpriteRenderer[] _portalBodies = new SpriteRenderer[StripAllies.MaxShown];
+        private float _portalClock;
         private int _count;
 
         private AllySilhouettes(Transform scene, RectTransform canvas, UiTheme theme, int flightSortingOrder, int burstSortingOrder)
@@ -64,6 +72,8 @@ namespace Game.Presentation.Battle
             {
                 _bodies[i] = HeroModel.Create("Ally " + i, BodyFeet(i), BodyScale, BodySortingOrder, scene);
                 _bodies[i].gameObject.SetActive(false);
+                _portalBodies[i] = ShapeSprites.Create("Ally portal " + i, ShapeSprites.Square, Color.white, StripSpace.AtPx(CentresPx[i] + PortalBehindPx, GroundPx), Vector2.one * PortalScale, PortalSortingOrder, scene);
+                _portalBodies[i].enabled = false;
                 _skins[i] = HeroModel.Skin(default);
                 _strikes[i] = new HeroStrike("Ally strike " + i, BodyFeet(i), BodyScale, flightSortingOrder, burstSortingOrder, StrikeDepth, scene);
                 _strikes[i].UseOpacity(DefaultStrikeOpacity);
@@ -128,8 +138,15 @@ namespace Game.Presentation.Battle
 
         public string ReactionShown(int index) => _bubbles[index].gameObject.activeSelf ? _bubbleTexts[index].text : string.Empty;
 
-        public void Show(StripAlly[] allies, int count)
+        public void Show(StripAlly[] allies, int count, StripPlace own = StripPlace.Home)
         {
+            for (var i = 0; i < StripAllies.MaxShown; i++)
+            {
+                if (i < count)
+                    _portals.Observe(i, allies[i], own);
+                else
+                    _portals.Forget(i);
+            }
             _count = Mathf.Clamp(count, 0, StripAllies.MaxShown);
             for (var i = 0; i < StripAllies.MaxShown; i++)
             {
@@ -175,6 +192,7 @@ namespace Game.Presentation.Battle
             }
             if (_turns.TryTake(time, _ready, out var turn, out var tier))
                 Swing(turn, tier);
+            AnimatePortals(delta);
             for (var i = 0; i < StripAllies.MaxShown; i++)
             {
                 if (i < _count)
@@ -192,6 +210,28 @@ namespace Game.Presentation.Battle
                 var amount = landed >= flying ? _flyingDamage[i] : _flyingDamage[i] * (landed / (double)flying);
                 _flyingDamage[i] -= amount;
                 Land(i, amount);
+            }
+        }
+
+        private void AnimatePortals(float delta)
+        {
+            _portalClock += delta;
+            while (_portalClock >= TickSeconds)
+            {
+                _portalClock -= TickSeconds;
+                _portals.Tick();
+            }
+            for (var i = 0; i < StripAllies.MaxShown; i++)
+            {
+                var clip = _portals.Active(i) ? TransitionArt.Clip(_portals.Destination(i), _portals.Leaving(i) ? TransitionSheet.AllyOut : TransitionSheet.AllyIn) : null;
+                var renderer = _portalBodies[i];
+                if (renderer.enabled != (clip != null))
+                    renderer.enabled = clip != null;
+                if (clip == null)
+                    continue;
+                var sprite = clip.SpriteAt(Mathf.Min((float)_portals.Progress(i) * clip.Duration, clip.Duration - 0.0001f));
+                if (renderer.sprite != sprite)
+                    renderer.sprite = sprite;
             }
         }
 

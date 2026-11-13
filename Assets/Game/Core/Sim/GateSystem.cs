@@ -9,7 +9,10 @@ namespace Game.Core.Sim
         private readonly GameState _state;
         private readonly EventQueue _events;
         private readonly ModifierLayer _layer;
+
         private StageTable _stages;
+
+        internal ModifierLayer Layer => _layer;
 
         public GateSystem(StageTable stages, GameState state, StatSheet hero, EventQueue events)
         {

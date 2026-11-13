@@ -193,7 +193,7 @@ namespace Game.Presentation.Battle
             return texture;
         }
 
-        private static HeroClip Clip(Texture2D texture, int width, int height, int count, Vector2 feetFromTopLeft, float[] seconds, bool loops)
+        internal static HeroClip Clip(Texture2D texture, int width, int height, int count, Vector2 feetFromTopLeft, float[] seconds, bool loops)
         {
             var frames = new Sprite[count];
             var pivot = new Vector2(feetFromTopLeft.x / width, 1f - feetFromTopLeft.y / height);
@@ -202,7 +202,7 @@ namespace Game.Presentation.Battle
             return new HeroClip(frames, seconds, loops);
         }
 
-        private static float[] Repeat(float seconds, int count)
+        internal static float[] Repeat(float seconds, int count)
         {
             var result = new float[count];
             for (var i = 0; i < count; i++)

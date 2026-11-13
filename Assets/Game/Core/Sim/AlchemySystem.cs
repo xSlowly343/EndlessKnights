@@ -23,8 +23,11 @@ namespace Game.Core.Sim
         private readonly PeacefulSystem _peaceful;
         private readonly EventQueue _events;
         private readonly ModifierLayer _layer;
+
         private readonly List<Modifier> _buffer = new List<Modifier>(4);
         private AlchemyRules _rules;
+
+        internal ModifierLayer Layer => _layer;
 
         public AlchemySystem(AlchemyRules rules, GameState state, StatSheet hero, CampSystem camp, PeacefulSystem peaceful, EventQueue events)
         {

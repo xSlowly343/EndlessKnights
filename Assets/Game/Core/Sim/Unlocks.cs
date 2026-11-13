@@ -1,4 +1,5 @@
 using Game.Core.Content;
+using Game.Core.Content.Rift;
 
 namespace Game.Core.Sim
 {
@@ -16,13 +17,21 @@ namespace Game.Core.Sim
 
         public UnlockRules Rules { get; set; }
         public CampSystem? Camp { get; set; }
+        public RiftRules? Rift { get; set; }
 
-        public bool IsOpen(Feature feature) => _state.OpenedFeatures.Contains(feature) || Met(Rules.For(feature));
+        public bool InRift => Rift != null && _state.Rift.Inside;
+
+        public bool IsOpen(Feature feature) => InRift ? _state.HighestStage >= Rift!.StageOf(feature) : _state.OpenedFeatures.Contains(feature) || Met(Rules.For(feature));
 
         public bool ArtifactGroupOpen(int group) => _state.RecordStage >= Rules.ArtifactGroupStage(group);
 
         public void Tick()
         {
+            if (InRift)
+            {
+                TickRift();
+                return;
+            }
             for (var i = 0; i < UnlockRules.FeatureCount; i++)
             {
                 var feature = (Feature)i;
@@ -31,6 +40,16 @@ namespace Game.Core.Sim
                     continue;
                 _state.OpenedFeatures.Add(feature);
                 _events?.Add(GameEvent.ForStage(GameEventKind.FeatureOpened, _state.Tick, i));
+            }
+        }
+
+        private void TickRift()
+        {
+            foreach (var (name, feature) in UnlockRules.FeatureNames)
+            {
+                if (!IsOpen(feature) || !_state.Rift.Opened.Add(name))
+                    continue;
+                _events?.Add(GameEvent.ForStage(GameEventKind.RiftFeatureOpened, _state.Tick, (long)feature));
             }
         }
 
@@ -52,6 +71,8 @@ namespace Game.Core.Sim
         {
             if (IsOpen(feature))
                 return null;
+            if (InRift)
+                return new UnlockNeed(UnlockNeedKind.Stage, string.Empty, Rift!.StageOf(feature));
             var condition = Rules.For(feature);
             var route = ClosestRoute(condition);
             return condition.Route(route)[Missing(condition, route)];
@@ -62,7 +83,7 @@ namespace Game.Core.Sim
             switch (need.Kind)
             {
                 case UnlockNeedKind.Stage:
-                    return _state.RecordStage;
+                    return InRift ? _state.HighestStage : _state.RecordStage;
                 case UnlockNeedKind.Prestiges:
                     return _state.Prestiges;
                 case UnlockNeedKind.HeroLevel:

@@ -18,8 +18,11 @@ namespace Game.Core.Sim
         private readonly GameState _state;
         private readonly CampSystem _camp;
         private readonly ModifierLayer _layer;
+
         private ClanCampRules _rules;
         private bool _feasting;
+
+        internal ModifierLayer Layer => _layer;
 
         public ClanCampSystem(ClanCampRules rules, GameState state, StatSheet hero, CampSystem camp)
         {

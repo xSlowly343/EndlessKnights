@@ -23,6 +23,7 @@ namespace Game.Core.Sim
         public StripPlace PreviousPlace { get; private set; }
         public StripFight Fight { get; private set; } = StripFight.Enemy;
         public int SwitchTicksLeft { get; private set; }
+        public StripTransition Transition { get; } = new StripTransition();
         public bool Switching => SwitchTicksLeft > 0;
         public double SwitchProgress => _switchTicks == 0 ? 1 : 1 - (double)SwitchTicksLeft / _switchTicks;
         public bool Peaceful => IsPeaceful(Place);
@@ -76,6 +77,7 @@ namespace Game.Core.Sim
             }
             if (SwitchTicksLeft > 0)
                 SwitchTicksLeft--;
+            Transition.Tick();
             if (place != Place)
                 MoveTo(place);
             if (fight == Fight)
@@ -90,6 +92,7 @@ namespace Game.Core.Sim
             Place = place;
             _switchTicks = (int)System.Math.Round(_rules.SwitchSeconds * GameLoop.TicksPerSecond);
             SwitchTicksLeft = _switchTicks;
+            Transition.Start(PreviousPlace, place, _rules.Portal(place));
             _events.Add(GameEvent.ForStage(GameEventKind.StripPlaceChanged, _state.Tick, (long)place));
         }
     }

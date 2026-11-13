@@ -23,6 +23,7 @@ namespace Game.Bootstrap
         private readonly ShowQueue _shows = new ShowQueue(ShowRules.OwnSkills);
         private GameData _data = null!;
         private int _bossTotalTicks = 1;
+        private bool _riftLoading;
 
         public event Action<long>? LeveledUp;
 
@@ -48,6 +49,7 @@ namespace Game.Bootstrap
             driver._skillBar.SlotClicked += driver._loop.RequestCast;
             driver._bossTotalTicks = System.Math.Max(1, driver._loop.State.BossTicksLeft);
             driver._view.ShowEnemy(driver._loop.State.EnemyType == EnemyType.Boss, driver._loop.State.EnemyType == EnemyType.Guardian);
+            driver._view.ShowTransition(driver._loop.Scene.Transition);
             return driver;
         }
 
@@ -103,6 +105,12 @@ namespace Game.Bootstrap
                     case GameEventKind.BossFailed:
                         _view.Retreat();
                         break;
+                    case GameEventKind.RiftGiftOffered:
+                        _view.ShowNotice(Game.Core.Text.Texts.Get("rift.gift.offered"));
+                        break;
+                    case GameEventKind.RiftFeatureOpened:
+                        _view.ShowNotice(TransitionTexts.FeatureOpened((Feature)gameEvent.Stage));
+                        break;
                     case GameEventKind.LevelUp:
                         LeveledUp?.Invoke(gameEvent.Stage);
                         break;
@@ -156,7 +164,19 @@ namespace Game.Bootstrap
                 _data.Combat.Resources.Max,
                 state.Gold);
             _skillBar.Show(state.Skills, state.Resource);
+            ShowRift(state);
             ShowAura(state);
+        }
+
+        private void ShowRift(GameState state)
+        {
+            _view.ShowRift(state.Rift.Inside);
+            var loading = TransitionLook.ShowsLoading(_loop.Scene.Transition);
+            if (loading == _riftLoading)
+                return;
+            _riftLoading = loading;
+            if (loading)
+                _view.ShowLoadingLines(RiftLoadingText.Lines(_loop));
         }
 
         private void ShowAura(GameState state)

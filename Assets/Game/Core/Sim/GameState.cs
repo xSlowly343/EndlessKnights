@@ -130,7 +130,9 @@ namespace Game.Core.Sim
         public TownForecast Forecast { get; } = new TownForecast();
         public double[] CompanionPerks { get; } = new double[MuseumRules.PerkCount];
 
-        public double Perk(MuseumPerk perk) => Museum.Perks[(int)perk] + SetPerks[(int)perk] + TalentPerks[(int)perk] + CampPerks[(int)perk] + CompanionPerks[(int)perk] + GuildPerks[(int)perk];
+        public double Perk(MuseumPerk perk) => SetPerks[(int)perk] + (Rift.Inside ? 0 : HomePerk(perk));
+
+        private double HomePerk(MuseumPerk perk) => Museum.Perks[(int)perk] + TalentPerks[(int)perk] + CampPerks[(int)perk] + CompanionPerks[(int)perk] + GuildPerks[(int)perk];
         public DecorState Decor { get; } = new DecorState();
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }

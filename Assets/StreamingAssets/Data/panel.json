@@ -1,6 +1,14 @@
 {
   "version": 1,
-  "strip": { "switchSeconds": 0.6 },
+  "strip": { "switchSeconds": 0.6, "portals": {
+    "home": { "open": 0.5, "enter": 0.4, "swap": 0.5, "arrive": 0.4, "exit": 0.4 },
+    "hideout": { "open": 0.6, "enter": 0.5, "swap": 0.6, "arrive": 0.5, "exit": 0.4 },
+    "town": { "open": 0.6, "enter": 0.5, "swap": 0.6, "arrive": 0.5, "exit": 0.4 },
+    "clanCamp": { "open": 0.6, "enter": 0.5, "swap": 0.6, "arrive": 0.5, "exit": 0.4 },
+    "dungeon": { "open": 0.7, "enter": 0.6, "swap": 0.8, "arrive": 0.6, "exit": 0.5, "group": true },
+    "eventFight": { "open": 0.6, "enter": 0.5, "swap": 0.7, "arrive": 0.5, "exit": 0.5, "group": true },
+    "rift": { "open": 0.9, "enter": 0.8, "swap": 1.0, "arrive": 0.9, "exit": 0.6, "group": true, "minLoad": 2.5, "maxLoad": 8 }
+  } },
   "unlocks": [
     { "section": "items", "stage": 50 },
     { "section": "party", "stage": 100 },

@@ -10,9 +10,12 @@ namespace Game.Core.Party
         private readonly LevelSystem _levels;
         private readonly GameState _state;
         private readonly ModifierLayer _layer;
+
         private readonly List<Modifier> _modifiers = new List<Modifier>(1);
         private readonly List<string> _marks = new List<string>();
         private MentorRules _rules;
+
+        internal ModifierLayer Layer => _layer;
 
         public MentorBonus(MentorRules rules, StatSheet hero, LevelSystem levels, GameState state)
         {

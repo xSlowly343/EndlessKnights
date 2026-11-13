@@ -423,7 +423,7 @@ namespace Game.Bootstrap
             _sinceAllies = 0f;
             var party = _party!;
             var count = StripAllies.Fill(party, _allies);
-            _battle.Allies.Show(_allies, count);
+            _battle.Allies.Show(_allies, count, _loop.Scene.Place);
             for (var i = 0; i < count; i++)
             {
                 var damage = party.TakeAllyDamage(_allies[i].Slot);

@@ -30,7 +30,11 @@ namespace Game.Core.Sim
             SyncTreePoints();
         }
 
-        public int GuardianPoints => (int)System.Math.Min(_rules.MaxGuardianPoints, (_state.RecordStage - 1) / _stages.BiomeLength);
+        public int GuardianPoints => (int)System.Math.Min(_rules.MaxGuardianPoints, (OwnRecord - 1) / _stages.BiomeLength);
+
+        private bool InRift => _state.Rift.Inside;
+
+        private long OwnRecord => InRift ? _state.HighestStage : _state.RecordStage;
 
         public int MilestonePoints
         {
@@ -83,16 +87,16 @@ namespace Game.Core.Sim
 
         public void SyncTreePoints()
         {
-            _state.TreePointsEarned = System.Math.Min(_state.HeroLevel, _rules.MaxLevel) + GuardianPoints + MilestonePoints;
+            _state.TreePointsEarned = System.Math.Min(_state.HeroLevel, _rules.MaxLevel) + GuardianPoints + (InRift ? 0 : MilestonePoints);
             _state.ClassTree.PointsEarned = _state.TreePointsEarned;
             for (var slot = 0; slot < _state.CommonTrees.Count && slot < CommonSlots.Count; slot++)
             {
                 if (_state.CommonTrees[slot] is { } common)
                     common.PointsEarned = CommonSlots[slot].PointsAt(_state.HeroLevel);
             }
-            if (_state.RecordStage > _stages.BiomeLength)
+            if (OwnRecord > _stages.BiomeLength)
                 _state.Ascendancy.Complete(ActivityIds.FirstGuardian);
-            if (_state.Prestiges > 0)
+            if (_state.Prestiges > 0 && !InRift)
                 _state.Ascendancy.Complete(ActivityIds.FirstPrestige);
         }
 

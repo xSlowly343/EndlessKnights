@@ -1,3 +1,4 @@
+using Game.Core.Content.Rift;
 using System;
 using System.Collections.Generic;
 using Game.Core.Content;
@@ -231,11 +232,13 @@ namespace Game.Core.Sim
             Push(PendingDrop.Key(stage));
         }
 
+        public RiftRules? Rift { get; set; }
+
         private void RollRiftKey(long stage, EnemyType type)
         {
             var rules = Dungeons;
             if (rules == null || !_state.Rift.Inside || _state.Dungeons.Inside || _state.Events.FightInside || stage < rules.Rift.FromStage
-                || Unlocks?.IsOpen(Feature.Dungeons) == false)
+                || (Unlocks != null ? !Unlocks.IsOpen(Feature.Dungeons) : Rift != null && _state.HighestStage < Rift.StageOf(Feature.Dungeons)))
                 return;
             var chance = (type == EnemyType.Guardian ? rules.Rift.GuardianKeyChance : rules.Rift.BossKeyChance) / rules.PartyDivisor(_state.PartyAllies);
             if (chance > 0 && _state.Drops.Rng.Chance(chance))

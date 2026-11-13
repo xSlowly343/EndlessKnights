@@ -35,6 +35,30 @@
     "unlockCost": { "curve": "exp", "base": 2, "rate": 1.15 },
     "levelCost": { "curve": "exp", "base": 1, "rate": 1.25 }
   },
+  "ladder": [
+    { "feature": "artifacts", "stage": 10 }, { "feature": "dungeons", "stage": 25 }, { "feature": "slates", "stage": 100 },
+    { "feature": "resonance", "stage": 200 }, { "feature": "spirits", "stage": 300 }, { "feature": "atlas", "stage": 400 },
+    { "feature": "chronicle", "stage": 600 }, { "feature": "setCraft", "stage": 800 }
+  ],
+  "windowSet": { "rarity": "rare", "itemLevel": 1 },
+  "gifts": {
+    "every": 1000,
+    "offer": 3,
+    "pool": [
+      { "id": "keen_edge", "modifiers": [{ "stat": "attackPower", "kind": "increased", "value": 0.3 }] },
+      { "id": "sharp_eye", "modifiers": [{ "stat": "critChance", "kind": "flat", "value": 0.05 }] },
+      { "id": "heavy_blow", "modifiers": [{ "stat": "critMultiplier", "kind": "increased", "value": 0.4 }] },
+      { "id": "giant_slayer", "modifiers": [{ "stat": "damageVsBoss", "kind": "increased", "value": 0.5 }] },
+      { "id": "golden_touch", "modifiers": [{ "stat": "gold", "kind": "increased", "value": 0.5 }] },
+      { "id": "patient_hunter", "modifiers": [{ "stat": "bossTimerSeconds", "kind": "flat", "value": 5 }] },
+      { "id": "deep_well", "modifiers": [{ "stat": "resourceMax", "kind": "increased", "value": 0.3 }] },
+      { "id": "quick_hands", "modifiers": [{ "stat": "skillCooldown", "kind": "increased", "value": -0.15 }] },
+      { "id": "aura_bloom", "modifiers": [{ "stat": "auraEffect", "kind": "increased", "value": 0.3 }] },
+      { "id": "double_strike", "modifiers": [{ "stat": "doubleHitChance", "kind": "flat", "value": 0.1 }] },
+      { "id": "wide_sweep", "modifiers": [{ "stat": "mouseDistance", "kind": "increased", "value": 0.3 }] },
+      { "id": "gem_scholar", "modifiers": [{ "stat": "gemExperience", "kind": "increased", "value": 0.5 }] }
+    ]
+  },
   "modifiersPerWindow": 2,
   "modifiers": [
     { "id": "stone_skin", "unlessRoles": ["herald"], "modifiers": [{ "stat": "attackPower", "kind": "more", "value": -0.5 }] },
