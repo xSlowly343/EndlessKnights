@@ -45,7 +45,7 @@ test("trial rules come from party.json", () => {
   assert.strictEqual(rules.perWeek, 2);
   assert.strictEqual(rules.tries, 5);
   assert.strictEqual(rules.minFighters, 2);
-  assert.strictEqual(rules.list[7].waves, 20);
+  assert.strictEqual(rules.list[7].waves, 30);
   assert.deepStrictEqual(plain(rules.extraTries), [{ node: 31, rank: 3, value: 1 }]);
   assert.deepStrictEqual(plain(rules.carry), [{ node: 31, rank: 5, value: 1 }]);
 });
@@ -150,7 +150,7 @@ test("the marathon reports waves held, capped by the ceiling and the clock", () 
   while (server.partyTrialOpenIds(server.partyTrialWeek(at)).indexOf("marathon") < 0)
     at += 7 * 86400000;
   server.partyTrialStart(nk, "ann", { trial: "marathon", fighters: ["ann", "bob"] }, at);
-  assert.throws(() => server.partyTrialFinish(nk, "ann", { waves: 21 }, at + 10 * minute), /bad request/);
+  assert.throws(() => server.partyTrialFinish(nk, "ann", { waves: 31 }, at + 15 * minute), /bad request/);
   assert.throws(() => server.partyTrialFinish(nk, "ann", { waves: 14 }, at + 6 * minute), /too fast/, "wave 14 starts after six and a half minutes");
   let view = server.partyTrialFinish(nk, "ann", { waves: 14 }, at + 7 * minute);
   assert.strictEqual(view.result.tier, 10, "the ceiling at level 20 is 10");

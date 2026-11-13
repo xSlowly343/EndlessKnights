@@ -151,6 +151,8 @@ namespace Game.Core.Party
         public long HpStage { get; private set; } = 1;
         public double HpMultiplier { get; private set; } = 1;
         public double HpGrowth { get; private set; } = 1;
+        public double ArmorPerTier { get; private set; }
+        public double ArmorMax { get; private set; }
         public double Seal { get; private set; }
         public int FirstClearSigns { get; private set; }
         public double ExperiencePerTier { get; private set; }
@@ -202,6 +204,8 @@ namespace Game.Core.Party
         public BigNumber Hp(StageTable stages, int tier, double fightersMultiplier) =>
             stages.BossHp(HpStage) * (HpMultiplier * System.Math.Pow(HpGrowth, System.Math.Max(1, tier) - 1) * fightersMultiplier);
 
+        public double ArmorShare(int tier) => System.Math.Min(ArmorMax, ArmorPerTier * (System.Math.Max(1, tier) - 1));
+
         public double WaveHp(int wave) => System.Math.Pow(HpGrowth, System.Math.Max(1, wave) - 1);
 
         public double SealIncrease(IReadOnlyList<int> best)
@@ -232,6 +236,9 @@ namespace Game.Core.Party
             rules.HpStage = hp.Field("stage").AsInt(1, 10_000_000);
             rules.HpMultiplier = hp.Field("multiplier").AsNumber(1e-6, 1e9);
             rules.HpGrowth = hp.Field("growth").AsNumber(1, 100);
+            var armor = node.Field("armor");
+            rules.ArmorPerTier = armor.Field("perTier").AsNumber(0, 100);
+            rules.ArmorMax = armor.Field("max").AsNumber(0, 100);
             foreach (var item in node.Field("list").Items())
                 rules._list.Add(ReadTrial(item, rules._list.Count));
             if (rules._list.Count == 0)

@@ -1,3 +1,4 @@
+using Game.Core.Content;
 using Game.Core.Sim;
 
 namespace Game.Core.Party
@@ -20,8 +21,10 @@ namespace Game.Core.Party
 
     public struct PartyTrialHit
     {
-        public PartyTrialHit(double keys, double mouse, double skills, double minions, bool typing, int reactions)
+        public PartyTrialHit(double keys, double mouse, double skills, double minions, bool typing, int reactions, double armorPen = 0, double shred = 0)
         {
+            ArmorPen = armorPen;
+            Shred = shred;
             Keys = keys;
             Mouse = mouse;
             Skills = skills;
@@ -36,8 +39,10 @@ namespace Game.Core.Party
         public double Minions;
         public bool Typing;
         public int Reactions;
+        public double ArmorPen;
+        public double Shred;
 
-        public double Of(PartyTrialDamage kind) => kind switch
+        public readonly double Of(PartyTrialDamage kind) => kind switch
         {
             PartyTrialDamage.Keys => Keys,
             PartyTrialDamage.Mouse => Mouse,
@@ -58,6 +63,7 @@ namespace Game.Core.Party
         private PartyTrialDef? _trial;
         private PartyTrialRules _rules = PartyTrialRules.None;
         private PartyTrialComplicationDef? _complication;
+        private DefenseRules _defense = new DefenseRules();
         private double _power;
         private double _globalFactor;
         private long _quietTicks;
@@ -78,6 +84,7 @@ namespace Game.Core.Party
         public int Resisted { get; private set; } = NoKind;
         public int Chain { get; private set; }
         public int Wave { get; private set; }
+        public double Armor { get; private set; }
         public int WavesCleared { get; private set; }
         public double SecondsLeft => System.Math.Max(0, TotalTicks - Tick) * GameLoop.TickSeconds;
         public bool Running => Outcome == PartyTrialOutcome.Running;
@@ -100,9 +107,10 @@ namespace Game.Core.Party
         public double ChainFactor => _trial == null ? 1
             : Chain == 0 ? _trial.ChainBase : System.Math.Min(_trial.ChainMax, 1 + _trial.ChainStep * Chain);
 
-        public void Start(PartyTrialRules rules, PartyTrialDef trial, int tier, int fighters, double power, bool night)
+        public void Start(PartyTrialRules rules, DefenseRules defense, PartyTrialDef trial, int tier, int fighters, double power, bool night)
         {
             _rules = rules;
+            _defense = defense;
             _trial = trial;
             Tier = trial.Rule == PartyTrialRule.Marathon ? 1 : System.Math.Max(1, tier);
             Fighters = System.Math.Max(1, fighters);
@@ -124,6 +132,7 @@ namespace Game.Core.Party
             WavesCleared = 0;
             HpFull = trial.Rule == PartyTrialRule.Marathon ? rules.WaveHp(1) : 1;
             HpLeft = HpFull;
+            Armor = rules.ArmorShare(Tier) * defense.K;
             SkillShieldLeft = Is(PartyTrialComplication.SkillShield) ? _complication!.Share : 0;
             SetFactors(night);
         }
@@ -159,7 +168,7 @@ namespace Game.Core.Party
             {
                 var amount = 0.0;
                 for (var i = 0; i < count; i++)
-                    amount += System.Math.Max(0, hits[i].Of((PartyTrialDamage)kind));
+                    amount += Landed(hits[i], kind);
                 dealt += Hit(kind, amount * Factor(kind));
             }
             if (trial.Rule == PartyTrialRule.Mirror)
@@ -185,7 +194,7 @@ namespace Game.Core.Party
             {
                 for (var kind = 0; kind < Kinds; kind++)
                 {
-                    var amount = System.Math.Max(0, hits[i].Of((PartyTrialDamage)kind)) * Factor(kind);
+                    var amount = Landed(hits[i], kind) * Factor(kind);
                     if (i == Holder)
                         dealt += Hit(kind, amount);
                     else
@@ -193,6 +202,17 @@ namespace Game.Core.Party
                 }
             }
             return dealt;
+        }
+
+        private double Landed(in PartyTrialHit hit, int kind) => System.Math.Max(0, hit.Of((PartyTrialDamage)kind)) * ArmorFactor(hit);
+
+        public double ArmorFactor(in PartyTrialHit hit)
+        {
+            if (!(Armor > 0))
+                return 1;
+            var shred = System.Math.Min(_defense.ShredCap, System.Math.Max(0, hit.Shred));
+            var pen = System.Math.Min(_defense.ArmorPenCap, System.Math.Max(0, hit.ArmorPen));
+            return _defense.K / (Armor * (1 - shred) * (1 - pen) + _defense.K);
         }
 
         private double Hit(int kind, double amount)
@@ -314,6 +334,7 @@ namespace Game.Core.Party
             Wave++;
             HpFull = _rules.WaveHp(Wave);
             HpLeft = HpFull;
+            Armor = _rules.ArmorShare(Wave) * _defense.K;
         }
 
         private void SetFactors(bool night)

@@ -27,9 +27,11 @@ namespace Game.Core.Tests.Party
         private static PartyTrialFight Start(string id, int tier = 1, int fighters = 2, double power = 1, bool night = false)
         {
             var fight = new PartyTrialFight();
-            fight.Start(Rules, Trial(id), tier, fighters, power, night);
+            fight.Start(Rules, TestWorld.Data.Combat.Defense, Trial(id), tier, fighters, power, night);
             return fight;
         }
+
+        private static double Bare(PartyTrialFight fight) => fight.ArmorFactor(new PartyTrialHit());
 
         private static double Run(PartyTrialFight fight, PartyTrialHit[] hits, int ticks)
         {
@@ -48,7 +50,7 @@ namespace Game.Core.Tests.Party
             Assert.That(Rules.Tries, Is.EqualTo(5));
             Assert.That(Rules.MinFighters, Is.EqualTo(2));
             Assert.That(Rules.Seal, Is.EqualTo(0.005));
-            Assert.That(Trial("marathon").Waves, Is.EqualTo(20));
+            Assert.That(Trial("marathon").Waves, Is.EqualTo(30));
             Assert.That(Rules.ComplicationList.Count, Is.EqualTo(5));
         }
 
@@ -204,26 +206,49 @@ namespace Game.Core.Tests.Party
             Assert.That(fight.ResultTier, Is.EqualTo(1));
 
             var strong = Start("marathon");
-            Run(strong, Hits(4, keys: 1), 10_000);
-            Assert.That(strong.ResultTier, Is.EqualTo(20));
-            Assert.That(strong.Tick, Is.EqualTo(6000));
+            Run(strong, Hits(4, keys: 100), 10_000);
+            Assert.That(strong.ResultTier, Is.EqualTo(30), "fifteen minutes hold thirty waves");
+            Assert.That(strong.Tick, Is.EqualTo(9000));
+            Assert.That(strong.Armor, Is.EqualTo(Rules.ArmorShare(30) * TestWorld.Data.Combat.Defense.K).Within(1e-9), "each wave wears the armor of its tier");
         }
 
         [Test]
         public void ComplicationsChangeTheFight()
         {
-            Assert.That(Start("choir", tier: 2).Advance(Hits(2, keys: 0.001), 2), Is.EqualTo(0.0012).Within(1e-12), "carapace");
-            Assert.That(Start("choir", tier: 3).Advance(Hits(2, mouse: 0.001), 2), Is.EqualTo(0.0012).Within(1e-12), "shadow");
+            var carapace = Start("choir", tier: 2);
+            Assert.That(carapace.Advance(Hits(2, keys: 0.001), 2), Is.EqualTo(0.0012 * Bare(carapace)).Within(1e-12), "carapace");
+            var shadow = Start("choir", tier: 3);
+            Assert.That(shadow.Advance(Hits(2, mouse: 0.001), 2), Is.EqualTo(0.0012 * Bare(shadow)).Within(1e-12), "shadow");
             var shield = Start("choir", tier: 4);
             Assert.That(shield.Advance(Hits(2, keys: 0.01), 2), Is.Zero, "only skills break the skill shield");
-            Assert.That(shield.Advance(Hits(2, skills: 0.01), 2), Is.EqualTo(0.02).Within(1e-12));
-            Assert.That(shield.SkillShieldLeft, Is.EqualTo(0.03).Within(1e-12));
-            Assert.That(Start("choir", tier: 5, night: true).Advance(Hits(2, keys: 0.001), 2), Is.EqualTo(0.0026).Within(1e-12), "night");
-            Assert.That(Start("choir", tier: 5).Advance(Hits(2, keys: 0.001), 2), Is.EqualTo(0.0014).Within(1e-12), "day");
+            Assert.That(shield.Advance(Hits(2, skills: 0.01), 2), Is.EqualTo(0.02 * Bare(shield)).Within(1e-12));
+            Assert.That(shield.SkillShieldLeft, Is.EqualTo(0.05 - 0.02 * Bare(shield)).Within(1e-12));
+            var night = Start("choir", tier: 5, night: true);
+            Assert.That(night.Advance(Hits(2, keys: 0.001), 2), Is.EqualTo(0.0026 * Bare(night)).Within(1e-12), "night");
+            var day = Start("choir", tier: 5);
+            Assert.That(day.Advance(Hits(2, keys: 0.001), 2), Is.EqualTo(0.0014 * Bare(day)).Within(1e-12), "day");
             var regen = Start("choir", tier: 6);
             regen.Advance(Hits(2, keys: 0.1), 2);
+            var hurt = 1 - 0.2 * Bare(regen);
             Run(regen, Hits(2), 40);
-            Assert.That(regen.HpLeft, Is.EqualTo(0.8 + 0.0005 * 11).Within(1e-9), "the boss heals after three quiet seconds");
+            Assert.That(regen.HpLeft, Is.EqualTo(hurt + 0.0005 * 11).Within(1e-9), "the boss heals after three quiet seconds");
+        }
+
+        [Test]
+        public void ArmorGrowsWithTheTierAndPenetrationCutsThroughIt()
+        {
+            var defense = TestWorld.Data.Combat.Defense;
+            Assert.That(Start("silence", tier: 1).Armor, Is.Zero);
+            Assert.That(Rules.ArmorShare(11), Is.EqualTo(0.45).Within(1e-12));
+            Assert.That(Rules.ArmorShare(35), Is.EqualTo(1.5));
+            var top = Start("silence", tier: 35);
+            Assert.That(top.Armor, Is.EqualTo(1.5 * defense.K).Within(1e-9));
+            Assert.That(top.Advance(Hits(2, skills: 0.01), 2), Is.EqualTo(0.02 * 0.4).Within(1e-12), "armor at 1.5 K takes 60%");
+            var pierced = new PartyTrialHit(0, 0.01, 0, 0, true, 0, armorPen: 1, shred: 0);
+            var expected = defense.K / (1.5 * defense.K * (1 - defense.ArmorPenCap) + defense.K);
+            Assert.That(top.ArmorFactor(pierced), Is.EqualTo(expected).Within(1e-12), "penetration stops at its cap");
+            var both = new PartyTrialHit(0, 0.01, 0, 0, true, 0, armorPen: 0.5, shred: 0.5);
+            Assert.That(top.ArmorFactor(both), Is.EqualTo(defense.K / (1.5 * defense.K * 0.25 + defense.K)).Within(1e-12));
         }
 
         [Test]

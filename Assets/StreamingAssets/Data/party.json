@@ -221,6 +221,7 @@
       "ceilingBase": 10,
       "ceilingStep": 5,
       "hp": { "stage": 2000, "multiplier": 6, "growth": 1.35 },
+      "armor": { "perTier": 0.045, "max": 1.5 },
       "seal": 0.005,
       "firstClearSigns": 20,
       "experiencePerTier": 5,
@@ -242,7 +243,7 @@
         {"id": "pulse", "rule": "pulse", "name": {"ru": "Пульс", "en": "Pulse"}, "seconds": 240, "everySeconds": 10, "windowSeconds": 3, "inside": 3, "outside": 0.3},
         {"id": "shields", "rule": "shields", "name": {"ru": "Четыре щита", "en": "Four Shields"}, "seconds": 300, "shieldShare": 0.1},
         {"id": "chain", "rule": "chain", "name": {"ru": "Цепь", "en": "Chain"}, "seconds": 240, "base": 0.5, "step": 0.2, "max": 3, "keepSeconds": 6},
-        {"id": "marathon", "rule": "marathon", "name": {"ru": "Марафон", "en": "Marathon"}, "seconds": 600, "waveSeconds": 30}
+        {"id": "marathon", "rule": "marathon", "name": {"ru": "Марафон", "en": "Marathon"}, "seconds": 900, "waveSeconds": 30}
       ]
     },
     "unlocks": [
