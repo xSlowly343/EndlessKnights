@@ -351,3 +351,38 @@ test("when every building and level is done the town stops counting and a record
   assert.strictEqual(fresh.candidates.length, starts.length - 1);
   assert.ok(fresh.candidates.some((entry) => entry.project === "gardeners"), "an old town builds the herbwitch's house too");
 });
+
+test("the weekly rebuild counts everyone's labour, decorates the town and gives a frame to those who helped", () => {
+  const { nk } = world(3);
+  const week = server.TownWeekServerRules;
+  const owns = (user, id) => (nk.storageRead([{ collection: "cosmetics", key: "owned", userId: user }])[0] || { value: { owned: [] } }).value.owned.includes(id);
+  let view = state(nk, "p0");
+  assert.strictEqual(view.week.week, server.weeklyWeekOf(now));
+  assert.strictEqual(view.week.goal, Math.max(week.minGoal, Math.round(rules.minPlayers * week.perPlayer)));
+  assert.strictEqual(view.week.done, false);
+  const reward = view.week.frame;
+  add(nk, "p0", { labour: 4000 });
+  add(nk, "p2", { labour: week.minLabour - 1 });
+  view = state(nk, "p0");
+  assert.strictEqual(view.week.total, 4000 + week.minLabour - 1);
+  assert.strictEqual(view.week.yours, 4000);
+  const stored = nk.storageRead([{ collection: "town", key: "week", userId: server.PartySystemUser }])[0];
+  nk.storageWrite([{ collection: "town", key: "week", userId: server.PartySystemUser, value: Object.assign({}, stored.value, { total: view.week.goal - 10 }), version: stored.version, permissionRead: 0, permissionWrite: 0 }]);
+  view = add(nk, "p1", { labour: 10 });
+  assert.strictEqual(view.week.done, true, "the goal is reached");
+  assert.deepStrictEqual(view.week.decorations, [view.week.decor], "the town gets its decoration of the week");
+  assert.ok(!owns("p1", reward), "ten actions are too few for the frame");
+  assert.strictEqual(state(nk, "p0").week.framed, true);
+  assert.ok(owns("p0", reward), "a helper gets the frame on the next visit");
+  state(nk, "p2");
+  assert.ok(!owns("p2", reward), "too little labour, no frame");
+  add(nk, "p2", { labour: 1 });
+  assert.ok(owns("p2", reward), "reaching the minimum later still gives the frame");
+  const next = state(nk, "p0", now + 7 * day);
+  assert.strictEqual(next.week.week, server.weeklyWeekOf(now) + 1);
+  assert.strictEqual(next.week.total, 0);
+  assert.strictEqual(next.week.done, false);
+  assert.strictEqual(next.week.yours, 0);
+  assert.notStrictEqual(next.week.frame, reward, "every week has its own reward");
+  assert.deepStrictEqual(next.week.decorations, [view.week.decor], "decorations stay");
+});

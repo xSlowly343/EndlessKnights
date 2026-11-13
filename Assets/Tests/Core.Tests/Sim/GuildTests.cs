@@ -636,6 +636,23 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void TheWeeklyRebuildIsShownOnTheBoard()
+        {
+            Assert.That(Rules.Decorations.Count, Is.GreaterThanOrEqualTo(4));
+            Assert.That(Rules.WeeklyMinLabour, Is.GreaterThan(0));
+            foreach (var decor in Rules.Decorations)
+                Assert.That(TestWorld.Real.Cosmetics.TryGet(decor.Frame, out _), Is.True, decor.Frame);
+            var gathering = new TownWeek(1, 60000, 12000, false, 1000, 3000, false, "lanterns", new string[0]);
+            Assert.That(GuildView.Week(Rules, gathering), Is.EqualTo("Отстройка недели: 12000 из 60000 мирных действий, ваш вклад 1000 (для рамки нужно 3000). Награда городу — «Фонари на столбах»"));
+            var enough = new TownWeek(1, 60000, 12000, false, 3000, 3000, false, "lanterns", new string[0]);
+            Assert.That(GuildView.Week(Rules, enough), Does.Contain("рамка будет ваша"));
+            var done = new TownWeek(1, 60000, 61000, true, 3000, 3000, true, "banners", new[] { "lanterns", "banners" });
+            Assert.That(GuildView.Week(Rules, done), Is.EqualTo("Отстройка недели завершена: «Флаги над Воротами» украшают Кромку, рамка — ваша"));
+            Assert.That(GuildView.Decorations(Rules, done), Is.EqualTo(new[] { "Фонари на столбах", "Флаги над Воротами" }));
+            Assert.That(GuildView.Week(Rules, TownWeek.None), Is.Empty);
+        }
+
+        [Test]
         public void ExpeditionFindsCountForTheTown()
         {
             var loop = TestWorld.Loop(new FakeInputSource());

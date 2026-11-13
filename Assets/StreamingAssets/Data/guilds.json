@@ -73,6 +73,17 @@
       ]
     }
   ],
+  "weekly": {
+    "perPlayer": 15000,
+    "minGoal": 60000,
+    "minLabour": 3000,
+    "rewards": [
+      { "decor": "lanterns", "name": { "ru": "Фонари на столбах", "en": "Lanterns on Posts" }, "frame": "frame_edge_lantern" },
+      { "decor": "banners", "name": { "ru": "Флаги над Воротами", "en": "Banners over the Gates" }, "frame": "frame_edge_banner" },
+      { "decor": "flowerbeds", "name": { "ru": "Клумбы у колодца", "en": "Flowerbeds by the Well" }, "frame": "frame_edge_bloom" },
+      { "decor": "garlands", "name": { "ru": "Гирлянды над улицей", "en": "Garlands over the Street" }, "frame": "frame_edge_garland" }
+    ]
+  },
   "trial": { "seconds": 120, "stage": 30, "heroLevel": 12 },
   "observatory": { "fishWeight": 3, "plantGrow": 0.25, "plantMutation": 0.05 },
   "districts": [

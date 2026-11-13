@@ -394,6 +394,30 @@ namespace Game.Core.Ui
 
         public static string TrialEnded(long kills) => Texts.Format("guild.trial.ended", kills);
 
+        public static string Week(GuildRules rules, TownWeek week)
+        {
+            if (week.Goal <= 0)
+                return string.Empty;
+            var decor = DecorName(rules, week.Decor);
+            if (week.Done)
+                return Texts.Format(week.Framed ? "guild.week.doneFramed" : "guild.week.done", decor, week.Total, week.Yours, week.MinLabour);
+            return Texts.Format(week.Yours >= week.MinLabour ? "guild.week.enough" : "guild.week.gather", System.Math.Min(week.Total, week.Goal), week.Goal, week.Yours, week.MinLabour, decor);
+        }
+
+        public static List<string> Decorations(GuildRules rules, TownWeek week)
+        {
+            var names = new List<string>(week.Decorations.Count);
+            foreach (var id in week.Decorations)
+                names.Add(DecorName(rules, id));
+            return names;
+        }
+
+        private static string DecorName(GuildRules rules, string id)
+        {
+            var decor = rules.Decor(id);
+            return decor == null ? id : Texts.Pick(decor.NameRu, decor.NameEn);
+        }
+
         public static string MasterSays(GuildRules rules, TownBoard board, long day)
         {
             if (board.Phase != TownBoardPhase.Gather && board.Phase != TownBoardPhase.Opening)

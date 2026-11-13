@@ -33,6 +33,22 @@ namespace Game.Core.Content
         public double PlantMutation { get; }
     }
 
+    public sealed class TownDecorDef
+    {
+        public TownDecorDef(string id, string nameRu, string nameEn, string frame)
+        {
+            Id = id;
+            NameRu = nameRu;
+            NameEn = nameEn;
+            Frame = frame;
+        }
+
+        public string Id { get; }
+        public string NameRu { get; }
+        public string NameEn { get; }
+        public string Frame { get; }
+    }
+
     public sealed class MasterTrialRules
     {
         public MasterTrialRules(double seconds, int stage, int heroLevel)
@@ -273,8 +289,10 @@ namespace Game.Core.Content
 
         private GuildRules(IReadOnlyList<long> levels, IReadOnlyList<GuildDef> guilds, IReadOnlyList<DistrictDef> districts, IReadOnlyList<TownBuildingDef> buildings,
             IReadOnlyList<TownStageDef> stages, int voteDays, int openHours, IReadOnlyList<BuildResourceDef> resources, IReadOnlyList<TownSiteDef> sites,
-            IReadOnlyList<TownRewardTier> rewards, int topSize, int topShards, int stageShards, ObservatoryBonus observatory, MasterTrialRules trial)
+            IReadOnlyList<TownRewardTier> rewards, int topSize, int topShards, int stageShards, ObservatoryBonus observatory, MasterTrialRules trial, IReadOnlyList<TownDecorDef> decorations, long weeklyMinLabour)
         {
+            Decorations = decorations;
+            WeeklyMinLabour = weeklyMinLabour;
             Trial = trial;
             Observatory = observatory;
             Buildings = buildings;
@@ -300,6 +318,18 @@ namespace Game.Core.Content
         public int StageShards { get; }
         public ObservatoryBonus Observatory { get; }
         public MasterTrialRules Trial { get; }
+        public IReadOnlyList<TownDecorDef> Decorations { get; }
+        public long WeeklyMinLabour { get; }
+
+        public TownDecorDef? Decor(string id)
+        {
+            for (var i = 0; i < Decorations.Count; i++)
+            {
+                if (Decorations[i].Id == id)
+                    return Decorations[i];
+            }
+            return null;
+        }
         public int VoteDays { get; }
         public int OpenHours { get; }
         public IReadOnlyList<BuildResourceDef> Resources { get; }
@@ -463,7 +493,28 @@ namespace Game.Core.Content
             build.Field("activeDays").AsInt(1);
             build.Field("minPlayers").AsInt(1);
             return new GuildRules(levels, guilds, districts, buildings, stages, build.Field("voteDays").AsInt(1), build.Field("openHours").AsInt(0), resources, sites,
-                rewards, top.Field("size").AsInt(0), top.Field("shards").AsInt(0), build.Field("stageShards").AsInt(0), ObservatoryOf(root.Field("observatory")), TrialOf(root.Field("trial")));
+                rewards, top.Field("size").AsInt(0), top.Field("shards").AsInt(0), build.Field("stageShards").AsInt(0), ObservatoryOf(root.Field("observatory")), TrialOf(root.Field("trial")), DecorationsOf(root.Field("weekly")), root.Field("weekly").Field("minLabour").AsLong(1));
+        }
+
+        private static IReadOnlyList<TownDecorDef> DecorationsOf(ContentNode node)
+        {
+            node.Field("perPlayer").AsLong(1);
+            node.Field("minGoal").AsLong(1);
+            var decorations = new List<TownDecorDef>();
+            foreach (var item in node.Field("rewards").Items())
+            {
+                var id = item.Field("decor").AsString();
+                foreach (var known in decorations)
+                {
+                    if (known.Id == id)
+                        throw item.Field("decor").Error($"decoration '{id}' is listed twice");
+                }
+                var name = item.Field("name");
+                decorations.Add(new TownDecorDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), item.Field("frame").AsString()));
+            }
+            if (decorations.Count == 0)
+                throw node.Field("rewards").Error("the weekly rebuild needs rewards");
+            return decorations;
         }
 
         private static MasterTrialRules TrialOf(ContentNode node) =>
