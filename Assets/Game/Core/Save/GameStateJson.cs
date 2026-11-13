@@ -2093,6 +2093,8 @@ namespace Game.Core.Save
                 ("windowEndUnixMs", JsonValue.Of(rift.WindowEndUnixMs)),
                 ("inside", JsonValue.Of(rift.Inside)),
                 ("shards", SaveValues.Of(rift.Shards)),
+                ("sparks", JsonValue.Of(rift.Sparks)),
+                ("shopCredited", JsonValue.Of(rift.ShopCredited)),
                 ("deepest", JsonValue.Of(rift.Deepest)),
                 ("supply", OptionalText(rift.Supply)),
                 ("supplyWindow", JsonValue.Of(rift.SupplyWindow)),
@@ -2133,6 +2135,8 @@ namespace Game.Core.Save
             rift.WindowEndUnixMs = node.Field("windowEndUnixMs").AsLong(0);
             rift.Inside = node.Field("inside").AsBool();
             rift.Shards = SaveValues.ReadBigNumber(node.Field("shards"));
+            rift.Sparks = node.HasField("sparks") ? node.Field("sparks").AsLong(0) : 0;
+            rift.ShopCredited = node.HasField("shopCredited") ? node.Field("shopCredited").AsLong(0) : 0;
             rift.Deepest = node.Field("deepest").AsLong(1);
             rift.Supply = ReadOptionalText(node, "supply");
             rift.SupplyWindow = node.HasField("supplyWindow") ? node.Field("supplyWindow").AsLong(0) : 0;

@@ -13,6 +13,7 @@ namespace Game.Core.Ui
             CraftResult.NeedsSlot => Texts.Get("craft.result.needsSlot"),
             CraftResult.WrongSlot => Texts.Get("craft.result.wrongSlot"),
             CraftResult.NotEnoughIngots => Texts.Get("craft.result.notEnoughIngots"),
+            CraftResult.NotEnoughSparks => Texts.Get("craft.result.notEnoughSparks"),
             CraftResult.BagFull => Texts.Get("craft.result.bagFull"),
             CraftResult.AboveCeiling => Texts.Get("craft.result.aboveCeiling"),
             _ => string.Empty

@@ -65,7 +65,7 @@ namespace Game.Core.Sim
                 return CraftResult.NotCraftable;
             if (Unlocks?.IsOpen(Feature.SetCraft) == false)
                 return CraftResult.Locked;
-            if (set.Rarity > _rules.CeilingAt(System.Math.Max(1, _state.RecordStage)))
+            if (set.Rarity > _rules.CeilingAt(System.Math.Max(1, CraftDepth)))
                 return CraftResult.AboveCeiling;
             if (BagFull)
                 return CraftResult.BagFull;
@@ -92,8 +92,8 @@ namespace Game.Core.Sim
             var slot = piece.Slot;
             var jewelry = ItemCatalog.IsJewelry(slot);
             var cost = (long)System.Math.Ceiling(CraftCost(set) * (jewelry ? _items.JewelryCraftMultiplier * set.CraftMultiplier : 1));
-            if (jewelry ? _state.Drops.Essence < cost : _state.Drops.Ingots < cost)
-                return jewelry ? CraftResult.NotEnoughEssence : CraftResult.NotEnoughIngots;
+            if (Unaffordable(cost, jewelry) is { } lacking)
+                return lacking;
             if (slot == ItemSlot.Weapon)
             {
                 var weapon = CraftSetWeapon(set, weaponType);
@@ -115,9 +115,24 @@ namespace Game.Core.Sim
             return CraftResult.Crafted;
         }
 
+        public bool CraftsForSparks => _state.Rift.Inside;
+
+        private long CraftDepth => _state.Rift.Inside ? _state.HighestStage : _state.RecordStage;
+
+        private CraftResult? Unaffordable(long cost, bool jewelry)
+        {
+            if (CraftsForSparks)
+                return _state.Rift.Sparks < cost ? CraftResult.NotEnoughSparks : null;
+            if (jewelry)
+                return _state.Drops.Essence < cost ? CraftResult.NotEnoughEssence : null;
+            return _state.Drops.Ingots < cost ? CraftResult.NotEnoughIngots : null;
+        }
+
         private void PayCraft(long cost, bool essence)
         {
-            if (essence)
+            if (CraftsForSparks)
+                _state.Rift.Sparks -= cost;
+            else if (essence)
                 _state.Drops.Essence -= cost;
             else
                 _state.Drops.Ingots -= cost;
@@ -143,8 +158,8 @@ namespace Game.Core.Sim
             {
                 var jewelry = ItemCatalog.IsJewelry(gearUnique.Slot);
                 var cost = UniqueCraftCost(gearUnique.Slot);
-                if (jewelry ? _state.Drops.Essence < cost : _state.Drops.Ingots < cost)
-                    return jewelry ? CraftResult.NotEnoughEssence : CraftResult.NotEnoughIngots;
+                if (Unaffordable(cost, jewelry) is { } lacking)
+                    return lacking;
                 PayCraft(cost, jewelry);
                 var item = new GearItem(gearUnique, level);
                 _state.Drops.Gear.Add(item);
@@ -157,8 +172,8 @@ namespace Game.Core.Sim
                 if (weaponUnique.Base.Type != OwnType)
                     return CraftResult.WrongSlot;
                 var cost = UniqueCraftCost(ItemSlot.Weapon);
-                if (_state.Drops.Ingots < cost)
-                    return CraftResult.NotEnoughIngots;
+                if (Unaffordable(cost, false) is { } lacking)
+                    return lacking;
                 PayCraft(cost, false);
                 var weapon = _weapons.Give(_weapons.Catalog.RollUnique(weaponUnique, level));
                 _state.Drops.ItemsFound++;

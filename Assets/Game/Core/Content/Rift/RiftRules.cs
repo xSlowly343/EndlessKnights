@@ -62,6 +62,7 @@ namespace Game.Core.Content.Rift
         public IReadOnlyDictionary<Feature, long> Ladder { get; private set; } = new Dictionary<Feature, long>();
 
         public RiftGiftRules Gifts { get; private set; } = RiftGiftRules.None;
+        public RiftForgeRules Forge { get; private set; } = RiftForgeRules.None;
         public RiftWindowSetRules WindowSet { get; private set; } = new RiftWindowSetRules(Items.ItemRarity.Rare, 1);
 
         public long StageOf(Feature feature) => Ladder.TryGetValue(feature, out var stage) ? stage : 1;
@@ -180,7 +181,8 @@ namespace Game.Core.Content.Rift
             {
                 Ladder = ReadLadder(root),
                 Gifts = RiftGiftRules.Read(root.Field("gifts")),
-                WindowSet = windowSet
+                WindowSet = windowSet,
+                Forge = root.HasField("forge") ? RiftForgeRules.Read(root.Field("forge")) : RiftForgeRules.None
             };
         }
 

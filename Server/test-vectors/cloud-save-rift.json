@@ -1,5 +1,5 @@
 {
-  "checksum": "265b67117c6a388f04c1ed2a77b8807bc9ec4233d7149fd21f4437369678fb6a",
+  "checksum": "75d537fd4faef96dc1035e5c55f18605f118c08074cf61a6cd066d24b3959651",
   "payload": {
     "clock": {
       "bootId": 1,
@@ -1247,6 +1247,8 @@
             "otherHero": null,
             "otherWorld": null,
             "shards": "0e0",
+            "shopCredited": 0,
+            "sparks": 0,
             "supply": null,
             "supplyWindow": 0,
             "windowEndUnixMs": 0,
@@ -2416,6 +2418,8 @@
           "previousBiome": null
         },
         "shards": "0e0",
+        "shopCredited": 0,
+        "sparks": 0,
         "supply": null,
         "supplyWindow": 0,
         "windowEndUnixMs": 1793188800000,

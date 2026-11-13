@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Content;
+using Game.Core.Content.Items;
 using Game.Core.Content.Rift;
 using Game.Core.Content.Synergy;
 using Game.Core.Math;
@@ -181,10 +182,34 @@ namespace Game.Core.Sim.Rift
                 return;
             var shards = type == EnemyType.Guardian ? _rules.GuardianShards : _rules.BossShards;
             _state.Rift.Shards += BigNumber.FromDouble(shards);
+            var forge = _rules.Forge;
+            _state.Rift.Sparks += type == EnemyType.Guardian ? forge.GuardianSparks : forge.BossSparks;
             if (_state.Stage <= _state.Rift.Deepest)
                 return;
+            _state.Rift.Sparks += (forge.MilestonesUpTo(_state.Stage) - forge.MilestonesUpTo(_state.Rift.Deepest)) * forge.MilestoneSparks;
             _state.Rift.Deepest = _state.Stage;
             Slates?.OnRiftBoss();
+        }
+
+        public long Sparks => _state.Rift.Sparks;
+
+        public bool SalvageSparks(ItemRarity rarity)
+        {
+            if (!Inside)
+                return false;
+            _state.Rift.Sparks += _rules.Forge.SalvageSparks(rarity);
+            return true;
+        }
+
+        public long CreditShop(long riftId, long boughtSparks)
+        {
+            var rift = _state.Rift;
+            if (riftId != rift.WindowId || riftId == 0 || boughtSparks <= rift.ShopCredited)
+                return 0;
+            var credit = boughtSparks - rift.ShopCredited;
+            rift.ShopCredited = boughtSparks;
+            rift.Sparks += credit;
+            return credit;
         }
 
         public void Tick()
