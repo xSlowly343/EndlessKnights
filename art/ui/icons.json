@@ -68,6 +68,7 @@
     { "group": "pastime", "id": "place_hideout", "source": "lorc/campfire" },
     { "group": "pastime", "id": "place_town", "source": "delapouite/crane" },
     { "group": "pastime", "id": "place_clan_camp", "source": "lorc/flying-flag" },
+    { "group": "pastime", "id": "offline", "source": "delapouite/exit-door" },
     { "group": "slots", "id": "right_hand", "source": "lorc/broadsword" },
     { "group": "slots", "id": "left_hand", "source": "willdabeast/round-shield" },
     { "group": "slots", "id": "helmet", "source": "lorc/visored-helm" },

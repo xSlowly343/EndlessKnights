@@ -76,6 +76,32 @@ namespace Game.Core.Tests.Ui
         }
 
         [Test]
+        public void PeacefulAlliesAreTranslucentAndOfflineOnesAreFadedWithTheirOwnIcon()
+        {
+            var roster = new RosterMessage
+            {
+                Player0 = 11, Presence0 = (byte)PartyPresence.Peaceful, Pastime0 = new PartyPastime(AllyActivity.Forge, StripPlace.Hideout).Packed,
+                Player1 = 22,
+                Player2 = 33, Presence2 = (byte)PartyPresence.Offline,
+                Player3 = 44
+            };
+
+            StripAllies.Fill(roster, 1, _ => string.Empty, _allies);
+
+            Assert.That(_allies[0].Translucent, Is.True);
+            Assert.That(_allies[0].Faded, Is.False);
+            Assert.That(AllyPastimeView.IconOf(_allies[0]), Is.EqualTo("pastime_forge"));
+            Assert.That(AllyPastimeView.PlaceIconOf(_allies[0]), Is.EqualTo("place_hideout"));
+            Assert.That(_allies[1].Faded, Is.True);
+            Assert.That(_allies[1].Translucent, Is.False);
+            Assert.That(AllyPastimeView.IconOf(_allies[1]), Is.EqualTo(AllyPastimeView.OfflineIcon));
+            Assert.That(AllyPastimeView.PlaceIconOf(_allies[1]), Is.Empty);
+            Assert.That(AllyPastimeView.KeyOf(_allies[1]), Is.Not.EqualTo(AllyPastimeView.KeyOf(_allies[0])));
+            Assert.That(_allies[2].Translucent || _allies[2].Faded, Is.False, "online and fighting is drawn as usual");
+            Assert.That(AllyPastimeView.IconOf(_allies[2]), Is.Empty);
+        }
+
+        [Test]
         public void TheHostPassesAPastimeOnOnlyWhileTheAllyIsPeaceful()
         {
             var encounter = new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 1);

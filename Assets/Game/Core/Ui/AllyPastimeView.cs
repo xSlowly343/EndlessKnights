@@ -8,6 +8,9 @@ namespace Game.Core.Ui
     public static class AllyPastimeView
     {
         public const string IconGroup = "pastime";
+        public const string OfflineIcon = "offline";
+        public const int NoIcon = 0;
+        public const int OfflineKey = 0x100;
 
         private static readonly string[] ActivityIcons =
         {
@@ -25,7 +28,13 @@ namespace Game.Core.Ui
             _ => string.Empty
         };
 
-        public static bool Shows(StripAlly ally) => ally.Presence == PartyPresence.Peaceful && ally.Pastime.Known;
+        public static bool Shows(StripAlly ally) => ally.Presence == PartyPresence.Offline || (ally.Presence == PartyPresence.Peaceful && ally.Pastime.Known);
+
+        public static int KeyOf(StripAlly ally) => !Shows(ally) ? NoIcon : ally.Presence == PartyPresence.Offline ? OfflineKey : ally.Pastime.Packed;
+
+        public static string IconOf(StripAlly ally) => ally.Presence == PartyPresence.Offline ? OfflineIcon : Shows(ally) ? Icon(ally.Pastime) : string.Empty;
+
+        public static string PlaceIconOf(StripAlly ally) => ally.Presence == PartyPresence.Peaceful ? PlaceIcon(ally.Pastime) : string.Empty;
 
         public static string Caption(PeacefulRules rules, PartyPastime pastime)
         {

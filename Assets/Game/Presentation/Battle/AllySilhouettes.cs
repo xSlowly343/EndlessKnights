@@ -26,6 +26,7 @@ namespace Game.Presentation.Battle
         private const float SwingGapSeconds = 0.34f;
         private const float RestingSwingAge = 100f;
         private const float FadedAlpha = 0.45f;
+        private const float PeacefulAlpha = 0.7f;
         private const int BodySortingOrder = 9;
         private const float StrikeDepth = 0.5f;
         private const float DefaultStrikeOpacity = 0.5f;
@@ -50,7 +51,7 @@ namespace Game.Presentation.Battle
         private readonly TextMeshProUGUI[] _markTexts = new TextMeshProUGUI[StripAllies.MaxShown];
         private readonly Image[] _pastimes = new Image[StripAllies.MaxShown];
         private readonly Image[] _placeBadges = new Image[StripAllies.MaxShown];
-        private readonly byte[] _pastimeShown = new byte[StripAllies.MaxShown];
+        private readonly int[] _pastimeShown = new int[StripAllies.MaxShown];
         private readonly Image[] _bubbles = new Image[StripAllies.MaxShown];
         private readonly TextMeshProUGUI[] _bubbleTexts = new TextMeshProUGUI[StripAllies.MaxShown];
         private readonly StripAlly[] _shown = new StripAlly[StripAllies.MaxShown];
@@ -150,7 +151,7 @@ namespace Game.Presentation.Battle
                     _skins[i] = HeroModel.Skin(ally.Look);
                     _strikes[i].Use(HeroModel.Strike(ally.Look.Strike));
                 }
-                var alpha = ally.Faded ? FadedAlpha : 1f;
+                var alpha = ally.Faded ? FadedAlpha : ally.Translucent ? PeacefulAlpha : 1f;
                 if (_bodies[i].color.a != alpha)
                     _bodies[i].color = new Color(1f, 1f, 1f, alpha);
                 _marks[i].color = MarkColor(ally.Presence);
@@ -218,17 +219,18 @@ namespace Game.Presentation.Battle
 
         private bool ShowPastime(int index, StripAlly ally)
         {
-            var packed = AllyPastimeView.Shows(ally) ? ally.Pastime.Packed : (byte)0;
-            if (packed != _pastimeShown[index])
+            var key = AllyPastimeView.KeyOf(ally);
+            if (key != _pastimeShown[index])
             {
-                _pastimeShown[index] = packed;
-                var sprite = packed == 0 ? null : UiIcons.Get(AllyPastimeView.IconGroup, AllyPastimeView.Icon(ally.Pastime));
+                _pastimeShown[index] = key;
+                var sprite = key == AllyPastimeView.NoIcon ? null : UiIcons.Get(AllyPastimeView.IconGroup, AllyPastimeView.IconOf(ally));
                 UiElements.Use(_pastimes[index], sprite);
-                var badge = sprite == null ? null : UiIcons.Get(AllyPastimeView.IconGroup, AllyPastimeView.PlaceIcon(ally.Pastime));
+                var place = AllyPastimeView.PlaceIconOf(ally);
+                var badge = sprite == null || place.Length == 0 ? null : UiIcons.Get(AllyPastimeView.IconGroup, place);
                 UiElements.Use(_placeBadges[index], badge);
                 SetActive(_placeBadges[index].gameObject, badge != null);
             }
-            var shown = _pastimeShown[index] != 0 && _pastimes[index].sprite != null;
+            var shown = _pastimeShown[index] != AllyPastimeView.NoIcon && _pastimes[index].sprite != null;
             SetActive(_pastimes[index].gameObject, shown);
             return shown;
         }

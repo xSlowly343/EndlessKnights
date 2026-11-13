@@ -22,6 +22,7 @@ namespace Game.Core.Ui
         public HeroLook Look { get; }
         public PartyPastime Pastime { get; }
         public bool Faded => Presence == PartyPresence.Offline;
+        public bool Translucent => Presence == PartyPresence.Peaceful;
         public bool Swings => Presence == PartyPresence.Fighting;
     }
 }
