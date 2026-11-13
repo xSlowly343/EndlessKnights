@@ -516,7 +516,7 @@ const townBuildRules = {
   minPlayers: guilds.build.minPlayers,
   paceBurst: guilds.build.pace.burstShare,
   paceFillMs: guilds.build.pace.fillHours * 3600000,
-  resources: guilds.build.resources.map((resource) => ({ id: resource.id, dailyCap: resource.dailyCap, guild: resource.guild || "" })),
+  resources: guilds.build.resources.map((resource) => ({ id: resource.id, dailyCap: resource.dailyCap, guild: resource.guild || "", kind: resource.kind })),
   rewards: guilds.build.rewards.map((tier) => ({ id: tier.id, points: tier.points, shards: tier.shards, friendship: tier.friendship })),
   topSize: guilds.build.top.size,
   topShards: guilds.build.top.shards,

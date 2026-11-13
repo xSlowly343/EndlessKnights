@@ -62,3 +62,36 @@ test("the rear board lists the party first, then those still waiting for a suppl
   assert.strictEqual(shut.window, 0);
   assert.ok(shut.fighters.every((f) => !f.supplied));
 });
+
+test("supplies to one's own party count for the chronicle feat and leave a record", () => {
+  const nk = world("ann", "bob", "cid");
+  const dish = "dish:" + server.HideoutServerRules.dishes[0];
+  server.riftSupplySend(nk, "ann", { to: "bob", item: dish }, open);
+  const group = server.partyGroupOfUser(nk, "ann");
+  const value = server.chronicleRead(nk, group.id).value;
+  assert.strictEqual(value.stats.suppliesTogether, 1);
+  assert.strictEqual(value.records[value.records.length - 1].kind, "supply");
+  assert.strictEqual(value.records[value.records.length - 1].name, "ann");
+  const feat = server.ChronicleServerRules.feats.find((entry) => entry.id === "feeders");
+  server.chronicleUpdate(nk, group.id, (chronicle) => {
+    const delta = server.chronicleNoStats();
+    delta.suppliesTogether = feat.levels[0] - 1;
+    server.chronicleAdd(chronicle, delta, open, server.ChronicleServerRules);
+  });
+  assert.strictEqual(server.chronicleRead(nk, group.id).value.feats.feeders.level, 1, "five supplies make the party feeders");
+});
+
+test("the town board names its feeder, logger and crafter of the round, only with consent", () => {
+  const nk = world("ann", "bob", "cid");
+  const build = server.TownBuildServerRules;
+  const logger = { info() {}, warn() {}, error() {}, debug() {} };
+  server.townBuildState(nk, logger, "ann", open);
+  const raw = build.resources.find((entry) => entry.kind === "raw").id;
+  const craft = build.resources.find((entry) => entry.kind === "craft").id;
+  server.consentSet(nk, logger, "cid", "town_top", true, open);
+  server.townBuildAdd(nk, logger, "bob", { [raw]: 10 }, open);
+  server.townBuildAdd(nk, logger, "cid", { [craft]: 2 }, open);
+  server.riftSupplySend(nk, "cid", { to: "bob", item: "dish:" + server.HideoutServerRules.dishes[0] }, open);
+  const roles = plain(server.townBuildState(nk, logger, "ann", open)).roles;
+  assert.deepStrictEqual(roles, [{ role: "logger", name: "", amount: 10 }, { role: "feeder", name: "cid", amount: 1 }, { role: "crafter", name: "cid", amount: 2 }]);
+});

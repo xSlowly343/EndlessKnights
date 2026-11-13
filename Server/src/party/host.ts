@@ -32,7 +32,7 @@ class PartyHost {
     repeatedShares = 0;
     relays = 0;
     clockUnixMs = 0;
-    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0, synergiesOnOneEnemy: 0, wanderersBosses: 0 };
+    readonly chronicle: ChronicleStats = { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0, synergiesOnOneEnemy: 0, wanderersBosses: 0, suppliesTogether: 0 };
     readonly stages = [0, 0, 0, 0];
     friendBosses: { [userId: string]: number } = {};
     wanderers: string[] = [];
@@ -252,7 +252,7 @@ class PartyHost {
             bossesTogether: this.chronicle.bossesTogether, ticksTogether: this.chronicle.ticksTogether, fullOrchestra: this.chronicle.fullOrchestra,
             nightBosses: this.chronicle.nightBosses, riftDepth: this.chronicle.riftDepth || 0, mentorSeconds: this.chronicle.mentorSeconds || 0,
             guardiansTogether: this.chronicle.guardiansTogether || 0, synergiesOnOneEnemy: this.chronicle.synergiesOnOneEnemy || 0,
-            wanderersBosses: this.chronicle.wanderersBosses || 0
+            wanderersBosses: this.chronicle.wanderersBosses || 0, suppliesTogether: 0
         };
         this.chronicle.wanderersBosses = 0;
         this.chronicle.synergiesOnOneEnemy = 0;

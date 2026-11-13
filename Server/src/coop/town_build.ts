@@ -2,6 +2,7 @@ interface TownBuildResource {
     id: string;
     dailyCap: number;
     guild: string;
+    kind: string;
 }
 
 interface TownBuildLevel {
@@ -417,7 +418,8 @@ function townBuildView(nk: nkruntime.Nakama, userId: string, value: TownBuildVal
             dailyCap: resource.dailyCap,
             room: Math.max(0, Math.min(resource.dailyCap - (mine.sent[resource.id] || 0), Math.floor(townBuildPaceRoom(mine, resource, nowUnixMs))))
         })),
-        accepted: accepted
+        accepted: accepted,
+        roles: counting ? townRoleTop(nk, value.round) : []
     };
 }
 
@@ -508,6 +510,7 @@ function townBuildAdd(nk: nkruntime.Nakama, logger: nkruntime.Logger, userId: st
         return townBuildView(nk, userId, before, townBuildMineRead(nk, userId, day, before.round).value, {}, nowUnixMs);
     const taken = townBuildTake(nk, userId, asked, day, before.round, nowUnixMs);
     townBuildScore(nk, userId, before.round, townBuildPoints(taken.mine.given));
+    townBuildRoles(nk, userId, taken.accepted, nowUnixMs);
     for (let attempt = 1; attempt <= TownWriteAttempts; attempt++) {
         const stored = townBuildRead(nk);
         const value = stored.value;
@@ -602,4 +605,48 @@ function townBuildAddRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: n
 function townBuildVoteRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     const request = partyRequest(payload);
     return JSON.stringify(townBuildVote(nk, logger, partyCaller(ctx), request.project !== undefined ? request.project : request.guild, Date.now()));
+}
+
+const TownRoleFeeder = "feeder";
+const TownRoleLogger = "logger";
+const TownRoleCrafter = "crafter";
+const TownRoles = [TownRoleLogger, TownRoleFeeder, TownRoleCrafter];
+const TownRoleOfKind: { [kind: string]: string } = { raw: TownRoleLogger, craft: TownRoleCrafter };
+
+function townRoleBoard(role: string, round: number): string {
+    return "town_role_" + role + "_" + round;
+}
+
+function townRoleAdd(nk: nkruntime.Nakama, userId: string, role: string, amount: number, nowUnixMs: number): void {
+    if (!(amount > 0))
+        return;
+    const value = townBuildRead(nk).value;
+    if (value.round <= 0 || value.phase === TownBuildDone)
+        return;
+    const id = townRoleBoard(role, value.round);
+    nk.leaderboardCreate(id, true, "descending", "incr", null, null);
+    nk.leaderboardRecordWrite(id, userId, consentShownName(nk, userId, ConsentTownTop), Math.min(amount, 1e9), 0, {});
+}
+
+function townBuildRoles(nk: nkruntime.Nakama, userId: string, accepted: { [resource: string]: number }, nowUnixMs: number): void {
+    const byRole: { [role: string]: number } = {};
+    for (const resource of TownBuildServerRules.resources) {
+        const role = TownRoleOfKind[resource.kind];
+        if (role && accepted[resource.id])
+            byRole[role] = (byRole[role] || 0) + accepted[resource.id];
+    }
+    for (const role of Object.keys(byRole))
+        townRoleAdd(nk, userId, role, byRole[role], nowUnixMs);
+}
+
+function townRoleTop(nk: nkruntime.Nakama, round: number): { role: string; name: string; amount: number }[] {
+    const roles: { role: string; name: string; amount: number }[] = [];
+    for (const role of TownRoles) {
+        const id = townRoleBoard(role, round);
+        nk.leaderboardCreate(id, true, "descending", "incr", null, null);
+        const best = (nk.leaderboardRecordsList(id, [], 1).records || [])[0];
+        if (best)
+            roles.push({ role: role, name: best.username || "", amount: best.score });
+    }
+    return roles;
 }

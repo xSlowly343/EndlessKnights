@@ -711,6 +711,14 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheTownRolesAreReadAndShown()
+        {
+            var reply = TownBuildReply.From(NakamaJson.Parse("{\"phase\":\"gather\",\"round\":2,\"roles\":[{\"role\":\"feeder\",\"name\":\"Cid\",\"amount\":4},{\"role\":\"logger\",\"name\":\"\",\"amount\":10}]}"));
+            Assert.That(reply.Board.Roles.Count, Is.EqualTo(2));
+            Assert.That(reply.Board.Roles[0].Name, Is.EqualTo("Cid"));
+        }
+
+        [Test]
         public void ARiftSupplyIsReadAndSent()
         {
             Assert.That(RiftSupplyReply.SendPayload("bob", "dish:carp_pie"), Is.EqualTo("{\"to\":\"bob\",\"item\":\"dish:carp_pie\"}"));

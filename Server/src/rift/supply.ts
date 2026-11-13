@@ -73,6 +73,8 @@ function riftSupplySend(nk: nkruntime.Nakama, userId: string, request: any, nowU
         { collection: RiftSupplyCollection, key: RiftSupplySentKey, userId: userId, value: { window: window.id, count: count + 1 } as any, version: sent.length > 0 ? sent[0].version : "*", permissionRead: 1, permissionWrite: 0 }
     ]);
     const friendship = walletGrant(nk, userId, riftSupplyRules().supplySource, 1, nowUnixMs);
+    riftSupplyChronicle(nk, userId, to, value.fromName, nowUnixMs);
+    townRoleAdd(nk, userId, TownRoleFeeder, 1, nowUnixMs);
     return { window: window.id, sentThisWindow: count + 1, friendship: friendship };
 }
 
@@ -131,4 +133,20 @@ function riftRear(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [k
 
 function riftRearRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     return JSON.stringify(riftRear(nk, partyCaller(ctx), Date.now()));
+}
+
+function riftSupplyChronicle(nk: nkruntime.Nakama, userId: string, to: string, name: string, nowUnixMs: number): void {
+    const party = partyGroupOfUser(nk, userId);
+    if (!party || partyMetaOf(party).members.indexOf(to) < 0)
+        return;
+    const delta = chronicleNoStats();
+    delta.suppliesTogether = 1;
+    try {
+        chronicleUpdate(nk, party.id, (value) => {
+            chronicleAdd(value, delta, nowUnixMs, ChronicleServerRules);
+            chronicleRecord(value, { at: nowUnixMs, kind: "supply", name: name, feat: "", level: 0 }, ChronicleServerRules);
+        });
+    } catch (error) {
+        return;
+    }
 }

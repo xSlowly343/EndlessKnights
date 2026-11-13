@@ -45,6 +45,20 @@ namespace Game.Core.Sim
         public bool Gathered => Stock >= Need;
     }
 
+    public readonly struct TownRole
+    {
+        public TownRole(string role, string name, long amount)
+        {
+            Role = role;
+            Name = name;
+            Amount = amount;
+        }
+
+        public string Role { get; }
+        public string Name { get; }
+        public long Amount { get; }
+    }
+
     public readonly struct TownBuilder
     {
         public TownBuilder(int rank, string name, long points)
@@ -91,6 +105,14 @@ namespace Game.Core.Sim
         public long Points { get; private set; }
         public int Rank { get; private set; }
         public IReadOnlyList<TownBuilder> Top { get; private set; } = NoBuilders;
+
+        public IReadOnlyList<TownRole> Roles { get; private set; } = System.Array.Empty<TownRole>();
+
+        public TownBoard WithRoles(IReadOnlyList<TownRole> roles)
+        {
+            Roles = roles;
+            return this;
+        }
 
         public TownBoard WithBuilders(long points, int rank, IReadOnlyList<TownBuilder> top)
         {

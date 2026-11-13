@@ -25,6 +25,8 @@ class FakeNakama {
     if (!board)
       throw new Error("leaderboard not found");
     const old = board.records.get(ownerId);
+    if (old && board.operator === "incr")
+      score = old.score + score;
     const keep = old && board.operator === "best" && old.score >= score;
     const record = keep ? Object.assign({}, old, { username: username, numScore: old.numScore + 1 })
       : { leaderboardId: id, ownerId: ownerId, username: username, score: score, subscore: subscore || 0, numScore: old ? old.numScore + 1 : 1, metadata: metadata || {}, createTime: 0, updateTime: 0, expiryTime: 0, rank: 0 };

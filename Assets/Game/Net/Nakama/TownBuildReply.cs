@@ -38,7 +38,15 @@ namespace Game.Net.Nakama
                 top.Add(new TownBuilder((int)NakamaJson.Number(item, "rank"), NakamaJson.Text(item, "name"), (long)NakamaJson.Number(item, "points")));
             Board = new TownBoard(TownBoard.PhaseOf(NakamaJson.Text(json, "phase")), (int)NakamaJson.Number(json, "round"), (long)NakamaJson.Number(json, "voteEnds"),
                 (long)NakamaJson.Number(json, "opensAt"), (long)NakamaJson.Number(json, "now"), NakamaJson.Text(json, "project"), NakamaJson.Text(json, "vote"),
-                voted, candidates, stocks).WithBuilders((long)NakamaJson.Number(json, "points"), (int)NakamaJson.Number(json, "rank"), top);
+                voted, candidates, stocks).WithBuilders((long)NakamaJson.Number(json, "points"), (int)NakamaJson.Number(json, "rank"), top).WithRoles(Roles(json));
+        }
+
+        private static IReadOnlyList<TownRole> Roles(JsonValue json)
+        {
+            var roles = new List<TownRole>();
+            foreach (var item in NakamaJson.Items(json, "roles"))
+                roles.Add(new TownRole(NakamaJson.Text(item, "role"), NakamaJson.Text(item, "name"), (long)NakamaJson.Number(item, "amount")));
+            return roles;
         }
 
         public IReadOnlyList<string> Built { get; }

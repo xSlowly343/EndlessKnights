@@ -452,7 +452,7 @@ function hideoutCooked(nk: nkruntime.Nakama, userId: string, dish: unknown, nowU
     const rules = hideoutCommons();
     if (typeof dish !== "string" || rules.dishes.indexOf(dish) < 0)
         throw new Error("bad request");
-    return hideoutUpdate(nk, userId, (hideout, meta) => {
+    const view = hideoutUpdate(nk, userId, (hideout, meta) => {
         if (!(hideout.buildings[rules.pot] > 0))
             throw new Error("the party pot is not built");
         if (hideoutHere(hideout, meta.members, nowUnixMs).indexOf(userId) < 0)
@@ -466,6 +466,8 @@ function hideoutCooked(nk: nkruntime.Nakama, userId: string, dish: unknown, nowU
             if (id !== userId)
                 hideoutOwe(hideout, id, "dish:" + dish, 1);
     }, nowUnixMs);
+    townRoleAdd(nk, userId, TownRoleFeeder, 1, nowUnixMs);
+    return view;
 }
 
 function hideoutCookedRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
