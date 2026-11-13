@@ -55,6 +55,7 @@
 
 ## 5. Инструменты для ассетов (по желанию)
 - Звуки-заглушки: jsfxr или sfxr (генерация), Audacity (правка).
+- Звуки переходов генерирует `Tools/sfx/transition_sounds.py`: Python 3 с `numpy` и `scipy` (`pip install numpy scipy`).
 - Шрифты только с лицензией на использование в играх (например, из Google Fonts с OFL).
 - Базовые модели и анимации для Blender: решение Сергея (blender-spec §9, «гибрид»).
 
