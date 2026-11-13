@@ -483,7 +483,7 @@ function partyTrialTreeLines(growth, stat) {
     [["a", 1], ["b", 3], ["c", 5]].forEach(([part, rank]) => {
       for (const line of node[part] || [])
         if (line.stat === stat && !line.waits)
-          found.push({ node: index + 1, rank: rank, value: line.value });
+          found.push({ node: index + 1, rank: rank, value: line.value, part: part });
     });
   });
   return found;
@@ -588,6 +588,30 @@ const partyGrowthRules = {
     soften: partyTrialTreeLines(growth, "colossusHardship"),
     switchOff: partyTrialTreeLines(growth, "colossusHardshipOff"),
     noHeal: partyTrialTreeLines(growth, "colossusNoHeal")
+  },
+  mascot: {
+    maxLevel: growth.mascot.maxLevel,
+    levelBase: growth.mascot.levelBase,
+    levelStep: growth.mascot.levelStep,
+    perMinute: growth.mascot.perMinute,
+    stages: growth.mascot.stages.map((stage) => ({ from: stage.from, id: stage.id })),
+    branchFrom: growth.mascot.branchFrom,
+    foods: growth.mascot.foods.map((food) => ({ id: food.id, experience: food.experience })),
+    favouriteMultiplier: growth.mascot.favouriteMultiplier,
+    feedPerDay: growth.mascot.feedPerDay,
+    changeMs: growth.mascot.changeDays * 86400000,
+    changeKeep: growth.mascot.changeKeep,
+    tempers: growth.mascot.tempers,
+    bond: growth.mascot.bond,
+    coats: growth.mascot.coats.map((coat) => ({ id: coat.id, partyLevel: coat.partyLevel || 0, trialTier: coat.trialTier || 0, colossusKills: coat.colossusKills || 0, event: !!coat.event })),
+    gear: growth.mascot.gear.map((item) => ({ id: item.id, slot: item.slot, level: item.level || 0, colossusTier: item.colossusTier || 0 })),
+    beasts: growth.mascot.beasts.map((beast) => ({ id: beast.id, favourite: beast.favourite, branches: beast.branches.map((branch) => branch.id) })),
+    treeExperience: partyTrialTreeLines(growth, "mascotExperience"),
+    treeFeedExperience: partyTrialTreeLines(growth, "mascotFeedExperience"),
+    treeFeeds: partyTrialTreeLines(growth, "mascotFeedsPerDay"),
+    treeFeedCost: partyTrialTreeLines(growth, "mascotFeedCost"),
+    treeStageEarly: partyTrialTreeLines(growth, "mascotStageEarly"),
+    relicExperience: growth.colossus.relics.filter((relic) => relic.stat === "mascotExperience" && !relic.waits).map((relic) => ({ id: relic.id, value: relic.value }))
   },
   unlocks: growth.unlocks.map((unlock) => ({ level: unlock.level, kind: unlock.kind }))
 };

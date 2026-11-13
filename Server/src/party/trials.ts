@@ -9,6 +9,7 @@ interface PartyTrialTreeLine {
     node: number;
     rank: number;
     value: number;
+    part: string;
 }
 
 interface PartyTrialRules {
@@ -118,9 +119,13 @@ function partyTrialSettle(value: PartyTrialValue, nowUnixMs: number): void {
 
 function partyTrialTreeValue(levels: { [node: string]: number }, lines: PartyTrialTreeLine[]): number {
     let total = 0;
-    for (const line of lines)
-        if ((levels[String(line.node)] || 0) >= line.rank)
-            total += line.value;
+    for (const line of lines) {
+        const rank = levels[String(line.node)] || 0;
+        if (rank < line.rank)
+            continue;
+        const rule = PartyGrowthServerRules.tree.nodes[line.node - 1];
+        total += line.value * (line.part === "a" && rule ? partyTreeAMultiplier(rule, rank) : 1);
+    }
     return total;
 }
 

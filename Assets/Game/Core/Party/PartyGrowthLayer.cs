@@ -20,6 +20,12 @@ namespace Game.Core.Party
         public static readonly StatId ColossusTrophyChance = new StatId("colossusTrophyChance");
         public static readonly StatId SignsColossus = new StatId("signsColossus");
         public static readonly StatId ColossusTrophyFlat = new StatId("colossusTrophyFlat");
+        public static readonly StatId MascotAuraStat = new StatId("mascotAura");
+        public static readonly StatId MascotStageEarly = new StatId("mascotStageEarly");
+        private static readonly StatId[] MascotOnly =
+        {
+            MascotAuraStat, MascotStageEarly, new StatId("mascotExperience"), new StatId("mascotFeedExperience"), new StatId("mascotFeedsPerDay"), new StatId("mascotFeedCost")
+        };
 
         private readonly ModifierLayer _layer;
         private readonly List<Modifier> _sources = new List<Modifier>();
@@ -29,6 +35,9 @@ namespace Game.Core.Party
         private readonly List<string> _treeMajors = new List<string>();
         private readonly List<int> _trialBest = new List<int>();
         private readonly List<Modifier> _relics = new List<Modifier>();
+        private readonly List<Modifier> _mascot = new List<Modifier>();
+        private string _mascotBeast = string.Empty;
+        private int _mascotLevel;
         private readonly Dictionary<string, int> _relicLevels = new Dictionary<string, int>();
         private PartyGrowthRules _rules;
         private long _joinedUnixMs;
@@ -56,6 +65,34 @@ namespace Game.Core.Party
         public double ColossusPower { get; private set; } = 1;
 
         public IReadOnlyList<Modifier> Relics => _relics;
+        public IReadOnlyList<Modifier> Mascot => _mascot;
+        public string MascotBeast => _mascotBeast;
+        public int MascotLevel => _mascotLevel;
+        public double MascotAura { get; private set; }
+        public PartyMascotStage? MascotStage { get; private set; }
+
+        public void SetMascot(string beast, int level)
+        {
+            _mascotBeast = beast ?? string.Empty;
+            _mascotLevel = System.Math.Max(0, level);
+            Rebuild();
+        }
+
+        private void BuildMascot()
+        {
+            _mascot.Clear();
+            var rules = _rules.Mascot;
+            var beast = _mascotBeast.Length == 0 ? null : rules.Beast(_mascotBeast);
+            MascotAura = beast == null ? 0 : rules.AuraAt(_mascotLevel, Members) * Scale(MascotAuraStat);
+            MascotStage = rules.Stages.Count == 0 ? null : rules.StageOf(_mascotLevel, (int)System.Math.Round(Sum(MascotStageEarly)));
+            if (beast == null)
+                return;
+            foreach (var line in beast.Aura)
+            {
+                if (line.Works)
+                    _mascot.Add(line.Modifier.WithValue(MascotAura));
+            }
+        }
         public IReadOnlyDictionary<string, int> RelicLevels => _relicLevels;
 
         public void SetRelics(IReadOnlyDictionary<string, int> levels)
@@ -147,6 +184,7 @@ namespace Game.Core.Party
             Capped = false;
             PartyTreeBonus.Build(_rules.Tree, _treeLevels, _treeMajors, Members, _tree);
             BuildRelics();
+            BuildMascot();
             Seals = _rules.Trials.SealIncrease(_trialBest) * Scale(TrialSeals);
             TrialPower = InParty ? Scale(TrialPowerStat) : 1;
             ColossusPower = InParty ? Scale(ColossusDamage) : 1;
@@ -160,6 +198,11 @@ namespace Game.Core.Party
                         _applied.Add(line.WithValue(line.Value * Share));
                 }
                 foreach (var line in _relics)
+                {
+                    if (!IsPartyOnlyLine(line))
+                        _applied.Add(line.WithValue(line.Value * Share));
+                }
+                foreach (var line in _mascot)
                 {
                     if (!IsPartyOnlyLine(line))
                         _applied.Add(line.WithValue(line.Value * Share));
@@ -178,7 +221,19 @@ namespace Game.Core.Party
             var more = 1.0;
             Collect(_tree, stat, ref increased, ref more);
             Collect(_relics, stat, ref increased, ref more);
+            Collect(_mascot, stat, ref increased, ref more);
             return System.Math.Max(0, (1 + increased) * more);
+        }
+
+        private double Sum(StatId stat)
+        {
+            var total = 0.0;
+            foreach (var line in _tree)
+            {
+                if (line.Stat == stat && line.Kind == ModifierKind.Flat)
+                    total += line.Value;
+            }
+            return total;
         }
 
         private static void Collect(List<Modifier> lines, StatId stat, ref double increased, ref double more)
@@ -198,7 +253,7 @@ namespace Game.Core.Party
             line.Stat == TrialSeals || line.Stat == TrialPowerStat || line.Stat == TrialTries || line.Stat == TrialCarry || line.Stat == ColossusDamage
             || line.Stat == ColossusHardship || line.Stat == ColossusHardshipOff || line.Stat == ColossusNoHeal
             || line.Stat == ColossusTrophies || line.Stat == ColossusLoot || line.Stat == ColossusTrophyChance || line.Stat == SignsColossus
-            || line.Stat == ColossusTrophyFlat;
+            || line.Stat == ColossusTrophyFlat || System.Array.IndexOf(MascotOnly, line.Stat) >= 0;
 
         private double CapDamage()
         {

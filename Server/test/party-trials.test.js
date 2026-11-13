@@ -46,8 +46,8 @@ test("trial rules come from party.json", () => {
   assert.strictEqual(rules.tries, 5);
   assert.strictEqual(rules.minFighters, 2);
   assert.strictEqual(rules.list[7].waves, 30);
-  assert.deepStrictEqual(plain(rules.extraTries), [{ node: 31, rank: 3, value: 1 }]);
-  assert.deepStrictEqual(plain(rules.carry), [{ node: 31, rank: 5, value: 1 }]);
+  assert.deepStrictEqual(plain(rules.extraTries), [{ node: 31, rank: 3, value: 1, part: "b" }]);
+  assert.deepStrictEqual(plain(rules.carry), [{ node: 31, rank: 5, value: 1, part: "c" }]);
 });
 
 test("two of eight trials are open each week and every trial comes round in four weeks", () => {

@@ -884,6 +884,61 @@ namespace Game.Core.Sim
             RefreshPeacefulBonus();
         }
 
+        public int MascotFoodCount(string food)
+        {
+            var def = _data.Party.Growth.Mascot.Food(food);
+            if (def == null)
+                return 0;
+            if (def.IsDish)
+                return State.Cooking.Meals.Count;
+            var total = 0L;
+            foreach (var pair in State.Camp.Bag)
+            {
+                if (pair.Key.StartsWith(def.Prefix, System.StringComparison.Ordinal))
+                    total += pair.Value;
+            }
+            return (int)System.Math.Min(int.MaxValue, total);
+        }
+
+        public int TakeMascotFood(string food, int amount)
+        {
+            var def = _data.Party.Growth.Mascot.Food(food);
+            if (def == null || amount <= 0)
+                return 0;
+            var taken = 0;
+            if (def.IsDish)
+            {
+                while (taken < amount && State.Cooking.Meals.Count > 0)
+                {
+                    State.Cooking.Meals.RemoveAt(State.Cooking.Meals.Count - 1);
+                    taken++;
+                }
+                return taken;
+            }
+            var items = new List<string>();
+            foreach (var pair in State.Camp.Bag)
+            {
+                if (pair.Key.StartsWith(def.Prefix, System.StringComparison.Ordinal))
+                    items.Add(pair.Key);
+            }
+            items.Sort(System.StringComparer.Ordinal);
+            foreach (var item in items)
+            {
+                var take = (int)System.Math.Min(amount - taken, _camp.Count(item));
+                if (take > 0 && _camp.Take(item, take))
+                    taken += take;
+                if (taken >= amount)
+                    break;
+            }
+            return taken;
+        }
+
+        public void SetPartyMascot(string beast, int level)
+        {
+            _partyGrowth.SetMascot(beast, level);
+            RefreshPeacefulBonus();
+        }
+
         public void SetPartyRelics(IReadOnlyDictionary<string, int> levels)
         {
             _partyGrowth.SetRelics(levels);
