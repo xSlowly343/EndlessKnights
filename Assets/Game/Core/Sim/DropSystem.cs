@@ -238,7 +238,7 @@ namespace Game.Core.Sim
         {
             var rules = Dungeons;
             if (rules == null || !_state.Rift.Inside || _state.Dungeons.Inside || _state.Events.FightInside || stage < rules.Rift.FromStage
-                || (Rift != null && _state.HighestStage < Rift.StageOf(RiftFeature.Dungeons)))
+                || (Unlocks != null ? !Unlocks.IsOpen(Feature.Dungeons) : Rift != null && _state.HighestStage < Rift.StageOf(Feature.Dungeons)))
                 return;
             var chance = (type == EnemyType.Guardian ? rules.Rift.GuardianKeyChance : rules.Rift.BossKeyChance) / rules.PartyDivisor(_state.PartyAllies);
             if (chance > 0 && _state.Drops.Rng.Chance(chance))

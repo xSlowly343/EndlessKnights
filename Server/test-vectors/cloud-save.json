@@ -1,5 +1,5 @@
 {
-  "checksum": "798d76b89867ab5df1702ba2c21170dc8a735df34b0314c3b8bb79826dc86884",
+  "checksum": "d8ddd3ba0b228e0a5b92c46dc51074861ebd0e715d6d5d66baf6412d596b5307",
   "payload": {
     "clock": {
       "bootId": 1,
@@ -558,14 +558,19 @@
       "rift": {
         "artifacts": [],
         "deepest": 1,
+        "giftOffer": [],
+        "giftOffers": 0,
+        "gifts": [],
         "inside": false,
         "opened": [],
+        "otherHero": null,
         "otherWorld": null,
         "shards": "0e0",
         "supply": null,
         "supplyWindow": 0,
         "windowEndUnixMs": 0,
-        "windowId": 0
+        "windowId": 0,
+        "windowSet": null
       },
       "rng": [
         "beeb8da1658eec67",

@@ -82,6 +82,7 @@ namespace Game.Core.Sim
         StripFightChanged,
         TownSiteOpened,
         MasterTrialEnded,
-        RiftFeatureOpened
+        RiftFeatureOpened,
+        RiftGiftOffered
     }
 }

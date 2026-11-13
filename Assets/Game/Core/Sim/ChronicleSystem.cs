@@ -10,9 +10,12 @@ namespace Game.Core.Sim
         private readonly EventQueue _events;
         private readonly LevelSystem _levels;
         private readonly ModifierLayer _layer;
+
         private readonly List<Modifier> _modifiers = new List<Modifier>();
         private readonly List<TrialDef> _weekly = new List<TrialDef>();
         private ChronicleCatalog _catalog;
+
+        internal ModifierLayer Layer => _layer;
 
         public ChronicleSystem(ChronicleCatalog catalog, GameState state, StatSheet hero, EventQueue events, LevelSystem levels)
         {

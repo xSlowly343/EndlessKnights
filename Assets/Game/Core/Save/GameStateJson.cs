@@ -312,7 +312,7 @@ namespace Game.Core.Save
             }
             ReadArtifacts(node.Field("artifacts"), state.Artifacts);
             if (node.HasField("rift"))
-                ReadRift(node.Field("rift"), state.Rift);
+                ReadRift(node.Field("rift"), state.Rift, enemies, gems, weapons, items, slates);
             if (node.HasField("weapons"))
                 ReadWeapons(node.Field("weapons"), weapons, items, state.Weapons);
             if (node.HasField("drops"))
@@ -2097,8 +2097,13 @@ namespace Game.Core.Save
                 ("supply", OptionalText(rift.Supply)),
                 ("supplyWindow", JsonValue.Of(rift.SupplyWindow)),
                 ("opened", WriteIdList(Sorted(rift.Opened))),
+                ("windowSet", OptionalText(rift.WindowSet)),
+                ("gifts", WriteIdList(rift.Gifts)),
+                ("giftOffer", WriteIdList(rift.GiftOffer)),
+                ("giftOffers", JsonValue.Of(rift.GiftOffers)),
                 ("artifacts", JsonValue.Array(WriteArtifacts(rift.Artifacts))),
-                ("otherWorld", rift.OtherWorld == null ? JsonValue.Null() : WriteProgress(rift.OtherWorld)));
+                ("otherWorld", rift.OtherWorld == null ? JsonValue.Null() : WriteProgress(rift.OtherWorld)),
+                ("otherHero", rift.OtherHero == null ? JsonValue.Null() : Write(rift.OtherHero)));
 
         private const long MomentTicksLimit = 1_000_000_000_000;
 
@@ -2120,8 +2125,10 @@ namespace Game.Core.Save
                 ("previousBiome", OptionalText(progress.PreviousBiome)),
                 ("biomeSinceTick", JsonValue.Of(progress.BiomeSinceTick)));
 
-        private static void ReadRift(ContentNode node, RiftState rift)
+        private static void ReadRift(ContentNode node, RiftState rift, EnemyCatalog enemies, GemCatalog gems, WeaponCatalog weapons, ItemCatalog? items, SlateRules? slates)
         {
+            if (node.HasField("otherHero") && !node.Field("otherHero").IsNull)
+                rift.OtherHero = Read(node.Field("otherHero"), enemies, gems, weapons, items, slates);
             rift.WindowId = node.Field("windowId").AsLong(0);
             rift.WindowEndUnixMs = node.Field("windowEndUnixMs").AsLong(0);
             rift.Inside = node.Field("inside").AsBool();
@@ -2135,6 +2142,13 @@ namespace Game.Core.Save
                     rift.Opened.Add(item.AsString());
             }
             ReadArtifacts(node.Field("artifacts"), rift.Artifacts);
+            rift.WindowSet = ReadOptionalText(node, "windowSet");
+            if (node.HasField("gifts"))
+            {
+                ReadIds(node.Field("gifts"), rift.Gifts);
+                ReadIds(node.Field("giftOffer"), rift.GiftOffer);
+                rift.GiftOffers = node.Field("giftOffers").AsInt(0, 1_000_000);
+            }
             var other = node.Field("otherWorld");
             rift.OtherWorld = other.IsNull ? null : ReadProgress(other);
             if (rift.Inside && rift.OtherWorld == null)

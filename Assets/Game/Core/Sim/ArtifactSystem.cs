@@ -217,7 +217,7 @@ namespace Game.Core.Sim
 
         public Unlocks? Unlocks { get; set; }
 
-        public bool Open => InRift ? _state.HighestStage >= _rift.StageOf(RiftFeature.Artifacts) : Unlocks?.IsOpen(Feature.Artifacts) != false;
+        public bool Open => Unlocks != null ? Unlocks.IsOpen(Feature.Artifacts) : !InRift || _state.HighestStage >= _rift.StageOf(Feature.Artifacts);
 
         public ArtifactDef? TryUnlock()
         {

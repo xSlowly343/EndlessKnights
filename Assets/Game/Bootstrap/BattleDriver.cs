@@ -2,7 +2,6 @@ using System;
 using Game.Core.Clock;
 using Game.Core.Content;
 using Game.Core.Content.Gems;
-using Game.Core.Content.Rift;
 using Game.Core.Input;
 using Game.Core.Math;
 using Game.Core.Sim;
@@ -24,6 +23,7 @@ namespace Game.Bootstrap
         private readonly ShowQueue _shows = new ShowQueue(ShowRules.OwnSkills);
         private GameData _data = null!;
         private int _bossTotalTicks = 1;
+        private bool _riftLoading;
 
         public event Action<long>? LeveledUp;
 
@@ -105,8 +105,11 @@ namespace Game.Bootstrap
                     case GameEventKind.BossFailed:
                         _view.Retreat();
                         break;
+                    case GameEventKind.RiftGiftOffered:
+                        _view.ShowNotice(Game.Core.Text.Texts.Get("rift.gift.offered"));
+                        break;
                     case GameEventKind.RiftFeatureOpened:
-                        _view.ShowNotice(TransitionTexts.FeatureOpened((RiftFeature)gameEvent.Stage));
+                        _view.ShowNotice(TransitionTexts.FeatureOpened((Feature)gameEvent.Stage));
                         break;
                     case GameEventKind.LevelUp:
                         LeveledUp?.Invoke(gameEvent.Stage);
@@ -161,7 +164,19 @@ namespace Game.Bootstrap
                 _data.Combat.Resources.Max,
                 state.Gold);
             _skillBar.Show(state.Skills, state.Resource);
+            ShowRift(state);
             ShowAura(state);
+        }
+
+        private void ShowRift(GameState state)
+        {
+            _view.ShowRift(state.Rift.Inside);
+            var loading = TransitionLook.ShowsLoading(_loop.Scene.Transition);
+            if (loading == _riftLoading)
+                return;
+            _riftLoading = loading;
+            if (loading)
+                _view.ShowLoadingLines(RiftLoadingText.Lines(_loop));
         }
 
         private void ShowAura(GameState state)

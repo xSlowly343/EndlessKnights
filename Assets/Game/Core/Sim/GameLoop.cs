@@ -100,6 +100,8 @@ namespace Game.Core.Sim
         private readonly RiftSupplySystem _riftSupply;
         private readonly ForgeSystem _forge;
         private readonly MuseumSystem _museum;
+        private readonly ModifierLayer[] _homeOnly;
+        private readonly RiftGiftSystem _riftGifts;
         private readonly DecorSystem _decor;
         private readonly SlateSystem _slates;
         private readonly ConditionSystem _conditions;
@@ -154,7 +156,7 @@ namespace Game.Core.Sim
             _atlas = new AtlasSystem(data.Atlas, state, hero);
             _resonance = new ResonanceSystem(data.Resonance, state, hero);
             _spirits = new SpiritSystem(data.Spirits, state, _combat);
-            _unlocks = new Unlocks(data.Unlocks, state, Events);
+            _unlocks = new Unlocks(data.Unlocks, state, Events) { Rift = data.Rift };
             _artifacts.Unlocks = _unlocks;
             _atlas.Unlocks = _unlocks;
             _resonance.Unlocks = _unlocks;
@@ -182,6 +184,7 @@ namespace Game.Core.Sim
             _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
             _cooking = new CookingSystem(data.Cooking, state, hero, _camp, _peaceful, Events);
             _riftSupply = new RiftSupplySystem(data.Cooking, data.Alchemy, state, hero);
+            _riftGifts = new RiftGiftSystem(data.Rift.Gifts, state, hero, Events);
             _companions = new CompanionSystem(data.Companions, data.Cooking, data.Combat.Conditions, state, _camp, _expeditions, Events);
             _nest = new NestSystem(state, _companions, _camp, data.Stages, Events);
             _nest.GuildLevel = _guilds.Level;
@@ -252,11 +255,13 @@ namespace Game.Core.Sim
             _synergy = new SynergySystem(data.Synergy, state, hero);
             _conditions = new ConditionSystem(state, hero, _combat, _skills, _focus) { Stages = data.Stages, Forge = data.Forge };
             _ghost = new GhostSystem(data.Party.Ghost, state, _combat, _stage, _synergy);
-            _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates, BeforeLeave = _dungeons.Retreat, Events = Events };
+            _rift = new RiftSystem(data, state, hero, _stage, _artifacts, _synergy) { Slates = _slates, BeforeLeave = _dungeons.Retreat, HeroSwapped = OnHeroSwapped };
             _drops.Rift = data.Rift;
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events, hero);
             _clanTree = new ClanTreeBonus(data.ClanTree, hero, state.ClanBonus);
             _mentor = new MentorBonus(data.Mentor, hero, _levels, state);
+            _homeOnly = new[] { _clanTree.Layer, _mentor.Layer, _alchemy.Layer, _museum.Layer, _cooking.Layer, _clanCamp.Layer, _gates.Layer, _chronicle.Layer };
+            MuteHomeOnly();
             RebuildTree();
             SyncPathSkill();
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
@@ -318,6 +323,7 @@ namespace Game.Core.Sim
         public FishingSystem Fishing => _fishing;
         public CookingSystem Cooking => _cooking;
         public RiftSupplySystem RiftSupply => _riftSupply;
+        public RiftGiftSystem RiftGifts => _riftGifts;
         public ForgeSystem Forge => _forge;
         public MuseumSystem Museum => _museum;
         public DecorSystem Decor => _decor;
@@ -1073,6 +1079,7 @@ namespace Game.Core.Sim
             _gear.UseCatalog(data.Items);
             _gates.UseStages(data.Stages);
             _unlocks.Rules = data.Unlocks;
+            _unlocks.Rift = data.Rift;
             _drops.Dungeons = data.Dungeons;
             _slates.Rules = data.Slates;
             _dungeons.UseData(data);
@@ -1094,6 +1101,7 @@ namespace Game.Core.Sim
             _colossus.UseRules(data.Colossus);
             _cooking.UseRules(data.Cooking);
             _riftSupply.UseRules(data.Cooking, data.Alchemy);
+            _riftGifts.UseRules(data.Rift.Gifts);
             _forge.UseRules(data.Forge);
             _forge.Shared = data.Hideout.Crafts;
             _museum.UseRules(data.Museum);
@@ -1124,6 +1132,39 @@ namespace Game.Core.Sim
             _rift.UseData(data);
             RebuildTree();
             SyncPathSkill();
+        }
+
+        private void WearWindowSet()
+        {
+            var rift = State.Rift;
+            var set = RiftWindowSet.For(_data.Items, _data.Rift.WindowSet, rift.WindowId);
+            if (set == null)
+                return;
+            rift.WindowSet = set.Id;
+            foreach (var piece in RiftWindowSet.Roll(_data.Items, set, _data.Rift.WindowSet, rift.WindowId))
+            {
+                State.Drops.Gear.Add(piece);
+                _gear.Equip(piece);
+            }
+        }
+
+        private void MuteHomeOnly()
+        {
+            var inside = State.Rift.Inside;
+            for (var i = 0; i < _homeOnly.Length; i++)
+                _homeOnly[i].Muted = inside;
+        }
+
+        private void OnHeroSwapped(bool fresh)
+        {
+            MuteHomeOnly();
+            UseData(_data);
+            if (fresh)
+            {
+                _book.GrantStartingGems();
+                _weapons.GiveClassStarter();
+                WearWindowSet();
+            }
         }
 
         private void CountIdle()
@@ -1171,6 +1212,7 @@ namespace Game.Core.Sim
         {
             Hook?.BeforeTick();
             var firstEvent = Events.Count;
+            MuteHomeOnly();
             RefreshClassAttribute();
             LastInput = Permissions.Apply(_input.Drain());
             SessionInput.Add(LastInput, MetersPerPixel);
@@ -1245,6 +1287,7 @@ namespace Game.Core.Sim
             _alchemy.BattleTick();
             _cooking.BattleTick();
             _riftSupply.Tick();
+            _riftGifts.Tick();
             _apprentices.BattleTick();
             _modules.NoteBosses(firstEvent);
             _digs.NoteGuardians(firstEvent);

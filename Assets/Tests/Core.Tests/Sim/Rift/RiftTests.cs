@@ -175,7 +175,7 @@ namespace Game.Core.Tests.Sim.Rift
             Assert.That(loop.Artifacts.TryUnlock(), Is.Null);
 
             Assert.That(loop.Artifacts.TryUnlock(), Is.Null, "the Rift has not reached its artifact stage");
-            loop.State.HighestStage = Rules.StageOf(RiftFeature.Artifacts);
+            loop.State.HighestStage = Rules.StageOf(Feature.Artifacts);
             loop.State.Rift.Shards = BigNumber.FromDouble(Rules.UnlockCost.At(1).ToDouble());
             var rift = loop.Artifacts.TryUnlock();
             Assert.That(rift, Is.Not.Null);

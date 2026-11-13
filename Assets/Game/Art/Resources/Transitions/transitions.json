@@ -580,5 +580,55 @@
         "loops": true
       }
     }
+  },
+  "riftSky": {
+    "sky": {
+      "file": "RiftSky_Sky_160x26_16f",
+      "width": 160,
+      "height": 26,
+      "frames": 16,
+      "pivot": [
+        80,
+        0
+      ],
+      "fps": 8,
+      "loops": true
+    },
+    "edgeLeft": {
+      "file": "RiftSky_EdgeLeft_14x60_12f",
+      "width": 14,
+      "height": 60,
+      "frames": 12,
+      "pivot": [
+        0,
+        30
+      ],
+      "fps": 10,
+      "loops": true
+    },
+    "edgeRight": {
+      "file": "RiftSky_EdgeRight_14x60_12f",
+      "width": 14,
+      "height": 60,
+      "frames": 12,
+      "pivot": [
+        14,
+        30
+      ],
+      "fps": 10,
+      "loops": true
+    },
+    "motes": {
+      "file": "RiftSky_Motes_160x60_24f",
+      "width": 160,
+      "height": 60,
+      "frames": 24,
+      "pivot": [
+        80,
+        30
+      ],
+      "fps": 12,
+      "loops": true
+    }
   }
 }

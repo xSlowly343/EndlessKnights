@@ -18,7 +18,11 @@ namespace Game.Core.Sim.Rift
         private readonly List<Modifier> _buffer = new List<Modifier>(16);
         private RiftRules _rules;
         private StageTable _home;
+        private const ulong EnemySalt = 0xE7E_3135UL;
+
         private EnemyCatalog _enemies;
+        private EnemyCatalog? _windowEnemies;
+        private long _windowEnemiesFor = -1;
         private StageTable _world;
         private SynergyRules _synergyRules;
         private IReadOnlyList<RiftModifier> _windowModifiers = System.Array.Empty<RiftModifier>();
@@ -38,6 +42,7 @@ namespace Game.Core.Sim.Rift
             _rules = data.Rift;
             _home = data.Stages;
             _enemies = data.Enemies;
+            _windowEnemies = null;
             _synergyRules = data.Synergy;
             _world = BuildWorld();
             stage.BossListener = this;
@@ -77,6 +82,7 @@ namespace Game.Core.Sim.Rift
             _rules = data.Rift;
             _home = data.Stages;
             _enemies = data.Enemies;
+            _windowEnemies = null;
             _synergyRules = data.Synergy;
             _world = BuildWorld();
             _modifiersFor = -1;
@@ -126,7 +132,11 @@ namespace Game.Core.Sim.Rift
             rift.OtherWorld = StageProgress.Capture(_state);
             rift.Inside = true;
             riftProgress.Restore(_state);
+            var fresh = rift.OtherHero == null;
+            rift.OtherHero ??= HeroKit.Fresh(_state, riftId);
+            HeroKit.Swap(_state, rift.OtherHero);
             SwitchWorld();
+            HeroSwapped?.Invoke(fresh);
             return RiftEntry.Entered;
         }
 
@@ -141,7 +151,12 @@ namespace Game.Core.Sim.Rift
             (rift.OtherWorld ?? new StageProgress()).Restore(_state);
             rift.OtherWorld = riftProgress;
             rift.Inside = false;
+            var swapped = rift.OtherHero != null;
+            if (swapped)
+                HeroKit.Swap(_state, rift.OtherHero!);
             SwitchWorld();
+            if (swapped)
+                HeroSwapped?.Invoke(false);
             return true;
         }
 
@@ -170,16 +185,8 @@ namespace Game.Core.Sim.Rift
             Slates?.OnRiftBoss();
         }
 
-        public EventQueue? Events { get; set; }
-
-        public bool IsOpen(RiftFeature feature) => Inside && _state.HighestStage >= _rules.StageOf(feature);
-
-        public long OpensAt(RiftFeature feature) => _rules.StageOf(feature);
-
         public void Tick()
         {
-            if (Inside)
-                NoteOpened();
             var roles = Inside ? _synergy.PartyRoles : 0;
             if (roles == _roles)
                 return;
@@ -187,22 +194,28 @@ namespace Game.Core.Sim.Rift
             Rebuild();
         }
 
-        private void NoteOpened()
-        {
-            foreach (var feature in RiftFeatures.All)
-            {
-                if (!IsOpen(feature) || !_state.Rift.Opened.Add(RiftFeatures.Key(feature)))
-                    continue;
-                Events?.Add(GameEvent.ForStage(GameEventKind.RiftFeatureOpened, _state.Tick, (long)feature));
-            }
-        }
-
         public System.Action? BeforeLeave { get; set; }
+
+        public System.Action<bool>? HeroSwapped { get; set; }
 
         public static StageTable BuildWorld(StageTable home, RiftRules rules) =>
             home.ForWorld(rules.HpMultiplier, rules.WallPeriod, rules.WallZoneLength, rules.WallRate, rules.BossTimerSeconds);
 
         private StageTable BuildWorld() => BuildWorld(_home, _rules);
+
+        public EnemyCatalog WindowEnemies
+        {
+            get
+            {
+                var window = _state.Rift.WindowId;
+                if (_windowEnemies == null || _windowEnemiesFor != window)
+                {
+                    _windowEnemies = _enemies.Shuffled((ulong)window ^ EnemySalt);
+                    _windowEnemiesFor = window;
+                }
+                return _windowEnemies;
+            }
+        }
 
         private void SwitchWorld()
         {
@@ -217,7 +230,7 @@ namespace Game.Core.Sim.Rift
             var inside = Inside;
             if (!_state.Dungeons.Inside)
             {
-                _stage.UseData(inside ? _world : _home, _enemies);
+                _stage.UseData(inside ? _world : _home, inside ? WindowEnemies : _enemies);
                 _stage.RaisesRecord = !inside;
             }
             LoadWindowModifiers();

@@ -113,5 +113,36 @@ namespace Game.Core.Tests.Sim
                 loop.Tick();
             Assert.That(loop.Scene.Transition.Active, Is.False);
         }
+
+        [Test]
+        public void EveryPlaceHasItsOwnSoundForEachPhase()
+        {
+            var keys = new HashSet<string>();
+            foreach (StripPlace place in System.Enum.GetValues(typeof(StripPlace)))
+            {
+                foreach (var phase in new[] { TransitionPhase.Open, TransitionPhase.Enter, TransitionPhase.Arrive, TransitionPhase.Exit })
+                    Assert.That(keys.Add(TransitionSound.Key(place, phase)), Is.True, place + " " + phase);
+            }
+            Assert.That(TransitionSound.Key(StripPlace.Town, TransitionPhase.Open), Is.EqualTo("portal_town_open"));
+
+            var transition = new StripTransition();
+            transition.Start(StripPlace.Home, StripPlace.Rift, RiftLike);
+            Assert.That(TransitionSound.Cue(transition), Is.EqualTo("portal_rift_open"));
+            while (transition.Phase != TransitionPhase.Swap)
+                transition.Tick();
+            Assert.That(TransitionSound.Cue(transition), Is.EqualTo(TransitionSound.RiftLoading));
+        }
+
+        [Test]
+        public void TheRiftLoadingShowsTheWindowModifiersAndWhoLiftsThem()
+        {
+            var loop = TestWorld.Loop();
+            var window = loop.Rift.Rules.Schedule.Next(0);
+            Assert.That(loop.Rift.Enter(window.StartUnixMs + 1), Is.EqualTo(Game.Core.Sim.Rift.RiftEntry.Entered));
+            var lines = RiftLoadingText.Lines(loop);
+            Assert.That(lines.Count, Is.EqualTo(loop.Rift.WindowModifiers.Count + 1), "modifiers and the window set");
+            foreach (var line in lines)
+                Assert.That(line, Does.Not.StartWith("rift."), "every line has a text");
+        }
     }
 }

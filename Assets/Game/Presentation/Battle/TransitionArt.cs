@@ -55,13 +55,29 @@ namespace Game.Presentation.Battle
             return color;
         }
 
+        private static readonly Dictionary<string, HeroClip?> SkyClips = new Dictionary<string, HeroClip?>();
+
+        public static HeroClip? Sky(string part)
+        {
+            if (SkyClips.TryGetValue(part, out var clip))
+                return clip;
+            var list = List();
+            clip = list.HasValue && list.Value.HasField("riftSky") && list.Value.Field("riftSky").HasField(part) ? Read(list.Value.Field("riftSky").Field(part)) : null;
+            SkyClips[part] = clip;
+            return clip;
+        }
+
         private static HeroClip? Load(StripPlace place, TransitionSheet sheet)
         {
             var node = Place(place);
             var key = SheetKeys[(int)sheet];
             if (!node.HasValue || !node.Value.HasField(key))
                 return null;
-            var entry = node.Value.Field(key);
+            return Read(node.Value.Field(key));
+        }
+
+        private static HeroClip? Read(ContentNode entry)
+        {
             var texture = Resources.Load<Texture2D>(Folder + entry.Field("file").AsString());
             if (texture == null)
                 return null;

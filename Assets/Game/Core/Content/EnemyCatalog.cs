@@ -21,12 +21,37 @@ namespace Game.Core.Content
         private readonly Dictionary<string, List<EnemyDef>> _normalsByBiome;
 
         private EnemyCatalog(List<EnemyDef> enemies)
+            : this(enemies, enemies.Where(enemy => enemy.Type == EnemyType.Normal)
+                .GroupBy(enemy => enemy.Biome)
+                .ToDictionary(group => group.Key, group => group.ToList(), StringComparer.Ordinal))
+        {
+        }
+
+        private EnemyCatalog(List<EnemyDef> enemies, Dictionary<string, List<EnemyDef>> normalsByBiome)
         {
             All = enemies;
             _byId = enemies.ToDictionary(enemy => enemy.Id, StringComparer.Ordinal);
-            _normalsByBiome = enemies.Where(enemy => enemy.Type == EnemyType.Normal)
-                .GroupBy(enemy => enemy.Biome)
-                .ToDictionary(group => group.Key, group => group.ToList(), StringComparer.Ordinal);
+            _normalsByBiome = normalsByBiome;
+        }
+
+        public EnemyCatalog Shuffled(ulong seed)
+        {
+            var pool = All.Where(enemy => enemy.Type == EnemyType.Normal).ToList();
+            var rng = new Math.Rng(seed == 0 ? 1 : seed);
+            var shuffled = new Dictionary<string, List<EnemyDef>>(StringComparer.Ordinal);
+            foreach (var biome in _normalsByBiome.Keys.OrderBy(key => key, StringComparer.Ordinal))
+            {
+                var left = new List<EnemyDef>(pool);
+                var picked = new List<EnemyDef>();
+                for (var i = 0; i < _normalsByBiome[biome].Count && left.Count > 0; i++)
+                {
+                    var index = rng.NextInt(0, left.Count);
+                    picked.Add(left[index]);
+                    left.RemoveAt(index);
+                }
+                shuffled[biome] = picked;
+            }
+            return new EnemyCatalog(new List<EnemyDef>(All), shuffled);
         }
 
         public IReadOnlyList<EnemyDef> All { get; }

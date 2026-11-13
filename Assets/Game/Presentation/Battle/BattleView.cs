@@ -103,6 +103,10 @@ namespace Game.Presentation.Battle
         private Transform _scene = null!;
         private SpriteRenderer _hero = null!;
         private TransitionView _transition = null!;
+        private TransitionSounds _sounds = null!;
+        private RiftSkyView _riftSky = null!;
+        private bool _inRift;
+        private string _loadingLines = string.Empty;
         private StripTransition? _sceneTransition;
         private TextMeshProUGUI _portalText = null!;
         private TransitionPhase _portalPhaseShown;
@@ -356,6 +360,8 @@ namespace Game.Presentation.Battle
             _allies = AllySilhouettes.Create(_scene, texts, _theme, FighterSortingOrder, StrikeSortingOrder);
             _allies.StrikeLanded += ShowAllyHit;
             _transition = TransitionView.Create(_scene);
+            _sounds = TransitionSounds.Create(_scene);
+            _riftSky = RiftSkyView.Create(_scene);
             _portalText = Label("Portal", texts, _theme.BoldFont, 12f, NoticeColor, TextAlignmentOptions.Center);
             StripCanvas.Place(_portalText.rectTransform, StripSpace.BaseWidthPx / 2f, PortalTextFromTopPx, new Vector2(320f, 18f), new Vector2(0.5f, 0.5f));
             _portalText.gameObject.SetActive(false);
@@ -507,11 +513,22 @@ namespace Game.Presentation.Battle
             AnimateHero(delta);
             _allies.Animate(Time.unscaledTime, delta, StrikeTarget);
             AnimateTransition(delta);
+            _riftSky.Animate(_inRift, Time.unscaledTime, delta);
             _marks.Animate(delta);
             AnimateEffects(delta);
         }
 
         public void ShowTransition(StripTransition transition) => _sceneTransition = transition;
+
+        public void UseSoundVolume(float volume) => _sounds.Volume = volume;
+
+        public void ShowRift(bool inside) => _inRift = inside;
+
+        public void ShowLoadingLines(System.Collections.Generic.IReadOnlyList<string> lines)
+        {
+            _loadingLines = lines.Count == 0 ? string.Empty : string.Join("\n", lines);
+            _portalPhaseShown = TransitionPhase.None;
+        }
 
         private void AnimateTransition(float delta)
         {
@@ -532,7 +549,10 @@ namespace Game.Presentation.Battle
             if (transition.Phase == _portalPhaseShown)
                 return;
             _portalPhaseShown = transition.Phase;
+            _sounds.Play(TransitionSound.Cue(transition));
             var caption = TransitionTexts.Caption(transition);
+            if (TransitionLook.ShowsLoading(transition) && _loadingLines.Length > 0)
+                caption += "\n" + _loadingLines;
             _portalText.text = caption;
             _portalText.gameObject.SetActive(caption.Length > 0);
         }

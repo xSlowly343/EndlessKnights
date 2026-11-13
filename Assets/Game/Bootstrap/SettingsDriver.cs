@@ -56,6 +56,7 @@ namespace Game.Bootstrap
             _dock = dock;
             _tray = tray;
             _battle = battle;
+            ApplySound();
             _fullscreen = fullscreen;
             ApplyStrikeOpacity();
             HeroModel.UseCosmetics(loop?.Cosmetics);
@@ -120,6 +121,10 @@ namespace Game.Bootstrap
                 case SettingId.HeroStrikeOpacity:
                 case SettingId.AllyStrikeOpacity:
                     ApplyStrikeOpacity();
+                    break;
+                case SettingId.MasterVolume:
+                case SettingId.InterfaceVolume:
+                    ApplySound();
                     break;
                 case SettingId.HeroCloak:
                 case SettingId.HeroEyes:
@@ -234,6 +239,8 @@ namespace Game.Bootstrap
             if (!registered && tellWhenBusy)
                 _panels?.ShowNotice(Texts.Get("settings.hideHotKeyBusy"));
         }
+
+        private void ApplySound() => _battle?.UseSoundVolume(TransitionSound.Volume(Settings));
 
         private void ApplyStrikeOpacity() => _battle?.UseStrikeOpacity((float)Settings.HeroStrikeOpacity, (float)Settings.AllyStrikeOpacity);
 

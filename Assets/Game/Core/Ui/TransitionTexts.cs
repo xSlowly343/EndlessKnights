@@ -1,4 +1,4 @@
-using Game.Core.Content.Rift;
+using Game.Core.Content;
 using Game.Core.Sim;
 using Game.Core.Text;
 
@@ -15,10 +15,16 @@ namespace Game.Core.Ui
             return Texts.Format(transition.Group ? "strip.portal.partyGoes" : "strip.portal.goes", StripSceneText.Place(transition.To));
         }
 
-        public static string FeatureOpened(RiftFeature feature) => Texts.Get(feature switch
+        public static string FeatureOpened(Feature feature) => Texts.Get("rift.opened." + FeatureKey(feature));
+
+        private static string FeatureKey(Feature feature)
         {
-            RiftFeature.Dungeons => "rift.opened.dungeons",
-            _ => "rift.opened.artifacts"
-        });
+            foreach (var (name, candidate) in UnlockRules.FeatureNames)
+            {
+                if (candidate == feature)
+                    return name;
+            }
+            return "artifacts";
+        }
     }
 }

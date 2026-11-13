@@ -7,9 +7,12 @@ namespace Game.Core.Party
     public sealed class ClanTreeBonus
     {
         private readonly ModifierLayer _layer;
+
         private readonly List<Modifier> _modifiers = new List<Modifier>();
         private readonly ClanBonusState _saved;
         private ClanTreeCatalog _catalog;
+
+        internal ModifierLayer Layer => _layer;
 
         public ClanTreeBonus(ClanTreeCatalog catalog, StatSheet hero, ClanBonusState saved)
         {
