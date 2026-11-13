@@ -475,6 +475,42 @@ if (!(growth.treasury.nodes >= 1) || !(growth.treasury.maxVotes >= 1) || !(growt
   throw new Error("party.json: party treasury limits are out of range");
 if (growth.tree.nodes.length !== growth.treasury.nodes)
   throw new Error("party.json: the party tree has " + growth.tree.nodes.length + " nodes, the treasury votes on " + growth.treasury.nodes);
+function partyTrialTreeLines(growth, stat) {
+  const found = [];
+  growth.tree.nodes.forEach((node, index) => {
+    [["a", 1], ["b", 3], ["c", 5]].forEach(([part, rank]) => {
+      for (const line of node[part] || [])
+        if (line.stat === stat && !line.waits)
+          found.push({ node: index + 1, rank: rank, value: line.value });
+    });
+  });
+  return found;
+}
+
+function partyTrialServerRules(growth) {
+  const trials = growth.trials;
+  return {
+    perWeek: trials.perWeek,
+    tries: trials.tries,
+    minFighters: trials.minFighters,
+    maxTier: trials.maxTier,
+    ceilingBase: trials.ceilingBase,
+    ceilingStep: trials.ceilingStep,
+    firstClearSigns: trials.firstClearSigns,
+    experiencePerTier: trials.experiencePerTier,
+    minMs: trials.minSeconds * 1000,
+    slackMs: trials.slackSeconds * 1000,
+    list: trials.list.map((trial) => ({
+      id: trial.id,
+      marathon: trial.rule === "marathon",
+      ms: trial.seconds * 1000,
+      waves: trial.rule === "marathon" ? Math.floor(trial.seconds / trial.waveSeconds + 1e-9) : 0
+    })),
+    extraTries: partyTrialTreeLines(growth, "trialTries"),
+    carry: partyTrialTreeLines(growth, "trialCarry")
+  };
+}
+
 const partyGrowthRules = {
   maxLevel: growth.maxLevel,
   levelBase: growth.levelBase,
@@ -512,6 +548,7 @@ const partyGrowthRules = {
     })),
     majors: growth.tree.majors.map((slot) => ({ at: slot.at, options: slot.options.map((option) => option.id) }))
   },
+  trials: partyTrialServerRules(growth),
   unlocks: growth.unlocks.map((unlock) => ({ level: unlock.level, kind: unlock.kind }))
 };
 

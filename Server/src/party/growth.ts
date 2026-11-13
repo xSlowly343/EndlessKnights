@@ -19,6 +19,7 @@ interface PartyGrowthRules {
     kickedRejoinHours: number;
     treasury: PartyTreasuryRules;
     tree: PartyTreeRules;
+    trials: PartyTrialRules;
     unlocks: PartyGrowthUnlock[];
 }
 

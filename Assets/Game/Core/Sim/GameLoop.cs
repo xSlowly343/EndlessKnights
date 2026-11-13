@@ -821,6 +821,12 @@ namespace Game.Core.Sim
             RefreshPeacefulBonus();
         }
 
+        public void SetPartyTrials(IReadOnlyList<int> bestTiers)
+        {
+            _partyGrowth.SetTrials(bestTiers);
+            RefreshPeacefulBonus();
+        }
+
         public void SetPartyGrowthSources(IReadOnlyList<Modifier> sources)
         {
             _partyGrowth.SetSources(sources);

@@ -634,6 +634,31 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void PartyTrialsAreReadWithBestTiersTriesTheRunAndTheResult()
+        {
+            Assert.That(PartyTrialsReply.StartPayload("choir", 3, new[] { "a", "b" }), Is.EqualTo("{\"trial\":\"choir\",\"tier\":3,\"fighters\":[\"a\",\"b\"]}"));
+            Assert.That(PartyTrialsReply.FinishPayload(true), Is.EqualTo("{\"cleared\":true}"));
+            Assert.That(PartyTrialsReply.MarathonPayload(12), Is.EqualTo("{\"waves\":12}"));
+            var reply = PartyTrialsReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"ceiling\":15,\"carry\":true,\"weekEndsAt\":1763337600000,\"trials\":[{\"id\":\"choir\",\"open\":true,\"best\":4,\"triesLeft\":3},{\"id\":\"relay\",\"open\":false,\"best\":2,\"triesLeft\":5}],\"run\":{\"trial\":\"choir\",\"tier\":5,\"by\":\"a\",\"fighters\":[\"a\",\"b\"],\"at\":1763100000000,\"until\":1763100300000},\"result\":{\"trial\":\"choir\",\"tier\":4,\"best\":4,\"firstClear\":true,\"signs\":80,\"experience\":20,\"carried\":[\"relay\"]}}"));
+            Assert.That(reply.Opened, Is.True);
+            Assert.That(reply.Ceiling, Is.EqualTo(15));
+            Assert.That(reply.Carry, Is.True);
+            Assert.That(reply.WeekEndsAt, Is.EqualTo(1763337600000));
+            Assert.That(reply.Trials[0].Open, Is.True);
+            Assert.That(reply.Trials[1].TriesLeft, Is.EqualTo(5));
+            Assert.That(reply.Best, Is.EqualTo(new[] { 4, 2 }));
+            Assert.That(reply.Run!.Fighters, Is.EqualTo(new[] { "a", "b" }));
+            Assert.That(reply.Run.Until, Is.EqualTo(1763100300000));
+            Assert.That(reply.Result!.FirstClear, Is.True);
+            Assert.That(reply.Result.Signs, Is.EqualTo(80));
+            Assert.That(reply.Result.Carried, Is.EqualTo(new[] { "relay" }));
+            var empty = PartyTrialsReply.From(NakamaJson.Parse("{\"run\":null,\"result\":null}"));
+            Assert.That(empty.Run, Is.Null);
+            Assert.That(empty.Result, Is.Null);
+            Assert.That(empty.Trials, Is.Empty);
+        }
+
+        [Test]
         public void TheRiftShopIsReadPerRiftWithItsSparksAndWindowCounts()
         {
             Assert.That(RiftShopReply.ViewPayload(1793102400), Is.EqualTo("{\"riftId\":1793102400}"));

@@ -7,6 +7,10 @@ namespace Game.Core.Party
     public sealed class PartyGrowthLayer
     {
         private const long DayMs = 86_400_000;
+        public static readonly StatId TrialSeals = new StatId("trialSeals");
+        public static readonly StatId TrialPowerStat = new StatId("trialPower");
+        public static readonly StatId TrialTries = new StatId("trialTries");
+        public static readonly StatId TrialCarry = new StatId("trialCarry");
 
         private readonly ModifierLayer _layer;
         private readonly List<Modifier> _sources = new List<Modifier>();
@@ -14,6 +18,7 @@ namespace Game.Core.Party
         private readonly List<Modifier> _tree = new List<Modifier>();
         private readonly Dictionary<int, int> _treeLevels = new Dictionary<int, int>();
         private readonly List<string> _treeMajors = new List<string>();
+        private readonly List<int> _trialBest = new List<int>();
         private PartyGrowthRules _rules;
         private long _joinedUnixMs;
         private long _nowUnixMs;
@@ -34,6 +39,17 @@ namespace Game.Core.Party
         public IReadOnlyList<Modifier> Tree => _tree;
         public IReadOnlyDictionary<int, int> TreeLevels => _treeLevels;
         public IReadOnlyList<string> TreeMajors => _treeMajors;
+        public IReadOnlyList<int> TrialBest => _trialBest;
+        public double Seals { get; private set; }
+        public double TrialPower { get; private set; } = 1;
+
+        public void SetTrials(IReadOnlyList<int> bestTiers)
+        {
+            _trialBest.Clear();
+            for (var i = 0; i < bestTiers.Count; i++)
+                _trialBest.Add(bestTiers[i]);
+            Rebuild();
+        }
 
         public void SetTree(IReadOnlyDictionary<int, int> levels, IReadOnlyList<string> majors)
         {
@@ -96,17 +112,43 @@ namespace Game.Core.Party
             Share = ShareAt(_nowUnixMs);
             Capped = false;
             PartyTreeBonus.Build(_rules.Tree, _treeLevels, _treeMajors, Members, _tree);
+            Seals = _rules.Trials.SealIncrease(_trialBest) * Scale(TrialSeals);
+            TrialPower = InParty ? Scale(TrialPowerStat) : 1;
             if (Share > 0)
             {
                 foreach (var source in _sources)
                     _applied.Add(source.WithValue(source.Value * Share));
                 foreach (var line in _tree)
-                    _applied.Add(line.WithValue(line.Value * Share));
+                {
+                    if (!IsTrialLine(line))
+                        _applied.Add(line.WithValue(line.Value * Share));
+                }
+                if (Seals > 0)
+                    _applied.Add(new Modifier(CombatStats.Damage, ModifierKind.Increased, Seals * Share));
             }
             DamageMultiplier = CapDamage();
             Peaceful = CapPeaceful();
             _layer.Set(_applied);
         }
+
+        private double Scale(StatId stat)
+        {
+            var increased = 0.0;
+            var more = 1.0;
+            foreach (var line in _tree)
+            {
+                if (line.Stat != stat)
+                    continue;
+                if (line.Kind == ModifierKind.Increased)
+                    increased += line.Value;
+                else if (line.Kind == ModifierKind.More)
+                    more *= 1 + line.Value;
+            }
+            return System.Math.Max(0, (1 + increased) * more);
+        }
+
+        private static bool IsTrialLine(Modifier line) =>
+            line.Stat == TrialSeals || line.Stat == TrialPowerStat || line.Stat == TrialTries || line.Stat == TrialCarry;
 
         private double CapDamage()
         {
