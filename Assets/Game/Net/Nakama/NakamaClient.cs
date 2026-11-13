@@ -30,6 +30,18 @@ namespace Game.Net.Nakama
             AuthenticateAsync("/v2/account/authenticate/steam?create=true" + (importFriends ? "&sync=true" : string.Empty),
                 NakamaJson.Object(("token", NakamaJson.Quote(sessionTicket))), cancel);
 
+        public Task<NakamaSession> AuthenticateEmailAsync(string email, string password, bool create, CancellationToken cancel = default) =>
+            AuthenticateAsync("/v2/account/authenticate/email?create=" + (create ? "true" : "false"), EmailBody(email, password), cancel);
+
+        public Task LinkEmailAsync(NakamaSession session, string email, string password, CancellationToken cancel = default) =>
+            SendAsync("/v2/account/link/email", new AuthenticationHeaderValue("Bearer", session.Token), EmailBody(email, password), cancel);
+
+        public Task LinkDeviceAsync(NakamaSession session, string deviceId, CancellationToken cancel = default) =>
+            SendAsync("/v2/account/link/device", new AuthenticationHeaderValue("Bearer", session.Token), NakamaJson.Object(("id", NakamaJson.Quote(deviceId))), cancel);
+
+        public static string EmailBody(string email, string password) =>
+            NakamaJson.Object(("email", NakamaJson.Quote(email)), ("password", NakamaJson.Quote(password)));
+
         public Task<NakamaSession> RefreshAsync(NakamaSession session, CancellationToken cancel = default) =>
             AuthenticateAsync("/v2/account/session/refresh", NakamaJson.Object(("token", NakamaJson.Quote(session.RefreshToken))), cancel);
 

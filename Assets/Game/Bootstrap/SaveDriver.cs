@@ -64,8 +64,36 @@ namespace Game.Bootstrap
             return driver;
         }
 
+        private bool _replaced;
+
+        public string Snapshot()
+        {
+            var now = SystemClock.Read();
+            var stamp = _clock.HasValue ? _clock.Value.Next(now) : ClockStamp.First(now);
+            return SaveCodec.Encode(_state, stamp);
+        }
+
+        public bool Replace(string text, GameData data)
+        {
+            try
+            {
+                SaveCodec.Decode(text, data);
+                Directory.CreateDirectory(_store.Directory);
+                _store.Write(text);
+                _replaced = true;
+                return true;
+            }
+            catch (Exception error) when (error is ContentException || error is IOException || error is UnauthorizedAccessException)
+            {
+                Debug.LogWarning("Save: the cloud save was not taken: " + error.Message);
+                return false;
+            }
+        }
+
         public void SaveNow()
         {
+            if (_replaced)
+                return;
             var now = SystemClock.Read();
             var stamp = _clock.HasValue ? _clock.Value.Next(now) : ClockStamp.First(now);
             try

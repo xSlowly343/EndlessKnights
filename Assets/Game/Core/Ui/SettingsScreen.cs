@@ -41,6 +41,7 @@ namespace Game.Core.Ui
             new[]
             {
                 new SettingGroup("about", new[] { SettingId.WhatsNew, SettingId.InputConsent, SettingId.Coupon }),
+                new SettingGroup("account", new[] { SettingId.AccountEmail, SettingId.AccountPassword, SettingId.AccountSignIn, SettingId.CloudSave, SettingId.CloudLoad }),
             },
             new[]
             {
@@ -108,7 +109,8 @@ namespace Game.Core.Ui
         {
             SettingId.Paused or SettingId.AlwaysOnTop or SettingId.ClickThrough or SettingId.CountKeys or SettingId.CountMouseMovement
                 or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug or SettingId.AutoHideFullscreen or SettingId.HideHotKey => SettingKind.Toggle,
-            SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew or SettingId.Coupon or SettingId.BuildCopy or SettingId.BuildPaste => SettingKind.Action,
+            SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew or SettingId.Coupon or SettingId.BuildCopy or SettingId.BuildPaste
+                or SettingId.AccountEmail or SettingId.AccountPassword or SettingId.AccountSignIn or SettingId.CloudSave or SettingId.CloudLoad => SettingKind.Action,
             SettingId.Language or SettingId.FrameRate or SettingId.NumberFormat or SettingId.CompanionStrip or SettingId.AuraShow => SettingKind.Segments,
             SettingId.MasterVolume or SettingId.MusicVolume or SettingId.HitVolume or SettingId.SkillVolume or SettingId.InterfaceVolume
                 or SettingId.NotificationVolume or SettingId.HeroStrikeOpacity or SettingId.AllyStrikeOpacity => SettingKind.Slider,
@@ -118,9 +120,26 @@ namespace Game.Core.Ui
         public static string Hint(SettingId id) => Texts.Get("settings.hint." + Key(id));
 
         public static CouponEntry CouponCode { get; } = new CouponEntry();
+        public static AccountEntry Account { get; } = new AccountEntry();
+
+        public static string ActionIcon(SettingId id) => id == SettingId.CloudSave || id == SettingId.CloudLoad ? IconKey(id) : string.Empty;
+
+        public static bool IsAccountField(SettingId id) => id == SettingId.AccountEmail || id == SettingId.AccountPassword;
+
+        private static string AccountHint(SettingId id) => id switch
+        {
+            SettingId.AccountEmail when Account.Email.Length > 0 => Texts.Format("settings.accountTyped", Account.Email),
+            SettingId.AccountEmail when Account.SignedIn => Texts.Format("settings.accountLinked", Account.LinkedEmail),
+            SettingId.AccountPassword when Account.Password.Length > 0 => Texts.Format("settings.accountTyped", Account.MaskedPassword),
+            SettingId.AccountSignIn when Account.SignedIn => Texts.Format("settings.accountLinked", Account.LinkedEmail),
+            _ => string.Empty
+        };
 
         public static string HintLine(SettingId id, GameSettings settings)
         {
+            var account = AccountHint(id);
+            if (account.Length > 0)
+                return account;
             if (id == SettingId.Coupon && CouponCode.Length > 0)
                 return Texts.Format("settings.couponTyped", CouponCode.Display);
             var preview = Preview(id, settings);
@@ -280,6 +299,10 @@ namespace Game.Core.Ui
             SettingId.Coupon => CouponCode.Length > 0 ? "settings.apply" : "settings.paste",
             SettingId.BuildPaste => "settings.paste",
             SettingId.BuildCopy => "settings.copy",
+            SettingId.AccountEmail or SettingId.AccountPassword => "settings.type",
+            SettingId.AccountSignIn => "settings.signIn",
+            SettingId.CloudSave => "settings.cloudSave",
+            SettingId.CloudLoad => "settings.cloudLoad",
             _ => "settings.open"
         });
 
@@ -336,6 +359,12 @@ namespace Game.Core.Ui
                 case SettingId.ResetPosition:
                     settings.StripOffset = 0;
                     return true;
+                case SettingId.AccountEmail:
+                    Account.FocusOn(AccountField.Email);
+                    return true;
+                case SettingId.AccountPassword:
+                    Account.FocusOn(AccountField.Password);
+                    return true;
                 case SettingId.FrameRate:
                     settings.FrameRate = Cycle(FrameRates, settings.FrameRate, step);
                     return true;
@@ -368,6 +397,9 @@ namespace Game.Core.Ui
                 case SettingId.InputConsent:
                 case SettingId.WhatsNew:
                 case SettingId.Coupon:
+                case SettingId.AccountSignIn:
+                case SettingId.CloudSave:
+                case SettingId.CloudLoad:
                 case SettingId.BuildCopy:
                 case SettingId.BuildPaste:
                     return true;

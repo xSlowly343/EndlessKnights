@@ -282,5 +282,28 @@ namespace Game.Core.Tests.Ui
 
         [TearDown]
         public void RestoreLanguage() => Texts.UseLanguage("ru");
-    }
+    
+        [Test]
+        public void TheAboutTabHasAnAccountWithEmailPasswordAndTwoCloudIconButtons()
+        {
+            Texts.UseLanguage("ru");
+            var settings = new GameSettings();
+            var rows = SettingsScreen.Rows(SettingsScreen.AboutTab);
+            foreach (var id in new[] { SettingId.AccountEmail, SettingId.AccountPassword, SettingId.AccountSignIn, SettingId.CloudSave, SettingId.CloudLoad })
+            {
+                Assert.That(rows, Does.Contain(id));
+                Assert.That(SettingsScreen.KindOf(id), Is.EqualTo(SettingKind.Action));
+                Assert.That(SettingsScreen.Label(id), Does.Not.StartWith("settings."), id + " has a label");
+            }
+            Assert.That(SettingsScreen.ActionIcon(SettingId.CloudSave), Is.EqualTo("cloudSave"));
+            Assert.That(SettingsScreen.ActionIcon(SettingId.CloudLoad), Is.EqualTo("cloudLoad"));
+            Assert.That(SettingsScreen.ActionIcon(SettingId.AccountSignIn), Is.Empty, "sign in is a word, the cloud buttons are icons");
+            SettingsScreen.Change(SettingId.AccountPassword, settings, 1);
+            Assert.That(SettingsScreen.Account.Focus, Is.EqualTo(AccountField.Password));
+            SettingsScreen.Account.Paste("secret123");
+            Assert.That(SettingsScreen.HintLine(SettingId.AccountPassword, settings), Does.Not.Contain("secret"), "the password is never shown");
+            SettingsScreen.Account.ForgetPassword();
+            SettingsScreen.Account.FocusOn(AccountField.None);
+        }
+}
 }
