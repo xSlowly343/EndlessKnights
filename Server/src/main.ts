@@ -135,6 +135,7 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("party_colossus_report", partyColossusReportRpc);
     initializer.registerRpc("party_colossus_choose", partyColossusChooseRpc);
     initializer.registerRpc("party_colossus_switch_off", partyColossusSwitchOffRpc);
+    initializer.registerRpc("party_relic_up", partyRelicUpRpc);
     initializer.registerRpc("rift_shop_buy", riftShopBuyRpc);
     initializer.registerRpc("companion_visit_send", companionVisitSendRpc);
     initializer.registerRpc("companion_visit", companionVisitRpc);

@@ -7,6 +7,18 @@ interface PartyColossusRules {
     logSize: number;
     classes: number;
     hardships: PartyColossusHardshipRule[];
+    trophyBase: number;
+    trophyPerTiers: number;
+    signsPerTier: number;
+    relicEvery: number;
+    relicMaxLevel: number;
+    relicCost: number;
+    weeklyMinShare: number;
+    weeklySource: string;
+    relics: { id: string; stat: string; value: number; works: boolean }[];
+    treeTrophies: PartyTrialTreeLine[];
+    treeTrophyChance: PartyTrialTreeLine[];
+    treeSigns: PartyTrialTreeLine[];
     soften: PartyTrialTreeLine[];
     switchOff: PartyTrialTreeLine[];
     noHeal: PartyTrialTreeLine[];
@@ -36,6 +48,8 @@ interface PartyColossusKill {
     at: number;
     hardships: string[];
     trophyBonus: number;
+    trophies: number;
+    signs: number;
 }
 
 interface PartyColossusValue {
@@ -58,6 +72,11 @@ interface PartyColossusValue {
     regenAt: number;
     hitters: { day: number; ids: string[] };
     log: PartyColossusKill[];
+    trophies: number;
+    trophyCarry: number;
+    relics: { [id: string]: number };
+    best: number;
+    lastWeek: { week: number; shares: { [userId: string]: number }; paid: string[] } | null;
 }
 
 interface PartyColossusSituation {
@@ -68,6 +87,9 @@ interface PartyColossusSituation {
     switchOff: boolean;
     noHeal: boolean;
     leader: boolean;
+    trophyBonus: number;
+    trophyChance: number;
+    signsBonus: number;
 }
 
 const PartyColossusCollection = "party_colossus";
@@ -162,7 +184,7 @@ function partyColossusEmpty(): PartyColossusValue {
     return {
         tier: 1, hp: partyColossusBaseHp(1), waiting: false, kills: 0, week: -1, shares: {}, members: {},
         mandatory: [], drawnTier: 0, optional: [], disabled: "", touched: false, shield: 0, shieldAt: 0, lastHit: 0, furyAt: 0, regenAt: 0,
-        hitters: { day: -1, ids: [] }, log: []
+        hitters: { day: -1, ids: [] }, log: [], trophies: 0, trophyCarry: 0, relics: {}, best: 0, lastWeek: null
     };
 }
 
@@ -230,6 +252,7 @@ function partyColossusHeal(value: PartyColossusValue, situation: PartyColossusSi
 function partyColossusSettle(value: PartyColossusValue, situation: PartyColossusSituation, nowUnixMs: number): void {
     const week = partyTrialWeek(nowUnixMs);
     if (value.week !== week) {
+        value.lastWeek = value.week >= 0 ? { week: value.week, shares: value.shares, paid: [] } : null;
         value.week = week;
         value.shares = {};
     }
@@ -261,6 +284,9 @@ function partyColossusSituation(nk: nkruntime.Nakama, partyId: string, userId: s
         soften: partyTrialTreeValue(levels, partyColossusRules().soften) !== 0,
         switchOff: partyTrialTreeValue(levels, partyColossusRules().switchOff) > 0,
         noHeal: partyTrialTreeValue(levels, partyColossusRules().noHeal) > 0,
+        trophyBonus: partyTrialTreeValue(levels, partyColossusRules().treeTrophies),
+        trophyChance: partyTrialTreeValue(levels, partyColossusRules().treeTrophyChance),
+        signsBonus: partyTrialTreeValue(levels, partyColossusRules().treeSigns),
         leader: !!group && partyMetaOf(group).leader === userId
     };
 }
@@ -289,6 +315,8 @@ function partyColossusView(nk: nkruntime.Nakama, partyId: string, value: PartyCo
         hittersToday: value.hitters.day === today ? value.hitters.ids.length : 0, leader: situation.leader,
         shares: ids.map((id) => ({ userId: id, name: names[id] || "", points: Math.floor(value.shares[id]), share: total > 0 ? value.shares[id] / total : 0 })),
         yours: Math.floor(value.shares[userId] || 0), reportSeconds: partyColossusRules().reportSeconds,
+        trophies: value.trophies, relics: value.relics, relicsOpen: partyColossusRelicsOpen(value), best: value.best,
+        topLastWeek: partyColossusTopLastWeek(value),
         accepted: accepted
     };
 }
@@ -356,7 +384,30 @@ function partyColossusShape(value: PartyColossusValue, situation: PartyColossusS
     return { points: points, offline: offline * rift * all };
 }
 
-function partyColossusHit(value: PartyColossusValue, situation: PartyColossusSituation, points: number, nowUnixMs: number): { dealt: number; killed: number[] } {
+function partyColossusRelicLevel(value: PartyColossusValue, stat: string): number {
+    let total = 0;
+    for (const relic of partyColossusRules().relics)
+        if (relic.works && relic.stat === stat)
+            total += relic.value * Math.min(partyColossusRules().relicMaxLevel, value.relics[relic.id] || 0);
+    return total;
+}
+
+function partyColossusReward(value: PartyColossusValue, situation: PartyColossusSituation, trophyBonus: number): { trophies: number; signs: number } {
+    const rules = partyColossusRules();
+    const base = Math.floor(rules.trophyBase + value.tier / rules.trophyPerTiers);
+    const greedy = partyColossusActive(value, situation).indexOf("greedy") >= 0;
+    const multiplier = Math.max(0, 1 + trophyBonus + situation.trophyBonus + partyColossusRelicLevel(value, "colossusTrophies") + (greedy ? partyColossusFactor(value, situation, "greedy", "trophies", 0) : 0));
+    const random = partyColossusSeed(situation.partyId + ":trophy:" + value.kills);
+    const extra = random() < situation.trophyChance ? 1 : 0;
+    const exact = base * multiplier * partyColossusFactor(value, situation, "limitArmor", "reward", 1) + extra + value.trophyCarry;
+    const trophies = Math.floor(exact + 1e-9);
+    value.trophyCarry = Math.max(0, exact - trophies);
+    const signs = Math.floor(rules.signsPerTier * value.tier * (greedy ? partyColossusFactor(value, situation, "greedy", "signs", 1) : 1) * (1 + situation.signsBonus) + 1e-9);
+    return { trophies: trophies, signs: signs };
+}
+
+function partyColossusHit(value: PartyColossusValue, situation: PartyColossusSituation, points: number, nowUnixMs: number): { dealt: number; killed: number[]; signs: number } {
+    let signs = 0;
     const killed: number[] = [];
     let left = points;
     let dealt = 0;
@@ -371,8 +422,13 @@ function partyColossusHit(value: PartyColossusValue, situation: PartyColossusSit
             break;
         killed.push(value.tier);
         value.kills++;
+        value.best = Math.max(value.best, value.tier);
         const active = partyColossusActive(value, situation);
-        value.log.push({ tier: value.tier, at: nowUnixMs, hardships: active, trophyBonus: value.optional.slice(0, partyColossusSlots(value)).length * partyColossusRules().optionalTrophyBonus });
+        const trophyBonus = value.optional.slice(0, partyColossusSlots(value)).length * partyColossusRules().optionalTrophyBonus;
+        const reward = partyColossusReward(value, situation, trophyBonus);
+        value.trophies += reward.trophies;
+        signs += reward.signs;
+        value.log.push({ tier: value.tier, at: nowUnixMs, hardships: active, trophyBonus: trophyBonus, trophies: reward.trophies, signs: reward.signs });
         if (value.log.length > partyColossusRules().logSize)
             value.log.splice(0, value.log.length - partyColossusRules().logSize);
         if (value.tier >= situation.ceiling) {
@@ -383,10 +439,10 @@ function partyColossusHit(value: PartyColossusValue, situation: PartyColossusSit
         value.tier++;
         partyColossusNewTier(value, situation, nowUnixMs);
     }
-    return { dealt: dealt, killed: killed };
+    return { dealt: dealt, killed: killed, signs: signs };
 }
 
-function partyColossusStrike(value: PartyColossusValue, situation: PartyColossusSituation, shaped: { points: number[]; offline: number }, nowUnixMs: number): { dealt: number; killed: number[]; total: number } {
+function partyColossusStrike(value: PartyColossusValue, situation: PartyColossusSituation, shaped: { points: number[]; offline: number }, nowUnixMs: number): { dealt: number; killed: number[]; total: number; signs: number } {
     let skills = shaped.points[2];
     let others = shaped.points[0] + shaped.points[1] + shaped.points[3] + shaped.offline;
     if (value.shield > 0 && !value.waiting) {
@@ -398,7 +454,7 @@ function partyColossusStrike(value: PartyColossusValue, situation: PartyColossus
     }
     const total = skills + others;
     const result = partyColossusHit(value, situation, total, nowUnixMs);
-    return { dealt: result.dealt, killed: result.killed, total: total + (shaped.points[2] - skills) };
+    return { dealt: result.dealt, killed: result.killed, total: total + (shaped.points[2] - skills), signs: result.signs };
 }
 
 function partyColossusAct(nk: nkruntime.Nakama, userId: string, nowUnixMs: number, act: (value: PartyColossusValue, situation: PartyColossusSituation) => { [key: string]: any } | null): { [key: string]: any } {
@@ -423,8 +479,11 @@ function partyColossusReport(nk: nkruntime.Nakama, userId: string, request: { [k
     const heroClass = request.heroClass === undefined ? -1 : request.heroClass;
     if (typeof heroClass !== "number" || heroClass !== Math.floor(heroClass) || heroClass < -1 || heroClass >= partyColossusRules().classes)
         throw new Error("bad request");
-    let gained = { dealt: 0, killed: [] as number[], total: 0 };
+    let gained = { dealt: 0, killed: [] as number[], total: 0, signs: 0 };
+    let weekly = false;
     const view = partyColossusAct(nk, userId, nowUnixMs, (value, situation) => {
+        gained = { dealt: 0, killed: [], total: 0, signs: 0 };
+        weekly = partyColossusClaimWeek(value, userId);
         const member = value.members[userId] || { at: 0, day: 0, offlineSeconds: 0 };
         value.members[userId] = member;
         const raw = direct.concat(background).reduce((sum, points) => sum + points, 0);
@@ -433,19 +492,73 @@ function partyColossusReport(nk: nkruntime.Nakama, userId: string, request: { [k
         const offline = partyColossusOffline(member, offlinePoints, offlineSeconds, situation.activeSeconds, nowUnixMs);
         member.at = nowUnixMs;
         if (value.waiting)
-            return { live: live, offline: offline, counted: 0, killed: [] };
+            return { live: live, offline: offline, counted: 0, killed: [], signs: 0, weekly: weekly };
         const shaped = partyColossusShape(value, situation, userId, heroClass, direct.map((p) => p * scale), background.map((p) => p * scale), offline, nowUnixMs);
         gained = partyColossusStrike(value, situation, shaped, nowUnixMs);
         if (gained.total > 0) {
             value.shares[userId] = (value.shares[userId] || 0) + gained.total;
             value.lastHit = nowUnixMs;
         }
-        return { live: live, offline: offline, counted: gained.total, killed: gained.killed };
+        return { live: live, offline: offline, counted: gained.total, killed: gained.killed, signs: gained.signs, weekly: weekly };
     });
     partyGrowthAdd(nk, view.partyId, gained.dealt * 100 * partyColossusRules().experiencePerPercent);
+    if (gained.signs > 0)
+        partyTreasuryChange(nk, view.partyId, (value) => {
+            value.treasury += gained.signs;
+        });
+    if (weekly)
+        walletGrant(nk, userId, partyColossusRules().weeklySource, 1, nowUnixMs);
     for (const tier of gained.killed)
         partyColossusChronicle(nk, view.partyId, tier, nowUnixMs);
     return view;
+}
+
+function partyColossusClaimWeek(value: PartyColossusValue, userId: string): boolean {
+    const last = value.lastWeek;
+    if (!last || last.week !== value.week - 1 || last.paid.indexOf(userId) >= 0)
+        return false;
+    const total = Object.keys(last.shares).reduce((sum, id) => sum + last.shares[id], 0);
+    if (!(total > 0) || (last.shares[userId] || 0) / total < partyColossusRules().weeklyMinShare)
+        return false;
+    last.paid.push(userId);
+    return true;
+}
+
+function partyColossusTopLastWeek(value: PartyColossusValue): string {
+    const last = value.lastWeek;
+    if (!last || last.week !== value.week - 1)
+        return "";
+    let top = "";
+    for (const id of Object.keys(last.shares))
+        if (!top || last.shares[id] > last.shares[top])
+            top = id;
+    return top;
+}
+
+function partyColossusRelicsOpen(value: PartyColossusValue): number {
+    return Math.min(partyColossusRules().relics.length, Math.floor(value.best / partyColossusRules().relicEvery));
+}
+
+function partyColossusRelicUp(nk: nkruntime.Nakama, userId: string, id: unknown, nowUnixMs: number): { [key: string]: any } {
+    const index = typeof id === "string" ? partyColossusRules().relics.map((relic) => relic.id).indexOf(id) : -1;
+    if (index < 0)
+        throw new Error("bad request");
+    const key = id as string;
+    return partyColossusAct(nk, userId, nowUnixMs, (value, situation) => {
+        if (!situation.leader)
+            throw new Error("only the leader can do that");
+        if (index >= partyColossusRelicsOpen(value))
+            throw new Error("the relic is not open yet");
+        const level = value.relics[key] || 0;
+        if (level >= partyColossusRules().relicMaxLevel)
+            throw new Error("the relic is at its last level");
+        const price = (level + 1) * partyColossusRules().relicCost;
+        if (value.trophies < price)
+            throw new Error("not enough trophies");
+        value.trophies -= price;
+        value.relics[key] = level + 1;
+        return null;
+    });
 }
 
 function partyColossusRefit(value: PartyColossusValue, situation: PartyColossusSituation, change: () => void): void {
@@ -522,6 +635,10 @@ function partyColossusReportRpc(ctx: nkruntime.Context, logger: nkruntime.Logger
 
 function partyColossusChooseRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     return JSON.stringify(partyColossusChoose(nk, partyCaller(ctx), partyRequest(payload).ids, Date.now()));
+}
+
+function partyRelicUpRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(partyColossusRelicUp(nk, partyCaller(ctx), partyRequest(payload).id, Date.now()));
 }
 
 function partyColossusSwitchOffRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {

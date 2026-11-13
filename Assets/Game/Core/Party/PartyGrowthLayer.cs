@@ -15,6 +15,10 @@ namespace Game.Core.Party
         public static readonly StatId ColossusHardship = new StatId("colossusHardship");
         public static readonly StatId ColossusHardshipOff = new StatId("colossusHardshipOff");
         public static readonly StatId ColossusNoHeal = new StatId("colossusNoHeal");
+        public static readonly StatId ColossusTrophies = new StatId("colossusTrophies");
+        public static readonly StatId ColossusLoot = new StatId("colossusLoot");
+        public static readonly StatId ColossusTrophyChance = new StatId("colossusTrophyChance");
+        public static readonly StatId SignsColossus = new StatId("signsColossus");
 
         private readonly ModifierLayer _layer;
         private readonly List<Modifier> _sources = new List<Modifier>();
@@ -23,6 +27,8 @@ namespace Game.Core.Party
         private readonly Dictionary<int, int> _treeLevels = new Dictionary<int, int>();
         private readonly List<string> _treeMajors = new List<string>();
         private readonly List<int> _trialBest = new List<int>();
+        private readonly List<Modifier> _relics = new List<Modifier>();
+        private readonly Dictionary<string, int> _relicLevels = new Dictionary<string, int>();
         private PartyGrowthRules _rules;
         private long _joinedUnixMs;
         private long _nowUnixMs;
@@ -47,6 +53,28 @@ namespace Game.Core.Party
         public double Seals { get; private set; }
         public double TrialPower { get; private set; } = 1;
         public double ColossusPower { get; private set; } = 1;
+
+        public IReadOnlyList<Modifier> Relics => _relics;
+        public IReadOnlyDictionary<string, int> RelicLevels => _relicLevels;
+
+        public void SetRelics(IReadOnlyDictionary<string, int> levels)
+        {
+            _relicLevels.Clear();
+            foreach (var pair in levels)
+                _relicLevels[pair.Key] = pair.Value;
+            Rebuild();
+        }
+
+        private void BuildRelics()
+        {
+            _relics.Clear();
+            foreach (var relic in _rules.Colossus.Relics)
+            {
+                if (!relic.Works || !_relicLevels.TryGetValue(relic.Id, out var level) || level <= 0)
+                    continue;
+                _relics.Add(relic.At(System.Math.Min(level, _rules.Colossus.RelicMaxLevel)));
+            }
+        }
 
         public void SetTrials(IReadOnlyList<int> bestTiers)
         {
@@ -117,6 +145,7 @@ namespace Game.Core.Party
             Share = ShareAt(_nowUnixMs);
             Capped = false;
             PartyTreeBonus.Build(_rules.Tree, _treeLevels, _treeMajors, Members, _tree);
+            BuildRelics();
             Seals = _rules.Trials.SealIncrease(_trialBest) * Scale(TrialSeals);
             TrialPower = InParty ? Scale(TrialPowerStat) : 1;
             ColossusPower = InParty ? Scale(ColossusDamage) : 1;
@@ -125,6 +154,11 @@ namespace Game.Core.Party
                 foreach (var source in _sources)
                     _applied.Add(source.WithValue(source.Value * Share));
                 foreach (var line in _tree)
+                {
+                    if (!IsPartyOnlyLine(line))
+                        _applied.Add(line.WithValue(line.Value * Share));
+                }
+                foreach (var line in _relics)
                 {
                     if (!IsPartyOnlyLine(line))
                         _applied.Add(line.WithValue(line.Value * Share));
@@ -141,7 +175,14 @@ namespace Game.Core.Party
         {
             var increased = 0.0;
             var more = 1.0;
-            foreach (var line in _tree)
+            Collect(_tree, stat, ref increased, ref more);
+            Collect(_relics, stat, ref increased, ref more);
+            return System.Math.Max(0, (1 + increased) * more);
+        }
+
+        private static void Collect(List<Modifier> lines, StatId stat, ref double increased, ref double more)
+        {
+            foreach (var line in lines)
             {
                 if (line.Stat != stat)
                     continue;
@@ -150,12 +191,12 @@ namespace Game.Core.Party
                 else if (line.Kind == ModifierKind.More)
                     more *= 1 + line.Value;
             }
-            return System.Math.Max(0, (1 + increased) * more);
         }
 
         private static bool IsPartyOnlyLine(Modifier line) =>
             line.Stat == TrialSeals || line.Stat == TrialPowerStat || line.Stat == TrialTries || line.Stat == TrialCarry || line.Stat == ColossusDamage
-            || line.Stat == ColossusHardship || line.Stat == ColossusHardshipOff || line.Stat == ColossusNoHeal;
+            || line.Stat == ColossusHardship || line.Stat == ColossusHardshipOff || line.Stat == ColossusNoHeal
+            || line.Stat == ColossusTrophies || line.Stat == ColossusLoot || line.Stat == ColossusTrophyChance || line.Stat == SignsColossus;
 
         private double CapDamage()
         {

@@ -674,6 +674,15 @@ namespace Game.Net.Tests
             Assert.That(hard.ShieldFull, Is.EqualTo(50));
             Assert.That(hard.WeakClass, Is.EqualTo(7));
             Assert.That(hard.HittersToday, Is.EqualTo(2));
+            Assert.That(PartyColossusReply.RelicPayload("colossus_fang"), Is.EqualTo("{\"id\":\"colossus_fang\"}"));
+            var relics = PartyColossusReply.From(NakamaJson.Parse("{\"trophies\":42,\"relics\":{\"colossus_fang\":3,\"hunt_horn\":1},\"relicsOpen\":2,\"best\":5,\"topLastWeek\":\"a\",\"accepted\":{\"signs\":50,\"weekly\":true}}"));
+            Assert.That(relics.Trophies, Is.EqualTo(42));
+            Assert.That(relics.Relics["colossus_fang"], Is.EqualTo(3));
+            Assert.That(relics.RelicsOpen, Is.EqualTo(2));
+            Assert.That(relics.Best, Is.EqualTo(5));
+            Assert.That(relics.TopLastWeek, Is.EqualTo("a"));
+            Assert.That(relics.Accepted!.Signs, Is.EqualTo(50));
+            Assert.That(relics.Accepted.Weekly, Is.True);
             var reply = PartyColossusReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"tier\":3,\"hp\":7000,\"hpFull\":31537.5,\"ceiling\":10,\"waiting\":false,\"kills\":2,\"shares\":[{\"userId\":\"a\",\"name\":\"Ann\",\"points\":900,\"share\":0.75}],\"yours\":900,\"reportSeconds\":300,\"accepted\":{\"live\":400,\"offline\":100,\"counted\":450,\"killed\":[2]}}"));
             Assert.That(reply.Opened, Is.True);
             Assert.That(reply.Tier, Is.EqualTo(3));

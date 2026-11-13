@@ -29,6 +29,8 @@ namespace Game.Net.Nakama
             Live = NakamaJson.Number(json, "live");
             Offline = NakamaJson.Number(json, "offline");
             Counted = NakamaJson.Number(json, "counted");
+            Signs = (long)NakamaJson.Number(json, "signs");
+            Weekly = NakamaJson.Flag(json, "weekly");
             var killed = new List<int>();
             foreach (var tier in NakamaJson.Items(json, "killed"))
             {
@@ -41,6 +43,8 @@ namespace Game.Net.Nakama
         public double Live { get; }
         public double Offline { get; }
         public double Counted { get; }
+        public long Signs { get; }
+        public bool Weekly { get; }
         public IReadOnlyList<int> Killed { get; }
     }
 
@@ -72,6 +76,21 @@ namespace Game.Net.Nakama
             Night = NakamaJson.Flag(json, "night");
             HittersToday = (int)NakamaJson.Number(json, "hittersToday");
             Leader = NakamaJson.Flag(json, "leader");
+            Trophies = (long)NakamaJson.Number(json, "trophies");
+            RelicsOpen = (int)NakamaJson.Number(json, "relicsOpen");
+            Best = (int)NakamaJson.Number(json, "best");
+            TopLastWeek = NakamaJson.Text(json, "topLastWeek");
+            var relics = new Dictionary<string, int>();
+            var relicField = NakamaJson.Field(json, "relics");
+            if (relicField != null && relicField.Kind == JsonKind.Object)
+            {
+                foreach (var pair in relicField.Fields)
+                {
+                    if (pair.Value.Kind == JsonKind.Number)
+                        relics[pair.Key] = (int)pair.Value.Number;
+                }
+            }
+            Relics = relics;
             var shares = new List<PartyColossusShare>();
             foreach (var share in NakamaJson.Items(json, "shares"))
                 shares.Add(new PartyColossusShare(NakamaJson.Text(share, "userId"), NakamaJson.Text(share, "name"),
@@ -105,6 +124,11 @@ namespace Game.Net.Nakama
         public bool Night { get; }
         public int HittersToday { get; }
         public bool Leader { get; }
+        public long Trophies { get; }
+        public int RelicsOpen { get; }
+        public int Best { get; }
+        public string TopLastWeek { get; }
+        public IReadOnlyDictionary<string, int> Relics { get; }
         public IReadOnlyList<PartyColossusShare> Shares { get; }
         public PartyColossusAccepted? Accepted { get; }
         public double HpShare => HpFull > 0 ? System.Math.Max(0, System.Math.Min(1, Hp / HpFull)) : 0;
@@ -124,6 +148,11 @@ namespace Game.Net.Nakama
         }
 
         public static string SwitchOffPayload(string id) => NakamaJson.Object(("id", NakamaJson.Quote(id)));
+
+        public static string RelicPayload(string id) => NakamaJson.Object(("id", NakamaJson.Quote(id)));
+
+        public static Task<PartyColossusReply> RelicUpAsync(NakamaClient client, NakamaSession session, string id, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_relic_up", RelicPayload(id), cancel);
 
         public static Task<PartyColossusReply> FetchAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
             CallAsync(client, session, "party_colossus", "{}", cancel);

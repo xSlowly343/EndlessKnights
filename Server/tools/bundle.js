@@ -469,6 +469,8 @@ if (chests.currency !== "crystals" || !walletRules.currencies.includes(chests.cu
 riftRules.shopCurrency = chests.currency;
 
 const growth = party.growth;
+if (!walletRules.sources.some((source) => source.id === growth.colossus.weekly.source))
+  throw new Error("party.json: the colossus weekly reward needs wallet source " + growth.colossus.weekly.source);
 if (!walletRules.currencies.includes(growth.treasury.currency))
   throw new Error("party.json: the party treasury currency is not a wallet currency");
 if (!(growth.treasury.nodes >= 1) || !(growth.treasury.maxVotes >= 1) || !(growth.treasury.resetFeeShare >= 0 && growth.treasury.resetFeeShare < 1) || !(growth.treasury.resetVoteHours > 0))
@@ -570,6 +572,18 @@ const partyGrowthRules = {
       delete numbers.name;
       return numbers;
     }),
+    trophyBase: growth.colossus.trophies.base,
+    trophyPerTiers: growth.colossus.trophies.perTiers,
+    signsPerTier: growth.colossus.trophies.signsPerTier,
+    relicEvery: growth.colossus.relicEvery,
+    relicMaxLevel: growth.colossus.relicMaxLevel,
+    relicCost: growth.colossus.relicCost,
+    weeklyMinShare: growth.colossus.weekly.minShare,
+    weeklySource: growth.colossus.weekly.source,
+    relics: growth.colossus.relics.map((relic) => ({ id: relic.id, stat: relic.stat, value: relic.value, works: !relic.waits })),
+    treeTrophies: partyTrialTreeLines(growth, "colossusTrophies").concat(partyTrialTreeLines(growth, "colossusLoot")),
+    treeTrophyChance: partyTrialTreeLines(growth, "colossusTrophyChance"),
+    treeSigns: partyTrialTreeLines(growth, "signsColossus"),
     soften: partyTrialTreeLines(growth, "colossusHardship"),
     switchOff: partyTrialTreeLines(growth, "colossusHardshipOff"),
     noHeal: partyTrialTreeLines(growth, "colossusNoHeal")

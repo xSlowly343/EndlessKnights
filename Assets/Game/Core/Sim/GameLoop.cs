@@ -884,6 +884,12 @@ namespace Game.Core.Sim
             RefreshPeacefulBonus();
         }
 
+        public void SetPartyRelics(IReadOnlyDictionary<string, int> levels)
+        {
+            _partyGrowth.SetRelics(levels);
+            RefreshPeacefulBonus();
+        }
+
         public void SetPartyTrials(IReadOnlyList<int> bestTiers)
         {
             _partyGrowth.SetTrials(bestTiers);

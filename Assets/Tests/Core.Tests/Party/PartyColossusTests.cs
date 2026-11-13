@@ -198,5 +198,47 @@ namespace Game.Core.Tests.Party
             loop.SetPartyStanding(false, 0, 0, Now);
             Assert.That(loop.PartyGrowth.ColossusPower, Is.EqualTo(1));
         }
+
+        [Test]
+        public void TwentyFourRelicsOpenEveryTwoTiersAndALevelCostsItsNumber()
+        {
+            Assert.That(Rules.Relics.Count, Is.EqualTo(24));
+            Assert.That(Rules.RelicsOpen(1), Is.Zero);
+            Assert.That(Rules.RelicsOpen(2), Is.EqualTo(1));
+            Assert.That(Rules.RelicsOpen(48), Is.EqualTo(24));
+            Assert.That(Rules.RelicsOpen(300), Is.EqualTo(24));
+            Assert.That(Rules.RelicPrice(0), Is.EqualTo(1));
+            Assert.That(Rules.RelicPrice(29), Is.EqualTo(30));
+            Assert.That(Rules.RelicPrice(30), Is.Zero);
+            Assert.That(Rules.RelicTotal(30), Is.EqualTo(465));
+            Assert.That(Rules.Trophies(1), Is.EqualTo(1));
+            Assert.That(Rules.Trophies(10), Is.EqualTo(3));
+            var multipliers = 0;
+            foreach (var relic in Rules.Relics)
+            {
+                if (relic.Compound)
+                    multipliers++;
+            }
+            Assert.That(multipliers, Is.EqualTo(6));
+            Assert.That(Rules.Relic("colossus_fang")!.ValueAt(30), Is.EqualTo(0.3).Within(1e-12));
+            Assert.That(Rules.Relic("eternal_heart")!.ValueAt(30), Is.EqualTo(System.Math.Pow(1.005, 30) - 1).Within(1e-12), "a multiplier compounds to about x1.16");
+            Assert.That(Rules.Relic("storm_eye")!.Works, Is.False, "the mascot call comes later");
+        }
+
+        [Test]
+        public void RelicsFeedThePartyBasketAndColossusDamage()
+        {
+            var (loop, _) = Member();
+            var before = loop.Hero.Value(CombatStats.Damage, 1);
+            loop.SetPartyRelics(new Dictionary<string, int> { ["colossus_fang"] = 10, ["eternal_heart"] = 30, ["colossus_eye"] = 5, ["colossus_chain"] = 10, ["storm_eye"] = 30 });
+            var heart = System.Math.Pow(1.005, 30) - 1;
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / before, Is.EqualTo(1.1 * (1 + heart)).Within(1e-9));
+            Assert.That(loop.PartyGrowth.ColossusPower, Is.EqualTo(1.1 * System.Math.Pow(1.008, 10)).Within(1e-12));
+            Assert.That(loop.Hero.Value(PartyGrowthLayer.ColossusDamage, 0), Is.Zero);
+            loop.SetPartyStanding(true, Now, 4, Now);
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / before, Is.EqualTo((1 + 0.03) * (1 + heart * 0.3)).Within(1e-9), "a newcomer gets a share");
+            loop.SetPartyStanding(false, 0, 0, Now);
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(before).Within(1e-9));
+        }
     }
 }

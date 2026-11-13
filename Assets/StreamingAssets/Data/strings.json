@@ -2392,6 +2392,7 @@
     "wallet.source.gift_back": { "ru": "подарок не ушёл, Знаки вернулись", "en": "the gift failed, tokens returned" },
     "wallet.source.help_call": { "ru": "помощь по зову", "en": "answering a call for help" },
     "wallet.source.party_quest": { "ru": "задание отряда", "en": "a party quest" },
+    "wallet.source.colossus_share": { "ru": "вклад в Колосса", "en": "Colossus share" },
     "wallet.source.weekly_top10": { "ru": "топ-10 испытания недели", "en": "top 10 of a weekly trial" },
     "wallet.source.weekly_top100": { "ru": "топ-100 испытания недели", "en": "top 100 of a weekly trial" },
     "wallet.source.crystal_purchase": { "ru": "покупка Кристаллов", "en": "crystals bought" },
