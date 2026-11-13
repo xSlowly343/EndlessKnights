@@ -127,6 +127,36 @@ namespace Game.Core.Tests.Sim.Rift
             Assert.That(loop.Paths.CompanionHits, Is.EqualTo(homeHits));
         }
 
+        [Test]
+        public void HomeSetsMadeForTheRiftAreTheOnlyHomeSetsThatWorkInside()
+        {
+            var loop = Home();
+            var items = TestWorld.Data.Items;
+            var depths = items.Sets.First(set => set.CarriedToRift && set.Rarity == ItemRarity.Rare);
+            var plain = items.Sets.First(set => set.Ordinary && !set.CarriedToRift && !set.Peaceful && set.Rarity == ItemRarity.Rare && !set.Jewelry);
+            foreach (var set in new[] { depths, plain })
+            {
+                foreach (var piece in set.Pieces)
+                    loop.State.SetCollection.Add(SetDef.PieceKey(set.Id, piece));
+            }
+            loop.Gear.Rebuild();
+            Assert.That(items.Sets.Where(set => set.CarriedToRift).All(set => set.Bonus.All(line => line.When == ModifierCondition.InRift)), Is.True, "a set carried into the Rift works only there");
+
+            Enter(loop);
+            Assert.That(loop.Gear.Collected(depths), Is.False, "it is not in the Rift hero's collection");
+            Assert.That(loop.Gear.CarriedFromHome(depths), Is.True);
+            Assert.That(loop.Gear.CarriedFromHome(plain), Is.False);
+            var homeScale = items.MasteryScale(items.MasteryLevel(0));
+            foreach (var line in depths.Bonus)
+                Assert.That(loop.Gear.Modifiers, Has.Member(line.WithValue(line.Value * homeScale)), "the home Rift set works inside");
+            foreach (var line in plain.Bonus)
+                Assert.That(loop.Gear.Modifiers, Has.None.EqualTo(line), "an ordinary home set stays home");
+
+            loop.Rift.Leave();
+            Assert.That(loop.Gear.CarriedFromHome(depths), Is.False);
+            Assert.That(loop.Gear.Collected(depths), Is.True);
+        }
+
         private static ModifierLayer TreeLayer(GameLoop loop) =>
             (ModifierLayer)typeof(GameLoop).GetField("_treeLayer", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(loop)!;
     }
