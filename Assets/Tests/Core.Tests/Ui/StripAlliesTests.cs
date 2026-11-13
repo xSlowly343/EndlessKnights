@@ -126,7 +126,7 @@ namespace Game.Core.Tests.Ui
                 var mark = PartyPastime.ActivityOf(activity.Id);
                 Assert.That(mark, Is.Not.EqualTo(AllyActivity.None), activity.Id + " has an icon over the ally");
                 Assert.That(PartyPastime.IdOf(mark), Is.EqualTo(activity.Id));
-                foreach (StripPlace place in System.Enum.GetValues(typeof(StripPlace)))
+                foreach (var place in new[] { StripPlace.Hideout, StripPlace.ClanCamp, StripPlace.Town })
                 {
                     var unpacked = PartyPastime.Unpack(new PartyPastime(mark, place).Packed);
                     Assert.That(unpacked.Activity, Is.EqualTo(mark));
@@ -135,6 +135,7 @@ namespace Game.Core.Tests.Ui
             }
             Assert.That(PartyPastime.Unpack(0).Known, Is.False);
             Assert.That(PartyPastime.Unpack(0xFF).Activity, Is.EqualTo(AllyActivity.None), "a byte from a newer client is not misread");
+            Assert.That(PartyPastime.Unpack(0x01).Place, Is.EqualTo(StripPlace.Hideout), "a fighting place in the byte reads as the hideout");
         }
 
         [TestCase(PartyPresence.Fighting, "")]

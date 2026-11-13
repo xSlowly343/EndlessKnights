@@ -36,7 +36,7 @@ namespace Game.Core.Party
             var activity = packed & ActivityMask;
             var place = packed >> PlaceShift;
             return new PartyPastime(activity <= (int)AllyActivity.Meditation ? (AllyActivity)activity : AllyActivity.None,
-                place <= (int)StripPlace.Town ? (StripPlace)place : StripPlace.Refuge);
+                place >= (int)StripPlace.Hideout && place <= (int)StripPlace.Town ? (StripPlace)place : StripPlace.Hideout);
         }
 
         public static AllyActivity ActivityOf(string id) => id switch

@@ -60,6 +60,19 @@ namespace Game.Net.Nakama
             }
             Beds = beds;
             Journal = journal;
+            var levels = new Dictionary<string, int>();
+            var branches = new Dictionary<string, string>();
+            var stations = NakamaJson.Field(json, "stations");
+            if (stations != null && stations.Kind == JsonKind.Object)
+            {
+                foreach (var pair in stations.Fields)
+                {
+                    levels[pair.Key] = (int)NakamaJson.Number(pair.Value, "level");
+                    branches[pair.Key] = NakamaJson.Text(pair.Value, "branch");
+                }
+            }
+            StationLevels = levels;
+            StationBranches = branches;
             var trophies = NakamaJson.Field(json, "trophies");
             var feats = new List<TrophyFeat>();
             if (trophies != null && trophies.Kind == JsonKind.Object)
@@ -138,6 +151,8 @@ namespace Game.Net.Nakama
         public long ProjectYours { get; }
         public long ProjectFromStorage { get; }
         public long ForBuildPoints { get; }
+        public IReadOnlyDictionary<string, int> StationLevels { get; }
+        public IReadOnlyDictionary<string, string> StationBranches { get; }
 
         public static string QueuePayload(string building) => NakamaJson.Object(("building", NakamaJson.Quote(building)));
 
@@ -228,6 +243,16 @@ namespace Game.Net.Nakama
             var hideout = NakamaJson.Field(json, "hideout");
             return (Amounts(NakamaJson.Field(json, "accepted")), From(hideout ?? json));
         }
+
+        public static string StationPayload(string station) => NakamaJson.Object(("station", NakamaJson.Quote(station)));
+
+        public static string BranchPayload(string station, string branch) => NakamaJson.Object(("station", NakamaJson.Quote(station)), ("branch", NakamaJson.Quote(branch)));
+
+        public static async Task<HideoutReply> StationUpAsync(NakamaClient client, NakamaSession session, string station, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_station_up", StationPayload(station), cancel).ConfigureAwait(false)));
+
+        public static async Task<HideoutReply> StationBranchAsync(NakamaClient client, NakamaSession session, string station, string branch, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_station_branch", BranchPayload(station, branch), cancel).ConfigureAwait(false)));
 
         public static async Task<HideoutReply> BuildFromStorageAsync(NakamaClient client, NakamaSession session, string item, int amount, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_build_store", GivePayload(item, amount), cancel).ConfigureAwait(false)));

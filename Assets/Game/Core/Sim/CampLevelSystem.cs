@@ -13,7 +13,8 @@ namespace Game.Core.Sim
         NotEnough,
         LevelTooLow,
         NoSuchBranch,
-        SameBranch
+        SameBranch,
+        PartyHouse
     }
 
     public sealed class CampLevelSystem
@@ -45,7 +46,7 @@ namespace Game.Core.Sim
         {
             if (!_camp.Open(building))
                 return 0;
-            return _state.Camp.Levels.TryGetValue(building, out var level) ? System.Math.Max(1, level) : 1;
+            return _state.Camp.HouseLevels.TryGetValue(building, out var level) ? System.Math.Max(1, level) : 1;
         }
 
         public CampLevelResult Check(string building)
@@ -56,6 +57,8 @@ namespace Game.Core.Sim
             var level = Level(building);
             if (level == 0)
                 return CampLevelResult.NotOpen;
+            if (_state.Camp.InPartyHouse)
+                return CampLevelResult.PartyHouse;
             if (level >= _rules.MaxLevel)
                 return CampLevelResult.TopLevel;
             var need = _rules.GuildLevelFor(level + 1);
@@ -85,7 +88,7 @@ namespace Game.Core.Sim
             return CampLevelResult.Done;
         }
 
-        public string BranchOf(string building) => _state.Camp.Branches.TryGetValue(building, out var branch) ? branch : string.Empty;
+        public string BranchOf(string building) => _state.Camp.HouseBranches.TryGetValue(building, out var branch) ? branch : string.Empty;
 
         public CampLevelResult CheckBranch(string building, string branch)
         {
@@ -94,6 +97,8 @@ namespace Game.Core.Sim
                 return CampLevelResult.NotLevelled;
             if (def.Branch(branch) == null)
                 return CampLevelResult.NoSuchBranch;
+            if (_state.Camp.InPartyHouse)
+                return CampLevelResult.PartyHouse;
             if (Level(building) < _rules.BranchLevel)
                 return CampLevelResult.LevelTooLow;
             var current = BranchOf(building);
@@ -178,6 +183,19 @@ namespace Game.Core.Sim
             return true;
         }
 
+        public void UsePartyHouse(bool inParty, IReadOnlyDictionary<string, int> levels, IReadOnlyDictionary<string, string> branches)
+        {
+            var camp = _state.Camp;
+            camp.InPartyHouse = inParty;
+            camp.PartyLevels.Clear();
+            camp.PartyBranches.Clear();
+            foreach (var pair in levels)
+                camp.PartyLevels[pair.Key] = pair.Value;
+            foreach (var pair in branches)
+                camp.PartyBranches[pair.Key] = pair.Value;
+            Apply();
+        }
+
         public void Apply()
         {
             var perks = _state.CampPerks;
@@ -185,7 +203,7 @@ namespace Game.Core.Sim
                 perks[i] = 0;
             foreach (var def in _rules.Buildings)
             {
-                var level = _state.Camp.Levels.TryGetValue(def.Building, out var stored) ? stored : 1;
+                var level = _state.Camp.HouseLevels.TryGetValue(def.Building, out var stored) ? stored : 1;
                 if (level > 1)
                     perks[(int)def.Perk] += def.PerLevel * (level - 1);
                 var branch = def.Branch(BranchOf(def.Building));

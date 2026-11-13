@@ -15,5 +15,10 @@ namespace Game.Core.Sim
         public HashSet<string> Modules { get; } = new HashSet<string>(System.StringComparer.Ordinal);
         public HashSet<string> Blueprints { get; } = new HashSet<string>(BlueprintCapacity, System.StringComparer.Ordinal);
         public Dictionary<string, int> Installed { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
+        public bool InPartyHouse { get; set; }
+        public Dictionary<string, int> PartyLevels { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
+        public Dictionary<string, string> PartyBranches { get; } = new Dictionary<string, string>(System.StringComparer.Ordinal);
+        public Dictionary<string, int> HouseLevels => InPartyHouse ? PartyLevels : Levels;
+        public Dictionary<string, string> HouseBranches => InPartyHouse ? PartyBranches : Branches;
     }
 }

@@ -67,22 +67,27 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InTheHideoutNoPersonalCraftMovesButPeacefulActionsCount()
+        public void InThePartyHideoutTheActivityAndTheSharedWorkBothCount()
         {
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input);
             loop.Peaceful.SetMode(PeacefulMode.Camp);
             loop.Peaceful.SetPlace(PeacefulPlace.Hideout);
+            Assert.That(loop.Hideout.Inside, Is.False, "the own hideout before the party");
+            loop.Hideout.Use(1, 2, 0, 0, 0, 0, System.Array.Empty<string>());
             Assert.That(loop.Hideout.Inside, Is.True);
             input.PressKeys(6);
             loop.Tick();
-            Assert.That(loop.Peaceful.Work(loop.Peaceful.Activity).Keys, Is.Zero);
+            Assert.That(loop.State.Peaceful.HideoutWork.Keys, Is.EqualTo(6));
             Assert.That(loop.Guilds.UnsentActions, Is.EqualTo(6));
 
-            loop.Peaceful.SetPlace(PeacefulPlace.Refuge);
+            loop.Hideout.Leave();
             input.PressKeys(4);
             loop.Tick();
-            Assert.That(loop.Hideout.Inside, Is.False);
+            Assert.That(loop.Hideout.Inside, Is.False, "without a party the hideout is the player's own");
+            Assert.That(loop.State.Peaceful.Place, Is.EqualTo(PeacefulPlace.Hideout));
+            Assert.That(loop.Guilds.UnsentActions, Is.EqualTo(10), "the chosen activity keeps counting in the own hideout");
+            Assert.That(loop.State.Peaceful.HideoutWork.Keys, Is.EqualTo(6), "the shared work waits for the party");
         }
 
         [Test]
@@ -100,7 +105,7 @@ namespace Game.Core.Tests.Sim
 
             loop.Hideout.Leave();
             Assert.That(loop.Hideout.State.Tier, Is.Zero);
-            Assert.That(loop.State.Peaceful.Place, Is.EqualTo(PeacefulPlace.Refuge));
+            Assert.That(loop.State.Peaceful.Place, Is.EqualTo(PeacefulPlace.Hideout), "leaving the party keeps the player in their own hideout");
         }
     
 
@@ -213,6 +218,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(input);
             loop.Peaceful.SetMode(PeacefulMode.Camp);
             loop.Peaceful.SetPlace(PeacefulPlace.Hideout);
+            loop.Hideout.Use(1, 2, 0, 0, 0, 0, System.Array.Empty<string>());
             input.PressKeys(5);
             input.ClickLeft(2);
             loop.Tick();
@@ -313,6 +319,19 @@ namespace Game.Core.Tests.Sim
             Assert.That(HideoutView.JournalLines(hideout.State)[0], Is.EqualTo(Texts.Format("hideout.journal.built", "Bob", "ore_hills", 6)));
             hideout.Leave();
             Assert.That(hideout.State.ForBuildPoints, Is.Zero);
+        }
+
+        [Test]
+        public void AnOldSaveFromTheRefugeReadsAsTheOwnHideout()
+        {
+            var state = new GameState(1);
+            state.Peaceful.Mode = PeacefulMode.Camp;
+            var json = Game.Core.Content.Json.JsonWriter.Write(GameStateJson.Write(state));
+            json = System.Text.RegularExpressions.Regex.Replace(json, "\"place\":\\s*\"hideout\"", "\"place\": \"refuge\"");
+            Assert.That(json, Does.Contain("refuge"));
+            var copy = GameStateJson.Read(new ContentNode(Game.Core.Content.Json.JsonParser.Parse(json, "save"), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Peaceful.Place, Is.EqualTo(PeacefulPlace.Hideout));
+            Assert.That(StripScene.PlaceOf(copy), Is.EqualTo(StripPlace.Hideout));
         }
 
         [Test]

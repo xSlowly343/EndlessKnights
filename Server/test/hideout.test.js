@@ -597,3 +597,35 @@ test("a refused put gives the day's allowance back", () => {
   const used = server.inflowRead(nk, "ann", server.walletDayOf(now)).value.used;
   assert.ok(!used.herb_, "nothing of the day is used up");
 });
+
+test("the party levels its workshop stations from the storage, the leader decides", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  const rules = server.HideoutServerRules;
+  const id = "garden_bed";
+  const station = rules.workshop[id];
+  assert.ok(station && station.guild === "", "garden beds need no guild hall");
+  assert.throws(() => call("ann", "hideoutStationUpRpc", { station: id }), /storage is not built/);
+  built(nk, "ann", { storage: 1 });
+  assert.throws(() => call("ann", "hideoutStationUpRpc", { station: id }), /not enough in the storage/);
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.hideoutChange(nk, group.id, (value) => { for (const item of station.materials) value.storage[item] = 500; });
+  assert.throws(() => call("bob", "hideoutStationUpRpc", { station: id }), /only the leader/);
+  assert.throws(() => call("ann", "hideoutStationUpRpc", { station: "moat" }), /no such station/);
+  let view = call("ann", "hideoutStationUpRpc", { station: id });
+  assert.deepStrictEqual(view.stations[id], { level: 2, branch: "" });
+  assert.strictEqual(view.commons.storage[station.materials[0]], 500 - rules.stationAmounts[0][0]);
+  assert.strictEqual(view.commons.journal[0].build, id);
+  assert.throws(() => call("ann", "hideoutStationBranchRpc", { station: id, branch: station.branches[0] }), /level is too low/);
+  view = call("ann", "hideoutStationUpRpc", { station: id });
+  const before = view.commons.storage[station.materials[0]];
+  view = call("ann", "hideoutStationBranchRpc", { station: id, branch: station.branches[0] });
+  assert.strictEqual(view.stations[id].branch, station.branches[0]);
+  assert.strictEqual(view.commons.storage[station.materials[0]], before, "the first branch is free");
+  view = call("ann", "hideoutStationBranchRpc", { station: id, branch: station.branches[1] });
+  assert.strictEqual(view.commons.storage[station.materials[0]], before - rules.stationChangeAmounts[0], "changing the branch costs");
+  assert.throws(() => call("ann", "hideoutStationBranchRpc", { station: id, branch: "volcano" }), /no such branch/);
+  const forge = Object.keys(rules.workshop).find((key) => rules.workshop[key].guild);
+  server.hideoutChange(nk, group.id, (value) => { for (const item of rules.workshop[forge].materials) value.storage[item] = 500; });
+  assert.throws(() => call("ann", "hideoutStationUpRpc", { station: forge }), /guild hall is not built/);
+});

@@ -32,10 +32,12 @@ namespace Game.Core.Sim
 
         public HideoutRules Rules => _rules;
         public HideoutState State => _state.Hideout;
-        public bool Inside => _state.Peaceful.Mode == PeacefulMode.Camp && _state.Peaceful.Place == PeacefulPlace.Hideout;
+        public bool Inside => _state.Peaceful.Mode == PeacefulMode.Camp && _state.Peaceful.Place == PeacefulPlace.Hideout && InParty;
+        public bool InParty => State.Tier > 0;
         public DecorSystem? Decor { get; set; }
         public CompanionSystem? Companions { get; set; }
         public NestSystem? Nest { get; set; }
+        public CampLevelSystem? Stations { get; set; }
         public int CornerDecor => _rules.CornerDecorAt(State.Tier);
         public bool CornerOpen => State.Tier > 0 && State.HasCorner;
         public IReadOnlyList<string> Corner => _state.Decor.Corner;
@@ -281,6 +283,9 @@ namespace Game.Core.Sim
             State.Project.Length > 0 && _materials.PointsOf(item) > 0 && amount > 0 && amount <= _materials.MaxGive
             && State.Storage.TryGetValue(item, out var stored) && stored >= amount;
 
+        public void UseStations(IReadOnlyDictionary<string, int> levels, IReadOnlyDictionary<string, string> branches) =>
+            Stations?.UsePartyHouse(InParty, levels, branches);
+
         public void UseForBuild(long points, long fromStorage)
         {
             State.ForBuildPoints = System.Math.Max(0, points);
@@ -362,11 +367,10 @@ namespace Game.Core.Sim
             UseCrafts(System.Array.Empty<string>(), System.Array.Empty<string>());
             UseCommons(false, System.Array.Empty<SharedBed>(), new Dictionary<string, long>(), false, new Dictionary<string, long>(), System.Array.Empty<StorageEntry>(), 0, 0);
             UseForBuild(0, 0);
+            Stations?.UsePartyHouse(false, new Dictionary<string, int>(), new Dictionary<string, string>());
             UseCorners(false, System.Array.Empty<HideoutCorner>());
             Use(0, 0, 0, 0, 0, 0, System.Array.Empty<string>());
             UseBuild(new Dictionary<string, int>(), System.Array.Empty<string>(), string.Empty, 0, 0, 0, 0, 0, false, new Dictionary<string, int>(), System.Array.Empty<string>());
-            if (_state.Peaceful.Place == PeacefulPlace.Hideout)
-                _state.Peaceful.Place = PeacefulPlace.Refuge;
         }
 
         public List<string> Open()

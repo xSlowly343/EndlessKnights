@@ -107,6 +107,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("hideout_store_take", hideoutStoreTakeRpc);
     initializer.registerRpc("hideout_store_share", hideoutStoreShareRpc);
     initializer.registerRpc("hideout_build_store", hideoutBuildFromStorageRpc);
+    initializer.registerRpc("hideout_station_up", hideoutStationUpRpc);
+    initializer.registerRpc("hideout_station_branch", hideoutStationBranchRpc);
     initializer.registerRpc("name_consent", consentRpc);
     initializer.registerRpc("hideout_brewed", hideoutBrewedRpc);
     initializer.registerRpc("hideout_order_redraw", hideoutOrderRedrawRpc);
@@ -142,10 +144,10 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("market_buy", marketBuyRpc);
     initializer.registerRpc("market_cancel", marketCancelRpc);
     initializer.registerRpc("market_claim", marketClaimRpc);
-    initializer.registerRpc("camp_publish", campPublishRpc);
-    initializer.registerRpc("camp_visit", campVisitRpc);
-    initializer.registerRpc("camp_guest", campGuestRpc);
-    initializer.registerRpc("camp_guests_claim", campGuestsClaimRpc);
+    initializer.registerRpc("hideout_publish", hideoutPublishRpc);
+    initializer.registerRpc("hideout_visit", hideoutVisitRpc);
+    initializer.registerRpc("hideout_guest", hideoutGuestRpc);
+    initializer.registerRpc("hideout_guests_claim", hideoutGuestsClaimRpc);
     initializer.registerBeforeCreateGroup(partyBeforeCreateGroup);
     initializer.registerBeforeUpdateGroup(partyBeforeGroupChange);
     initializer.registerBeforeDeleteGroup(partyBeforeGroupChange);

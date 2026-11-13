@@ -58,10 +58,10 @@ namespace Game.Core.Tests.Sim
             loop.Camp.SetGuilds(new[] { "smiths" });
             Assert.That(loop.Camp.Open("forge"), Is.True);
 
-            var street = CampView.Street(loop.Camp);
+            var street = HideoutView.Workshop(loop.Camp);
             Assert.That(street.Single(l => l.Building == "pier").WaitsForGuild, Is.True);
             Assert.That(street.Single(l => l.Building == "chef_table").OpensAtTier, Is.EqualTo("Застава"));
-            Assert.That(CampView.TierName(loop.Camp), Is.EqualTo("Лагерь"));
+            Assert.That(HideoutView.WorkshopTierName(loop.Camp), Is.EqualTo("Лагерь"));
         }
 
         [Test]

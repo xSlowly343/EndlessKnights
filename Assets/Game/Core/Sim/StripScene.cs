@@ -30,7 +30,7 @@ namespace Game.Core.Sim
 
         public void UseRules(StripSceneRules rules) => _rules = rules;
 
-        public static bool IsPeaceful(StripPlace place) => place >= StripPlace.Refuge;
+        public static bool IsPeaceful(StripPlace place) => place >= StripPlace.Hideout;
 
         public static StripPlace PlaceOf(GameState state)
         {
@@ -45,10 +45,9 @@ namespace Game.Core.Sim
 
         public static StripPlace PlaceOf(PeacefulPlace place) => place switch
         {
-            PeacefulPlace.Hideout => StripPlace.Hideout,
             PeacefulPlace.Town => StripPlace.Town,
             PeacefulPlace.ClanCamp => StripPlace.ClanCamp,
-            _ => StripPlace.Refuge
+            _ => StripPlace.Hideout
         };
 
         public static StripFight FightOf(GameState state, StripPlace place)

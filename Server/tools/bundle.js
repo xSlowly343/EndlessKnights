@@ -524,6 +524,8 @@ const townBuildRules = {
 };
 
 const hideout = JSON.parse(fs.readFileSync(path.join(data, "party_hideout.json"), "utf8"));
+const campLevelsData = JSON.parse(fs.readFileSync(path.join(data, "camp_levels.json"), "utf8"));
+const campData = JSON.parse(fs.readFileSync(path.join(data, "camp.json"), "utf8"));
 if (hideout.version !== 1)
   throw new Error("party_hideout.json: version " + hideout.version + " is not supported");
 if (!(guilds.build.pace.burstShare > 0 && guilds.build.pace.burstShare <= 1) || !(guilds.build.pace.fillHours > 0))
@@ -560,10 +562,21 @@ const hideoutRules = {
   orderDays: hideout.order.days,
   orderFromTier: hideout.order.fromTier,
   orderSource: hideout.order.source,
+  workshop: Object.fromEntries(campLevelsData.buildings.map((building) => [building.building, {
+    materials: building.materials, branches: building.branches.map((branch) => branch.id),
+    guild: (campData.buildings.find((entry) => entry.id === building.building) || {}).guild || "" }])),
+  stationMaxLevel: campLevelsData.maxLevel,
+  stationAmounts: campLevelsData.amounts,
+  stationBranchLevel: campLevelsData.branchLevel,
+  stationChangeAmounts: campLevelsData.changeAmounts,
   orderGoals: hideout.order.goals.map((goal) => ({ id: goal.id, fromTier: goal.fromTier, needs: goal.needs.map((need) => ({ counter: need.counter, target: need.target })) }))
 };
 if (!walletRules.sources.some((entry) => entry.id === hideoutRules.orderSource))
   throw new Error("coop_currency.json: the party order needs the " + hideoutRules.orderSource + " source");
+for (const id of Object.keys(hideoutRules.workshop))
+  for (const item of hideoutRules.workshop[id].materials)
+    if (!hideoutRules.storagePrefixes.some((prefix) => item.startsWith(prefix)) && !hideoutRules.storageItems.includes(item))
+      throw new Error("camp_levels.json: station " + id + " needs " + item + ", which the party storage does not take");
 for (const row of hideoutRules.gardenRows)
   if (!hideoutRules.buildings.some((building) => building.id === row))
     throw new Error("party_hideout.json: unknown garden row " + row);

@@ -58,15 +58,15 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void TheSharedForgeWaitsForItsBuildingInTheHideout()
+        public void WithoutTheSharedForgeThePlayerSmithsAtTheirOwn()
         {
             var input = new FakeInputSource();
             var loop = InHideout(input, ForgeSystem.Activity, string.Empty, "Bob");
-            Assert.That(loop.Forge.Open, Is.False, "no shared forge, no smithing in the hideout");
-            Assert.That(loop.Forge.TemperWeapon(), Is.EqualTo(ForgeResult.Closed));
+            Assert.That(loop.Forge.Open, Is.EqualTo(loop.Camp.Open(TestWorld.Data.Forge.Building)), "without the shared forge the player's own forge in the corner works, if there is one");
+            Assert.That(loop.Forge.Together, Is.False);
             Assert.That(loop.Hideout.Station, Is.EqualTo(HideoutSystem.ForgeStation));
-            loop.Peaceful.SetPlace(PeacefulPlace.Refuge);
-            Assert.That(loop.Forge.Open, Is.True, "the own forge still works at home");
+            loop.Hideout.Leave();
+            Assert.That(loop.Hideout.Station, Is.Empty, "alone the player smiths at their own forge");
         }
 
         [Test]

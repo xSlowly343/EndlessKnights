@@ -113,7 +113,7 @@ namespace Game.Core.Tests.Sim
 
             var lines = ApprenticeView.Lines(loop.Apprentices, TestWorld.Real.Guilds);
             Assert.That(lines.Find(line => line.Building == "cauldron")!.Status, Does.StartWith("уровень 1 из 5"));
-            Assert.That(lines.Find(line => line.Building == "pier")!.Status, Is.EqualTo("Постройки ещё нет в убежище"));
+            Assert.That(lines.Find(line => line.Building == "pier")!.Status, Is.EqualTo("Постройки ещё нет в Пристанище"));
             loop.State.Town.Reputation["smiths"] = 0;
             loop.Camp.SetGuilds(new[] { "smiths" });
             Assert.That(ApprenticeView.Lines(loop.Apprentices, TestWorld.Real.Guilds).Find(line => line.Building == "forge")!.Status,

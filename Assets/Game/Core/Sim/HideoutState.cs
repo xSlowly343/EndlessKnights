@@ -51,6 +51,26 @@ namespace Game.Core.Sim
         public string Build { get; }
     }
 
+    public readonly struct PartyStationLine
+    {
+        public PartyStationLine(string building, int level, string branch, string cost, bool canUpgrade, bool canBranch)
+        {
+            Building = building;
+            Level = level;
+            Branch = branch;
+            Cost = cost;
+            CanUpgrade = canUpgrade;
+            CanBranch = canBranch;
+        }
+
+        public string Building { get; }
+        public int Level { get; }
+        public string Branch { get; }
+        public string Cost { get; }
+        public bool CanUpgrade { get; }
+        public bool CanBranch { get; }
+    }
+
     public readonly struct StorageForBuildLine
     {
         public StorageForBuildLine(string item, long amount, int pointsEach, bool canGive)
