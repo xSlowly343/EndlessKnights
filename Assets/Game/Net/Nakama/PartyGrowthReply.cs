@@ -14,6 +14,8 @@ namespace Game.Net.Nakama
             Level = (int)NakamaJson.Number(json, "level");
             Into = (long)NakamaJson.Number(json, "into");
             Need = (long)NakamaJson.Number(json, "need");
+            Members = (int)NakamaJson.Number(json, "members");
+            JoinedAt = (long)NakamaJson.Number(json, "joinedAt");
         }
 
         public string PartyId { get; }
@@ -21,6 +23,8 @@ namespace Game.Net.Nakama
         public int Level { get; }
         public long Into { get; }
         public long Need { get; }
+        public int Members { get; }
+        public long JoinedAt { get; }
 
         public static PartyGrowthReply From(JsonValue json) => new PartyGrowthReply(json);
 

@@ -47,6 +47,7 @@ namespace Game.Core.Sim
         private readonly RaidTally _raid;
         private readonly ClanTreeBonus _clanTree;
         private readonly MentorBonus _mentor;
+        private readonly PartyGrowthLayer _partyGrowth;
         private readonly RiftSystem _rift;
         private readonly WeaponSystem _weapons;
         private readonly DropSystem _drops;
@@ -257,6 +258,7 @@ namespace Game.Core.Sim
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events, hero);
             _clanTree = new ClanTreeBonus(data.ClanTree, hero, state.ClanBonus);
             _mentor = new MentorBonus(data.Mentor, hero, _levels, state);
+            _partyGrowth = new PartyGrowthLayer(data.Party.Growth, hero);
             _homeOnly = new[] { _clanTree.Layer, _mentor.Layer, _alchemy.Layer, _museum.Layer, _cooking.Layer, _clanCamp.Layer, _gates.Layer, _chronicle.Layer };
             MuteHomeOnly();
             RebuildTree();
@@ -291,6 +293,7 @@ namespace Game.Core.Sim
         public SynergySystem Synergy => _synergy;
         public GhostSystem Ghost => _ghost;
         public PartyActivityMeter PartyActivity { get; } = new PartyActivityMeter();
+        public PartyGrowthLayer PartyGrowth => _partyGrowth;
         public RaidTally Raid => _raid;
         public ClanTreeBonus ClanTree => _clanTree;
         public MentorBonus Mentor => _mentor;
@@ -799,7 +802,24 @@ namespace Game.Core.Sim
             _gear.Rebuild();
         }
 
-        public void SetServerTime(long utcUnixMs) => State.ServerHour = _data.Combat.Conditions.ServerHour(utcUnixMs);
+        public void SetServerTime(long utcUnixMs)
+        {
+            State.ServerHour = _data.Combat.Conditions.ServerHour(utcUnixMs);
+            if (_partyGrowth.Refresh(utcUnixMs))
+                RefreshPeacefulBonus();
+        }
+
+        public void SetPartyStanding(bool inParty, long joinedUnixMs, int members, long nowUnixMs)
+        {
+            _partyGrowth.SetStanding(inParty, joinedUnixMs, members, nowUnixMs);
+            RefreshPeacefulBonus();
+        }
+
+        public void SetPartyGrowthSources(IReadOnlyList<Modifier> sources)
+        {
+            _partyGrowth.SetSources(sources);
+            RefreshPeacefulBonus();
+        }
 
         public static int FateOf(long startedUnixMs, long day) => FateOf(startedUnixMs, day, 3);
 
@@ -1127,6 +1147,7 @@ namespace Game.Core.Sim
             _raid.UseRules(data.Raid);
             _clanTree.UseCatalog(data.ClanTree);
             _mentor.UseRules(data.Mentor);
+            _partyGrowth.UseRules(data.Party.Growth);
             _rift.UseData(data);
             RebuildTree();
             SyncPathSkill();

@@ -481,6 +481,7 @@ const partyGrowthRules = {
   dailyMinutesPerMember: growth.experience.dailyMinutesPerMember,
   firstReportSeconds: growth.experience.firstReportSeconds,
   reportSlackSeconds: growth.experience.reportSlackSeconds,
+  rejoinHours: growth.basket.rejoinHours,
   unlocks: growth.unlocks.map((unlock) => ({ level: unlock.level, kind: unlock.kind }))
 };
 
