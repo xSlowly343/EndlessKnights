@@ -942,7 +942,8 @@ namespace Game.Core.Save
             var eggs = new JsonValue[companions.Eggs.Count];
             for (var i = 0; i < eggs.Length; i++)
                 eggs[i] = Object(("biome", JsonValue.Of(companions.Eggs[i].Biome)), ("secondsLeft", JsonValue.Of(companions.Eggs[i].SecondsLeft)));
-            return Object(("day", JsonValue.Of(companions.Day)), ("home", WriteIdList(companions.Home)), ("owned", WriteIdList(owned)),
+            return Object(("day", JsonValue.Of(companions.Day)), ("visiting", OptionalText(companions.Visiting)), ("visitHost", OptionalText(companions.VisitHost)),
+                ("visitEndsUnixMs", JsonValue.Of(companions.VisitEndsUnixMs)), ("home", WriteIdList(companions.Home)), ("owned", WriteIdList(owned)),
                 ("eggs", JsonValue.Array(eggs)), ("eggCooldown", JsonValue.Of(companions.EggCooldown)), ("sparks", JsonValue.Of(companions.Sparks)),
                 ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)), ("soulTrialWeek", JsonValue.Of(companions.SoulTrialWeek)), ("soulTreeWeek", JsonValue.Of(companions.SoulTreeWeek)), ("essence", JsonValue.Of(companions.Essence)), ("quickBiteSeconds", JsonValue.Of(companions.QuickBiteSeconds)), ("quickBiteFactor", JsonValue.Of(companions.QuickBiteFactor)), ("sureForge", JsonValue.Of(companions.SureForge)), ("xpBoostSeconds", JsonValue.Of(companions.XpBoostSeconds)), ("xpBoost", JsonValue.Of(companions.XpBoost)), ("hostEssenceDays", WriteNumberMap(companions.HostEssenceDays)),
                 ("gear", WriteCompanionGear(companions.Gear)), ("nextGearId", JsonValue.Of(companions.NextGearId)),
@@ -1001,6 +1002,9 @@ namespace Game.Core.Save
         private static void ReadCompanions(ContentNode node, CompanionState companions)
         {
             companions.Day = node.Field("day").AsLong(-1);
+            companions.Visiting = ReadOptionalText(node, "visiting");
+            companions.VisitHost = ReadOptionalText(node, "visitHost");
+            companions.VisitEndsUnixMs = node.HasField("visitEndsUnixMs") ? node.Field("visitEndsUnixMs").AsLong(0) : 0;
             companions.Progress.Clear();
             foreach (var item in node.Field("progress").Items())
             {

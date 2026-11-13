@@ -82,6 +82,8 @@ namespace Game.Core.Sim
 
         public bool Busy(string companion)
         {
+            if (companion.Length > 0 && _state.Companions.Visiting == companion)
+                return true;
             var active = State.Active;
             for (var i = 0; i < active.Count; i++)
             {

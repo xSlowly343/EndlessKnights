@@ -711,6 +711,21 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ACompanionVisitIsReadFromTheServer()
+        {
+            Assert.That(CompanionVisitReply.SendPayload("bob", "camp_dog", "Rex", 1), Is.EqualTo("{\"host\":\"bob\",\"companion\":\"camp_dog\",\"name\":\"Rex\",\"stage\":1}"));
+            var away = CompanionVisitReply.From(NakamaJson.Parse("{\"away\":{\"host\":\"b\",\"hostName\":\"Bob\",\"companion\":\"camp_dog\",\"endsAt\":9,\"ready\":true},\"visitsLeft\":1,\"guests\":[{\"fromName\":\"Eve\",\"companion\":\"pet_owl\",\"name\":\"Hoot\",\"stage\":2,\"endsAt\":7}],\"now\":5}"));
+            Assert.That(away.Away, Is.True);
+            Assert.That(away.Ready, Is.True);
+            Assert.That(away.AwayHost, Is.EqualTo("Bob"));
+            Assert.That(away.Guests.Single().Name, Is.EqualTo("Hoot"));
+            var back = CompanionVisitReply.From(NakamaJson.Parse("{\"away\":null,\"visitsLeft\":1,\"guests\":[],\"companion\":\"camp_dog\",\"gifts\":{\"fish_hills_roach\":1},\"now\":5}"));
+            Assert.That(back.Away, Is.False);
+            Assert.That(back.Gifts["fish_hills_roach"], Is.EqualTo(1));
+            Assert.That(back.BackCompanion, Is.EqualTo("camp_dog"));
+        }
+
+        [Test]
         public void TheTownRolesAreReadAndShown()
         {
             var reply = TownBuildReply.From(NakamaJson.Parse("{\"phase\":\"gather\",\"round\":2,\"roles\":[{\"role\":\"feeder\",\"name\":\"Cid\",\"amount\":4},{\"role\":\"logger\",\"name\":\"\",\"amount\":10}]}"));

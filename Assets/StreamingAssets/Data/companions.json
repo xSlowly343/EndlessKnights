@@ -2341,6 +2341,7 @@
   "coop": {
     "petsPerDay": 3,
     "warmsPerFriendPerDay": 1,
+    "visit": { "hours": 4, "perDay": 2, "experience": 60, "bond": 5, "source": "companion_visit" },
     "farTrip": {
       "hours": 24,
       "perDay": 1,

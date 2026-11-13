@@ -116,6 +116,9 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("rift_supply_send", riftSupplySendRpc);
     initializer.registerRpc("rift_supply", riftSupplyMineRpc);
     initializer.registerRpc("rift_rear", riftRearRpc);
+    initializer.registerRpc("companion_visit_send", companionVisitSendRpc);
+    initializer.registerRpc("companion_visit", companionVisitRpc);
+    initializer.registerRpc("companion_visit_claim", companionVisitClaimRpc);
     initializer.registerRpc("name_consent", consentRpc);
     initializer.registerRpc("hideout_brewed", hideoutBrewedRpc);
     initializer.registerRpc("hideout_order_redraw", hideoutOrderRedrawRpc);

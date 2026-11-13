@@ -620,12 +620,15 @@ const companionRules = {
   bonesPerCompanion: companions.coop.farTrip.bonesPerCompanion,
   rarePerCompanion: companions.coop.farTrip.rarePerCompanion,
   rarePerBiome: companions.coop.farTrip.rarePerBiome,
-  soulsPerTrip: companions.coop.farTrip.souls
+  soulsPerTrip: companions.coop.farTrip.souls,
+  visitMs: companions.coop.visit.hours * 3600000,
+  visitsPerDay: companions.coop.visit.perDay,
+  visitSource: companions.coop.visit.source
 };
 for (const id of Object.keys(companionRules.companions))
   if (!companionRules.biomes[companionRules.companions[id]])
     throw new Error("companions.json: no biome entry for " + companionRules.companions[id]);
-for (const source of ["companion_pet", "companion_trip", "companion_pair"])
+for (const source of ["companion_pet", "companion_trip", "companion_pair", companions.coop.visit.source])
   if (!walletRules.sources.some((entry) => entry.id === source))
     throw new Error("coop_currency.json: companions need the " + source + " source");
 

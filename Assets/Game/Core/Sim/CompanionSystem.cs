@@ -1951,6 +1951,53 @@ namespace Game.Core.Sim
             }
         }
 
+        public bool Visiting => State.Visiting.Length > 0;
+
+        public bool VisitBack(long nowUnixMs) => Visiting && nowUnixMs >= State.VisitEndsUnixMs;
+
+        public CompanionResult CanVisit(string companion)
+        {
+            if (!Known(companion))
+                return CompanionResult.UnknownCompanion;
+            if (Visiting || _expeditions.Busy(companion))
+                return CompanionResult.Busy;
+            return CompanionResult.Done;
+        }
+
+        public CompanionResult StartVisit(string companion, string hostName, long endsUnixMs)
+        {
+            var check = CanVisit(companion);
+            if (check != CompanionResult.Done)
+                return check;
+            State.Visiting = companion;
+            State.VisitHost = hostName;
+            State.VisitEndsUnixMs = endsUnixMs;
+            return CompanionResult.Done;
+        }
+
+        public void CancelVisit()
+        {
+            State.Visiting = string.Empty;
+            State.VisitHost = string.Empty;
+            State.VisitEndsUnixMs = 0;
+        }
+
+        public string FinishVisit(IReadOnlyDictionary<string, long> gifts)
+        {
+            var companion = State.Visiting;
+            if (companion.Length == 0)
+                return string.Empty;
+            foreach (var pair in gifts)
+            {
+                if (pair.Value > 0)
+                    _camp.Add(pair.Key, pair.Value);
+            }
+            Gain(companion, _rules.VisitExperience);
+            AddBond(companion, _rules.VisitBond);
+            CancelVisit();
+            return companion;
+        }
+
         public void Gain(string companion, double experience)
         {
             if (experience <= 0)
