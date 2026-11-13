@@ -29,6 +29,14 @@ namespace Game.Core.Ui
         public string Text { get; internal set; } = string.Empty;
     }
 
+    public sealed class GuildPerkLine
+    {
+        public int Level { get; internal set; }
+        public int Hall { get; internal set; }
+        public bool Open { get; internal set; }
+        public string Text { get; internal set; } = string.Empty;
+    }
+
     public sealed class TownStageLine
     {
         public string Id { get; internal set; } = string.Empty;
@@ -340,6 +348,31 @@ namespace Game.Core.Ui
                     : Texts.Format("guild.stage.next", name, built, Texts.Pick(next.NameRu, next.NameEn), next.Built - built)
             };
         }
+
+        public static List<GuildPerkLine> Perks(GuildSystem guilds, string guildId)
+        {
+            var guild = guilds.Rules.Guild(guildId);
+            var lines = new List<GuildPerkLine>();
+            if (guild == null)
+                return lines;
+            foreach (var perk in guild.Perks)
+            {
+                var effect = Texts.Format("perk." + MuseumRules.NameOf(perk.Perk), Percent(perk.Value));
+                lines.Add(new GuildPerkLine
+                {
+                    Level = perk.Level,
+                    Hall = perk.Hall,
+                    Open = guilds.PerkOpen(guild, perk),
+                    Text = perk.Level > 0 ? Texts.Format("guild.perk.level", perk.Level, effect) : Texts.Format("guild.perk.hall", perk.Hall, effect)
+                });
+            }
+            return lines;
+        }
+
+        public static string ForecastBonus(GuildRules rules) =>
+            Texts.Format("guild.forecast.bonus", rules.Observatory.FishWeight.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture), Percent(rules.Observatory.PlantGrow), Percent(rules.Observatory.PlantMutation));
+
+        private static string Percent(double value) => (value * 100).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);
 
         public static string MasterSays(GuildRules rules, TownBoard board, long day)
         {

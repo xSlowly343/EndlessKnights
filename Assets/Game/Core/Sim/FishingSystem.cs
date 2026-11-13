@@ -239,13 +239,14 @@ namespace Game.Core.Sim
 
         private FishDef Pick(IReadOnlyList<FishDef> fish)
         {
+            var forecast = _state.Forecast;
             var total = 0.0;
             for (var i = 0; i < fish.Count; i++)
-                total += fish[i].Weight;
+                total += fish[i].Weight * forecast.WeightOf(fish[i].Id);
             var roll = _state.Rng.NextDouble() * total;
             for (var i = 0; i < fish.Count; i++)
             {
-                roll -= fish[i].Weight;
+                roll -= fish[i].Weight * forecast.WeightOf(fish[i].Id);
                 if (roll < 0)
                     return fish[i];
             }

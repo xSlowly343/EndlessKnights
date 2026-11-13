@@ -126,9 +126,11 @@ namespace Game.Core.Sim
         public double[] SetPerks { get; } = new double[MuseumRules.PerkCount];
         public double[] TalentPerks { get; } = new double[MuseumRules.PerkCount];
         public double[] CampPerks { get; } = new double[MuseumRules.PerkCount];
+        public double[] GuildPerks { get; } = new double[MuseumRules.PerkCount];
+        public TownForecast Forecast { get; } = new TownForecast();
         public double[] CompanionPerks { get; } = new double[MuseumRules.PerkCount];
 
-        public double Perk(MuseumPerk perk) => Museum.Perks[(int)perk] + SetPerks[(int)perk] + TalentPerks[(int)perk] + CampPerks[(int)perk] + CompanionPerks[(int)perk];
+        public double Perk(MuseumPerk perk) => Museum.Perks[(int)perk] + SetPerks[(int)perk] + TalentPerks[(int)perk] + CampPerks[(int)perk] + CompanionPerks[(int)perk] + GuildPerks[(int)perk];
         public DecorState Decor { get; } = new DecorState();
         public AwakeningState Awakening { get; } = new AwakeningState();
         public SlateState Slates { get; }

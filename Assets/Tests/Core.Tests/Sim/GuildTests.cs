@@ -487,6 +487,105 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void GuildLevelsAndHallLevelsOpenPerksForTheirCraft()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            loop.Tick();
+            Assert.That(loop.State.GuildPerks, Is.All.EqualTo(0), "no hall, no perks");
+            loop.State.Town.Reputation["gardeners"] = Rules.Levels[6];
+            loop.Guilds.Refresh();
+            Assert.That(loop.State.Perk(MuseumPerk.GrowFaster), Is.Zero, "reputation alone does nothing while the house is not built");
+            loop.Camp.SetGuilds(new[] { "gardeners" });
+            loop.Guilds.Refresh();
+            Assert.That(loop.State.GuildPerks[(int)MuseumPerk.GrowFaster], Is.EqualTo(0.05).Within(1e-9));
+            Assert.That(loop.State.GuildPerks[(int)MuseumPerk.SeedBack], Is.EqualTo(0.04).Within(1e-9));
+            Assert.That(loop.State.GuildPerks[(int)MuseumPerk.MutationChance], Is.EqualTo(0.02).Within(1e-9));
+            loop.Camp.SetGuilds(new[] { "gardeners", "gardeners:2" });
+            for (var i = 0; i < 10; i++)
+                loop.Tick();
+            Assert.That(loop.State.GuildPerks[(int)MuseumPerk.MutationChance], Is.EqualTo(0.03).Within(1e-9), "the hall level adds its own perk, refreshed by the tick");
+            var lines = GuildView.Perks(loop.Guilds, "gardeners");
+            Assert.That(lines.Count, Is.EqualTo(6));
+            Assert.That(lines[0].Text, Is.EqualTo("Гильдия, уровень 3: Растения растут на 5% быстрее"));
+            Assert.That(lines[0].Open, Is.True);
+            Assert.That(lines[3].Open, Is.False, "level 10 is not reached");
+            Assert.That(lines[4].Text, Is.EqualTo("Здание, уровень 2: Шанс мутации +1%"));
+            Assert.That(lines[4].Open, Is.True);
+            Assert.That(lines[5].Open, Is.False);
+            foreach (var guild in Rules.Guilds)
+            {
+                Assert.That(guild.Perks.Count, Is.GreaterThan(0), guild.Id);
+                foreach (var line in GuildView.Perks(loop.Guilds, guild.Id))
+                    Assert.That(line.Text, Does.Not.Contain("perk."), guild.Id);
+            }
+        }
+
+        [Test]
+        public void TheObservatoryForecastMakesTheFishAndTheHerbOfTheDayBetter()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            loop.Tick();
+            loop.State.Town.Day = 20400;
+            loop.Guilds.Refresh();
+            Assert.That(loop.State.Forecast.Fish, Is.Empty, "the observatory is not open yet");
+            Assert.That(loop.State.Forecast.WeightOf("anything"), Is.EqualTo(1));
+            loop.State.RecordStage = TestWorld.Real.Stages.HeartFromStage;
+            loop.Guilds.Refresh();
+            Assert.That(loop.Guilds.ObservatoryOpen, Is.True);
+            var forecast = loop.State.Forecast;
+            var today = loop.Guilds.Forecast(20400);
+            Assert.That(forecast.Fish, Is.EqualTo(today.Fish));
+            Assert.That(forecast.Plant, Is.EqualTo(today.Plant));
+            Assert.That(forecast.WeightOf(today.Fish), Is.EqualTo(Rules.Observatory.FishWeight));
+            Assert.That(forecast.WeightOf("other"), Is.EqualTo(1));
+            Assert.That(forecast.GrowOf(today.Plant), Is.EqualTo(Rules.Observatory.PlantGrow));
+            Assert.That(forecast.MutationOf("other", today.Plant), Is.EqualTo(Rules.Observatory.PlantMutation));
+            Assert.That(forecast.MutationOf("other", "other"), Is.Zero);
+            Assert.That(GuildView.ForecastBonus(Rules), Is.EqualTo("Рыба дня клюёт в 3 раза чаще, трава дня растёт на 25% быстрее и мутирует с шансом +5%"));
+
+            double Grown(bool observatory)
+            {
+                var garden = TestWorld.Loop(new FakeInputSource());
+                garden.Tick();
+                garden.State.Town.Day = 20400;
+                if (observatory)
+                    garden.State.RecordStage = TestWorld.Real.Stages.HeartFromStage;
+                garden.Guilds.Refresh();
+                garden.Camp.Add(TestWorld.Real.Garden.Plant(today.Plant)!.Seed, 1);
+                Assert.That(garden.Garden.Plant(0, today.Plant), Is.EqualTo(GardenResult.Done));
+                garden.Garden.Advance(10);
+                return garden.Garden.State.Beds[0].Grown;
+            }
+
+            Assert.That(Grown(true), Is.EqualTo(Grown(false) * (1 + Rules.Observatory.PlantGrow)).Within(1e-6));
+            loop.State.Town.Day = 20401;
+            loop.Guilds.Refresh();
+            Assert.That(loop.State.Forecast.Plant, Is.EqualTo(loop.Guilds.Forecast(20401).Plant), "a new day, a new forecast");
+        }
+
+        [Test]
+        public void BrokenGuildPerksAreRejected()
+        {
+            var json = TestData.ReadGameDataFile(GuildRules.FileName);
+            var biomes = TestWorld.Real.Stages.Biomes;
+            var characters = new List<string>();
+            foreach (var character in TestWorld.Real.Characters.All)
+                characters.Add(character.Id);
+            void Rejected(string from, string to, string why)
+            {
+                Assert.That(json, Does.Contain(from), why);
+                Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace(from, to), biomes, characters), why);
+            }
+
+            Rejected("{ \"level\": 3, \"perk\": \"growFaster\"", "{ \"level\": 3, \"hall\": 2, \"perk\": \"growFaster\"", "a perk opens one way");
+            Rejected("{ \"level\": 3, \"perk\": \"growFaster\"", "{ \"level\": 3, \"perk\": \"flyFaster\"", "an unknown perk");
+            Rejected("{ \"level\": 3, \"perk\": \"growFaster\", \"value\": 0.05 }", "{ \"level\": 3, \"perk\": \"growFaster\", \"value\": 0.3 }", "too much of one perk");
+            Rejected("{ \"hall\": 3, \"perk\": \"seedBack\"", "{ \"hall\": 5, \"perk\": \"seedBack\"", "a hall level that does not exist");
+            Rejected("{ \"level\": 3, \"perk\": \"growFaster\"", "{ \"level\": 11, \"perk\": \"growFaster\"", "a guild level that does not exist");
+            Rejected("\"fishWeight\": 3", "\"fishWeight\": 0.5", "the fish of the day is not rarer");
+        }
+
+        [Test]
         public void ExpeditionFindsCountForTheTown()
         {
             var loop = TestWorld.Loop(new FakeInputSource());
