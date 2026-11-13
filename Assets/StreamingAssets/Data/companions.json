@@ -1778,7 +1778,8 @@
     "seriesPauseSeconds": 2,
     "cheerHearts": 3,
     "cheerSeconds": 3,
-    "flashSeconds": 2
+    "flashSeconds": 2,
+    "gestureEvery": { "min": 20, "max": 40 }
   },
   "rarityTraitMultiplier": {
     "legendary": 1.15,
@@ -4184,6 +4185,11 @@
   "companions": [
     {
       "id": "camp_dog",
+      "gestures": [
+        { "id": "scratch_ear", "seconds": 2.4 },
+        { "id": "chase_tail", "seconds": 2.4 },
+        { "id": "sniff_ground", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Пёс у костра",
         "en": "Campfire Dog"
@@ -4240,6 +4246,11 @@
     },
     {
       "id": "camp_crow",
+      "gestures": [
+        { "id": "peck_ground", "seconds": 2.4 },
+        { "id": "hide_trinket", "seconds": 2.4 },
+        { "id": "head_tilt", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Ворона-находчица",
         "en": "Finder Crow"
@@ -4295,6 +4306,11 @@
     },
     {
       "id": "pet_owl",
+      "gestures": [
+        { "id": "head_spin", "seconds": 2.4 },
+        { "id": "slow_blink", "seconds": 2.4 },
+        { "id": "ruffle", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Сова",
         "en": "Owl"
@@ -4350,6 +4366,10 @@
     },
     {
       "id": "pet_fox",
+      "gestures": [
+        { "id": "pounce", "seconds": 2.4 },
+        { "id": "tail_curl", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Лис",
         "en": "Fox"
@@ -4407,6 +4427,10 @@
     },
     {
       "id": "pet_firefly",
+      "gestures": [
+        { "id": "blink_glow", "seconds": 2.4 },
+        { "id": "loop_flight", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Светлячок",
         "en": "Firefly"
@@ -4462,6 +4486,10 @@
     },
     {
       "id": "pet_golem",
+      "gestures": [
+        { "id": "drop_pebbles", "seconds": 2.4 },
+        { "id": "stack_stones", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Маленький голем",
         "en": "Little Golem"
@@ -4519,6 +4547,10 @@
     },
     {
       "id": "pass1_companion",
+      "gestures": [
+        { "id": "lick_flame", "seconds": 2.4 },
+        { "id": "bask", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Огненная саламандра",
         "en": "Fire Salamander"
@@ -4575,6 +4607,10 @@
     },
     {
       "id": "pumpkin_companion",
+      "gestures": [
+        { "id": "wobble", "seconds": 2.4 },
+        { "id": "leaf_wave", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Тыквёнок",
         "en": "Pumpkinling"
@@ -4631,6 +4667,10 @@
     },
     {
       "id": "longnight_companion",
+      "gestures": [
+        { "id": "adjust_hat", "seconds": 2.4 },
+        { "id": "snow_sneeze", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Снеговичок",
         "en": "Little Snowman"
@@ -4688,6 +4728,10 @@
     },
     {
       "id": "flood_companion",
+      "gestures": [
+        { "id": "catch_fly", "seconds": 2.4 },
+        { "id": "puff_throat", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Лягушонок",
         "en": "Froglet"
@@ -4744,6 +4788,11 @@
     },
     {
       "id": "solstice_companion",
+      "gestures": [
+        { "id": "juggle_sparks", "seconds": 2.4 },
+        { "id": "flicker", "seconds": 2.4 },
+        { "id": "spin_flame", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Огонёк",
         "en": "Little Flame"
@@ -4800,6 +4849,10 @@
     },
     {
       "id": "egg_boarlet",
+      "gestures": [
+        { "id": "dig_snout", "seconds": 2.4 },
+        { "id": "wag_tail", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Кабанёнок",
         "en": "Boarlet"
@@ -4856,6 +4909,10 @@
     },
     {
       "id": "egg_scarab",
+      "gestures": [
+        { "id": "roll_ball", "seconds": 2.4 },
+        { "id": "open_wings", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Скарабей",
         "en": "Scarab"
@@ -4912,6 +4969,10 @@
     },
     {
       "id": "egg_mammoth",
+      "gestures": [
+        { "id": "trunk_toss", "seconds": 2.4 },
+        { "id": "stomp", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Мамонтёнок",
         "en": "Mammoth Calf"
@@ -4969,6 +5030,10 @@
     },
     {
       "id": "egg_wormlet",
+      "gestures": [
+        { "id": "burrow_peek", "seconds": 2.4 },
+        { "id": "ember_puff", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Угольный червячок",
         "en": "Coal Wormlet"
@@ -5025,6 +5090,10 @@
     },
     {
       "id": "egg_griffin",
+      "gestures": [
+        { "id": "preen", "seconds": 2.4 },
+        { "id": "wing_stretch", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Грифонёнок",
         "en": "Griffin Chick"
@@ -5081,6 +5150,10 @@
     },
     {
       "id": "museum_mole",
+      "gestures": [
+        { "id": "dig_hole", "seconds": 2.4 },
+        { "id": "polish_bone", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Кротёнок",
         "en": "Molelet"
@@ -5137,6 +5210,10 @@
     },
     {
       "id": "heart_fold",
+      "gestures": [
+        { "id": "fold_in", "seconds": 2.4 },
+        { "id": "ripple", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Складочка",
         "en": "Little Fold"
@@ -5192,6 +5269,10 @@
     },
     {
       "id": "hills_piglet",
+      "gestures": [
+        { "id": "roll_mud", "seconds": 2.4 },
+        { "id": "snort", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Кабанишка",
         "en": "Piglet"
@@ -5253,6 +5334,10 @@
     },
     {
       "id": "jackal_pup",
+      "gestures": [
+        { "id": "count_coins", "seconds": 2.4 },
+        { "id": "howl", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Шакалёнок",
         "en": "Jackal Pup"
@@ -5314,6 +5399,10 @@
     },
     {
       "id": "walrus_pup",
+      "gestures": [
+        { "id": "belly_flop", "seconds": 2.4 },
+        { "id": "tusk_scratch", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Моржонок",
         "en": "Walrus Pup"
@@ -5375,6 +5464,10 @@
     },
     {
       "id": "little_cauldron",
+      "gestures": [
+        { "id": "bubble_over", "seconds": 2.4 },
+        { "id": "lid_hop", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Котелок",
         "en": "Little Cauldron"
@@ -5438,6 +5531,10 @@
     },
     {
       "id": "cloud_ray",
+      "gestures": [
+        { "id": "glide_wave", "seconds": 2.4 },
+        { "id": "cloud_puff", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Скатик",
         "en": "Cloud Ray"
@@ -5499,6 +5596,10 @@
     },
     {
       "id": "post_griffin",
+      "gestures": [
+        { "id": "sort_letters", "seconds": 2.4 },
+        { "id": "salute", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Почтовый грифончик",
         "en": "Post Griffin"
@@ -5559,6 +5660,10 @@
     },
     {
       "id": "little_crown",
+      "gestures": [
+        { "id": "polish_gem", "seconds": 2.4 },
+        { "id": "royal_bow", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Корона",
         "en": "Little Crown"
@@ -5620,6 +5725,10 @@
     },
     {
       "id": "market_hedgehog",
+      "gestures": [
+        { "id": "apple_roll", "seconds": 2.4 },
+        { "id": "curl_up", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Рыночный ёж",
         "en": "Market Hedgehog"
@@ -5681,6 +5790,11 @@
     },
     {
       "id": "harbour_cat",
+      "gestures": [
+        { "id": "wash_face", "seconds": 2.4 },
+        { "id": "knead", "seconds": 2.4 },
+        { "id": "fish_bat", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Гаванский кот",
         "en": "Harbour Cat"
@@ -5743,6 +5857,10 @@
     },
     {
       "id": "forge_cricket",
+      "gestures": [
+        { "id": "tap_anvil", "seconds": 2.4 },
+        { "id": "chirp", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Кузнечный сверчок",
         "en": "Forge Cricket"
@@ -5805,6 +5923,10 @@
     },
     {
       "id": "banner_pup",
+      "gestures": [
+        { "id": "wave_banner", "seconds": 2.4 },
+        { "id": "march", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Знамёныш",
         "en": "Banner Pup"
@@ -5864,6 +5986,10 @@
     },
     {
       "id": "party_pup",
+      "gestures": [
+        { "id": "fetch_stick", "seconds": 2.4 },
+        { "id": "guard_stance", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Пёсик отряда",
         "en": "Party Pup"
@@ -5923,6 +6049,10 @@
     },
     {
       "id": "echo_critter",
+      "gestures": [
+        { "id": "echo_ring", "seconds": 2.4 },
+        { "id": "copy_hero", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Эхо-зверёк",
         "en": "Echo Critter"
@@ -5982,6 +6112,10 @@
     },
     {
       "id": "chronicler",
+      "gestures": [
+        { "id": "write_note", "seconds": 2.4 },
+        { "id": "read_scroll", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Летописец",
         "en": "Chronicler"
@@ -6041,6 +6175,10 @@
     },
     {
       "id": "double",
+      "gestures": [
+        { "id": "mirror_wave", "seconds": 2.4 },
+        { "id": "split_merge", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Двойник",
         "en": "Double"
@@ -6099,6 +6237,10 @@
     },
     {
       "id": "eater_cub",
+      "gestures": [
+        { "id": "gnaw", "seconds": 2.4 },
+        { "id": "lick_lips", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Детёныш Пожирателя",
         "en": "Eater Cub"
@@ -6157,6 +6299,10 @@
     },
     {
       "id": "rune_stoat",
+      "gestures": [
+        { "id": "carve_rune", "seconds": 2.4 },
+        { "id": "rune_glow", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Рунный горностай",
         "en": "Rune Stoat"
@@ -6220,6 +6366,10 @@
     },
     {
       "id": "fencing_crane",
+      "gestures": [
+        { "id": "en_garde", "seconds": 2.4 },
+        { "id": "lunge", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Фехтовальный журавль",
         "en": "Fencing Crane"
@@ -6282,6 +6432,10 @@
     },
     {
       "id": "wind_swift",
+      "gestures": [
+        { "id": "dart_loop", "seconds": 2.4 },
+        { "id": "perch_shake", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Ветряной стриж",
         "en": "Wind Swift"
@@ -6344,6 +6498,10 @@
     },
     {
       "id": "crystal_hedgehog",
+      "gestures": [
+        { "id": "chime_spines", "seconds": 2.4 },
+        { "id": "sparkle", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Кристальный ёжик",
         "en": "Crystal Hedgehog"
@@ -6406,6 +6564,10 @@
     },
     {
       "id": "sand_jerboa",
+      "gestures": [
+        { "id": "hourglass_flip", "seconds": 2.4 },
+        { "id": "big_hop", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Песочный тушканчик",
         "en": "Sand Jerboa"
@@ -6468,6 +6630,10 @@
     },
     {
       "id": "singing_cricket",
+      "gestures": [
+        { "id": "sing", "seconds": 2.4 },
+        { "id": "bow", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Певчий сверчок",
         "en": "Singing Cricket"
@@ -6529,6 +6695,10 @@
     },
     {
       "id": "dream_dormouse",
+      "gestures": [
+        { "id": "yawn", "seconds": 2.4 },
+        { "id": "dream_bubble", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Сонная соня",
         "en": "Dream Dormouse"
@@ -6590,6 +6760,10 @@
     },
     {
       "id": "lantern_moth",
+      "gestures": [
+        { "id": "lantern_swing", "seconds": 2.4 },
+        { "id": "flutter", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Фонарный мотылёк",
         "en": "Lantern Moth"
@@ -6651,6 +6825,10 @@
     },
     {
       "id": "rag_puppy",
+      "gestures": [
+        { "id": "loose_thread", "seconds": 2.4 },
+        { "id": "patch_flap", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Тряпичный щенок",
         "en": "Rag Puppy"
@@ -6712,6 +6890,10 @@
     },
     {
       "id": "clockwork_mouse",
+      "gestures": [
+        { "id": "wind_key", "seconds": 2.4 },
+        { "id": "tick_twitch", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Заводная мышь",
         "en": "Clockwork Mouse"
@@ -6773,6 +6955,10 @@
     },
     {
       "id": "flask_slime",
+      "gestures": [
+        { "id": "bubble_pop", "seconds": 2.4 },
+        { "id": "color_shift", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Склянник-слизень",
         "en": "Flask Slime"
@@ -6837,6 +7023,10 @@
     },
     {
       "id": "dowsing_rat",
+      "gestures": [
+        { "id": "rod_twitch", "seconds": 2.4 },
+        { "id": "sniff_air", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Лозоходная крыса",
         "en": "Dowsing Rat"
@@ -6899,6 +7089,10 @@
     },
     {
       "id": "spirit_firefly",
+      "gestures": [
+        { "id": "soul_trail", "seconds": 2.4 },
+        { "id": "orbit_hero", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Духовый светлячок",
         "en": "Spirit Firefly"
@@ -6960,6 +7154,10 @@
     },
     {
       "id": "ship_parrot",
+      "gestures": [
+        { "id": "squawk", "seconds": 2.4 },
+        { "id": "spyglass", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Корабельный попугай",
         "en": "Ship Parrot"
@@ -7021,6 +7219,10 @@
     },
     {
       "id": "moon_moth",
+      "gestures": [
+        { "id": "moon_dust", "seconds": 2.4 },
+        { "id": "slow_wings", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Лунная моль",
         "en": "Moon Moth"
@@ -7084,6 +7286,10 @@
     },
     {
       "id": "card_fox",
+      "gestures": [
+        { "id": "shuffle_cards", "seconds": 2.4 },
+        { "id": "draw_card", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Карточная лиса",
         "en": "Card Fox"
@@ -7145,6 +7351,10 @@
     },
     {
       "id": "moss_turtle",
+      "gestures": [
+        { "id": "hide_shell", "seconds": 2.4 },
+        { "id": "moss_bloom", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Мшистая черепаха",
         "en": "Moss Turtle"
@@ -7207,6 +7417,10 @@
     },
     {
       "id": "clay_pigeon",
+      "gestures": [
+        { "id": "coo_bob", "seconds": 2.4 },
+        { "id": "crack_mend", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Глиняный голубь",
         "en": "Clay Pigeon"
@@ -7269,6 +7483,10 @@
     },
     {
       "id": "crooked_boarlet",
+      "gestures": [
+        { "id": "wobble_walk", "seconds": 2.4 },
+        { "id": "flip_ears", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Кабанчик-перекос",
         "en": "Crooked Boarlet"
@@ -7329,6 +7547,10 @@
     },
     {
       "id": "upturned_sphinxling",
+      "gestures": [
+        { "id": "handstand", "seconds": 2.4 },
+        { "id": "riddle_mark", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Сфинксёнок вверх ногами",
         "en": "Upturned Sphinxling"
@@ -7389,6 +7611,10 @@
     },
     {
       "id": "shadow_mammoth_calf",
+      "gestures": [
+        { "id": "shadow_fade", "seconds": 2.4 },
+        { "id": "trunk_toss", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Мамонтёнок-тень",
         "en": "Shadow Mammoth Calf"
@@ -7449,6 +7675,10 @@
     },
     {
       "id": "cold_grasshopper",
+      "gestures": [
+        { "id": "frost_chirp", "seconds": 2.4 },
+        { "id": "ice_hop", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Кузнечик-холод",
         "en": "Cold Grasshopper"
@@ -7510,6 +7740,10 @@
     },
     {
       "id": "quiet_dragonet",
+      "gestures": [
+        { "id": "silent_roar", "seconds": 2.4 },
+        { "id": "curl_nap", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Тихий дракончик",
         "en": "Quiet Dragonet"
@@ -7570,6 +7804,10 @@
     },
     {
       "id": "heart_crease",
+      "gestures": [
+        { "id": "heartbeat", "seconds": 2.4 },
+        { "id": "crease_open", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Складка Сердца",
         "en": "Heart Crease"
@@ -7630,6 +7868,10 @@
     },
     {
       "id": "bloom_hare",
+      "gestures": [
+        { "id": "ear_bloom", "seconds": 2.4 },
+        { "id": "thump", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Цветочный зайчонок",
         "en": "Bloom Hare"
@@ -7689,6 +7931,10 @@
     },
     {
       "id": "star_kitten",
+      "gestures": [
+        { "id": "chase_star", "seconds": 2.4 },
+        { "id": "stretch", "seconds": 2.4 }
+      ],
       "name": {
         "ru": "Звёздный котёнок",
         "en": "Star Kitten"

@@ -17,6 +17,18 @@ namespace Game.Core.Content
         public double Experience { get; }
     }
 
+    public sealed class CompanionGesture
+    {
+        public CompanionGesture(string id, double seconds)
+        {
+            Id = id;
+            Seconds = seconds;
+        }
+
+        public string Id { get; }
+        public double Seconds { get; }
+    }
+
     public sealed class CompanionDef
     {
         public CompanionDef(string id, string biome, string favourite)
@@ -40,6 +52,7 @@ namespace Game.Core.Content
         public string BaseTrait { get; internal set; } = string.Empty;
         public IReadOnlyList<string> StagesRu { get; internal set; } = Array.Empty<string>();
         public IReadOnlyList<string> StagesEn { get; internal set; } = Array.Empty<string>();
+        public IReadOnlyList<CompanionGesture> Gestures { get; internal set; } = Array.Empty<CompanionGesture>();
     }
 
     public enum OwnEffectKind
@@ -538,6 +551,19 @@ namespace Game.Core.Content
             return total;
         }
 
+        private static IReadOnlyList<CompanionGesture> LoadGestures(ContentNode node)
+        {
+            var gestures = new List<CompanionGesture>();
+            foreach (var item in node.Items())
+            {
+                var id = item.Field("id").AsString();
+                if (gestures.Exists(g => g.Id == id))
+                    throw item.Field("id").Error($"gesture '{id}' is listed twice");
+                gestures.Add(new CompanionGesture(id, item.Field("seconds").AsNumber(0.2, 30)));
+            }
+            return gestures;
+        }
+
         public CompanionDef? Companion(string id)
         {
             for (var i = 0; i < Companions.Count; i++)
@@ -695,6 +721,8 @@ namespace Game.Core.Content
                     if (expeditions.Trait(def.BaseTrait) == null)
                         throw node.Field("baseTrait").Error($"unknown trait '{def.BaseTrait}'");
                 }
+                if (node.HasField("gestures"))
+                    def.Gestures = LoadGestures(node.Field("gestures"));
                 var stageNames = node.Field("stages");
                 def.StagesRu = Names(stageNames.Field("ru"), stages.Count);
                 def.StagesEn = Names(stageNames.Field("en"), stages.Count);
