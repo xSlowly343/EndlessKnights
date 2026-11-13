@@ -36,6 +36,7 @@ class PartyMember {
     bossPierce = 0;
     stageCarry = 0;
     atGate = false;
+    pastime = 0;
     guestTicksLeft = 0;
     stage = 0;
     creditRate = 0;
@@ -64,6 +65,7 @@ class PartyMember {
         this.bossPierce = 0;
         this.stageCarry = 0;
         this.atGate = false;
+        this.pastime = 0;
         this.guestTicksLeft = 0;
         this.stage = 0;
         this.creditRate = 0;
@@ -301,6 +303,13 @@ class PartyEncounter {
     setPeaceful(slot: number, peaceful: boolean): void {
         if (this.isMember(slot))
             this.members[slot].peaceful = peaceful;
+    }
+
+    setPastime(slot: number, pastime: number): boolean {
+        if (!this.isMember(slot) || this.members[slot].pastime === pastime)
+            return false;
+        this.members[slot].pastime = pastime;
+        return true;
     }
 
     setHeroClass(slot: number, heroClass: number): void {

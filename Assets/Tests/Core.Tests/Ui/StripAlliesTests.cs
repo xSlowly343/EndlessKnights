@@ -1,5 +1,8 @@
 using Game.Core.Party;
 using Game.Core.Party.Wire;
+using Game.Core.Sim;
+using Game.Core.Tests.Sim;
+using Game.Core.Text;
 using Game.Core.Ui;
 using NUnit.Framework;
 
@@ -48,6 +51,64 @@ namespace Game.Core.Tests.Ui
             var roster = new RosterMessage { Player0 = 1, Player1 = 2 };
 
             Assert.That(StripAllies.Fill(roster, PartyEncounter.NoSlot, _ => string.Empty, _allies), Is.Zero);
+        }
+
+        [Test]
+        public void AnAllyInPeacefulModeShowsWhatTheyAreDoingAndWhere()
+        {
+            Texts.UseLanguage("ru");
+            var fishing = new PartyPastime(AllyActivity.Fishing, StripPlace.Hideout);
+            var roster = new RosterMessage
+            {
+                Player0 = 11, Presence0 = (byte)PartyPresence.Peaceful, Pastime0 = fishing.Packed,
+                Player1 = 22,
+                Player2 = 33, Presence2 = (byte)PartyPresence.Resting, Pastime2 = fishing.Packed
+            };
+
+            StripAllies.Fill(roster, 1, _ => string.Empty, _allies);
+
+            Assert.That(_allies[0].Pastime.Activity, Is.EqualTo(AllyActivity.Fishing));
+            Assert.That(AllyPastimeView.Shows(_allies[0]), Is.True);
+            Assert.That(AllyPastimeView.Icon(_allies[0].Pastime), Is.EqualTo("pastime_fishing"));
+            Assert.That(AllyPastimeView.PlaceIcon(_allies[0].Pastime), Is.EqualTo("place_hideout"));
+            Assert.That(AllyPastimeView.Caption(TestWorld.Real.Peaceful, _allies[0].Pastime), Is.EqualTo("Пристанище · Рыбалка"));
+            Assert.That(AllyPastimeView.Shows(_allies[1]), Is.False, "a resting fighter shows no pastime even if one came over the wire");
+        }
+
+        [Test]
+        public void TheHostPassesAPastimeOnOnlyWhileTheAllyIsPeaceful()
+        {
+            var encounter = new PartyEncounter(TestWorld.Data.Party, TestWorld.Data.Stages, 1);
+            encounter.Join(1);
+            encounter.Join(2);
+            var garden = new PartyPastime(AllyActivity.Garden, StripPlace.Town).Packed;
+
+            Assert.That(encounter.SetPastime(1, garden), Is.True);
+            Assert.That(encounter.SetPastime(1, garden), Is.False, "the same pastime is no news for the roster");
+            Assert.That(RosterMessage.Of(encounter, 1).Pastime(1).Known, Is.False);
+            encounter.SetPeaceful(1, true);
+            var shown = RosterMessage.Of(encounter, 2).Pastime(1);
+            Assert.That(shown.Activity, Is.EqualTo(AllyActivity.Garden));
+            Assert.That(shown.Place, Is.EqualTo(StripPlace.Town));
+        }
+
+        [Test]
+        public void APastimePacksIntoOneByteAndEveryPeacefulActivityHasAnIcon()
+        {
+            foreach (var activity in TestWorld.Real.Peaceful.Activities)
+            {
+                var mark = PartyPastime.ActivityOf(activity.Id);
+                Assert.That(mark, Is.Not.EqualTo(AllyActivity.None), activity.Id + " has an icon over the ally");
+                Assert.That(PartyPastime.IdOf(mark), Is.EqualTo(activity.Id));
+                foreach (StripPlace place in System.Enum.GetValues(typeof(StripPlace)))
+                {
+                    var unpacked = PartyPastime.Unpack(new PartyPastime(mark, place).Packed);
+                    Assert.That(unpacked.Activity, Is.EqualTo(mark));
+                    Assert.That(unpacked.Place, Is.EqualTo(place));
+                }
+            }
+            Assert.That(PartyPastime.Unpack(0).Known, Is.False);
+            Assert.That(PartyPastime.Unpack(0xFF).Activity, Is.EqualTo(AllyActivity.None), "a byte from a newer client is not misread");
         }
 
         [TestCase(PartyPresence.Fighting, "")]

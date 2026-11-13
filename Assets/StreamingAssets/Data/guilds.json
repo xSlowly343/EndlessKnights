@@ -24,6 +24,7 @@
     "gatherDays": 21,
     "openHours": 24,
     "buildDays": 14,
+    "pace": { "burstShare": 0.25, "fillHours": 8 },
     "activeDays": 7,
     "minPlayers": 2,
     "resources": [

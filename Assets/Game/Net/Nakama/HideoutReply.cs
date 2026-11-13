@@ -51,7 +51,10 @@ namespace Game.Net.Nakama
                 StorageBuilt = storage != null && storage.Kind == JsonKind.Object;
                 Storage = Amounts(storage);
                 foreach (var entry in NakamaJson.Items(commons, "journal"))
-                    journal.Add(new StorageEntry(NakamaJson.Text(entry, "name"), NakamaJson.Text(entry, "item"), (long)NakamaJson.Number(entry, "amount")));
+                    journal.Add(new StorageEntry(NakamaJson.Text(entry, "name"), NakamaJson.Text(entry, "item"), (long)NakamaJson.Number(entry, "amount"), NakamaJson.Text(entry, "build")));
+                var forBuild = NakamaJson.Field(commons, "forBuild");
+                if (forBuild != null && forBuild.Kind == JsonKind.Object)
+                    ForBuildPoints = (long)NakamaJson.Number(forBuild, "points");
                 TakenToday = (int)NakamaJson.Number(commons, "takenToday");
                 TakePerDay = (int)NakamaJson.Number(commons, "takePerDay");
             }
@@ -94,6 +97,7 @@ namespace Game.Net.Nakama
                 ProjectTarget = (long)NakamaJson.Number(project, "target");
                 ProjectHours = NakamaJson.Number(project, "hours");
                 ProjectYours = (long)NakamaJson.Number(project, "yours");
+                ProjectFromStorage = (long)NakamaJson.Number(project, "fromStorage");
             }
         }
 
@@ -132,6 +136,8 @@ namespace Game.Net.Nakama
         public long ProjectTarget { get; }
         public double ProjectHours { get; }
         public long ProjectYours { get; }
+        public long ProjectFromStorage { get; }
+        public long ForBuildPoints { get; }
 
         public static string QueuePayload(string building) => NakamaJson.Object(("building", NakamaJson.Quote(building)));
 
@@ -207,6 +213,24 @@ namespace Game.Net.Nakama
 
         public static async Task<HideoutReply> StoreTakeAsync(NakamaClient client, NakamaSession session, string item, int amount, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_store_take", GivePayload(item, amount), cancel).ConfigureAwait(false)));
+
+        public static string SharePayload(IReadOnlyDictionary<string, long> items)
+        {
+            var fields = new List<(string, string)>();
+            foreach (var pair in items)
+                fields.Add((pair.Key, pair.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+            return NakamaJson.Object(("items", NakamaJson.Object(fields.ToArray())));
+        }
+
+        public static async Task<(IReadOnlyDictionary<string, long> Accepted, HideoutReply Hideout)> StoreShareAsync(NakamaClient client, NakamaSession session, IReadOnlyDictionary<string, long> items, CancellationToken cancel = default)
+        {
+            var json = NakamaJson.Parse(await client.RpcAsync(session, "hideout_store_share", SharePayload(items), cancel).ConfigureAwait(false));
+            var hideout = NakamaJson.Field(json, "hideout");
+            return (Amounts(NakamaJson.Field(json, "accepted")), From(hideout ?? json));
+        }
+
+        public static async Task<HideoutReply> BuildFromStorageAsync(NakamaClient client, NakamaSession session, string item, int amount, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_build_store", GivePayload(item, amount), cancel).ConfigureAwait(false)));
 
         public static IReadOnlyDictionary<string, long> ClaimedItems(JsonValue json) => Amounts(NakamaJson.Field(json, "items"));
 

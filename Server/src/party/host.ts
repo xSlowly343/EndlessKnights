@@ -154,6 +154,8 @@ class PartyHost {
                     this.encounter.setCredit(slot, presence.contribution);
                     this.encounter.setPierce(slot, presence);
                     this.encounter.setAtGate(slot, presence.atGate);
+                    if (this.encounter.setPastime(slot, presence.pastime))
+                        this.rosterChanged = true;
                 }
                 break;
             }

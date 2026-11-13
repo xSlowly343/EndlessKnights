@@ -1232,9 +1232,14 @@ namespace Game.Core.Party
                     SplashTargets = (byte)System.Math.Min(byte.MaxValue, System.Math.Floor(Positive(CombatStats.SplashTargets) + 1e-9)),
                     BossPierce = (float)Positive(CombatStats.BossPierce),
                     StageCarry = (float)Positive(CombatStats.StageCarry),
-                    AtGate = AtUnclearedGate
+                    AtGate = AtUnclearedGate,
+                    Pastime = OwnPastime.Packed
                 }));
         }
+
+        public PartyPastime OwnPastime => _loop.Peaceful.InCamp
+            ? new PartyPastime(PartyPastime.ActivityOf(_loop.Peaceful.Activity), StripScene.PlaceOf(_loop.State.Peaceful.Place))
+            : default;
 
         private bool AtUnclearedGate => _loop.Data.Stages.GateAt(_loop.State.Stage) != null && !_loop.State.GatesCleared.Contains(_loop.State.Stage);
 

@@ -31,6 +31,8 @@ interface TownBuildRules {
     openMs: number;
     activeDays: number;
     minPlayers: number;
+    paceBurst: number;
+    paceFillMs: number;
     resources: TownBuildResource[];
     rewards: TownBuildReward[];
     topSize: number;
@@ -59,6 +61,9 @@ interface TownBuildMine {
     round: number;
     vote: string;
     given: { [resource: string]: number };
+    pace: { [resource: string]: number };
+    paceAt: number;
+    thanked: number;
 }
 
 declare const TownBuildServerRules: TownBuildRules;
@@ -136,9 +141,19 @@ function townBuildScore(nk: nkruntime.Nakama, userId: string, round: number, poi
         return;
     const id = townBuildBoardId(round);
     nk.leaderboardCreate(id, true, "descending", "best", null, null);
-    const users = nk.usersGetId([userId]);
-    const name = users.length > 0 ? users[0].displayName || users[0].username : "";
-    nk.leaderboardRecordWrite(id, userId, name, Math.min(points, 1e9), 0, {});
+    nk.leaderboardRecordWrite(id, userId, consentShownName(nk, userId, ConsentTownTop), Math.min(points, 1e9), 0, {});
+}
+
+function townBuildRename(nk: nkruntime.Nakama, logger: nkruntime.Logger, userId: string, nowUnixMs: number): void {
+    const value = townBuildRead(nk).value;
+    const points = townBuildPoints(townBuildMineRead(nk, userId, walletDayOf(nowUnixMs), value.round).value.given);
+    if (value.round <= 0 || points <= 0)
+        return;
+    const id = townBuildBoardId(value.round);
+    nk.leaderboardCreate(id, true, "descending", "best", null, null);
+    nk.leaderboardRecordDelete(id, userId);
+    townBuildScore(nk, userId, value.round, points);
+    logger.info("town: %s changed the name shown in the builders' top", userId);
 }
 
 function townBuildSettle(nk: nkruntime.Nakama, logger: nkruntime.Logger, userId: string, value: TownBuildValue, nowUnixMs: number): void {
@@ -239,7 +254,10 @@ function townBuildMineRead(nk: nkruntime.Nakama, userId: string, day: number, ro
             sent: stored.day === day ? townBuildCounts(stored.sent) : {},
             round: round,
             vote: sameRound && typeof stored.vote === "string" ? stored.vote : "",
-            given: sameRound ? townBuildCounts(stored.given) : {}
+            given: sameRound ? townBuildCounts(stored.given) : {},
+            pace: townBuildCounts(stored.pace),
+            paceAt: typeof stored.paceAt === "number" ? stored.paceAt : 0,
+            thanked: typeof stored.thanked === "number" ? stored.thanked : 0
         },
         version: objects.length > 0 ? objects[0].version : "*"
     };
@@ -396,7 +414,8 @@ function townBuildView(nk: nkruntime.Nakama, userId: string, value: TownBuildVal
             need: value.need[resource.id] || 0,
             yours: mine.given[resource.id] || 0,
             sentToday: mine.sent[resource.id] || 0,
-            dailyCap: resource.dailyCap
+            dailyCap: resource.dailyCap,
+            room: Math.max(0, Math.min(resource.dailyCap - (mine.sent[resource.id] || 0), Math.floor(townBuildPaceRoom(mine, resource, nowUnixMs))))
         })),
         accepted: accepted
     };
@@ -420,20 +439,37 @@ function townBuildGains(gains: unknown): { [resource: string]: number } {
     return known;
 }
 
-function townBuildTake(nk: nkruntime.Nakama, userId: string, gains: { [resource: string]: number }, day: number, round: number): { mine: TownBuildMine; accepted: { [resource: string]: number }; first: boolean } {
+function townBuildPaceRoom(mine: TownBuildMine, resource: TownBuildResource, nowUnixMs: number): number {
+    const rules = TownBuildServerRules;
+    const capacity = resource.dailyCap * rules.paceBurst;
+    if (mine.paceAt <= 0 || mine.pace[resource.id] === undefined)
+        return capacity;
+    const refill = resource.dailyCap * Math.max(0, nowUnixMs - mine.paceAt) / rules.paceFillMs;
+    return Math.min(capacity, mine.pace[resource.id] + refill);
+}
+
+function townBuildPace(mine: TownBuildMine, nowUnixMs: number): void {
+    for (const resource of TownBuildServerRules.resources)
+        mine.pace[resource.id] = townBuildPaceRoom(mine, resource, nowUnixMs);
+    mine.paceAt = nowUnixMs;
+}
+
+function townBuildTake(nk: nkruntime.Nakama, userId: string, gains: { [resource: string]: number }, day: number, round: number, nowUnixMs: number): { mine: TownBuildMine; accepted: { [resource: string]: number }; first: boolean } {
     for (let attempt = 1; attempt <= TownWriteAttempts; attempt++) {
         const stored = townBuildMineRead(nk, userId, day, round);
         const mine = stored.value;
         const first = Object.keys(mine.sent).length === 0;
         const accepted: { [resource: string]: number } = {};
+        townBuildPace(mine, nowUnixMs);
         for (const resource of TownBuildServerRules.resources) {
             const sent = mine.sent[resource.id] || 0;
-            const taken = Math.max(0, Math.min(gains[resource.id] || 0, resource.dailyCap - sent));
+            const taken = Math.max(0, Math.min(gains[resource.id] || 0, resource.dailyCap - sent, Math.floor(mine.pace[resource.id])));
             if (taken === 0)
                 continue;
             accepted[resource.id] = taken;
             mine.sent[resource.id] = sent + taken;
             mine.given[resource.id] = (mine.given[resource.id] || 0) + taken;
+            mine.pace[resource.id] -= taken;
         }
         if (Object.keys(accepted).length === 0)
             return { mine: mine, accepted: accepted, first: false };
@@ -470,7 +506,7 @@ function townBuildAdd(nk: nkruntime.Nakama, logger: nkruntime.Logger, userId: st
     townBuildSettle(nk, logger, userId, before, nowUnixMs);
     if (before.phase === TownBuildDone)
         return townBuildView(nk, userId, before, townBuildMineRead(nk, userId, day, before.round).value, {}, nowUnixMs);
-    const taken = townBuildTake(nk, userId, asked, day, before.round);
+    const taken = townBuildTake(nk, userId, asked, day, before.round, nowUnixMs);
     townBuildScore(nk, userId, before.round, townBuildPoints(taken.mine.given));
     for (let attempt = 1; attempt <= TownWriteAttempts; attempt++) {
         const stored = townBuildRead(nk);

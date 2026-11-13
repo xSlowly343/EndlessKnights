@@ -17,7 +17,7 @@ namespace Game.Core.Ui
             {
                 if (slot == client.OwnSlot || roster.Player(slot) == 0)
                     continue;
-                into[count] = new StripAlly(slot, count + 1, roster.Presence(slot), PartyReactions.Label(client.Reactions, client.ReactionOf(slot)), client.AllyLook(slot));
+                into[count] = new StripAlly(slot, count + 1, roster.Presence(slot), PartyReactions.Label(client.Reactions, client.ReactionOf(slot)), client.AllyLook(slot), roster.Pastime(slot));
                 count++;
             }
             return count;
@@ -30,7 +30,7 @@ namespace Game.Core.Ui
             {
                 if (slot == ownSlot || roster.Player(slot) == 0)
                     continue;
-                into[count] = new StripAlly(slot, count + 1, roster.Presence(slot), reaction(slot));
+                into[count] = new StripAlly(slot, count + 1, roster.Presence(slot), reaction(slot), default, roster.Pastime(slot));
                 count++;
             }
             return count;

@@ -105,6 +105,8 @@ namespace Game.Core.Save
                     ("sitSeconds", JsonValue.Of(state.Hideout.SitSeconds)),
                     ("fireLevel", JsonValue.Of(state.Hideout.FireLevel)),
                     ("claimSeq", JsonValue.Of(state.Hideout.ClaimSeq.ToString(System.Globalization.CultureInfo.InvariantCulture))),
+                    ("shareMaterials", JsonValue.Of(state.Hideout.ShareMaterials)),
+                    ("shareKeep", JsonValue.Of(state.Hideout.ShareKeep)),
                     ("buildings", WriteLevels(state.Hideout.Buildings)))),
                 ("clanCamp", Object(
                     ("level", JsonValue.Of(state.ClanCamp.Level)),
@@ -1576,6 +1578,8 @@ namespace Game.Core.Save
                 hideout.ClaimSeq = (long)ReadCount(node.Field("claimSeq"));
             if (node.HasField("buildings"))
                 ReadLevels(node.Field("buildings"), hideout.Buildings);
+            hideout.ShareMaterials = node.HasField("shareMaterials") && node.Field("shareMaterials").AsBool();
+            hideout.ShareKeep = node.HasField("shareKeep") ? node.Field("shareKeep").AsInt(-1, 1000) : -1;
         }
 
         private static void ReadClanCamp(ContentNode node, ClanCampState camp)

@@ -74,6 +74,7 @@ namespace Game.Core.Ui
         public string Name { get; internal set; } = string.Empty;
         public long Points { get; internal set; }
         public bool Yours { get; internal set; }
+        public bool Hidden { get; internal set; }
         public string Text { get; internal set; } = string.Empty;
     }
 
@@ -257,13 +258,15 @@ namespace Game.Core.Ui
             foreach (var builder in board.Top)
             {
                 var yours = builder.Rank == board.Rank;
+                var name = builder.Name.Length > 0 ? builder.Name : Texts.Get("town.top.hidden");
                 lines.Add(new TownBuilderLine
                 {
                     Rank = builder.Rank,
-                    Name = builder.Name,
+                    Name = name,
                     Points = builder.Points,
                     Yours = yours,
-                    Text = Texts.Format(yours ? "guild.top.yours" : "guild.top.line", builder.Rank, builder.Name, builder.Points)
+                    Hidden = builder.Name.Length == 0,
+                    Text = Texts.Format(yours ? "guild.top.yours" : "guild.top.line", builder.Rank, name, builder.Points)
                 });
             }
             return lines;

@@ -527,3 +527,73 @@ test("there is no party order before the yard", () => {
   party(call, ["ann", "bob"]);
   assert.strictEqual(at(nk, "ann", true, now).order, null);
 });
+
+test("the storage feeds the build: anyone in the party puts in what they gathered, and the build takes it from there", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  built(nk, "ann", { storage: 1 });
+  const material = Object.keys(rules.materials).find((item) => item.startsWith("ore_"));
+  const shared = call("ann", "hideoutStoreShareRpc", { items: { [material]: 10, herb_knockbloom: 4 } });
+  assert.deepStrictEqual(shared.accepted, { [material]: 10, herb_knockbloom: 4 });
+  assert.strictEqual(shared.hideout.commons.forBuild.items[material], 10);
+  assert.strictEqual(shared.hideout.commons.forBuild.points, 10 * rules.materials[material] + 4 * rules.materials.herb_knockbloom);
+  assert.throws(() => call("bob", "hideoutBuildFromStorageRpc", { item: material, amount: 5 }), /nothing is being built/);
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.hideoutChange(nk, group.id, (value) => { value.project = { building: "storage", level: 2, points: 0, by: {} }; });
+  assert.throws(() => call("bob", "hideoutBuildFromStorageRpc", { item: "herb_colossus_bloom", amount: 1 }), /not a building material/);
+  assert.throws(() => call("bob", "hideoutBuildFromStorageRpc", { item: material, amount: 11 }), /not enough in the storage/);
+  const view = call("bob", "hideoutBuildFromStorageRpc", { item: material, amount: 6 });
+  assert.strictEqual(view.project.points, 6 * rules.materials[material]);
+  assert.strictEqual(view.project.fromStorage, 6 * rules.materials[material]);
+  assert.strictEqual(view.commons.storage[material], 4);
+  assert.deepStrictEqual(view.commons.journal[0], { at: view.commons.journal[0].at, name: "bob", item: material, amount: -6, build: "storage" });
+  assert.throws(() => call("ann", "hideoutStoreShareRpc", { items: { sword_of_kings: 1 } }), /does not go into the storage/);
+  assert.throws(() => call("ann", "hideoutStoreShareRpc", { items: {} }), /bad request/);
+});
+
+test("what a player brings in from their own bag is capped by what could be gathered in a day", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  built(nk, "ann", { storage: 1 });
+  const limit = server.InflowServerRules.perDay.find((entry) => entry.prefix === "herb_").amount;
+  let brought = 0;
+  while (brought + rules.maxGive <= limit - 5)
+    brought += plain(server.hideoutShare(nk, "ann", { herb_knockbloom: rules.maxGive }, now)).accepted.herb_knockbloom;
+  if (brought < limit - 5)
+    brought += plain(server.hideoutShare(nk, "ann", { herb_knockbloom: limit - 5 - brought }, now)).accepted.herb_knockbloom;
+  const shared = plain(server.hideoutShare(nk, "ann", { herb_windwort: 50 }, now));
+  assert.deepStrictEqual(shared.accepted, { herb_windwort: 5 }, "the rest stays in the bag");
+  assert.throws(() => server.hideoutStore(nk, "ann", "herb_windwort", 1, true, now), /could have gathered today/);
+  const material = Object.keys(rules.materials).find((item) => item.startsWith("herb_"));
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.hideoutChange(nk, group.id, (value) => { value.project = { building: "storage", level: 2, points: 0, by: {} }; });
+  assert.throws(() => server.hideoutGive(nk, "ann", material, 1, now), /could have gathered today/, "giving to the build counts too");
+  assert.strictEqual(plain(server.hideoutStore(nk, "ann", "herb_windwort", 1, true, now + 86400000)).commons.storage.herb_windwort, 6, "the next day opens again");
+});
+
+test("goods the server handed out count as held: taken from the storage, they can go back without the daily cap", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  built(nk, "ann", { storage: 1 });
+  const limit = server.InflowServerRules.perDay.find((entry) => entry.prefix === "ore_").amount;
+  server.hideoutStore(nk, "bob", "ore_hills", 20, true, now);
+  server.hideoutStore(nk, "ann", "ore_hills", 10, false, now);
+  const claim = plain(server.hideoutClaim(nk, "ann", undefined, now));
+  assert.deepStrictEqual(claim.items, { ore_hills: 10 });
+  assert.strictEqual(server.inflowRead(nk, "ann", server.walletDayOf(now)).value.held.ore_hills, undefined, "nothing is held before the claim is confirmed");
+  server.hideoutClaim(nk, "ann", claim.seq, now);
+  assert.strictEqual(server.inflowRead(nk, "ann", server.walletDayOf(now)).value.held.ore_hills, 10);
+  server.hideoutShare(nk, "ann", { ore_hills: 15 }, now);
+  const ledger = server.inflowRead(nk, "ann", server.walletDayOf(now)).value;
+  assert.strictEqual(ledger.held.ore_hills, undefined);
+  assert.strictEqual(ledger.used.ore_, 5, "held goods are spent first");
+  assert.ok(limit > 15);
+});
+
+test("a refused put gives the day's allowance back", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  assert.throws(() => server.hideoutStore(nk, "ann", "herb_windwort", 30, true, now), /storage is not built/);
+  const used = server.inflowRead(nk, "ann", server.walletDayOf(now)).value.used;
+  assert.ok(!used.herb_, "nothing of the day is used up");
+});

@@ -44,11 +44,12 @@ namespace Game.Core.Tests.Party
             encounter.WeakenNext(2, 0.2, 0.25);
             encounter.ApplyDamage(1, 1, 5);
             encounter.SetPeaceful(1, true);
+            encounter.SetPastime(1, 0x63);
             encounter.JoinGuest(76561198000000003UL, 30);
 
             var builder = new StringBuilder("{\n  \"version\": 1,\n");
             builder.Append("  \"seed\": \"777\",\n");
-            builder.Append("  \"script\": [\"join 76561198000000001\", \"join 76561198000000002\", \"class 0 9\", \"class 1 6\", \"echo 1 5\", \"damage 0 1 0.75\", \"effect -123456 0.15 10 1\", \"effect 42 0.25 4\", \"advance 32\", \"weaken 2 0.2 0.25\", \"damage 1 1 5\", \"peaceful 1 true\", \"guest 76561198000000003 30\"],\n");
+            builder.Append("  \"script\": [\"join 76561198000000001\", \"join 76561198000000002\", \"class 0 9\", \"class 1 6\", \"echo 1 5\", \"damage 0 1 0.75\", \"effect -123456 0.15 10 1\", \"effect 42 0.25 4\", \"advance 32\", \"weaken 2 0.2 0.25\", \"damage 1 1 5\", \"peaceful 1 true\", \"pastime 1 99\", \"guest 76561198000000003 30\"],\n");
             builder.Append("  \"encode\": {\n");
             builder.Append("    \"encounterState\": { \"sequence\": 5, \"hex\": \"").Append(Hex(PartyCodec.Encode(_buffer, EncounterStateMessage.Of(encounter, 5)))).Append("\" },\n");
             var busy = EncounterStateMessage.Of(encounter, 6);
@@ -78,8 +79,8 @@ namespace Game.Core.Tests.Party
             builder.Append("    \"bossRequest\": { \"hex\": \"").Append(Hex(PartyCodec.EncodeBossRequest(_buffer))).Append("\" },\n");
             builder.Append("    \"worldRequest\": { \"world\": 1, \"cancel\": false, \"riftId\": 1761652800, \"hex\": \"")
                 .Append(Hex(PartyCodec.Encode(_buffer, new WorldRequestMessage { World = PartyWorld.Rift, RiftId = 1761652800 }))).Append("\" },\n");
-            builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"contribution\": 0.125, \"pierceShare\": 0.25, \"enemySkip\": 2, \"splashShare\": 0.5, \"splashTargets\": 3, \"bossPierce\": 0.125, \"stageCarry\": 0.75, \"atGate\": true, \"hex\": \"")
-                .Append(Hex(PartyCodec.Encode(_buffer, new PresenceMessage { Presence = PartyPresence.Peaceful, Stage = 77, Resource = 12.5f, Contribution = 0.125f, PierceShare = 0.25f, EnemySkip = 2, SplashShare = 0.5f, SplashTargets = 3, BossPierce = 0.125f, StageCarry = 0.75f, AtGate = true }))).Append("\" },\n");
+            builder.Append("    \"presence\": { \"presence\": 2, \"stage\": 77, \"resource\": 12.5, \"contribution\": 0.125, \"pierceShare\": 0.25, \"enemySkip\": 2, \"splashShare\": 0.5, \"splashTargets\": 3, \"bossPierce\": 0.125, \"stageCarry\": 0.75, \"atGate\": true, \"pastime\": 83, \"hex\": \"")
+                .Append(Hex(PartyCodec.Encode(_buffer, new PresenceMessage { Presence = PartyPresence.Peaceful, Stage = 77, Resource = 12.5f, Contribution = 0.125f, PierceShare = 0.25f, EnemySkip = 2, SplashShare = 0.5f, SplashTargets = 3, BossPierce = 0.125f, StageCarry = 0.75f, AtGate = true, Pastime = 83 }))).Append("\" },\n");
             var offer = new PartyOfferMessage { Slot = 0 };
             offer.SetStat(0, 0.3);
             offer.SetAura(0, new OfferedAura { GemNetId = 5, Strength = 1.5f, TicksLeft = 200 });

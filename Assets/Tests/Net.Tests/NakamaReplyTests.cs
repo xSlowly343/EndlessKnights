@@ -689,6 +689,21 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheStorageForTheBuildAndTheNameConsentAreRead()
+        {
+            Assert.That(HideoutReply.SharePayload(new System.Collections.Generic.Dictionary<string, long> { ["ore_hills"] = 15 }), Is.EqualTo("{\"items\":{\"ore_hills\":15}}"));
+            var hideout = HideoutReply.From(NakamaJson.Parse("{\"tier\":3,\"project\":{\"building\":\"storage\",\"level\":2,\"points\":40,\"target\":1000,\"hours\":30,\"yours\":0,\"fromStorage\":12},"
+                + "\"commons\":{\"storage\":{\"ore_hills\":4},\"forBuild\":{\"points\":8,\"items\":{\"ore_hills\":4}},\"journal\":[{\"name\":\"Bob\",\"item\":\"ore_hills\",\"amount\":-6,\"build\":\"storage\"}]}}"));
+            Assert.That(hideout.ProjectFromStorage, Is.EqualTo(12));
+            Assert.That(hideout.ForBuildPoints, Is.EqualTo(8));
+            Assert.That(hideout.Journal.Single().Build, Is.EqualTo("storage"));
+            Assert.That(NameConsentReply.SetPayload(NameConsentReply.TownTop, true), Is.EqualTo("{\"place\":\"town_top\",\"shown\":true}"));
+            Assert.That(NameConsentReply.From(NakamaJson.Parse("{\"shown\":[\"town_top\"]}")).Shows(NameConsentReply.TownTop), Is.True);
+            Assert.That(NameConsentReply.From(NakamaJson.Parse("{\"shown\":[]}")).Shows(NameConsentReply.Museum), Is.False);
+            Assert.That(TownReply.From(NakamaJson.Parse("{\"gatherLeft\":{\"herb_\":150}}")).GatherLeft["herb_"], Is.EqualTo(150));
+        }
+
+        [Test]
         public void ObjectsAreWrittenWithEscapedStrings() =>
             Assert.That(NakamaJson.Object(("code", NakamaJson.Quote("a\"b")), ("n", "4")), Is.EqualTo("{\"code\":\"a\\\"b\",\"n\":4}"));
     }

@@ -16,6 +16,8 @@ namespace Game.Presentation.Battle
         private const float GroundPx = 150f;
         private const float MarkPx = 12f;
         private const float MarkGapPx = 4f;
+        private const float PastimePx = 18f;
+        private const float PlaceBadgePx = 10f;
         private const float BubbleWidthPx = 88f;
         private const float BubbleHeightPx = 16f;
         private const float BubbleLowestPx = 74f;
@@ -46,6 +48,9 @@ namespace Game.Presentation.Battle
         private readonly BigNumber[] _flyingDamage = new BigNumber[StripAllies.MaxShown];
         private readonly Image[] _marks = new Image[StripAllies.MaxShown];
         private readonly TextMeshProUGUI[] _markTexts = new TextMeshProUGUI[StripAllies.MaxShown];
+        private readonly Image[] _pastimes = new Image[StripAllies.MaxShown];
+        private readonly Image[] _placeBadges = new Image[StripAllies.MaxShown];
+        private readonly byte[] _pastimeShown = new byte[StripAllies.MaxShown];
         private readonly Image[] _bubbles = new Image[StripAllies.MaxShown];
         private readonly TextMeshProUGUI[] _bubbleTexts = new TextMeshProUGUI[StripAllies.MaxShown];
         private readonly StripAlly[] _shown = new StripAlly[StripAllies.MaxShown];
@@ -67,6 +72,12 @@ namespace Game.Presentation.Battle
                 _markTexts[i] = UiElements.Label("Text", _marks[i].rectTransform, theme.BoldFont, 9f, Color.white, TextAlignmentOptions.Center);
                 UiElements.Stretch(_markTexts[i].rectTransform);
                 _marks[i].gameObject.SetActive(false);
+                _pastimes[i] = UiElements.Icon("Ally pastime " + i, canvas, null, Color.white);
+                StripCanvas.Place(_pastimes[i].rectTransform, CentresPx[i], PastimeCentrePx, Vector2.one * PastimePx, new Vector2(0.5f, 0.5f));
+                _pastimes[i].gameObject.SetActive(false);
+                _placeBadges[i] = UiElements.Icon("Ally place " + i, _pastimes[i].rectTransform, null, PeacefulMark);
+                UiElements.Anchor(_placeBadges[i].rectTransform, Vector2.one, Vector2.one * (PlaceBadgePx / 3f), Vector2.one * PlaceBadgePx);
+                _placeBadges[i].gameObject.SetActive(false);
                 _bubbles[i] = UiElements.Fill("Ally reaction " + i, canvas, BubbleFill, BubbleHeightPx / 2f);
                 var bubbleX = Mathf.Max(EdgePx + BubbleWidthPx / 2f, CentresPx[i]);
                 StripCanvas.Place(_bubbles[i].rectTransform, bubbleX, BubbleLowestPx - i * BubbleStepPx, new Vector2(BubbleWidthPx, BubbleHeightPx), new Vector2(0.5f, 0.5f));
@@ -127,6 +138,7 @@ namespace Game.Presentation.Battle
                 if (!shown)
                 {
                     SetActive(_bubbles[i].gameObject, false);
+                    SetActive(_pastimes[i].gameObject, false);
                     Rest(i);
                     continue;
                 }
@@ -142,7 +154,7 @@ namespace Game.Presentation.Battle
                 if (_bodies[i].color.a != alpha)
                     _bodies[i].color = new Color(1f, 1f, 1f, alpha);
                 _marks[i].color = MarkColor(ally.Presence);
-                var mark = StripAllies.StatusMark(ally.Presence);
+                var mark = ShowPastime(i, ally) ? string.Empty : StripAllies.StatusMark(ally.Presence);
                 if (_markTexts[i].text != mark)
                     _markTexts[i].text = mark;
                 var reacting = ally.Reaction.Length > 0;
@@ -203,6 +215,27 @@ namespace Game.Presentation.Battle
             _queuedDamage[index] = BigNumber.Zero;
             _flyingDamage[index] = BigNumber.Zero;
         }
+
+        private bool ShowPastime(int index, StripAlly ally)
+        {
+            var packed = AllyPastimeView.Shows(ally) ? ally.Pastime.Packed : (byte)0;
+            if (packed != _pastimeShown[index])
+            {
+                _pastimeShown[index] = packed;
+                var sprite = packed == 0 ? null : UiIcons.Get(AllyPastimeView.IconGroup, AllyPastimeView.Icon(ally.Pastime));
+                UiElements.Use(_pastimes[index], sprite);
+                var badge = sprite == null ? null : UiIcons.Get(AllyPastimeView.IconGroup, AllyPastimeView.PlaceIcon(ally.Pastime));
+                UiElements.Use(_placeBadges[index], badge);
+                SetActive(_placeBadges[index].gameObject, badge != null);
+            }
+            var shown = _pastimeShown[index] != 0 && _pastimes[index].sprite != null;
+            SetActive(_pastimes[index].gameObject, shown);
+            return shown;
+        }
+
+        public string PastimeShown(int index) => _pastimes[index].gameObject.activeSelf && _pastimes[index].sprite != null ? _pastimes[index].sprite!.name : string.Empty;
+
+        private static float PastimeCentrePx => GroundPx - BodyHeightPx - MarkGapPx - MarkPx - MarkGapPx - PastimePx / 2f;
 
         private static Vector2 BodyFeet(int index) => StripSpace.AtPx(CentresPx[index], GroundPx);
 

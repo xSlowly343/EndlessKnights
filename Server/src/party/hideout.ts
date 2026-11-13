@@ -39,6 +39,7 @@ interface HideoutProject {
     level: number;
     points: number;
     by: { [userId: string]: number };
+    fromStorage?: number;
 }
 
 interface HideoutCorner {
@@ -313,7 +314,7 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
         fishingTogether: fishers.length >= 2 && fishers.indexOf(userId) >= 0, fishTogether: value.counters["fishTogether"] || 0,
         buildings: value.buildings,
         canQueue: hideoutOpenBuildings(value.tier).filter((id) => hideoutCanQueue(nk, value, id) === ""),
-        project: project && cost ? { building: project.building, level: project.level, points: project.points, target: cost.points, hours: cost.hours, yours: project.by[userId] || 0 } : null,
+        project: project && cost ? { building: project.building, level: project.level, points: project.points, target: cost.points, hours: cost.hours, yours: project.by[userId] || 0, fromStorage: project.fromStorage || 0 } : null,
         wants: wants, mine: value.wants[userId] || [],
         corners: cornered.map((id) => ({ userId: id, name: nameOf(id), slot: value.corners[id].slot, hero: value.corners[id].hero, path: value.corners[id].path, decor: value.corners[id].decor }))
             .sort((a, b) => a.slot - b.slot),
@@ -421,12 +422,15 @@ function hideoutGive(nk: nkruntime.Nakama, userId: string, item: unknown, amount
         throw new Error("not a building material");
     if (typeof amount !== "number" || amount !== Math.floor(amount) || amount < 1 || amount > HideoutServerRules.maxGive)
         throw new Error("bad amount");
-    return hideoutUpdate(nk, userId, (hideout) => {
+    if (!partyGroupOfUser(nk, userId))
+        throw new Error("not in a party");
+    const receipt = inflowSpend(nk, userId, item as string, amount, nowUnixMs);
+    return inflowGuard(nk, userId, receipt, nowUnixMs, () => hideoutUpdate(nk, userId, (hideout) => {
         if (!hideout.project)
             throw new Error("nothing is being built");
         hideout.project.points += points * amount;
         hideout.project.by[userId] = (hideout.project.by[userId] || 0) + points * amount;
-    }, nowUnixMs);
+    }, nowUnixMs));
 }
 
 function hideoutWant(nk: nkruntime.Nakama, userId: string, building: unknown, on: unknown, nowUnixMs: number): { [key: string]: any } {

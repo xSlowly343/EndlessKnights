@@ -315,6 +315,14 @@ namespace Game.Core.Party
                 _members[slot].Peaceful = peaceful;
         }
 
+        public bool SetPastime(int slot, byte pastime)
+        {
+            if (!IsMember(slot) || _members[slot].Pastime == pastime)
+                return false;
+            _members[slot].Pastime = pastime;
+            return true;
+        }
+
         public void SetConnected(int slot, bool connected)
         {
             if (!IsMember(slot))

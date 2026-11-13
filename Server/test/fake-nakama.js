@@ -32,6 +32,27 @@ class FakeNakama {
     return this.ranked(board).find((r) => r.ownerId === ownerId);
   }
 
+  leaderboardRecordDelete(id, ownerId) {
+    const board = this.boards.get(id);
+    if (board)
+      board.records.delete(ownerId);
+  }
+
+  friendsList(userId, limit, state, cursor) {
+    const friends = (this.friends && this.friends.get(userId)) || [];
+    return { friends: friends.map((id) => ({ user: this.users.get(id), state: 0 })).filter((entry) => entry.user) };
+  }
+
+  addFriends(first, second) {
+    this.friends = this.friends || new Map();
+    for (const [a, b] of [[first, second], [second, first]]) {
+      const list = this.friends.get(a) || [];
+      if (list.indexOf(b) < 0)
+        list.push(b);
+      this.friends.set(a, list);
+    }
+  }
+
   leaderboardRecordsList(id, ownerIds, limit, cursor, overrideExpiry) {
     const board = this.boards.get(id);
     if (!board)

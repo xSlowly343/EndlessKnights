@@ -35,6 +35,7 @@ namespace Game.Net.Nakama
             GiftsPerDay = (int)NakamaJson.Number(json, "giftsPerDay");
             Inbox = Gifts(json, "inbox");
             Claimed = Gifts(json, "claimed");
+            GatherLeft = HideoutReply.Amounts(NakamaJson.Field(json, "gatherLeft"));
         }
 
         public IReadOnlyList<string> Guilds { get; }
@@ -42,6 +43,7 @@ namespace Game.Net.Nakama
         public int GiftsPerDay { get; }
         public IReadOnlyList<TownGift> Inbox { get; }
         public IReadOnlyList<TownGift> Claimed { get; }
+        public IReadOnlyDictionary<string, long> GatherLeft { get; }
 
         public static TownReply From(JsonValue json) => new TownReply(json);
 

@@ -238,6 +238,55 @@ namespace Game.Core.Sim
 
         public bool PackGoods(string item, int amount) => amount > 0 && _camp.Take(item, amount);
 
+        public int ShareKeep => State.ShareKeep >= 0 ? State.ShareKeep : _rules.Storage.ShareKeep;
+
+        public void SetShare(bool on, int keep = -1)
+        {
+            State.ShareMaterials = on;
+            State.ShareKeep = System.Math.Max(-1, keep);
+        }
+
+        public bool Shares(string item) => _materials.PointsOf(item) > 0 && _rules.Storage.Takes(item);
+
+        public Dictionary<string, long> TakeShare()
+        {
+            var taken = new Dictionary<string, long>(System.StringComparer.Ordinal);
+            if (!State.ShareMaterials || !State.StorageBuilt)
+                return taken;
+            var keep = ShareKeep;
+            var items = new List<string>(_state.Camp.Bag.Keys);
+            items.Sort(System.StringComparer.Ordinal);
+            foreach (var item in items)
+            {
+                if (!Shares(item))
+                    continue;
+                var amount = System.Math.Min(_camp.Count(item) - keep, _materials.MaxGive);
+                if (amount > 0 && _camp.Take(item, amount))
+                    taken[item] = amount;
+            }
+            return taken;
+        }
+
+        public void SettleShare(IReadOnlyDictionary<string, long> sent, IReadOnlyDictionary<string, long> accepted)
+        {
+            foreach (var pair in sent)
+            {
+                var left = pair.Value - (accepted.TryGetValue(pair.Key, out var took) ? System.Math.Min(took, pair.Value) : 0);
+                if (left > 0)
+                    _camp.Add(pair.Key, left);
+            }
+        }
+
+        public bool CanBuildFromStorage(string item, int amount) =>
+            State.Project.Length > 0 && _materials.PointsOf(item) > 0 && amount > 0 && amount <= _materials.MaxGive
+            && State.Storage.TryGetValue(item, out var stored) && stored >= amount;
+
+        public void UseForBuild(long points, long fromStorage)
+        {
+            State.ForBuildPoints = System.Math.Max(0, points);
+            State.ProjectFromStorage = System.Math.Max(0, fromStorage);
+        }
+
         private bool ReceiveCompanion(string item, long amount)
         {
             if (item == CompanionSoul)
@@ -312,6 +361,7 @@ namespace Game.Core.Sim
             UseOrder(string.Empty, false, 0, false, System.Array.Empty<PartyOrderNeed>());
             UseCrafts(System.Array.Empty<string>(), System.Array.Empty<string>());
             UseCommons(false, System.Array.Empty<SharedBed>(), new Dictionary<string, long>(), false, new Dictionary<string, long>(), System.Array.Empty<StorageEntry>(), 0, 0);
+            UseForBuild(0, 0);
             UseCorners(false, System.Array.Empty<HideoutCorner>());
             Use(0, 0, 0, 0, 0, 0, System.Array.Empty<string>());
             UseBuild(new Dictionary<string, int>(), System.Array.Empty<string>(), string.Empty, 0, 0, 0, 0, 0, false, new Dictionary<string, int>(), System.Array.Empty<string>());

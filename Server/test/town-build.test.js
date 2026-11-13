@@ -22,6 +22,13 @@ function world(count) {
 const state = (nk, user, at) => plain(server.townBuildState(nk, logger, user, at === undefined ? now : at));
 const add = (nk, user, gains, at) => plain(server.townBuildAdd(nk, logger, user, gains, at === undefined ? now : at));
 const vote = (nk, user, project, at) => plain(server.townBuildVote(nk, logger, user, project, at === undefined ? now : at));
+function addDay(nk, user, gains, from) {
+  let view = null;
+  const sends = Math.ceil(1 / rules.paceBurst);
+  for (let i = 0; i < sends; i++)
+    view = add(nk, user, gains, from + i * rules.paceFillMs * rules.paceBurst);
+  return view;
+}
 const resource = (view, id) => view.resources.find((entry) => entry.id === id);
 const stored = (nk) => nk.storageRead([{ collection: "town", key: "guilds", userId: server.PartySystemUser }])[0].value;
 
@@ -181,6 +188,8 @@ test("what a player gathers counts for the town during the vote too, capped per 
   const cap = rules.resources[0].dailyCap;
   const id = rules.resources[0].id;
   const other = rules.resources[1].id;
+  const hour = 3600000;
+  const burst = Math.floor(cap * rules.paceBurst);
   const first = add(nk, "p0", { [id]: 1200, [other]: 3 });
   assert.strictEqual(first.phase, "vote");
   assert.deepStrictEqual(first.accepted, { [id]: 1200, [other]: 3 });
@@ -188,10 +197,16 @@ test("what a player gathers counts for the town during the vote too, capped per 
   assert.strictEqual(resource(first, id).yours, 1200);
   assert.strictEqual(resource(first, id).sentToday, 1200);
   assert.strictEqual(resource(first, id).dailyCap, cap);
+  assert.strictEqual(resource(first, id).room, burst - 1200);
   assert.strictEqual(resource(first, other).stock, 3);
-  const capped = add(nk, "p0", { [id]: cap });
-  assert.deepStrictEqual(capped.accepted, { [id]: cap - 1200 });
-  assert.deepStrictEqual(add(nk, "p0", { [id]: 10 }).accepted, {}, "the day is full");
+  assert.deepStrictEqual(add(nk, "p0", { [id]: cap }).accepted, { [id]: burst - 1200 }, "one send carries at most a share of the day");
+  let sent = burst;
+  for (let step = 1; sent < cap; step++) {
+    const paced = add(nk, "p0", { [id]: cap }, now + step * rules.paceFillMs * rules.paceBurst);
+    assert.deepStrictEqual(paced.accepted, { [id]: Math.min(burst, cap - sent) }, "the share refills with time");
+    sent += paced.accepted[id];
+  }
+  assert.deepStrictEqual(add(nk, "p0", { [id]: 10 }, now + 11 * hour).accepted, {}, "the day is full");
   const next = add(nk, "p0", { [id]: 10 }, now + day);
   assert.deepStrictEqual(next.accepted, { [id]: 10 }, "the next day opens again");
   assert.strictEqual(resource(next, id).stock, cap + 10);
@@ -272,13 +287,14 @@ test("builders earn points, the board shows the best of them and the town thanks
   for (const entry of rules.resources.slice(0, 3))
     full[entry.id] = entry.dailyCap;
   vote(nk, "p0", starts[0]);
-  let view = add(nk, "p0", full);
+  server.consentSet(nk, logger, "p0", "town_top", true, now);
+  let view = addDay(nk, "p0", full, now);
   assert.strictEqual(view.points, 3000, "a full day of one resource is 1000 points");
   assert.strictEqual(view.rank, 1);
   add(nk, "p1", { [rules.resources[0].id]: rules.resources[0].dailyCap / 10 });
-  view = add(nk, "p0", full, now + day);
+  view = addDay(nk, "p0", full, now + day);
   assert.strictEqual(view.points, 6000);
-  assert.deepStrictEqual(view.top, [{ rank: 1, name: "p0", points: 6000 }, { rank: 2, name: "p1", points: 100 }]);
+  assert.deepStrictEqual(view.top, [{ rank: 1, name: "p0", points: 6000 }, { rank: 2, name: "", points: 100 }], "only those who agreed show their name");
   assert.strictEqual(state(nk, "p1", now + day).rank, 2);
   assert.strictEqual(state(nk, "p2", now + day).rank, 0);
   assert.strictEqual(letter("p0"), undefined, "nothing is sent while the building is not open");
@@ -350,4 +366,18 @@ test("when every building and level is done the town stops counting and a record
   assert.deepStrictEqual(fresh.built, ["fishers"]);
   assert.strictEqual(fresh.candidates.length, starts.length - 1);
   assert.ok(fresh.candidates.some((entry) => entry.project === "gardeners"), "an old town builds the herbwitch's house too");
+});
+
+test("a builder decides whether the top shows their name, and can change it later", () => {
+  const { nk } = world(2);
+  vote(nk, "p0", starts[0]);
+  add(nk, "p0", { [rules.resources[0].id]: 100 });
+  add(nk, "p1", { [rules.resources[0].id]: 50 });
+  assert.deepStrictEqual(state(nk, "p0").top.map((entry) => entry.name), ["", ""], "nobody is named without consent");
+  assert.deepStrictEqual(plain(server.consentSet(nk, logger, "p1", "town_top", true, now)).shown, ["town_top"]);
+  assert.deepStrictEqual(state(nk, "p0").top, [{ rank: 1, name: "", points: 20 }, { rank: 2, name: "p1", points: 10 }]);
+  server.consentSet(nk, logger, "p1", "town_top", false, now);
+  assert.deepStrictEqual(state(nk, "p0").top.map((entry) => entry.name), ["", ""], "taking consent back hides the name again");
+  assert.throws(() => server.consentSet(nk, logger, "p1", "everywhere", true, now), /bad request/);
+  assert.throws(() => server.consentSet(nk, logger, "p1", "town_top", "yes", now), /bad request/);
 });

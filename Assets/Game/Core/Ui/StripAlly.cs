@@ -5,13 +5,14 @@ namespace Game.Core.Ui
 {
     public readonly struct StripAlly
     {
-        public StripAlly(int slot, int colorIndex, PartyPresence presence, string reaction, HeroLook look = default)
+        public StripAlly(int slot, int colorIndex, PartyPresence presence, string reaction, HeroLook look = default, PartyPastime pastime = default)
         {
             Slot = slot;
             ColorIndex = colorIndex;
             Presence = presence;
             Reaction = reaction;
             Look = look;
+            Pastime = pastime;
         }
 
         public int Slot { get; }
@@ -19,6 +20,7 @@ namespace Game.Core.Ui
         public PartyPresence Presence { get; }
         public string Reaction { get; }
         public HeroLook Look { get; }
+        public PartyPastime Pastime { get; }
         public bool Faded => Presence == PartyPresence.Offline;
         public bool Swings => Presence == PartyPresence.Fighting;
     }
