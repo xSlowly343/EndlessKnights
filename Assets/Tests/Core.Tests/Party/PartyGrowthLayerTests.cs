@@ -27,6 +27,7 @@ namespace Game.Core.Tests.Party
             Assert.That(Rules.NewcomerShare(2), Is.EqualTo(1));
             Assert.That(Rules.NewcomerShare(40), Is.EqualTo(1));
             Assert.That(Rules.RejoinHours, Is.EqualTo(24));
+            Assert.That(Rules.KickedRejoinHours, Is.EqualTo(8));
         }
 
         [Test]

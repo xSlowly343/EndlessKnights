@@ -119,7 +119,8 @@
       "damageCap": 3,
       "peacefulCap": 2,
       "newcomerShares": [0.3, 0.6, 1.0],
-      "rejoinHours": 24
+      "rejoinHours": 24,
+      "kickedRejoinHours": 8
     },
     "unlocks": [
       { "level": 5, "kind": "mascot" },

@@ -482,6 +482,7 @@ const partyGrowthRules = {
   firstReportSeconds: growth.experience.firstReportSeconds,
   reportSlackSeconds: growth.experience.reportSlackSeconds,
   rejoinHours: growth.basket.rejoinHours,
+  kickedRejoinHours: growth.basket.kickedRejoinHours,
   unlocks: growth.unlocks.map((unlock) => ({ level: unlock.level, kind: unlock.kind }))
 };
 

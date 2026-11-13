@@ -83,6 +83,7 @@ namespace Game.Core.Party
         public double PeacefulCap { get; private set; } = double.PositiveInfinity;
         public IReadOnlyList<double> NewcomerShares { get; private set; } = FullShare;
         public double RejoinHours { get; private set; }
+        public double KickedRejoinHours { get; private set; }
 
         public double NewcomerShare(int daysInParty) =>
             NewcomerShares[System.Math.Min(System.Math.Max(0, daysInParty), NewcomerShares.Count - 1)];
@@ -174,6 +175,7 @@ namespace Game.Core.Party
             rules.PeacefulCap = basket.Field("peacefulCap").AsNumber(1, 1000);
             rules.NewcomerShares = shares;
             rules.RejoinHours = basket.Field("rejoinHours").AsNumber(0, 24 * 30);
+            rules.KickedRejoinHours = basket.Field("kickedRejoinHours").AsNumber(0, rules.RejoinHours);
         }
     }
 }
