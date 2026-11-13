@@ -58,10 +58,10 @@ namespace Game.Net.Nakama
             Kills = (int)NakamaJson.Number(json, "kills");
             Yours = (long)NakamaJson.Number(json, "yours");
             ReportSeconds = NakamaJson.Number(json, "reportSeconds");
-            Mandatory = NakamaJson.Text(json, "mandatory");
+            Mandatory = PartyTreasuryReply.Texts(NakamaJson.Items(json, "mandatory"));
             Optional = PartyTreasuryReply.Texts(NakamaJson.Items(json, "optional"));
             Active = PartyTreasuryReply.Texts(NakamaJson.Items(json, "active"));
-            OptionalAllowed = NakamaJson.Flag(json, "optionalAllowed");
+            OptionalSlots = (int)NakamaJson.Number(json, "optionalSlots");
             Touched = NakamaJson.Flag(json, "touched");
             Disabled = NakamaJson.Text(json, "disabled");
             CanSwitchOff = NakamaJson.Flag(json, "canSwitchOff");
@@ -91,10 +91,10 @@ namespace Game.Net.Nakama
         public int Kills { get; }
         public long Yours { get; }
         public double ReportSeconds { get; }
-        public string Mandatory { get; }
+        public IReadOnlyList<string> Mandatory { get; }
         public IReadOnlyList<string> Optional { get; }
         public IReadOnlyList<string> Active { get; }
-        public bool OptionalAllowed { get; }
+        public int OptionalSlots { get; }
         public bool Touched { get; }
         public string Disabled { get; }
         public bool CanSwitchOff { get; }

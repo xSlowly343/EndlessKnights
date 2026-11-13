@@ -84,15 +84,21 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void TwelveHardshipsAndOneMandatoryOnEveryFifthTier()
+        public void TwelveHardshipsAndUpToThreeDrawnOnEachTier()
         {
             Assert.That(Rules.Hardships.Count, Is.EqualTo(12));
-            Assert.That(Rules.MandatoryOf(4), Is.Null);
-            Assert.That(Rules.MandatoryOf(5)!.Id, Is.EqualTo("carapace"));
-            Assert.That(Rules.MandatoryOf(60)!.Id, Is.EqualTo("greedy"));
-            Assert.That(Rules.MandatoryOf(65)!.Id, Is.EqualTo("carapace"));
-            Assert.That(Rules.OptionalAllowed(7), Is.True);
-            Assert.That(Rules.OptionalAllowed(10), Is.False);
+            Assert.That(Rules.MaxHardships, Is.EqualTo(3));
+            Assert.That(Rules.MandatoryRange(1), Is.EqualTo((1, 1)));
+            Assert.That(Rules.MandatoryRange(15), Is.EqualTo((1, 1)));
+            Assert.That(Rules.MandatoryRange(16), Is.EqualTo((2, 2)));
+            Assert.That(Rules.MandatoryRange(30), Is.EqualTo((2, 2)));
+            Assert.That(Rules.MandatoryRange(31), Is.EqualTo((2, 3)));
+            Assert.That(Rules.MandatoryRange(45), Is.EqualTo((2, 3)));
+            Assert.That(Rules.MandatoryRange(46), Is.EqualTo((3, 3)));
+            Assert.That(Rules.MandatoryRange(500), Is.EqualTo((3, 3)));
+            Assert.That(Rules.OptionalSlots(1), Is.EqualTo(2));
+            Assert.That(Rules.OptionalSlots(2), Is.EqualTo(1));
+            Assert.That(Rules.OptionalSlots(3), Is.Zero);
             Assert.That(Rules.OptionalMax, Is.EqualTo(2));
             Assert.That(Rules.OptionalTrophyBonus, Is.EqualTo(0.25));
             Assert.That(Rules.Hardship("limitArmor")!.Number("hp"), Is.EqualTo(50));

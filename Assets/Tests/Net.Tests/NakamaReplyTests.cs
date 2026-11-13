@@ -665,11 +665,11 @@ namespace Game.Net.Tests
                 Is.EqualTo("{\"direct\":[120.5,0,3,0],\"background\":[1.25,0,0,0],\"offlinePoints\":0,\"offlineSeconds\":3600,\"heroClass\":4}"));
             Assert.That(PartyColossusReply.ChoosePayload(new[] { "night", "rift" }), Is.EqualTo("{\"ids\":[\"night\",\"rift\"]}"));
             Assert.That(PartyColossusReply.SwitchOffPayload("carapace"), Is.EqualTo("{\"id\":\"carapace\"}"));
-            var hard = PartyColossusReply.From(NakamaJson.Parse("{\"mandatory\":\"carapace\",\"optional\":[\"rift\"],\"active\":[\"carapace\"],\"optionalAllowed\":false,\"touched\":true,\"disabled\":\"\",\"canSwitchOff\":true,\"softened\":true,\"shield\":10,\"shieldFull\":50,\"weakClass\":7,\"night\":true,\"hittersToday\":2,\"leader\":true}"));
-            Assert.That(hard.Mandatory, Is.EqualTo("carapace"));
+            var hard = PartyColossusReply.From(NakamaJson.Parse("{\"mandatory\":[\"carapace\"],\"optional\":[\"rift\"],\"active\":[\"carapace\"],\"optionalSlots\":1,\"touched\":true,\"disabled\":\"\",\"canSwitchOff\":true,\"softened\":true,\"shield\":10,\"shieldFull\":50,\"weakClass\":7,\"night\":true,\"hittersToday\":2,\"leader\":true}"));
+            Assert.That(hard.Mandatory, Is.EqualTo(new[] { "carapace" }));
             Assert.That(hard.Optional, Is.EqualTo(new[] { "rift" }));
             Assert.That(hard.Active, Is.EqualTo(new[] { "carapace" }));
-            Assert.That(hard.OptionalAllowed, Is.False);
+            Assert.That(hard.OptionalSlots, Is.EqualTo(1));
             Assert.That(hard.CanSwitchOff && hard.Softened && hard.Night && hard.Leader && hard.Touched, Is.True);
             Assert.That(hard.ShieldFull, Is.EqualTo(50));
             Assert.That(hard.WeakClass, Is.EqualTo(7));

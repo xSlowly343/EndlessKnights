@@ -39,7 +39,8 @@ namespace Game.Core.Party
         public double MaxOfflinePointsPerSecond { get; private set; }
         public double ReportSeconds { get; private set; } = 300;
         public double ExperiencePerPercent { get; private set; }
-        public int MandatoryEvery { get; private set; }
+        public int MaxHardships { get; private set; }
+        private readonly List<(int UpTo, int Min, int Max)> _mandatory = new List<(int UpTo, int Min, int Max)>();
         public int OptionalMax { get; private set; }
         public double OptionalTrophyBonus { get; private set; }
         public double HardshipSoften { get; private set; }
@@ -56,14 +57,17 @@ namespace Game.Core.Party
             return null;
         }
 
-        public PartyColossusHardship? MandatoryOf(int tier)
+        public (int Min, int Max) MandatoryRange(int tier)
         {
-            if (MandatoryEvery <= 0 || _hardships.Count == 0 || tier % MandatoryEvery != 0)
-                return null;
-            return _hardships[(tier / MandatoryEvery - 1) % _hardships.Count];
+            foreach (var step in _mandatory)
+            {
+                if (step.UpTo == 0 || tier <= step.UpTo)
+                    return (System.Math.Min(MaxHardships, step.Min), System.Math.Min(MaxHardships, step.Max));
+            }
+            return (0, 0);
         }
 
-        public bool OptionalAllowed(int tier) => MandatoryOf(tier) == null;
+        public int OptionalSlots(int mandatory) => System.Math.Max(0, System.Math.Min(OptionalMax, MaxHardships - mandatory));
 
         public double Hp(int tier) => HpBase * System.Math.Pow(HpGrowth, System.Math.Max(1, tier) - 1);
 
@@ -93,7 +97,12 @@ namespace Game.Core.Party
             };
             if (!node.HasField("hardships"))
                 return rules;
-            rules.MandatoryEvery = node.Field("mandatoryEvery").AsInt(1, 1000);
+            rules.MaxHardships = node.Field("maxHardships").AsInt(0, 12);
+            foreach (var step in node.Field("mandatory").Items())
+            {
+                var min = step.Field("min").AsInt(0, 12);
+                rules._mandatory.Add((step.HasField("upTo") ? step.Field("upTo").AsInt(1, 1_000_000) : 0, min, step.Field("max").AsInt(min, 12)));
+            }
             rules.OptionalMax = node.Field("optionalMax").AsInt(0, 12);
             rules.OptionalTrophyBonus = node.Field("optionalTrophyBonus").AsNumber(0, 10);
             rules.HardshipSoften = node.Field("hardshipSoften").AsNumber(0, 1);

@@ -1,5 +1,6 @@
 interface PartyColossusRules {
-    mandatoryEvery: number;
+    maxHardships: number;
+    mandatory: { upTo: number; min: number; max: number }[];
     optionalMax: number;
     optionalTrophyBonus: number;
     hardshipSoften: number;
@@ -45,6 +46,8 @@ interface PartyColossusValue {
     week: number;
     shares: { [userId: string]: number };
     members: { [userId: string]: PartyColossusMember };
+    mandatory: string[];
+    drawnTier: number;
     optional: string[];
     disabled: string;
     touched: boolean;
@@ -58,6 +61,7 @@ interface PartyColossusValue {
 }
 
 interface PartyColossusSituation {
+    partyId: string;
     ceiling: number;
     activeSeconds: number;
     soften: boolean;
@@ -95,18 +99,46 @@ function partyColossusHardship(id: string): PartyColossusHardshipRule | undefine
     return partyColossusRules().hardships.filter((hardship) => hardship.id === id)[0];
 }
 
-function partyColossusMandatory(tier: number): string {
-    const rules = partyColossusRules();
-    if (rules.hardships.length === 0 || tier % rules.mandatoryEvery !== 0)
-        return "";
-    return rules.hardships[(tier / rules.mandatoryEvery - 1) % rules.hardships.length].id;
+function partyColossusSeed(text: string): () => number {
+    let state = 2166136261;
+    for (let i = 0; i < text.length; i++) {
+        state ^= text.charCodeAt(i);
+        state = Math.imul(state, 16777619) >>> 0;
+    }
+    return () => {
+        state = (state + 0x6D2B79F5) >>> 0;
+        let t = state;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+}
+
+function partyColossusMandatoryRange(tier: number): { min: number; max: number } {
+    for (const step of partyColossusRules().mandatory)
+        if (step.upTo === 0 || tier <= step.upTo)
+            return { min: step.min, max: step.max };
+    return { min: 0, max: 0 };
+}
+
+function partyColossusDraw(partyId: string, tier: number): string[] {
+    const random = partyColossusSeed(partyId + ":" + tier);
+    const range = partyColossusMandatoryRange(tier);
+    const count = Math.min(partyColossusRules().maxHardships, range.min + Math.floor(random() * (range.max - range.min + 1)));
+    const pool = partyColossusRules().hardships.map((hardship) => hardship.id);
+    const drawn: string[] = [];
+    while (drawn.length < count && pool.length > 0)
+        drawn.push(pool.splice(Math.floor(random() * pool.length), 1)[0]);
+    return drawn;
+}
+
+function partyColossusSlots(value: PartyColossusValue): number {
+    return Math.max(0, Math.min(partyColossusRules().optionalMax, partyColossusRules().maxHardships - value.mandatory.length));
 }
 
 function partyColossusActive(value: PartyColossusValue, situation: PartyColossusSituation): string[] {
-    const mandatory = partyColossusMandatory(value.tier);
-    if (mandatory)
-        return situation.switchOff && value.disabled === mandatory ? [] : [mandatory];
-    return value.optional.slice();
+    const mandatory = value.mandatory.filter((id) => !(situation.switchOff && value.disabled === id));
+    return mandatory.concat(value.optional.slice(0, partyColossusSlots(value)));
 }
 
 function partyColossusFactor(value: PartyColossusValue, situation: PartyColossusSituation, id: string, key: string, fallback: number): number {
@@ -114,7 +146,7 @@ function partyColossusFactor(value: PartyColossusValue, situation: PartyColossus
         return fallback;
     const rule = partyColossusHardship(id);
     const number = rule && typeof rule[key] === "number" ? rule[key] as number : fallback;
-    const softened = situation.soften && partyColossusMandatory(value.tier) === id;
+    const softened = situation.soften && value.mandatory[0] === id;
     return softened ? 1 + (number - 1) * (1 - partyColossusRules().hardshipSoften) : number;
 }
 
@@ -129,7 +161,7 @@ function partyColossusShieldFull(value: PartyColossusValue, situation: PartyColo
 function partyColossusEmpty(): PartyColossusValue {
     return {
         tier: 1, hp: partyColossusBaseHp(1), waiting: false, kills: 0, week: -1, shares: {}, members: {},
-        optional: [], disabled: "", touched: false, shield: 0, shieldAt: 0, lastHit: 0, furyAt: 0, regenAt: 0,
+        mandatory: [], drawnTier: 0, optional: [], disabled: "", touched: false, shield: 0, shieldAt: 0, lastHit: 0, furyAt: 0, regenAt: 0,
         hitters: { day: -1, ids: [] }, log: []
     };
 }
@@ -161,8 +193,9 @@ function partyColossusChange<T>(nk: nkruntime.Nakama, partyId: string, change: (
 }
 
 function partyColossusNewTier(value: PartyColossusValue, situation: PartyColossusSituation, nowUnixMs: number): void {
-    const mandatory = partyColossusMandatory(value.tier);
-    value.optional = value.optional.filter((id) => id !== mandatory);
+    value.mandatory = partyColossusDraw(situation.partyId, value.tier);
+    value.drawnTier = value.tier;
+    value.optional = value.optional.filter((id) => value.mandatory.indexOf(id) < 0).slice(0, partyColossusSlots(value));
     value.touched = false;
     value.hp = partyColossusFull(value, situation);
     value.shield = partyColossusShieldFull(value, situation);
@@ -200,6 +233,8 @@ function partyColossusSettle(value: PartyColossusValue, situation: PartyColossus
         value.week = week;
         value.shares = {};
     }
+    if (value.drawnTier !== value.tier && !value.touched)
+        partyColossusNewTier(value, situation, nowUnixMs);
     if (value.waiting && value.tier < situation.ceiling) {
         value.waiting = false;
         value.tier++;
@@ -220,6 +255,7 @@ function partyColossusSituation(nk: nkruntime.Nakama, partyId: string, userId: s
     const levels = partyTreasuryRead(nk, partyId).value.levels;
     const group = partyGroupOfUser(nk, userId);
     return {
+        partyId: partyId,
         ceiling: partyColossusCeiling(partyGrowthLevel(growth.experience).level),
         activeSeconds: member && member.day === today ? member.minutes * 60 + member.carry : 0,
         soften: partyTrialTreeValue(levels, partyColossusRules().soften) !== 0,
@@ -246,8 +282,8 @@ function partyColossusView(nk: nkruntime.Nakama, partyId: string, value: PartyCo
     return {
         partyId: partyId, opened: situation.ceiling > 0, tier: value.tier, hp: Math.max(0, value.hp), hpFull: partyColossusFull(value, situation),
         ceiling: situation.ceiling, waiting: value.waiting, kills: value.kills,
-        mandatory: partyColossusMandatory(value.tier), optional: value.optional, active: partyColossusActive(value, situation),
-        optionalAllowed: !partyColossusMandatory(value.tier), touched: value.touched, disabled: value.disabled, canSwitchOff: situation.switchOff,
+        mandatory: value.mandatory, optional: value.optional, active: partyColossusActive(value, situation),
+        optionalSlots: partyColossusSlots(value), touched: value.touched, disabled: value.disabled, canSwitchOff: situation.switchOff,
         softened: situation.soften, shield: value.shield, shieldFull: partyColossusShieldFull(value, situation),
         weakClass: partyColossusWeakClass(value, nowUnixMs), night: partyColossusAtNight(nowUnixMs),
         hittersToday: value.hitters.day === today ? value.hitters.ids.length : 0, leader: situation.leader,
@@ -336,7 +372,7 @@ function partyColossusHit(value: PartyColossusValue, situation: PartyColossusSit
         killed.push(value.tier);
         value.kills++;
         const active = partyColossusActive(value, situation);
-        value.log.push({ tier: value.tier, at: nowUnixMs, hardships: active, trophyBonus: partyColossusMandatory(value.tier) ? 0 : value.optional.length * partyColossusRules().optionalTrophyBonus });
+        value.log.push({ tier: value.tier, at: nowUnixMs, hardships: active, trophyBonus: value.optional.slice(0, partyColossusSlots(value)).length * partyColossusRules().optionalTrophyBonus });
         if (value.log.length > partyColossusRules().logSize)
             value.log.splice(0, value.log.length - partyColossusRules().logSize);
         if (value.tier >= situation.ceiling) {
@@ -427,12 +463,14 @@ function partyColossusChoose(nk: nkruntime.Nakama, userId: string, ids: unknown,
     if (!Array.isArray(ids) || ids.some((id) => typeof id !== "string" || !partyColossusHardship(id as string)))
         throw new Error("bad request");
     const unique = (ids as string[]).filter((id, index, all) => all.indexOf(id) === index);
-    if (unique.length > partyColossusRules().optionalMax)
-        throw new Error("at most " + partyColossusRules().optionalMax + " hardships");
     return partyColossusAct(nk, userId, nowUnixMs, (value, situation) => {
         if (!situation.leader)
             throw new Error("only the leader can do that");
-        if (value.touched && !partyColossusMandatory(value.tier))
+        if (unique.length > partyColossusSlots(value))
+            throw new Error("at most " + partyColossusSlots(value) + " hardships on this tier");
+        if (unique.some((id) => value.mandatory.indexOf(id) >= 0))
+            throw new Error("that hardship is already on this tier");
+        if (value.touched)
             throw new Error("the tier has already been hit");
         partyColossusRefit(value, situation, () => {
             value.optional = unique;
