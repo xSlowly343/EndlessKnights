@@ -339,7 +339,8 @@ test("the shared garden waits for the gardeners and grows from everyone's input"
   const group = server.partyGroupOfUser(nk, "ann");
   server.hideoutChange(nk, group.id, (value) => { value.tier = 3; });
   assert.strictEqual(building("garden").guild, "gardeners", "the garden waits for the gardeners' hall like every guild building");
-  assert.ok(rules.startBuilt.includes("gardeners"), "the herbalist's tent stands from the start");
+  assert.strictEqual(rules.startBuilt, undefined, "the herbwitch's house is built by the town, not given from the start");
+  nk.storageWrite([{ collection: "town", key: "guilds", userId: server.PartySystemUser, value: { built: ["gardeners"] }, version: "*", permissionRead: 0, permissionWrite: 0 }]);
   built(nk, "ann", { garden: 1 });
   const planted = plain(server.hideoutPlant(nk, "ann", 0, plant.id, now));
   assert.strictEqual(planted.commons.garden.length, rules.bedsPerRow);

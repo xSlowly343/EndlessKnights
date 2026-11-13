@@ -41,7 +41,7 @@ namespace Game.Core.Tests.Sim
             foreach (var building in TestWorld.Real.Camp.Buildings)
             {
                 if (building.Guild.Length > 0)
-                    Assert.That(Rules.BuildOrder, Does.Contain(building.Guild), building.Id);
+                    Assert.That(Rules.Building(building.Guild), Is.Not.Null, building.Id);
             }
             var json = TestData.ReadGameDataFile(GuildRules.FileName);
             var biomes = TestWorld.Real.Stages.Biomes;
@@ -51,10 +51,10 @@ namespace Game.Core.Tests.Sim
             Assert.That(GuildRules.Load(json, biomes, characters).Guilds.Count, Is.EqualTo(7));
             Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace("\"master\": \"dowser\"", "\"master\": \"huscarl\""), biomes, characters));
             Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace("\"biome\": \"ice_peak\"", "\"biome\": \"moon\""), biomes, characters));
-            Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace("\"order\": [\"fishers\", ", "\"order\": ["), biomes, characters));
+            Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace("\"id\": \"fishers\",\n        \"guild\": \"fishers\",", "\"id\": \"fishers\","), biomes, characters), "a guild without a hall");
             Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace("\"levels\": [0, 30,", "\"levels\": [5, 30,"), biomes, characters));
             Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace("\"id\": \"finds\"", "\"id\": \"gold\""), biomes, characters), "a resource the game does not count");
-            Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace("{ \"guild\": \"cooks\"", "{ \"guild\": \"gardeners\""), biomes, characters), "a hall on the board without resources");
+            Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace("\"perPlayerDay\": { \"labour\": 800, \"wood\": 30 }", "\"perPlayerDay\": { }"), biomes, characters), "a level without resources");
             Assert.That(Rules.VoteDays, Is.EqualTo(14));
             Assert.That(Rules.Resources.Count, Is.EqualTo(TownResource.Counted.Count));
         }
@@ -72,7 +72,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(lines.FindAll(line => line.Open).Count, Is.EqualTo(1));
             Assert.That(guilds.ObservatoryOpen, Is.False);
             Assert.That(lines[0].Guilds.Count, Is.EqualTo(2));
-            Assert.That(lines[0].Guilds[0].Built, Is.True, "the herbalist's tent stands from the start");
+            Assert.That(lines[0].Guilds[0].Built, Is.False, "the herbwitch's house waits for the town to build it");
             Assert.That(lines[0].Guilds[0].Master, Is.EqualTo("Herbwitch"));
 
             loop.State.RecordStage = length + 1;
@@ -137,6 +137,7 @@ namespace Game.Core.Tests.Sim
             {
                 candidates.Add(new TownCandidate("fishers", 12));
                 candidates.Add(new TownCandidate("smiths", 30));
+                candidates.Add(new TownCandidate("gardeners:2", 4));
             }
             return new TownBoard(phase, 1, voteEnds, opensAt, serverNow, project, vote, new string[0], candidates, stocks);
         }
@@ -153,10 +154,12 @@ namespace Game.Core.Tests.Sim
             Assert.That(GuildView.Sign(Rules, board, 60 * 3600), Is.EqualTo("Голосование: осталось 17 ч"));
             Assert.That(board.SecondsLeft(1000 * 3600), Is.EqualTo(0));
             var lines = GuildView.Board(Rules, board);
-            Assert.That(lines.Count, Is.EqualTo(2));
-            Assert.That(lines[0].Text, Is.EqualTo("Гильдия рыбаков — голосов: 12"));
+            Assert.That(lines.Count, Is.EqualTo(3));
+            Assert.That(lines[0].Text, Is.EqualTo("Пристань рыбаков — голосов: 12"));
             Assert.That(lines[1].Yours, Is.True);
-            Assert.That(lines[1].Text, Is.EqualTo("Гильдия кузнецов — голосов: 30 (ваш голос)"));
+            Assert.That(lines[1].Text, Is.EqualTo("Кузня — голосов: 30 (ваш голос)"));
+            Assert.That(lines[2].Text, Is.EqualTo("Дом травницы, уровень 2 — голосов: 4"));
+            Assert.That(lines[2].Level, Is.EqualTo(2));
             Assert.That(GuildView.QuestTitle(Rules, board), Does.StartWith("Запас города"));
             Assert.That(GuildView.Quest(Rules, board)[0].Text, Is.EqualTo("Труд: собрано 800, ваш вклад 120"));
         }
@@ -170,8 +173,8 @@ namespace Game.Core.Tests.Sim
                 new TownStock(TownResource.Finds, 10, 0, 0, 0, 200));
             Assert.That(gather.CanVote, Is.False);
             Assert.That(gather.Gathered, Is.False);
-            Assert.That(GuildView.Sign(Rules, gather, 0), Is.EqualTo("Строим: Гильдия кузнецов"));
-            Assert.That(GuildView.QuestTitle(Rules, gather), Is.EqualTo("Задание города: собрать ресурсы на «Гильдия кузнецов»"));
+            Assert.That(GuildView.Sign(Rules, gather, 0), Is.EqualTo("Строим: Кузня"));
+            Assert.That(GuildView.QuestTitle(Rules, gather), Is.EqualTo("Задание города: собрать ресурсы на «Кузня»"));
             var quest = GuildView.Quest(Rules, gather);
             Assert.That(quest.Count, Is.EqualTo(2), "a resource the hall does not need is not listed");
             Assert.That(quest[0].Text, Is.EqualTo("Труд: 3200 из 50000, ваш вклад 300"));
@@ -183,9 +186,9 @@ namespace Game.Core.Tests.Sim
             var opening = Board(TownBoardPhase.Opening, "smiths", string.Empty, 1_000_000, 0, 1_000_000 + 5 * 3600_000 + 60_000,
                 new TownStock(TownResource.Labour, 50000, 50000, 300, 0, 5000));
             Assert.That(opening.Gathered, Is.True);
-            Assert.That(GuildView.Sign(Rules, opening, 0), Is.EqualTo("Гильдия кузнецов: откроется через 5 ч 1 мин"));
+            Assert.That(GuildView.Sign(Rules, opening, 0), Is.EqualTo("Кузня: откроется через 5 ч 1 мин"));
             var done = Board(TownBoardPhase.Done, string.Empty, string.Empty, 1_000_000, 0, 0);
-            Assert.That(GuildView.Sign(Rules, done, 0), Is.EqualTo("Все здания гильдий построены"));
+            Assert.That(GuildView.Sign(Rules, done, 0), Is.EqualTo("Кромка отстроена целиком: все здания и их уровни готовы"));
             Assert.That(GuildView.Quest(Rules, done), Is.Empty);
             Assert.That(TownBoard.PhaseOf("vote"), Is.EqualTo(TownBoardPhase.Vote));
             Assert.That(TownBoard.PhaseOf("gather"), Is.EqualTo(TownBoardPhase.Gather));
@@ -324,19 +327,23 @@ namespace Game.Core.Tests.Sim
         public void TheBoardShowsYourPartTheRewardTiersAndTheBestBuilders()
         {
             var tiers = Rules.Rewards;
-            Assert.That(tiers.Count, Is.EqualTo(4));
+            Assert.That(tiers.Count, Is.EqualTo(8), "twice as many steps as before");
+            for (var i = 1; i < tiers.Count; i++)
+                Assert.That(tiers[i].Shards, Is.GreaterThan(tiers[i - 1].Shards), tiers[i].Id);
+            Assert.That(Rules.StageShards, Is.GreaterThan(0));
             Assert.That(Rules.TierAt(tiers[0].Points - 1), Is.Null);
             Assert.That(Rules.TierAt(tiers[1].Points), Is.SameAs(tiers[1]));
-            Assert.That(Rules.TierAfter(tiers[3].Points), Is.Null);
+            var last = tiers[tiers.Count - 1];
+            Assert.That(Rules.TierAfter(last.Points), Is.Null);
             var board = Board(TownBoardPhase.Gather, "smiths", string.Empty, 0, 0, 0);
             Assert.That(board.Top, Is.Empty);
             Assert.That(GuildView.Reward(Rules, board), Is.EqualTo($"Ваш вклад: 0 очков. До ступени «Подсобник» ещё {tiers[0].Points}"));
             board.WithBuilders(tiers[1].Points + 500, 2, new[] { new TownBuilder(1, "Mira", 90000), new TownBuilder(2, "You", tiers[1].Points + 500) });
-            Assert.That(GuildView.Reward(Rules, board), Is.EqualTo($"Ваш вклад: {tiers[1].Points + 500} очков — «Строитель». До ступени «Мастер стройки» ещё {tiers[2].Points - tiers[1].Points - 500}"));
-            board.WithBuilders(tiers[3].Points, 1, board.Top);
-            Assert.That(GuildView.Reward(Rules, board), Is.EqualTo($"Ваш вклад: {tiers[3].Points} очков — «Зодчий», высшая ступень"));
+            Assert.That(GuildView.Reward(Rules, board), Is.EqualTo($"Ваш вклад: {tiers[1].Points + 500} очков — «Подносчик». До ступени «Плотник» ещё {tiers[2].Points - tiers[1].Points - 500}"));
+            board.WithBuilders(last.Points, 1, board.Top);
+            Assert.That(GuildView.Reward(Rules, board), Is.EqualTo($"Ваш вклад: {last.Points} очков — «Градостроитель», высшая ступень"));
             Assert.That(GuildView.RewardOf(tiers[0]), Is.EqualTo($"«Подсобник» — от {tiers[0].Points} очков: Осколков {tiers[0].Shards}"));
-            Assert.That(GuildView.RewardOf(tiers[3]), Is.EqualTo($"«Зодчий» — от {tiers[3].Points} очков: Осколков {tiers[3].Shards}, Знаков дружбы {tiers[3].Friendship}"));
+            Assert.That(GuildView.RewardOf(last), Is.EqualTo($"«Градостроитель» — от {last.Points} очков: Осколков {last.Shards}, Знаков дружбы {last.Friendship}"));
             var top = GuildView.Top(board);
             Assert.That(top[0].Text, Is.EqualTo("1. Mira — 90000 (вы)"));
             Assert.That(top[1].Yours, Is.False);
@@ -345,7 +352,9 @@ namespace Game.Core.Tests.Sim
 
             var thanks = new Game.Core.Mail.MailLetter("town-build-1", Game.Core.Mail.MailLetter.TownKind, 0, 3, 0, 15500, "smiths", new Game.Core.Content.Rift.RiftReward(40, 0, 2), false);
             Assert.That(MailText.Title(thanks), Is.EqualTo("Кромка благодарит"));
-            Assert.That(MailText.Body(thanks, guilds: Rules), Is.EqualTo("Построено: «Гильдия кузнецов». Ваш вклад — 15500 очков, место 3 среди строителей"));
+            Assert.That(MailText.Body(thanks, guilds: Rules), Is.EqualTo("Построено: «Кузня». Ваш вклад — 15500 очков, место 3 среди строителей"));
+            var upgrade = new Game.Core.Mail.MailLetter("town-build-9", Game.Core.Mail.MailLetter.TownKind, 0, 0, 0, 2000, "palisade:3", new Game.Core.Content.Rift.RiftReward(3, 0, 0), false);
+            Assert.That(MailText.Body(upgrade, guilds: Rules), Is.EqualTo("Построено: «Частокол, уровень 3». Ваш вклад — 2000 очков"));
         }
 
         [Test]
@@ -362,13 +371,119 @@ namespace Game.Core.Tests.Sim
                 Assert.Throws<ContentException>(() => GuildRules.Load(json.Replace(from, to), biomes, characters), why);
             }
 
-            Rejected("\"resource\": \"wood\", \"fromStage\": 10", "\"resource\": \"fish\", \"fromStage\": 10", "a site cannot gather what a hall makes");
-            Rejected("\"resource\": \"stone\", \"fromStage\": 60", "\"resource\": \"stone\", \"fromStage\": 20", "sites open in order");
+            Rejected("\"resource\": \"wood\", \"fromStage\": 5000", "\"resource\": \"fish\", \"fromStage\": 5000", "a site cannot gather what a hall makes");
+            Rejected("\"resource\": \"stone\", \"fromStage\": 7500", "\"resource\": \"stone\", \"fromStage\": 2000", "sites open in order");
             Rejected("\"resource\": \"riftdust\"", "\"resource\": \"wood\"", "raw material nobody gathers");
             Rejected("\"id\": \"salt\", \"kind\": \"raw\"", "\"id\": \"salt\", \"kind\": \"gift\"", "an unknown kind");
             Rejected("\"guild\": \"cooks\", \"name\"", "\"guild\": \"bakers\", \"name\"", "an unknown guild");
-            Rejected("\"points\": 15000", "\"points\": 3000", "tiers grow");
-            Rejected("\"finds\": 4, \"fish\": 4", "\"finds\": 4, \"dishes\": 4", "a hall is not built from its own goods");
+            Rejected("\"points\": 12000", "\"points\": 5000", "tiers grow");
+            Rejected("\"finds\": 4, \"fish\": 2", "\"finds\": 4, \"dishes\": 2", "a hall is not built from its own goods");
+            Rejected("{ \"afterBuilt\": 25,", "{ \"afterBuilt\": 400,", "a level that waits for more than the town can hold");
+            Rejected("{ \"afterBuilt\": 6, \"perPlayerDay\": { \"labour\": 1200, \"stone\": 30", "{ \"afterBuilt\": 6, \"perPlayerDay\": { \"potato\": 1200, \"stone\": 30", "an unknown resource");
+            Rejected("\"built\": 3 }", "\"built\": 1 }", "the looks of the town grow");
+            Rejected("\"built\": 40 }", "\"built\": 99 }", "a look the town cannot reach");
+            Rejected("\"master\": \"windshot\"", "\"master\": \"nobody\"", "a master who is not a character");
+            Rejected("\"id\": \"well\",", "\"id\": \"well:2\",", "a building id cannot look like a level");
+        }
+
+        [Test]
+        public void TheTownStartsFromATentAndTheHerbwitchAndTheAlchemistAreBuiltToo()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            Assert.That(loop.Guilds.Built("gardeners"), Is.False, "the herbwitch's house is built by the town");
+            Assert.That(loop.Guilds.Built("alchemists"), Is.False, "the alchemist's shop is built by the town");
+            foreach (var guild in Rules.Guilds)
+                Assert.That(Rules.Building(guild.Id)!.Guild, Is.EqualTo(guild.Id), guild.Id);
+            var first = new List<string>();
+            foreach (var building in Rules.Buildings)
+            {
+                if (building.Levels[0].AfterBuilt == 0)
+                {
+                    first.Add(building.Id);
+                    Assert.That(building.Levels[0].Needs.ContainsKey(TownResource.Wood), Is.True, building.Id + " is built from wood");
+                }
+                for (var level = 1; level < building.MaxLevel; level++)
+                {
+                    var fresh = false;
+                    foreach (var need in building.Levels[level].Needs)
+                        fresh |= !building.Levels[level - 1].Needs.ContainsKey(need.Key) && need.Key != TownResource.Labour;
+                    Assert.That(fresh, Is.True, $"level {level + 1} of {building.Id} asks for something new");
+                    Assert.That(building.Levels[level].AfterBuilt, Is.GreaterThan(0), "upgrades come after the first buildings");
+                }
+            }
+            Assert.That(first, Does.Contain("gardeners").And.Contain("alchemists"));
+            Assert.That(first.Count, Is.GreaterThan(2));
+            Assert.That(Rules.Buildings.Count, Is.GreaterThan(Rules.Guilds.Count), "the town has more than guild halls");
+            Assert.That(Rules.ProjectCount, Is.EqualTo(Rules.Stages[Rules.Stages.Count - 1].Built));
+            Assert.That(Rules.Stages.Count, Is.GreaterThanOrEqualTo(8));
+            for (var i = 0; i < 4; i++)
+                Assert.That(Rules.Sites[i].FromStage, Is.GreaterThanOrEqualTo(5000), Rules.Sites[i].Id);
+        }
+
+        [Test]
+        public void ProjectsAreBuildingsAndTheirLevels()
+        {
+            Assert.That(GuildRules.ProjectId("smiths", 1), Is.EqualTo("smiths"));
+            Assert.That(GuildRules.ProjectId("smiths", 3), Is.EqualTo("smiths:3"));
+            Assert.That(Rules.ProjectOf("smiths:3", out var level)!.Id, Is.EqualTo("smiths"));
+            Assert.That(level, Is.EqualTo(3));
+            Assert.That(Rules.ProjectOf("well", out level)!.Id, Is.EqualTo("well"));
+            Assert.That(level, Is.EqualTo(1));
+            Assert.That(Rules.ProjectOf("smiths:1", out _), Is.Null);
+            Assert.That(Rules.ProjectOf("smiths:9", out _), Is.Null);
+            Assert.That(Rules.ProjectOf("smiths:x", out _), Is.Null);
+            Assert.That(Rules.ProjectOf("bakery", out _), Is.Null);
+            var built = new HashSet<string> { "smiths", "smiths:2", "well", "palisade:2" };
+            Assert.That(Rules.LevelOf(Rules.Building("smiths")!, built), Is.EqualTo(2));
+            Assert.That(Rules.LevelOf(Rules.Building("palisade")!, built), Is.Zero, "a level without the one below does not count");
+            Assert.That(Rules.CountProjects(new[] { "smiths", "smiths:2", "well", "bakery" }), Is.EqualTo(3));
+
+            var loop = TestWorld.Loop(new FakeInputSource());
+            loop.Camp.SetGuilds(built);
+            Assert.That(loop.Guilds.HallLevel("smiths"), Is.EqualTo(2));
+            var smiths = GuildView.Districts(loop.Guilds).Find(line => line.Id == "smith_row")!.Guilds[0];
+            Assert.That(smiths.HallLevel, Is.EqualTo(2));
+            Assert.That(smiths.HallMaxLevel, Is.EqualTo(3));
+            var buildings = GuildView.Buildings(Rules, built);
+            Assert.That(buildings.Count, Is.EqualTo(Rules.Buildings.Count));
+            Assert.That(buildings.Find(line => line.Id == "smiths")!.Text, Is.EqualTo("Кузня: уровень 2 из 3"));
+            Assert.That(buildings.Find(line => line.Id == "market")!.Text, Is.EqualTo("Рынок: ещё не построено"));
+        }
+
+        [Test]
+        public void TheTownChangesItsLookAsItGrows()
+        {
+            var tent = GuildView.Stage(Rules, 0);
+            Assert.That(tent.Name, Is.EqualTo("Палатка"));
+            Assert.That(tent.Index, Is.Zero);
+            Assert.That(tent.Text, Is.EqualTo("Кромка — Палатка: построено 0. До вида «Стоянка» ещё 1"));
+            var hamlet = GuildView.Stage(Rules, 4);
+            Assert.That(hamlet.Name, Is.EqualTo("Посёлок"));
+            Assert.That(hamlet.Text, Is.EqualTo("Кромка — Посёлок: построено 4. До вида «Слобода» ещё 2"));
+            var capital = GuildView.Stage(Rules, Rules.ProjectCount);
+            Assert.That(capital.Index, Is.EqualTo(Rules.Stages.Count - 1));
+            Assert.That(capital.Text, Is.EqualTo($"Кромка — Столица Кромки: построено {Rules.ProjectCount}, город отстроен"));
+            var board = new TownBoard(TownBoardPhase.Vote, 5, 0, 0, 0, string.Empty, string.Empty, new[] { "gardeners", "well", "gardeners:2", "bakery" }, new TownCandidate[0], new TownStock[0]);
+            Assert.That(board.BuiltCount(Rules), Is.EqualTo(3));
+        }
+
+        [Test]
+        public void TheMasterOfTheBuildingStandsAtTheBoardWhileItIsBuilt()
+        {
+            var smiths = Rules.Building("smiths")!;
+            var gather = Board(TownBoardPhase.Gather, "smiths:2", string.Empty, 0, 0, 0);
+            var said = new HashSet<string>();
+            for (var day = 0; day < 30; day++)
+            {
+                var line = GuildView.MasterSays(Rules, gather, 20400 + day);
+                Assert.That(line, Does.StartWith("Golemancer у доски: «"));
+                said.Add(line);
+            }
+            Assert.That(said.Count, Is.EqualTo(smiths.Lines.Count), "every line is heard over the days");
+            Assert.That(GuildView.MasterSays(Rules, gather, 7), Is.EqualTo(GuildView.MasterSays(Rules, gather, 7)), "one line a day");
+            Assert.That(GuildView.MasterSays(Rules, Board(TownBoardPhase.Opening, "well", string.Empty, 0, 0, 0), 1), Does.StartWith("Dreamcatcher у доски: «"));
+            Assert.That(GuildView.MasterSays(Rules, Board(TownBoardPhase.Vote, string.Empty, string.Empty, 0, 0, 0), 1), Is.Empty);
+            Assert.That(GuildView.MasterSays(Rules, Board(TownBoardPhase.Gather, "bakery", string.Empty, 0, 0, 0), 1), Is.Empty);
         }
 
         [Test]

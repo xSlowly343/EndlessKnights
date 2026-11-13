@@ -114,14 +114,12 @@ namespace Game.Core.Sim
 
         public int Level(string guild) => _rules.LevelAt(_state.Town.Reputation.TryGetValue(guild, out var reputation) ? reputation : 0);
 
-        public bool Built(string guild)
+        public bool Built(string guild) => _state.Camp.Guilds.Contains(guild);
+
+        public int HallLevel(string building)
         {
-            foreach (var id in _rules.StartBuilt)
-            {
-                if (id == guild)
-                    return true;
-            }
-            return _state.Camp.Guilds.Contains(guild);
+            var def = _rules.Building(building);
+            return def == null ? 0 : _rules.LevelOf(def, _state.Camp.Guilds);
         }
 
         public bool ObservatoryOpen

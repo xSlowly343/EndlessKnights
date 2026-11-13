@@ -11,13 +11,11 @@ namespace Game.Net.Nakama
     {
         private TownBuildReply(JsonValue json)
         {
-            var built = new List<string>(CosmeticsMineView.Ids(json, "startBuilt"));
             var voted = CosmeticsMineView.Ids(json, "built");
-            built.AddRange(voted);
-            Built = built;
+            Built = voted;
             var candidates = new List<TownCandidate>();
             foreach (var item in NakamaJson.Items(json, "candidates"))
-                candidates.Add(new TownCandidate(NakamaJson.Text(item, "guild"), (long)NakamaJson.Number(item, "votes")));
+                candidates.Add(new TownCandidate(NakamaJson.Text(item, "project"), (long)NakamaJson.Number(item, "votes")));
             var stocks = new List<TownStock>();
             foreach (var item in NakamaJson.Items(json, "resources"))
             {
@@ -59,7 +57,7 @@ namespace Game.Net.Nakama
             return NakamaJson.Object(("gains", NakamaJson.Object(fields)));
         }
 
-        public static string VotePayload(string guild) => NakamaJson.Object(("guild", NakamaJson.Quote(guild)));
+        public static string VotePayload(string project) => NakamaJson.Object(("project", NakamaJson.Quote(project)));
 
         public static async Task<TownBuildReply> FetchAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "town_build", "{}", cancel).ConfigureAwait(false)));
@@ -67,7 +65,7 @@ namespace Game.Net.Nakama
         public static async Task<TownBuildReply> AddAsync(NakamaClient client, NakamaSession session, IReadOnlyDictionary<string, long> gains, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "town_build_add", AddPayload(gains), cancel).ConfigureAwait(false)));
 
-        public static async Task<TownBuildReply> VoteAsync(NakamaClient client, NakamaSession session, string guild, CancellationToken cancel = default) =>
-            From(NakamaJson.Parse(await client.RpcAsync(session, "town_build_vote", VotePayload(guild), cancel).ConfigureAwait(false)));
+        public static async Task<TownBuildReply> VoteAsync(NakamaClient client, NakamaSession session, string project, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "town_build_vote", VotePayload(project), cancel).ConfigureAwait(false)));
     }
 }

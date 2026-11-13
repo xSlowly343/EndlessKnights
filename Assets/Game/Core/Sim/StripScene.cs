@@ -26,7 +26,6 @@ namespace Game.Core.Sim
         public bool Switching => SwitchTicksLeft > 0;
         public double SwitchProgress => _switchTicks == 0 ? 1 : 1 - (double)SwitchTicksLeft / _switchTicks;
         public bool Peaceful => IsPeaceful(Place);
-        public StripFight BackgroundFight { get; private set; }
         public string Activity => Peaceful ? _peaceful.Activity : string.Empty;
 
         public void UseRules(StripSceneRules rules) => _rules = rules;
@@ -68,7 +67,6 @@ namespace Game.Core.Sim
         {
             var place = PlaceOf(_state);
             var fight = FightOf(_state, place);
-            BackgroundFight = _peaceful.FightsInBackground ? FightOf(_state, StripPlace.Home) : StripFight.None;
             if (!_started)
             {
                 _started = true;

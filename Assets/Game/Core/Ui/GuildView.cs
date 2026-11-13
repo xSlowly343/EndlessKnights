@@ -12,7 +12,31 @@ namespace Game.Core.Ui
         public string Master { get; internal set; } = string.Empty;
         public int Level { get; internal set; }
         public bool Built { get; internal set; }
+        public int HallLevel { get; internal set; }
+        public int HallMaxLevel { get; internal set; }
         public string Status { get; internal set; } = string.Empty;
+    }
+
+    public sealed class TownBuildingLine
+    {
+        public string Id { get; internal set; } = string.Empty;
+        public string Guild { get; internal set; } = string.Empty;
+        public string Name { get; internal set; } = string.Empty;
+        public string Master { get; internal set; } = string.Empty;
+        public string District { get; internal set; } = string.Empty;
+        public int Level { get; internal set; }
+        public int MaxLevel { get; internal set; }
+        public string Text { get; internal set; } = string.Empty;
+    }
+
+    public sealed class TownStageLine
+    {
+        public string Id { get; internal set; } = string.Empty;
+        public string Name { get; internal set; } = string.Empty;
+        public int Built { get; internal set; }
+        public int Index { get; internal set; }
+        public int Count { get; internal set; }
+        public string Text { get; internal set; } = string.Empty;
     }
 
     public sealed class DistrictLine
@@ -26,7 +50,8 @@ namespace Game.Core.Ui
 
     public sealed class TownBoardLine
     {
-        public string Guild { get; internal set; } = string.Empty;
+        public string Project { get; internal set; } = string.Empty;
+        public int Level { get; internal set; }
         public string Name { get; internal set; } = string.Empty;
         public long Votes { get; internal set; }
         public bool Yours { get; internal set; }
@@ -87,6 +112,7 @@ namespace Game.Core.Ui
                         continue;
                     var built = guilds.Built(guild.Id);
                     var level = guilds.Level(guild.Id);
+                    var hall = rules.Building(guild.Id);
                     line.Guilds.Add(new GuildLine
                     {
                         Id = guild.Id,
@@ -94,6 +120,8 @@ namespace Game.Core.Ui
                         Master = MasterName(guild.Master),
                         Level = level,
                         Built = built,
+                        HallLevel = guilds.HallLevel(guild.Id),
+                        HallMaxLevel = hall == null ? 0 : hall.MaxLevel,
                         Status = built ? Texts.Format("guild.level", level, rules.MaxLevel) : Texts.Get("guild.building")
                     });
                 }
@@ -109,9 +137,9 @@ namespace Game.Core.Ui
                 case TownBoardPhase.Vote:
                     return Texts.Format("guild.sign.vote", TimeLeft(board.SecondsLeft(secondsSinceReply)));
                 case TownBoardPhase.Gather:
-                    return Texts.Format("guild.sign.gather", Name(rules, board.Project));
+                    return Texts.Format("guild.sign.gather", ProjectName(rules, board.Project));
                 case TownBoardPhase.Opening:
-                    return Texts.Format("guild.sign.opening", Name(rules, board.Project), TimeLeft(board.SecondsLeft(secondsSinceReply)));
+                    return Texts.Format("guild.sign.opening", ProjectName(rules, board.Project), TimeLeft(board.SecondsLeft(secondsSinceReply)));
                 default:
                     return Texts.Get("guild.project.done");
             }
@@ -122,14 +150,17 @@ namespace Game.Core.Ui
             var lines = new List<TownBoardLine>(board.Candidates.Count);
             foreach (var candidate in board.Candidates)
             {
-                var yours = candidate.Guild == board.Vote;
+                var yours = candidate.Project == board.Vote;
+                rules.ProjectOf(candidate.Project, out var level);
+                var name = ProjectName(rules, candidate.Project);
                 lines.Add(new TownBoardLine
                 {
-                    Guild = candidate.Guild,
-                    Name = Name(rules, candidate.Guild),
+                    Project = candidate.Project,
+                    Level = level,
+                    Name = name,
                     Votes = candidate.Votes,
                     Yours = yours,
-                    Text = Texts.Format(yours ? "guild.board.yours" : "guild.board.candidate", Name(rules, candidate.Guild), candidate.Votes)
+                    Text = Texts.Format(yours ? "guild.board.yours" : "guild.board.candidate", name, candidate.Votes)
                 });
             }
             return lines;
@@ -240,7 +271,7 @@ namespace Game.Core.Ui
 
         public static string QuestTitle(GuildRules rules, TownBoard board) =>
             board.Phase == TownBoardPhase.Vote ? Texts.Get("guild.quest.early")
-            : board.Phase == TownBoardPhase.Gather ? Texts.Format("guild.quest.title", Name(rules, board.Project))
+            : board.Phase == TownBoardPhase.Gather ? Texts.Format("guild.quest.title", ProjectName(rules, board.Project))
             : board.Phase == TownBoardPhase.Opening ? Texts.Get("guild.quest.next")
             : string.Empty;
 
@@ -259,10 +290,66 @@ namespace Game.Core.Ui
             return Texts.Format("guild.forecast", fish == null ? "—" : Texts.Pick(fish.NameRu, fish.NameEn), plant == null ? "—" : Texts.Pick(plant.NameRu, plant.NameEn));
         }
 
-        private static string Name(GuildRules rules, string guild)
+        public static string ProjectName(GuildRules rules, string project)
         {
-            var def = rules.Guild(guild);
-            return def == null ? guild : Texts.Pick(def.NameRu, def.NameEn);
+            var building = rules.ProjectOf(project, out var level);
+            if (building == null)
+                return project;
+            var name = Texts.Pick(building.NameRu, building.NameEn);
+            return level <= 1 ? name : Texts.Format("guild.project.level", name, level);
+        }
+
+        public static List<TownBuildingLine> Buildings(GuildRules rules, ICollection<string> built)
+        {
+            var lines = new List<TownBuildingLine>(rules.Buildings.Count);
+            foreach (var building in rules.Buildings)
+            {
+                var level = rules.LevelOf(building, built);
+                var name = Texts.Pick(building.NameRu, building.NameEn);
+                lines.Add(new TownBuildingLine
+                {
+                    Id = building.Id,
+                    Guild = building.Guild,
+                    Name = name,
+                    Master = MasterName(building.Master),
+                    District = building.District,
+                    Level = level,
+                    MaxLevel = building.MaxLevel,
+                    Text = level == 0 ? Texts.Format("guild.hall.none", name) : Texts.Format("guild.hall.level", name, level, building.MaxLevel)
+                });
+            }
+            return lines;
+        }
+
+        public static TownStageLine Stage(GuildRules rules, int built)
+        {
+            var stage = rules.StageAt(built);
+            var next = rules.StageAfter(built);
+            var name = Texts.Pick(stage.NameRu, stage.NameEn);
+            var index = 0;
+            while (index < rules.Stages.Count && rules.Stages[index] != stage)
+                index++;
+            return new TownStageLine
+            {
+                Id = stage.Id,
+                Name = name,
+                Built = built,
+                Index = index,
+                Count = rules.Stages.Count,
+                Text = next == null ? Texts.Format("guild.stage.last", name, built)
+                    : Texts.Format("guild.stage.next", name, built, Texts.Pick(next.NameRu, next.NameEn), next.Built - built)
+            };
+        }
+
+        public static string MasterSays(GuildRules rules, TownBoard board, long day)
+        {
+            if (board.Phase != TownBoardPhase.Gather && board.Phase != TownBoardPhase.Opening)
+                return string.Empty;
+            var building = rules.ProjectOf(board.Project, out _);
+            if (building == null)
+                return string.Empty;
+            var line = building.Lines[(int)(((day % building.Lines.Count) + building.Lines.Count) % building.Lines.Count)];
+            return Texts.Format("guild.master.says", MasterName(building.Master), Texts.Pick(line.Ru, line.En));
         }
 
         private static string MasterName(string id) => Texts.Get("class." + id);

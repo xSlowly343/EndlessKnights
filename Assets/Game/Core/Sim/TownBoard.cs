@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Content;
 
 namespace Game.Core.Sim
 {
@@ -12,13 +13,13 @@ namespace Game.Core.Sim
 
     public readonly struct TownCandidate
     {
-        public TownCandidate(string guild, long votes)
+        public TownCandidate(string project, long votes)
         {
-            Guild = guild;
+            Project = project;
             Votes = votes;
         }
 
-        public string Guild { get; }
+        public string Project { get; }
         public long Votes { get; }
     }
 
@@ -100,6 +101,8 @@ namespace Game.Core.Sim
         }
 
         public bool CanVote => Phase == TownBoardPhase.Vote;
+
+        public int BuiltCount(GuildRules rules) => rules.CountProjects(Built);
 
         public bool Gathered
         {

@@ -108,6 +108,72 @@ namespace Game.Core.Content
         public int Friendship { get; }
     }
 
+    public sealed class TownBuildLevel
+    {
+        public TownBuildLevel(int afterBuilt, IReadOnlyDictionary<string, long> needs)
+        {
+            AfterBuilt = afterBuilt;
+            Needs = needs;
+        }
+
+        public int AfterBuilt { get; }
+        public IReadOnlyDictionary<string, long> Needs { get; }
+    }
+
+    public sealed class TownMasterLine
+    {
+        public TownMasterLine(string ru, string en)
+        {
+            Ru = ru;
+            En = en;
+        }
+
+        public string Ru { get; }
+        public string En { get; }
+    }
+
+    public sealed class TownBuildingDef
+    {
+        public TownBuildingDef(string id, string guild, string nameRu, string nameEn, string master, string district, IReadOnlyList<TownBuildLevel> levels,
+            IReadOnlyList<TownMasterLine> lines)
+        {
+            Id = id;
+            Guild = guild;
+            NameRu = nameRu;
+            NameEn = nameEn;
+            Master = master;
+            District = district;
+            Levels = levels;
+            Lines = lines;
+        }
+
+        public string Id { get; }
+        public string Guild { get; }
+        public string NameRu { get; }
+        public string NameEn { get; }
+        public string Master { get; }
+        public string District { get; }
+        public IReadOnlyList<TownBuildLevel> Levels { get; }
+        public IReadOnlyList<TownMasterLine> Lines { get; }
+        public int MaxLevel => Levels.Count;
+    }
+
+    public sealed class TownStageDef
+    {
+        public TownStageDef(string id, string nameRu, string nameEn, int built)
+        {
+            Id = id;
+            NameRu = nameRu;
+            NameEn = nameEn;
+            Built = built;
+        }
+
+        public string Id { get; }
+        public string NameRu { get; }
+        public string NameEn { get; }
+        public int Built { get; }
+    }
+
     public static class TownResource
     {
         public const double PointsPerDay = 1000;
@@ -128,10 +194,13 @@ namespace Game.Core.Content
         public const string Coal = "coal";
         public const string Skyglass = "skyglass";
         public const string RiftDust = "riftdust";
+        public const string Marble = "marble";
+        public const string Amber = "amber";
+        public const string StarMetal = "starmetal";
 
         public static readonly IReadOnlyList<string> Counted = new[]
         {
-            Labour, Herbs, Finds, Potions, Fish, Metalwork, Dishes, Relics, Tinctures, Wood, Stone, Ore, Clay, Salt, Coal, Skyglass, RiftDust
+            Labour, Herbs, Finds, Potions, Fish, Metalwork, Dishes, Relics, Tinctures, Wood, Stone, Ore, Clay, Salt, Coal, Skyglass, RiftDust, Marble, Amber, StarMetal
         };
 
         public static TownResourceKind KindOf(string name) => name switch
@@ -149,10 +218,15 @@ namespace Game.Core.Content
         public const string FileName = "guilds.json";
         public const int SupportedVersion = 1;
 
-        private GuildRules(IReadOnlyList<long> levels, IReadOnlyList<GuildDef> guilds, IReadOnlyList<DistrictDef> districts, IReadOnlyList<string> startBuilt,
-            IReadOnlyList<string> buildOrder, int voteDays, int openHours, IReadOnlyList<BuildResourceDef> resources, IReadOnlyList<TownSiteDef> sites,
-            IReadOnlyList<TownRewardTier> rewards, int topSize, int topShards)
+        public const char LevelMark = ':';
+
+        private GuildRules(IReadOnlyList<long> levels, IReadOnlyList<GuildDef> guilds, IReadOnlyList<DistrictDef> districts, IReadOnlyList<TownBuildingDef> buildings,
+            IReadOnlyList<TownStageDef> stages, int voteDays, int openHours, IReadOnlyList<BuildResourceDef> resources, IReadOnlyList<TownSiteDef> sites,
+            IReadOnlyList<TownRewardTier> rewards, int topSize, int topShards, int stageShards)
         {
+            Buildings = buildings;
+            Stages = stages;
+            StageShards = stageShards;
             Sites = sites;
             Rewards = rewards;
             TopSize = topSize;
@@ -160,8 +234,6 @@ namespace Game.Core.Content
             Levels = levels;
             Guilds = guilds;
             Districts = districts;
-            StartBuilt = startBuilt;
-            BuildOrder = buildOrder;
             VoteDays = voteDays;
             OpenHours = openHours;
             Resources = resources;
@@ -170,8 +242,9 @@ namespace Game.Core.Content
         public IReadOnlyList<long> Levels { get; }
         public IReadOnlyList<GuildDef> Guilds { get; }
         public IReadOnlyList<DistrictDef> Districts { get; }
-        public IReadOnlyList<string> StartBuilt { get; }
-        public IReadOnlyList<string> BuildOrder { get; }
+        public IReadOnlyList<TownBuildingDef> Buildings { get; }
+        public IReadOnlyList<TownStageDef> Stages { get; }
+        public int StageShards { get; }
         public int VoteDays { get; }
         public int OpenHours { get; }
         public IReadOnlyList<BuildResourceDef> Resources { get; }
@@ -180,6 +253,81 @@ namespace Game.Core.Content
         public int TopSize { get; }
         public int TopShards { get; }
         public int MaxLevel => Levels.Count;
+
+        public int ProjectCount
+        {
+            get
+            {
+                var count = 0;
+                foreach (var building in Buildings)
+                    count += building.MaxLevel;
+                return count;
+            }
+        }
+
+        public static string ProjectId(string building, int level) => level <= 1 ? building : building + LevelMark + level;
+
+        public TownBuildingDef? Building(string id)
+        {
+            foreach (var building in Buildings)
+            {
+                if (building.Id == id)
+                    return building;
+            }
+            return null;
+        }
+
+        public TownBuildingDef? ProjectOf(string project, out int level)
+        {
+            var mark = project.IndexOf(LevelMark);
+            level = 1;
+            if (mark < 0)
+                return Building(project);
+            if (!int.TryParse(project.Substring(mark + 1), System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out level) || level < 2)
+                return null;
+            var building = Building(project.Substring(0, mark));
+            return building != null && level <= building.MaxLevel ? building : null;
+        }
+
+        public int LevelOf(TownBuildingDef building, ICollection<string> built)
+        {
+            var level = 0;
+            while (level < building.MaxLevel && built.Contains(ProjectId(building.Id, level + 1)))
+                level++;
+            return level;
+        }
+
+        public int CountProjects(IEnumerable<string> built)
+        {
+            var count = 0;
+            foreach (var id in built)
+            {
+                if (ProjectOf(id, out _) != null)
+                    count++;
+            }
+            return count;
+        }
+
+        public TownStageDef StageAt(int built)
+        {
+            var reached = Stages[0];
+            foreach (var stage in Stages)
+            {
+                if (built >= stage.Built)
+                    reached = stage;
+            }
+            return reached;
+        }
+
+        public TownStageDef? StageAfter(int built)
+        {
+            foreach (var stage in Stages)
+            {
+                if (built < stage.Built)
+                    return stage;
+            }
+            return null;
+        }
 
         public TownRewardTier? TierAt(long points)
         {
@@ -249,24 +397,138 @@ namespace Game.Core.Content
             var districts = DistrictsOf(root.Field("districts"), biomes);
             var guilds = GuildsOf(root.Field("guilds"), districts, characters);
             var build = root.Field("build");
-            var startBuilt = IdsOf(build.Field("startBuilt"), guilds);
-            var order = IdsOf(build.Field("order"), guilds);
-            foreach (var guild in guilds)
-            {
-                var placed = (Contains(startBuilt, guild.Id) ? 1 : 0) + (Contains(order, guild.Id) ? 1 : 0);
-                if (placed != 1)
-                    throw build.Error($"guild '{guild.Id}' must be either built from the start or in the build order, once");
-            }
             var resources = ResourcesOf(build.Field("resources"), guilds);
-            CheckNeeds(build.Field("needs"), order, resources);
+            var buildings = BuildingsOf(build.Field("buildings"), guilds, districts, characters, resources);
+            var stages = StagesOf(build.Field("stages"), buildings);
             var sites = SitesOf(build.Field("sites"), resources);
             var rewards = RewardsOf(build.Field("rewards"));
             var top = build.Field("top");
             build.Field("gatherDays").AsInt(1);
+            build.Field("buildDays").AsInt(1);
             build.Field("activeDays").AsInt(1);
             build.Field("minPlayers").AsInt(1);
-            return new GuildRules(levels, guilds, districts, startBuilt, order, build.Field("voteDays").AsInt(1), build.Field("openHours").AsInt(0), resources, sites,
-                rewards, top.Field("size").AsInt(0), top.Field("shards").AsInt(0));
+            return new GuildRules(levels, guilds, districts, buildings, stages, build.Field("voteDays").AsInt(1), build.Field("openHours").AsInt(0), resources, sites,
+                rewards, top.Field("size").AsInt(0), top.Field("shards").AsInt(0), build.Field("stageShards").AsInt(0));
+        }
+
+        private static IReadOnlyList<TownBuildingDef> BuildingsOf(ContentNode node, IReadOnlyList<GuildDef> guilds, IReadOnlyList<DistrictDef> districts,
+            IReadOnlyCollection<string> characters, IReadOnlyList<BuildResourceDef> resources)
+        {
+            var buildings = new List<TownBuildingDef>();
+            var total = 0;
+            foreach (var item in node.Items())
+            {
+                var id = item.Field("id").AsString();
+                if (id.Length == 0 || id.IndexOf(LevelMark) >= 0)
+                    throw item.Field("id").Error($"building id '{id}' must be a plain name");
+                foreach (var known in buildings)
+                {
+                    if (known.Id == id)
+                        throw item.Field("id").Error($"building '{id}' is listed twice");
+                }
+                var guild = item.HasField("guild") ? item.Field("guild").AsString() : string.Empty;
+                if (guild.Length > 0 && guild != id)
+                    throw item.Field("guild").Error($"the hall of guild '{guild}' must have the guild's id");
+                if (guild.Length > 0 && FindGuild(guilds, guild) == null)
+                    throw item.Field("guild").Error($"unknown guild '{guild}'");
+                var master = item.Field("master").AsString();
+                if (!Contains(characters, master))
+                    throw item.Field("master").Error($"master '{master}' is not a character");
+                var district = item.Field("district").AsString();
+                var placed = false;
+                foreach (var entry in districts)
+                    placed |= entry.Id == district;
+                if (!placed)
+                    throw item.Field("district").Error($"unknown district '{district}'");
+                var levels = new List<TownBuildLevel>();
+                foreach (var level in item.Field("levels").Items())
+                    levels.Add(LevelOf(level, id, guild, levels, resources));
+                if (levels.Count == 0)
+                    throw item.Field("levels").Error($"building '{id}' needs at least one level");
+                var lines = new List<TownMasterLine>();
+                foreach (var line in item.Field("lines").Items())
+                    lines.Add(new TownMasterLine(line.Field("ru").AsString(), line.Field("en").AsString()));
+                if (lines.Count == 0)
+                    throw item.Field("lines").Error($"the master of '{id}' needs something to say at the board");
+                var name = item.Field("name");
+                buildings.Add(new TownBuildingDef(id, guild, name.Field("ru").AsString(), name.Field("en").AsString(), master, district, levels, lines));
+                total += levels.Count;
+            }
+            foreach (var guild in guilds)
+            {
+                var hall = false;
+                foreach (var building in buildings)
+                    hall |= building.Guild == guild.Id;
+                if (!hall)
+                    throw node.Error($"guild '{guild.Id}' has no hall to build");
+            }
+            var start = false;
+            foreach (var building in buildings)
+            {
+                start |= building.Levels[0].AfterBuilt == 0;
+                foreach (var level in building.Levels)
+                {
+                    if (level.AfterBuilt >= total)
+                        throw node.Error($"building '{building.Id}' waits for more buildings than the town can have");
+                }
+            }
+            if (!start)
+                throw node.Error("the town needs a building to start from");
+            return buildings;
+        }
+
+        private static TownBuildLevel LevelOf(ContentNode node, string building, string guild, IReadOnlyList<TownBuildLevel> before, IReadOnlyList<BuildResourceDef> resources)
+        {
+            var afterBuilt = node.Field("afterBuilt").AsInt(0);
+            if (before.Count > 0 && afterBuilt < before[before.Count - 1].AfterBuilt)
+                throw node.Field("afterBuilt").Error($"a level of '{building}' cannot open before the level below it");
+            var perPlayerDay = node.Field("perPlayerDay");
+            var needs = new Dictionary<string, long>(StringComparer.Ordinal);
+            foreach (var field in perPlayerDay.FieldNames())
+            {
+                var resource = Find(resources, field);
+                if (resource == null)
+                    throw perPlayerDay.Field(field).Error($"building '{building}' needs unknown resource '{field}'");
+                if (guild.Length > 0 && resource.Guild == guild)
+                    throw perPlayerDay.Field(field).Error($"hall '{guild}' cannot be built from what only it makes");
+                needs[field] = perPlayerDay.Field(field).AsLong(1);
+            }
+            if (needs.Count == 0)
+                throw perPlayerDay.Error($"building '{building}' needs at least one resource");
+            return new TownBuildLevel(afterBuilt, needs);
+        }
+
+        private static IReadOnlyList<TownStageDef> StagesOf(ContentNode node, IReadOnlyList<TownBuildingDef> buildings)
+        {
+            var total = 0;
+            foreach (var building in buildings)
+                total += building.MaxLevel;
+            var stages = new List<TownStageDef>();
+            foreach (var item in node.Items())
+            {
+                var built = item.Field("built").AsInt(0);
+                if (stages.Count == 0 && built != 0)
+                    throw item.Field("built").Error("the first look of the town is the one it starts with");
+                if (stages.Count > 0 && built <= stages[stages.Count - 1].Built)
+                    throw item.Field("built").Error("each look of the town needs more buildings than the one before");
+                if (built > total)
+                    throw item.Field("built").Error($"the town has only {total} buildings and levels");
+                var name = item.Field("name");
+                stages.Add(new TownStageDef(item.Field("id").AsString(), name.Field("ru").AsString(), name.Field("en").AsString(), built));
+            }
+            if (stages.Count == 0)
+                throw node.Error("the town needs at least one look");
+            return stages;
+        }
+
+        private static GuildDef? FindGuild(IReadOnlyList<GuildDef> guilds, string id)
+        {
+            foreach (var guild in guilds)
+            {
+                if (guild.Id == id)
+                    return guild;
+            }
+            return null;
         }
 
         private static IReadOnlyList<TownSiteDef> SitesOf(ContentNode node, IReadOnlyList<BuildResourceDef> resources)
@@ -363,41 +625,6 @@ namespace Game.Core.Content
             return resources;
         }
 
-        private static void CheckNeeds(ContentNode node, IReadOnlyList<string> order, IReadOnlyList<BuildResourceDef> resources)
-        {
-            var seen = new List<string>();
-            foreach (var item in node.Items())
-            {
-                var guild = item.Field("guild").AsString();
-                if (!Contains(order, guild))
-                    throw item.Field("guild").Error($"guild '{guild}' is not in the build order");
-                if (Contains(seen, guild))
-                    throw item.Field("guild").Error($"guild '{guild}' is listed twice");
-                seen.Add(guild);
-                var perPlayerDay = item.Field("perPlayerDay");
-                var needed = 0;
-                foreach (var resource in resources)
-                {
-                    if (!perPlayerDay.HasField(resource.Id))
-                        continue;
-                    perPlayerDay.Field(resource.Id).AsLong(1);
-                    needed++;
-                }
-                if (needed == 0)
-                    throw perPlayerDay.Error($"guild '{guild}' needs at least one known resource");
-                foreach (var resource in resources)
-                {
-                    if (resource.Guild == guild && perPlayerDay.HasField(resource.Id))
-                        throw perPlayerDay.Field(resource.Id).Error($"hall '{guild}' cannot be built from what only it makes");
-                }
-            }
-            foreach (var guild in order)
-            {
-                if (!Contains(seen, guild))
-                    throw node.Error($"guild '{guild}' has no resources to gather");
-            }
-        }
-
         private static IReadOnlyList<DistrictDef> DistrictsOf(ContentNode node, IReadOnlyCollection<string> biomes)
         {
             var districts = new List<DistrictDef>();
@@ -443,24 +670,6 @@ namespace Game.Core.Content
                 guilds.Add(new GuildDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), master, district));
             }
             return guilds;
-        }
-
-        private static IReadOnlyList<string> IdsOf(ContentNode node, IReadOnlyList<GuildDef> guilds)
-        {
-            var ids = new List<string>();
-            foreach (var item in node.Items())
-            {
-                var id = item.AsString();
-                var known = false;
-                foreach (var guild in guilds)
-                    known |= guild.Id == id;
-                if (!known)
-                    throw item.Error($"unknown guild '{id}'");
-                if (Contains(ids, id))
-                    throw item.Error($"guild '{id}' is listed twice");
-                ids.Add(id);
-            }
-            return ids;
         }
 
         private static bool Contains(IEnumerable<string> list, string id)

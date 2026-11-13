@@ -1156,8 +1156,7 @@ namespace Game.Core.Sim
             _forge.Tick();
             _museum.Tick();
             RebuildOnMuseum();
-            State.DamageScale = _peaceful.DamageShare;
-            if (_peaceful.FightPaused)
+            if (_peaceful.InCamp)
             {
                 CampTick(firstEvent);
                 return;

@@ -20,11 +20,10 @@
     { "id": "rift_crack", "name": { "ru": "Трещина", "en": "The Crack" }, "biome": "rift_heart" }
   ],
   "build": {
-    "startBuilt": ["gardeners", "alchemists"],
-    "order": ["fishers", "smiths", "cooks", "diggers", "distillers"],
     "voteDays": 14,
     "gatherDays": 21,
     "openHours": 24,
+    "buildDays": 14,
     "activeDays": 7,
     "minPlayers": 2,
     "resources": [
@@ -37,6 +36,9 @@
       { "id": "coal", "kind": "raw", "name": { "ru": "Уголь", "en": "Coal" }, "dailyCap": 150 },
       { "id": "skyglass", "kind": "raw", "name": { "ru": "Небесное стекло", "en": "Skyglass" }, "dailyCap": 100 },
       { "id": "riftdust", "kind": "raw", "name": { "ru": "Пыль Изнанки", "en": "Rift Dust" }, "dailyCap": 50 },
+      { "id": "marble", "kind": "raw", "name": { "ru": "Мрамор", "en": "Marble" }, "dailyCap": 60 },
+      { "id": "amber", "kind": "raw", "name": { "ru": "Янтарь", "en": "Amber" }, "dailyCap": 40 },
+      { "id": "starmetal", "kind": "raw", "name": { "ru": "Звёздное железо", "en": "Star Iron" }, "dailyCap": 30 },
       { "id": "herbs", "kind": "produce", "name": { "ru": "Травы", "en": "Herbs" }, "dailyCap": 300 },
       { "id": "finds", "kind": "produce", "name": { "ru": "Находки", "en": "Finds" }, "dailyCap": 200 },
       { "id": "fish", "kind": "produce", "guild": "fishers", "name": { "ru": "Рыба", "en": "Fish" }, "dailyCap": 60 },
@@ -47,29 +49,285 @@
       { "id": "tinctures", "kind": "craft", "guild": "distillers", "name": { "ru": "Настойки", "en": "Tinctures" }, "dailyCap": 20 }
     ],
     "sites": [
-      { "id": "logging", "name": { "ru": "Лесосека", "en": "Logging Camp" }, "resource": "wood", "fromStage": 10, "perKill": 0.05 },
-      { "id": "meadow", "name": { "ru": "Луговой сбор", "en": "Meadow Gatherers" }, "resource": "herbs", "fromStage": 25, "perKill": 0.02 },
-      { "id": "quarry", "name": { "ru": "Каменоломня", "en": "Quarry" }, "resource": "stone", "fromStage": 60, "perKill": 0.04 },
-      { "id": "mine", "name": { "ru": "Пещерный рудник", "en": "Cave Mine" }, "resource": "ore", "fromStage": 110, "perKill": 0.025 },
-      { "id": "clay_pit", "name": { "ru": "Глиняный карьер", "en": "Clay Pit" }, "resource": "clay", "fromStage": 180, "perKill": 0.025 },
-      { "id": "salt_works", "name": { "ru": "Соляная варница", "en": "Salt Works" }, "resource": "salt", "fromStage": 300, "perKill": 0.02 },
-      { "id": "coal_pits", "name": { "ru": "Угольные ямы", "en": "Coal Pits" }, "resource": "coal", "fromStage": 550, "perKill": 0.02 },
-      { "id": "sky_gleaners", "name": { "ru": "Сборщики небесного стекла", "en": "Skyglass Gleaners" }, "resource": "skyglass", "fromStage": 1050, "perKill": 0.012 },
-      { "id": "rift_panners", "name": { "ru": "Старатели Изнанки", "en": "Rift Panners" }, "resource": "riftdust", "fromStage": 20000, "perKill": 0.006 }
+      { "id": "logging", "name": { "ru": "Лесосека", "en": "Logging Camp" }, "resource": "wood", "fromStage": 5000, "perKill": 0.05 },
+      { "id": "meadow", "name": { "ru": "Луговой сбор", "en": "Meadow Gatherers" }, "resource": "herbs", "fromStage": 6000, "perKill": 0.02 },
+      { "id": "quarry", "name": { "ru": "Каменоломня", "en": "Quarry" }, "resource": "stone", "fromStage": 7500, "perKill": 0.04 },
+      { "id": "mine", "name": { "ru": "Пещерный рудник", "en": "Cave Mine" }, "resource": "ore", "fromStage": 9000, "perKill": 0.025 },
+      { "id": "clay_pit", "name": { "ru": "Глиняный карьер", "en": "Clay Pit" }, "resource": "clay", "fromStage": 11000, "perKill": 0.025 },
+      { "id": "salt_works", "name": { "ru": "Соляная варница", "en": "Salt Works" }, "resource": "salt", "fromStage": 13500, "perKill": 0.02 },
+      { "id": "coal_pits", "name": { "ru": "Угольные ямы", "en": "Coal Pits" }, "resource": "coal", "fromStage": 16000, "perKill": 0.02 },
+      { "id": "sky_gleaners", "name": { "ru": "Сборщики небесного стекла", "en": "Skyglass Gleaners" }, "resource": "skyglass", "fromStage": 19000, "perKill": 0.012 },
+      { "id": "rift_panners", "name": { "ru": "Старатели Изнанки", "en": "Rift Panners" }, "resource": "riftdust", "fromStage": 22000, "perKill": 0.006 },
+      { "id": "marble_quarry", "name": { "ru": "Мраморный карьер", "en": "Marble Quarry" }, "resource": "marble", "fromStage": 26000, "perKill": 0.008 },
+      { "id": "amber_shore", "name": { "ru": "Янтарный берег", "en": "Amber Shore" }, "resource": "amber", "fromStage": 31000, "perKill": 0.005 },
+      { "id": "star_field", "name": { "ru": "Поле упавших звёзд", "en": "Field of Fallen Stars" }, "resource": "starmetal", "fromStage": 37000, "perKill": 0.004 }
     ],
-    "needs": [
-      { "guild": "fishers", "perPlayerDay": { "labour": 1500, "wood": 40, "stone": 10, "herbs": 8, "finds": 6 } },
-      { "guild": "smiths", "perPlayerDay": { "labour": 1800, "wood": 20, "stone": 30, "ore": 20, "coal": 4, "finds": 10 } },
-      { "guild": "cooks", "perPlayerDay": { "labour": 1500, "wood": 20, "clay": 15, "salt": 6, "herbs": 14, "finds": 4, "fish": 4, "potions": 1 } },
-      { "guild": "diggers", "perPlayerDay": { "labour": 2000, "wood": 30, "stone": 20, "clay": 10, "herbs": 6, "finds": 8, "metalwork": 1 } },
-      { "guild": "distillers", "perPlayerDay": { "labour": 1500, "ore": 8, "clay": 15, "skyglass": 2, "herbs": 12, "finds": 8, "potions": 2, "dishes": 1 } }
+    "buildings": [
+      {
+        "id": "gardeners",
+        "guild": "gardeners",
+        "name": { "ru": "Дом травницы", "en": "Herbwitch's House" },
+        "master": "herbwitch",
+        "district": "gates",
+        "levels": [
+          { "afterBuilt": 0, "perPlayerDay": { "labour": 600, "wood": 25, "herbs": 6 } },
+          { "afterBuilt": 4, "perPlayerDay": { "labour": 900, "stone": 20, "clay": 10, "herbs": 10, "potions": 1 } },
+          { "afterBuilt": 12, "perPlayerDay": { "labour": 1200, "salt": 6, "skyglass": 2, "herbs": 14, "dishes": 1, "tinctures": 1 } }
+        ],
+        "lines": [
+          { "ru": "Палатка — не дом. Травам нужна крыша и сухой чердак.", "en": "A tent is no house. Herbs need a roof and a dry loft." },
+          { "ru": "Принесите дерева, а я научу ваш сад слушаться.", "en": "Bring wood, and I'll teach your garden to listen." },
+          { "ru": "Изнанка пахнет железом. Мои травы — мятой. Строим?", "en": "The Rift smells of iron. My herbs smell of mint. Shall we build?" }
+        ]
+      },
+      {
+        "id": "alchemists",
+        "guild": "alchemists",
+        "name": { "ru": "Лавка алхимика", "en": "Alchemist's Shop" },
+        "master": "alchemist",
+        "district": "gates",
+        "levels": [
+          { "afterBuilt": 0, "perPlayerDay": { "labour": 700, "wood": 25, "herbs": 8, "finds": 2 } },
+          { "afterBuilt": 4, "perPlayerDay": { "labour": 1000, "clay": 15, "ore": 6, "herbs": 10 } },
+          { "afterBuilt": 12, "perPlayerDay": { "labour": 1300, "coal": 4, "skyglass": 3, "finds": 8, "relics": 1 } }
+        ],
+        "lines": [
+          { "ru": "Котёл у меня есть. Стен вокруг него — пока нет.", "en": "I have a cauldron. Walls around it — not yet." },
+          { "ru": "Каждая доска — это зелье, которое не взорвётся под дождём.", "en": "Every plank is a potion that won't blow up in the rain." },
+          { "ru": "Глина для колб, стекло для окон — и Кромка запахнет наукой.", "en": "Clay for flasks, glass for windows — and the Edge will smell of science." }
+        ]
+      },
+      {
+        "id": "fishers",
+        "guild": "fishers",
+        "name": { "ru": "Пристань рыбаков", "en": "Fishers' Wharf" },
+        "master": "ghostcaptain",
+        "district": "ice_harbor",
+        "levels": [
+          { "afterBuilt": 0, "perPlayerDay": { "labour": 1200, "wood": 40, "herbs": 6, "finds": 4 } },
+          { "afterBuilt": 5, "perPlayerDay": { "labour": 1500, "stone": 25, "clay": 8, "salt": 6, "potions": 1 } },
+          { "afterBuilt": 14, "perPlayerDay": { "labour": 1800, "skyglass": 3, "amber": 2, "metalwork": 1, "dishes": 2 } }
+        ],
+        "lines": [
+          { "ru": "Пристань строят из дерева и терпения. Терпения у меня на века.", "en": "A wharf is built of wood and patience. I have centuries of patience." },
+          { "ru": "Лёд держит лодку лучше якоря. Но сваи всё равно нужны.", "en": "Ice holds a boat better than an anchor. We still need piles." },
+          { "ru": "Соль на досках — к удаче. Сыпьте не жалея.", "en": "Salt on the boards brings luck. Don't spare it." }
+        ]
+      },
+      {
+        "id": "smiths",
+        "guild": "smiths",
+        "name": { "ru": "Кузня", "en": "Smithy" },
+        "master": "golemancer",
+        "district": "smith_row",
+        "levels": [
+          { "afterBuilt": 0, "perPlayerDay": { "labour": 1500, "wood": 30, "stone": 10, "finds": 8 } },
+          { "afterBuilt": 5, "perPlayerDay": { "labour": 1800, "stone": 30, "ore": 20, "coal": 4 } },
+          { "afterBuilt": 14, "perPlayerDay": { "labour": 2000, "coal": 10, "marble": 2, "starmetal": 2, "fish": 4 } }
+        ],
+        "lines": [
+          { "ru": "Голем держит молот. Мне нужно, чтобы кто-то держал крышу.", "en": "The golem holds the hammer. I need someone to hold the roof." },
+          { "ru": "Камень для горна, руда для наковальни. Остальное — дело рук.", "en": "Stone for the hearth, ore for the anvil. The rest is handiwork." },
+          { "ru": "Звёздное железо поёт под молотом. Вы его ещё услышите.", "en": "Star iron sings under the hammer. You'll hear it yet." }
+        ]
+      },
+      {
+        "id": "cooks",
+        "guild": "cooks",
+        "name": { "ru": "Харчевня", "en": "Tavern Kitchen" },
+        "master": "minstrel",
+        "district": "sky_square",
+        "levels": [
+          { "afterBuilt": 0, "perPlayerDay": { "labour": 1300, "wood": 30, "herbs": 12, "finds": 4, "fish": 2 } },
+          { "afterBuilt": 6, "perPlayerDay": { "labour": 1500, "clay": 15, "salt": 6, "fish": 6, "potions": 1 } },
+          { "afterBuilt": 16, "perPlayerDay": { "labour": 1800, "marble": 2, "amber": 2, "metalwork": 2, "tinctures": 1 } }
+        ],
+        "lines": [
+          { "ru": "Песня без ужина — полпесни. Построим кухню!", "en": "A song without supper is half a song. Let's build a kitchen!" },
+          { "ru": "Мне нужен очаг, а очагу — стены. Подпевайте и несите брёвна.", "en": "I need a hearth, and the hearth needs walls. Sing along and carry logs." },
+          { "ru": "Когда здесь запахнет похлёбкой, Стражи сами придут строить дальше.", "en": "Once it smells of stew here, the Wardens will come to build on their own." }
+        ]
+      },
+      {
+        "id": "diggers",
+        "guild": "diggers",
+        "name": { "ru": "Контора раскопщиков", "en": "Diggers' Lodge" },
+        "master": "dowser",
+        "district": "sand_bazaar",
+        "levels": [
+          { "afterBuilt": 0, "perPlayerDay": { "labour": 1600, "wood": 35, "herbs": 4, "finds": 10 } },
+          { "afterBuilt": 6, "perPlayerDay": { "labour": 2000, "stone": 20, "clay": 10, "metalwork": 1 } },
+          { "afterBuilt": 16, "perPlayerDay": { "labour": 2200, "ore": 10, "riftdust": 3, "dishes": 2 } }
+        ],
+        "lines": [
+          { "ru": "Лоза дрожит — под Кромкой что-то есть. Сначала контора, потом лопаты.", "en": "The rod trembles — something lies under the Edge. Lodge first, shovels later." },
+          { "ru": "Каждая находка ищет полку. Полкам нужны доски.", "en": "Every find wants a shelf. Shelves want planks." },
+          { "ru": "Пыль Изнанки не копают руками. Для неё нужен свой подвал.", "en": "Rift dust isn't dug by hand. It needs a cellar of its own." }
+        ]
+      },
+      {
+        "id": "distillers",
+        "guild": "distillers",
+        "name": { "ru": "Перегонная", "en": "Distillery" },
+        "master": "lanternbearer",
+        "district": "sky_square",
+        "levels": [
+          { "afterBuilt": 0, "perPlayerDay": { "labour": 1300, "wood": 25, "clay": 10, "herbs": 10, "potions": 1 } },
+          { "afterBuilt": 7, "perPlayerDay": { "labour": 1500, "ore": 8, "skyglass": 2, "dishes": 1 } },
+          { "afterBuilt": 18, "perPlayerDay": { "labour": 1800, "amber": 3, "riftdust": 2, "relics": 2 } }
+        ],
+        "lines": [
+          { "ru": "Фонарь светит ярче, когда в нём настойка. Стройте — я посвечу.", "en": "A lantern shines brighter with a tincture in it. Build — I'll hold the light." },
+          { "ru": "Медные трубы, стеклянные колбы и немного тишины. Больше мне не надо.", "en": "Copper pipes, glass flasks and a little quiet. That's all I need." },
+          { "ru": "Янтарь хранит свет тысячу лет. Пусть хранит и наш.", "en": "Amber keeps light for a thousand years. Let it keep ours too." }
+        ]
+      },
+      {
+        "id": "palisade",
+        "name": { "ru": "Частокол", "en": "Palisade" },
+        "master": "clockwright",
+        "district": "gates",
+        "levels": [
+          { "afterBuilt": 0, "perPlayerDay": { "labour": 800, "wood": 30 } },
+          { "afterBuilt": 6, "perPlayerDay": { "labour": 1200, "stone": 30, "ore": 5 } },
+          { "afterBuilt": 20, "perPlayerDay": { "labour": 1500, "marble": 3, "starmetal": 1 } }
+        ],
+        "lines": [
+          { "ru": "Ровно сорок кольев — и твари Изнанки станут обходить нас.", "en": "Exactly forty stakes — and the Rift's beasts will walk around us." },
+          { "ru": "Камень вместо дерева, и я перестану считать трещины по ночам.", "en": "Stone instead of wood, and I'll stop counting cracks at night." },
+          { "ru": "Хорошая стена тикает в такт с городом. Я проверял.", "en": "A good wall ticks in time with the town. I checked." }
+        ]
+      },
+      {
+        "id": "well",
+        "name": { "ru": "Колодец", "en": "Well" },
+        "master": "dreamcatcher",
+        "district": "gates",
+        "levels": [
+          { "afterBuilt": 0, "perPlayerDay": { "labour": 500, "wood": 15, "finds": 2 } },
+          { "afterBuilt": 5, "perPlayerDay": { "labour": 800, "stone": 15, "clay": 8 } }
+        ],
+        "lines": [
+          { "ru": "Вода из глубины видит сны. Давайте её достанем.", "en": "Water from the deep dreams. Let's draw it up." },
+          { "ru": "Над колодцем повешу ловец снов — пусть пьют спокойно.", "en": "I'll hang a dreamcatcher over the well — let them drink in peace." },
+          { "ru": "Камень сохранит воду холодной даже в окно Разлома.", "en": "Stone will keep the water cold even in a Rift window." }
+        ]
+      },
+      {
+        "id": "warehouse",
+        "name": { "ru": "Склад", "en": "Warehouse" },
+        "master": "sandwalker",
+        "district": "gates",
+        "levels": [
+          { "afterBuilt": 2, "perPlayerDay": { "labour": 900, "wood": 35, "finds": 4 } },
+          { "afterBuilt": 7, "perPlayerDay": { "labour": 1200, "stone": 20, "ore": 6 } },
+          { "afterBuilt": 20, "perPlayerDay": { "labour": 1500, "marble": 2, "amber": 2 } }
+        ],
+        "lines": [
+          { "ru": "Песок сыплется везде, кроме хорошего склада.", "en": "Sand gets in everywhere except a good warehouse." },
+          { "ru": "Город, которому негде хранить запасы, живёт одним днём.", "en": "A town with nowhere to keep its stock lives one day at a time." },
+          { "ru": "Полки до потолка — и ни одной пустой. Вот мечта.", "en": "Shelves to the ceiling, not one empty. That's the dream." }
+        ]
+      },
+      {
+        "id": "market",
+        "name": { "ru": "Рынок", "en": "Market" },
+        "master": "cartomancer",
+        "district": "green_market",
+        "levels": [
+          { "afterBuilt": 3, "perPlayerDay": { "labour": 1000, "wood": 25, "herbs": 6, "finds": 6 } },
+          { "afterBuilt": 9, "perPlayerDay": { "labour": 1300, "stone": 15, "salt": 4, "dishes": 1 } },
+          { "afterBuilt": 20, "perPlayerDay": { "labour": 1600, "skyglass": 2, "amber": 3, "tinctures": 1 } }
+        ],
+        "lines": [
+          { "ru": "Карты говорят: будет торг. Значит, нужны прилавки.", "en": "The cards say there'll be trade. So we need stalls." },
+          { "ru": "Каждый прилавок — новая масть в колоде города.", "en": "Every stall is a new suit in the town's deck." },
+          { "ru": "Под стеклянной крышей и дождь торгуется честно.", "en": "Under a glass roof even the rain bargains fairly." }
+        ]
+      },
+      {
+        "id": "clock_tower",
+        "name": { "ru": "Часовая башня", "en": "Clock Tower" },
+        "master": "clockwright",
+        "district": "sky_square",
+        "levels": [
+          { "afterBuilt": 8, "perPlayerDay": { "labour": 1400, "wood": 20, "stone": 25, "ore": 8 } },
+          { "afterBuilt": 18, "perPlayerDay": { "labour": 1800, "skyglass": 3, "starmetal": 1, "metalwork": 2 } }
+        ],
+        "lines": [
+          { "ru": "Городу нужно общее время. Иначе все опаздывают по-разному.", "en": "A town needs a shared time. Otherwise everyone is late differently." },
+          { "ru": "Шестерни я выточу сам. От вас — камень и терпение.", "en": "I'll cut the gears myself. From you — stone and patience." },
+          { "ru": "Когда башня пробьёт полдень, Кромка станет городом.", "en": "When the tower strikes noon, the Edge becomes a town." }
+        ]
+      },
+      {
+        "id": "lighthouse",
+        "name": { "ru": "Маяк", "en": "Lighthouse" },
+        "master": "mothcaller",
+        "district": "ice_harbor",
+        "levels": [
+          { "afterBuilt": 10, "perPlayerDay": { "labour": 1300, "stone": 25, "salt": 6, "fish": 3 } },
+          { "afterBuilt": 20, "perPlayerDay": { "labour": 1600, "skyglass": 4, "amber": 3 } }
+        ],
+        "lines": [
+          { "ru": "Мотыльки летят на свет. Корабли — тоже. Построим им свет.", "en": "Moths fly to the light. So do ships. Let's build them a light." },
+          { "ru": "Маяк над ледяной гаванью — и лодки вернутся даже в метель.", "en": "A lighthouse over the ice harbor — and boats come home even in a blizzard." },
+          { "ru": "Янтарное стекло даст тёплый луч. Мотылькам понравится.", "en": "Amber glass makes a warm beam. The moths will love it." }
+        ]
+      },
+      {
+        "id": "sky_bridge",
+        "name": { "ru": "Небесный мост", "en": "Sky Bridge" },
+        "master": "windshot",
+        "district": "sky_square",
+        "levels": [
+          { "afterBuilt": 12, "perPlayerDay": { "labour": 1600, "wood": 30, "stone": 30, "skyglass": 2 } },
+          { "afterBuilt": 22, "perPlayerDay": { "labour": 1900, "marble": 3, "starmetal": 2 } }
+        ],
+        "lines": [
+          { "ru": "Ветер сам подскажет, где ставить опоры. Я его слышу.", "en": "The wind will tell us where to set the piers. I can hear it." },
+          { "ru": "Мост на Небесную площадь — и до облаков рукой подать.", "en": "A bridge to Sky Square — and the clouds are within reach." },
+          { "ru": "Звёздное железо не боится высоты. Как и я.", "en": "Star iron isn't afraid of heights. Neither am I." }
+        ]
+      },
+      {
+        "id": "wardens_hall",
+        "name": { "ru": "Зал Стражей", "en": "Wardens' Hall" },
+        "master": "runedancer",
+        "district": "rift_crack",
+        "levels": [
+          { "afterBuilt": 16, "perPlayerDay": { "labour": 2000, "marble": 3, "riftdust": 4, "metalwork": 2 } },
+          { "afterBuilt": 25, "perPlayerDay": { "labour": 2400, "starmetal": 3, "riftdust": 5, "relics": 2 } }
+        ],
+        "lines": [
+          { "ru": "У Трещины должен стоять зал, где помнят всех, кто держал Кромку.", "en": "By the Crack there must be a hall that remembers all who held the Edge." },
+          { "ru": "Руны на мраморе живут дольше, чем на коже. Высечем имена.", "en": "Runes on marble outlive runes on skin. Let's carve the names." },
+          { "ru": "Пыль Изнанки в стенах — чтобы Изнанка знала, кто здесь хозяин.", "en": "Rift dust in the walls — so the Rift knows who rules here." }
+        ]
+      }
+    ],
+    "stages": [
+      { "id": "tent", "name": { "ru": "Палатка", "en": "Tent" }, "built": 0 },
+      { "id": "camp", "name": { "ru": "Стоянка", "en": "Camp" }, "built": 1 },
+      { "id": "hamlet", "name": { "ru": "Посёлок", "en": "Hamlet" }, "built": 3 },
+      { "id": "settlement", "name": { "ru": "Слобода", "en": "Settlement" }, "built": 6 },
+      { "id": "township", "name": { "ru": "Городок", "en": "Township" }, "built": 10 },
+      { "id": "town", "name": { "ru": "Город", "en": "Town" }, "built": 15 },
+      { "id": "big_town", "name": { "ru": "Большой город", "en": "Large Town" }, "built": 22 },
+      { "id": "city", "name": { "ru": "Град", "en": "City" }, "built": 30 },
+      { "id": "capital", "name": { "ru": "Столица Кромки", "en": "Capital of the Edge" }, "built": 40 }
     ],
     "rewards": [
-      { "id": "helper", "name": { "ru": "Подсобник", "en": "Helper" }, "points": 3000, "shards": 5, "friendship": 0 },
-      { "id": "builder", "name": { "ru": "Строитель", "en": "Builder" }, "points": 15000, "shards": 15, "friendship": 2 },
-      { "id": "foreman", "name": { "ru": "Мастер стройки", "en": "Foreman" }, "points": 50000, "shards": 30, "friendship": 5 },
-      { "id": "architect", "name": { "ru": "Зодчий", "en": "Architect" }, "points": 150000, "shards": 60, "friendship": 10 }
+      { "id": "helper", "name": { "ru": "Подсобник", "en": "Helper" }, "points": 1500, "shards": 3, "friendship": 0 },
+      { "id": "carrier", "name": { "ru": "Подносчик", "en": "Carrier" }, "points": 5000, "shards": 6, "friendship": 0 },
+      { "id": "carpenter", "name": { "ru": "Плотник", "en": "Carpenter" }, "points": 12000, "shards": 10, "friendship": 1 },
+      { "id": "mason", "name": { "ru": "Каменщик", "en": "Mason" }, "points": 25000, "shards": 16, "friendship": 2 },
+      { "id": "builder", "name": { "ru": "Строитель", "en": "Builder" }, "points": 45000, "shards": 24, "friendship": 3 },
+      { "id": "foreman", "name": { "ru": "Мастер стройки", "en": "Foreman" }, "points": 75000, "shards": 34, "friendship": 5 },
+      { "id": "architect", "name": { "ru": "Зодчий", "en": "Architect" }, "points": 120000, "shards": 48, "friendship": 8 },
+      { "id": "town_planner", "name": { "ru": "Градостроитель", "en": "Town Planner" }, "points": 200000, "shards": 70, "friendship": 12 }
     ],
-    "top": { "size": 10, "shards": 25 }
+    "top": { "size": 10, "shards": 25 },
+    "stageShards": 10
   }
 }

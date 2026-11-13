@@ -494,19 +494,19 @@ if (guilds.version !== 1)
   throw new Error("guilds.json: version " + guilds.version + " is not supported");
 const campGuilds = JSON.parse(fs.readFileSync(path.join(data, "camp.json"), "utf8")).buildings.filter((building) => building.guild).map((building) => building.guild);
 for (const guild of campGuilds)
-  if (!guilds.build.order.includes(guild))
+  if (!guilds.build.buildings.some((building) => building.guild === guild))
     throw new Error("guilds.json: camp building guild " + guild + " is never built by the server");
-for (const guild of guilds.build.order)
-  if (!guilds.build.needs.some((need) => need.guild === guild))
-    throw new Error("guilds.json: building " + guild + " has no resources to gather");
-for (const need of guilds.build.needs)
-  for (const resource of Object.keys(need.perPlayerDay))
-    if (!guilds.build.resources.some((entry) => entry.id === resource))
-      throw new Error("guilds.json: building " + need.guild + " needs unknown resource " + resource);
+for (const building of guilds.build.buildings)
+  for (const level of building.levels)
+    for (const resource of Object.keys(level.perPlayerDay))
+      if (!guilds.build.resources.some((entry) => entry.id === resource))
+        throw new Error("guilds.json: building " + building.id + " needs unknown resource " + resource);
 const townBuildRules = {
-  startBuilt: guilds.build.startBuilt,
-  order: guilds.build.order,
+  buildings: guilds.build.buildings.map((building) => ({ id: building.id, levels: building.levels.map((level) => ({ afterBuilt: level.afterBuilt, needs: level.perPlayerDay })) })),
+  stages: guilds.build.stages.map((stage) => stage.built),
+  stageShards: guilds.build.stageShards,
   voteMs: guilds.build.voteDays * 86400000,
+  minBuildMs: guilds.build.buildDays * 86400000,
   gatherDays: guilds.build.gatherDays,
   openMs: guilds.build.openHours * 3600000,
   activeDays: guilds.build.activeDays,
@@ -515,7 +515,6 @@ const townBuildRules = {
   rewards: guilds.build.rewards.map((tier) => ({ id: tier.id, points: tier.points, shards: tier.shards, friendship: tier.friendship })),
   topSize: guilds.build.top.size,
   topShards: guilds.build.top.shards,
-  needs: Object.fromEntries(guilds.build.needs.map((need) => [need.guild, need.perPlayerDay])),
   keptDays: 8
 };
 
@@ -551,7 +550,6 @@ const hideoutRules = {
   levelTiers: hideout.levelTiers,
   materials: Object.fromEntries(clanCamp.materials.map((material) => [material.item, material.points])),
   maxGive: clanCamp.maxGive,
-  startBuilt: guilds.build.startBuilt,
   orderDays: hideout.order.days,
   orderFromTier: hideout.order.fromTier,
   orderSource: hideout.order.source,
