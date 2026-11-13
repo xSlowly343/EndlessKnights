@@ -149,3 +149,62 @@ test("a solo party resets at once, an empty tree has nothing to reset", () => {
   assert.strictEqual(view.outcome, "passed");
   assert.strictEqual(view.treasury, 300);
 });
+
+function fund(nk, partyId, amount) {
+  server.partyTreasuryChange(nk, partyId, (value) => { value.treasury += amount; });
+}
+
+test("the leader buys node levels from the treasury, rows open by points and parents must be taken", () => {
+  const { nk, partyId } = party("ann", "bob");
+  openTree(nk, partyId);
+  fund(nk, partyId, 1000);
+  assert.throws(() => server.partyTreeBuy(nk, "bob", { node: 1 }, now), /only the leader/);
+  assert.throws(() => server.partyTreeBuy(nk, "ann", { node: 11 }, now), /row is not open/);
+  server.partyTreasuryVote(nk, "bob", { node: 1 }, now);
+  let view = server.partyTreeBuy(nk, "ann", { node: 1 }, now);
+  assert.strictEqual(view.outcome, "bought");
+  assert.strictEqual(view.treasury, 900);
+  assert.strictEqual(view.spent, 100);
+  assert.strictEqual(view.points, 1);
+  assert.deepStrictEqual(plain(view.levels), { "1": 1 });
+  assert.strictEqual(view.votes["1"], undefined, "the vote is spent once the node goes up");
+  for (let i = 0; i < 4; i++)
+    server.partyTreeBuy(nk, "ann", { node: 1 }, now);
+  assert.throws(() => server.partyTreeBuy(nk, "ann", { node: 1 }, now), /last level/);
+  assert.throws(() => server.partyTreeBuy(nk, "ann", { node: 12 }, now), /not connected/);
+  view = server.partyTreeBuy(nk, "ann", { node: 11 }, now);
+  assert.strictEqual(view.treasury, 1000 - 500 - 150);
+  assert.throws(() => server.partyTreeBuy(nk, "ann", { node: 20 }, now), /row is not open/);
+  fund(nk, partyId, -view.treasury + 10);
+  assert.throws(() => server.partyTreeBuy(nk, "ann", { node: 2 }, now), /not enough/);
+});
+
+test("bookkeeping makes rows 1–2 cheaper, the same price the client shows", () => {
+  const { nk, partyId } = party("ann");
+  openTree(nk, partyId);
+  seedTree(nk, partyId, 0, { "1": 5, "9": 1, "19": 4 });
+  const value = server.partyTreasuryRead(nk, partyId).value;
+  assert.strictEqual(server.partyTreePrice(value, 2), 91);
+  assert.strictEqual(server.partyTreePrice(value, 11), 137);
+  assert.strictEqual(server.partyTreePrice(value, 20), 200);
+});
+
+test("the leader picks a big talent once the bar reaches it and changes it once a day; a reset clears it", () => {
+  const { nk, partyId } = party("ann", "bob");
+  openTree(nk, partyId);
+  assert.throws(() => server.partyTreeMajor(nk, "ann", "party_m20_morning", now), /not open yet/);
+  seedTree(nk, partyId, 3000, { "1": 5, "2": 5, "3": 5, "4": 5 });
+  assert.throws(() => server.partyTreeMajor(nk, "bob", "party_m20_morning", now), /only the leader/);
+  assert.throws(() => server.partyTreeMajor(nk, "ann", "nope", now), /bad request/);
+  let view = server.partyTreeMajor(nk, "ann", "party_m20_morning", now);
+  assert.deepStrictEqual(plain(view.majors), ["party_m20_morning"]);
+  assert.strictEqual(view.majorChangeAt, now + day);
+  assert.throws(() => server.partyTreeMajor(nk, "ann", "party_m20_evening", now + 1000), /less than a day/);
+  view = server.partyTreeMajor(nk, "ann", "party_m20_evening", now + day);
+  assert.deepStrictEqual(plain(view.majors), ["party_m20_evening"]);
+  server.partyTreasuryPropose(nk, "ann", now + day);
+  view = server.partyTreasuryResetVote(nk, "bob", true, now + day);
+  assert.strictEqual(view.outcome, "passed");
+  assert.deepStrictEqual(plain(view.majors), []);
+  assert.strictEqual(view.points, 0);
+});

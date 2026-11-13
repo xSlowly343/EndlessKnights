@@ -624,6 +624,13 @@ namespace Game.Net.Tests
             Assert.That(reply.Reset.Members, Is.EqualTo(4));
             Assert.That(reply.Outcome, Is.EqualTo(PartyResetOutcome.Rejected));
             Assert.That(PartyTreasuryReply.From(NakamaJson.Parse("{\"reset\":null,\"outcome\":\"\"}")).Reset, Is.Null);
+            Assert.That(PartyTreasuryReply.BuyPayload(11), Is.EqualTo("{\"node\":11}"));
+            Assert.That(PartyTreasuryReply.MajorPayload("party_m20_morning"), Is.EqualTo("{\"id\":\"party_m20_morning\"}"));
+            var tree = PartyTreasuryReply.From(NakamaJson.Parse("{\"points\":21,\"majors\":[\"party_m20_morning\"],\"majorChangeAt\":1763100000000,\"outcome\":\"bought\"}"));
+            Assert.That(tree.Points, Is.EqualTo(21));
+            Assert.That(tree.Majors, Is.EqualTo(new[] { "party_m20_morning" }));
+            Assert.That(tree.MajorChangeAt, Is.EqualTo(1763100000000));
+            Assert.That(tree.Outcome, Is.EqualTo(PartyResetOutcome.Bought));
         }
 
         [Test]

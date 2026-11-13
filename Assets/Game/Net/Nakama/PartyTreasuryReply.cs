@@ -25,7 +25,9 @@ namespace Game.Net.Nakama
         None,
         Passed,
         Rejected,
-        Cancelled
+        Cancelled,
+        Bought,
+        Chosen
     }
 
     public sealed class PartyResetVote
@@ -52,7 +54,9 @@ namespace Game.Net.Nakama
         {
             ["passed"] = PartyResetOutcome.Passed,
             ["rejected"] = PartyResetOutcome.Rejected,
-            ["cancelled"] = PartyResetOutcome.Cancelled
+            ["cancelled"] = PartyResetOutcome.Cancelled,
+            ["bought"] = PartyResetOutcome.Bought,
+            ["chosen"] = PartyResetOutcome.Chosen
         };
 
         private PartyTreasuryReply(JsonValue json)
@@ -66,6 +70,9 @@ namespace Game.Net.Nakama
             VotesLeft = (int)NakamaJson.Number(json, "votesLeft");
             ResetFee = (long)NakamaJson.Number(json, "resetFee");
             FreeResetAt = (long)NakamaJson.Number(json, "freeResetAt");
+            Points = (int)NakamaJson.Number(json, "points");
+            MajorChangeAt = (long)NakamaJson.Number(json, "majorChangeAt");
+            Majors = Texts(NakamaJson.Items(json, "majors"));
             var levels = new Dictionary<int, int>();
             var votes = new Dictionary<int, IReadOnlyList<string>>();
             ReadNodes(NakamaJson.Field(json, "levels"), (node, value) => levels[node] = value.Kind == JsonKind.Number ? (int)value.Number : 0);
@@ -97,6 +104,9 @@ namespace Game.Net.Nakama
         public int VotesLeft { get; }
         public long ResetFee { get; }
         public long FreeResetAt { get; }
+        public int Points { get; }
+        public long MajorChangeAt { get; }
+        public IReadOnlyList<string> Majors { get; }
         public IReadOnlyDictionary<int, int> Levels { get; }
         public IReadOnlyDictionary<int, IReadOnlyList<string>> Votes { get; }
         public IReadOnlyList<PartyTreasuryDonor> Donors { get; }
@@ -113,6 +123,10 @@ namespace Game.Net.Nakama
         public static string VotePayload(int node, bool add) =>
             NakamaJson.Object(("node", node.ToString(CultureInfo.InvariantCulture)), ("add", add ? "true" : "false"));
 
+        public static string BuyPayload(int node) => NakamaJson.Object(("node", node.ToString(CultureInfo.InvariantCulture)));
+
+        public static string MajorPayload(string id) => NakamaJson.Object(("id", NakamaJson.Quote(id)));
+
         public static string ResetVotePayload(bool yes) => NakamaJson.Object(("yes", yes ? "true" : "false"));
 
         public static Task<PartyTreasuryReply> FetchAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
@@ -123,6 +137,12 @@ namespace Game.Net.Nakama
 
         public static Task<PartyTreasuryReply> VoteAsync(NakamaClient client, NakamaSession session, int node, bool add, CancellationToken cancel = default) =>
             CallAsync(client, session, "party_treasury_vote", VotePayload(node, add), cancel);
+
+        public static Task<PartyTreasuryReply> BuyAsync(NakamaClient client, NakamaSession session, int node, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_tree_buy", BuyPayload(node), cancel);
+
+        public static Task<PartyTreasuryReply> ChooseMajorAsync(NakamaClient client, NakamaSession session, string id, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_tree_major", MajorPayload(id), cancel);
 
         public static Task<PartyTreasuryReply> ProposeResetAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
             CallAsync(client, session, "party_treasury_reset_propose", "{}", cancel);

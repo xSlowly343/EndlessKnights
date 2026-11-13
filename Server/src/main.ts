@@ -125,6 +125,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("party_treasury_reset_propose", partyTreasuryResetProposeRpc);
     initializer.registerRpc("party_treasury_reset_vote", partyTreasuryResetVoteRpc);
     initializer.registerRpc("party_treasury_reset_cancel", partyTreasuryResetCancelRpc);
+    initializer.registerRpc("party_tree_buy", partyTreeBuyRpc);
+    initializer.registerRpc("party_tree_major", partyTreeMajorRpc);
     initializer.registerRpc("rift_shop_buy", riftShopBuyRpc);
     initializer.registerRpc("companion_visit_send", companionVisitSendRpc);
     initializer.registerRpc("companion_visit", companionVisitRpc);
