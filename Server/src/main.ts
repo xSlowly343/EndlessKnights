@@ -94,6 +94,10 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("town_build_add", townBuildAddRpc);
     initializer.registerRpc("town_build_vote", townBuildVoteRpc);
     initializer.registerRpc("town_build_finish", townBuildFinishRpc);
+    initializer.registerRpc("town_pioneer_claim", townPioneerClaimRpc);
+    initializer.registerRpc("town_pioneers", townPioneersRpc);
+    initializer.registerRpc("town_consent", townConsentRpc);
+    initializer.registerRpc("town_street", townStreetRpc);
     initializer.registerRpc("hideout_view", hideoutViewRpc);
     initializer.registerRpc("hideout_presence", hideoutPresenceRpc);
     initializer.registerRpc("hideout_queue", hideoutQueueRpc);

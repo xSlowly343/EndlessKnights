@@ -3,10 +3,71 @@ using System.Collections.Generic;
 
 namespace Game.Core.Content
 {
+    public sealed class GuildPerk
+    {
+        public GuildPerk(int level, int hall, MuseumPerk perk, double value)
+        {
+            Level = level;
+            Hall = hall;
+            Perk = perk;
+            Value = value;
+        }
+
+        public int Level { get; }
+        public int Hall { get; }
+        public MuseumPerk Perk { get; }
+        public double Value { get; }
+    }
+
+    public sealed class ObservatoryBonus
+    {
+        public ObservatoryBonus(double fishWeight, double plantGrow, double plantMutation)
+        {
+            FishWeight = fishWeight;
+            PlantGrow = plantGrow;
+            PlantMutation = plantMutation;
+        }
+
+        public double FishWeight { get; }
+        public double PlantGrow { get; }
+        public double PlantMutation { get; }
+    }
+
+    public sealed class TownDecorDef
+    {
+        public TownDecorDef(string id, string nameRu, string nameEn, string frame)
+        {
+            Id = id;
+            NameRu = nameRu;
+            NameEn = nameEn;
+            Frame = frame;
+        }
+
+        public string Id { get; }
+        public string NameRu { get; }
+        public string NameEn { get; }
+        public string Frame { get; }
+    }
+
+    public sealed class MasterTrialRules
+    {
+        public MasterTrialRules(double seconds, int stage, int heroLevel)
+        {
+            Seconds = seconds;
+            Stage = stage;
+            HeroLevel = heroLevel;
+        }
+
+        public double Seconds { get; }
+        public int Stage { get; }
+        public int HeroLevel { get; }
+    }
+
     public sealed class GuildDef
     {
-        public GuildDef(string id, string nameRu, string nameEn, string master, string district)
+        public GuildDef(string id, string nameRu, string nameEn, string master, string district, IReadOnlyList<GuildPerk> perks)
         {
+            Perks = perks;
             Id = id;
             NameRu = nameRu;
             NameEn = nameEn;
@@ -19,6 +80,7 @@ namespace Game.Core.Content
         public string NameEn { get; }
         public string Master { get; }
         public string District { get; }
+        public IReadOnlyList<GuildPerk> Perks { get; }
     }
 
     public sealed class DistrictDef
@@ -145,6 +207,10 @@ namespace Game.Core.Content
             District = district;
             Levels = levels;
             Lines = lines;
+            var ids = new string[levels.Count];
+            for (var i = 0; i < ids.Length; i++)
+                ids[i] = GuildRules.ProjectId(id, i + 1);
+            ProjectIds = ids;
         }
 
         public string Id { get; }
@@ -155,6 +221,7 @@ namespace Game.Core.Content
         public string District { get; }
         public IReadOnlyList<TownBuildLevel> Levels { get; }
         public IReadOnlyList<TownMasterLine> Lines { get; }
+        public IReadOnlyList<string> ProjectIds { get; }
         public int MaxLevel => Levels.Count;
     }
 
@@ -222,8 +289,12 @@ namespace Game.Core.Content
 
         private GuildRules(IReadOnlyList<long> levels, IReadOnlyList<GuildDef> guilds, IReadOnlyList<DistrictDef> districts, IReadOnlyList<TownBuildingDef> buildings,
             IReadOnlyList<TownStageDef> stages, int voteDays, int openHours, IReadOnlyList<BuildResourceDef> resources, IReadOnlyList<TownSiteDef> sites,
-            IReadOnlyList<TownRewardTier> rewards, int topSize, int topShards, int stageShards)
+            IReadOnlyList<TownRewardTier> rewards, int topSize, int topShards, int stageShards, ObservatoryBonus observatory, MasterTrialRules trial, IReadOnlyList<TownDecorDef> decorations, long weeklyMinLabour)
         {
+            Decorations = decorations;
+            WeeklyMinLabour = weeklyMinLabour;
+            Trial = trial;
+            Observatory = observatory;
             Buildings = buildings;
             Stages = stages;
             StageShards = stageShards;
@@ -245,6 +316,20 @@ namespace Game.Core.Content
         public IReadOnlyList<TownBuildingDef> Buildings { get; }
         public IReadOnlyList<TownStageDef> Stages { get; }
         public int StageShards { get; }
+        public ObservatoryBonus Observatory { get; }
+        public MasterTrialRules Trial { get; }
+        public IReadOnlyList<TownDecorDef> Decorations { get; }
+        public long WeeklyMinLabour { get; }
+
+        public TownDecorDef? Decor(string id)
+        {
+            for (var i = 0; i < Decorations.Count; i++)
+            {
+                if (Decorations[i].Id == id)
+                    return Decorations[i];
+            }
+            return null;
+        }
         public int VoteDays { get; }
         public int OpenHours { get; }
         public IReadOnlyList<BuildResourceDef> Resources { get; }
@@ -269,10 +354,10 @@ namespace Game.Core.Content
 
         public TownBuildingDef? Building(string id)
         {
-            foreach (var building in Buildings)
+            for (var i = 0; i < Buildings.Count; i++)
             {
-                if (building.Id == id)
-                    return building;
+                if (Buildings[i].Id == id)
+                    return Buildings[i];
             }
             return null;
         }
@@ -292,7 +377,7 @@ namespace Game.Core.Content
         public int LevelOf(TownBuildingDef building, ICollection<string> built)
         {
             var level = 0;
-            while (level < building.MaxLevel && built.Contains(ProjectId(building.Id, level + 1)))
+            while (level < building.MaxLevel && built.Contains(building.ProjectIds[level]))
                 level++;
             return level;
         }
@@ -395,7 +480,7 @@ namespace Game.Core.Content
                 levels.Add(need);
             }
             var districts = DistrictsOf(root.Field("districts"), biomes);
-            var guilds = GuildsOf(root.Field("guilds"), districts, characters);
+            var guilds = GuildsOf(root.Field("guilds"), districts, characters, levels.Count);
             var build = root.Field("build");
             var resources = ResourcesOf(build.Field("resources"), guilds);
             var buildings = BuildingsOf(build.Field("buildings"), guilds, districts, characters, resources);
@@ -408,7 +493,56 @@ namespace Game.Core.Content
             build.Field("activeDays").AsInt(1);
             build.Field("minPlayers").AsInt(1);
             return new GuildRules(levels, guilds, districts, buildings, stages, build.Field("voteDays").AsInt(1), build.Field("openHours").AsInt(0), resources, sites,
-                rewards, top.Field("size").AsInt(0), top.Field("shards").AsInt(0), build.Field("stageShards").AsInt(0));
+                rewards, top.Field("size").AsInt(0), top.Field("shards").AsInt(0), build.Field("stageShards").AsInt(0), ObservatoryOf(root.Field("observatory")), TrialOf(root.Field("trial")), DecorationsOf(root.Field("weekly")), root.Field("weekly").Field("minLabour").AsLong(1));
+        }
+
+        private static IReadOnlyList<TownDecorDef> DecorationsOf(ContentNode node)
+        {
+            node.Field("perPlayer").AsLong(1);
+            node.Field("minGoal").AsLong(1);
+            var decorations = new List<TownDecorDef>();
+            foreach (var item in node.Field("rewards").Items())
+            {
+                var id = item.Field("decor").AsString();
+                foreach (var known in decorations)
+                {
+                    if (known.Id == id)
+                        throw item.Field("decor").Error($"decoration '{id}' is listed twice");
+                }
+                var name = item.Field("name");
+                decorations.Add(new TownDecorDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), item.Field("frame").AsString()));
+            }
+            if (decorations.Count == 0)
+                throw node.Field("rewards").Error("the weekly rebuild needs rewards");
+            return decorations;
+        }
+
+        private static MasterTrialRules TrialOf(ContentNode node) =>
+            new MasterTrialRules(node.Field("seconds").AsNumber(10, 600), node.Field("stage").AsInt(1, 1000), node.Field("heroLevel").AsInt(1, 200));
+
+        private static ObservatoryBonus ObservatoryOf(ContentNode node) =>
+            new ObservatoryBonus(node.Field("fishWeight").AsNumber(1, 20), node.Field("plantGrow").AsNumber(0, MuseumRules.MaxPerk), node.Field("plantMutation").AsNumber(0, MuseumRules.MaxPerk));
+
+        private static IReadOnlyList<GuildPerk> PerksOf(ContentNode node, string guild, int maxLevel)
+        {
+            var perks = new List<GuildPerk>();
+            var sum = new Dictionary<MuseumPerk, double>();
+            foreach (var item in node.Items())
+            {
+                var level = item.HasField("level") ? item.Field("level").AsInt(2, maxLevel) : 0;
+                var hall = item.HasField("hall") ? item.Field("hall").AsInt(2, 10) : 0;
+                if ((level > 0) == (hall > 0))
+                    throw item.Error($"a perk of guild '{guild}' opens either at a guild level or at a hall level");
+                var name = item.Field("perk").AsString();
+                if (!MuseumRules.TryPerk(name, out var perk))
+                    throw item.Field("perk").Error($"unknown perk '{name}'");
+                var value = item.Field("value").AsNumber(0.001, MuseumRules.MaxOf(perk));
+                sum[perk] = (sum.TryGetValue(perk, out var before) ? before : 0) + value;
+                if (sum[perk] > MuseumRules.MaxOf(perk) / 2)
+                    throw item.Field("value").Error($"guild '{guild}' gives too much '{name}'");
+                perks.Add(new GuildPerk(level, hall, perk, value));
+            }
+            return perks;
         }
 
         private static IReadOnlyList<TownBuildingDef> BuildingsOf(ContentNode node, IReadOnlyList<GuildDef> guilds, IReadOnlyList<DistrictDef> districts,
@@ -445,6 +579,11 @@ namespace Game.Core.Content
                     levels.Add(LevelOf(level, id, guild, levels, resources));
                 if (levels.Count == 0)
                     throw item.Field("levels").Error($"building '{id}' needs at least one level");
+                foreach (var perk in guild.Length > 0 ? FindGuild(guilds, guild)!.Perks : System.Array.Empty<GuildPerk>())
+                {
+                    if (perk.Hall > levels.Count)
+                        throw item.Field("levels").Error($"a perk of '{guild}' waits for hall level {perk.Hall}, the hall has {levels.Count}");
+                }
                 var lines = new List<TownMasterLine>();
                 foreach (var line in item.Field("lines").Items())
                     lines.Add(new TownMasterLine(line.Field("ru").AsString(), line.Field("en").AsString()));
@@ -648,7 +787,7 @@ namespace Game.Core.Content
             return districts;
         }
 
-        private static IReadOnlyList<GuildDef> GuildsOf(ContentNode node, IReadOnlyList<DistrictDef> districts, IReadOnlyCollection<string> characters)
+        private static IReadOnlyList<GuildDef> GuildsOf(ContentNode node, IReadOnlyList<DistrictDef> districts, IReadOnlyCollection<string> characters, int maxLevel)
         {
             var guilds = new List<GuildDef>();
             var ids = new HashSet<string>(StringComparer.Ordinal);
@@ -667,7 +806,8 @@ namespace Game.Core.Content
                 if (!known)
                     throw item.Field("district").Error($"unknown district '{district}'");
                 var name = item.Field("name");
-                guilds.Add(new GuildDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), master, district));
+                var perks = item.HasField("perks") ? PerksOf(item.Field("perks"), id, maxLevel) : System.Array.Empty<GuildPerk>();
+                guilds.Add(new GuildDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), master, district, perks));
             }
             return guilds;
         }

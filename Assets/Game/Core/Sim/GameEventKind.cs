@@ -80,6 +80,7 @@ namespace Game.Core.Sim
         DungeonKeysMerged,
         StripPlaceChanged,
         StripFightChanged,
-        TownSiteOpened
+        TownSiteOpened,
+        MasterTrialEnded
     }
 }
