@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Content;
+using Game.Core.Math;
 
 namespace Game.Core.Sim
 {
@@ -37,6 +38,13 @@ namespace Game.Core.Sim
         private bool _away;
         private double _idle;
         private double _series;
+        private const ulong GestureSeed = 0x6E57_0E5UL;
+        private readonly Rng _gestureRng = new Rng(GestureSeed);
+        private CompanionDef? _def;
+        private string _defFor = string.Empty;
+        private double _untilGesture = -1;
+        private double _gestureLeft;
+        private int _lastGesture = -1;
 
         public CompanionStrip(GameState state, CompanionSystem companions, ExpeditionSystem expeditions, PeacefulSystem peaceful, EventQueue events)
         {
@@ -53,6 +61,8 @@ namespace Game.Core.Sim
         public StripPose Pose { get; private set; } = StripPose.Stand;
         public double ReturnSeconds { get; private set; }
         public string BringItem { get; private set; } = string.Empty;
+        public string Gesture { get; private set; } = string.Empty;
+        public double GestureSecondsLeft => _gestureLeft;
 
         public string Companion
         {
@@ -68,6 +78,8 @@ namespace Game.Core.Sim
                 return CompanionResult.UnknownCompanion;
             _companions.State.Shown = companion;
             BringItem = string.Empty;
+            StopGesture();
+            _untilGesture = -1;
             _away = _expeditions.Busy(companion);
             return CompanionResult.Done;
         }
@@ -108,6 +120,62 @@ namespace Game.Core.Sim
             _away = away;
             ReturnSeconds = away ? SecondsLeft(companion) : 0;
             Pose = PoseNow(away);
+            TickGesture(companion);
+        }
+
+        private void TickGesture(string companion)
+        {
+            var gestures = GesturesOf(companion);
+            var calm = Pose == StripPose.Stand || Pose == StripPose.Sit;
+            if (!calm || !Rules.Gestures || gestures.Count == 0)
+            {
+                StopGesture();
+                return;
+            }
+            if (_gestureLeft > 0)
+            {
+                _gestureLeft -= GameLoop.TickSeconds;
+                if (_gestureLeft > 0)
+                    return;
+                StopGesture();
+                _untilGesture = NextWait();
+                return;
+            }
+            if (_untilGesture < 0)
+                _untilGesture = NextWait();
+            _untilGesture -= GameLoop.TickSeconds;
+            if (_untilGesture > 0)
+                return;
+            var index = _gestureRng.NextInt(0, gestures.Count);
+            if (index == _lastGesture && gestures.Count > 1)
+                index = (index + 1) % gestures.Count;
+            _lastGesture = index;
+            Gesture = gestures[index].Id;
+            _gestureLeft = gestures[index].Seconds;
+            _untilGesture = -1;
+        }
+
+        private double NextWait()
+        {
+            var rules = Rules;
+            return rules.GestureMinSeconds + _gestureRng.NextDouble() * (rules.GestureMaxSeconds - rules.GestureMinSeconds);
+        }
+
+        private void StopGesture()
+        {
+            Gesture = string.Empty;
+            _gestureLeft = 0;
+        }
+
+        private IReadOnlyList<CompanionGesture> GesturesOf(string companion)
+        {
+            if (!ReferenceEquals(companion, _defFor))
+            {
+                _defFor = companion;
+                _def = _companions.Rules.Companion(companion);
+                _lastGesture = -1;
+            }
+            return _def == null ? (IReadOnlyList<CompanionGesture>)System.Array.Empty<CompanionGesture>() : _def.Gestures;
         }
 
         private StripPose PoseNow(bool away)

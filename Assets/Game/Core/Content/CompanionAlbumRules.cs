@@ -83,12 +83,17 @@ namespace Game.Core.Content
         public int CheerHearts { get; private set; } = 3;
         public double CheerSeconds { get; private set; } = 3;
         public double FlashSeconds { get; private set; } = 2;
+        public double GestureMinSeconds { get; private set; }
+        public double GestureMaxSeconds { get; private set; }
+        public bool Gestures => GestureMaxSeconds > 0;
 
         internal static CompanionStripRules Load(ContentNode node)
         {
             var sit = node.Field("sitAfterSeconds").AsNumber(1, 1e6);
             var sleep = node.Field("sleepAfterSeconds").AsNumber(sit, 1e6);
             var hop = node.Field("hopAfterSeconds").AsNumber(0.1, 1e6);
+            var gestures = node.HasField("gestureEvery");
+            var gestureMin = gestures ? node.Field("gestureEvery").Field("min").AsNumber(1, 3600) : 0;
             return new CompanionStripRules
             {
                 SitAfterSeconds = sit,
@@ -98,7 +103,9 @@ namespace Game.Core.Content
                 SeriesPauseSeconds = node.Field("seriesPauseSeconds").AsNumber(0.1, 60),
                 CheerHearts = node.Field("cheerHearts").AsInt(0, 100),
                 CheerSeconds = node.Field("cheerSeconds").AsNumber(0, 60),
-                FlashSeconds = node.Field("flashSeconds").AsNumber(0, 60)
+                FlashSeconds = node.Field("flashSeconds").AsNumber(0, 60),
+                GestureMinSeconds = gestureMin,
+                GestureMaxSeconds = gestures ? node.Field("gestureEvery").Field("max").AsNumber(gestureMin, 3600) : 0
             };
         }
     }
