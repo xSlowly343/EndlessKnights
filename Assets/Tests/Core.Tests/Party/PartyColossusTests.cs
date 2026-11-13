@@ -222,7 +222,7 @@ namespace Game.Core.Tests.Party
             Assert.That(multipliers, Is.EqualTo(6));
             Assert.That(Rules.Relic("colossus_fang")!.ValueAt(30), Is.EqualTo(0.3).Within(1e-12));
             Assert.That(Rules.Relic("eternal_heart")!.ValueAt(30), Is.EqualTo(System.Math.Pow(1.005, 30) - 1).Within(1e-12), "a multiplier compounds to about x1.16");
-            Assert.That(Rules.Relic("storm_eye")!.Works, Is.False, "the mascot call comes later");
+            Assert.That(Rules.Relic("limit_brand")!.Works, Is.False, "the party limit comes later");
         }
 
         [Test]

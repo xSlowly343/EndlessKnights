@@ -22,6 +22,24 @@ namespace Game.Net.Nakama
         public int Hearts { get; }
     }
 
+    public readonly struct PartyMascotTrialView
+    {
+        public PartyMascotTrialView(string id, string stage, int need, int count, bool done)
+        {
+            Id = id;
+            Stage = stage;
+            Need = need;
+            Count = count;
+            Done = done;
+        }
+
+        public string Id { get; }
+        public string Stage { get; }
+        public int Need { get; }
+        public int Count { get; }
+        public bool Done { get; }
+    }
+
     public sealed class PartyMascotReply
     {
         private PartyMascotReply(JsonValue json)
@@ -52,12 +70,39 @@ namespace Game.Net.Nakama
             foreach (var bond in NakamaJson.Items(json, "bonds"))
                 bonds.Add(new PartyMascotBond(NakamaJson.Text(bond, "userId"), NakamaJson.Text(bond, "name"), (long)NakamaJson.Number(bond, "bond"), (int)NakamaJson.Number(bond, "hearts")));
             Bonds = bonds;
+            Held = NakamaJson.Text(json, "held");
+            RitePoints = (int)NakamaJson.Number(json, "ritePoints");
+            RiteMaxRank = (int)NakamaJson.Number(json, "riteMaxRank");
+            RiteResetAt = (long)NakamaJson.Number(json, "riteResetAt");
+            Favourite = NakamaJson.Text(json, "favourite");
+            Gauge = NakamaJson.Number(json, "gauge");
+            GaugeFull = NakamaJson.Number(json, "gaugeFull");
+            CallId = (long)NakamaJson.Number(json, "callId");
+            CallPending = NakamaJson.Flag(json, "callPending");
+            var rites = new Dictionary<string, int>();
+            var riteField = NakamaJson.Field(json, "rites");
+            if (riteField != null && riteField.Kind == JsonKind.Object)
+            {
+                foreach (var pair in riteField.Fields)
+                {
+                    if (pair.Value.Kind == JsonKind.Number)
+                        rites[pair.Key] = (int)pair.Value.Number;
+                }
+            }
+            Rites = rites;
+            var trials = new List<PartyMascotTrialView>();
+            foreach (var trial in NakamaJson.Items(json, "trials"))
+                trials.Add(new PartyMascotTrialView(NakamaJson.Text(trial, "id"), NakamaJson.Text(trial, "stage"), (int)NakamaJson.Number(trial, "need"),
+                    (int)NakamaJson.Number(trial, "count"), NakamaJson.Flag(trial, "done")));
+            Trials = trials;
             var accepted = NakamaJson.Field(json, "accepted");
             if (accepted != null && accepted.Kind == JsonKind.Object)
             {
                 FedPortions = (int)NakamaJson.Number(accepted, "portions");
                 FedExperience = NakamaJson.Number(accepted, "experience");
                 FedFavourite = NakamaJson.Flag(accepted, "favourite");
+                Call = NakamaJson.Flag(accepted, "call");
+                Calls = (int)NakamaJson.Number(accepted, "calls");
             }
         }
 
@@ -87,6 +132,20 @@ namespace Game.Net.Nakama
         public int FedPortions { get; }
         public double FedExperience { get; }
         public bool FedFavourite { get; }
+        public bool Call { get; }
+        public int Calls { get; }
+        public string Held { get; }
+        public int RitePoints { get; }
+        public int RiteMaxRank { get; }
+        public long RiteResetAt { get; }
+        public string Favourite { get; }
+        public double Gauge { get; }
+        public double GaugeFull { get; }
+        public long CallId { get; }
+        public bool CallPending { get; }
+        public IReadOnlyDictionary<string, int> Rites { get; }
+        public IReadOnlyList<PartyMascotTrialView> Trials { get; }
+        public double GaugeShare => GaugeFull > 0 ? System.Math.Min(1, Gauge / GaugeFull) : 0;
 
         public static PartyMascotReply From(JsonValue json) => new PartyMascotReply(json);
 
@@ -96,6 +155,23 @@ namespace Game.Net.Nakama
             NakamaJson.Object(("food", NakamaJson.Quote(food)), ("amount", amount.ToString(CultureInfo.InvariantCulture)));
 
         public static string BranchPayload(string branch) => NakamaJson.Object(("branch", NakamaJson.Quote(branch)));
+
+        public static string RitePayload(string id) => NakamaJson.Object(("id", NakamaJson.Quote(id)));
+
+        public static string ActionsPayload(double actions) =>
+            NakamaJson.Object(("actions", System.Math.Max(0, System.Math.Round(actions, 2)).ToString("0.##", CultureInfo.InvariantCulture)));
+
+        public static Task<PartyMascotReply> RiteAsync(NakamaClient client, NakamaSession session, string id, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_mascot_rite", RitePayload(id), cancel);
+
+        public static Task<PartyMascotReply> RiteResetAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_mascot_rite_reset", "{}", cancel);
+
+        public static Task<PartyMascotReply> ActionsAsync(NakamaClient client, NakamaSession session, double actions, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_mascot_actions", ActionsPayload(actions), cancel);
+
+        public static Task<PartyMascotReply> CallTakeAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_mascot_call_take", "{}", cancel);
 
         public static string LookPayload(string? coat, IReadOnlyDictionary<string, string>? gear)
         {

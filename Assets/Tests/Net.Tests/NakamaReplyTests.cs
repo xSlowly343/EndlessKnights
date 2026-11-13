@@ -719,6 +719,17 @@ namespace Game.Net.Tests
             Assert.That(reply.FedPortions, Is.EqualTo(3));
             Assert.That(reply.FedFavourite, Is.True);
             Assert.That(PartyMascotReply.From(NakamaJson.Parse("{\"accepted\":null}")).FedPortions, Is.Zero);
+            Assert.That(PartyMascotReply.RitePayload("power_aura"), Is.EqualTo("{\"id\":\"power_aura\"}"));
+            Assert.That(PartyMascotReply.ActionsPayload(1234.567), Is.EqualTo("{\"actions\":1234.57}"));
+            var rites = PartyMascotReply.From(NakamaJson.Parse("{\"held\":\"pets\",\"trials\":[{\"id\":\"pets\",\"stage\":\"youngling\",\"need\":10,\"count\":4,\"done\":false}],\"rites\":{\"power_aura\":2},\"ritePoints\":1,\"riteMaxRank\":3,\"riteResetAt\":1765000000000,\"favourite\":\"fish\",\"gauge\":750,\"gaugeFull\":1500,\"callId\":4,\"callPending\":true,\"accepted\":{\"call\":true,\"calls\":1}}"));
+            Assert.That(rites.Held, Is.EqualTo("pets"));
+            Assert.That(rites.Trials[0].Count, Is.EqualTo(4));
+            Assert.That(rites.Rites["power_aura"], Is.EqualTo(2));
+            Assert.That(rites.RitePoints, Is.EqualTo(1));
+            Assert.That(rites.Favourite, Is.EqualTo("fish"));
+            Assert.That(rites.GaugeShare, Is.EqualTo(0.5));
+            Assert.That(rites.CallPending && rites.Call, Is.True);
+            Assert.That(rites.Calls, Is.EqualTo(1));
         }
 
         [Test]

@@ -260,6 +260,7 @@ namespace Game.Core.Sim
             _mentor = new MentorBonus(data.Mentor, hero, _levels, state);
             _partyGrowth = new PartyGrowthLayer(data.Party.Growth, hero);
             PartyColossus = new PartyColossusMeter(data.Party.Growth.Colossus);
+            MascotStrip = new MascotStrip(data.Party.Growth.Mascot, state, _partyGrowth, Events);
             _homeOnly = new[] { _clanTree.Layer, _mentor.Layer, _alchemy.Layer, _museum.Layer, _cooking.Layer, _clanCamp.Layer, _gates.Layer, _chronicle.Layer };
             MuteHomeOnly();
             RebuildTree();
@@ -296,6 +297,7 @@ namespace Game.Core.Sim
         public PartyActivityMeter PartyActivity { get; } = new PartyActivityMeter();
         public PartyGrowthLayer PartyGrowth => _partyGrowth;
         public PartyColossusMeter PartyColossus { get; }
+        public MascotStrip MascotStrip { get; }
         public bool AtPartyColossus => _stage.AtColossus;
         private bool ColossusCounts => _partyGrowth.InParty && _partyColossusOpen;
         private bool _partyColossusOpen;
@@ -340,7 +342,7 @@ namespace Game.Core.Sim
         {
             var active = State.IdleTicks <= _data.Party.Contribution.ActiveInputSeconds * TicksPerSecond;
             var before = PartyColossus.Direct;
-            PartyColossus.Note(_combat, _data.Stages, State.RecordStage, _stage.AtColossus, active, ColossusCounts, _partyGrowth.ColossusPower);
+            PartyColossus.Note(_combat, _data.Stages, State.RecordStage, _stage.AtColossus, active, ColossusCounts, _partyGrowth.ColossusPower * ColossusCallFactor);
             if (_curse != null && PartyColossus.Direct > before)
                 _curseTicks = (long)System.Math.Round(_curse.Number("minutes") * 60 * TicksPerSecond);
             else if (_curseTicks > 0)
@@ -933,10 +935,75 @@ namespace Game.Core.Sim
             return taken;
         }
 
-        public void SetPartyMascot(string beast, int level)
+        public void SetPartyMascot(string beast, int level, IReadOnlyDictionary<string, int>? rites = null)
         {
-            _partyGrowth.SetMascot(beast, level);
+            _partyGrowth.SetMascot(beast, level, rites);
             RefreshPeacefulBonus();
+        }
+
+        private ModifierLayer? _callLayer;
+        private readonly List<Modifier> _callLines = new List<Modifier>();
+        private PartyMascotBeast? _callBeast;
+        private double _callColossus = 1;
+        private double _mascotActions;
+
+        public double MascotActions => _mascotActions;
+        public bool MascotCalling => State.MascotCallTicks > 0;
+        public double ColossusCallFactor => MascotCalling ? _callColossus : 1;
+
+        public double TakeMascotActions()
+        {
+            var actions = _mascotActions;
+            _mascotActions = 0;
+            return actions;
+        }
+
+        public bool StartPartyMascotCall()
+        {
+            var beast = _data.Party.Growth.Mascot.Beast(_partyGrowth.MascotBeast);
+            if (beast == null || !_partyGrowth.InParty)
+                return false;
+            _callBeast = beast;
+            _callLines.Clear();
+            _callColossus = _partyGrowth.CallColossus;
+            var power = _partyGrowth.CallPower;
+            foreach (var line in beast.Call)
+            {
+                if (!line.Works || !line.Modifier.HasValue)
+                    continue;
+                var modifier = line.Modifier.Value;
+                if (modifier.Stat == PartyGrowthLayer.ColossusDamage)
+                    _callColossus *= 1 + modifier.Value * power;
+                else
+                    _callLines.Add(modifier.WithValue(modifier.Value * power));
+            }
+            _callLayer ??= new ModifierLayer(Hero);
+            _callLayer.Set(_callLines);
+            State.MascotCallTicks = (long)System.Math.Round(_partyGrowth.CallSeconds * TicksPerSecond);
+            return true;
+        }
+
+        private void NoteMascotInput(in EffectiveInput input)
+        {
+            if (_partyGrowth.InParty && _partyGrowth.MascotBeast.Length > 0)
+                _mascotActions += _data.Party.Growth.Mascot.CallActions(input.Hits, input.ButtonPresses, input.MousePx);
+        }
+
+        private void TickMascotCall()
+        {
+            if (State.MascotCallTicks <= 0)
+                return;
+            foreach (var line in _callBeast?.Call ?? (IReadOnlyList<PartyMascotCallLine>)System.Array.Empty<PartyMascotCallLine>())
+            {
+                if (line.BossTimerStop && State.FightingBoss)
+                    State.BossTimerStopTicks = System.Math.Max(State.BossTimerStopTicks, 1);
+                if (line.FocusFull)
+                    State.Focus = _focus.Max;
+            }
+            if (--State.MascotCallTicks > 0)
+                return;
+            _callColossus = 1;
+            _callLayer?.Set(System.Array.Empty<Modifier>());
         }
 
         public void SetPartyRelics(IReadOnlyDictionary<string, int> levels)
@@ -1286,6 +1353,7 @@ namespace Game.Core.Sim
             _mentor.UseRules(data.Mentor);
             _partyGrowth.UseRules(data.Party.Growth);
             PartyColossus.UseRules(data.Party.Growth.Colossus);
+            MascotStrip.UseRules(data.Party.Growth.Mascot);
             _rift.UseData(data);
             RebuildTree();
             SyncPathSkill();
@@ -1430,11 +1498,13 @@ namespace Game.Core.Sim
             _partyBuffs.Tick();
             _ghost.NoteInput(input.HasInput);
             PartyActivity.NoteInput(input.HasInput);
+            NoteMascotInput(input);
             _ghost.Tick();
             _synergy.Tick();
             _conditions.NoteInput(input);
             _conditions.Tick();
             _rift.Tick();
+            TickMascotCall();
             _stage.Tick();
             _oddities.Tick(input);
             _dungeons.Tick();
@@ -1462,6 +1532,7 @@ namespace Game.Core.Sim
             _colossus.NoteGuardians(firstEvent);
             _nest.NoteGuardians(firstEvent);
             _strip.Tick(firstEvent, LastInput.HasAnyInput);
+            MascotStrip.Tick(firstEvent, LastInput.HasAnyInput);
             _scene.Tick();
             _forge.NoteKills(firstEvent);
             _artifacts.TickAwakening();

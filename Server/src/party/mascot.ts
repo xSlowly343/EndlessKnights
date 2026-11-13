@@ -21,6 +21,22 @@ interface PartyMascotRules {
     treeFeedCost: PartyTrialTreeLine[];
     treeStageEarly: PartyTrialTreeLine[];
     relicExperience: { id: string; value: number }[];
+    rites: { id: string; stat: string; value: number }[];
+    riteEvery: number;
+    riteMaxRank: number;
+    riteSignsPerRank: number;
+    riteResetMs: number;
+    call: { gauge: number; seconds: number; mouseStep: number; maxActionsPerSecond: number; reportSeconds: number };
+    trials: { stage: string; id: string; need: number }[];
+    offlineShare: number;
+    offlineMaxHours: number;
+    treeCallGain: PartyTrialTreeLine[];
+    treeRiteCost: PartyTrialTreeLine[];
+    treeMinorRites: PartyTrialTreeLine[];
+    treeRiteLevels: PartyTrialTreeLine[];
+    treeHunger: PartyTrialTreeLine[];
+    treeFavourite: PartyTrialTreeLine[];
+    treeOfflineHit: PartyTrialTreeLine[];
 }
 
 interface PartyMascotMember {
@@ -41,6 +57,20 @@ interface PartyMascotValue {
     bonds: { [userId: string]: number };
     members: { [userId: string]: PartyMascotMember };
     extraCoats: string[];
+    rites: { [id: string]: number };
+    riteSpent: number;
+    riteResetAt: number;
+    gauge: number;
+    callId: number;
+    callAt: number;
+    callSeen: { [userId: string]: number };
+    actionsAt: { [userId: string]: number };
+    petsTotal: number;
+    favouriteStreak: number;
+    favouriteDay: number;
+    bosses: number;
+    trialsDone: string[];
+    hungerDay: number;
 }
 
 interface PartyMascotSituation {
@@ -63,7 +93,11 @@ function partyMascotRules(): PartyMascotRules {
 }
 
 function partyMascotEmpty(): PartyMascotValue {
-    return { beast: "", chosenAt: 0, experience: 0, temper: "", branch: "", votes: {}, coat: "common", gear: {}, bonds: {}, members: {}, extraCoats: [] };
+    return {
+        beast: "", chosenAt: 0, experience: 0, temper: "", branch: "", votes: {}, coat: "common", gear: {}, bonds: {}, members: {}, extraCoats: [],
+        rites: {}, riteSpent: 0, riteResetAt: 0, gauge: 0, callId: 0, callAt: 0, callSeen: {}, actionsAt: {}, petsTotal: 0, favouriteStreak: 0, favouriteDay: -1,
+        bosses: 0, trialsDone: [], hungerDay: -1
+    };
 }
 
 function partyMascotRead(nk: nkruntime.Nakama, partyId: string): { value: PartyMascotValue; version: string } {
@@ -108,6 +142,62 @@ function partyMascotLevel(experience: number): { level: number; into: number; ne
     return { level: level, into: level >= rules.maxLevel ? 0 : left, need: partyMascotNeed(level) };
 }
 
+function partyMascotStageFrom(stage: string): number {
+    const found = partyMascotRules().stages.filter((candidate) => candidate.id === stage)[0];
+    return found ? found.from : 0;
+}
+
+function partyMascotTrialMet(value: PartyMascotValue, situation: PartyMascotSituation, trial: { stage: string; id: string; need: number }): boolean {
+    switch (trial.id) {
+        case "pets":
+            return value.petsTotal >= trial.need;
+        case "favourite_days":
+            return value.favouriteStreak >= trial.need;
+        case "bosses":
+            return value.bosses >= trial.need;
+        case "colossus_kills":
+            return situation.colossusKills >= trial.need;
+        case "hearts":
+            return situation.members.every((id) => partyMascotHearts(value.bonds[id] || 0) >= trial.need);
+        default:
+            return false;
+    }
+}
+
+function partyMascotTrialCount(value: PartyMascotValue, situation: PartyMascotSituation, id: string): number {
+    switch (id) {
+        case "pets":
+            return value.petsTotal;
+        case "favourite_days":
+            return value.favouriteStreak;
+        case "bosses":
+            return value.bosses;
+        case "colossus_kills":
+            return situation.colossusKills;
+        case "hearts":
+            return situation.members.reduce((least, id) => Math.min(least, partyMascotHearts(value.bonds[id] || 0)), Number.MAX_VALUE);
+        default:
+            return 0;
+    }
+}
+
+function partyMascotSettleTrials(value: PartyMascotValue, situation: PartyMascotSituation): void {
+    const raw = partyMascotLevel(value.experience).level;
+    for (const trial of partyMascotRules().trials)
+        if (value.trialsDone.indexOf(trial.id) < 0 && raw >= partyMascotStageFrom(trial.stage) - 1 && partyMascotTrialMet(value, situation, trial))
+            value.trialsDone.push(trial.id);
+}
+
+function partyMascotGatedLevel(value: PartyMascotValue): { level: number; into: number; need: number; held: string } {
+    const level = partyMascotLevel(value.experience);
+    for (const trial of partyMascotRules().trials) {
+        const cap = partyMascotStageFrom(trial.stage) - 1;
+        if (value.trialsDone.indexOf(trial.id) < 0 && level.level > cap)
+            return { level: cap, into: partyMascotNeed(cap), need: partyMascotNeed(cap), held: trial.id };
+    }
+    return { level: level.level, into: level.into, need: level.need, held: "" };
+}
+
 function partyMascotStage(level: number, early: number): string {
     const stages = partyMascotRules().stages;
     let stage = stages[0].id;
@@ -150,8 +240,160 @@ function partyMascotOpened(situation: PartyMascotSituation): boolean {
     return PartyGrowthServerRules.unlocks.some((unlock) => unlock.kind === "mascot" && unlock.level <= situation.level);
 }
 
-function partyMascotExperienceScale(situation: PartyMascotSituation): number {
-    return 1 + partyTrialTreeValue(situation.levels, partyMascotRules().treeExperience) + situation.relicExperience;
+function partyMascotRiteSum(value: PartyMascotValue, stat: string): number {
+    let total = 0;
+    for (const rite of partyMascotRules().rites)
+        if (rite.stat === stat)
+            total += rite.value * (value.rites[rite.id] || 0);
+    return total;
+}
+
+function partyMascotExperienceScale(situation: PartyMascotSituation, value?: PartyMascotValue): number {
+    return 1 + partyTrialTreeValue(situation.levels, partyMascotRules().treeExperience) + situation.relicExperience + (value ? partyMascotRiteSum(value, "mascotExperience") : 0);
+}
+
+function partyMascotBondScale(value: PartyMascotValue): number {
+    return 1 + partyMascotRiteSum(value, "mascotBond");
+}
+
+function partyMascotFavourite(value: PartyMascotValue, situation: PartyMascotSituation, nowUnixMs: number): string {
+    const beast = partyMascotBeast(value.beast);
+    if (!beast)
+        return "";
+    if (partyTrialTreeValue(situation.levels, partyMascotRules().treeFavourite) <= 0)
+        return beast.favourite;
+    const foods = partyMascotRules().foods;
+    const index = partyMascotRules().beasts.indexOf(beast);
+    return foods[(partyTrialWeek(nowUnixMs) + index) % foods.length].id;
+}
+
+function partyMascotRitePoints(value: PartyMascotValue, situation: PartyMascotSituation): number {
+    const total = Math.floor(partyMascotGatedLevel(value).level / partyMascotRules().riteEvery) + Math.floor(partyTrialTreeValue(situation.levels, partyMascotRules().treeMinorRites) + 1e-9);
+    const spent = Object.keys(value.rites).reduce((sum, id) => sum + value.rites[id], 0);
+    return Math.max(0, total - spent);
+}
+
+function partyMascotRiteMaxRank(situation: PartyMascotSituation): number {
+    return partyMascotRules().riteMaxRank + Math.floor(partyTrialTreeValue(situation.levels, partyMascotRules().treeRiteLevels) + 1e-9);
+}
+
+function partyMascotRitePrice(situation: PartyMascotSituation, rank: number): number {
+    const cut = Math.min(0.9, -partyTrialTreeValue(situation.levels, partyMascotRules().treeRiteCost));
+    return Math.ceil(partyMascotRules().riteSignsPerRank * rank * (1 - cut) - 1e-9);
+}
+
+function partyMascotRite(nk: nkruntime.Nakama, userId: string, id: unknown, nowUnixMs: number): { [key: string]: any } {
+    const rite = typeof id === "string" ? partyMascotRules().rites.filter((candidate) => candidate.id === id)[0] : undefined;
+    if (!rite)
+        throw new Error("bad request");
+    const situation = partyMascotSituation(nk, userId);
+    if (situation.leader !== userId)
+        throw new Error("only the leader can do that");
+    const current = partyMascotRead(nk, situation.partyId).value;
+    const rank = (current.rites[rite.id] || 0) + 1;
+    const price = partyMascotRitePrice(situation, rank);
+    if (!current.beast)
+        throw new Error("choose a mascot first");
+    if (partyMascotRitePoints(current, situation) <= 0)
+        throw new Error("no rite points left");
+    if (rank > partyMascotRiteMaxRank(situation))
+        throw new Error("the rite is at its last level");
+    partyTreasuryChange(nk, situation.partyId, (value) => {
+        if (value.treasury < price)
+            throw new Error("not enough friendship in the treasury");
+        value.treasury -= price;
+    });
+    try {
+        return partyMascotAct(nk, userId, nowUnixMs, (value, fresh) => {
+            if (partyMascotRitePoints(value, fresh) <= 0 || (value.rites[rite.id] || 0) + 1 !== rank)
+                throw new Error("the rites changed, try again");
+            value.rites[rite.id] = rank;
+            value.riteSpent += price;
+            return { price: price };
+        });
+    } catch (error) {
+        partyTreasuryChange(nk, situation.partyId, (value) => {
+            value.treasury += price;
+        });
+        throw error;
+    }
+}
+
+function partyMascotRiteReset(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [key: string]: any } {
+    let refund = 0;
+    const view = partyMascotAct(nk, userId, nowUnixMs, (value, situation) => {
+        if (situation.leader !== userId)
+            throw new Error("only the leader can do that");
+        if (Object.keys(value.rites).length === 0)
+            throw new Error("nothing to reset");
+        if (value.riteResetAt > 0 && nowUnixMs < value.riteResetAt + partyMascotRules().riteResetMs)
+            throw new Error("rites reset once a week");
+        refund = value.riteSpent;
+        value.rites = {};
+        value.riteSpent = 0;
+        value.riteResetAt = nowUnixMs;
+        return { refund: refund };
+    });
+    if (refund > 0)
+        partyTreasuryChange(nk, view.partyId, (value) => {
+            value.treasury += refund;
+        });
+    return view;
+}
+
+function partyMascotActions(nk: nkruntime.Nakama, userId: string, actions: unknown, nowUnixMs: number): { [key: string]: any } {
+    if (typeof actions !== "number" || !(actions >= 0) || actions > 1e9)
+        throw new Error("bad request");
+    return partyMascotAct(nk, userId, nowUnixMs, (value, situation) => {
+        if (!value.beast)
+            throw new Error("choose a mascot first");
+        const call = partyMascotRules().call;
+        const at = value.actionsAt[userId] || 0;
+        const elapsed = at > 0 ? Math.max(0, nowUnixMs - at) / 1000 : call.reportSeconds;
+        const counted = Math.min(actions, elapsed * call.maxActionsPerSecond);
+        value.actionsAt[userId] = nowUnixMs;
+        value.gauge += counted * (1 + partyTrialTreeValue(situation.levels, partyMascotRules().treeCallGain) + partyMascotRiteSum(value, "mascotCallGain"));
+        let calls = 0;
+        while (value.gauge >= call.gauge) {
+            value.gauge -= call.gauge;
+            value.callId++;
+            value.callAt = nowUnixMs;
+            calls++;
+        }
+        return { counted: counted, calls: calls };
+    });
+}
+
+function partyMascotCallTake(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [key: string]: any } {
+    return partyMascotAct(nk, userId, nowUnixMs, (value) => {
+        const pending = value.callId > (value.callSeen[userId] || 0);
+        value.callSeen[userId] = value.callId;
+        return { call: pending };
+    });
+}
+
+function partyMascotBosses(nk: nkruntime.Nakama, partyId: string, bosses: number): void {
+    if (!partyId || !(bosses > 0))
+        return;
+    try {
+        partyMascotChange(nk, partyId, (value) => {
+            if (value.beast)
+                value.bosses += bosses;
+        });
+    } catch (error) {
+        return;
+    }
+}
+
+function partyMascotColossusPower(nk: nkruntime.Nakama, partyId: string): { power: number; since: number } {
+    const value = partyMascotRead(nk, partyId).value;
+    if (!value.beast)
+        return { power: 0, since: 0 };
+    const levels = partyTreasuryRead(nk, partyId).value.levels;
+    const rules = partyMascotRules();
+    const level = partyMascotGatedLevel(value).level;
+    const bonus = 1 + partyTrialTreeValue(levels, rules.treeOfflineHit) + partyMascotRiteSum(value, "mascotOfflineHit");
+    return { power: rules.offlineShare * level / rules.maxLevel * bonus, since: value.chosenAt };
 }
 
 function partyMascotCoats(value: PartyMascotValue, situation: PartyMascotSituation): string[] {
@@ -163,7 +405,7 @@ function partyMascotCoats(value: PartyMascotValue, situation: PartyMascotSituati
 }
 
 function partyMascotGear(value: PartyMascotValue, situation: PartyMascotSituation): string[] {
-    const level = partyMascotLevel(value.experience).level;
+    const level = partyMascotGatedLevel(value).level;
     return partyMascotRules().gear.filter((item) => level >= item.level && situation.colossusBest >= item.colossusTier).map((item) => item.id);
 }
 
@@ -193,7 +435,8 @@ function partyMascotHearts(bond: number): number {
 }
 
 function partyMascotView(nk: nkruntime.Nakama, value: PartyMascotValue, situation: PartyMascotSituation, userId: string, nowUnixMs: number, accepted: { [key: string]: any } | null): { [key: string]: any } {
-    const level = partyMascotLevel(value.experience);
+    partyMascotSettleTrials(value, situation);
+    const level = partyMascotGatedLevel(value);
     const member = partyMascotToday(value.members[userId] ? Object.assign({}, value.members[userId]) : { day: 0, fed: 0, pets: 0 }, nowUnixMs);
     const ids = situation.members;
     const names = partyTreasuryNames(nk, ids);
@@ -207,6 +450,11 @@ function partyMascotView(nk: nkruntime.Nakama, value: PartyMascotValue, situatio
         feedLeft: Math.max(0, partyMascotFeedLimit(situation) - member.fed), petsLeft: Math.max(0, partyMascotRules().bond.petsPerDay - member.pets),
         bonds: ids.map((id) => ({ userId: id, name: names[id] || "", bond: Math.floor(value.bonds[id] || 0), hearts: partyMascotHearts(value.bonds[id] || 0) })),
         yourBond: Math.floor(value.bonds[userId] || 0), yourHearts: partyMascotHearts(value.bonds[userId] || 0),
+        held: level.held, trials: partyMascotRules().trials.map((trial) => ({ id: trial.id, stage: trial.stage, need: trial.need, count: Math.min(trial.need, partyMascotTrialCount(value, situation, trial.id)), done: value.trialsDone.indexOf(trial.id) >= 0 })),
+        rites: value.rites, ritePoints: partyMascotRitePoints(value, situation), riteMaxRank: partyMascotRiteMaxRank(situation),
+        riteResetAt: value.riteResetAt > 0 ? value.riteResetAt + partyMascotRules().riteResetMs : 0,
+        favourite: partyMascotFavourite(value, situation, nowUnixMs), gauge: Math.floor(value.gauge), gaugeFull: partyMascotRules().call.gauge,
+        callId: value.callId, callAt: value.callAt, callPending: value.callId > (value.callSeen[userId] || 0),
         accepted: accepted
     };
 }
@@ -267,13 +515,22 @@ function partyMascotFeed(nk: nkruntime.Nakama, userId: string, request: { [key: 
         if (portions === 0)
             throw new Error("the mascot has eaten enough from you today");
         const rules = partyMascotRules();
-        const favourite = beast.favourite === food.id ? rules.favouriteMultiplier : 1;
+        const isFavourite = partyMascotFavourite(value, situation, nowUnixMs) === food.id;
+        const favourite = isFavourite ? rules.favouriteMultiplier + partyTrialTreeValue(situation.levels, rules.treeFavourite) : 1;
+        const today = Math.floor(nowUnixMs / PartyGrowthDayMs);
+        const hunger = value.hungerDay !== today ? partyTrialTreeValue(situation.levels, rules.treeHunger) : 0;
+        if (hunger > 0)
+            value.hungerDay = today;
+        if (isFavourite && value.favouriteDay !== today) {
+            value.favouriteStreak = value.favouriteDay === today - 1 ? value.favouriteStreak + 1 : 1;
+            value.favouriteDay = today;
+        }
         const feedBonus = 1 + partyTrialTreeValue(situation.levels, rules.treeFeedExperience);
         const cost = 1 + partyTrialTreeValue(situation.levels, rules.treeFeedCost);
-        const experience = portions * food.experience * favourite * feedBonus / Math.max(0.1, cost) * partyMascotExperienceScale(situation);
+        const experience = (portions + hunger) * food.experience * favourite * feedBonus / Math.max(0.1, cost) * partyMascotExperienceScale(situation, value);
         member.fed += portions;
         value.experience += experience;
-        value.bonds[userId] = (value.bonds[userId] || 0) + portions * rules.bond.feed;
+        value.bonds[userId] = (value.bonds[userId] || 0) + portions * rules.bond.feed * partyMascotBondScale(value);
         return { portions: portions, experience: experience, favourite: favourite > 1 };
     });
 }
@@ -286,7 +543,8 @@ function partyMascotPet(nk: nkruntime.Nakama, userId: string, nowUnixMs: number)
         if (member.pets >= partyMascotRules().bond.petsPerDay)
             throw new Error("the mascot wants to rest");
         member.pets++;
-        value.bonds[userId] = (value.bonds[userId] || 0) + partyMascotRules().bond.pet;
+        value.petsTotal++;
+        value.bonds[userId] = (value.bonds[userId] || 0) + partyMascotRules().bond.pet * partyMascotBondScale(value);
         return { bond: partyMascotRules().bond.pet };
     });
 }
@@ -300,7 +558,7 @@ function partyMascotBranch(nk: nkruntime.Nakama, userId: string, branch: unknown
             throw new Error("bad request");
         if (value.branch)
             throw new Error("the branch is already chosen");
-        if (partyMascotLevel(value.experience).level < partyMascotRules().branchFrom)
+        if (partyMascotGatedLevel(value).level < partyMascotRules().branchFrom)
             throw new Error("the branch opens on level " + partyMascotRules().branchFrom);
         value.votes[userId] = branch;
         for (const id of Object.keys(value.votes))
@@ -352,8 +610,8 @@ function partyMascotBattle(nk: nkruntime.Nakama, partyId: string, userId: string
         partyMascotChange(nk, partyId, (value) => {
             if (!value.beast)
                 return;
-            value.experience += minutes * partyMascotRules().perMinute * partyMascotExperienceScale(situation);
-            value.bonds[userId] = (value.bonds[userId] || 0) + minutes * partyMascotRules().bond.perMinute;
+            value.experience += minutes * partyMascotRules().perMinute * partyMascotExperienceScale(situation, value);
+            value.bonds[userId] = (value.bonds[userId] || 0) + minutes * partyMascotRules().bond.perMinute * partyMascotBondScale(value);
         });
     } catch (error) {
         return;
@@ -382,4 +640,20 @@ function partyMascotBranchRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, 
 
 function partyMascotLookRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     return JSON.stringify(partyMascotLook(nk, partyCaller(ctx), partyRequest(payload), Date.now()));
+}
+
+function partyMascotRiteRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(partyMascotRite(nk, partyCaller(ctx), partyRequest(payload).id, Date.now()));
+}
+
+function partyMascotRiteResetRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(partyMascotRiteReset(nk, partyCaller(ctx), Date.now()));
+}
+
+function partyMascotActionsRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(partyMascotActions(nk, partyCaller(ctx), partyRequest(payload).actions, Date.now()));
+}
+
+function partyMascotCallTakeRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(partyMascotCallTake(nk, partyCaller(ctx), Date.now()));
 }

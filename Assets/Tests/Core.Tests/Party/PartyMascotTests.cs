@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Game.Core.Input;
 using Game.Core.Party;
 using Game.Core.Sim;
 using Game.Core.Stats;
@@ -91,7 +92,8 @@ namespace Game.Core.Tests.Party
             loop.SetPartyMascot("phoenix", 1);
             Assert.That(loop.PartyGrowth.ColossusPower, Is.EqualTo(1.02).Within(1e-12));
             loop.SetPartyMascot("serpent", 50);
-            Assert.That(loop.PartyGrowth.Mascot, Is.Empty);
+            Assert.That(loop.PartyGrowth.Mascot.Count, Is.EqualTo(1));
+            Assert.That(loop.PartyGrowth.Mascot[0].Stat, Is.EqualTo(CombatStats.PartyPeaceful), "only the peaceful gift");
         }
 
         [Test]
@@ -123,6 +125,163 @@ namespace Game.Core.Tests.Party
             Assert.That(loop.State.Camp.Bag.ContainsKey("herb_windwort"), Is.True);
             Assert.That(loop.TakeMascotFood("dish", 2), Is.EqualTo(1));
             Assert.That(loop.TakeMascotFood("cake", 1), Is.Zero);
+        }
+
+        [Test]
+        public void ThreeBranchesOfFiveRitesAPointEveryFiveLevels()
+        {
+            Assert.That(Rules.RiteBranches.Count, Is.EqualTo(3));
+            Assert.That(Rules.Rites.Count, Is.EqualTo(15));
+            Assert.That(Rules.RitePoints(4), Is.Zero);
+            Assert.That(Rules.RitePoints(100), Is.EqualTo(20));
+            Assert.That(Rules.RiteMaxRank, Is.EqualTo(3));
+            Assert.That(Rules.Trials.Count, Is.EqualTo(5));
+            Assert.That(Rules.CallGauge, Is.EqualTo(1500));
+            Assert.That(Rules.CallActions(10, 2, 250), Is.EqualTo(14.5).Within(1e-12));
+            Assert.That(Rules.Gift(100), Is.EqualTo(0.2).Within(1e-12));
+        }
+
+        [Test]
+        public void RitesRaiseTheAuraColossusDamageAndThePeacefulGift()
+        {
+            var loop = Member(1);
+            loop.SetPartyMascot("wolf", 50);
+            var aura = loop.PartyGrowth.MascotAura;
+            var peaceful = loop.PartyGrowth.Peaceful;
+            Assert.That(peaceful, Is.EqualTo(Rules.Gift(50)).Within(1e-12), "the peaceful gift grows with the level");
+            loop.SetPartyMascot("wolf", 50, new Dictionary<string, int> { ["power_aura"] = 2, ["hunt_fang"] = 3, ["home_gift"] = 1 });
+            Assert.That(loop.PartyGrowth.MascotAura, Is.EqualTo(aura * 1.1).Within(1e-12));
+            Assert.That(loop.PartyGrowth.ColossusPower, Is.EqualTo(1.15).Within(1e-12));
+            Assert.That(loop.PartyGrowth.Peaceful, Is.EqualTo(peaceful + 0.03).Within(1e-12));
+        }
+
+        [Test]
+        public void TheCallLastsThirtySecondsAndTheTreeAndRitesStretchAndStrengthenIt()
+        {
+            var loop = Member(1);
+            Assert.That(loop.StartPartyMascotCall(), Is.False, "no beast, no call");
+            loop.SetPartyMascot("boar", 10);
+            var strike = loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike);
+            Assert.That(loop.StartPartyMascotCall(), Is.True);
+            Assert.That(loop.State.MascotCallTicks, Is.EqualTo(300));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike) / strike, Is.EqualTo(2).Within(1e-9), "the boar doubles key hits");
+            for (var i = 0; i < 300; i++)
+                loop.Tick();
+            Assert.That(loop.MascotCalling, Is.False);
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike), Is.EqualTo(strike).Within(1e-9));
+            loop.SetPartyTree(new Dictionary<int, int> { [45] = 3 }, new string[0]);
+            loop.SetPartyMascot("boar", 10, new Dictionary<string, int> { ["power_length"] = 1, ["power_call"] = 1 });
+            loop.StartPartyMascotCall();
+            Assert.That(loop.State.MascotCallTicks, Is.EqualTo((30 + 5 + 3) * 10));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1, StatTags.Strike) / strike, Is.EqualTo(2.2).Within(1e-9), "Call Fury +20%");
+        }
+
+        [Test]
+        public void TheBearStopsTheBossTimerAndTheMammothSwitchesOffRegeneration()
+        {
+            var loop = Member(1);
+            loop.SetPartyMascot("bear", 10);
+            loop.State.SpawnEnemy(null, Game.Core.Content.EnemyType.Boss, Game.Core.Math.BigNumber.FromDouble(1e300));
+            loop.State.BossTicksLeft = 300;
+            loop.StartPartyMascotCall();
+            for (var i = 0; i < 50; i++)
+                loop.Tick();
+            Assert.That(loop.State.BossTicksLeft, Is.EqualTo(300), "the boss timer stands still");
+            var mammoth = Member(1);
+            mammoth.SetPartyMascot("mammoth", 10);
+            mammoth.StartPartyMascotCall();
+            Assert.That(mammoth.Hero.Value(new StatId("enemyRegen"), 0.05), Is.Zero);
+        }
+
+        [Test]
+        public void ThePhoenixDoublesColossusPointsDuringTheCallAndTheStormEyeWorksOnlyThen()
+        {
+            var loop = Member(1);
+            loop.SetPartyMascot("phoenix", 1);
+            loop.SetPartyRelics(new Dictionary<string, int> { ["storm_eye"] = 30 });
+            loop.Tick();
+            var damage = loop.Hero.Value(CombatStats.Damage, 1);
+            Assert.That(loop.ColossusCallFactor, Is.EqualTo(1));
+            loop.StartPartyMascotCall();
+            loop.Tick();
+            Assert.That(loop.ColossusCallFactor, Is.EqualTo(2).Within(1e-12));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / damage, Is.EqualTo(System.Math.Pow(1.01, 30)).Within(1e-9));
+            for (var i = 0; i < 300; i++)
+                loop.Tick();
+            Assert.That(loop.ColossusCallFactor, Is.EqualTo(1));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(damage).Within(damage * 1e-9));
+        }
+
+        [Test]
+        public void ActionsOfThePlayerAreCountedForTheCallGauge()
+        {
+            var input = new FakeInputSource();
+            var loop = TestWorld.Loop(input);
+            loop.SetPartyStanding(true, Now - 10 * Day, 2, Now);
+            for (var i = 0; i < 10; i++)
+            {
+                input.PressKeys(3);
+                loop.Tick();
+            }
+            Assert.That(loop.MascotActions, Is.Zero, "no beast, no gauge");
+            loop.SetPartyMascot("wolf", 5);
+            for (var i = 0; i < 10; i++)
+            {
+                input.PressKeys(3);
+                loop.Tick();
+            }
+            var taken = loop.TakeMascotActions();
+            Assert.That(taken, Is.GreaterThan(0).And.LessThanOrEqualTo(30), "effective presses: spam does not fill the gauge faster");
+            Assert.That(loop.MascotActions, Is.Zero);
+        }
+
+        [Test]
+        public void TheMascotWalksBehindChargesOnTheCallStandsAtBossesAndSleepsWhenIdle()
+        {
+            var input = new FakeInputSource();
+            var loop = TestWorld.Loop(input);
+            loop.Tick();
+            Assert.That(loop.MascotStrip.Pose, Is.EqualTo(MascotPose.Hidden));
+            loop.SetPartyStanding(true, Now - 10 * Day, 2, Now);
+            loop.SetPartyMascot("wolf", 5);
+            loop.MascotStrip.SetTemper("playful");
+            input.PressKeys(1);
+            loop.Tick();
+            Assert.That(loop.MascotStrip.Pose, Is.EqualTo(MascotPose.Walk));
+            Assert.That(loop.MascotStrip.Place, Is.EqualTo(MascotPlace.Behind));
+            Assert.That(loop.MascotStrip.Stage, Is.EqualTo("cub"));
+            loop.StartPartyMascotCall();
+            loop.Tick();
+            Assert.That(loop.MascotStrip.Pose, Is.EqualTo(MascotPose.Charge));
+            Assert.That(loop.MascotStrip.Place, Is.EqualTo(MascotPlace.Front));
+            for (var i = 0; i < 300; i++)
+                loop.Tick();
+            Assert.That(loop.MascotStrip.Place, Is.EqualTo(MascotPlace.Behind));
+            for (var i = 0; i < 1200; i++)
+                loop.Tick();
+            Assert.That(loop.MascotStrip.Pose, Is.EqualTo(MascotPose.Sleep));
+        }
+
+        [Test]
+        public void CalmBeastsShowGesturesOfTheirKindAndTemper()
+        {
+            var input = new FakeInputSource();
+            var loop = TestWorld.Loop(input);
+            loop.SetPartyStanding(true, Now - 10 * Day, 2, Now);
+            loop.SetPartyMascot("wolf", 5);
+            loop.MascotStrip.SetTemper("lazy");
+            var seen = new HashSet<string>();
+            for (var i = 0; i < 20000; i++)
+            {
+                input.PressKeys(1);
+                loop.Tick();
+                if (loop.MascotStrip.Gesture.Length > 0)
+                    seen.Add(loop.MascotStrip.Gesture);
+            }
+            Assert.That(seen, Is.Not.Empty);
+            var allowed = new HashSet<string>(Rules.Beast("wolf")!.Gestures);
+            allowed.UnionWith(Rules.TemperGestures("lazy"));
+            Assert.That(allowed.IsSupersetOf(seen), Is.True);
         }
     }
 }

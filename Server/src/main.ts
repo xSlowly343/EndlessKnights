@@ -142,6 +142,10 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("party_mascot_pet", partyMascotPetRpc);
     initializer.registerRpc("party_mascot_branch", partyMascotBranchRpc);
     initializer.registerRpc("party_mascot_look", partyMascotLookRpc);
+    initializer.registerRpc("party_mascot_rite", partyMascotRiteRpc);
+    initializer.registerRpc("party_mascot_rite_reset", partyMascotRiteResetRpc);
+    initializer.registerRpc("party_mascot_actions", partyMascotActionsRpc);
+    initializer.registerRpc("party_mascot_call_take", partyMascotCallTakeRpc);
     initializer.registerRpc("rift_shop_buy", riftShopBuyRpc);
     initializer.registerRpc("companion_visit_send", companionVisitSendRpc);
     initializer.registerRpc("companion_visit", companionVisitRpc);

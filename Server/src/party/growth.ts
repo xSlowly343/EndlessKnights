@@ -202,6 +202,7 @@ function partyGrowthReport(nk: nkruntime.Nakama, userId: string, activeSeconds: 
 
 function partyGrowthBattle(nk: nkruntime.Nakama, partyId: string, bosses: number, guardians: number): void {
     const rules = PartyGrowthServerRules;
+    partyMascotBosses(nk, partyId, Math.max(0, bosses) + Math.max(0, guardians));
     partyGrowthAdd(nk, partyId, Math.max(0, bosses) * rules.bossTogether + Math.max(0, guardians) * rules.guardianTogether);
 }
 

@@ -37,10 +37,69 @@ namespace Game.Core.Party
         public bool Works => Waits.Length == 0;
     }
 
+    public sealed class PartyMascotCallLine
+    {
+        internal PartyMascotCallLine(Modifier? modifier, bool bossTimerStop, bool focusFull, string waits)
+        {
+            Modifier = modifier;
+            BossTimerStop = bossTimerStop;
+            FocusFull = focusFull;
+            Waits = waits;
+        }
+
+        public Modifier? Modifier { get; }
+        public bool BossTimerStop { get; }
+        public bool FocusFull { get; }
+        public string Waits { get; }
+        public bool Works => Waits.Length == 0;
+    }
+
+    public sealed class PartyMascotRite
+    {
+        internal PartyMascotRite(int branch, int index, PartyMascotNamed named, Modifier modifier)
+        {
+            Branch = branch;
+            Index = index;
+            Id = named.Id;
+            NameRu = named.NameRu;
+            NameEn = named.NameEn;
+            Modifier = modifier;
+        }
+
+        public int Branch { get; }
+        public int Index { get; }
+        public string Id { get; }
+        public string NameRu { get; }
+        public string NameEn { get; }
+        public Modifier Modifier { get; }
+    }
+
+    public sealed class PartyMascotTrial
+    {
+        internal PartyMascotTrial(string stage, PartyMascotNamed named, int need)
+        {
+            Stage = stage;
+            Id = named.Id;
+            NameRu = named.NameRu;
+            NameEn = named.NameEn;
+            Need = need;
+        }
+
+        public string Stage { get; }
+        public string Id { get; }
+        public string NameRu { get; }
+        public string NameEn { get; }
+        public int Need { get; }
+    }
+
     public sealed class PartyMascotBeast
     {
-        internal PartyMascotBeast(int index, PartyMascotNamed named, string biome, string favourite, IReadOnlyList<PartyMascotAuraLine> aura, IReadOnlyList<PartyMascotNamed> branches)
+        internal PartyMascotBeast(int index, PartyMascotNamed named, string biome, string favourite, IReadOnlyList<PartyMascotAuraLine> aura, IReadOnlyList<PartyMascotNamed> branches,
+            IReadOnlyList<PartyMascotCallLine> call, IReadOnlyList<string> gestures, string gift)
         {
+            Call = call;
+            Gestures = gestures;
+            Gift = gift;
             Index = index;
             Id = named.Id;
             NameRu = named.NameRu;
@@ -59,6 +118,9 @@ namespace Game.Core.Party
         public string Favourite { get; }
         public IReadOnlyList<PartyMascotAuraLine> Aura { get; }
         public IReadOnlyList<PartyMascotNamed> Branches { get; }
+        public IReadOnlyList<PartyMascotCallLine> Call { get; }
+        public IReadOnlyList<string> Gestures { get; }
+        public string Gift { get; }
     }
 
     public sealed class PartyMascotStage
@@ -145,6 +207,46 @@ namespace Game.Core.Party
         public double AuraMax { get; private set; }
         public int Hearts { get; private set; }
         public double PerHeart { get; private set; } = 1;
+        public int RitePointEvery { get; private set; } = 5;
+        public int RiteMaxRank { get; private set; }
+        public int RiteSignsPerRank { get; private set; }
+        public IReadOnlyList<PartyMascotNamed> RiteBranches => _riteBranches;
+        public IReadOnlyList<PartyMascotRite> Rites => _rites;
+        public double CallGauge { get; private set; }
+        public double CallSeconds { get; private set; }
+        public double CallMouseStep { get; private set; } = 100;
+        public double CallReportSeconds { get; private set; } = 300;
+        public IReadOnlyList<PartyMascotTrial> Trials => _trials;
+        public double OfflineShare { get; private set; }
+        public double GiftPerLevel { get; private set; }
+        public double SitAfterSeconds { get; private set; }
+        public double SleepAfterSeconds { get; private set; }
+        public double CheerSeconds { get; private set; }
+        public double GestureMinSeconds { get; private set; }
+        public double GestureMaxSeconds { get; private set; }
+        private readonly List<PartyMascotNamed> _riteBranches = new List<PartyMascotNamed>();
+        private readonly List<PartyMascotRite> _rites = new List<PartyMascotRite>();
+        private readonly List<PartyMascotTrial> _trials = new List<PartyMascotTrial>();
+        private readonly Dictionary<string, IReadOnlyList<string>> _temperGestures = new Dictionary<string, IReadOnlyList<string>>();
+
+        public PartyMascotRite? Rite(string id)
+        {
+            foreach (var rite in _rites)
+            {
+                if (rite.Id == id)
+                    return rite;
+            }
+            return null;
+        }
+
+        public int RitePoints(int level) => System.Math.Max(0, level) / RitePointEvery;
+
+        public double Gift(int level) => GiftPerLevel * System.Math.Max(0, level);
+
+        public double CallActions(double keys, int clicks, double mousePx) => System.Math.Max(0, keys) + System.Math.Max(0, clicks) + System.Math.Max(0, mousePx) / CallMouseStep;
+
+        public IReadOnlyList<string> TemperGestures(string temper) =>
+            _temperGestures.TryGetValue(temper, out var gestures) ? gestures : System.Array.Empty<string>();
 
         public PartyMascotBeast? Beast(string id)
         {
@@ -255,9 +357,76 @@ namespace Game.Core.Party
                 rules._gear.Add(new PartyMascotGear(PartyMascotNamed.Read(item), item.Field("slot").AsString(),
                     item.HasField("level") ? item.Field("level").AsInt(1, rules.MaxLevel) : 0,
                     item.HasField("colossusTier") ? item.Field("colossusTier").AsInt(1, 100_000) : 0));
+            if (node.HasField("rites"))
+                ReadExtras(node, rules);
             foreach (var item in node.Field("beasts").Items())
                 rules._beasts.Add(ReadBeast(item, rules));
             return rules;
+        }
+
+        private static void ReadExtras(ContentNode node, PartyMascotRules rules)
+        {
+            var rites = node.Field("rites");
+            rules.RitePointEvery = rites.Field("pointEvery").AsInt(1, 1000);
+            rules.RiteMaxRank = rites.Field("maxRank").AsInt(1, 100);
+            rules.RiteSignsPerRank = rites.Field("signsPerRank").AsInt(0, 1_000_000);
+            foreach (var branch in rites.Field("branches").Items())
+            {
+                var branchIndex = rules._riteBranches.Count;
+                rules._riteBranches.Add(PartyMascotNamed.Read(branch));
+                var index = 0;
+                foreach (var item in branch.Field("nodes").Items())
+                    rules._rites.Add(new PartyMascotRite(branchIndex, index++, PartyMascotNamed.Read(item), ModifierReader.Read(item)));
+            }
+            var call = node.Field("call");
+            rules.CallGauge = call.Field("gauge").AsNumber(1, 1e9);
+            rules.CallSeconds = call.Field("seconds").AsNumber(1, 3600);
+            rules.CallMouseStep = call.Field("mouseStep").AsNumber(1, 1e6);
+            rules.CallReportSeconds = call.Field("reportSeconds").AsNumber(10, 86400);
+            foreach (var item in node.Field("trials").Items())
+            {
+                var stage = item.Field("stage").AsString();
+                var known = false;
+                foreach (var candidate in rules._stages)
+                    known |= candidate.Id == stage;
+                if (!known)
+                    throw item.Field("stage").Error($"unknown stage '{stage}'");
+                rules._trials.Add(new PartyMascotTrial(stage, PartyMascotNamed.Read(item), item.Field("need").AsInt(1, 1_000_000)));
+            }
+            rules.OfflineShare = node.Field("offline").Field("share").AsNumber(0, 1);
+            rules.GiftPerLevel = node.Field("giftPerLevel").AsNumber(0, 1);
+            var strip = node.Field("strip");
+            rules.SitAfterSeconds = strip.Field("sitAfterSeconds").AsNumber(0, 3600);
+            rules.SleepAfterSeconds = strip.Field("sleepAfterSeconds").AsNumber(rules.SitAfterSeconds, 36000);
+            rules.CheerSeconds = strip.Field("cheerSeconds").AsNumber(0, 60);
+            rules.GestureMinSeconds = strip.Field("gestureMinSeconds").AsNumber(1, 3600);
+            rules.GestureMaxSeconds = strip.Field("gestureMaxSeconds").AsNumber(rules.GestureMinSeconds, 3600);
+            var tempers = strip.Field("tempers");
+            foreach (var temper in rules._tempers)
+            {
+                var gestures = new List<string>();
+                if (tempers.HasField(temper))
+                {
+                    foreach (var gesture in tempers.Field(temper).Items())
+                        gestures.Add(gesture.AsString());
+                }
+                rules._temperGestures[temper] = gestures;
+            }
+        }
+
+        private static IReadOnlyList<PartyMascotCallLine> ReadCall(ContentNode item)
+        {
+            var lines = new List<PartyMascotCallLine>();
+            if (!item.HasField("call"))
+                return lines;
+            foreach (var line in item.Field("call").Items())
+            {
+                var waits = line.HasField("waits") ? line.Field("waits").AsString() : string.Empty;
+                var stop = line.HasField("bossTimerStop") && line.Field("bossTimerStop").AsBool();
+                var focus = line.HasField("focusFull") && line.Field("focusFull").AsBool();
+                lines.Add(new PartyMascotCallLine(line.HasField("stat") ? ModifierReader.Read(line) : (Modifier?)null, stop, focus, waits));
+            }
+            return lines;
         }
 
         private static PartyMascotBeast ReadBeast(ContentNode item, PartyMascotRules rules)
@@ -275,7 +444,14 @@ namespace Game.Core.Party
                 branches.Add(PartyMascotNamed.Read(branch));
             if (branches.Count != 2)
                 throw item.Field("branches").Error("a beast has two branches");
-            return new PartyMascotBeast(rules._beasts.Count, PartyMascotNamed.Read(item), item.Field("biome").AsString(), favourite, aura, branches);
+            var gestures = new List<string>();
+            if (item.HasField("gestures"))
+            {
+                foreach (var gesture in item.Field("gestures").Items())
+                    gestures.Add(gesture.AsString());
+            }
+            return new PartyMascotBeast(rules._beasts.Count, PartyMascotNamed.Read(item), item.Field("biome").AsString(), favourite, aura, branches,
+                ReadCall(item), gestures, item.HasField("gift") ? item.Field("gift").AsString() : string.Empty);
         }
 
         private static Modifier AuraModifier(ContentNode line)

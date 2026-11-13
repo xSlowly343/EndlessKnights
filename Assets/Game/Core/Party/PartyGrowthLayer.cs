@@ -22,9 +22,15 @@ namespace Game.Core.Party
         public static readonly StatId ColossusTrophyFlat = new StatId("colossusTrophyFlat");
         public static readonly StatId MascotAuraStat = new StatId("mascotAura");
         public static readonly StatId MascotStageEarly = new StatId("mascotStageEarly");
+        public static readonly StatId MascotCallSeconds = new StatId("mascotCallSeconds");
+        public static readonly StatId MascotCallPower = new StatId("mascotCallPower");
+        public static readonly StatId ColossusDamageTaken = new StatId("colossusDamageTaken");
         private static readonly StatId[] MascotOnly =
         {
-            MascotAuraStat, MascotStageEarly, new StatId("mascotExperience"), new StatId("mascotFeedExperience"), new StatId("mascotFeedsPerDay"), new StatId("mascotFeedCost")
+            MascotAuraStat, MascotStageEarly, MascotCallSeconds, MascotCallPower, ColossusDamageTaken, new StatId("mascotExperience"), new StatId("mascotFeedExperience"),
+            new StatId("mascotFeedsPerDay"), new StatId("mascotFeedCost"), new StatId("mascotCallGain"), new StatId("mascotOfflineHit"), new StatId("mascotBond"),
+            new StatId("mascotColossusDamage"), new StatId("mascotRiteCost"), new StatId("mascotRiteLevels"), new StatId("mascotMinorRites"), new StatId("mascotHunger"),
+            new StatId("mascotFavourite"), new StatId("mascotStrikes")
         };
 
         private readonly ModifierLayer _layer;
@@ -36,6 +42,8 @@ namespace Game.Core.Party
         private readonly List<int> _trialBest = new List<int>();
         private readonly List<Modifier> _relics = new List<Modifier>();
         private readonly List<Modifier> _mascot = new List<Modifier>();
+        private readonly List<Modifier> _rites = new List<Modifier>();
+        private readonly Dictionary<string, int> _riteLevels = new Dictionary<string, int>();
         private string _mascotBeast = string.Empty;
         private int _mascotLevel;
         private readonly Dictionary<string, int> _relicLevels = new Dictionary<string, int>();
@@ -71,11 +79,37 @@ namespace Game.Core.Party
         public double MascotAura { get; private set; }
         public PartyMascotStage? MascotStage { get; private set; }
 
-        public void SetMascot(string beast, int level)
+        public IReadOnlyDictionary<string, int> RiteLevels => _riteLevels;
+        public IReadOnlyList<Modifier> Rites => _rites;
+        public double CallSeconds { get; private set; }
+        public double CallPower { get; private set; } = 1;
+        public double CallColossus { get; private set; } = 1;
+        public bool MascotStrikes { get; private set; }
+
+        public void SetMascot(string beast, int level, IReadOnlyDictionary<string, int>? rites = null)
         {
             _mascotBeast = beast ?? string.Empty;
             _mascotLevel = System.Math.Max(0, level);
+            _riteLevels.Clear();
+            if (rites != null)
+            {
+                foreach (var pair in rites)
+                    _riteLevels[pair.Key] = pair.Value;
+            }
             Rebuild();
+        }
+
+        private void BuildRites()
+        {
+            _rites.Clear();
+            if (_mascotBeast.Length == 0)
+                return;
+            foreach (var pair in _riteLevels)
+            {
+                var rite = _rules.Mascot.Rite(pair.Key);
+                if (rite != null && pair.Value > 0)
+                    _rites.Add(rite.Modifier.WithValue(rite.Modifier.Value * pair.Value));
+            }
         }
 
         private void BuildMascot()
@@ -85,6 +119,10 @@ namespace Game.Core.Party
             var beast = _mascotBeast.Length == 0 ? null : rules.Beast(_mascotBeast);
             MascotAura = beast == null ? 0 : rules.AuraAt(_mascotLevel, Members) * Scale(MascotAuraStat);
             MascotStage = rules.Stages.Count == 0 ? null : rules.StageOf(_mascotLevel, (int)System.Math.Round(Sum(MascotStageEarly)));
+            CallSeconds = rules.CallSeconds + Sum(MascotCallSeconds);
+            CallPower = Scale(MascotCallPower);
+            CallColossus = Scale(ColossusDamageTaken);
+            MascotStrikes = Sum(new StatId("mascotStrikes")) > 0;
             if (beast == null)
                 return;
             foreach (var line in beast.Aura)
@@ -92,6 +130,9 @@ namespace Game.Core.Party
                 if (line.Works)
                     _mascot.Add(line.Modifier.WithValue(MascotAura));
             }
+            var gift = rules.Gift(_mascotLevel);
+            if (gift > 0)
+                _mascot.Add(new Modifier(CombatStats.PartyPeaceful, ModifierKind.Flat, gift));
         }
         public IReadOnlyDictionary<string, int> RelicLevels => _relicLevels;
 
@@ -184,6 +225,7 @@ namespace Game.Core.Party
             Capped = false;
             PartyTreeBonus.Build(_rules.Tree, _treeLevels, _treeMajors, Members, _tree);
             BuildRelics();
+            BuildRites();
             BuildMascot();
             Seals = _rules.Trials.SealIncrease(_trialBest) * Scale(TrialSeals);
             TrialPower = InParty ? Scale(TrialPowerStat) : 1;
@@ -207,6 +249,11 @@ namespace Game.Core.Party
                     if (!IsPartyOnlyLine(line))
                         _applied.Add(line.WithValue(line.Value * Share));
                 }
+                foreach (var line in _rites)
+                {
+                    if (!IsPartyOnlyLine(line))
+                        _applied.Add(line.WithValue(line.Value * Share));
+                }
                 if (Seals > 0)
                     _applied.Add(new Modifier(CombatStats.Damage, ModifierKind.Increased, Seals * Share));
             }
@@ -222,6 +269,7 @@ namespace Game.Core.Party
             Collect(_tree, stat, ref increased, ref more);
             Collect(_relics, stat, ref increased, ref more);
             Collect(_mascot, stat, ref increased, ref more);
+            Collect(_rites, stat, ref increased, ref more);
             return System.Math.Max(0, (1 + increased) * more);
         }
 
@@ -229,6 +277,11 @@ namespace Game.Core.Party
         {
             var total = 0.0;
             foreach (var line in _tree)
+            {
+                if (line.Stat == stat && line.Kind == ModifierKind.Flat)
+                    total += line.Value;
+            }
+            foreach (var line in _rites)
             {
                 if (line.Stat == stat && line.Kind == ModifierKind.Flat)
                     total += line.Value;

@@ -255,6 +255,7 @@ namespace Game.Core.Sim
         public double NextKillShards { get; set; }
         public int HitsOnEnemy { get; set; }
         public int BossTimerStopTicks { get; set; }
+        public long MascotCallTicks { get; set; }
         public bool WandererBoss { get; set; }
         public OddityState Oddities { get; }
         public int GoldenTicks { get; set; }

@@ -149,6 +149,8 @@ namespace Game.Core.Sim
                 conditions |= ModifierConditions.Bit(ModifierCondition.BossShielded);
             if (_state.Rift.Inside || _state.Dungeons.Inside)
                 conditions |= ModifierConditions.Bit(ModifierCondition.InRift);
+            if (_state.MascotCallTicks > 0)
+                conditions |= ModifierConditions.Bit(ModifierCondition.MascotCall);
             if (_state.AfterFastKillTicks > 0)
                 conditions |= ModifierConditions.Bit(ModifierCondition.AfterFastKill);
             if (_state.AfterCircleTicks > 0)
