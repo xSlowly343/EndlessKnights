@@ -392,6 +392,11 @@ namespace Game.Core.Save
                 foreach (var item in museum.Field("shelf").Items())
                     state.Museum.Shelf.Add(item.AsString());
                 state.Museum.Title = ReadOptionalText(museum, "title");
+                if (museum.HasField("reported"))
+                {
+                    foreach (var item in museum.Field("reported").Items())
+                        state.Museum.Reported.Add(item.AsString());
+                }
             }
             if (node.HasField("forge"))
             {
@@ -1217,7 +1222,9 @@ namespace Game.Core.Save
         {
             var done = new List<string>(museum.Done);
             done.Sort(System.StringComparer.Ordinal);
-            return Object(("done", WriteIdList(done)), ("shelf", WriteIdList(museum.Shelf)), ("title", OptionalText(museum.Title)));
+            var reported = new List<string>(museum.Reported);
+            reported.Sort(System.StringComparer.Ordinal);
+            return Object(("done", WriteIdList(done)), ("shelf", WriteIdList(museum.Shelf)), ("title", OptionalText(museum.Title)), ("reported", WriteIdList(reported)));
         }
 
         private static JsonValue WriteCooking(CookingState cooking)

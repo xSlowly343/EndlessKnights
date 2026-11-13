@@ -8,6 +8,7 @@ namespace Game.Core.Sim
         public HashSet<string> Done { get; } = new HashSet<string>(System.StringComparer.Ordinal);
         public List<string> Shelf { get; } = new List<string>();
         public string Title { get; set; } = string.Empty;
+        public HashSet<string> Reported { get; } = new HashSet<string>(System.StringComparer.Ordinal);
         public double[] Perks { get; } = new double[MuseumRules.PerkCount];
 
         public double Perk(MuseumPerk perk) => Perks[(int)perk];

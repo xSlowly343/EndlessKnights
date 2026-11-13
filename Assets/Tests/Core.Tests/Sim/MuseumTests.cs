@@ -6,6 +6,7 @@ using Game.Core.Save;
 using Game.Core.Sim;
 using Game.Core.Stats;
 using Game.Core.Ui;
+using Game.Core.Text;
 using NUnit.Framework;
 
 namespace Game.Core.Tests.Sim
@@ -18,6 +19,32 @@ namespace Game.Core.Tests.Sim
         {
             foreach (var id in fish)
                 loop.State.Fishing.Album[id] = new FishRecord { Count = 1 };
+        }
+
+        [Test]
+        public void NewFindsAreReportedOnceForTheDiscoverersPlaques()
+        {
+            Texts.UseLanguage("ru");
+            var loop = TestWorld.Loop();
+            Assert.That(loop.Museum.TakeDiscoveries(), Is.Empty);
+            var hills = Rules.Collection("fish_hills")!;
+            Catch(loop, hills.Items[0]);
+            Assert.That(loop.Museum.TakeDiscoveries(), Is.EqualTo(new[] { hills.Items[0] }));
+            loop.Museum.Reported(new[] { hills.Items[0] });
+            Assert.That(loop.Museum.TakeDiscoveries(), Is.Empty, "reported once");
+            Catch(loop, hills.Items.ToArray());
+            loop.Museum.Check();
+            var found = loop.Museum.TakeDiscoveries();
+            Assert.That(found, Does.Contain("fish_hills"), "a finished collection is a find too");
+            Assert.That(found, Does.Not.Contain(hills.Items[0]));
+            loop.Museum.Reported(found);
+            var copy = Game.Core.Save.GameStateJson.Read(new Game.Core.Content.ContentNode(Game.Core.Save.GameStateJson.Write(loop.State), "save", string.Empty),
+                TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Museum.Reported, Does.Contain("fish_hills"));
+            Assert.That(MuseumView.Discoverer("Ann", false), Is.EqualTo(Texts.Format("museum.first", "Ann")));
+            Assert.That(MuseumView.Discoverer(string.Empty, false), Is.EqualTo(Texts.Get("museum.first.hidden")));
+            Assert.That(MuseumView.Discoverer(string.Empty, true), Is.EqualTo(Texts.Get("museum.first.mine")));
+            Assert.That(MuseumView.Street(new[] { "Bob", "Cid" }), Is.EqualTo(Texts.Format("town.street", "Bob, Cid")));
         }
 
         [Test]

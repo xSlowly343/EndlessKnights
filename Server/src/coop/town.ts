@@ -1,4 +1,7 @@
 interface TownRules {
+    museum: string[];
+    streetSeconds: number;
+    streetShown: number;
     giftsPerDay: number;
     giftMaxAmount: number;
     giftInbox: number;

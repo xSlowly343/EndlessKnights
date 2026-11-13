@@ -56,6 +56,28 @@ namespace Game.Core.Sim
 
         public bool Complete(string id) => State.Done.Contains(id);
 
+        public List<string> TakeDiscoveries()
+        {
+            var found = new List<string>();
+            foreach (var collection in _rules.Collections)
+            {
+                foreach (var item in collection.Items)
+                {
+                    if (Has(collection.Kind, item) && !Given(collection.Kind, item) && !State.Reported.Contains(item) && !found.Contains(item))
+                        found.Add(item);
+                }
+                if (State.Done.Contains(collection.Id) && !State.Reported.Contains(collection.Id))
+                    found.Add(collection.Id);
+            }
+            return found;
+        }
+
+        public void Reported(IReadOnlyList<string> ids)
+        {
+            foreach (var id in ids)
+                State.Reported.Add(id);
+        }
+
         public void Tick()
         {
             if (_state.Tick % CheckEveryTicks == 0)
@@ -122,6 +144,8 @@ namespace Game.Core.Sim
             State.Title = collectionId;
             return MuseumResult.Done;
         }
+
+        private bool Given(CollectionKind kind, string id) => kind == CollectionKind.Recipes && _alchemy.Rules.Recipe(id)?.Known == true;
 
         private bool Has(CollectionKind kind, string id) => kind switch
         {

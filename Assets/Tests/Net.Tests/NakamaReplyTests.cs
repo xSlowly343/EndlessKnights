@@ -711,6 +711,17 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void MuseumDiscoverersAndTheTownStreetAreRead()
+        {
+            Assert.That(MuseumFirstsReply.FoundPayload(new[] { "fish_hills_roach", "fish_hills" }), Is.EqualTo("{\"ids\":[\"fish_hills_roach\",\"fish_hills\"]}"));
+            var reply = MuseumFirstsReply.From(NakamaJson.Parse("{\"reported\":[\"fish_hills_roach\"],\"won\":[\"fish_hills_roach\"],\"firsts\":[{\"id\":\"fish_hills_roach\",\"name\":\"\",\"mine\":true,\"at\":5}]}"));
+            Assert.That(reply.Won, Is.EqualTo(new[] { "fish_hills_roach" }));
+            Assert.That(reply.Firsts.Single().Mine, Is.True);
+            Assert.That(TownStreetReply.Payload(true), Is.EqualTo("{\"here\":true}"));
+            Assert.That(TownStreetReply.From(NakamaJson.Parse("{\"walkers\":[{\"userId\":\"b\",\"name\":\"Bob\"}]}")).Walkers, Is.EqualTo(new[] { "Bob" }));
+        }
+
+        [Test]
         public void ACompanionVisitIsReadFromTheServer()
         {
             Assert.That(CompanionVisitReply.SendPayload("bob", "camp_dog", "Rex", 1), Is.EqualTo("{\"host\":\"bob\",\"companion\":\"camp_dog\",\"name\":\"Rex\",\"stage\":1}"));

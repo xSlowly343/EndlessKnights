@@ -119,6 +119,9 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("companion_visit_send", companionVisitSendRpc);
     initializer.registerRpc("companion_visit", companionVisitRpc);
     initializer.registerRpc("companion_visit_claim", companionVisitClaimRpc);
+    initializer.registerRpc("museum_found", museumFoundRpc);
+    initializer.registerRpc("museum_firsts", museumFirstsRpc);
+    initializer.registerRpc("town_street", townStreetRpc);
     initializer.registerRpc("name_consent", consentRpc);
     initializer.registerRpc("hideout_brewed", hideoutBrewedRpc);
     initializer.registerRpc("hideout_order_redraw", hideoutOrderRedrawRpc);

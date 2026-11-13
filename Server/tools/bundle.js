@@ -425,7 +425,9 @@ const socialRules = {
 const townData = JSON.parse(fs.readFileSync(path.join(data, "town.json"), "utf8"));
 if (townData.version !== 1)
   throw new Error("town.json: version " + townData.version + " is not supported");
-const townRules = { giftsPerDay: townData.gifts.perDay, giftMaxAmount: townData.gifts.maxAmount, giftInbox: townData.gifts.inbox, giftItems: townData.gifts.items };
+const museumData = JSON.parse(fs.readFileSync(path.join(data, "museum.json"), "utf8"));
+const museumIds = museumData.collections.map((collection) => collection.id).concat(...museumData.collections.map((collection) => collection.items));
+const townRules = { museum: museumIds.filter((id, index) => museumIds.indexOf(id) === index), streetSeconds: townData.street.seconds, streetShown: townData.street.shown, giftsPerDay: townData.gifts.perDay, giftMaxAmount: townData.gifts.maxAmount, giftInbox: townData.gifts.inbox, giftItems: townData.gifts.items };
 const inflowRules = { perDay: townData.inflow.perDay.map((entry) => ({ prefix: entry.prefix, amount: entry.amount })), other: townData.inflow.other };
 if (inflowRules.perDay.some((entry) => !(entry.amount >= 1) || entry.prefix.length === 0) || !(inflowRules.other >= 1))
   throw new Error("town.json: inflow limits are out of range");
