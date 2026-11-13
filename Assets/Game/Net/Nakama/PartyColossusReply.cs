@@ -28,6 +28,7 @@ namespace Game.Net.Nakama
         {
             Live = NakamaJson.Number(json, "live");
             Offline = NakamaJson.Number(json, "offline");
+            Counted = NakamaJson.Number(json, "counted");
             var killed = new List<int>();
             foreach (var tier in NakamaJson.Items(json, "killed"))
             {
@@ -39,6 +40,7 @@ namespace Game.Net.Nakama
 
         public double Live { get; }
         public double Offline { get; }
+        public double Counted { get; }
         public IReadOnlyList<int> Killed { get; }
     }
 
@@ -56,6 +58,20 @@ namespace Game.Net.Nakama
             Kills = (int)NakamaJson.Number(json, "kills");
             Yours = (long)NakamaJson.Number(json, "yours");
             ReportSeconds = NakamaJson.Number(json, "reportSeconds");
+            Mandatory = NakamaJson.Text(json, "mandatory");
+            Optional = PartyTreasuryReply.Texts(NakamaJson.Items(json, "optional"));
+            Active = PartyTreasuryReply.Texts(NakamaJson.Items(json, "active"));
+            OptionalAllowed = NakamaJson.Flag(json, "optionalAllowed");
+            Touched = NakamaJson.Flag(json, "touched");
+            Disabled = NakamaJson.Text(json, "disabled");
+            CanSwitchOff = NakamaJson.Flag(json, "canSwitchOff");
+            Softened = NakamaJson.Flag(json, "softened");
+            Shield = NakamaJson.Number(json, "shield");
+            ShieldFull = NakamaJson.Number(json, "shieldFull");
+            WeakClass = (int)NakamaJson.Number(json, "weakClass");
+            Night = NakamaJson.Flag(json, "night");
+            HittersToday = (int)NakamaJson.Number(json, "hittersToday");
+            Leader = NakamaJson.Flag(json, "leader");
             var shares = new List<PartyColossusShare>();
             foreach (var share in NakamaJson.Items(json, "shares"))
                 shares.Add(new PartyColossusShare(NakamaJson.Text(share, "userId"), NakamaJson.Text(share, "name"),
@@ -75,20 +91,59 @@ namespace Game.Net.Nakama
         public int Kills { get; }
         public long Yours { get; }
         public double ReportSeconds { get; }
+        public string Mandatory { get; }
+        public IReadOnlyList<string> Optional { get; }
+        public IReadOnlyList<string> Active { get; }
+        public bool OptionalAllowed { get; }
+        public bool Touched { get; }
+        public string Disabled { get; }
+        public bool CanSwitchOff { get; }
+        public bool Softened { get; }
+        public double Shield { get; }
+        public double ShieldFull { get; }
+        public int WeakClass { get; }
+        public bool Night { get; }
+        public int HittersToday { get; }
+        public bool Leader { get; }
         public IReadOnlyList<PartyColossusShare> Shares { get; }
         public PartyColossusAccepted? Accepted { get; }
         public double HpShare => HpFull > 0 ? System.Math.Max(0, System.Math.Min(1, Hp / HpFull)) : 0;
 
         public static PartyColossusReply From(JsonValue json) => new PartyColossusReply(json);
 
-        public static string ReportPayload(double points, double offlinePoints, double offlineSeconds) =>
-            NakamaJson.Object(("points", Number(points)), ("offlinePoints", Number(offlinePoints)), ("offlineSeconds", Number(offlineSeconds)));
+        public static string ReportPayload(IReadOnlyList<double> direct, IReadOnlyList<double> background, double offlinePoints, double offlineSeconds, int heroClass) =>
+            NakamaJson.Object(("direct", Numbers(direct)), ("background", Numbers(background)), ("offlinePoints", Number(offlinePoints)),
+                ("offlineSeconds", Number(offlineSeconds)), ("heroClass", heroClass.ToString(CultureInfo.InvariantCulture)));
+
+        public static string ChoosePayload(IReadOnlyList<string> ids)
+        {
+            var quoted = new string[ids.Count];
+            for (var i = 0; i < ids.Count; i++)
+                quoted[i] = NakamaJson.Quote(ids[i]);
+            return NakamaJson.Object(("ids", "[" + string.Join(",", quoted) + "]"));
+        }
+
+        public static string SwitchOffPayload(string id) => NakamaJson.Object(("id", NakamaJson.Quote(id)));
 
         public static Task<PartyColossusReply> FetchAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
             CallAsync(client, session, "party_colossus", "{}", cancel);
 
-        public static Task<PartyColossusReply> ReportAsync(NakamaClient client, NakamaSession session, double points, double offlinePoints, double offlineSeconds, CancellationToken cancel = default) =>
-            CallAsync(client, session, "party_colossus_report", ReportPayload(points, offlinePoints, offlineSeconds), cancel);
+        public static Task<PartyColossusReply> ReportAsync(NakamaClient client, NakamaSession session, IReadOnlyList<double> direct, IReadOnlyList<double> background, double offlinePoints, double offlineSeconds, int heroClass, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_colossus_report", ReportPayload(direct, background, offlinePoints, offlineSeconds, heroClass), cancel);
+
+        public static Task<PartyColossusReply> ChooseAsync(NakamaClient client, NakamaSession session, IReadOnlyList<string> ids, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_colossus_choose", ChoosePayload(ids), cancel);
+
+        public static Task<PartyColossusReply> SwitchOffAsync(NakamaClient client, NakamaSession session, string id, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_colossus_switch_off", SwitchOffPayload(id), cancel);
+
+        private static string Numbers(IReadOnlyList<double> values)
+        {
+            var parts = new string[values.Count];
+            for (var i = 0; i < values.Count; i++)
+                parts[i] = Number(values[i]);
+            return "[" + string.Join(",", parts) + "]";
+        }
 
         private static string Number(double value) => System.Math.Max(0, System.Math.Round(value, 3)).ToString("0.###", CultureInfo.InvariantCulture);
 

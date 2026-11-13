@@ -12,6 +12,9 @@ namespace Game.Core.Party
         public static readonly StatId TrialTries = new StatId("trialTries");
         public static readonly StatId TrialCarry = new StatId("trialCarry");
         public static readonly StatId ColossusDamage = new StatId("colossusDamage");
+        public static readonly StatId ColossusHardship = new StatId("colossusHardship");
+        public static readonly StatId ColossusHardshipOff = new StatId("colossusHardshipOff");
+        public static readonly StatId ColossusNoHeal = new StatId("colossusNoHeal");
 
         private readonly ModifierLayer _layer;
         private readonly List<Modifier> _sources = new List<Modifier>();
@@ -151,7 +154,8 @@ namespace Game.Core.Party
         }
 
         private static bool IsPartyOnlyLine(Modifier line) =>
-            line.Stat == TrialSeals || line.Stat == TrialPowerStat || line.Stat == TrialTries || line.Stat == TrialCarry || line.Stat == ColossusDamage;
+            line.Stat == TrialSeals || line.Stat == TrialPowerStat || line.Stat == TrialTries || line.Stat == TrialCarry || line.Stat == ColossusDamage
+            || line.Stat == ColossusHardship || line.Stat == ColossusHardshipOff || line.Stat == ColossusNoHeal;
 
         private double CapDamage()
         {

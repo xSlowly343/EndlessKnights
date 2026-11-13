@@ -6,52 +6,74 @@ namespace Game.Core.Party
 {
     public sealed class PartyColossusMeter
     {
+        private readonly double[] _direct = new double[PartyTrialFight.Kinds];
+        private readonly double[] _background = new double[PartyTrialFight.Kinds];
         private PartyColossusRules _rules;
-        private BigNumber _lastTotal;
-        private bool _started;
 
         public PartyColossusMeter(PartyColossusRules rules)
         {
             _rules = rules;
         }
 
-        public double Direct { get; private set; }
-        public double Background { get; private set; }
         public double Offline { get; private set; }
         public double OfflineSeconds { get; private set; }
+        public double Direct => Sum(_direct);
+        public double Background => Sum(_background);
         public double Pending => Direct + Background;
+
+        public double DirectOf(PartyTrialDamage kind) => _direct[(int)kind];
+
+        public double BackgroundOf(PartyTrialDamage kind) => _background[(int)kind];
 
         public void UseRules(PartyColossusRules rules) => _rules = rules;
 
-        public void Note(BigNumber totalDamage, StageTable stages, long recordStage, bool atColossus, bool active, bool counts, double power)
+        public void Note(CombatSystem combat, StageTable stages, long recordStage, bool atColossus, bool active, bool counts, double power)
         {
-            var delta = _started ? totalDamage - _lastTotal : BigNumber.Zero;
-            _lastTotal = totalDamage;
-            _started = true;
-            if (!counts || !active || delta.Sign <= 0)
+            if (!counts || !active)
                 return;
-            var points = Points(delta, stages, recordStage) * System.Math.Max(0, power);
-            if (atColossus)
-                Direct += points;
-            else
-                Background += points * _rules.Background;
+            var boss = stages.BossHp(System.Math.Max(1, recordStage));
+            if (boss.Sign <= 0)
+                return;
+            var scale = _rules.PointsPerBoss * System.Math.Max(0, power) * (atColossus ? 1 : _rules.Background);
+            var target = atColossus ? _direct : _background;
+            for (var kind = 0; kind < PartyTrialFight.Kinds; kind++)
+            {
+                var damage = combat.TickDamage((PartyTrialDamage)kind);
+                if (damage.Sign > 0)
+                    target[kind] += (damage / boss).ToDouble() * scale;
+            }
         }
 
         public void NoteOffline(OfflineResult result, StageTable stages, long recordStage, bool counts, double power)
         {
             if (!counts || result.Kills <= 0 || result.Seconds <= 0)
                 return;
+            var boss = stages.BossHp(System.Math.Max(1, recordStage));
+            if (boss.Sign <= 0)
+                return;
             var damage = stages.NormalHp(System.Math.Max(1, result.StageAfter)) * (double)result.Kills;
-            Offline += Points(damage, stages, recordStage) * _rules.Offline * System.Math.Max(0, power);
+            Offline += (damage / boss).ToDouble() * _rules.PointsPerBoss * _rules.Offline * System.Math.Max(0, power);
             OfflineSeconds += result.Seconds;
         }
 
-        public double TakePending()
+        public void TakePending(double[] direct, double[] background)
         {
-            var points = Pending;
-            Direct = 0;
-            Background = 0;
-            return points;
+            for (var kind = 0; kind < PartyTrialFight.Kinds; kind++)
+            {
+                direct[kind] = _direct[kind];
+                background[kind] = _background[kind];
+            }
+            System.Array.Clear(_direct, 0, _direct.Length);
+            System.Array.Clear(_background, 0, _background.Length);
+        }
+
+        public void Return(double[] direct, double[] background)
+        {
+            for (var kind = 0; kind < PartyTrialFight.Kinds; kind++)
+            {
+                _direct[kind] += direct[kind];
+                _background[kind] += background[kind];
+            }
         }
 
         public (double Points, double Seconds) TakeOffline()
@@ -62,10 +84,6 @@ namespace Game.Core.Party
             return taken;
         }
 
-        private double Points(BigNumber damage, StageTable stages, long recordStage)
-        {
-            var boss = stages.BossHp(System.Math.Max(1, recordStage));
-            return boss.Sign <= 0 ? 0 : (damage / boss).ToDouble() * _rules.PointsPerBoss;
-        }
+        private static double Sum(double[] values) => values[0] + values[1] + values[2] + values[3];
     }
 }

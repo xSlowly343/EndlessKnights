@@ -557,7 +557,21 @@ const partyGrowthRules = {
     maxPointsPerSecond: growth.colossus.maxPointsPerSecond,
     maxOfflinePointsPerSecond: growth.colossus.maxOfflinePointsPerSecond,
     reportSeconds: growth.colossus.reportSeconds,
-    experiencePerPercent: growth.colossus.experiencePerPercent
+    experiencePerPercent: growth.colossus.experiencePerPercent,
+    mandatoryEvery: growth.colossus.mandatoryEvery,
+    optionalMax: growth.colossus.optionalMax,
+    optionalTrophyBonus: growth.colossus.optionalTrophyBonus,
+    hardshipSoften: growth.colossus.hardshipSoften,
+    logSize: growth.colossus.logSize,
+    classes: Object.keys(party.search.classRoles).length,
+    hardships: growth.colossus.hardships.map((hardship) => {
+      const numbers = Object.assign({}, hardship);
+      delete numbers.name;
+      return numbers;
+    }),
+    soften: partyTrialTreeLines(growth, "colossusHardship"),
+    switchOff: partyTrialTreeLines(growth, "colossusHardshipOff"),
+    noHeal: partyTrialTreeLines(growth, "colossusNoHeal")
   },
   unlocks: growth.unlocks.map((unlock) => ({ level: unlock.level, kind: unlock.kind }))
 };

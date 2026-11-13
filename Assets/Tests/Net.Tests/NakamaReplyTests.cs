@@ -661,8 +661,20 @@ namespace Game.Net.Tests
         [Test]
         public void ThePartyColossusIsReadWithTierHpTheWeeklyTableAndWhatWasAccepted()
         {
-            Assert.That(PartyColossusReply.ReportPayload(120.5, 0, 3600), Is.EqualTo("{\"points\":120.5,\"offlinePoints\":0,\"offlineSeconds\":3600}"));
-            var reply = PartyColossusReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"tier\":3,\"hp\":7000,\"hpFull\":31537.5,\"ceiling\":10,\"waiting\":false,\"kills\":2,\"shares\":[{\"userId\":\"a\",\"name\":\"Ann\",\"points\":900,\"share\":0.75}],\"yours\":900,\"reportSeconds\":300,\"accepted\":{\"live\":400,\"offline\":100,\"killed\":[2]}}"));
+            Assert.That(PartyColossusReply.ReportPayload(new[] { 120.5, 0, 3, 0 }, new[] { 1.25, 0, 0, 0 }, 0, 3600, 4),
+                Is.EqualTo("{\"direct\":[120.5,0,3,0],\"background\":[1.25,0,0,0],\"offlinePoints\":0,\"offlineSeconds\":3600,\"heroClass\":4}"));
+            Assert.That(PartyColossusReply.ChoosePayload(new[] { "night", "rift" }), Is.EqualTo("{\"ids\":[\"night\",\"rift\"]}"));
+            Assert.That(PartyColossusReply.SwitchOffPayload("carapace"), Is.EqualTo("{\"id\":\"carapace\"}"));
+            var hard = PartyColossusReply.From(NakamaJson.Parse("{\"mandatory\":\"carapace\",\"optional\":[\"rift\"],\"active\":[\"carapace\"],\"optionalAllowed\":false,\"touched\":true,\"disabled\":\"\",\"canSwitchOff\":true,\"softened\":true,\"shield\":10,\"shieldFull\":50,\"weakClass\":7,\"night\":true,\"hittersToday\":2,\"leader\":true}"));
+            Assert.That(hard.Mandatory, Is.EqualTo("carapace"));
+            Assert.That(hard.Optional, Is.EqualTo(new[] { "rift" }));
+            Assert.That(hard.Active, Is.EqualTo(new[] { "carapace" }));
+            Assert.That(hard.OptionalAllowed, Is.False);
+            Assert.That(hard.CanSwitchOff && hard.Softened && hard.Night && hard.Leader && hard.Touched, Is.True);
+            Assert.That(hard.ShieldFull, Is.EqualTo(50));
+            Assert.That(hard.WeakClass, Is.EqualTo(7));
+            Assert.That(hard.HittersToday, Is.EqualTo(2));
+            var reply = PartyColossusReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"tier\":3,\"hp\":7000,\"hpFull\":31537.5,\"ceiling\":10,\"waiting\":false,\"kills\":2,\"shares\":[{\"userId\":\"a\",\"name\":\"Ann\",\"points\":900,\"share\":0.75}],\"yours\":900,\"reportSeconds\":300,\"accepted\":{\"live\":400,\"offline\":100,\"counted\":450,\"killed\":[2]}}"));
             Assert.That(reply.Opened, Is.True);
             Assert.That(reply.Tier, Is.EqualTo(3));
             Assert.That(reply.HpShare, Is.EqualTo(7000 / 31537.5).Within(1e-12));
@@ -672,6 +684,7 @@ namespace Game.Net.Tests
             Assert.That(reply.ReportSeconds, Is.EqualTo(300));
             Assert.That(reply.Accepted!.Live, Is.EqualTo(400));
             Assert.That(reply.Accepted.Killed, Is.EqualTo(new[] { 2 }));
+            Assert.That(reply.Accepted.Counted, Is.EqualTo(450));
             Assert.That(PartyColossusReply.From(NakamaJson.Parse("{\"accepted\":null}")).Accepted, Is.Null);
         }
 

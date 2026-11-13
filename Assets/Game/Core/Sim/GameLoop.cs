@@ -316,10 +316,46 @@ namespace Game.Core.Sim
 
         public void LeavePartyColossus() => _stage.LeaveColossus();
 
+        private ModifierLayer? _colossusCurse;
+        private readonly Modifier[] _curseLine = new Modifier[1];
+        private PartyColossusHardship? _curse;
+        private long _curseTicks;
+
+        public long ColossusCurseTicks => _curseTicks;
+
+        public void SetPartyColossusHardships(IReadOnlyList<string> active)
+        {
+            _curse = null;
+            for (var i = 0; i < active.Count; i++)
+            {
+                if (active[i] == "curse")
+                    _curse = _data.Party.Growth.Colossus.Hardship("curse");
+            }
+            if (_curse == null)
+                _curseTicks = 0;
+            ShowCurse();
+        }
+
         private void NotePartyColossus()
         {
             var active = State.IdleTicks <= _data.Party.Contribution.ActiveInputSeconds * TicksPerSecond;
-            PartyColossus.Note(State.TotalDamage, _data.Stages, State.RecordStage, _stage.AtColossus, active, ColossusCounts, _partyGrowth.ColossusPower);
+            var before = PartyColossus.Direct;
+            PartyColossus.Note(_combat, _data.Stages, State.RecordStage, _stage.AtColossus, active, ColossusCounts, _partyGrowth.ColossusPower);
+            if (_curse != null && PartyColossus.Direct > before)
+                _curseTicks = (long)System.Math.Round(_curse.Number("minutes") * 60 * TicksPerSecond);
+            else if (_curseTicks > 0)
+                _curseTicks--;
+            ShowCurse();
+        }
+
+        private void ShowCurse()
+        {
+            var cursed = _curse != null && _curseTicks > 0 && !_stage.AtColossus;
+            if (cursed == (_colossusCurse != null && _colossusCurse.Applied.Count > 0))
+                return;
+            _colossusCurse ??= new ModifierLayer(Hero);
+            _curseLine[0] = new Modifier(CombatStats.Damage, ModifierKind.More, _curse?.Number("damage") ?? 0);
+            _colossusCurse.Set(cursed ? _curseLine : System.Array.Empty<Modifier>());
         }
         public RaidTally Raid => _raid;
         public ClanTreeBonus ClanTree => _clanTree;
