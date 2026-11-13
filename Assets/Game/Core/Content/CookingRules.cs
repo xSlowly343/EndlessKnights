@@ -72,6 +72,13 @@ namespace Game.Core.Content
                 FavoriteMultiplier = root.Field("favoriteMultiplier").AsNumber(1, 10),
                 MealsKept = root.Field("mealsKept").AsInt(1, 1000)
             };
+            var lowerIsBetter = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var item in root.Field("lowerIsBetter").Items())
+                lowerIsBetter.Add(item.AsString());
+            var flatCaps = new Dictionary<string, double>(StringComparer.Ordinal);
+            var flat = root.Field("flat");
+            foreach (var key in flat.FieldNames())
+                flatCaps[key] = flat.Field(key).AsNumber(0, 1000);
             var dishes = new List<DishDef>();
             var ids = new HashSet<string>(StringComparer.Ordinal);
             foreach (var node in root.Field("dishes").Items())
@@ -87,10 +94,22 @@ namespace Game.Core.Content
                 var modifiers = ModifierReader.ReadList(node.Field("modifiers"));
                 foreach (var modifier in modifiers)
                 {
+                    if (modifier.Kind == ModifierKind.Flat)
+                    {
+                        if (!flatCaps.TryGetValue(modifier.Stat.Name, out var cap))
+                            throw node.Field("modifiers").Error($"food gives only increased bonuses and the listed flat ones, '{id}' gives flat {modifier.Stat.Name}");
+                        if (modifier.Value <= 0 || modifier.Value > cap + 1e-9)
+                            throw node.Field("modifiers").Error($"food gives at most {cap} flat {modifier.Stat.Name}, '{id}' gives {modifier.Value}");
+                        continue;
+                    }
                     if (modifier.Kind != ModifierKind.Increased)
                         throw node.Field("modifiers").Error($"food gives only increased bonuses, '{id}' gives {modifier.Kind}");
-                    if (modifier.Value > rules.MaxShare + 1e-9)
+                    if (modifier.Value < 0 && !lowerIsBetter.Contains(modifier.Stat.Name))
+                        throw node.Field("modifiers").Error($"food never lowers {modifier.Stat.Name}, '{id}' gives {modifier.Value}");
+                    if (System.Math.Abs(modifier.Value) > rules.MaxShare + 1e-9)
                         throw node.Field("modifiers").Error($"food gives at most {rules.MaxShare} to one stat, '{id}' gives {modifier.Value}");
+                    if (modifier.Value < 0)
+                        continue;
                     var potion = BestPotion(alchemy, modifier);
                     if (potion + modifier.Value > rules.ComboShare + 1e-9)
                         throw node.Field("modifiers").Error($"a potion and food give at most {rules.ComboShare} to one stat, '{id}' with a potion gives {potion + modifier.Value}");
