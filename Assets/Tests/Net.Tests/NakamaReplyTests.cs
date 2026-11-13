@@ -711,6 +711,17 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ARiftSupplyIsReadAndSent()
+        {
+            Assert.That(RiftSupplyReply.SendPayload("bob", "dish:carp_pie"), Is.EqualTo("{\"to\":\"bob\",\"item\":\"dish:carp_pie\"}"));
+            var mine = RiftSupplyReply.From(NakamaJson.Parse("{\"window\":1761652800,\"supply\":{\"window\":1761652800,\"from\":\"a\",\"fromName\":\"Ann\",\"item\":\"potion:might:fine\",\"at\":5}}"));
+            Assert.That(mine.Window, Is.EqualTo(1761652800));
+            Assert.That(mine.Item, Is.EqualTo("potion:might:fine"));
+            Assert.That(mine.FromName, Is.EqualTo("Ann"));
+            Assert.That(RiftSupplyReply.From(NakamaJson.Parse("{\"window\":0,\"supply\":null}")).HasSupply, Is.False);
+        }
+
+        [Test]
         public void ObjectsAreWrittenWithEscapedStrings() =>
             Assert.That(NakamaJson.Object(("code", NakamaJson.Quote("a\"b")), ("n", "4")), Is.EqualTo("{\"code\":\"a\\\"b\",\"n\":4}"));
     }

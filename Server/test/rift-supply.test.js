@@ -1,0 +1,47 @@
+const test = require("node:test");
+const assert = require("node:assert");
+const { loadModule } = require("./load");
+const { FakeNakama } = require("./fake-nakama");
+
+const server = loadModule();
+const plain = (o) => JSON.parse(JSON.stringify(o));
+const base = Date.UTC(2026, 10, 9, 12);
+const open = server.riftNext(server.RiftServerRules, base).startUnixMs + 60000;
+const closed = server.riftNext(server.RiftServerRules, base).startUnixMs - 60000;
+
+function world(...names) {
+  const nk = new FakeNakama();
+  names.forEach((name, i) => nk.addUser(name, name, "7656119800000000" + i));
+  const call = (user, rpc, request) => JSON.parse(server[rpc]({ userId: user, env: {} }, { info() {}, warn() {}, error() {}, debug() {} }, nk, request === undefined ? "" : JSON.stringify(request)));
+  const created = call(names[0], "partyCreateRpc", {});
+  for (const name of names.slice(1, 3))
+    call(name, "partyJoinRpc", { code: created.code });
+  return nk;
+}
+
+test("a peaceful player sends one supply to a fighter of the party during the rift window", () => {
+  const nk = world("ann", "bob", "cid", "eve");
+  const dish = "dish:" + server.HideoutServerRules.dishes[0];
+  assert.throws(() => server.riftSupplySend(nk, "ann", { to: "bob", item: dish }, closed), /rift is closed/);
+  assert.throws(() => server.riftSupplySend(nk, "ann", { to: "bob", item: "dish:mud_pie" }, open), /bad request/);
+  assert.throws(() => server.riftSupplySend(nk, "ann", { to: "ann", item: dish }, open), /not to yourself/);
+  assert.throws(() => server.riftSupplySend(nk, "ann", { to: "eve", item: dish }, open), /only to the party and the clan/);
+  const sent = plain(server.riftSupplySend(nk, "ann", { to: "bob", item: dish }, open));
+  assert.strictEqual(sent.sentThisWindow, 1);
+  assert.ok(sent.friendship > 0, "the cook earns friendship");
+  const mine = plain(server.riftSupplyMine(nk, "bob", open));
+  assert.strictEqual(mine.supply.item, dish);
+  assert.strictEqual(mine.supply.fromName, "ann");
+  assert.throws(() => server.riftSupplySend(nk, "cid", { to: "bob", item: "potion:" + server.HideoutServerRules.recipes[0] + ":fine" }, open), /already supplied this window/);
+  assert.strictEqual(plain(server.riftSupplyMine(nk, "bob", closed)).supply, null, "outside the window there is no supply");
+});
+
+test("a sender has a few supplies per window, and a new window opens them again", () => {
+  const nk = world("ann", "bob", "cid");
+  const dish = "dish:" + server.HideoutServerRules.dishes[0];
+  const window = server.riftWindowAt(server.RiftServerRules, open).id;
+  nk.storageWrite([{ collection: "rift_supply", key: "sent", userId: "ann", value: { window: window, count: server.HideoutServerRules.supplySends }, version: "*", permissionRead: 1, permissionWrite: 0 }]);
+  assert.throws(() => server.riftSupplySend(nk, "ann", { to: "bob", item: dish }, open), /no more supplies this window/);
+  const later = server.riftNext(server.RiftServerRules, open + 86400000).startUnixMs + 60000;
+  assert.strictEqual(plain(server.riftSupplySend(nk, "ann", { to: "bob", item: dish }, later)).sentThisWindow, 1);
+});

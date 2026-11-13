@@ -2179,6 +2179,7 @@
     "settings.companionStrip.off": { "ru": "Выключен", "en": "Off" },
     "wallet.source.clan_fair": { "ru": "ярмарка клана", "en": "the clan fair" },
     "wallet.source.camp_gift": { "ru": "подарок у костра", "en": "a gift by the fire" },
+    "wallet.source.rift_supply": { "ru": "припас бойцу в Разлом", "en": "a supply for a fighter in the Rift" },
     "raid.boss.devourer": { "ru": "Пожиратель Миров", "en": "World Devourer" },
     "raid.layer.shield": { "ru": "Щит", "en": "Shield" },
     "raid.layer.armor": { "ru": "Броня", "en": "Armor" },

@@ -545,6 +545,8 @@ const hideoutRules = {
   pot: hideout.crafts.pot.building,
   dishesPerDay: hideout.crafts.pot.dishesPerDay,
   dishes: cooking.dishes.map((dish) => dish.id),
+  supplySends: JSON.parse(fs.readFileSync(path.join(data, "peaceful.json"), "utf8")).riftSupply.sendsPerWindow,
+  supplySource: JSON.parse(fs.readFileSync(path.join(data, "peaceful.json"), "utf8")).riftSupply.source,
   recipes: JSON.parse(fs.readFileSync(path.join(data, "alchemy.json"), "utf8")).recipes.map((recipe) => recipe.id),
   togetherBoost: hideout.fire.togetherBoost,
   bedsPerRow: hideout.sharedGarden.bedsPerRow,
