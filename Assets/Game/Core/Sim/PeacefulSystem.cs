@@ -27,9 +27,6 @@ namespace Game.Core.Sim
         public PeacefulState State => _state.Peaceful;
         public bool InCamp => State.Mode == PeacefulMode.Camp;
         public bool InHideout => InCamp && State.Place == PeacefulPlace.Hideout;
-        public bool FightsInBackground => InCamp && _rules.FightsInBackground(State.Place);
-        public bool FightPaused => InCamp && !_rules.FightsInBackground(State.Place);
-        public double DamageShare => FightsInBackground ? _rules.BackgroundDamageShare : 1;
 
         public void SetPlace(PeacefulPlace place) => State.Place = place;
 
