@@ -83,6 +83,14 @@ namespace Game.Core.Party
         public double PeacefulCap { get; private set; } = double.PositiveInfinity;
         public IReadOnlyList<double> NewcomerShares { get; private set; } = FullShare;
         public double RejoinHours { get; private set; }
+        public double KickedRejoinHours { get; private set; }
+        public int TreeNodes { get; private set; }
+        public int MaxVotes { get; private set; }
+        public double FreeResetDays { get; private set; }
+        public double ResetFeeShare { get; private set; }
+        public double ResetVoteHours { get; private set; }
+
+        public long ResetFee(long spent, bool free) => free ? 0 : (long)System.Math.Ceiling(spent * ResetFeeShare);
 
         public double NewcomerShare(int daysInParty) =>
             NewcomerShares[System.Math.Min(System.Math.Max(0, daysInParty), NewcomerShares.Count - 1)];
@@ -160,7 +168,18 @@ namespace Game.Core.Party
                 experience.Field("perActiveMinute").AsNumber(0, 1000), unlocks);
             if (node.HasField("basket"))
                 ReadBasket(node.Field("basket"), rules);
+            if (node.HasField("treasury"))
+                ReadTreasury(node.Field("treasury"), rules);
             return rules;
+        }
+
+        private static void ReadTreasury(ContentNode treasury, PartyGrowthRules rules)
+        {
+            rules.TreeNodes = treasury.Field("nodes").AsInt(1, 1000);
+            rules.MaxVotes = treasury.Field("maxVotes").AsInt(1, 100);
+            rules.FreeResetDays = treasury.Field("freeResetDays").AsNumber(0, 365);
+            rules.ResetFeeShare = treasury.Field("resetFeeShare").AsNumber(0, 0.99);
+            rules.ResetVoteHours = treasury.Field("resetVoteHours").AsNumber(0.1, 24 * 30);
         }
 
         private static void ReadBasket(ContentNode basket, PartyGrowthRules rules)
@@ -174,6 +193,7 @@ namespace Game.Core.Party
             rules.PeacefulCap = basket.Field("peacefulCap").AsNumber(1, 1000);
             rules.NewcomerShares = shares;
             rules.RejoinHours = basket.Field("rejoinHours").AsNumber(0, 24 * 30);
+            rules.KickedRejoinHours = basket.Field("kickedRejoinHours").AsNumber(0, rules.RejoinHours);
         }
     }
 }

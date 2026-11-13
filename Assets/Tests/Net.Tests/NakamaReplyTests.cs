@@ -601,6 +601,32 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ThePartyTreasuryShowsSharesVotesAndTheResetVote()
+        {
+            Assert.That(PartyTreasuryReply.DonatePayload(40), Is.EqualTo("{\"amount\":40}"));
+            Assert.That(PartyTreasuryReply.VotePayload(9, false), Is.EqualTo("{\"node\":9,\"add\":false}"));
+            Assert.That(PartyTreasuryReply.ResetVotePayload(true), Is.EqualTo("{\"yes\":true}"));
+            var reply = PartyTreasuryReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"leader\":false,\"treasury\":700,\"yours\":30,\"spent\":2000,\"levels\":{\"1\":5,\"4\":3},\"donors\":[{\"userId\":\"a\",\"name\":\"Ann\",\"amount\":40}],\"votes\":{\"4\":[\"a\",\"b\"]},\"mine\":[4,11],\"votesLeft\":1,\"resetFee\":200,\"freeResetAt\":1763600000000,\"reset\":{\"by\":\"a\",\"until\":1763100000000,\"yes\":[\"a\"],\"no\":[\"c\"],\"members\":4},\"outcome\":\"rejected\"}"));
+            Assert.That(reply.Opened, Is.True);
+            Assert.That(reply.Leader, Is.False);
+            Assert.That(reply.Treasury, Is.EqualTo(700));
+            Assert.That(reply.Yours, Is.EqualTo(30));
+            Assert.That(reply.Spent, Is.EqualTo(2000));
+            Assert.That(reply.Levels[4], Is.EqualTo(3));
+            Assert.That(reply.Donors[0].Name, Is.EqualTo("Ann"));
+            Assert.That(reply.VotesFor(4), Is.EqualTo(2));
+            Assert.That(reply.VotesFor(5), Is.EqualTo(0));
+            Assert.That(reply.Mine, Is.EqualTo(new[] { 4, 11 }));
+            Assert.That(reply.VotesLeft, Is.EqualTo(1));
+            Assert.That(reply.ResetFee, Is.EqualTo(200));
+            Assert.That(reply.Reset!.Yes, Is.EqualTo(new[] { "a" }));
+            Assert.That(reply.Reset.No, Is.EqualTo(new[] { "c" }));
+            Assert.That(reply.Reset.Members, Is.EqualTo(4));
+            Assert.That(reply.Outcome, Is.EqualTo(PartyResetOutcome.Rejected));
+            Assert.That(PartyTreasuryReply.From(NakamaJson.Parse("{\"reset\":null,\"outcome\":\"\"}")).Reset, Is.Null);
+        }
+
+        [Test]
         public void TheRiftShopIsReadPerRiftWithItsSparksAndWindowCounts()
         {
             Assert.That(RiftShopReply.ViewPayload(1793102400), Is.EqualTo("{\"riftId\":1793102400}"));

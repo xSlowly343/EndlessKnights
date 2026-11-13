@@ -321,7 +321,7 @@ function partyAdd(nk: nkruntime.Nakama, group: nkruntime.Group, userId: string):
     if (meta.members.length >= PartyDirectoryRules.maxMembers)
         throw new Error("party is full");
     if (!partyGrowthMayRejoin(nk, group.id, userId, Date.now()))
-        throw new Error("you left this party less than a day ago");
+        throw new Error("you cannot rejoin this party yet");
     try {
         nk.groupUsersAdd(group.id, [userId]);
     } catch (error) {
@@ -335,7 +335,7 @@ function partyAdd(nk: nkruntime.Nakama, group: nkruntime.Group, userId: string):
     return group;
 }
 
-function partyRemove(nk: nkruntime.Nakama, group: nkruntime.Group, userId: string): void {
+function partyRemove(nk: nkruntime.Nakama, group: nkruntime.Group, userId: string, blockHours: number): void {
     const meta = partyMetaOf(group);
     const index = meta.members.indexOf(userId);
     if (index < 0)
@@ -351,7 +351,7 @@ function partyRemove(nk: nkruntime.Nakama, group: nkruntime.Group, userId: strin
         return;
     }
     chronicleNote(nk, group.id, "left", userId);
-    partyGrowthLeft(nk, group.id, userId, Date.now());
+    partyGrowthLeft(nk, group.id, userId, Date.now(), blockHours);
     if (meta.leader === userId)
         meta.leader = meta.members[0];
     partyHandOverOwner(nk, group.id, userId, meta.leader);
@@ -452,7 +452,7 @@ function partyPruneInactive(nk: nkruntime.Nakama, group: nkruntime.Group, now: n
     for (const userId of meta.members.slice()) {
         if ((seen[userId] || 0) >= limit)
             continue;
-        partyRemove(nk, group, userId);
+        partyRemove(nk, group, userId, 0);
         if (meta.members.length === 0)
             return false;
     }
@@ -565,7 +565,7 @@ function partyLeaveRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkr
     const group = partyGroupOfUser(nk, userId);
     if (!group)
         throw new Error("not in a party");
-    partyRemove(nk, group, userId);
+    partyRemove(nk, group, userId, PartyGrowthServerRules.rejoinHours);
     return JSON.stringify({ party: null });
 }
 
@@ -575,7 +575,7 @@ function partyKickRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkru
     const group = partyLedBy(nk, userId);
     if (typeof target !== "string" || target === userId)
         throw new Error("bad request");
-    partyRemove(nk, group, target);
+    partyRemove(nk, group, target, PartyGrowthServerRules.kickedRejoinHours);
     return JSON.stringify(partyView(nk, group));
 }
 

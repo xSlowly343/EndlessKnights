@@ -27,6 +27,12 @@ namespace Game.Core.Tests.Party
             Assert.That(Rules.NewcomerShare(2), Is.EqualTo(1));
             Assert.That(Rules.NewcomerShare(40), Is.EqualTo(1));
             Assert.That(Rules.RejoinHours, Is.EqualTo(24));
+            Assert.That(Rules.KickedRejoinHours, Is.EqualTo(8));
+            Assert.That(Rules.TreeNodes, Is.EqualTo(50));
+            Assert.That(Rules.MaxVotes, Is.EqualTo(3));
+            Assert.That(Rules.FreeResetDays, Is.EqualTo(7));
+            Assert.That(Rules.ResetFee(2000, false), Is.EqualTo(200));
+            Assert.That(Rules.ResetFee(2000, true), Is.EqualTo(0));
         }
 
         [Test]

@@ -469,6 +469,10 @@ if (chests.currency !== "crystals" || !walletRules.currencies.includes(chests.cu
 riftRules.shopCurrency = chests.currency;
 
 const growth = party.growth;
+if (!walletRules.currencies.includes(growth.treasury.currency))
+  throw new Error("party.json: the party treasury currency is not a wallet currency");
+if (!(growth.treasury.nodes >= 1) || !(growth.treasury.maxVotes >= 1) || !(growth.treasury.resetFeeShare >= 0 && growth.treasury.resetFeeShare < 1) || !(growth.treasury.resetVoteHours > 0))
+  throw new Error("party.json: party treasury limits are out of range");
 const partyGrowthRules = {
   maxLevel: growth.maxLevel,
   levelBase: growth.levelBase,
@@ -482,6 +486,16 @@ const partyGrowthRules = {
   firstReportSeconds: growth.experience.firstReportSeconds,
   reportSlackSeconds: growth.experience.reportSlackSeconds,
   rejoinHours: growth.basket.rejoinHours,
+  kickedRejoinHours: growth.basket.kickedRejoinHours,
+  treasury: {
+    currency: growth.treasury.currency,
+    minDonation: growth.treasury.minDonation,
+    nodes: growth.treasury.nodes,
+    maxVotes: growth.treasury.maxVotes,
+    freeResetMs: growth.treasury.freeResetDays * 86400000,
+    resetFeeShare: growth.treasury.resetFeeShare,
+    resetVoteMs: growth.treasury.resetVoteHours * 3600000
+  },
   unlocks: growth.unlocks.map((unlock) => ({ level: unlock.level, kind: unlock.kind }))
 };
 

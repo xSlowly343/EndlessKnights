@@ -16,7 +16,19 @@ interface PartyGrowthRules {
     firstReportSeconds: number;
     reportSlackSeconds: number;
     rejoinHours: number;
+    kickedRejoinHours: number;
+    treasury: PartyTreasuryRules;
     unlocks: PartyGrowthUnlock[];
+}
+
+interface PartyTreasuryRules {
+    currency: string;
+    minDonation: number;
+    nodes: number;
+    maxVotes: number;
+    freeResetMs: number;
+    resetFeeShare: number;
+    resetVoteMs: number;
 }
 
 interface PartyGrowthMember {
@@ -97,6 +109,11 @@ function partyGrowthView(partyId: string, value: PartyGrowthValue, userId: strin
     };
 }
 
+function partyGrowthOpened(nk: nkruntime.Nakama, partyId: string, kind: string): boolean {
+    const level = partyGrowthLevel(partyGrowthRead(nk, partyId).value.experience).level;
+    return PartyGrowthServerRules.unlocks.some((unlock) => unlock.kind === kind && unlock.level <= level);
+}
+
 function partyGrowthMine(nk: nkruntime.Nakama, userId: string): { [key: string]: any } {
     const group = partyGroupOfUser(nk, userId);
     if (!group)
@@ -113,16 +130,19 @@ function partyGrowthJoined(nk: nkruntime.Nakama, partyId: string, userId: string
     });
 }
 
-function partyGrowthLeft(nk: nkruntime.Nakama, partyId: string, userId: string, nowUnixMs: number): void {
+function partyGrowthLeft(nk: nkruntime.Nakama, partyId: string, userId: string, nowUnixMs: number, blockHours: number): void {
     partyGrowthChange(nk, partyId, (value) => {
         delete value.members[userId];
-        value.left[userId] = nowUnixMs;
+        if (blockHours > 0)
+            value.left[userId] = nowUnixMs + blockHours * 3600000;
+        else
+            delete value.left[userId];
     });
 }
 
 function partyGrowthMayRejoin(nk: nkruntime.Nakama, partyId: string, userId: string, nowUnixMs: number): boolean {
-    const left = partyGrowthRead(nk, partyId).value.left[userId];
-    return !left || nowUnixMs - left >= PartyGrowthServerRules.rejoinHours * 3600000;
+    const until = partyGrowthRead(nk, partyId).value.left[userId];
+    return !until || nowUnixMs >= until;
 }
 
 function partyGrowthMinutes(member: PartyGrowthMember, activeSeconds: number, nowUnixMs: number): number {

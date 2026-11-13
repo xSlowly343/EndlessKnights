@@ -77,10 +77,24 @@ test("the server tells when you joined and how many are in the party, and you ca
   const code = call("ann", "partyMineRpc").party.code;
   call("cat", "partyLeaveRpc", {});
   assert.ok(server.partyGrowthRead(nk, partyId).value.left.cat > 0);
-  assert.throws(() => call("cat", "partyJoinRpc", { code: code }), /less than a day ago/);
+  assert.throws(() => call("cat", "partyJoinRpc", { code: code }), /cannot rejoin/);
   const record = server.partyGrowthRead(nk, partyId);
+  assert.ok(record.value.left.cat - Date.now() > (rules.rejoinHours - 1) * 3600000, "leaving on your own: a day");
   record.value.left.cat -= rules.rejoinHours * 3600000;
   nk.storageWrite([{ collection: "party_growth", key: partyId, userId: "00000000-0000-0000-0000-000000000000", value: record.value, permissionRead: 0, permissionWrite: 0 }]);
   call("cat", "partyJoinRpc", { code: code });
   assert.strictEqual(call("cat", "partyGrowthRpc").members, 3, "after a day the way back is open");
+});
+
+test("a kicked member waits 8 hours, a member pruned for inactivity does not wait", () => {
+  const { nk, call, partyId } = party("ann", "bob");
+  const code = call("ann", "partyMineRpc").party.code;
+  call("ann", "partyKickRpc", { userId: "bob" });
+  const until = server.partyGrowthRead(nk, partyId).value.left.bob;
+  const hours = (until - Date.now()) / 3600000;
+  assert.ok(hours > rules.kickedRejoinHours - 0.1 && hours <= rules.kickedRejoinHours, "8 hours for a kick");
+  assert.throws(() => call("bob", "partyJoinRpc", { code: code }), /cannot rejoin/);
+  server.partyGrowthLeft(nk, partyId, "bob", Date.now(), 0);
+  call("bob", "partyJoinRpc", { code: code });
+  assert.strictEqual(call("bob", "partyGrowthRpc").members, 2);
 });
