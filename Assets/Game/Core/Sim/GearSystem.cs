@@ -135,7 +135,7 @@ namespace Game.Core.Sim
                 AddScaled(modifiers, set.Bonus, scale);
                 modifiers.AddRange(set.Primary);
                 AddScaled(modifiers, set.PerRaritySet, scale * _collectedByRarity[(int)set.Rarity]);
-                AddScaled(modifiers, set.PerMuseumCollection, scale * _state.Museum.Done.Count);
+                AddScaled(modifiers, set.PerMuseumCollection, scale * _state.MuseumCollectionsInPlay);
                 AddScaled(modifiers, set.Echo, scale * AlliesEchoing(set));
                 foreach (var perk in set.Perks)
                     _state.SetPerks[(int)perk.Perk] += perk.Value;
@@ -175,7 +175,7 @@ namespace Game.Core.Sim
                     var step = System.Math.Pow(RarityStep, rarity - ItemRarity.Rare);
                     AddScaled(modifiers, consonance.Lines, step * mastery);
                     modifiers.AddRange(consonance.Fixed);
-                    AddScaled(modifiers, consonance.PerMuseumCollection, step * mastery * _state.Museum.Done.Count);
+                    AddScaled(modifiers, consonance.PerMuseumCollection, step * mastery * _state.MuseumCollectionsInPlay);
                     foreach (var perk in consonance.Perks)
                         _state.SetPerks[(int)perk.Perk] += perk.Value * step;
                     foreach (var perk in armor.Perks)
