@@ -815,6 +815,12 @@ namespace Game.Core.Sim
             RefreshPeacefulBonus();
         }
 
+        public void SetPartyTree(IReadOnlyDictionary<int, int> levels, IReadOnlyList<string> majors)
+        {
+            _partyGrowth.SetTree(levels, majors);
+            RefreshPeacefulBonus();
+        }
+
         public void SetPartyGrowthSources(IReadOnlyList<Modifier> sources)
         {
             _partyGrowth.SetSources(sources);

@@ -89,6 +89,7 @@ namespace Game.Core.Party
         public double FreeResetDays { get; private set; }
         public double ResetFeeShare { get; private set; }
         public double ResetVoteHours { get; private set; }
+        public PartyTreeRules Tree { get; private set; } = PartyTreeRules.None;
 
         public long ResetFee(long spent, bool free) => free ? 0 : (long)System.Math.Ceiling(spent * ResetFeeShare);
 
@@ -170,6 +171,8 @@ namespace Game.Core.Party
                 ReadBasket(node.Field("basket"), rules);
             if (node.HasField("treasury"))
                 ReadTreasury(node.Field("treasury"), rules);
+            if (node.HasField("tree"))
+                rules.Tree = PartyTreeRules.Read(node.Field("tree"));
             return rules;
         }
 

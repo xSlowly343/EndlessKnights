@@ -18,6 +18,7 @@ interface PartyGrowthRules {
     rejoinHours: number;
     kickedRejoinHours: number;
     treasury: PartyTreasuryRules;
+    tree: PartyTreeRules;
     unlocks: PartyGrowthUnlock[];
 }
 
@@ -29,6 +30,23 @@ interface PartyTreasuryRules {
     freeResetMs: number;
     resetFeeShare: number;
     resetVoteMs: number;
+}
+
+interface PartyTreeNodeRule {
+    row: number;
+    parent: number;
+    keystone: boolean;
+    prices: { basisPoints: number; rows: number[] }[];
+}
+
+interface PartyTreeRules {
+    maxPoints: number;
+    maxRank: number;
+    rows: number[];
+    rowPrices: number[];
+    majorChangeMs: number;
+    nodes: PartyTreeNodeRule[];
+    majors: { at: number; options: string[] }[];
 }
 
 interface PartyGrowthMember {

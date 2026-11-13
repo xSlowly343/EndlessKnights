@@ -473,6 +473,8 @@ if (!walletRules.currencies.includes(growth.treasury.currency))
   throw new Error("party.json: the party treasury currency is not a wallet currency");
 if (!(growth.treasury.nodes >= 1) || !(growth.treasury.maxVotes >= 1) || !(growth.treasury.resetFeeShare >= 0 && growth.treasury.resetFeeShare < 1) || !(growth.treasury.resetVoteHours > 0))
   throw new Error("party.json: party treasury limits are out of range");
+if (growth.tree.nodes.length !== growth.treasury.nodes)
+  throw new Error("party.json: the party tree has " + growth.tree.nodes.length + " nodes, the treasury votes on " + growth.treasury.nodes);
 const partyGrowthRules = {
   maxLevel: growth.maxLevel,
   levelBase: growth.levelBase,
@@ -495,6 +497,20 @@ const partyGrowthRules = {
     freeResetMs: growth.treasury.freeResetDays * 86400000,
     resetFeeShare: growth.treasury.resetFeeShare,
     resetVoteMs: growth.treasury.resetVoteHours * 3600000
+  },
+  tree: {
+    maxPoints: growth.tree.maxPoints,
+    maxRank: growth.tree.maxRank,
+    rows: growth.tree.rows,
+    rowPrices: growth.tree.rowPrices,
+    majorChangeMs: growth.tree.majorChangeHours * 3600000,
+    nodes: growth.tree.nodes.map((node) => ({
+      row: node.row,
+      parent: node.parent || 0,
+      keystone: !!node.keystone,
+      prices: node.a.filter((line) => line.price !== undefined).map((line) => ({ basisPoints: Math.round(line.price * 10000), rows: line.rows }))
+    })),
+    majors: growth.tree.majors.map((slot) => ({ at: slot.at, options: slot.options.map((option) => option.id) }))
   },
   unlocks: growth.unlocks.map((unlock) => ({ level: unlock.level, kind: unlock.kind }))
 };

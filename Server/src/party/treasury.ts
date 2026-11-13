@@ -19,6 +19,7 @@ interface PartyTreasuryValue {
     votes: { [userId: string]: PartyTreasuryVote[] };
     reset: PartyTreasuryReset | null;
     freeResetAt: number;
+    majors: { [at: string]: { id: string; at: number } };
 }
 
 const PartyTreasuryCollection = "party_treasury";
@@ -29,7 +30,7 @@ function partyTreasuryRules(): PartyTreasuryRules {
 }
 
 function partyTreasuryEmpty(): PartyTreasuryValue {
-    return { treasury: 0, donated: {}, levels: {}, spent: 0, votes: {}, reset: null, freeResetAt: 0 };
+    return { treasury: 0, donated: {}, levels: {}, spent: 0, votes: {}, reset: null, freeResetAt: 0, majors: {} };
 }
 
 function partyTreasuryRead(nk: nkruntime.Nakama, partyId: string): { value: PartyTreasuryValue; version: string } {
@@ -45,6 +46,7 @@ function partyTreasuryRead(nk: nkruntime.Nakama, partyId: string): { value: Part
     value.votes = stored.votes || {};
     value.reset = stored.reset || null;
     value.freeResetAt = stored.freeResetAt || 0;
+    value.majors = stored.majors || {};
     return { value: value, version: objects[0].version };
 }
 
@@ -104,6 +106,7 @@ function partyTreasuryDecide(value: PartyTreasuryValue, members: string[], nowUn
         value.treasury += value.spent - fee;
         value.spent = 0;
         value.levels = {};
+        value.majors = {};
         value.votes = {};
         value.reset = null;
         return "passed";
@@ -134,6 +137,8 @@ function partyTreasuryView(nk: nkruntime.Nakama, partyId: string, value: PartyTr
     return {
         partyId: partyId, opened: partyGrowthOpened(nk, partyId, "tree"), leader: meta.leader === userId,
         treasury: value.treasury, yours: value.donated[userId] || 0, spent: value.spent, levels: value.levels,
+        points: partyTreePoints(value), majors: Object.keys(value.majors).map((at) => value.majors[at].id),
+        majorChangeAt: partyTreeMajorChangeAt(value),
         donors: donors.map((id) => ({ userId: id, name: names[id] || "", amount: value.donated[id] })),
         votes: votes, mine: mine, votesLeft: partyTreasuryRules().maxVotes - mine.length,
         resetFee: partyTreasuryResetFee(value, nowUnixMs), freeResetAt: value.freeResetAt === 0 ? 0 : value.freeResetAt + partyTreasuryRules().freeResetMs,
@@ -276,4 +281,101 @@ function partyTreasuryResetVoteRpc(ctx: nkruntime.Context, logger: nkruntime.Log
 
 function partyTreasuryResetCancelRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     return JSON.stringify(partyTreasuryCancel(nk, partyCaller(ctx), Date.now()));
+}
+
+function partyTreePoints(value: PartyTreasuryValue): number {
+    let points = 0;
+    for (const node of Object.keys(value.levels))
+        points += value.levels[node];
+    return points;
+}
+
+function partyTreeAMultiplier(rule: PartyTreeNodeRule, rank: number): number {
+    return rank <= 0 ? 0 : rule.keystone || rank === 1 ? 1 : rank < 4 ? 2 : 3;
+}
+
+function partyTreePrice(value: PartyTreasuryValue, node: number): number {
+    const rules = PartyGrowthServerRules.tree;
+    const row = rules.nodes[node - 1].row;
+    let discount = 0;
+    for (const key of Object.keys(value.levels)) {
+        const rule = rules.nodes[Number(key) - 1];
+        const rank = value.levels[key];
+        if (!rule || rank <= 0)
+            continue;
+        for (const price of rule.prices)
+            if (price.rows.indexOf(row) >= 0)
+                discount += price.basisPoints * partyTreeAMultiplier(rule, rank);
+    }
+    return Math.floor((rules.rowPrices[row - 1] * (10000 - Math.min(9000, discount)) + 5000) / 10000);
+}
+
+function partyTreeRefusal(value: PartyTreasuryValue, node: number): string {
+    const rules = PartyGrowthServerRules.tree;
+    const rule = rules.nodes[node - 1];
+    const points = partyTreePoints(value);
+    if (partyTreasuryLevel(value, node) >= rules.maxRank)
+        return "the node is at its last level";
+    if (points >= rules.maxPoints)
+        return "the party tree is full";
+    if (points < rules.rows[rule.row - 1])
+        return "the row is not open yet";
+    if (rule.parent > 0 && partyTreasuryLevel(value, rule.parent) <= 0)
+        return "not connected";
+    return "";
+}
+
+function partyTreeMajorChangeAt(value: PartyTreasuryValue): number {
+    let last = 0;
+    for (const at of Object.keys(value.majors))
+        last = Math.max(last, value.majors[at].at);
+    return last === 0 ? 0 : last + PartyGrowthServerRules.tree.majorChangeMs;
+}
+
+function partyTreeBuy(nk: nkruntime.Nakama, userId: string, request: { [key: string]: any }, nowUnixMs: number): { [key: string]: any } {
+    const node = partyTreasuryNode(request.node);
+    return partyTreasuryAct(nk, userId, nowUnixMs, (value, meta, partyId) => {
+        partyTreasuryRequireTree(nk, partyId);
+        if (meta.leader !== userId)
+            throw new Error("only the leader can do that");
+        const refusal = partyTreeRefusal(value, node);
+        if (refusal)
+            throw new Error(refusal);
+        const price = partyTreePrice(value, node);
+        if (value.treasury < price)
+            throw new Error("not enough friendship in the treasury");
+        value.treasury -= price;
+        value.spent += price;
+        value.levels[String(node)] = partyTreasuryLevel(value, node) + 1;
+        partyTreasurySettle(value, meta.members, nowUnixMs);
+        return "bought";
+    });
+}
+
+function partyTreeMajor(nk: nkruntime.Nakama, userId: string, id: unknown, nowUnixMs: number): { [key: string]: any } {
+    const slot = typeof id === "string" ? PartyGrowthServerRules.tree.majors.filter((major) => major.options.indexOf(id) >= 0)[0] : undefined;
+    if (!slot)
+        throw new Error("bad request");
+    return partyTreasuryAct(nk, userId, nowUnixMs, (value, meta, partyId) => {
+        partyTreasuryRequireTree(nk, partyId);
+        if (meta.leader !== userId)
+            throw new Error("only the leader can do that");
+        if (partyTreePoints(value) < slot.at)
+            throw new Error("the talent is not open yet");
+        const held = value.majors[String(slot.at)];
+        if (held && held.id === id)
+            return "";
+        if (held && nowUnixMs < held.at + PartyGrowthServerRules.tree.majorChangeMs)
+            throw new Error("the talent was changed less than a day ago");
+        value.majors[String(slot.at)] = { id: id as string, at: nowUnixMs };
+        return "chosen";
+    });
+}
+
+function partyTreeBuyRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(partyTreeBuy(nk, partyCaller(ctx), partyRequest(payload), Date.now()));
+}
+
+function partyTreeMajorRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(partyTreeMajor(nk, partyCaller(ctx), partyRequest(payload).id, Date.now()));
 }

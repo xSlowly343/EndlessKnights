@@ -11,6 +11,9 @@ namespace Game.Core.Party
         private readonly ModifierLayer _layer;
         private readonly List<Modifier> _sources = new List<Modifier>();
         private readonly List<Modifier> _applied = new List<Modifier>();
+        private readonly List<Modifier> _tree = new List<Modifier>();
+        private readonly Dictionary<int, int> _treeLevels = new Dictionary<int, int>();
+        private readonly List<string> _treeMajors = new List<string>();
         private PartyGrowthRules _rules;
         private long _joinedUnixMs;
         private long _nowUnixMs;
@@ -28,6 +31,20 @@ namespace Game.Core.Party
         public double Peaceful { get; private set; }
         public bool Capped { get; private set; }
         public IReadOnlyList<Modifier> Applied => _applied;
+        public IReadOnlyList<Modifier> Tree => _tree;
+        public IReadOnlyDictionary<int, int> TreeLevels => _treeLevels;
+        public IReadOnlyList<string> TreeMajors => _treeMajors;
+
+        public void SetTree(IReadOnlyDictionary<int, int> levels, IReadOnlyList<string> majors)
+        {
+            _treeLevels.Clear();
+            foreach (var pair in levels)
+                _treeLevels[pair.Key] = pair.Value;
+            _treeMajors.Clear();
+            for (var i = 0; i < majors.Count; i++)
+                _treeMajors.Add(majors[i]);
+            Rebuild();
+        }
 
         public void UseRules(PartyGrowthRules rules)
         {
@@ -78,10 +95,13 @@ namespace Game.Core.Party
             _applied.Clear();
             Share = ShareAt(_nowUnixMs);
             Capped = false;
+            PartyTreeBonus.Build(_rules.Tree, _treeLevels, _treeMajors, Members, _tree);
             if (Share > 0)
             {
                 foreach (var source in _sources)
                     _applied.Add(source.WithValue(source.Value * Share));
+                foreach (var line in _tree)
+                    _applied.Add(line.WithValue(line.Value * Share));
             }
             DamageMultiplier = CapDamage();
             Peaceful = CapPeaceful();
