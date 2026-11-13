@@ -17,6 +17,7 @@ namespace Game.Core.Sim.Rift
             SwapBuild(a, b);
             SwapGems(a, b);
             SwapArms(a, b);
+            SwapForge(a, b);
             SwapMount(a.Mount, b.Mount);
             SwapSlates(a.Slates, b.Slates);
             SwapMap(a.Resonance, b.Resonance);
@@ -66,6 +67,12 @@ namespace Game.Core.Sim.Rift
             SwapList(a.Drops.Gear, b.Drops.Gear);
         }
 
+        private static void SwapForge(GameState a, GameState b)
+        {
+            SwapSet(a.SetCollection, b.SetCollection);
+            (a.Drops.CraftSpent, b.Drops.CraftSpent) = (b.Drops.CraftSpent, a.Drops.CraftSpent);
+        }
+
         private static void SwapMount(MountState a, MountState b)
         {
             SwapArray(a.Levels, b.Levels);
@@ -89,6 +96,15 @@ namespace Game.Core.Sim.Rift
             a.AddRange(b);
             b.Clear();
             b.AddRange(held);
+        }
+
+        private static void SwapSet<T>(HashSet<T> a, HashSet<T> b)
+        {
+            var held = new HashSet<T>(a, a.Comparer);
+            a.Clear();
+            a.UnionWith(b);
+            b.Clear();
+            b.UnionWith(held);
         }
 
         private static void SwapMap<TKey, TValue>(Dictionary<TKey, TValue> a, Dictionary<TKey, TValue> b) where TKey : notnull

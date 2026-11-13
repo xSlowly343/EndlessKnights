@@ -17,6 +17,8 @@ interface RiftRules {
     boardPlaces: RiftBoardPlace[];
     enemies: RiftEnemyModifier[];
     milestones: RiftMilestoneRules;
+    softenShare: number;
+    keyed: boolean[];
 }
 
 interface RiftMilestoneStep {
@@ -112,6 +114,21 @@ function riftPick<T>(items: T[], pick: number, seedId: number): T[] {
 
 function riftModifiersFor(rules: RiftRules, windowId: number): string[] {
     return riftPick(rules.modifiers, rules.modifiersPerWindow, windowId);
+}
+
+const RiftKeyModifierIndex = 4097;
+
+function riftKeyedModifier(rules: RiftRules, windowId: number): string | null {
+    const picked = riftModifiersFor(rules, windowId);
+    if (picked.length === 0)
+        return null;
+    const start = u64ModSmall(splitMixAt(u64FromNumber(windowId), RiftKeyModifierIndex), picked.length);
+    for (let i = 0; i < picked.length; i++) {
+        const id = picked[(start + i) % picked.length];
+        if (rules.keyed[rules.modifiers.indexOf(id)])
+            return id;
+    }
+    return null;
 }
 
 function riftMilestoneStep(rules: RiftRules, stage: number): RiftMilestoneStep | null {

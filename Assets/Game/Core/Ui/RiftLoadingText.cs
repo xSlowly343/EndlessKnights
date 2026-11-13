@@ -13,8 +13,15 @@ namespace Game.Core.Ui
             var modifiers = loop.Rift.WindowModifiers;
             for (var i = 0; i < modifiers.Count; i++)
                 lines.Add(Line(modifiers[i]));
-            if (loop.State.Rift.WindowSet.Length > 0 && loop.Data.Items.TryGetSet(loop.State.Rift.WindowSet, out var set))
-                lines.Add(Texts.Format("rift.loading.set", Texts.Pick(set.NameRu, set.NameEn)));
+            if (loop.State.Rift.WindowSet.Length == 0 || !loop.Data.Items.TryGetSet(loop.State.Rift.WindowSet, out var set))
+                return lines;
+            var name = Texts.Pick(set.NameRu, set.NameEn);
+            lines.Add(Texts.Format("rift.loading.set", name));
+            if (set.RiftOnly)
+                lines.Add(Texts.Get("rift.key." + set.Id));
+            var keyed = loop.Rift.KeyedModifier;
+            if (keyed != null && loop.Rift.KeyHeld)
+                lines.Add(Texts.Format("rift.loading.key", name, Texts.Get("rift.mod." + keyed.Id)));
             return lines;
         }
 

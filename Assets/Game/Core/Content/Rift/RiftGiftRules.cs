@@ -59,17 +59,66 @@ namespace Game.Core.Content.Rift
 
     public sealed class RiftWindowSetRules
     {
-        public RiftWindowSetRules(ItemRarity rarity, int itemLevel)
+        private static readonly IReadOnlyDictionary<string, IReadOnlyList<string>> NoKeys = new Dictionary<string, IReadOnlyList<string>>();
+
+        public RiftWindowSetRules(ItemRarity rarity, int itemLevel, double softenShare = 0, IReadOnlyDictionary<string, IReadOnlyList<string>>? keys = null)
         {
             Rarity = rarity;
             ItemLevel = itemLevel;
+            SoftenShare = softenShare;
+            Keys = keys ?? NoKeys;
         }
 
         public ItemRarity Rarity { get; }
         public int ItemLevel { get; }
+        public double SoftenShare { get; }
+        public IReadOnlyDictionary<string, IReadOnlyList<string>> Keys { get; }
+
+        public IReadOnlyList<string> KeysOf(string modifierId) =>
+            Keys.TryGetValue(modifierId, out var sets) ? sets : System.Array.Empty<string>();
+
+        public void CheckSets(ItemCatalog items)
+        {
+            var keyed = new HashSet<string>(System.StringComparer.Ordinal);
+            foreach (var pair in Keys)
+            {
+                foreach (var id in pair.Value)
+                {
+                    if (!items.TryGetSet(id, out var set) || !set.RiftOnly)
+                        throw new ContentException(RiftRules.FileName, "windowSet.keys." + pair.Key, $"'{id}' is not a riftOnly set in {ItemCatalog.FileName}");
+                    keyed.Add(id);
+                }
+            }
+            foreach (var set in items.Sets)
+            {
+                if (set.RiftOnly && !keyed.Contains(set.Id))
+                    throw new ContentException(ItemCatalog.FileName, "sets." + set.Id, $"a riftOnly set must be a window key in {RiftRules.FileName}");
+            }
+        }
 
         public static RiftWindowSetRules Read(ContentNode node) =>
-            new RiftWindowSetRules(ReadRarity(node.Field("rarity")), node.Field("itemLevel").AsInt(1, 1000));
+            new RiftWindowSetRules(ReadRarity(node.Field("rarity")), node.Field("itemLevel").AsInt(1, 1000),
+                node.HasField("softenShare") ? node.Field("softenShare").AsNumber(0, 1) : 0, ReadKeys(node));
+
+        private static IReadOnlyDictionary<string, IReadOnlyList<string>> ReadKeys(ContentNode node)
+        {
+            var keys = new Dictionary<string, IReadOnlyList<string>>(System.StringComparer.Ordinal);
+            if (!node.HasField("keys"))
+                return keys;
+            foreach (var key in node.Field("keys").Items())
+            {
+                var modifier = key.Field("modifier").AsString();
+                var sets = new List<string>();
+                foreach (var set in key.Field("sets").Items())
+                    sets.Add(set.AsString());
+                if (sets.Count == 0)
+                    throw key.Field("sets").Error("a key needs at least one set");
+                if (keys.ContainsKey(modifier))
+                    throw key.Field("modifier").Error($"modifier '{modifier}' has keys twice");
+                keys[modifier] = sets;
+            }
+            return keys;
+        }
 
         private static ItemRarity ReadRarity(ContentNode node)
         {

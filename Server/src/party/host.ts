@@ -407,7 +407,9 @@ class PartyHost {
             return;
         }
         const window = riftWindowAt(RiftServerRules, this.encounter.riftId * 1000);
-        const picked = riftModifiersFor(RiftServerRules, window ? window.id : this.encounter.riftId);
+        const windowId = window ? window.id : this.encounter.riftId;
+        const picked = riftModifiersFor(RiftServerRules, windowId);
+        const keyed = riftKeyedModifier(RiftServerRules, windowId);
         const roles = this.joinedRoles();
         let regen = 0;
         let shield = 0;
@@ -416,9 +418,10 @@ class PartyHost {
             const enemy = RiftServerRules.enemies[RiftServerRules.modifiers.indexOf(id)];
             if (!enemy || (enemy.unless & roles) !== 0)
                 continue;
-            regen += enemy.regen;
-            shield += enemy.shield;
-            extra += enemy.extraEnemies;
+            const share = id === keyed ? 1 - RiftServerRules.softenShare : 1;
+            regen += enemy.regen * share;
+            shield += enemy.shield * share;
+            extra += enemy.extraEnemies * share;
         }
         this.encounter.setRiftEnemy(regen, shield, extra);
     }

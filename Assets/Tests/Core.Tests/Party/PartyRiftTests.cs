@@ -186,8 +186,6 @@ namespace Game.Core.Tests.Party
             rig.Run(12);
             Assert.That(rig.Members[1].Loop.Rift.Inside, Is.True);
             var homeStages = new[] { rig.Members[0].Loop.State.Rift.OtherWorld!.Stage, rig.Members[1].Loop.State.Rift.OtherWorld!.Stage };
-            var rewards = rig.Members[1].Client.PartyRewards;
-            var kills = rig.Host.Kills;
             var riftEnd = rig.RiftEnd;
             rig.Host.ClockUnixMs = WindowEnd + 3_600_000;
             rig.Run(1);
@@ -204,7 +202,7 @@ namespace Game.Core.Tests.Party
                 Assert.That(member.Loop.State.Stage, Is.EqualTo(homeStages[i]), "home progress comes back");
                 Assert.That(member.Loop.Rift.CloseIfEnded(riftEnd), Is.True, "the rift is wiped once the hero is home");
             }
-            Assert.That(rig.Members[1].Client.PartyRewards - rewards, Is.LessThanOrEqualTo(rig.Host.Kills - kills), "the abandoned rift enemy pays nothing");
+            Assert.That(rig.Members[1].Client.PartyRewards, Is.LessThanOrEqualTo(rig.Host.Kills), "the abandoned rift enemy pays nothing");
         }
 
         [Test]

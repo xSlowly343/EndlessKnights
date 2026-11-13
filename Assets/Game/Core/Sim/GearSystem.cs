@@ -28,6 +28,8 @@ namespace Game.Core.Sim
             Rebuild();
         }
 
+        public bool Collected(string setId) => _catalog.TryGetSet(setId, out var set) && Collected(set);
+
         public bool Collected(SetDef set)
         {
             foreach (var piece in set.Pieces)

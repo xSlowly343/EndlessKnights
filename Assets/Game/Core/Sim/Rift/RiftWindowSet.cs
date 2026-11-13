@@ -9,12 +9,20 @@ namespace Game.Core.Sim.Rift
     {
         private const ulong SetSalt = 0x5E7_0F_71EUL;
 
-        public static SetDef? For(ItemCatalog items, RiftWindowSetRules rules, long windowId)
+        public static SetDef? For(ItemCatalog items, RiftRules rift, long windowId)
+        {
+            var key = rift.KeySet(windowId);
+            if (key != null && items.TryGetSet(key, out var keySet) && keySet.Pieces.Count > 0)
+                return keySet;
+            return Fallback(items, rift.WindowSet, windowId);
+        }
+
+        private static SetDef? Fallback(ItemCatalog items, RiftWindowSetRules rules, long windowId)
         {
             var candidates = new List<SetDef>();
             foreach (var set in items.Sets)
             {
-                if (set.Event == null && set.Rarity == rules.Rarity && set.Pieces.Count > 0)
+                if (set.Ordinary && set.Rarity == rules.Rarity && set.Pieces.Count > 0)
                     candidates.Add(set);
             }
             if (candidates.Count == 0)

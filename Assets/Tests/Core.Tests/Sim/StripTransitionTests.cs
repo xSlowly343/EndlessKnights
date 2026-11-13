@@ -140,7 +140,7 @@ namespace Game.Core.Tests.Sim
             var window = loop.Rift.Rules.Schedule.Next(0);
             Assert.That(loop.Rift.Enter(window.StartUnixMs + 1), Is.EqualTo(Game.Core.Sim.Rift.RiftEntry.Entered));
             var lines = RiftLoadingText.Lines(loop);
-            Assert.That(lines.Count, Is.EqualTo(loop.Rift.WindowModifiers.Count + 1), "modifiers and the window set");
+            Assert.That(lines.Count, Is.EqualTo(loop.Rift.WindowModifiers.Count + 3), "modifiers, the window set, its mechanic and the softened modifier");
             foreach (var line in lines)
                 Assert.That(line, Does.Not.StartWith("rift."), "every line has a text");
         }

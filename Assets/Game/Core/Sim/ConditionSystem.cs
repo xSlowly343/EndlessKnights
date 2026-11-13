@@ -144,8 +144,9 @@ namespace Game.Core.Sim
             var conditions = 0UL;
             if (_state.Focus >= _focus.Max - 1e-9)
                 conditions |= ModifierConditions.Bit(ModifierCondition.FocusFull);
-            if (_state.PartyAllies > 0)
-                conditions |= ModifierConditions.Bit(ModifierCondition.InParty);
+            conditions |= ModifierConditions.Bit(_state.PartyAllies > 0 ? ModifierCondition.InParty : ModifierCondition.Solo);
+            if (_state.EnemyAlive && _state.EnemyShieldFloor.Sign > 0 && _state.EnemyHp > _state.EnemyShieldFloor)
+                conditions |= ModifierConditions.Bit(ModifierCondition.BossShielded);
             if (_state.Rift.Inside || _state.Dungeons.Inside)
                 conditions |= ModifierConditions.Bit(ModifierCondition.InRift);
             if (_state.AfterFastKillTicks > 0)
