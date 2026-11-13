@@ -71,5 +71,29 @@ namespace Game.Core.Tests.Sim
                 loop.RiftSupply.Tick();
             Assert.That(System.GC.GetAllocatedBytesForCurrentThread() - before, Is.EqualTo(0));
         }
-    }
+    
+        [Test]
+        public void RiftRationsAreOnlyForTheRearAndComeFirstInTheList()
+        {
+            Game.Core.Text.Texts.UseLanguage("ru");
+            var loop = TestWorld.Loop(new FakeInputSource());
+            var ration = TestWorld.Data.Cooking.Dish("scout_ration")!;
+            Assert.That(ration.RiftOnly, Is.True);
+            Assert.That(TestWorld.Data.Cooking.Dish("carp_pie")!.RiftOnly, Is.False);
+            loop.State.Cooking.Meals.Add("carp_pie");
+            loop.State.Cooking.Meals.Add("scout_ration");
+            Assert.That(loop.Cooking.Eat(1), Is.EqualTo(CookingResult.RiftOnly), "a ration is not eaten at home");
+            Assert.That(loop.State.Cooking.Meals.Count, Is.EqualTo(2));
+            var lines = Game.Core.Ui.RiftRearView.Supplies(loop);
+            Assert.That(lines[0].Item, Is.EqualTo("dish:scout_ration"));
+            Assert.That(lines[0].RiftOnly, Is.True);
+            Assert.That(lines[0].Effects, Does.Contain("Осколков Разлома"));
+            Assert.That(lines[1].Item, Is.EqualTo("dish:carp_pie"));
+
+            loop.State.Rift.WindowId = 3;
+            loop.RiftSupply.Receive(3, "dish:scout_ration");
+            Assert.That(Game.Core.Ui.RiftRearView.Mine(loop, "Ann"), Does.Contain("Ann").And.Contain("Паёк разведчика"));
+            Assert.That(Game.Core.Ui.RiftRearView.Status(1, 3, true), Does.Contain("1 из 3"));
+        }
+}
 }

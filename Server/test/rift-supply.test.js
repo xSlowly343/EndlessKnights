@@ -45,3 +45,20 @@ test("a sender has a few supplies per window, and a new window opens them again"
   const later = server.riftNext(server.RiftServerRules, open + 86400000).startUnixMs + 60000;
   assert.strictEqual(plain(server.riftSupplySend(nk, "ann", { to: "bob", item: dish }, later)).sentThisWindow, 1);
 });
+
+test("the rear board lists the party first, then those still waiting for a supply", () => {
+  const nk = world("ann", "bob", "cid");
+  nk.addUser("dan", "dan", "76561198000000009");
+  server.clanCreateFor(nk, "ann", { name: "Северный ветер", tag: "NW", language: "ru" }, open);
+  server.clanAdd(nk, server.clanGroupOfUser(nk, "ann", open), "dan", open);
+  const dish = "dish:" + server.HideoutServerRules.dishes[0];
+  server.riftSupplySend(nk, "ann", { to: "bob", item: dish }, open);
+  const rear = plain(server.riftRear(nk, "ann", open));
+  assert.strictEqual(rear.sentThisWindow, 1);
+  assert.strictEqual(rear.sendsPerWindow, server.HideoutServerRules.supplySends);
+  assert.deepStrictEqual(rear.fighters.map((f) => [f.name, f.party, f.supplied]), [["cid", true, false], ["bob", true, true], ["dan", false, false]]);
+  assert.strictEqual(plain(server.riftRear(nk, "bob", open)).mine.item, dish);
+  const shut = plain(server.riftRear(nk, "ann", closed));
+  assert.strictEqual(shut.window, 0);
+  assert.ok(shut.fighters.every((f) => !f.supplied));
+});

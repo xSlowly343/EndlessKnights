@@ -27,6 +27,7 @@ namespace Game.Core.Content
         public int Plates { get; }
         public double Seconds { get; }
         public IReadOnlyList<Modifier> Modifiers { get; }
+        public bool RiftOnly { get; internal set; }
     }
 
     public sealed class CookingRules
@@ -116,7 +117,10 @@ namespace Game.Core.Content
                 }
                 var name = node.Field("name");
                 dishes.Add(new DishDef(id, name.Field("ru").AsString(), name.Field("en").AsString(), ingredients, node.Field("chops").AsInt(1, 100000),
-                    node.Field("plates").AsInt(1, 1000), node.Field("hours").AsNumber(0.1, 24) * 3600, modifiers));
+                    node.Field("plates").AsInt(1, 1000), node.Field("hours").AsNumber(0.1, 24) * 3600, modifiers)
+                {
+                    RiftOnly = node.HasField("riftOnly") && node.Field("riftOnly").AsBool()
+                });
             }
             rules.Dishes = dishes;
             var favorites = root.Field("favorites");

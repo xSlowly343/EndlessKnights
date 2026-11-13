@@ -12,7 +12,8 @@ namespace Game.Core.Sim
         Busy,
         NoIngredients,
         NoMeal,
-        MealsFull
+        MealsFull,
+        RiftOnly
     }
 
     public sealed class CookingSystem
@@ -94,6 +95,8 @@ namespace Game.Core.Sim
             if (index < 0 || index >= State.Meals.Count)
                 return CookingResult.NoMeal;
             var dish = _rules.Dish(State.Meals[index]);
+            if (dish != null && dish.RiftOnly)
+                return CookingResult.RiftOnly;
             State.Meals.RemoveAt(index);
             if (dish == null)
                 return CookingResult.UnknownDish;

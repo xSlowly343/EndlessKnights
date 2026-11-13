@@ -719,6 +719,11 @@ namespace Game.Net.Tests
             Assert.That(mine.Item, Is.EqualTo("potion:might:fine"));
             Assert.That(mine.FromName, Is.EqualTo("Ann"));
             Assert.That(RiftSupplyReply.From(NakamaJson.Parse("{\"window\":0,\"supply\":null}")).HasSupply, Is.False);
+            var rear = RiftSupplyReply.From(NakamaJson.Parse("{\"window\":5,\"endsAt\":9,\"sentThisWindow\":1,\"sendsPerWindow\":3,\"mine\":null,\"fighters\":[{\"userId\":\"c\",\"name\":\"Cid\",\"party\":true,\"supplied\":false}]}"));
+            Assert.That(rear.Fighters.Single().Name, Is.EqualTo("Cid"));
+            Assert.That(rear.Fighters.Single().Party, Is.True);
+            Assert.That(rear.SendsPerWindow, Is.EqualTo(3));
+            Assert.That(rear.HasSupply, Is.False);
         }
 
         [Test]

@@ -90,3 +90,45 @@ function riftSupplySendRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk:
 function riftSupplyMineRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     return JSON.stringify(riftSupplyMine(nk, partyCaller(ctx), Date.now()));
 }
+
+function riftRearMembers(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): string[] {
+    const members: string[] = [];
+    const party = partyGroupOfUser(nk, userId);
+    const clan = clanGroupOfUser(nk, userId, nowUnixMs);
+    for (const id of (party ? partyMetaOf(party).members : []).concat(clan ? clanMetaOf(clan).members : []))
+        if (id !== userId && members.indexOf(id) < 0)
+            members.push(id);
+    return members;
+}
+
+function riftRear(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [key: string]: any } {
+    const window = riftWindowAt(RiftServerRules, nowUnixMs);
+    const members = riftRearMembers(nk, userId, nowUnixMs);
+    const party = partyGroupOfUser(nk, userId);
+    const partyMembers = party ? partyMetaOf(party).members : [];
+    const users = members.length > 0 ? nk.usersGetId(members) : [];
+    const received = window && members.length > 0 ? nk.storageRead(members.map((id) => ({ collection: RiftSupplyCollection, key: RiftSupplyKey, userId: id }))) : [];
+    const sent = nk.storageRead([{ collection: RiftSupplyCollection, key: RiftSupplySentKey, userId: userId }]);
+    const sentValue = sent.length > 0 ? sent[0].value as { window: number; count: number } : { window: 0, count: 0 };
+    return {
+        window: window ? window.id : 0,
+        endsAt: window ? window.endUnixMs : 0,
+        sentThisWindow: window && sentValue.window === window.id ? sentValue.count : 0,
+        sendsPerWindow: riftSupplyRules().supplySends,
+        mine: window ? riftSupplyOf(nk, userId, window.id) : null,
+        fighters: members.map((id) => {
+            const user = users.filter((entry) => entry.userId === id)[0];
+            const supply = received.filter((object) => object.userId === id)[0];
+            return {
+                userId: id,
+                name: user ? user.displayName || user.username : "",
+                party: partyMembers.indexOf(id) >= 0,
+                supplied: !!window && !!supply && (supply.value as RiftSupplyValue).window === window.id
+            };
+        }).sort((a, b) => (a.party === b.party ? 0 : a.party ? -1 : 1) || (a.supplied === b.supplied ? 0 : a.supplied ? 1 : -1))
+    };
+}
+
+function riftRearRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(riftRear(nk, partyCaller(ctx), Date.now()));
+}
