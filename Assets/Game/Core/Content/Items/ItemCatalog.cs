@@ -531,6 +531,7 @@ namespace Game.Core.Content.Items
                 PerRaritySet = node.HasField("perRaritySet") ? ModifierReader.ReadList(node.Field("perRaritySet")) : System.Array.Empty<Modifier>(),
                 Event = node.HasField("event") ? node.Field("event").AsString() : null,
                 RiftOnly = node.HasField("riftOnly") && node.Field("riftOnly").AsBool(),
+                CarriedToRift = node.HasField("carriedToRift") && node.Field("carriedToRift").AsBool(),
                 PerMuseumCollection = node.HasField("perMuseumCollection") ? ModifierReader.ReadList(node.Field("perMuseumCollection")) : System.Array.Empty<Modifier>(),
                 Echo = node.HasField("echo") ? ModifierReader.ReadList(node.Field("echo")) : System.Array.Empty<Modifier>()
             };

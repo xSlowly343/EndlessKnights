@@ -131,7 +131,11 @@ namespace Game.Core.Sim
             foreach (var set in _catalog.Sets)
             {
                 if (!Collected(set))
+                {
+                    if (CarriedFromHome(set))
+                        AddScaled(modifiers, set.Bonus, HomeMasteryScale);
                     continue;
+                }
                 AddScaled(modifiers, set.Bonus, scale);
                 modifiers.AddRange(set.Primary);
                 AddScaled(modifiers, set.PerRaritySet, scale * _collectedByRarity[(int)set.Rarity]);
@@ -149,6 +153,21 @@ namespace Game.Core.Sim
         private readonly int[] _collectedByRarity = new int[System.Enum.GetValues(typeof(ItemRarity)).Length];
 
         public int MasteryLevel => _catalog.MasteryLevel(_state.Drops.CraftSpent);
+
+        private double HomeMasteryScale => _catalog.MasteryScale(_catalog.MasteryLevel(_state.Rift.OtherHero?.Drops.CraftSpent ?? 0));
+
+        public bool CarriedFromHome(SetDef set)
+        {
+            var home = _state.Rift.OtherHero;
+            if (!set.CarriedToRift || !_state.Rift.Inside || home == null)
+                return false;
+            foreach (var piece in set.Pieces)
+            {
+                if (!home.SetCollection.Contains(SetDef.PieceKey(set.Id, piece)))
+                    return false;
+            }
+            return true;
+        }
 
         public double MasteryScale => _catalog.MasteryScale(MasteryLevel);
 
