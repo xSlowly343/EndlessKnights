@@ -586,6 +586,56 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void TheMasterGivesATrialFightThatLeavesTheHeroAlone()
+        {
+            var input = new FakeInputSource();
+            var loop = TestWorld.Loop(input);
+            loop.Tick();
+            Assert.That(loop.StartMasterTrial("smiths"), Is.EqualTo(MasterTrialResult.NotInTown));
+            loop.Peaceful.Enter(PeacefulPlace.Town);
+            loop.Tick();
+            Assert.That(loop.StartMasterTrial("smiths"), Is.EqualTo(MasterTrialResult.NotBuilt));
+            Assert.That(loop.StartMasterTrial("bakery"), Is.EqualTo(MasterTrialResult.NoMaster));
+            loop.Camp.SetGuilds(new[] { "smiths" });
+            var heroClass = loop.State.Class;
+            var kills = loop.State.Kills;
+            var actions = loop.Guilds.UnsentActions;
+            Assert.That(loop.StartMasterTrial("smiths"), Is.EqualTo(MasterTrialResult.Started));
+            Assert.That(loop.StartMasterTrial("smiths"), Is.EqualTo(MasterTrialResult.Busy));
+            var trial = loop.MasterTrial;
+            Assert.That(trial.Master, Is.EqualTo(HeroClass.Golemancer));
+            Assert.That(trial.SecondsLeft, Is.EqualTo(Rules.Trial.Seconds).Within(1e-9));
+            Assert.That(GuildView.TrialOffer(Rules, "smiths"), Is.EqualTo("Golemancer предлагает пробный бой своим классом на 2 мин: ваши клавиши и мышь бьют за него, герой и сейв не меняются"));
+            for (var i = 0; i < 100; i++)
+            {
+                input.PressKeys(4);
+                loop.Tick();
+            }
+            Assert.That(trial.Damage.Sign, Is.GreaterThan(0), "your keys fight for the master's class");
+            Assert.That(GuildView.TrialStatus(trial), Does.StartWith("Пробный бой за Golemancer: осталось 1 мин"));
+            Assert.That(loop.State.Kills, Is.EqualTo(kills), "the hero does not fight");
+            Assert.That(loop.State.Class, Is.EqualTo(heroClass));
+            Assert.That(loop.Guilds.UnsentActions, Is.EqualTo(actions), "the keys go to the trial, not to the town work");
+            loop.Events.Clear();
+            for (var i = 0; i < Rules.Trial.Seconds * GameLoop.TicksPerSecond; i++)
+                loop.Tick();
+            Assert.That(trial.Active, Is.False);
+            Assert.That(loop.Events.CountOf(GameEventKind.MasterTrialEnded), Is.EqualTo(1));
+            Assert.That(GuildView.TrialEnded(3), Is.EqualTo("Пробный бой окончен: убито 3"));
+            input.PressKeys(5);
+            loop.Tick();
+            Assert.That(loop.Guilds.UnsentActions, Is.GreaterThan(actions), "after the trial the keys work for the town again");
+
+            Assert.That(loop.StartMasterTrial("smiths"), Is.EqualTo(MasterTrialResult.Started));
+            loop.Events.Clear();
+            loop.Peaceful.Leave();
+            loop.Tick();
+            Assert.That(trial.Active, Is.False, "leaving the town ends the trial");
+            Assert.That(loop.Events.CountOf(GameEventKind.MasterTrialEnded), Is.EqualTo(1));
+            Assert.That(GuildView.TrialResult(MasterTrialResult.NotBuilt), Is.EqualTo("Мастер ещё ждёт своего здания"));
+        }
+
+        [Test]
         public void ExpeditionFindsCountForTheTown()
         {
             var loop = TestWorld.Loop(new FakeInputSource());

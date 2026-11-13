@@ -374,6 +374,26 @@ namespace Game.Core.Ui
 
         private static string Percent(double value) => (value * 100).ToString("0.#", System.Globalization.CultureInfo.InvariantCulture);
 
+        public static string TrialOffer(GuildRules rules, string building)
+        {
+            var def = rules.Building(building);
+            return def == null ? string.Empty : Texts.Format("guild.trial.offer", MasterName(def.Master), TimeLeft(rules.Trial.Seconds));
+        }
+
+        public static string TrialStatus(MasterTrial trial) =>
+            trial.Active ? Texts.Format("guild.trial.running", Texts.Get("class." + HeroClassNames.Of(trial.Master)), TimeLeft(trial.SecondsLeft), trial.Kills, Game.Core.Math.NumberFormatter.Format(trial.Damage, Game.Core.Math.NumberDisplay.Settings)) : string.Empty;
+
+        public static string TrialResult(MasterTrialResult result) => result switch
+        {
+            MasterTrialResult.NotInTown => Texts.Get("guild.trial.notInTown"),
+            MasterTrialResult.NotBuilt => Texts.Get("guild.trial.notBuilt"),
+            MasterTrialResult.Busy => Texts.Get("guild.trial.busy"),
+            MasterTrialResult.NoMaster => Texts.Get("guild.trial.noMaster"),
+            _ => string.Empty
+        };
+
+        public static string TrialEnded(long kills) => Texts.Format("guild.trial.ended", kills);
+
         public static string MasterSays(GuildRules rules, TownBoard board, long day)
         {
             if (board.Phase != TownBoardPhase.Gather && board.Phase != TownBoardPhase.Opening)

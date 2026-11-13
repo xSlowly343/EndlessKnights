@@ -33,6 +33,20 @@ namespace Game.Core.Content
         public double PlantMutation { get; }
     }
 
+    public sealed class MasterTrialRules
+    {
+        public MasterTrialRules(double seconds, int stage, int heroLevel)
+        {
+            Seconds = seconds;
+            Stage = stage;
+            HeroLevel = heroLevel;
+        }
+
+        public double Seconds { get; }
+        public int Stage { get; }
+        public int HeroLevel { get; }
+    }
+
     public sealed class GuildDef
     {
         public GuildDef(string id, string nameRu, string nameEn, string master, string district, IReadOnlyList<GuildPerk> perks)
@@ -259,8 +273,9 @@ namespace Game.Core.Content
 
         private GuildRules(IReadOnlyList<long> levels, IReadOnlyList<GuildDef> guilds, IReadOnlyList<DistrictDef> districts, IReadOnlyList<TownBuildingDef> buildings,
             IReadOnlyList<TownStageDef> stages, int voteDays, int openHours, IReadOnlyList<BuildResourceDef> resources, IReadOnlyList<TownSiteDef> sites,
-            IReadOnlyList<TownRewardTier> rewards, int topSize, int topShards, int stageShards, ObservatoryBonus observatory)
+            IReadOnlyList<TownRewardTier> rewards, int topSize, int topShards, int stageShards, ObservatoryBonus observatory, MasterTrialRules trial)
         {
+            Trial = trial;
             Observatory = observatory;
             Buildings = buildings;
             Stages = stages;
@@ -284,6 +299,7 @@ namespace Game.Core.Content
         public IReadOnlyList<TownStageDef> Stages { get; }
         public int StageShards { get; }
         public ObservatoryBonus Observatory { get; }
+        public MasterTrialRules Trial { get; }
         public int VoteDays { get; }
         public int OpenHours { get; }
         public IReadOnlyList<BuildResourceDef> Resources { get; }
@@ -447,8 +463,11 @@ namespace Game.Core.Content
             build.Field("activeDays").AsInt(1);
             build.Field("minPlayers").AsInt(1);
             return new GuildRules(levels, guilds, districts, buildings, stages, build.Field("voteDays").AsInt(1), build.Field("openHours").AsInt(0), resources, sites,
-                rewards, top.Field("size").AsInt(0), top.Field("shards").AsInt(0), build.Field("stageShards").AsInt(0), ObservatoryOf(root.Field("observatory")));
+                rewards, top.Field("size").AsInt(0), top.Field("shards").AsInt(0), build.Field("stageShards").AsInt(0), ObservatoryOf(root.Field("observatory")), TrialOf(root.Field("trial")));
         }
+
+        private static MasterTrialRules TrialOf(ContentNode node) =>
+            new MasterTrialRules(node.Field("seconds").AsNumber(10, 600), node.Field("stage").AsInt(1, 1000), node.Field("heroLevel").AsInt(1, 200));
 
         private static ObservatoryBonus ObservatoryOf(ContentNode node) =>
             new ObservatoryBonus(node.Field("fishWeight").AsNumber(1, 20), node.Field("plantGrow").AsNumber(0, MuseumRules.MaxPerk), node.Field("plantMutation").AsNumber(0, MuseumRules.MaxPerk));

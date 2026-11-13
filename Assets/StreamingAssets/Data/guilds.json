@@ -73,6 +73,7 @@
       ]
     }
   ],
+  "trial": { "seconds": 120, "stage": 30, "heroLevel": 12 },
   "observatory": { "fishWeight": 3, "plantGrow": 0.25, "plantMutation": 0.05 },
   "districts": [
     { "id": "gates", "name": { "ru": "Ворота", "en": "The Gates" } },
