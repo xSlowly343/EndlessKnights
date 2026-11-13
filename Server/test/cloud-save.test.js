@@ -10,6 +10,7 @@ const plain = (o) => JSON.parse(JSON.stringify(o));
 const now = Date.UTC(2026, 10, 13, 12);
 const hour = 3600000;
 const vector = fs.readFileSync(path.join(__dirname, "..", "test-vectors", "cloud-save.json"), "utf8");
+const riftVector = fs.readFileSync(path.join(__dirname, "..", "test-vectors", "cloud-save-rift.json"), "utf8");
 
 function edit(change) {
   const root = JSON.parse(vector);
@@ -82,4 +83,33 @@ test("too big or broken saves are refused", () => {
   assert.throws(() => put(nk, "x".repeat(server.CloudServerRules.maxBytes + 1), now), /too big/);
   assert.throws(() => put(nk, "{}", now), /not readable/);
   assert.throws(() => server.cloudPut(nk, logger, "ann", {}, now), /bad request/);
+});
+
+test("inside the Rift the server reads the shared record and peaceful bag, not the Rift hero", () => {
+  const root = JSON.parse(riftVector);
+  assert.strictEqual(root.payload.state.rift.inside, true, "the vector is made inside the Rift");
+  assert.ok(root.payload.state.rift.otherHero, "the home hero waits in rift.otherHero");
+  const inside = plain(server.cloudFacts(riftVector));
+  const home = plain(server.cloudFacts(vector));
+  assert.strictEqual(inside.record, 321);
+  assert.strictEqual(inside.playSeconds, home.playSeconds);
+  assert.deepStrictEqual(inside.bag, home.bag, "the peaceful bag is the same inside and at home");
+  assert.deepStrictEqual(inside.found.slice().sort(), home.found.slice().sort());
+  assert.ok(riftVector.length < server.CloudServerRules.maxBytes);
+});
+
+test("going in and out of the Rift does not make the bag grow on the server", () => {
+  const nk = world();
+  assert.strictEqual(put(nk, vector, now).status, "saved");
+  const later = (text, seconds) => { const root = JSON.parse(text); root.payload.state.inputStats.playSeconds = 7200 + seconds; return JSON.stringify(root); };
+  for (let i = 1; i <= 3; i++) {
+    const inside = put(nk, later(riftVector, i * 1200), now + i * hour);
+    assert.strictEqual(inside.status, "saved", "inside, round " + i);
+    assert.strictEqual(inside.server.record, 321);
+    const back = put(nk, later(vector, i * 1200 + 600), now + i * hour + hour / 2);
+    assert.strictEqual(back.status, "saved", "back home, round " + i);
+  }
+  const ledger = server.inflowRead(nk, "ann").value;
+  assert.strictEqual(ledger.bag.herb_windwort, 40);
+  assert.strictEqual(ledger.bag.ore_hills, 12);
 });
