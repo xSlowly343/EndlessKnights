@@ -43,8 +43,9 @@ const needOf = (project) => {
   const found = server.townBuildProject(project);
   return found.building.levels[found.level - 1].needs;
 };
-const labour = rules.resources.find((entry) => entry.kind === "labour").id;
-const raw = rules.resources.find((entry) => entry.kind === "raw").id;
+const labour = rules.resources[0].id;
+const wood = "wood";
+const finish = (nk, ctx, at) => plain(JSON.parse(server.townBuildFinishRpc(ctx, logger, nk, "{}")));
 
 test("rules come from guilds.json: every building level has resources to gather", () => {
   assert.ok(starts.length > 1, "the town starts from a tent and has several first buildings to choose from");
@@ -112,7 +113,7 @@ test("a player has one vote and can move it until the vote ends", () => {
   assert.throws(() => vote(nk, "p0", second, now + rules.voteMs), /the vote is closed/);
 });
 
-test("when the vote ends the sign names the winner and the resources its givers can bring", () => {
+test("when the vote ends the sign names the winner and every resource it needs", () => {
   const { nk } = world(2);
   const winner = starts[2];
   vote(nk, "p0", winner);
@@ -121,45 +122,37 @@ test("when the vote ends the sign names the winner and the resources its givers 
   assert.strictEqual(view.phase, "gather");
   assert.strictEqual(view.project, winner);
   assert.deepStrictEqual(view.candidates, []);
-  for (const entry of view.resources)
-    assert.strictEqual(entry.need, entry.id === labour ? Math.round(needOf(winner)[labour] * rules.minPlayers * rules.gatherDays) : 0, entry.id);
+  const stands = (guild) => guild === "";
+  for (const entry of view.resources) {
+    const rule = rules.resources.find((known) => known.id === entry.id);
+    assert.strictEqual(entry.need, stands(rule.guild) ? Math.round((needOf(winner)[entry.id] || 0) * rules.minPlayers * rules.gatherDays) : 0, entry.id);
+  }
+  assert.ok(resource(view, wood).need > 0, "wood is needed even if nobody cuts it yet: then the build waits");
 });
 
-test("a building never needs what nobody gathers or what only an unbuilt hall makes", () => {
+test("a building never needs what only a hall that is not built yet can make", () => {
   const gated = rules.resources.filter((entry) => entry.guild !== "");
   assert.ok(gated.length > 0);
-  const everyDay = {};
-  const suppliers = {};
-  for (let i = 1; i <= rules.activeDays; i++)
-    everyDay[String(100 - i)] = 10;
-  for (const entry of rules.resources)
-    suppliers[entry.id] = Object.assign({}, everyDay);
   for (const project of projects) {
-    const before = plain(server.townBuildNeed({ built: [], days: everyDay, suppliers: suppliers }, project, 100));
-    const after = plain(server.townBuildNeed({ built: projects, days: everyDay, suppliers: suppliers }, project, 100));
-    const nobody = plain(server.townBuildNeed({ built: projects, days: everyDay, suppliers: {} }, project, 100));
+    const before = plain(server.townBuildNeed({ built: [], days: {} }, project, 100));
+    const after = plain(server.townBuildNeed({ built: projects, days: {} }, project, 100));
     for (const entry of gated) {
       assert.strictEqual(before[entry.id], undefined, project + " " + entry.id);
       if (needOf(project)[entry.id] > 0)
         assert.ok(after[entry.id] > 0, project + " " + entry.id);
     }
     assert.ok(Object.keys(before).length > 0, project);
-    assert.deepStrictEqual(Object.keys(nobody), [labour], project + ": only labour when nobody brings anything else");
   }
 });
 
-test("a raw material is needed in proportion to the players who gather it", () => {
+test("the need grows with the players who gathered in the last days", () => {
   const days = {};
-  const wood = {};
-  for (let i = 1; i <= rules.activeDays; i++) {
+  for (let i = 1; i <= rules.activeDays; i++)
     days[String(100 - i)] = 200;
-    wood[String(100 - i)] = 30;
-  }
-  const project = starts.find((id) => needOf(id)[raw] > 0);
-  assert.ok(project, "a first building is built from wood");
-  const need = plain(server.townBuildNeed({ built: [], days: days, suppliers: { [raw]: wood } }, project, 100));
-  assert.strictEqual(need[labour], needOf(project)[labour] * 200 * rules.gatherDays);
-  assert.strictEqual(need[raw], needOf(project)[raw] * 30 * rules.gatherDays);
+  const project = starts[0];
+  const need = plain(server.townBuildNeed({ built: projects, days: days }, project, 100));
+  for (const id of Object.keys(needOf(project)))
+    assert.strictEqual(need[id], needOf(project)[id] * 200 * rules.gatherDays);
   assert.strictEqual(server.townBuildPlayers({}, 100), rules.minPlayers);
 });
 
@@ -196,10 +189,8 @@ test("what a player gathers counts for the town during the vote too, capped per 
   assert.strictEqual(resource(first, id).sentToday, 1200);
   assert.strictEqual(resource(first, id).dailyCap, cap);
   assert.strictEqual(resource(first, other).stock, 3);
-  assert.deepStrictEqual(stored(nk).suppliers[other], { [String(server.walletDayOf(now))]: 1 }, "the town remembers who brings what");
-  const capped = add(nk, "p0", { [id]: cap, [other]: 2 });
-  assert.deepStrictEqual(capped.accepted, { [id]: cap - 1200, [other]: 2 });
-  assert.strictEqual(stored(nk).suppliers[other][String(server.walletDayOf(now))], 1, "a giver counts once a day");
+  const capped = add(nk, "p0", { [id]: cap });
+  assert.deepStrictEqual(capped.accepted, { [id]: cap - 1200 });
   assert.deepStrictEqual(add(nk, "p0", { [id]: 10 }).accepted, {}, "the day is full");
   const next = add(nk, "p0", { [id]: 10 }, now + day);
   assert.deepStrictEqual(next.accepted, { [id]: 10 }, "the next day opens again");
@@ -212,15 +203,18 @@ test("what a player gathers counts for the town during the vote too, capped per 
   assert.throws(() => add(nk, "p0", 5), /bad request/);
 });
 
-test("resources gathered in advance start the countdown the moment the vote ends", () => {
+test("resources gathered in advance still leave the build two weeks long", () => {
   const { nk } = world(1);
   vote(nk, "p0", starts[0]);
   fill(nk, { resources: plain(rules.resources).map((entry) => ({ id: entry.id, need: 1e12 })) });
   const view = state(nk, "p0", now + rules.voteMs + 5000);
   assert.strictEqual(view.phase, "build");
   assert.strictEqual(view.project, starts[0]);
-  assert.strictEqual(view.opensAt, now + rules.voteMs + rules.openMs);
+  assert.strictEqual(rules.minBuildMs, 14 * day, "a build takes at least two weeks");
+  assert.strictEqual(view.opensAt, now + rules.voteMs + rules.minBuildMs);
   assert.deepStrictEqual(view.built, [], "not open before the countdown ends");
+  assert.strictEqual(state(nk, "p0", now + rules.voteMs + rules.minBuildMs - 1000).phase, "build");
+  assert.deepStrictEqual(state(nk, "p0", now + rules.voteMs + rules.minBuildMs).built, [starts[0]]);
 });
 
 test("the last delivery starts the countdown, then the building opens and a new vote begins", () => {
@@ -238,7 +232,11 @@ test("the last delivery starts the countdown, then the building opens and a new 
   assert.strictEqual(state(nk, "p0", chosen + day).phase, "gather");
   view = add(nk, "p0", { [id]: 9 }, chosen + day);
   assert.strictEqual(view.phase, "build");
-  assert.strictEqual(view.opensAt, chosen + day + rules.openMs);
+  assert.strictEqual(view.opensAt, chosen + rules.minBuildMs, "gathered early, it still opens two weeks after the vote");
+  const late = world(1);
+  vote(late.nk, "p0", starts[0]);
+  fill(late.nk, state(late.nk, "p0", chosen), chosen + 20 * day);
+  assert.strictEqual(state(late.nk, "p0", chosen + 20 * day).opensAt, chosen + 20 * day + rules.openMs, "gathered late, it opens after the countdown");
   assert.deepStrictEqual(plain(server.townMine(nk, "p0", chosen + day)).guilds, []);
 
   const opened = view.opensAt;
@@ -286,7 +284,7 @@ test("builders earn points, the board shows the best of them and the town thanks
   assert.strictEqual(letter("p0"), undefined, "nothing is sent while the building is not open");
 
   fill(nk, { resources: rules.resources.map((entry) => ({ id: entry.id, need: 1e12 })) });
-  const opened = now + rules.voteMs + rules.openMs + 1000;
+  const opened = now + rules.voteMs + rules.minBuildMs + 1000;
   view = state(nk, "p0", opened);
   assert.strictEqual(view.round, 2);
   assert.strictEqual(view.points, 0);
@@ -307,6 +305,23 @@ test("builders earn points, the board shows the best of them and the town thanks
   add(nk, "p0", full, opened);
   state(nk, "p0", opened + day);
   assert.strictEqual(letter("p0").version, version, "one letter per building");
+});
+
+test("the game developer can open a gathered building before two weeks, players cannot", () => {
+  const { nk } = world(2);
+  nk.storageWrite([{ collection: "chat_roles", key: "p1", userId: server.PartySystemUser, value: { role: "developer" }, version: "*", permissionRead: 0, permissionWrite: 0 }]);
+  vote(nk, "p0", starts[0]);
+  const chosen = now + rules.voteMs;
+  assert.strictEqual(state(nk, "p0", chosen).phase, "gather");
+  assert.throws(() => server.townBuildFinish(nk, logger, "server", chosen), /nothing gathered/, "not before everything is gathered");
+  fill(nk, { resources: rules.resources.map((entry) => ({ id: entry.id, need: 1e12 })) }, chosen);
+  assert.throws(() => server.townBuildFinishRpc({ userId: "p0" }, logger, nk, "{}"), (error) => error.code === 7, "a player cannot");
+  nk.storageWrite([{ collection: "chat_roles", key: "p0", userId: server.PartySystemUser, value: { role: "moderator" }, version: "*", permissionRead: 0, permissionWrite: 0 }]);
+  assert.throws(() => server.townBuildFinishRpc({ userId: "p0" }, logger, nk, "{}"), (error) => error.code === 7, "a chat moderator cannot");
+  const done = plain(server.townBuildFinish(nk, logger, "p1", chosen + day));
+  assert.deepStrictEqual(done.built, [starts[0]]);
+  assert.strictEqual(done.phase, "vote");
+  assert.throws(() => server.townBuildFinishRpc({ userId: "p1" }, logger, nk, "{}"), /nothing gathered/, "a new vote has nothing to open");
 });
 
 test("there are more reward tiers than before and each one is worth more", () => {

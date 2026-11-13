@@ -404,6 +404,7 @@ namespace Game.Core.Content
             var rewards = RewardsOf(build.Field("rewards"));
             var top = build.Field("top");
             build.Field("gatherDays").AsInt(1);
+            build.Field("buildDays").AsInt(1);
             build.Field("activeDays").AsInt(1);
             build.Field("minPlayers").AsInt(1);
             return new GuildRules(levels, guilds, districts, buildings, stages, build.Field("voteDays").AsInt(1), build.Field("openHours").AsInt(0), resources, sites,

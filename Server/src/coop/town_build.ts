@@ -1,6 +1,5 @@
 interface TownBuildResource {
     id: string;
-    kind: string;
     dailyCap: number;
     guild: string;
 }
@@ -27,6 +26,7 @@ interface TownBuildRules {
     stages: number[];
     stageShards: number;
     voteMs: number;
+    minBuildMs: number;
     gatherDays: number;
     openMs: number;
     activeDays: number;
@@ -41,7 +41,6 @@ interface TownBuildRules {
 interface TownBuildValue {
     built: string[];
     days: { [day: string]: number };
-    suppliers: { [resource: string]: { [day: string]: number } };
     round: number;
     phase: string;
     voteEnds: number;
@@ -50,6 +49,7 @@ interface TownBuildValue {
     stock: { [resource: string]: number };
     need: { [resource: string]: number };
     opensAt: number;
+    buildFrom: number;
     halls: { [round: string]: string };
 }
 
@@ -72,7 +72,6 @@ const TownBuildMaxSteps = 64;
 const TownBuildPointsPerDay = 1000;
 const TownBuildMailKind = "town";
 const TownBuildLevelMark = ":";
-const TownBuildLabour = "labour";
 
 function townBuildProjectId(building: string, level: number): string {
     return level <= 1 ? building : building + TownBuildLevelMark + level;
@@ -192,18 +191,6 @@ function townBuildCounts(source: unknown): { [id: string]: number } {
     return counts;
 }
 
-function townBuildSuppliersOf(source: unknown): { [resource: string]: { [day: string]: number } } {
-    const suppliers: { [resource: string]: { [day: string]: number } } = {};
-    if (source === null || typeof source !== "object")
-        return suppliers;
-    for (const key of Object.keys(source as object)) {
-        const days = townBuildCounts((source as { [resource: string]: unknown })[key]);
-        if (Object.keys(days).length > 0)
-            suppliers[key] = days;
-    }
-    return suppliers;
-}
-
 function townBuildHalls(source: unknown): { [round: string]: string } {
     const halls: { [round: string]: string } = {};
     if (source === null || typeof source !== "object")
@@ -227,7 +214,6 @@ function townBuildRead(nk: nkruntime.Nakama): { value: TownBuildValue; version: 
         value: {
             built: Array.isArray(stored.built) ? stored.built : [],
             days: townBuildCounts(stored.days),
-            suppliers: townBuildSuppliersOf(stored.suppliers),
             round: typeof stored.round === "number" ? stored.round : 0,
             phase: typeof stored.phase === "string" ? stored.phase : "",
             voteEnds: typeof stored.voteEnds === "number" ? stored.voteEnds : 0,
@@ -236,6 +222,7 @@ function townBuildRead(nk: nkruntime.Nakama): { value: TownBuildValue; version: 
             stock: townBuildCounts(stored.stock),
             need: townBuildCounts(stored.need),
             opensAt: typeof stored.opensAt === "number" ? stored.opensAt : 0,
+            buildFrom: typeof stored.buildFrom === "number" ? stored.buildFrom : 0,
             halls: townBuildHalls(stored.halls)
         },
         version: objects.length > 0 ? objects[0].version : "*"
@@ -284,36 +271,20 @@ function townBuildPlayers(days: { [day: string]: number }, today: number): numbe
     return Math.max(rules.minPlayers, counted > 0 ? total / counted : days[String(today)] || 0);
 }
 
-function townBuildSuppliers(value: TownBuildValue, resource: string, today: number): number {
-    const rules = TownBuildServerRules;
-    const days = value.suppliers[resource] || {};
-    let total = 0;
-    let counted = 0;
-    for (let day = today - rules.activeDays; day < today; day++) {
-        if (value.days[String(day)] !== undefined) {
-            total += days[String(day)] || 0;
-            counted++;
-        }
-    }
-    return counted > 0 ? total / counted : days[String(today)] || 0;
-}
-
 function townBuildNeed(value: TownBuildValue, project: string, today: number): { [resource: string]: number } {
     const rules = TownBuildServerRules;
     const found = townBuildProject(project);
     const perPlayerDay = found === null ? {} : found.building.levels[found.level - 1].needs;
     const players = townBuildPlayers(value.days, today);
     const need: { [resource: string]: number } = {};
-    for (const resource of rules.resources) {
-        if (!(perPlayerDay[resource.id] > 0) || !townBuildStands(value, resource.guild))
-            continue;
-        const givers = resource.kind === TownBuildLabour ? players : townBuildSuppliers(value, resource.id, today);
-        if (givers > 0)
-            need[resource.id] = Math.max(1, Math.round(perPlayerDay[resource.id] * givers * rules.gatherDays));
-    }
-    if (Object.keys(need).length === 0)
-        need[TownBuildLabour] = Math.max(1, Math.round((perPlayerDay[TownBuildLabour] || 1) * players * rules.gatherDays));
+    for (const resource of rules.resources)
+        if (perPlayerDay[resource.id] > 0 && townBuildStands(value, resource.guild))
+            need[resource.id] = Math.max(1, Math.round(perPlayerDay[resource.id] * players * rules.gatherDays));
     return need;
+}
+
+function townBuildOpensAt(value: TownBuildValue, gatheredAt: number): number {
+    return Math.max(gatheredAt + TownBuildServerRules.openMs, value.buildFrom + TownBuildServerRules.minBuildMs);
 }
 
 function townBuildVotes(value: TownBuildValue): number {
@@ -343,6 +314,7 @@ function townBuildOpenVote(value: TownBuildValue, fromUnixMs: number): void {
     value.need = {};
     value.votes = {};
     value.opensAt = 0;
+    value.buildFrom = 0;
     if (townBuildCandidates(value).length === 0) {
         value.phase = TownBuildDone;
         value.voteEnds = 0;
@@ -376,15 +348,16 @@ function townBuildAdvance(value: TownBuildValue, logger: nkruntime.Logger, nowUn
             value.project = townBuildWinner(value);
             value.need = townBuildNeed(value, value.project, walletDayOf(value.voteEnds));
             value.votes = {};
+            value.buildFrom = value.voteEnds;
             value.phase = TownBuildGather;
             logger.info("town: the vote of round %d chose %s", value.round, value.project);
             if (townBuildGathered(value)) {
                 value.phase = TownBuildOpening;
-                value.opensAt = value.voteEnds + rules.openMs;
+                value.opensAt = townBuildOpensAt(value, value.voteEnds);
             }
         } else if (value.phase === TownBuildGather && townBuildGathered(value)) {
             value.phase = TownBuildOpening;
-            value.opensAt = nowUnixMs + rules.openMs;
+            value.opensAt = townBuildOpensAt(value, nowUnixMs);
         } else if (value.phase === TownBuildOpening && nowUnixMs >= value.opensAt) {
             const openedAt = value.opensAt;
             value.built.push(value.project);
@@ -447,29 +420,26 @@ function townBuildGains(gains: unknown): { [resource: string]: number } {
     return known;
 }
 
-function townBuildTake(nk: nkruntime.Nakama, userId: string, gains: { [resource: string]: number }, day: number, round: number): { mine: TownBuildMine; accepted: { [resource: string]: number }; first: boolean; fresh: string[] } {
+function townBuildTake(nk: nkruntime.Nakama, userId: string, gains: { [resource: string]: number }, day: number, round: number): { mine: TownBuildMine; accepted: { [resource: string]: number }; first: boolean } {
     for (let attempt = 1; attempt <= TownWriteAttempts; attempt++) {
         const stored = townBuildMineRead(nk, userId, day, round);
         const mine = stored.value;
         const first = Object.keys(mine.sent).length === 0;
         const accepted: { [resource: string]: number } = {};
-        const fresh: string[] = [];
         for (const resource of TownBuildServerRules.resources) {
             const sent = mine.sent[resource.id] || 0;
             const taken = Math.max(0, Math.min(gains[resource.id] || 0, resource.dailyCap - sent));
             if (taken === 0)
                 continue;
-            if (sent === 0)
-                fresh.push(resource.id);
             accepted[resource.id] = taken;
             mine.sent[resource.id] = sent + taken;
             mine.given[resource.id] = (mine.given[resource.id] || 0) + taken;
         }
         if (Object.keys(accepted).length === 0)
-            return { mine: mine, accepted: accepted, first: false, fresh: fresh };
+            return { mine: mine, accepted: accepted, first: false };
         try {
             nk.storageWrite([{ collection: TownCollection, key: TownBuildSentKey, userId: userId, value: mine as any, version: stored.version, permissionRead: 1, permissionWrite: 0 }]);
-            return { mine: mine, accepted: accepted, first: first, fresh: fresh };
+            return { mine: mine, accepted: accepted, first: first };
         } catch (error) {
             continue;
         }
@@ -508,20 +478,9 @@ function townBuildAdd(nk: nkruntime.Nakama, logger: nkruntime.Logger, userId: st
         townBuildAdvance(value, logger, nowUnixMs);
         if (taken.first)
             value.days[String(day)] = (value.days[String(day)] || 0) + 1;
-        for (const resource of taken.fresh) {
-            const days = value.suppliers[resource] || (value.suppliers[resource] = {});
-            days[String(day)] = (days[String(day)] || 0) + 1;
-        }
         for (const key of Object.keys(value.days))
             if (Number(key) < day - rules.keptDays)
                 delete value.days[key];
-        for (const resource of Object.keys(value.suppliers)) {
-            for (const key of Object.keys(value.suppliers[resource]))
-                if (Number(key) < day - rules.keptDays)
-                    delete value.suppliers[resource][key];
-            if (Object.keys(value.suppliers[resource]).length === 0)
-                delete value.suppliers[resource];
-        }
         for (const resource of Object.keys(taken.accepted))
             value.stock[resource] = (value.stock[resource] || 0) + taken.accepted[resource];
         townBuildAdvance(value, logger, nowUnixMs);
@@ -567,6 +526,33 @@ function townBuildVote(nk: nkruntime.Nakama, logger: nkruntime.Logger, userId: s
         }
     }
     throw new Error("the town is busy, try again");
+}
+
+function townBuildFinish(nk: nkruntime.Nakama, logger: nkruntime.Logger, by: string, nowUnixMs: number): { [key: string]: any } {
+    for (let attempt = 1; attempt <= TownWriteAttempts; attempt++) {
+        const stored = townBuildRead(nk);
+        const value = stored.value;
+        townBuildAdvance(value, logger, nowUnixMs);
+        if (value.phase !== TownBuildOpening)
+            throw new Error("the town has nothing gathered to build");
+        value.opensAt = nowUnixMs;
+        townBuildAdvance(value, logger, nowUnixMs);
+        try {
+            nk.storageWrite([{ collection: TownCollection, key: TownGuildsKey, userId: PartySystemUser, value: value as any, version: stored.version, permissionRead: 0, permissionWrite: 0 }]);
+            logger.warn("town: the build of round %d is finished early by %s", value.round - 1, by);
+            return { built: value.built, round: value.round, phase: value.phase };
+        } catch (error) {
+            continue;
+        }
+    }
+    throw new Error("the town is busy, try again");
+}
+
+function townBuildFinishRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    const role = ctx.userId ? chatRoleOf(nk, ctx.userId) : ChatOperator;
+    if (role === "" || !chatRoleRule(role).grantsRoles)
+        throw { message: "not available to players", code: 7 };
+    return JSON.stringify(townBuildFinish(nk, logger, ctx.userId || ChatOperator, Date.now()));
 }
 
 function townBuildRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {

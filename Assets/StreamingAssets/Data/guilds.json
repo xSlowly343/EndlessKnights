@@ -23,6 +23,7 @@
     "voteDays": 14,
     "gatherDays": 21,
     "openHours": 24,
+    "buildDays": 14,
     "activeDays": 7,
     "minPlayers": 2,
     "resources": [
