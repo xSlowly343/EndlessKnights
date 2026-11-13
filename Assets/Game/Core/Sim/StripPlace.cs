@@ -6,8 +6,7 @@ namespace Game.Core.Sim
         Rift,
         Dungeon,
         EventFight,
-        Refuge,
-        Hideout,
+        Hideout = 5,
         ClanCamp,
         Town
     }

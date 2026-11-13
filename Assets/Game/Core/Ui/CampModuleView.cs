@@ -59,6 +59,7 @@ namespace Game.Core.Ui
             CampModuleResult.ForgeClosed => Texts.Get("campModule.forgeClosed"),
             CampModuleResult.NoBlueprint => Texts.Get("campModule.noBlueprint"),
             CampModuleResult.NotEnough => Texts.Get("campModule.notEnough"),
+            CampModuleResult.PartyHouse => Texts.Get("campModule.party"),
             _ => Texts.Get("campModule.ready")
         };
     }

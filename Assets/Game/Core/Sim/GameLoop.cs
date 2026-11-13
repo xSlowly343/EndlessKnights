@@ -97,6 +97,7 @@ namespace Game.Core.Sim
         private readonly TownSystem _town;
         private readonly FishingSystem _fishing;
         private readonly CookingSystem _cooking;
+        private readonly RiftSupplySystem _riftSupply;
         private readonly ForgeSystem _forge;
         private readonly MuseumSystem _museum;
         private readonly DecorSystem _decor;
@@ -180,6 +181,7 @@ namespace Game.Core.Sim
             _alchemy = new AlchemySystem(data.Alchemy, state, hero, _camp, _peaceful, Events);
             _expeditions = new ExpeditionSystem(data.Expeditions, state, data.Stages, data.Cosmetics, _camp, Events);
             _cooking = new CookingSystem(data.Cooking, state, hero, _camp, _peaceful, Events);
+            _riftSupply = new RiftSupplySystem(data.Cooking, data.Alchemy, state, hero);
             _companions = new CompanionSystem(data.Companions, data.Cooking, data.Combat.Conditions, state, _camp, _expeditions, Events);
             _nest = new NestSystem(state, _companions, _camp, data.Stages, Events);
             _nest.GuildLevel = _guilds.Level;
@@ -212,6 +214,8 @@ namespace Game.Core.Sim
             _hideout.Companions = _companions;
             _chronicle.Companions = _companions;
             _hideout.Nest = _nest;
+            _hideout.Stations = _campLevels;
+            _hideout.Kitchen = _cooking;
             _museum.Companions = _companions;
             _forge.Shared = data.Hideout.Crafts;
             _alchemy.Shared = data.Hideout.Crafts;
@@ -312,6 +316,7 @@ namespace Game.Core.Sim
         public TownSystem Town => _town;
         public FishingSystem Fishing => _fishing;
         public CookingSystem Cooking => _cooking;
+        public RiftSupplySystem RiftSupply => _riftSupply;
         public ForgeSystem Forge => _forge;
         public MuseumSystem Museum => _museum;
         public DecorSystem Decor => _decor;
@@ -1086,6 +1091,7 @@ namespace Game.Core.Sim
             _distill.UseRules(data.Distill);
             _colossus.UseRules(data.Colossus);
             _cooking.UseRules(data.Cooking);
+            _riftSupply.UseRules(data.Cooking, data.Alchemy);
             _forge.UseRules(data.Forge);
             _forge.Shared = data.Hideout.Crafts;
             _museum.UseRules(data.Museum);
@@ -1236,6 +1242,7 @@ namespace Game.Core.Sim
             _tournament.Tick();
             _alchemy.BattleTick();
             _cooking.BattleTick();
+            _riftSupply.Tick();
             _apprentices.BattleTick();
             _modules.NoteBosses(firstEvent);
             _digs.NoteGuardians(firstEvent);

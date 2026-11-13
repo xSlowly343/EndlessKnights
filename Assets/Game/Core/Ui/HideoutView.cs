@@ -16,8 +16,49 @@ namespace Game.Core.Ui
         public bool IWant { get; internal set; }
     }
 
+    public sealed class CampStreetLine
+    {
+        public string Building { get; internal set; } = string.Empty;
+        public string Name { get; internal set; } = string.Empty;
+        public int Slots { get; internal set; }
+        public bool WaitsForGuild { get; internal set; }
+        public string OpensAtTier { get; internal set; } = string.Empty;
+    }
+
     public static class HideoutView
     {
+        public static string WorkshopTierName(CampSystem camp, bool russian = true) => russian ? camp.Tier.NameRu : camp.Tier.NameEn;
+
+        public static List<CampStreetLine> Workshop(CampSystem camp, bool russian = true)
+        {
+            var lines = new List<CampStreetLine>();
+            foreach (var building in camp.Rules.Buildings)
+            {
+                var slots = camp.Slots(building.Id);
+                var opens = string.Empty;
+                if (slots == 0)
+                {
+                    foreach (var tier in camp.Rules.Tiers)
+                    {
+                        if (tier.SlotsOf(building.Id) > 0)
+                        {
+                            opens = russian ? tier.NameRu : tier.NameEn;
+                            break;
+                        }
+                    }
+                }
+                lines.Add(new CampStreetLine
+                {
+                    Building = building.Id,
+                    Name = russian ? building.NameRu : building.NameEn,
+                    Slots = slots,
+                    WaitsForGuild = slots > 0 && camp.WaitsForGuild(building.Id),
+                    OpensAtTier = opens
+                });
+            }
+            return lines;
+        }
+
         public static string TierName(HideoutSystem hideout) =>
             hideout.State.Tier <= 0 ? Texts.Get("hideout.none") : Texts.Pick(hideout.Rules.Tiers[hideout.State.Tier - 1].NameRu, hideout.Rules.Tiers[hideout.State.Tier - 1].NameEn);
 
@@ -90,7 +131,8 @@ namespace Game.Core.Ui
                 return Texts.Get(state.Leader ? "hideout.project.pick" : "hideout.project.none");
             var building = hideout.Rules.Building(state.Project);
             var name = building == null ? state.Project : Texts.Pick(building.NameRu, building.NameEn);
-            return Texts.Format("hideout.project", name, state.ProjectLevel) + " " + Texts.Format("hideout.project.progress", state.ProjectPoints, state.ProjectTarget, System.Math.Min(state.HoursTogether, state.ProjectHours), state.ProjectHours);
+            var line = Texts.Format("hideout.project", name, state.ProjectLevel) + " " + Texts.Format("hideout.project.progress", state.ProjectPoints, state.ProjectTarget, System.Math.Min(state.HoursTogether, state.ProjectHours), state.ProjectHours);
+            return state.ProjectFromStorage > 0 ? line + " " + Texts.Format("hideout.project.fromStorage", state.ProjectFromStorage) : line;
         }
 
         public static string MyCorner(HideoutSystem hideout) =>
@@ -148,11 +190,71 @@ namespace Game.Core.Ui
             return lines;
         }
 
+        public static List<StorageForBuildLine> StorageForBuild(HideoutSystem hideout)
+        {
+            var lines = new List<StorageForBuildLine>();
+            var state = hideout.State;
+            if (!state.StorageBuilt)
+                return lines;
+            var items = new List<string>(state.Storage.Keys);
+            items.Sort(System.StringComparer.Ordinal);
+            foreach (var item in items)
+            {
+                var each = hideout.PointsOf(item);
+                if (each > 0)
+                    lines.Add(new StorageForBuildLine(item, state.Storage[item], each, hideout.CanBuildFromStorage(item, 1)));
+            }
+            return lines;
+        }
+
+        public static string StorageForBuildSummary(HideoutSystem hideout)
+        {
+            var state = hideout.State;
+            if (!state.StorageBuilt)
+                return string.Empty;
+            if (state.Project.Length == 0 || state.ProjectTarget <= state.ProjectPoints)
+                return Texts.Format("hideout.storage.forBuild", state.ForBuildPoints);
+            var left = state.ProjectTarget - state.ProjectPoints;
+            var share = (int)System.Math.Min(100, System.Math.Floor(100.0 * state.ForBuildPoints / left));
+            return Texts.Format("hideout.storage.forBuildShare", state.ForBuildPoints, share);
+        }
+
+        public static List<PartyStationLine> PartyStations(HideoutSystem hideout, CampLevelSystem levels)
+        {
+            var lines = new List<PartyStationLine>();
+            if (!hideout.InParty)
+                return lines;
+            var rules = levels.Rules;
+            var state = hideout.State;
+            foreach (var def in rules.Buildings)
+            {
+                var level = levels.Level(def.Building);
+                if (level == 0)
+                    continue;
+                var top = level >= rules.MaxLevel;
+                var amounts = top ? null : rules.AmountsFor(level + 1);
+                var enough = amounts != null && state.StorageBuilt;
+                var parts = new List<string>(def.Materials.Count);
+                for (var i = 0; amounts != null && i < def.Materials.Count; i++)
+                {
+                    var stored = state.Storage.TryGetValue(def.Materials[i], out var have) ? have : 0;
+                    enough &= stored >= amounts[i];
+                    parts.Add(Texts.Format("campLevel.cost", def.Materials[i], stored, amounts[i]));
+                }
+                lines.Add(new PartyStationLine(def.Building, level, levels.BranchOf(def.Building), string.Join(" · ", parts),
+                    state.Leader && enough, state.Leader && level >= rules.BranchLevel));
+            }
+            return lines;
+        }
+
+        public static string ShareSetting(HideoutSystem hideout) =>
+            hideout.State.ShareMaterials ? Texts.Format("hideout.storage.share.on", hideout.ShareKeep) : Texts.Get("hideout.storage.share.off");
+
         public static List<string> JournalLines(HideoutState state)
         {
             var lines = new List<string>();
             foreach (var entry in state.Journal)
-                lines.Add(Texts.Format(entry.Amount > 0 ? "hideout.journal.put" : "hideout.journal.took", entry.Name, entry.Item, System.Math.Abs(entry.Amount)));
+                lines.Add(Texts.Format(entry.Amount > 0 ? "hideout.journal.put" : entry.Build.Length > 0 ? "hideout.journal.built" : "hideout.journal.took", entry.Name, entry.Item, System.Math.Abs(entry.Amount)));
             return lines;
         }
 

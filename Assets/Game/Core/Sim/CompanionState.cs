@@ -56,6 +56,9 @@ namespace Game.Core.Sim
 
     public sealed class CompanionState
     {
+        public string Visiting { get; set; } = string.Empty;
+        public string VisitHost { get; set; } = string.Empty;
+        public long VisitEndsUnixMs { get; set; }
         public List<CompanionEgg> Eggs { get; } = new List<CompanionEgg>();
         public double EggCooldown { get; set; }
         public long Sparks { get; set; }

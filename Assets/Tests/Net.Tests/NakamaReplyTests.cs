@@ -274,15 +274,15 @@ namespace Game.Net.Tests
         }
 
         [Test]
-        public void CampVisitsAreReadFromTheServer()
+        public void HideoutVisitsAreReadFromTheServer()
         {
-            Assert.That(CampReply.GuestPayload("ann", "water", 2), Is.EqualTo("{\"host\":\"ann\",\"act\":\"water\",\"bed\":2}"));
-            var visit = CampVisitView.From(NakamaJson.Parse("{\"host\":\"ann\",\"camp\":{\"theme\":\"ice_peak\",\"decor\":[\"decor_lantern\",\"\"],\"monuments\":{\"milestone\":2},\"title\":\"legends\",\"trophies\":[\"trophy_dragon_koi\"],\"brand\":\"\"},\"left\":[\"water\",\"hammer\"]}"));
+            Assert.That(HideoutGuests.GuestPayload("ann", "water", 2), Is.EqualTo("{\"host\":\"ann\",\"act\":\"water\",\"bed\":2}"));
+            var visit = HideoutVisitView.From(NakamaJson.Parse("{\"host\":\"ann\",\"hideout\":{\"theme\":\"ice_peak\",\"decor\":[\"decor_lantern\",\"\"],\"monuments\":{\"milestone\":2},\"title\":\"legends\",\"trophies\":[\"trophy_dragon_koi\"],\"brand\":\"\"},\"left\":[\"water\",\"hammer\"]}"));
             Assert.That(visit.Theme, Is.EqualTo("ice_peak"));
             Assert.That(visit.Monuments["milestone"], Is.EqualTo(2));
             Assert.That(visit.Decor, Is.EqualTo(new[] { "decor_lantern", "" }));
             Assert.That(visit.Left, Is.EqualTo(new[] { "water", "hammer" }));
-            var guests = CampReply.Guests(NakamaJson.Parse("{\"guests\":[{\"from\":\"b\",\"fromName\":\"Bob\",\"act\":\"water\",\"bed\":1,\"at\":5}]}"));
+            var guests = HideoutGuests.Guests(NakamaJson.Parse("{\"guests\":[{\"from\":\"b\",\"fromName\":\"Bob\",\"act\":\"water\",\"bed\":1,\"at\":5}]}"));
             Assert.That(guests.Single().Act, Is.EqualTo("water"));
             Assert.That(guests.Single().Bed, Is.EqualTo(1));
         }
@@ -694,6 +694,95 @@ namespace Game.Net.Tests
             Assert.That(card.Members, Is.EqualTo(3));
             Assert.That(card.ActiveNow, Is.True);
             Assert.That(card.UsuallyOnline, Is.EqualTo("day"));
+        }
+
+        [Test]
+        public void TheStorageForTheBuildAndTheNameConsentAreRead()
+        {
+            Assert.That(HideoutReply.SharePayload(new System.Collections.Generic.Dictionary<string, long> { ["ore_hills"] = 15 }), Is.EqualTo("{\"items\":{\"ore_hills\":15}}"));
+            var hideout = HideoutReply.From(NakamaJson.Parse("{\"tier\":3,\"project\":{\"building\":\"storage\",\"level\":2,\"points\":40,\"target\":1000,\"hours\":30,\"yours\":0,\"fromStorage\":12},"
+                + "\"commons\":{\"storage\":{\"ore_hills\":4},\"forBuild\":{\"points\":8,\"items\":{\"ore_hills\":4}},\"journal\":[{\"name\":\"Bob\",\"item\":\"ore_hills\",\"amount\":-6,\"build\":\"storage\"}]}}"));
+            Assert.That(hideout.ProjectFromStorage, Is.EqualTo(12));
+            Assert.That(hideout.ForBuildPoints, Is.EqualTo(8));
+            Assert.That(hideout.Journal.Single().Build, Is.EqualTo("storage"));
+            Assert.That(NameConsentReply.SetPayload(NameConsentReply.TownTop, true), Is.EqualTo("{\"place\":\"town_top\",\"shown\":true}"));
+            Assert.That(NameConsentReply.From(NakamaJson.Parse("{\"shown\":[\"town_top\"]}")).Shows(NameConsentReply.TownTop), Is.True);
+            Assert.That(NameConsentReply.From(NakamaJson.Parse("{\"shown\":[]}")).Shows(NameConsentReply.Museum), Is.False);
+            Assert.That(TownReply.From(NakamaJson.Parse("{\"available\":{\"herb_windwort\":150}}")).Available["herb_windwort"], Is.EqualTo(150));
+            var stations = HideoutReply.From(NakamaJson.Parse("{\"tier\":2,\"stations\":{\"garden_bed\":{\"level\":3,\"branch\":\"greenhouse\"}}}"));
+            Assert.That(stations.StationLevels["garden_bed"], Is.EqualTo(3));
+            Assert.That(stations.StationBranches["garden_bed"], Is.EqualTo("greenhouse"));
+            Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":0}")).StationLevels, Is.Empty);
+            Assert.That(HideoutReply.BranchPayload("forge", "armory"), Is.EqualTo("{\"station\":\"forge\",\"branch\":\"armory\"}"));
+            Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":2,\"modules\":{\"iron_tripod\":0,\"signal_horn\":-1}}")).Modules["signal_horn"], Is.EqualTo(-1));
+            Assert.That(HideoutReply.InstallPayload("iron_tripod", 0), Is.EqualTo("{\"module\":\"iron_tripod\",\"socket\":0}"));
+        }
+
+        [Test]
+        public void TheCloudSaveIsSentAndRead()
+        {
+            Assert.That(CloudSaveReply.PutPayload("{\"a\":1}", true), Is.EqualTo("{\"save\":\"{\\\"a\\\":1}\",\"force\":true}"));
+            var older = CloudSaveReply.From(NakamaJson.Parse("{\"status\":\"older\",\"server\":{\"at\":1,\"record\":400,\"playSeconds\":9000,\"savedAt\":5,\"bytes\":10,\"trusted\":true,\"reason\":\"\"}}"));
+            Assert.That(older.Status, Is.EqualTo(CloudSaveReply.Older));
+            Assert.That(older.Server!.Value.Record, Is.EqualTo(400));
+            Assert.That(older.Trusted, Is.True);
+            var got = CloudSaveReply.From(NakamaJson.Parse("{\"save\":\"{}\",\"server\":null}"));
+            Assert.That(got.HasSave, Is.True);
+            Assert.That(got.Server, Is.Null);
+            Assert.That(CloudSaveReply.From(NakamaJson.Parse("{\"save\":null,\"server\":null}")).HasSave, Is.False);
+        }
+
+        [Test]
+        public void MuseumDiscoverersAndTheTownStreetAreRead()
+        {
+            Assert.That(MuseumFirstsReply.FoundPayload(new[] { "fish_hills_roach", "fish_hills" }), Is.EqualTo("{\"ids\":[\"fish_hills_roach\",\"fish_hills\"]}"));
+            var reply = MuseumFirstsReply.From(NakamaJson.Parse("{\"reported\":[\"fish_hills_roach\"],\"won\":[\"fish_hills_roach\"],\"firsts\":[{\"id\":\"fish_hills_roach\",\"name\":\"\",\"mine\":true,\"at\":5}]}"));
+            Assert.That(reply.Won, Is.EqualTo(new[] { "fish_hills_roach" }));
+            Assert.That(reply.Firsts.Single().Mine, Is.True);
+            Assert.That(TownStreetReply.Payload(true, TownStreetReply.Hideout), Is.EqualTo("{\"here\":true,\"place\":\"hideout\"}"));
+            var street = TownStreetReply.From(NakamaJson.Parse("{\"walkers\":[{\"userId\":\"b\",\"name\":\"Bob\",\"place\":\"hideout\",\"ties\":[\"party\",\"friend\"]}]}"));
+            Assert.That(street.Walkers, Is.EqualTo(new[] { "Bob" }));
+            Assert.That(street.People.Single().Place, Is.EqualTo(TownStreetReply.Hideout));
+            Assert.That(street.People.Single().Ties, Is.EqualTo(new[] { "party", "friend" }));
+        }
+
+        [Test]
+        public void ACompanionVisitIsReadFromTheServer()
+        {
+            Assert.That(CompanionVisitReply.SendPayload("bob", "camp_dog", "Rex", 1), Is.EqualTo("{\"host\":\"bob\",\"companion\":\"camp_dog\",\"name\":\"Rex\",\"stage\":1}"));
+            var away = CompanionVisitReply.From(NakamaJson.Parse("{\"away\":{\"host\":\"b\",\"hostName\":\"Bob\",\"companion\":\"camp_dog\",\"endsAt\":9,\"ready\":true},\"visitsLeft\":1,\"guests\":[{\"fromName\":\"Eve\",\"companion\":\"pet_owl\",\"name\":\"Hoot\",\"stage\":2,\"endsAt\":7}],\"now\":5}"));
+            Assert.That(away.Away, Is.True);
+            Assert.That(away.Ready, Is.True);
+            Assert.That(away.AwayHost, Is.EqualTo("Bob"));
+            Assert.That(away.Guests.Single().Name, Is.EqualTo("Hoot"));
+            var back = CompanionVisitReply.From(NakamaJson.Parse("{\"away\":null,\"visitsLeft\":1,\"guests\":[],\"companion\":\"camp_dog\",\"gifts\":{\"fish_hills_roach\":1},\"now\":5}"));
+            Assert.That(back.Away, Is.False);
+            Assert.That(back.Gifts["fish_hills_roach"], Is.EqualTo(1));
+            Assert.That(back.BackCompanion, Is.EqualTo("camp_dog"));
+        }
+
+        [Test]
+        public void TheTownRolesAreReadAndShown()
+        {
+            var reply = TownBuildReply.From(NakamaJson.Parse("{\"phase\":\"gather\",\"round\":2,\"roles\":[{\"role\":\"feeder\",\"name\":\"Cid\",\"amount\":4},{\"role\":\"logger\",\"name\":\"\",\"amount\":10}]}"));
+            Assert.That(reply.Board.Roles.Count, Is.EqualTo(2));
+            Assert.That(reply.Board.Roles[0].Name, Is.EqualTo("Cid"));
+        }
+
+        [Test]
+        public void ARiftSupplyIsReadAndSent()
+        {
+            Assert.That(RiftSupplyReply.SendPayload("bob", "dish:carp_pie"), Is.EqualTo("{\"to\":\"bob\",\"item\":\"dish:carp_pie\"}"));
+            var mine = RiftSupplyReply.From(NakamaJson.Parse("{\"window\":1761652800,\"supply\":{\"window\":1761652800,\"from\":\"a\",\"fromName\":\"Ann\",\"item\":\"potion:might:fine\",\"at\":5}}"));
+            Assert.That(mine.Window, Is.EqualTo(1761652800));
+            Assert.That(mine.Item, Is.EqualTo("potion:might:fine"));
+            Assert.That(mine.FromName, Is.EqualTo("Ann"));
+            Assert.That(RiftSupplyReply.From(NakamaJson.Parse("{\"window\":0,\"supply\":null}")).HasSupply, Is.False);
+            var rear = RiftSupplyReply.From(NakamaJson.Parse("{\"window\":5,\"endsAt\":9,\"sentThisWindow\":1,\"sendsPerWindow\":3,\"mine\":null,\"fighters\":[{\"userId\":\"c\",\"name\":\"Cid\",\"party\":true,\"supplied\":false}]}"));
+            Assert.That(rear.Fighters.Single().Name, Is.EqualTo("Cid"));
+            Assert.That(rear.Fighters.Single().Party, Is.True);
+            Assert.That(rear.SendsPerWindow, Is.EqualTo(3));
+            Assert.That(rear.HasSupply, Is.False);
         }
 
         [Test]

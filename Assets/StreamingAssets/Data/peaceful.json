@@ -10,6 +10,7 @@
     { "id": "distill", "name": { "ru": "Перегонный куб", "en": "Still" } },
     { "id": "meditation", "name": { "ru": "Созерцание", "en": "Meditation" } }
   ],
+  "riftSupply": { "sendsPerWindow": 3, "source": "rift_supply" },
   "offlineGoldShare": 0.3,
   "teaPause": { "battleMinutes": 30, "idleMinutes": 5 },
   "presets": [

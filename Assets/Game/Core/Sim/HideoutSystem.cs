@@ -32,10 +32,13 @@ namespace Game.Core.Sim
 
         public HideoutRules Rules => _rules;
         public HideoutState State => _state.Hideout;
-        public bool Inside => _state.Peaceful.Mode == PeacefulMode.Camp && _state.Peaceful.Place == PeacefulPlace.Hideout;
+        public bool Inside => _state.Peaceful.Mode == PeacefulMode.Camp && _state.Peaceful.Place == PeacefulPlace.Hideout && InParty;
+        public bool InParty => State.Tier > 0;
         public DecorSystem? Decor { get; set; }
         public CompanionSystem? Companions { get; set; }
         public NestSystem? Nest { get; set; }
+        public CampLevelSystem? Stations { get; set; }
+        public CookingSystem? Kitchen { get; set; }
         public int CornerDecor => _rules.CornerDecorAt(State.Tier);
         public bool CornerOpen => State.Tier > 0 && State.HasCorner;
         public IReadOnlyList<string> Corner => _state.Decor.Corner;
@@ -75,6 +78,7 @@ namespace Game.Core.Sim
             hideout.MyWants.AddRange(myWants);
             hideout.PierRareBoost = LevelOf(_rules.Pier) > 0 ? _rules.PierRareBoost : 0;
             hideout.DummyBuilt = LevelOf(_rules.Dummy) > 0;
+            hideout.PotBuilt = LevelOf(_rules.Pot) > 0;
             hideout.Trophies.Built = LevelOf(_rules.TrophyHall) > 0;
             Fill(hideout.Forge, _rules.Crafts.ForgeBuilding, hideout.Forge.Partners);
             Fill(hideout.Cauldron, _rules.Crafts.CauldronBuilding, hideout.Cauldron.Partners);
@@ -204,6 +208,14 @@ namespace Game.Core.Sim
             return brews;
         }
 
+        public List<string> TakeSharedDishes()
+        {
+            var dishes = new List<string>(_state.Cooking.SharedDishes);
+            _state.Cooking.SharedDishes.Clear();
+            return dishes;
+        }
+
+        public const string DishPrefix = "dish:";
         public const string PotionPrefix = "potion:";
         public const string FineSuffix = ":fine";
         public const string CompanionPetPrefix = "companion_pet:";
@@ -237,6 +249,58 @@ namespace Game.Core.Sim
         }
 
         public bool PackGoods(string item, int amount) => amount > 0 && _camp.Take(item, amount);
+
+        public int ShareKeep => State.ShareKeep >= 0 ? State.ShareKeep : _rules.Storage.ShareKeep;
+
+        public void SetShare(bool on, int keep = -1)
+        {
+            State.ShareMaterials = on;
+            State.ShareKeep = System.Math.Max(-1, keep);
+        }
+
+        public bool Shares(string item) => _materials.PointsOf(item) > 0 && _rules.Storage.Takes(item);
+
+        public Dictionary<string, long> TakeShare()
+        {
+            var taken = new Dictionary<string, long>(System.StringComparer.Ordinal);
+            if (!State.ShareMaterials || !State.StorageBuilt)
+                return taken;
+            var keep = ShareKeep;
+            var items = new List<string>(_state.Camp.Bag.Keys);
+            items.Sort(System.StringComparer.Ordinal);
+            foreach (var item in items)
+            {
+                if (!Shares(item))
+                    continue;
+                var amount = System.Math.Min(_camp.Count(item) - keep, _materials.MaxGive);
+                if (amount > 0 && _camp.Take(item, amount))
+                    taken[item] = amount;
+            }
+            return taken;
+        }
+
+        public void SettleShare(IReadOnlyDictionary<string, long> sent, IReadOnlyDictionary<string, long> accepted)
+        {
+            foreach (var pair in sent)
+            {
+                var left = pair.Value - (accepted.TryGetValue(pair.Key, out var took) ? System.Math.Min(took, pair.Value) : 0);
+                if (left > 0)
+                    _camp.Add(pair.Key, left);
+            }
+        }
+
+        public bool CanBuildFromStorage(string item, int amount) =>
+            State.Project.Length > 0 && _materials.PointsOf(item) > 0 && amount > 0 && amount <= _materials.MaxGive
+            && State.Storage.TryGetValue(item, out var stored) && stored >= amount;
+
+        public void UseStations(IReadOnlyDictionary<string, int> levels, IReadOnlyDictionary<string, string> branches, IReadOnlyDictionary<string, int>? modules = null, IReadOnlyList<string>? street = null) =>
+            Stations?.UsePartyHouse(InParty, levels, branches, modules, street);
+
+        public void UseForBuild(long points, long fromStorage)
+        {
+            State.ForBuildPoints = System.Math.Max(0, points);
+            State.ProjectFromStorage = System.Math.Max(0, fromStorage);
+        }
 
         private bool ReceiveCompanion(string item, long amount)
         {
@@ -274,6 +338,12 @@ namespace Game.Core.Sim
             {
                 if (pair.Value <= 0 || ReceiveCompanion(pair.Key, pair.Value))
                     continue;
+                if (pair.Key.StartsWith(DishPrefix, System.StringComparison.Ordinal))
+                {
+                    for (var i = 0; i < pair.Value; i++)
+                        Kitchen?.AddMeal(pair.Key.Substring(DishPrefix.Length));
+                    continue;
+                }
                 if (!pair.Key.StartsWith(PotionPrefix, System.StringComparison.Ordinal))
                 {
                     _camp.Add(pair.Key, pair.Value);
@@ -312,11 +382,11 @@ namespace Game.Core.Sim
             UseOrder(string.Empty, false, 0, false, System.Array.Empty<PartyOrderNeed>());
             UseCrafts(System.Array.Empty<string>(), System.Array.Empty<string>());
             UseCommons(false, System.Array.Empty<SharedBed>(), new Dictionary<string, long>(), false, new Dictionary<string, long>(), System.Array.Empty<StorageEntry>(), 0, 0);
+            UseForBuild(0, 0);
+            Stations?.UsePartyHouse(false, new Dictionary<string, int>(), new Dictionary<string, string>());
             UseCorners(false, System.Array.Empty<HideoutCorner>());
             Use(0, 0, 0, 0, 0, 0, System.Array.Empty<string>());
             UseBuild(new Dictionary<string, int>(), System.Array.Empty<string>(), string.Empty, 0, 0, 0, 0, 0, false, new Dictionary<string, int>(), System.Array.Empty<string>());
-            if (_state.Peaceful.Place == PeacefulPlace.Hideout)
-                _state.Peaceful.Place = PeacefulPlace.Refuge;
         }
 
         public List<string> Open()

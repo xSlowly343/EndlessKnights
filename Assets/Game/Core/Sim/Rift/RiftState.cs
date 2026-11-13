@@ -11,6 +11,8 @@ namespace Game.Core.Sim.Rift
         public StageProgress? OtherWorld { get; set; }
         public BigNumber Shards { get; set; }
         public long Deepest { get; set; } = 1;
+        public string Supply { get; set; } = string.Empty;
+        public long SupplyWindow { get; set; }
         public Dictionary<string, int> Artifacts { get; } = new Dictionary<string, int>(System.StringComparer.Ordinal);
 
         public void StartWindow(long windowId, long endUnixMs)

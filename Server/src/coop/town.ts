@@ -1,4 +1,7 @@
 interface TownRules {
+    museum: string[];
+    streetSeconds: number;
+    streetShown: number;
     giftsPerDay: number;
     giftMaxAmount: number;
     giftInbox: number;
@@ -63,7 +66,8 @@ function townView(nk: nkruntime.Nakama, userId: string, nowUnixMs: number, extra
         guilds: townGuilds(nk),
         sentToday: sent,
         giftsPerDay: rules.giftsPerDay,
-        inbox: townInbox(nk, userId)
+        inbox: townInbox(nk, userId),
+        available: inflowAvailable(nk, userId, rules.giftItems)
     };
     for (const key in extra)
         view[key] = extra[key];
@@ -91,24 +95,12 @@ function townGiftSend(nk: nkruntime.Nakama, userId: string, request: any, nowUni
     const recipient = users.filter((user) => user.userId === to)[0];
     if (!recipient)
         throw new Error("no such player");
+    if (!circleClose(nk, userId, to, nowUnixMs))
+        throw new Error("gifts go only to friends, clan and party");
     if (townInbox(nk, to).length >= rules.giftInbox)
         throw new Error("inbox is full");
-    const day = walletDayOf(nowUnixMs);
-    let count = 0;
-    for (let attempt = 1; attempt <= TownWriteAttempts; attempt++) {
-        const stored = townSentToday(nk, userId, day);
-        if (stored.value.sent >= rules.giftsPerDay)
-            throw new Error("daily limit");
-        stored.value.sent += 1;
-        try {
-            nk.storageWrite([{ collection: TownCollection, key: TownSentKey, userId: userId, value: stored.value as any, version: stored.version, permissionRead: 1, permissionWrite: 0 }]);
-            count = stored.value.sent;
-            break;
-        } catch (error) {
-            if (attempt === TownWriteAttempts)
-                throw new Error("town is busy, try again");
-        }
-    }
+    const receipt = inflowSpend(nk, userId, item, amount);
+    const count = inflowGuard(nk, userId, receipt, () => townCountGift(nk, userId, nowUnixMs));
     const sender = users.filter((user) => user.userId === userId)[0];
     const gift: TownGift = {
         id: userId + "_" + nowUnixMs + "_" + count,
@@ -122,10 +114,32 @@ function townGiftSend(nk: nkruntime.Nakama, userId: string, request: any, nowUni
     return townView(nk, userId, nowUnixMs, { sent: gift });
 }
 
+function townCountGift(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): number {
+    const day = walletDayOf(nowUnixMs);
+    for (let attempt = 1; attempt <= TownWriteAttempts; attempt++) {
+        const stored = townSentToday(nk, userId, day);
+        if (stored.value.sent >= TownServerRules.giftsPerDay)
+            throw new Error("daily limit");
+        stored.value.sent += 1;
+        try {
+            nk.storageWrite([{ collection: TownCollection, key: TownSentKey, userId: userId, value: stored.value as any, version: stored.version, permissionRead: 1, permissionWrite: 0 }]);
+            return stored.value.sent;
+        } catch (error) {
+            continue;
+        }
+    }
+    throw new Error("town is busy, try again");
+}
+
 function townGiftClaim(nk: nkruntime.Nakama, userId: string, ack: unknown, nowUnixMs: number): { [key: string]: any } {
     const taken = Array.isArray(ack) ? ack.filter((id) => typeof id === "string" && id.length > 0 && id.length <= 128).slice(0, TownServerRules.giftInbox) : [];
-    if (taken.length > 0)
+    if (taken.length > 0) {
+        const received: { [item: string]: number } = {};
+        for (const gift of townInbox(nk, userId).filter((entry) => taken.indexOf(entry.id) >= 0))
+            received[gift.item] = (received[gift.item] || 0) + gift.amount;
         nk.storageDelete(taken.map((id) => ({ collection: TownGiftCollection, key: id as string, userId: userId })));
+        inflowGrant(nk, userId, received);
+    }
     return townView(nk, userId, nowUnixMs, { claimed: townInbox(nk, userId) });
 }
 

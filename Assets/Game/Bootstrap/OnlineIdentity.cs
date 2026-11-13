@@ -34,7 +34,16 @@ namespace Game.Bootstrap
             catch (Exception error) when (error is ContentException || error is FormatException || error is OverflowException || error is IOException)
             {
             }
-            var created = new OnlineIdentity("rw-" + Guid.NewGuid().ToString("N"), PlayerNumberBase + (ulong)new Random().Next(1, 999999999));
+            return Write(folder, new OnlineIdentity(NewDeviceId(), PlayerNumberBase + (ulong)new Random().Next(1, 999999999)));
+        }
+
+        public static string NewDeviceId() => "rw-" + Guid.NewGuid().ToString("N");
+
+        public static OnlineIdentity MoveTo(string folder, OnlineIdentity current, string deviceId) => Write(folder, new OnlineIdentity(deviceId, current.PlayerNumber));
+
+        private static OnlineIdentity Write(string folder, OnlineIdentity created)
+        {
+            var path = Path.Combine(folder, FileName);
             Directory.CreateDirectory(folder);
             var json = JsonWriter.Write(JsonValue.Object(new Dictionary<string, JsonValue>
             {

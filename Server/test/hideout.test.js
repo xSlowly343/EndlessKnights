@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert");
-const { loadModule } = require("./load");
+const { loadModule, stockBag } = require("./load");
 const { FakeNakama, logger } = require("./fake-nakama");
 
 const server = loadModule();
@@ -12,6 +12,7 @@ const now = 1800000000000;
 function world(...names) {
   const nk = new FakeNakama();
   names.forEach((name, i) => nk.addUser(name, name, "7656119800000000" + i));
+  stockBag(server, nk, names);
   const call = (user, rpc, request) => JSON.parse(server[rpc]({ userId: user, env: {} }, logger, nk, request === undefined ? "" : JSON.stringify(request)));
   return { nk, call };
 }
@@ -526,4 +527,161 @@ test("there is no party order before the yard", () => {
   const { nk, call } = world("ann", "bob");
   party(call, ["ann", "bob"]);
   assert.strictEqual(at(nk, "ann", true, now).order, null);
+});
+
+test("the storage feeds the build: anyone in the party puts in what they gathered, and the build takes it from there", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  built(nk, "ann", { storage: 1 });
+  const material = Object.keys(rules.materials).find((item) => item.startsWith("ore_"));
+  const shared = call("ann", "hideoutStoreShareRpc", { items: { [material]: 10, herb_knockbloom: 4 } });
+  assert.deepStrictEqual(shared.accepted, { [material]: 10, herb_knockbloom: 4 });
+  assert.strictEqual(shared.hideout.commons.forBuild.items[material], 10);
+  assert.strictEqual(shared.hideout.commons.forBuild.points, 10 * rules.materials[material] + 4 * rules.materials.herb_knockbloom);
+  assert.throws(() => call("bob", "hideoutBuildFromStorageRpc", { item: material, amount: 5 }), /nothing is being built/);
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.hideoutChange(nk, group.id, (value) => { value.project = { building: "storage", level: 2, points: 0, by: {} }; });
+  assert.throws(() => call("bob", "hideoutBuildFromStorageRpc", { item: "herb_colossus_bloom", amount: 1 }), /not a building material/);
+  assert.throws(() => call("bob", "hideoutBuildFromStorageRpc", { item: material, amount: 11 }), /not enough in the storage/);
+  const view = call("bob", "hideoutBuildFromStorageRpc", { item: material, amount: 6 });
+  assert.strictEqual(view.project.points, 6 * rules.materials[material]);
+  assert.strictEqual(view.project.fromStorage, 6 * rules.materials[material]);
+  assert.strictEqual(view.commons.storage[material], 4);
+  assert.deepStrictEqual(view.commons.journal[0], { at: view.commons.journal[0].at, name: "bob", item: material, amount: -6, build: "storage" });
+  assert.throws(() => call("ann", "hideoutStoreShareRpc", { items: { sword_of_kings: 1 } }), /does not go into the storage/);
+  assert.throws(() => call("ann", "hideoutStoreShareRpc", { items: {} }), /bad request/);
+});
+
+test("a player puts in only what the last cloud save shows in the bag", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  built(nk, "ann", { storage: 1 });
+  server.inflowBaseline(nk, "ann", { herb_windwort: 10 });
+  assert.deepStrictEqual(plain(server.hideoutShare(nk, "ann", { herb_windwort: 30, herb_knockbloom: 5 }, now)).accepted, { herb_windwort: 10 }, "the rest stays in the bag");
+  assert.throws(() => server.hideoutStore(nk, "ann", "herb_windwort", 1, true, now), /not in your bag by the last cloud save/);
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.hideoutChange(nk, group.id, (value) => { value.project = { building: "storage", level: 2, points: 0, by: {} }; });
+  const material = Object.keys(rules.materials).find((item) => item.startsWith("herb_"));
+  assert.throws(() => server.hideoutGive(nk, "ann", material, 1, now), /not in your bag/, "giving to the build is checked too");
+  server.inflowBaseline(nk, "ann", { herb_windwort: 7 });
+  assert.strictEqual(plain(server.hideoutStore(nk, "ann", "herb_windwort", 7, true, now + 1)).commons.storage.herb_windwort, 17, "a new cloud save opens what it shows");
+});
+
+test("without a cloud save nothing leaves the bag", () => {
+  const nk = new FakeNakama();
+  nk.addUser("zed", "zed", "76561198000000099");
+  assert.throws(() => server.inflowSpend(nk, "zed", "herb_windwort", 1), /cloud save is not uploaded yet/);
+});
+
+test("goods the server handed out count as held: taken from the storage, they can go back", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  built(nk, "ann", { storage: 1 });
+  server.inflowBaseline(nk, "ann", {});
+  server.hideoutStore(nk, "bob", "ore_hills", 20, true, now);
+  server.hideoutStore(nk, "ann", "ore_hills", 10, false, now);
+  const claim = plain(server.hideoutClaim(nk, "ann", undefined, now));
+  assert.deepStrictEqual(claim.items, { ore_hills: 10 });
+  assert.strictEqual(server.inflowRead(nk, "ann").value.held.ore_hills, undefined, "nothing is held before the claim is confirmed");
+  server.hideoutClaim(nk, "ann", claim.seq, now);
+  assert.strictEqual(server.inflowRead(nk, "ann").value.held.ore_hills, 10);
+  assert.deepStrictEqual(plain(server.hideoutShare(nk, "ann", { ore_hills: 15 }, now)).accepted, { ore_hills: 10 });
+});
+
+test("a refused put gives the item back to the ledger", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  server.inflowBaseline(nk, "ann", { herb_windwort: 30 });
+  assert.throws(() => server.hideoutStore(nk, "ann", "herb_windwort", 30, true, now), /storage is not built/);
+  assert.ok(!server.inflowRead(nk, "ann").value.spent.herb_windwort, "nothing is spent");
+});
+
+test("the party levels its workshop stations from the storage, the leader decides", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  const rules = server.HideoutServerRules;
+  const id = "garden_bed";
+  const station = rules.workshop[id];
+  assert.ok(station && station.guild === "", "garden beds need no guild hall");
+  assert.throws(() => call("ann", "hideoutStationUpRpc", { station: id }), /storage is not built/);
+  built(nk, "ann", { storage: 1 });
+  assert.throws(() => call("ann", "hideoutStationUpRpc", { station: id }), /not enough in the storage/);
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.hideoutChange(nk, group.id, (value) => { for (const item of station.materials) value.storage[item] = 500; });
+  assert.throws(() => call("bob", "hideoutStationUpRpc", { station: id }), /only the leader/);
+  assert.throws(() => call("ann", "hideoutStationUpRpc", { station: "moat" }), /no such station/);
+  let view = call("ann", "hideoutStationUpRpc", { station: id });
+  assert.deepStrictEqual(view.stations[id], { level: 2, branch: "" });
+  assert.strictEqual(view.commons.storage[station.materials[0]], 500 - rules.stationAmounts[0][0]);
+  assert.strictEqual(view.commons.journal[0].build, id);
+  assert.throws(() => call("ann", "hideoutStationBranchRpc", { station: id, branch: station.branches[0] }), /level is too low/);
+  view = call("ann", "hideoutStationUpRpc", { station: id });
+  const before = view.commons.storage[station.materials[0]];
+  view = call("ann", "hideoutStationBranchRpc", { station: id, branch: station.branches[0] });
+  assert.strictEqual(view.stations[id].branch, station.branches[0]);
+  assert.strictEqual(view.commons.storage[station.materials[0]], before, "the first branch is free");
+  view = call("ann", "hideoutStationBranchRpc", { station: id, branch: station.branches[1] });
+  assert.strictEqual(view.commons.storage[station.materials[0]], before - rules.stationChangeAmounts[0], "changing the branch costs");
+  assert.throws(() => call("ann", "hideoutStationBranchRpc", { station: id, branch: "volcano" }), /no such branch/);
+  const forge = Object.keys(rules.workshop).find((key) => rules.workshop[key].guild);
+  server.hideoutChange(nk, group.id, (value) => { for (const item of rules.workshop[forge].materials) value.storage[item] = 500; });
+  assert.throws(() => call("ann", "hideoutStationUpRpc", { station: forge }), /guild hall is not built/);
+});
+
+test("the leader makes modules from the storage and sets them into the sockets of the party stations", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  const rules = server.HideoutServerRules;
+  const id = Object.keys(rules.modules).find((key) => rules.modules[key].building === "bonfire");
+  const other = Object.keys(rules.modules).find((key) => key !== id && rules.modules[key].building === "bonfire");
+  const module = rules.modules[id];
+  built(nk, "ann", { storage: 1 });
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.hideoutChange(nk, group.id, (value) => {
+    for (const key of [id, other])
+      rules.modules[key].materials.forEach((item, i) => { value.storage[item] = (value.storage[item] || 0) + rules.modules[key].counts[i]; });
+  });
+  assert.throws(() => call("bob", "hideoutModuleMakeRpc", { module: id }), /only the leader/);
+  assert.throws(() => call("ann", "hideoutModuleInstallRpc", { module: id, socket: 0 }), /not made yet/);
+  let view = call("ann", "hideoutModuleMakeRpc", { module: id });
+  assert.strictEqual(view.modules[id], -1, "made, waiting in the storeroom");
+  assert.strictEqual(view.commons.storage[module.materials[0]] || 0, other && rules.modules[other].materials.includes(module.materials[0]) ? rules.modules[other].counts[rules.modules[other].materials.indexOf(module.materials[0])] : 0);
+  assert.throws(() => call("ann", "hideoutModuleMakeRpc", { module: id }), /already made/);
+  assert.throws(() => call("ann", "hideoutModuleInstallRpc", { module: id, socket: 1 }), /no such socket/, "a level 1 station has one socket");
+  view = call("ann", "hideoutModuleInstallRpc", { module: id, socket: 0 });
+  assert.strictEqual(view.modules[id], 0);
+  call("ann", "hideoutModuleMakeRpc", { module: other });
+  view = call("ann", "hideoutModuleInstallRpc", { module: other, socket: 0 });
+  assert.deepStrictEqual([view.modules[id], view.modules[other]], [-1, 0], "the new module takes the socket, the old one goes back");
+  assert.throws(() => call("ann", "hideoutModuleMakeRpc", { module: "golden_toilet" }), /no such module/);
+});
+
+test("the leader orders the party's street, so neighbours count for the party", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  const street = plain(server.HideoutServerRules.street).reverse();
+  assert.deepStrictEqual(call("ann", "hideoutViewRpc").street, [], "the default order until the leader moves something");
+  assert.throws(() => call("bob", "hideoutStreetRpc", { order: street }), /only the leader/);
+  assert.throws(() => call("ann", "hideoutStreetRpc", { order: street.slice(1) }), /bad request/);
+  assert.throws(() => call("ann", "hideoutStreetRpc", { order: street.slice(1).concat(["moat"]) }), /bad request/);
+  assert.deepStrictEqual(call("ann", "hideoutStreetRpc", { order: street }).street, street);
+});
+
+test("a dish cooked at the party pot reaches everyone in the party, a few times a day", () => {
+  const { nk, call } = world("ann", "bob", "cid");
+  party(call, ["ann", "bob", "cid"]);
+  const rules = server.HideoutServerRules;
+  const dish = rules.dishes[0];
+  at(nk, "ann", true, now);
+  assert.throws(() => server.hideoutCooked(nk, "ann", dish, now), /pot is not built/);
+  built(nk, "ann", { [rules.pot]: 1 });
+  assert.throws(() => server.hideoutCooked(nk, "ann", "mud_pie", now), /bad request/);
+  assert.throws(() => server.hideoutCooked(nk, "bob", dish, now), /cook in the hideout/);
+  server.hideoutCooked(nk, "ann", dish, now);
+  assert.deepStrictEqual(plain(server.hideoutClaim(nk, "bob", undefined, now)).items, { ["dish:" + dish]: 1 });
+  assert.deepStrictEqual(plain(server.hideoutClaim(nk, "cid", undefined, now)).items, { ["dish:" + dish]: 1 }, "also those who are away");
+  assert.deepStrictEqual(plain(server.hideoutClaim(nk, "ann", undefined, now)).items, {}, "the cook keeps their own dish");
+  for (let i = 1; i < rules.dishesPerDay; i++)
+    server.hideoutCooked(nk, "ann", dish, now + i);
+  assert.throws(() => server.hideoutCooked(nk, "ann", dish, now + 100), /daily pot limit/);
 });

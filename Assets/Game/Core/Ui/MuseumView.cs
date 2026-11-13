@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Game.Core.Sim;
+using Game.Core.Text;
 
 namespace Game.Core.Ui
 {
@@ -42,5 +43,11 @@ namespace Game.Core.Ui
             var collection = museum.Rules.Collection(museum.State.Title);
             return collection == null ? string.Empty : russian ? collection.TitleRu : collection.TitleEn;
         }
+
+        public static string Discoverer(string name, bool mine) =>
+            mine ? Texts.Get("museum.first.mine") : name.Length > 0 ? Texts.Format("museum.first", name) : Texts.Get("museum.first.hidden");
+
+        public static string Street(IReadOnlyList<string> walkers) =>
+            walkers.Count == 0 ? Texts.Get("town.street.empty") : Texts.Format("town.street", string.Join(", ", walkers));
     }
 }

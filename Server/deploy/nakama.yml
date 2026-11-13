@@ -9,6 +9,7 @@ session:
   refresh_token_expiry_sec: 2592000
 socket:
   port: 7350
+  max_request_size_bytes: 2097152
 runtime:
   path: /nakama/data/modules
   js_entrypoint: index.js

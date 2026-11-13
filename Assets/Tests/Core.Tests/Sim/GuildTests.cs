@@ -665,5 +665,17 @@ namespace Game.Core.Tests.Sim
             Assert.That(found, Is.GreaterThan(0));
             Assert.That(loop.Guilds.Unsent(TownResource.Finds), Is.GreaterThanOrEqualTo(found));
         }
-    }
+    
+        [Test]
+        public void TheBoardNamesTheRolesOfTheRoundAndHidesNamesWithoutConsent()
+        {
+            Texts.UseLanguage("ru");
+            var board = new TownBoard(TownBoardPhase.Gather, 2, 0, 0, 0, string.Empty, string.Empty, System.Array.Empty<string>(), System.Array.Empty<TownCandidate>(), System.Array.Empty<TownStock>())
+                .WithRoles(new[] { new TownRole("feeder", "Cid", 4), new TownRole("logger", string.Empty, 10) });
+            var lines = GuildView.Roles(board);
+            Assert.That(lines[0], Is.EqualTo(Texts.Format("town.role.feeder", "Cid", 4)));
+            Assert.That(lines[1], Is.EqualTo(Texts.Format("town.role.logger", Texts.Get("town.top.hidden"), 10)));
+            Assert.That(PartyChronicleText.Record("supply", 0, "Ann", string.Empty, 0), Does.Contain("Ann").And.Contain("припас"));
+        }
+}
 }

@@ -37,16 +37,55 @@ namespace Game.Core.Sim
 
     public readonly struct StorageEntry
     {
-        public StorageEntry(string name, string item, long amount)
+        public StorageEntry(string name, string item, long amount, string build = "")
         {
             Name = name;
             Item = item;
             Amount = amount;
+            Build = build;
         }
 
         public string Name { get; }
         public string Item { get; }
         public long Amount { get; }
+        public string Build { get; }
+    }
+
+    public readonly struct PartyStationLine
+    {
+        public PartyStationLine(string building, int level, string branch, string cost, bool canUpgrade, bool canBranch)
+        {
+            Building = building;
+            Level = level;
+            Branch = branch;
+            Cost = cost;
+            CanUpgrade = canUpgrade;
+            CanBranch = canBranch;
+        }
+
+        public string Building { get; }
+        public int Level { get; }
+        public string Branch { get; }
+        public string Cost { get; }
+        public bool CanUpgrade { get; }
+        public bool CanBranch { get; }
+    }
+
+    public readonly struct StorageForBuildLine
+    {
+        public StorageForBuildLine(string item, long amount, int pointsEach, bool canGive)
+        {
+            Item = item;
+            Amount = amount;
+            PointsEach = pointsEach;
+            CanGive = canGive;
+        }
+
+        public string Item { get; }
+        public long Amount { get; }
+        public int PointsEach { get; }
+        public long Points => Amount * PointsEach;
+        public bool CanGive { get; }
     }
 
     public sealed class CraftStation
@@ -131,6 +170,7 @@ namespace Game.Core.Sim
         public TrophyHall Trophies { get; } = new TrophyHall();
         public double PierRareBoost { get; set; }
         public bool DummyBuilt { get; set; }
+        public bool PotBuilt { get; set; }
         public List<SharedBed> Beds { get; } = new List<SharedBed>();
         public Dictionary<string, long> Owed { get; } = new Dictionary<string, long>(System.StringComparer.Ordinal);
         public bool StorageBuilt { get; set; }
@@ -138,5 +178,9 @@ namespace Game.Core.Sim
         public List<StorageEntry> Journal { get; } = new List<StorageEntry>();
         public int TakenToday { get; set; }
         public int TakePerDay { get; set; }
+        public bool ShareMaterials { get; set; }
+        public int ShareKeep { get; set; } = -1;
+        public long ForBuildPoints { get; set; }
+        public long ProjectFromStorage { get; set; }
     }
 }

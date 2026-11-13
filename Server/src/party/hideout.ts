@@ -39,6 +39,7 @@ interface HideoutProject {
     level: number;
     points: number;
     by: { [userId: string]: number };
+    fromStorage?: number;
 }
 
 interface HideoutCorner {
@@ -77,6 +78,10 @@ interface HideoutValue {
     farTrips: { day: number; count: number };
     order: HideoutOrder | null;
     claims: { [userId: string]: { seq: number; items: { [item: string]: number } } };
+    stations: { [id: string]: HideoutStation };
+    modules: { [id: string]: number };
+    street: string[];
+    dishes: { [userId: string]: { day: number; count: number } };
 }
 
 interface HideoutChronicle {
@@ -95,7 +100,7 @@ const HideoutMaxCornerText = 40;
 const HideoutCornerBuilding = "corner";
 
 function hideoutEmpty(): HideoutValue {
-    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {}, crafting: {}, brews: {}, pets: {}, petted: {}, warmed: {}, farTrip: null, farTrips: { day: 0, count: 0 }, order: null, claims: {} };
+    return { tier: 0, sitSeconds: 0, orders: 0, here: {}, fishing: {}, sitAt: 0, buildings: {}, project: null, wants: {}, counters: {}, corners: {}, former: [], garden: [], gardenAt: 0, storage: {}, journal: [], taken: {}, owed: {}, fireBy: {}, crafting: {}, brews: {}, pets: {}, petted: {}, warmed: {}, farTrip: null, farTrips: { day: 0, count: 0 }, order: null, claims: {}, stations: {}, modules: {}, street: [], dishes: {} };
 }
 
 function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutValue; version: string } {
@@ -132,6 +137,10 @@ function hideoutRead(nk: nkruntime.Nakama, partyId: string): { value: HideoutVal
     value.farTrips = stored.farTrips || { day: 0, count: 0 };
     value.order = stored.order || null;
     value.claims = stored.claims || {};
+    value.stations = stored.stations || {};
+    value.modules = stored.modules || {};
+    value.street = stored.street || [];
+    value.dishes = stored.dishes || {};
     return { value: value, version: objects[0].version };
 }
 
@@ -313,7 +322,7 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
         fishingTogether: fishers.length >= 2 && fishers.indexOf(userId) >= 0, fishTogether: value.counters["fishTogether"] || 0,
         buildings: value.buildings,
         canQueue: hideoutOpenBuildings(value.tier).filter((id) => hideoutCanQueue(nk, value, id) === ""),
-        project: project && cost ? { building: project.building, level: project.level, points: project.points, target: cost.points, hours: cost.hours, yours: project.by[userId] || 0 } : null,
+        project: project && cost ? { building: project.building, level: project.level, points: project.points, target: cost.points, hours: cost.hours, yours: project.by[userId] || 0, fromStorage: project.fromStorage || 0 } : null,
         wants: wants, mine: value.wants[userId] || [],
         corners: cornered.map((id) => ({ userId: id, name: nameOf(id), slot: value.corners[id].slot, hero: value.corners[id].hero, path: value.corners[id].path, decor: value.corners[id].decor }))
             .sort((a, b) => a.slot - b.slot),
@@ -322,7 +331,10 @@ function hideoutView(nk: nkruntime.Nakama, group: nkruntime.Group, value: Hideou
         crafts: hideoutCraftView(value, meta.members, userId, nowUnixMs, nameOf),
         trophies: hideoutTrophies(nk, group.id, value, chronicle),
         companions: companionView(value, meta, userId, nowUnixMs, nameOf),
-        order: hideoutOrderView(value, chronicle, meta.leader === userId, nowUnixMs)
+        order: hideoutOrderView(value, chronicle, meta.leader === userId, nowUnixMs),
+        stations: value.stations,
+        modules: value.modules,
+        street: value.street
     };
 }
 
@@ -421,12 +433,15 @@ function hideoutGive(nk: nkruntime.Nakama, userId: string, item: unknown, amount
         throw new Error("not a building material");
     if (typeof amount !== "number" || amount !== Math.floor(amount) || amount < 1 || amount > HideoutServerRules.maxGive)
         throw new Error("bad amount");
-    return hideoutUpdate(nk, userId, (hideout) => {
+    if (!partyGroupOfUser(nk, userId))
+        throw new Error("not in a party");
+    const receipt = inflowSpend(nk, userId, item as string, amount);
+    return inflowGuard(nk, userId, receipt, () => hideoutUpdate(nk, userId, (hideout) => {
         if (!hideout.project)
             throw new Error("nothing is being built");
         hideout.project.points += points * amount;
         hideout.project.by[userId] = (hideout.project.by[userId] || 0) + points * amount;
-    }, nowUnixMs);
+    }, nowUnixMs));
 }
 
 function hideoutWant(nk: nkruntime.Nakama, userId: string, building: unknown, on: unknown, nowUnixMs: number): { [key: string]: any } {

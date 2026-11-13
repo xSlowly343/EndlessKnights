@@ -33,6 +33,7 @@ namespace Game.Core.Ui
                     Status = result switch
                     {
                         CampLevelResult.NotOpen => Texts.Get("campLevel.notOpen"),
+                        CampLevelResult.PartyHouse => Texts.Format("campLevel.party", level, rules.MaxLevel),
                         CampLevelResult.TopLevel => Texts.Format("campLevel.top", level),
                         CampLevelResult.GuildTooLow => Texts.Format("campLevel.guild", GuildName(guilds, def.Guild), rules.GuildLevelFor(level + 1)),
                         CampLevelResult.NotEnough => Texts.Format("campLevel.level", level, rules.MaxLevel),

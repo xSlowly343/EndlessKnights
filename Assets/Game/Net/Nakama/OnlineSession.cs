@@ -51,6 +51,11 @@ namespace Game.Net.Nakama
         public PartyDirectory Directory => new PartyDirectory(_client, _session);
         public MailDirectory Mail => new MailDirectory(_client, _session);
         public CouponDirectory Coupons => new CouponDirectory(_client, _session);
+        public Task<CloudSaveReply> CloudPutAsync(string save, bool force, CancellationToken cancel = default) => CloudSaveReply.PutAsync(_client, _session, save, force, cancel);
+        public Task<CloudSaveReply> CloudGetAsync(CancellationToken cancel = default) => CloudSaveReply.GetAsync(_client, _session, cancel);
+        public Task<(AccountOutcome Outcome, NakamaSession? Session)> SignInAsync(string email, string password, CancellationToken cancel = default) =>
+            AccountSignIn.RunAsync(_client, _session, email, password, cancel);
+        public Task MoveDeviceAsync(NakamaSession account, string deviceId, CancellationToken cancel = default) => _client.LinkDeviceAsync(account, deviceId, cancel);
         public GhostDirectory Ghosts => new GhostDirectory(_client, _session);
         public HelpDirectory Help => new HelpDirectory(_client, _session);
 

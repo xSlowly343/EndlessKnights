@@ -67,22 +67,27 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
-        public void InTheHideoutNoPersonalCraftMovesButPeacefulActionsCount()
+        public void InThePartyHideoutTheActivityAndTheSharedWorkBothCount()
         {
             var input = new FakeInputSource();
             var loop = TestWorld.Loop(input);
             loop.Peaceful.SetMode(PeacefulMode.Camp);
             loop.Peaceful.SetPlace(PeacefulPlace.Hideout);
+            Assert.That(loop.Hideout.Inside, Is.False, "the own hideout before the party");
+            loop.Hideout.Use(1, 2, 0, 0, 0, 0, System.Array.Empty<string>());
             Assert.That(loop.Hideout.Inside, Is.True);
             input.PressKeys(6);
             loop.Tick();
-            Assert.That(loop.Peaceful.Work(loop.Peaceful.Activity).Keys, Is.Zero);
+            Assert.That(loop.State.Peaceful.HideoutWork.Keys, Is.EqualTo(6));
             Assert.That(loop.Guilds.UnsentActions, Is.EqualTo(6));
 
-            loop.Peaceful.SetPlace(PeacefulPlace.Refuge);
+            loop.Hideout.Leave();
             input.PressKeys(4);
             loop.Tick();
-            Assert.That(loop.Hideout.Inside, Is.False);
+            Assert.That(loop.Hideout.Inside, Is.False, "without a party the hideout is the player's own");
+            Assert.That(loop.State.Peaceful.Place, Is.EqualTo(PeacefulPlace.Hideout));
+            Assert.That(loop.Guilds.UnsentActions, Is.EqualTo(10), "the chosen activity keeps counting in the own hideout");
+            Assert.That(loop.State.Peaceful.HideoutWork.Keys, Is.EqualTo(6), "the shared work waits for the party");
         }
 
         [Test]
@@ -100,7 +105,7 @@ namespace Game.Core.Tests.Sim
 
             loop.Hideout.Leave();
             Assert.That(loop.Hideout.State.Tier, Is.Zero);
-            Assert.That(loop.State.Peaceful.Place, Is.EqualTo(PeacefulPlace.Refuge));
+            Assert.That(loop.State.Peaceful.Place, Is.EqualTo(PeacefulPlace.Hideout), "leaving the party keeps the player in their own hideout");
         }
     
 
@@ -213,6 +218,7 @@ namespace Game.Core.Tests.Sim
             var loop = TestWorld.Loop(input);
             loop.Peaceful.SetMode(PeacefulMode.Camp);
             loop.Peaceful.SetPlace(PeacefulPlace.Hideout);
+            loop.Hideout.Use(1, 2, 0, 0, 0, 0, System.Array.Empty<string>());
             input.PressKeys(5);
             input.ClickLeft(2);
             loop.Tick();
@@ -260,5 +266,83 @@ namespace Game.Core.Tests.Sim
             Assert.That(hideout.State.Beds, Is.Empty);
             Assert.That(HideoutView.StorageLines(hideout.State), Is.EqualTo(new[] { Texts.Get("hideout.storage.none") }));
         }
-    }
+    
+        [Test]
+        public void BuildingMaterialsGoToTheStorageByThemselvesAboveWhatThePlayerKeeps()
+        {
+            var loop = TestWorld.Loop(new FakeInputSource());
+            var hideout = loop.Hideout;
+            var material = "ore_hills";
+            Assert.That(hideout.PointsOf(material), Is.GreaterThan(0));
+            loop.Camp.Add(material, 25);
+            loop.Camp.Add("fish_perch", 30);
+            loop.Camp.Add("seed_colossus", 30);
+
+            Assert.That(hideout.TakeShare(), Is.Empty, "off by default");
+            hideout.SetShare(true);
+            Assert.That(hideout.TakeShare(), Is.Empty, "nothing goes while the storage is not built");
+            hideout.UseCommons(false, System.Array.Empty<SharedBed>(), new Dictionary<string, long>(), true, new Dictionary<string, long>(), System.Array.Empty<StorageEntry>(), 0, 20);
+            var sent = hideout.TakeShare();
+            Assert.That(sent, Is.EqualTo(new Dictionary<string, long> { [material] = 25 - hideout.ShareKeep }), "only building materials, the player keeps a few");
+            Assert.That(loop.Camp.Count(material), Is.EqualTo(hideout.ShareKeep));
+            Assert.That(loop.Camp.Count("fish_perch"), Is.EqualTo(30));
+            hideout.SettleShare(sent, new Dictionary<string, long> { [material] = 5 });
+            Assert.That(loop.Camp.Count(material), Is.EqualTo(25 - 5), "what the server did not take comes back");
+            Assert.That(HideoutView.ShareSetting(hideout), Does.Contain(hideout.ShareKeep.ToString()));
+
+            hideout.SetShare(true, 0);
+            Assert.That(hideout.TakeShare()[material], Is.EqualTo(20));
+            var copy = GameStateJson.Read(new ContentNode(GameStateJson.Write(loop.State), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Hideout.ShareMaterials, Is.True);
+            Assert.That(copy.Hideout.ShareKeep, Is.Zero);
+        }
+
+        [Test]
+        public void TheStorageShowsHowMuchOfTheBuildItCanCover()
+        {
+            Texts.UseLanguage("ru");
+            var loop = TestWorld.Loop(new FakeInputSource());
+            var hideout = loop.Hideout;
+            hideout.UseBuild(new Dictionary<string, int>(), System.Array.Empty<string>(), "storage", 2, 400, 1000, 30, 10, false, new Dictionary<string, int>(), System.Array.Empty<string>());
+            hideout.UseCommons(false, System.Array.Empty<SharedBed>(), new Dictionary<string, long>(), true, new Dictionary<string, long> { ["ore_hills"] = 30, ["fish_perch"] = 4 },
+                new[] { new StorageEntry("Bob", "ore_hills", -6, "storage") }, 0, 20);
+            hideout.UseForBuild(30 * hideout.PointsOf("ore_hills"), 12);
+
+            var lines = HideoutView.StorageForBuild(hideout);
+            Assert.That(lines.Select(line => line.Item), Is.EqualTo(new[] { "ore_hills" }));
+            Assert.That(lines[0].Points, Is.EqualTo(30 * hideout.PointsOf("ore_hills")));
+            Assert.That(lines[0].CanGive, Is.True);
+            Assert.That(hideout.CanBuildFromStorage("ore_hills", 31), Is.False);
+            var share = (int)System.Math.Floor(100.0 * 30 * hideout.PointsOf("ore_hills") / 600);
+            Assert.That(HideoutView.StorageForBuildSummary(hideout), Does.Contain(share + "%"));
+            Assert.That(HideoutView.Project(hideout), Does.Contain(Texts.Format("hideout.project.fromStorage", 12)));
+            Assert.That(HideoutView.JournalLines(hideout.State)[0], Is.EqualTo(Texts.Format("hideout.journal.built", "Bob", "ore_hills", 6)));
+            hideout.Leave();
+            Assert.That(hideout.State.ForBuildPoints, Is.Zero);
+        }
+
+        [Test]
+        public void AnOldSaveFromTheRefugeReadsAsTheOwnHideout()
+        {
+            var state = new GameState(1);
+            state.Peaceful.Mode = PeacefulMode.Camp;
+            var json = Game.Core.Content.Json.JsonWriter.Write(GameStateJson.Write(state));
+            json = System.Text.RegularExpressions.Regex.Replace(json, "\"place\":\\s*\"hideout\"", "\"place\": \"refuge\"");
+            Assert.That(json, Does.Contain("refuge"));
+            var copy = GameStateJson.Read(new ContentNode(Game.Core.Content.Json.JsonParser.Parse(json, "save"), "save", string.Empty), TestWorld.Data.Enemies, TestWorld.Data.Gems, TestWorld.Data.Weapons, TestWorld.Data.Items, TestWorld.Data.Slates);
+            Assert.That(copy.Peaceful.Place, Is.EqualTo(PeacefulPlace.Hideout));
+            Assert.That(StripScene.PlaceOf(copy), Is.EqualTo(StripPlace.Hideout));
+        }
+
+        [Test]
+        public void TheStorageRulesComeFromTheData()
+        {
+            var storage = TestWorld.Real.Hideout.Storage;
+            Assert.That(storage.Takes("herb_windwort"), Is.True);
+            Assert.That(storage.Takes("ember_coal"), Is.True);
+            Assert.That(storage.Takes("seed_colossus"), Is.False);
+            Assert.That(storage.Takes("gem_fireball"), Is.False);
+            Assert.That(storage.ShareKeep, Is.EqualTo(10));
+        }
+}
 }

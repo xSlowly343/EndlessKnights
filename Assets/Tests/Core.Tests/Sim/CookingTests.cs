@@ -87,6 +87,36 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void ADishCookedAtThePartyPotIsSentToThePartyAndOneFromThePartyLandsOnTheShelf()
+        {
+            var (loop, input) = Cook();
+            var dish = Rules.Dish("carp_pie")!;
+            var hideout = loop.Hideout;
+            hideout.Use(4, 2, 0, 0, 0, 0, System.Array.Empty<string>());
+            hideout.UseBuild(new System.Collections.Generic.Dictionary<string, int> { [hideout.Rules.Pot] = 1 }, System.Array.Empty<string>(), string.Empty, 0, 0, 0, 0, 0, false,
+                new System.Collections.Generic.Dictionary<string, int>(), System.Array.Empty<string>());
+            loop.Peaceful.SetPlace(PeacefulPlace.Hideout);
+            Stock(loop, dish);
+            loop.Cooking.Cook(dish.Id);
+            Prepare(loop, input, dish);
+            Assert.That(loop.State.Cooking.Meals, Is.EqualTo(new[] { dish.Id }), "the cook keeps the dish");
+            Assert.That(hideout.TakeSharedDishes(), Is.EqualTo(new[] { dish.Id }), "and the party pot shares it");
+            Assert.That(hideout.TakeSharedDishes(), Is.Empty);
+
+            hideout.Receive(new System.Collections.Generic.Dictionary<string, long> { [HideoutSystem.DishPrefix + "carp_pie"] = 1, [HideoutSystem.DishPrefix + "mud_pie"] = 1 });
+            Assert.That(loop.State.Cooking.Meals, Is.EqualTo(new[] { dish.Id, dish.Id }), "an unknown dish is dropped");
+            while (loop.Cooking.AddMeal(dish.Id)) { }
+            Assert.That(loop.State.Cooking.Meals.Count, Is.EqualTo(Rules.MealsKept), "the shelf keeps its limit");
+
+            hideout.Leave();
+            Stock(loop, dish);
+            loop.State.Cooking.Meals.Clear();
+            loop.Cooking.Cook(dish.Id);
+            Prepare(loop, input, dish);
+            Assert.That(hideout.TakeSharedDishes(), Is.Empty, "no party, no party pot");
+        }
+
+        [Test]
         public void KeysChopClicksPlateAndTheMealLastsHoursOfBattle()
         {
             var (loop, input) = Cook();
@@ -104,7 +134,7 @@ namespace Game.Core.Tests.Sim
             loop.Tick();
             var before = loop.Hero.Value(CombatStats.Damage, 1);
             Assert.That(loop.Cooking.Eat(0), Is.EqualTo(CookingResult.Done));
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / before, Is.EqualTo(1 + 0.04).Within(0.03), "the pie adds damage");
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / before, Is.EqualTo(1 + 0.10).Within(0.03), "the pie adds damage");
             Assert.That(loop.State.Cooking.ActiveTicksLeft, Is.EqualTo(dish.Seconds * GameLoop.TicksPerSecond));
             loop.State.Cooking.ActiveTicksLeft = 2;
             loop.Events.Clear();
@@ -134,12 +164,34 @@ namespace Game.Core.Tests.Sim
         {
             foreach (var dish in Rules.Dishes)
                 foreach (var modifier in dish.Modifiers)
-                    Assert.That(modifier.Value, Is.LessThanOrEqualTo(Rules.MaxShare));
-            var json = Content.TestData.ReadGameDataFile(CookingRules.FileName).Replace("\"value\": 0.04 }] },\n    { \"id\": \"herb_balls\"", "\"value\": 0.05 }] },\n    { \"id\": \"herb_balls\"");
-            Assert.DoesNotThrow(() => CookingRules.Load(json, TestWorld.Data.Camp, TestWorld.Data.Alchemy), "a fine storm draught 10% plus a 5% pie is 15%");
-            var greedy = Content.TestData.ReadGameDataFile(CookingRules.FileName).Replace("\"maxShare\": 0.05", "\"maxShare\": 0.07").Replace("\"value\": 0.04 }] },\n    { \"id\": \"herb_balls\"", "\"value\": 0.06 }] },\n    { \"id\": \"herb_balls\"");
+                    if (modifier.Kind == ModifierKind.Increased)
+                        Assert.That(System.Math.Abs(modifier.Value), Is.LessThanOrEqualTo(Rules.MaxShare));
+            var json = Content.TestData.ReadGameDataFile(CookingRules.FileName);
+            var greedy = json.Replace("\"maxShare\": 0.15", "\"maxShare\": 0.2").Replace("{ \"stat\": \"attackPower\", \"kind\": \"increased\", \"value\": 0.12 }", "{ \"stat\": \"attackPower\", \"kind\": \"increased\", \"value\": 0.2 }");
             var error = Assert.Throws<ContentException>(() => CookingRules.Load(greedy, TestWorld.Data.Camp, TestWorld.Data.Alchemy))!;
-            Assert.That(error.Message, Does.Contain("a potion and food give at most 0.15"));
+            Assert.That(error.Message, Does.Contain("a potion and food give at most 0.25"));
+        }
+
+        [Test]
+        public void EveryDishGivesPowerAResourceAndOneMoreThing()
+        {
+            foreach (var dish in Rules.Dishes)
+            {
+                Assert.That(dish.Modifiers.Any(m => m.Stat.Name == "attackPower" && m.Value > 0), Is.True, dish.Id + " gives power");
+                Assert.That(dish.Modifiers.Any(m => m.Stat.Name == "resourceGain" || m.Stat.Name == "resourceDecay"), Is.True, dish.Id + " helps the resource");
+                Assert.That(dish.Modifiers.Count, Is.GreaterThanOrEqualTo(3), dish.Id + " has a perk of its own");
+            }
+        }
+
+        [TestCase("{ \"stat\": \"resourceDecay\", \"kind\": \"increased\", \"value\": -0.15 }", "{ \"stat\": \"resourceGain\", \"kind\": \"increased\", \"value\": -0.15 }", "food never lowers resourceGain")]
+        [TestCase("{ \"stat\": \"bossTimerSeconds\", \"kind\": \"flat\", \"value\": 2 }", "{ \"stat\": \"bossTimerSeconds\", \"kind\": \"flat\", \"value\": 9 }", "food gives at most 3 flat bossTimerSeconds")]
+        [TestCase("{ \"stat\": \"critChance\", \"kind\": \"flat\", \"value\": 0.02 }", "{ \"stat\": \"gold\", \"kind\": \"flat\", \"value\": 0.02 }", "and the listed flat ones")]
+        public void FoodLimitsAreChecked(string from, string to, string message)
+        {
+            var json = Content.TestData.ReadGameDataFile(CookingRules.FileName);
+            Assert.That(json, Does.Contain(from));
+            var error = Assert.Throws<ContentException>(() => CookingRules.Load(json.Replace(from, to), TestWorld.Data.Camp, TestWorld.Data.Alchemy))!;
+            Assert.That(error.Message, Does.Contain(message));
         }
 
         [Test]
@@ -196,9 +248,7 @@ namespace Game.Core.Tests.Sim
 
         [TestCase(@"""building"": ""chef_table""", @"""building"": ""oven""", "unknown building 'oven'")]
         [TestCase(@"""golemancer"": ""ember_stew""", @"""golemancer"": ""cake""", "unknown dish 'cake'")]
-        [TestCase(@"""kind"": ""increased"", ""value"": 0.05 }] },
-    { ""id"": ""carp_pie""", @"""kind"": ""flat"", ""value"": 0.05 }] },
-    { ""id"": ""carp_pie""", "food gives only increased bonuses")]
+        [TestCase(@"""stat"": ""focusGain"", ""kind"": ""increased""", @"""stat"": ""focusGain"", ""kind"": ""more""", "food gives only increased bonuses")]
         public void BrokenCookingIsReported(string from, string to, string message)
         {
             var json = Content.TestData.ReadGameDataFile(CookingRules.FileName).Replace(from, to);

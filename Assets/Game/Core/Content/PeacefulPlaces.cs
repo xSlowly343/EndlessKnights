@@ -4,18 +4,16 @@ namespace Game.Core.Content
     {
         public static string Key(PeacefulPlace place) => place switch
         {
-            PeacefulPlace.Hideout => "hideout",
             PeacefulPlace.Town => "town",
             PeacefulPlace.ClanCamp => "clanCamp",
-            _ => "refuge"
+            _ => "hideout"
         };
 
         public static PeacefulPlace Parse(string key) => key switch
         {
-            "hideout" => PeacefulPlace.Hideout,
             "town" => PeacefulPlace.Town,
             "clanCamp" => PeacefulPlace.ClanCamp,
-            _ => PeacefulPlace.Refuge
+            _ => PeacefulPlace.Hideout
         };
     }
 }

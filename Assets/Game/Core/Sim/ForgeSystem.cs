@@ -44,7 +44,7 @@ namespace Game.Core.Sim
         public ForgeRules Rules => _rules;
         public ForgeState State => _state.Forge;
         public HideoutCrafts? Shared { get; set; }
-        public bool Open => _peaceful.InHideout ? _state.Hideout.Forge.Built : _camp.Open(_rules.Building);
+        public bool Open => (_peaceful.InHideout && _state.Hideout.Forge.Built) || _camp.Open(_rules.Building);
         public bool Together => _peaceful.InHideout && _state.Hideout.Forge.Together && Shared != null;
         public bool Busy => State.Target != ForgeTarget.None;
 
@@ -138,7 +138,7 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            if (!Busy || !_peaceful.InCamp || _peaceful.Activity != Activity || (_peaceful.InHideout && !_state.Hideout.Forge.Built))
+            if (!Busy || !_peaceful.InCamp || _peaceful.Activity != Activity || !Open)
                 return;
             var mark = TargetMark;
             if (mark == null)

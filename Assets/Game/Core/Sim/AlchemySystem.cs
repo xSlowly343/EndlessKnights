@@ -19,6 +19,7 @@ namespace Game.Core.Sim
 
         private readonly GameState _state;
         private readonly CampSystem _camp;
+        private const string CampBuilding = "cauldron";
         private readonly PeacefulSystem _peaceful;
         private readonly EventQueue _events;
         private readonly ModifierLayer _layer;
@@ -93,7 +94,7 @@ namespace Game.Core.Sim
 
         public void Tick()
         {
-            if (State.Brewing == null || !_peaceful.InCamp || _peaceful.Activity != Activity || (_peaceful.InHideout && !_state.Hideout.Cauldron.Built))
+            if (State.Brewing == null || !_peaceful.InCamp || _peaceful.Activity != Activity || (_peaceful.InHideout && !_state.Hideout.Cauldron.Built && !_camp.Open(CampBuilding)))
                 return;
             var work = _peaceful.Work(Activity);
             State.Stirs += work.Keys * (1 + _state.Perk(MuseumPerk.StirFaster)) / _state.PeacefulBonus.TimeFactor;

@@ -11,7 +11,6 @@ namespace Game.Core.Content
 
     public enum PeacefulPlace
     {
-        Refuge,
         Hideout,
         Town,
         ClanCamp

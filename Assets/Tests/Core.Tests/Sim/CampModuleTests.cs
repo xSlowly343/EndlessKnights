@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Game.Core.Content;
 using Game.Core.Save;
 using Game.Core.Sim;
@@ -149,5 +151,35 @@ namespace Game.Core.Tests.Sim
             Assert.That(copy.Camp.Blueprints.Count, Is.EqualTo(blueprints));
             Assert.That(copy.Camp.Installed["wyvern_bellows"], Is.EqualTo(0));
         }
-    }
+    
+        [Test]
+        public void InAPartyTheModulesOfThePartyCountAndTheOwnOnesWait()
+        {
+            var loop = Refuge();
+            var modules = loop.Modules;
+            var free = modules.Rules.Modules.First(def => !def.Blueprint && def.Building == "bonfire");
+            foreach (var material in free.Materials)
+                loop.Camp.Add(material.Item, material.Count);
+            Assert.That(modules.Craft(free.Id), Is.EqualTo(CampModuleResult.Done));
+            Assert.That(modules.Install(free.Id, "bonfire", 0), Is.EqualTo(CampModuleResult.Done));
+            var own = (double[])loop.State.CampPerks.Clone();
+
+            loop.Hideout.Use(1, 2, 0, 0, 0, 0, System.Array.Empty<string>());
+            loop.Hideout.UseStations(new Dictionary<string, int>(), new Dictionary<string, string>(), new Dictionary<string, int>());
+            Assert.That(modules.Made(free.Id), Is.False, "the party has not made it");
+            Assert.That(loop.State.CampPerks, Is.Not.EqualTo(own));
+            Assert.That(modules.Install(free.Id, "bonfire", 0), Is.EqualTo(CampModuleResult.NotMade));
+            loop.Hideout.UseStations(new Dictionary<string, int>(), new Dictionary<string, string>(), new Dictionary<string, int> { [free.Id] = 0 });
+            Assert.That(modules.InSocket("bonfire", 0), Is.EqualTo(free.Id));
+            Assert.That(loop.State.CampPerks, Is.EqualTo(own), "the same module in the party's socket gives the same perk");
+            Assert.That(modules.Remove(free.Id), Is.False, "only the leader changes the party's sockets, through the server");
+            loop.Hideout.UseStations(new Dictionary<string, int>(), new Dictionary<string, string>(), new Dictionary<string, int> { [free.Id] = CampModuleSystem.Stored });
+            Assert.That(modules.InSocket("bonfire", 0), Is.Empty);
+            Assert.That(modules.Made(free.Id), Is.True);
+
+            loop.Hideout.Leave();
+            Assert.That(modules.SocketOf(free.Id), Is.Zero, "the own module is back in the own socket");
+            Assert.That(loop.State.CampPerks, Is.EqualTo(own));
+        }
+}
 }

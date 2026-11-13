@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Core.Content;
 using Game.Core.Input;
 using Game.Core.Save;
@@ -33,6 +34,75 @@ namespace Game.Core.Tests.Sim
             var amounts = loop.CampLevels.Rules.AmountsFor(level);
             for (var i = 0; i < def.Materials.Count; i++)
                 loop.Camp.Add(def.Materials[i], amounts[i]);
+        }
+
+        [Test]
+        public void InAPartyTheStationsOfTheSharedHideoutCountAndTheOwnOnesWait()
+        {
+            var loop = Camp();
+            Stock(loop, "garden_bed", 2);
+            Stock(loop, "garden_bed", 3);
+            loop.CampLevels.Upgrade("garden_bed");
+            loop.CampLevels.Upgrade("garden_bed");
+            Assert.That(loop.CampLevels.Level("garden_bed"), Is.EqualTo(3));
+            var own = (double[])loop.State.CampPerks.Clone();
+
+            loop.Hideout.Use(1, 2, 0, 0, 0, 0, System.Array.Empty<string>());
+            loop.Hideout.UseStations(new Dictionary<string, int> { ["garden_bed"] = 2 }, new Dictionary<string, string>());
+            Assert.That(loop.CampLevels.Level("garden_bed"), Is.EqualTo(2), "the party's beds are level 2");
+            Assert.That(loop.CampLevels.Level("cauldron"), Is.EqualTo(1), "an untouched party station starts at level 1");
+            Assert.That(loop.State.CampPerks, Is.Not.EqualTo(own));
+            Stock(loop, "garden_bed", 3);
+            Assert.That(loop.CampLevels.Upgrade("garden_bed"), Is.EqualTo(CampLevelResult.PartyHouse), "the party levels its stations from the storage");
+            Assert.That(CampLevelView.Lines(loop.CampLevels, loop.Camp, TestWorld.Real.Guilds).Find(line => line.Building == "garden_bed")!.Status,
+                Is.EqualTo(Texts.Format("campLevel.party", 2, loop.CampLevels.Rules.MaxLevel)));
+
+            loop.Hideout.Leave();
+            Assert.That(loop.CampLevels.Level("garden_bed"), Is.EqualTo(3), "leaving the party brings the own stations back as they were");
+            Assert.That(loop.State.CampPerks, Is.EqualTo(own));
+        }
+
+        [Test]
+        public void InAPartyTheStreetOfThePartyDecidesTheNeighbours()
+        {
+            var loop = Camp();
+            var own = new List<string>(loop.CampLevels.Street);
+            loop.Hideout.Use(1, 2, 0, 0, 0, 0, System.Array.Empty<string>());
+            var reversed = new List<string>(own);
+            reversed.Reverse();
+            loop.Hideout.UseStations(new Dictionary<string, int>(), new Dictionary<string, string>(), null, reversed);
+            Assert.That(loop.CampLevels.Street, Is.EqualTo(reversed));
+            Assert.That(loop.CampLevels.Move(own[0], 1), Is.False, "the leader moves the party's stations through the server");
+            var asked = loop.CampLevels.StreetIfMoved(reversed[0], 1);
+            Assert.That(asked[1], Is.EqualTo(reversed[0]));
+            Assert.That(loop.CampLevels.Street, Is.EqualTo(reversed), "asking does not move anything");
+            loop.Hideout.UseStations(new Dictionary<string, int>(), new Dictionary<string, string>(), null, System.Array.Empty<string>());
+            Assert.That(loop.CampLevels.Street, Is.EqualTo(own), "an empty party street is the default order");
+            loop.Hideout.Leave();
+            Assert.That(loop.CampLevels.Street, Is.EqualTo(own));
+        }
+
+        [Test]
+        public void ThePartyStationLinesShowTheStorageAndOnlyTheLeaderCanLevel()
+        {
+            var loop = Camp();
+            var hideout = loop.Hideout;
+            Assert.That(HideoutView.PartyStations(hideout, loop.CampLevels), Is.Empty, "no party, no party stations");
+            hideout.Use(3, 2, 0, 0, 0, 0, System.Array.Empty<string>());
+            hideout.UseStations(new Dictionary<string, int> { ["garden_bed"] = 2 }, new Dictionary<string, string>());
+            var def = loop.CampLevels.Rules.Of("garden_bed")!;
+            var amounts = loop.CampLevels.Rules.AmountsFor(3);
+            var storage = new Dictionary<string, long>();
+            for (var i = 0; i < def.Materials.Count; i++)
+                storage[def.Materials[i]] = amounts[i];
+            hideout.UseCommons(false, System.Array.Empty<SharedBed>(), new Dictionary<string, long>(), true, storage, System.Array.Empty<StorageEntry>(), 0, 20);
+            var line = HideoutView.PartyStations(hideout, loop.CampLevels).Find(entry => entry.Building == "garden_bed");
+            Assert.That(line.Level, Is.EqualTo(2));
+            Assert.That(line.CanUpgrade, Is.False, "only the leader spends the storage");
+            hideout.UseBuild(new Dictionary<string, int>(), System.Array.Empty<string>(), string.Empty, 0, 0, 0, 0, 0, true, new Dictionary<string, int>(), System.Array.Empty<string>());
+            line = HideoutView.PartyStations(hideout, loop.CampLevels).Find(entry => entry.Building == "garden_bed");
+            Assert.That(line.CanUpgrade, Is.True);
+            Assert.That(line.Cost, Does.Contain(def.Materials[0]));
         }
 
         [Test]
@@ -99,7 +169,7 @@ namespace Game.Core.Tests.Sim
             var cauldron = lines.Find(line => line.Building == "cauldron")!;
             Assert.That(cauldron.Status, Is.EqualTo("уровень 2 из 5"));
             Assert.That(cauldron.Cost, Is.EqualTo("herb_clickweed: 0/20 · ruin_shard: 0/10"));
-            Assert.That(lines.Find(line => line.Building == "pier")!.Status, Is.EqualTo("Постройки ещё нет в убежище"));
+            Assert.That(lines.Find(line => line.Building == "pier")!.Status, Is.EqualTo("Постройки ещё нет в Пристанище"));
         }
     
 

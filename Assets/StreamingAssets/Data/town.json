@@ -23,6 +23,8 @@
     { "id": "bryn_ember", "resident": "bryn", "item": "ember_coal", "biome": "volcanic_forge", "min": 2, "max": 4, "text": { "ru": "Тлеющий уголь из кузни: {0} шт.", "en": "Ember coal from the forge: {0}" } },
     { "id": "bryn_feather", "resident": "bryn", "item": "sky_feather", "biome": "sky_islands", "min": 2, "max": 4, "text": { "ru": "Небесные перья: {0} шт.", "en": "Sky feathers: {0}" } }
   ],
+  "street": { "seconds": 180, "shown": 12 },
+  "inflow": { "perDay": [{ "prefix": "herb_", "amount": 200 }, { "prefix": "seed_", "amount": 40 }, { "prefix": "fish_", "amount": 60 }, { "prefix": "ore_", "amount": 120 }, { "prefix": "find_", "amount": 40 }, { "prefix": "bone_", "amount": 20 }], "other": 40 },
   "gifts": {
     "perDay": 5,
     "maxAmount": 10,

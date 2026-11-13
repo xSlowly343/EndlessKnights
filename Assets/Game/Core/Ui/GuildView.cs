@@ -82,6 +82,7 @@ namespace Game.Core.Ui
         public string Name { get; internal set; } = string.Empty;
         public long Points { get; internal set; }
         public bool Yours { get; internal set; }
+        public bool Hidden { get; internal set; }
         public string Text { get; internal set; } = string.Empty;
     }
 
@@ -259,19 +260,32 @@ namespace Game.Core.Ui
             ? Texts.Format("guild.reward.priceBoth", Texts.Pick(tier.NameRu, tier.NameEn), tier.Points, tier.Shards, tier.Friendship)
             : Texts.Format("guild.reward.price", Texts.Pick(tier.NameRu, tier.NameEn), tier.Points, tier.Shards);
 
+        public static List<string> Roles(TownBoard board)
+        {
+            var lines = new List<string>(board.Roles.Count);
+            foreach (var role in board.Roles)
+            {
+                var name = role.Name.Length > 0 ? role.Name : Texts.Get("town.top.hidden");
+                lines.Add(Texts.Format("town.role." + role.Role, name, role.Amount));
+            }
+            return lines;
+        }
+
         public static List<TownBuilderLine> Top(TownBoard board)
         {
             var lines = new List<TownBuilderLine>(board.Top.Count);
             foreach (var builder in board.Top)
             {
                 var yours = builder.Rank == board.Rank;
+                var name = builder.Name.Length > 0 ? builder.Name : Texts.Get("town.top.hidden");
                 lines.Add(new TownBuilderLine
                 {
                     Rank = builder.Rank,
-                    Name = builder.Name,
+                    Name = name,
                     Points = builder.Points,
                     Yours = yours,
-                    Text = Texts.Format(yours ? "guild.top.yours" : "guild.top.line", builder.Rank, builder.Name, builder.Points)
+                    Hidden = builder.Name.Length == 0,
+                    Text = Texts.Format(yours ? "guild.top.yours" : "guild.top.line", builder.Rank, name, builder.Points)
                 });
             }
             return lines;

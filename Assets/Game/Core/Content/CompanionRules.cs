@@ -453,6 +453,9 @@ namespace Game.Core.Content
         public CompanionResonanceRules Resonance { get; private set; } = new CompanionResonanceRules();
         public CompanionGearRules Gear { get; private set; } = new CompanionGearRules();
         public CompanionWorkRules Work { get; private set; } = new CompanionWorkRules();
+        public double VisitHours { get; private set; }
+        public double VisitExperience { get; private set; }
+        public double VisitBond { get; private set; }
         public CompanionTreatRules Treats { get; private set; } = new CompanionTreatRules();
         public MenagerieTreeRules Menagerie { get; private set; } = new MenagerieTreeRules();
         public CompanionFamilyRules Families { get; private set; } = new CompanionFamilyRules();
@@ -750,6 +753,9 @@ namespace Game.Core.Content
                 Treats = CompanionTreatRules.Load(root.Field("treats")),
                 Menagerie = MenagerieTreeRules.Load(root.Field("menagerie")),
                 Work = CompanionWorkRules.Load(root.Field("work"), knownBiomes),
+                VisitHours = root.Field("coop").Field("visit").Field("hours").AsNumber(0.1, 72),
+                VisitExperience = root.Field("coop").Field("visit").Field("experience").AsNumber(0, 100000),
+                VisitBond = root.Field("coop").Field("visit").Field("bond").AsNumber(0, 1000),
                 Gear = CompanionGearRules.Load(root.Field("gear"), stages.Count, root.Field("stars").Field("costs").Items().Count),
                 Resonance = CompanionResonanceRules.Load(root.Field("resonance"), root.Field("mastery")),
                 Forms = CompanionFormRules.Load(root.Field("forms"), stages.Count, root.Field("stars").Field("costs").Items().Count),

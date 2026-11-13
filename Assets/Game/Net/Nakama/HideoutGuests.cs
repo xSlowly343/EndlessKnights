@@ -7,9 +7,9 @@ using Game.Core.Ui;
 
 namespace Game.Net.Nakama
 {
-    public sealed class CampGuestAction
+    public sealed class HideoutGuestAction
     {
-        public CampGuestAction(string from, string fromName, string act, int bed, long atUnixMs)
+        public HideoutGuestAction(string from, string fromName, string act, int bed, long atUnixMs)
         {
             From = from;
             FromName = fromName;
@@ -25,12 +25,12 @@ namespace Game.Net.Nakama
         public long AtUnixMs { get; }
     }
 
-    public sealed class CampVisitView
+    public sealed class HideoutVisitView
     {
-        private CampVisitView(JsonValue json)
+        private HideoutVisitView(JsonValue json)
         {
             Host = NakamaJson.Text(json, "host");
-            var camp = NakamaJson.Field(json, "camp") ?? JsonValue.Null();
+            var camp = NakamaJson.Field(json, "hideout") ?? JsonValue.Null();
             Theme = camp.Kind == JsonKind.Object ? NakamaJson.Text(camp, "theme") : string.Empty;
             Decor = camp.Kind == JsonKind.Object ? CosmeticsMineView.Ids(camp, "decor") : System.Array.Empty<string>();
             Title = camp.Kind == JsonKind.Object ? NakamaJson.Text(camp, "title") : string.Empty;
@@ -56,10 +56,10 @@ namespace Game.Net.Nakama
         public string Brand { get; }
         public IReadOnlyList<string> Left { get; }
 
-        public static CampVisitView From(JsonValue json) => new CampVisitView(json);
+        public static HideoutVisitView From(JsonValue json) => new HideoutVisitView(json);
     }
 
-    public static class CampReply
+    public static class HideoutGuests
     {
         public static string PublishPayload(CampSnapshot snapshot)
         {
@@ -78,26 +78,26 @@ namespace Game.Net.Nakama
         public static string GuestPayload(string host, string act, int bed = -1) =>
             NakamaJson.Object(("host", NakamaJson.Quote(host)), ("act", NakamaJson.Quote(act)), ("bed", bed.ToString(CultureInfo.InvariantCulture)));
 
-        public static IReadOnlyList<CampGuestAction> Guests(JsonValue json)
+        public static IReadOnlyList<HideoutGuestAction> Guests(JsonValue json)
         {
-            var actions = new List<CampGuestAction>();
+            var actions = new List<HideoutGuestAction>();
             foreach (var item in NakamaJson.Items(json, "guests"))
-                actions.Add(new CampGuestAction(NakamaJson.Text(item, "from"), NakamaJson.Text(item, "fromName"), NakamaJson.Text(item, "act"),
+                actions.Add(new HideoutGuestAction(NakamaJson.Text(item, "from"), NakamaJson.Text(item, "fromName"), NakamaJson.Text(item, "act"),
                     (int)NakamaJson.Number(item, "bed"), (long)NakamaJson.Number(item, "at")));
             return actions;
         }
 
         public static Task<string> PublishAsync(NakamaClient client, NakamaSession session, CampSnapshot snapshot, CancellationToken cancel = default) =>
-            client.RpcAsync(session, "camp_publish", PublishPayload(snapshot), cancel);
+            client.RpcAsync(session, "hideout_publish", PublishPayload(snapshot), cancel);
 
-        public static async Task<CampVisitView> VisitAsync(NakamaClient client, NakamaSession session, string host, CancellationToken cancel = default) =>
-            CampVisitView.From(NakamaJson.Parse(await client.RpcAsync(session, "camp_visit", NakamaJson.Object(("host", NakamaJson.Quote(host))), cancel).ConfigureAwait(false)));
+        public static async Task<HideoutVisitView> VisitAsync(NakamaClient client, NakamaSession session, string host, CancellationToken cancel = default) =>
+            HideoutVisitView.From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_visit", NakamaJson.Object(("host", NakamaJson.Quote(host))), cancel).ConfigureAwait(false)));
 
         public static async Task<IReadOnlyList<string>> GuestAsync(NakamaClient client, NakamaSession session, string host, string act, int bed = -1, CancellationToken cancel = default) =>
-            CosmeticsMineView.Ids(NakamaJson.Parse(await client.RpcAsync(session, "camp_guest", GuestPayload(host, act, bed), cancel).ConfigureAwait(false)), "left");
+            CosmeticsMineView.Ids(NakamaJson.Parse(await client.RpcAsync(session, "hideout_guest", GuestPayload(host, act, bed), cancel).ConfigureAwait(false)), "left");
 
-        public static async Task<IReadOnlyList<CampGuestAction>> ClaimGuestsAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
-            Guests(NakamaJson.Parse(await client.RpcAsync(session, "camp_guests_claim", "{}", cancel).ConfigureAwait(false)));
+        public static async Task<IReadOnlyList<HideoutGuestAction>> ClaimGuestsAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
+            Guests(NakamaJson.Parse(await client.RpcAsync(session, "hideout_guests_claim", "{}", cancel).ConfigureAwait(false)));
 
         private static string List(IReadOnlyList<string> items)
         {

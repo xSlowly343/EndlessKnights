@@ -102,6 +102,48 @@ namespace Game.Core.Content
         public double FineChance { get; }
     }
 
+    public sealed class HideoutStorage
+    {
+        public HideoutStorage(IReadOnlyList<string> prefixes, IReadOnlyList<string> items, IReadOnlyList<string> never, int takePerDay, int shareKeep)
+        {
+            Prefixes = prefixes;
+            Items = items;
+            Never = never;
+            TakePerDay = takePerDay;
+            ShareKeep = shareKeep;
+        }
+
+        public IReadOnlyList<string> Prefixes { get; }
+        public IReadOnlyList<string> Items { get; }
+        public IReadOnlyList<string> Never { get; }
+        public int TakePerDay { get; }
+        public int ShareKeep { get; }
+
+        public bool Takes(string item)
+        {
+            if (item.Length == 0 || Contains(Never, item))
+                return false;
+            if (Contains(Items, item))
+                return true;
+            foreach (var prefix in Prefixes)
+            {
+                if (item.StartsWith(prefix, StringComparison.Ordinal))
+                    return true;
+            }
+            return false;
+        }
+
+        private static bool Contains(IReadOnlyList<string> list, string item)
+        {
+            foreach (var entry in list)
+            {
+                if (entry == item)
+                    return true;
+            }
+            return false;
+        }
+    }
+
     public sealed class HideoutRules
     {
         public const string FileName = "party_hideout.json";
@@ -111,8 +153,9 @@ namespace Game.Core.Content
 
         public const string CornerBuilding = "corner";
 
-        private HideoutRules(int presenceSeconds, int cornerDecor, int frozenDays, HideoutCrafts crafts, string dummy, string pier, string trophyHall, double pierRareBoost, IReadOnlyList<HideoutTier> tiers, IReadOnlyList<HideoutBuilding> buildings, IReadOnlyList<int> levelTiers)
+        private HideoutRules(int presenceSeconds, int cornerDecor, int frozenDays, HideoutCrafts crafts, string dummy, string pier, string trophyHall, double pierRareBoost, IReadOnlyList<HideoutTier> tiers, IReadOnlyList<HideoutBuilding> buildings, IReadOnlyList<int> levelTiers, HideoutStorage storage)
         {
+            Storage = storage;
             PresenceSeconds = presenceSeconds;
             CornerDecor = cornerDecor;
             FrozenDays = frozenDays;
@@ -126,6 +169,8 @@ namespace Game.Core.Content
             LevelTiers = levelTiers;
         }
 
+        public HideoutStorage Storage { get; }
+        public string Pot { get; private set; } = string.Empty;
         public int PresenceSeconds { get; }
         public int CornerDecor { get; }
         public int FrozenDays { get; }
@@ -251,7 +296,24 @@ namespace Game.Core.Content
             var pierRareBoost = places.Field("pierRareBoost").AsNumber(0, 1);
             if (!ids.Contains(CornerBuilding))
                 throw root.Field("buildings").Error($"the hideout needs the '{CornerBuilding}' building");
-            return new HideoutRules(presence, cornerDecor, frozenDays, crafts, dummy, pier, trophyHall, pierRareBoost, tiers, buildings, levelTiers);
+            var pot = craftsNode.Field("pot");
+            pot.Field("dishesPerDay").AsInt(1, 100);
+            return new HideoutRules(presence, cornerDecor, frozenDays, crafts, dummy, pier, trophyHall, pierRareBoost, tiers, buildings, levelTiers, LoadStorage(root.Field("storage")))
+            {
+                Pot = Known(pot.Field("building"), ids)
+            };
+        }
+
+        private static HideoutStorage LoadStorage(ContentNode node)
+        {
+            List<string> Strings(string field)
+            {
+                var list = new List<string>();
+                foreach (var item in node.Field(field).Items())
+                    list.Add(item.AsString());
+                return list;
+            }
+            return new HideoutStorage(Strings("prefixes"), Strings("items"), Strings("never"), node.Field("takePerDay").AsInt(1, 1000), node.Field("shareKeep").AsInt(0, 1000));
         }
     }
 }

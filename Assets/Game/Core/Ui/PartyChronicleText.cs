@@ -39,6 +39,7 @@ namespace Game.Core.Ui
                 "raid" => Texts.Format("chronicle.record.raid", day),
                 "node" => Texts.Format("chronicle.record.node", day, name),
                 "rift" => Texts.Format("chronicle.record.rift", day, level),
+                "supply" => Texts.Format("chronicle.record.supply", day, name),
                 "war_win" or "war_draw" or "war_loss" => Texts.Format("chronicle.record." + kind, day, name),
                 _ => day
             };

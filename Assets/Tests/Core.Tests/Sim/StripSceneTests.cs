@@ -48,8 +48,7 @@ namespace Game.Core.Tests.Sim
             {
                 (PeacefulPlace.Town, StripPlace.Town),
                 (PeacefulPlace.Hideout, StripPlace.Hideout),
-                (PeacefulPlace.ClanCamp, StripPlace.ClanCamp),
-                (PeacefulPlace.Refuge, StripPlace.Refuge)
+                (PeacefulPlace.ClanCamp, StripPlace.ClanCamp)
             };
             var loop = Hero();
             Assert.That(loop.Scene.Place, Is.EqualTo(StripPlace.Home));
@@ -72,7 +71,7 @@ namespace Game.Core.Tests.Sim
             Assert.That(loop.Peaceful.Leave(), Is.EqualTo(PeacefulResult.Done));
             loop.Tick();
             Assert.That(loop.Scene.Place, Is.EqualTo(StripPlace.Home));
-            Assert.That(loop.Scene.PreviousPlace, Is.EqualTo(StripPlace.Refuge));
+            Assert.That(loop.Scene.PreviousPlace, Is.EqualTo(StripPlace.ClanCamp));
             Assert.That(loop.Scene.Fight, Is.EqualTo(StripFight.Enemy));
             Assert.That(loop.Scene.Activity, Is.Empty);
             Assert.That(loop.Events.CountOf(GameEventKind.StripPlaceChanged), Is.EqualTo(1));
@@ -81,7 +80,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void EveryPeacefulPlacePausesTheFight()
         {
-            foreach (var place in new[] { PeacefulPlace.Town, PeacefulPlace.ClanCamp, PeacefulPlace.Refuge, PeacefulPlace.Hideout })
+            foreach (var place in new[] { PeacefulPlace.Town, PeacefulPlace.ClanCamp, PeacefulPlace.Hideout })
             {
                 var input = new FakeInputSource();
                 var loop = Hero(input);
@@ -154,7 +153,7 @@ namespace Game.Core.Tests.Sim
             state.Events.FightInside = true;
             Assert.That(StripScene.PlaceOf(state), Is.EqualTo(StripPlace.EventFight));
             state.Peaceful.Mode = PeacefulMode.Camp;
-            Assert.That(StripScene.PlaceOf(state), Is.EqualTo(StripPlace.Refuge));
+            Assert.That(StripScene.PlaceOf(state), Is.EqualTo(StripPlace.Hideout));
         }
 
         [Test]
@@ -195,7 +194,7 @@ namespace Game.Core.Tests.Sim
         [Test]
         public void TheSaveKeepsEveryPlace()
         {
-            foreach (var place in new[] { PeacefulPlace.Refuge, PeacefulPlace.Hideout, PeacefulPlace.Town, PeacefulPlace.ClanCamp })
+            foreach (var place in new[] { PeacefulPlace.Hideout, PeacefulPlace.Town, PeacefulPlace.ClanCamp })
             {
                 var state = new GameState(1);
                 state.Peaceful.Mode = PeacefulMode.Camp;

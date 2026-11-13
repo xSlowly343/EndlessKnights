@@ -23,6 +23,9 @@ interface HideoutCommonsRules {
     stations: { [station: string]: string };
     brewsPerDay: number;
     recipes: string[];
+    pot: string;
+    dishesPerDay: number;
+    dishes: string[];
 }
 
 interface HideoutBed {
@@ -37,7 +40,10 @@ interface HideoutJournalEntry {
     userId: string;
     item: string;
     amount: number;
+    build?: string;
 }
+
+const HideoutMaxShareKinds = 32;
 
 interface HideoutTend {
     keys: number;
@@ -185,7 +191,8 @@ function hideoutCommonsView(nk: nkruntime.Nakama, value: HideoutValue, members: 
         }),
         owed: hideoutWaiting(value, userId),
         storage: value.buildings["storage"] ? value.storage : null,
-        journal: value.journal.slice().reverse().map((entry) => ({ at: entry.at, name: nameOf(entry.userId), item: entry.item, amount: entry.amount })),
+        journal: value.journal.slice().reverse().map((entry) => ({ at: entry.at, name: nameOf(entry.userId), item: entry.item, amount: entry.amount, build: entry.build || "" })),
+        forBuild: value.buildings["storage"] ? hideoutForBuild(value) : null,
         takenToday: hideoutTakenToday(value, userId, nowUnixMs), takePerDay: hideoutCommons().takePerDay
     };
 }
@@ -226,11 +233,15 @@ function hideoutHarvest(nk: nkruntime.Nakama, userId: string, bed: unknown, nowU
 
 function hideoutClaim(nk: nkruntime.Nakama, userId: string, ack: unknown, nowUnixMs: number): { [key: string]: any } {
     let items: { [item: string]: number } = {};
+    let delivered: { [item: string]: number } = {};
     let seq = 0;
     const view = hideoutUpdate(nk, userId, (hideout) => {
         let claim = hideout.claims[userId] || { seq: 0, items: {} };
-        if (typeof ack === "number" && ack === claim.seq)
+        delivered = {};
+        if (typeof ack === "number" && ack === claim.seq) {
+            delivered = claim.items;
             claim = { seq: claim.seq, items: {} };
+        }
         if (Object.keys(claim.items).length === 0 && hideout.owed[userId]) {
             claim = { seq: Math.max(nowUnixMs, claim.seq + 1), items: hideout.owed[userId] };
             delete hideout.owed[userId];
@@ -239,6 +250,7 @@ function hideoutClaim(nk: nkruntime.Nakama, userId: string, ack: unknown, nowUni
         items = claim.items;
         seq = claim.seq;
     }, nowUnixMs);
+    inflowGrant(nk, userId, delivered);
     return { seq: seq, items: items, hideout: view };
 }
 
@@ -248,24 +260,96 @@ function hideoutStore(nk: nkruntime.Nakama, userId: string, item: unknown, amoun
     if (typeof amount !== "number" || amount !== Math.floor(amount) || amount < 1 || amount > HideoutServerRules.maxGive)
         throw new Error("bad amount");
     const id = item as string;
+    if (!put)
+        return hideoutStoreTake(nk, userId, id, amount, nowUnixMs);
+    if (!partyGroupOfUser(nk, userId))
+        throw new Error("not in a party");
+    const receipt = inflowSpend(nk, userId, id, amount);
+    return inflowGuard(nk, userId, receipt, () => hideoutUpdate(nk, userId, (hideout) => {
+        if (!hideout.buildings["storage"])
+            throw new Error("the storage is not built");
+        hideout.storage[id] = (hideout.storage[id] || 0) + amount;
+        hideoutJournal(hideout, { at: nowUnixMs, userId: userId, item: id, amount: amount });
+    }, nowUnixMs));
+}
+
+function hideoutStoreTake(nk: nkruntime.Nakama, userId: string, id: string, amount: number, nowUnixMs: number): { [key: string]: any } {
     return hideoutUpdate(nk, userId, (hideout) => {
         if (!hideout.buildings["storage"])
             throw new Error("the storage is not built");
-        if (put) {
-            hideout.storage[id] = (hideout.storage[id] || 0) + amount;
-        } else {
-            if ((hideout.storage[id] || 0) < amount)
-                throw new Error("not enough in the storage");
-            const taken = hideoutTakenToday(hideout, userId, nowUnixMs);
-            if (taken + amount > hideoutCommons().takePerDay)
-                throw new Error("the daily take limit is reached");
-            hideout.taken[userId] = { day: walletDayOf(nowUnixMs), count: taken + amount };
-            hideout.storage[id] -= amount;
-            if (hideout.storage[id] === 0)
-                delete hideout.storage[id];
-            hideoutOwe(hideout, userId, id, amount);
+        if ((hideout.storage[id] || 0) < amount)
+            throw new Error("not enough in the storage");
+        const taken = hideoutTakenToday(hideout, userId, nowUnixMs);
+        if (taken + amount > hideoutCommons().takePerDay)
+            throw new Error("the daily take limit is reached");
+        hideout.taken[userId] = { day: walletDayOf(nowUnixMs), count: taken + amount };
+        hideout.storage[id] -= amount;
+        if (hideout.storage[id] === 0)
+            delete hideout.storage[id];
+        hideoutOwe(hideout, userId, id, amount);
+        hideoutJournal(hideout, { at: nowUnixMs, userId: userId, item: id, amount: -amount });
+    }, nowUnixMs);
+}
+
+function hideoutReadItems(raw: unknown): { [item: string]: number } {
+    if (raw === null || typeof raw !== "object" || Array.isArray(raw))
+        throw new Error("bad request");
+    const asked = raw as { [item: string]: unknown };
+    const items: { [item: string]: number } = {};
+    const names = Object.keys(asked);
+    if (names.length === 0 || names.length > HideoutMaxShareKinds)
+        throw new Error("bad request");
+    for (const item of names) {
+        const amount = asked[item];
+        if (!hideoutStorable(item))
+            throw new Error("this does not go into the storage");
+        if (typeof amount !== "number" || amount !== Math.floor(amount) || amount < 1 || amount > HideoutServerRules.maxGive)
+            throw new Error("bad amount");
+        items[item] = amount;
+    }
+    return items;
+}
+
+function hideoutShare(nk: nkruntime.Nakama, userId: string, raw: unknown, nowUnixMs: number): { [key: string]: any } {
+    const items = hideoutReadItems(raw);
+    const group = partyGroupOfUser(nk, userId);
+    if (!group)
+        throw new Error("not in a party");
+    if (!(hideoutRead(nk, group.id).value.buildings["storage"] > 0))
+        throw new Error("the storage is not built");
+    const receipt = inflowTake(nk, userId, items);
+    const accepted = inflowTaken(receipt);
+    const view = inflowGuard(nk, userId, receipt, () => hideoutUpdate(nk, userId, (hideout) => {
+        if (!hideout.buildings["storage"])
+            throw new Error("the storage is not built");
+        for (const item of Object.keys(accepted)) {
+            hideout.storage[item] = (hideout.storage[item] || 0) + accepted[item];
+            hideoutJournal(hideout, { at: nowUnixMs, userId: userId, item: item, amount: accepted[item] });
         }
-        hideoutJournal(hideout, { at: nowUnixMs, userId: userId, item: id, amount: put ? amount : -amount });
+    }, nowUnixMs));
+    return { accepted: accepted, hideout: view };
+}
+
+function hideoutBuildFromStorage(nk: nkruntime.Nakama, userId: string, item: unknown, amount: unknown, nowUnixMs: number): { [key: string]: any } {
+    const points = typeof item === "string" ? HideoutServerRules.materials[item] || 0 : 0;
+    if (points <= 0)
+        throw new Error("not a building material");
+    if (typeof amount !== "number" || amount !== Math.floor(amount) || amount < 1 || amount > HideoutServerRules.maxGive)
+        throw new Error("bad amount");
+    const id = item as string;
+    return hideoutUpdate(nk, userId, (hideout) => {
+        if (!hideout.buildings["storage"])
+            throw new Error("the storage is not built");
+        if (!hideout.project)
+            throw new Error("nothing is being built");
+        if ((hideout.storage[id] || 0) < amount)
+            throw new Error("not enough in the storage");
+        hideout.storage[id] -= amount;
+        if (hideout.storage[id] === 0)
+            delete hideout.storage[id];
+        hideout.project.points += points * amount;
+        hideout.project.fromStorage = (hideout.project.fromStorage || 0) + points * amount;
+        hideoutJournal(hideout, { at: nowUnixMs, userId: userId, item: id, amount: -amount, build: hideout.project.building });
     }, nowUnixMs);
 }
 
@@ -290,6 +374,15 @@ function hideoutStorePutRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk
 function hideoutStoreTakeRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     const request = partyRequest(payload);
     return JSON.stringify(hideoutStore(nk, partyCaller(ctx), request.item, request.amount, false, Date.now()));
+}
+
+function hideoutStoreShareRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(hideoutShare(nk, partyCaller(ctx), partyRequest(payload).items, Date.now()));
+}
+
+function hideoutBuildFromStorageRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    const request = partyRequest(payload);
+    return JSON.stringify(hideoutBuildFromStorage(nk, partyCaller(ctx), request.item, request.amount, Date.now()));
 }
 
 function hideoutReadStation(raw: unknown): string | null {
@@ -340,4 +433,43 @@ function hideoutBrewed(nk: nkruntime.Nakama, userId: string, recipe: unknown, fi
 function hideoutBrewedRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     const request = partyRequest(payload);
     return JSON.stringify(hideoutBrewed(nk, partyCaller(ctx), request.recipe, request.fine, Date.now()));
+}
+
+function hideoutForBuild(value: HideoutValue): { points: number; items: { [item: string]: number } } {
+    const items: { [item: string]: number } = {};
+    let points = 0;
+    for (const item of Object.keys(value.storage)) {
+        const each = HideoutServerRules.materials[item] || 0;
+        if (each <= 0)
+            continue;
+        items[item] = value.storage[item];
+        points += each * value.storage[item];
+    }
+    return { points: points, items: items };
+}
+
+function hideoutCooked(nk: nkruntime.Nakama, userId: string, dish: unknown, nowUnixMs: number): { [key: string]: any } {
+    const rules = hideoutCommons();
+    if (typeof dish !== "string" || rules.dishes.indexOf(dish) < 0)
+        throw new Error("bad request");
+    const view = hideoutUpdate(nk, userId, (hideout, meta) => {
+        if (!(hideout.buildings[rules.pot] > 0))
+            throw new Error("the party pot is not built");
+        if (hideoutHere(hideout, meta.members, nowUnixMs).indexOf(userId) < 0)
+            throw new Error("cook in the hideout");
+        const day = walletDayOf(nowUnixMs);
+        const cooked = hideout.dishes[userId] && hideout.dishes[userId].day === day ? hideout.dishes[userId].count : 0;
+        if (cooked >= rules.dishesPerDay)
+            throw new Error("the daily pot limit is reached");
+        hideout.dishes[userId] = { day: day, count: cooked + 1 };
+        for (const id of meta.members)
+            if (id !== userId)
+                hideoutOwe(hideout, id, "dish:" + dish, 1);
+    }, nowUnixMs);
+    townRoleAdd(nk, userId, TownRoleFeeder, 1, nowUnixMs);
+    return view;
+}
+
+function hideoutCookedRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(hideoutCooked(nk, partyCaller(ctx), partyRequest(payload).dish, Date.now()));
 }

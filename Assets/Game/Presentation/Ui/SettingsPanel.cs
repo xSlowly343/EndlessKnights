@@ -224,6 +224,7 @@ namespace Game.Presentation.Ui
             private readonly UiButton _next;
             private readonly TextMeshProUGUI _value;
             private readonly UiButton _action;
+            private readonly Image _actionIcon;
             private readonly RectTransform _segmentBar;
             private readonly List<UiButton> _segments = new List<UiButton>();
             private readonly TextMeshProUGUI _number;
@@ -261,6 +262,8 @@ namespace Game.Presentation.Ui
                 _previous = Control("Previous", row, right, new Vector2(-(RowInsetPx + ControlWidthPx - ArrowPx), 0f), Vector2.one * ArrowPx, ArrowFill, theme, 6f);
                 _previous.Text = "‹";
                 _action = Control("Action", row, right, new Vector2(-RowInsetPx, 0f), new Vector2(ActionWidthPx, ControlHeightPx), theme.Accent, theme, 6f);
+                _actionIcon = UiElements.Icon("Action icon", _action.Rect, null, Color.white);
+                UiElements.Anchor(_actionIcon.rectTransform, new Vector2(0.5f, 0.5f), Vector2.zero, Vector2.one * (ControlHeightPx - 6f));
                 _segmentBar = UiElements.Rect("Segments", row);
                 UiElements.Anchor(_segmentBar, right, new Vector2(-RowInsetPx, 0f), new Vector2(ControlWidthPx, ControlHeightPx));
                 for (var i = 0; i < MaxSegments; i++)
@@ -332,7 +335,10 @@ namespace Game.Presentation.Ui
                         ShowToggle(SettingsScreen.IsOn(id, settings), theme);
                         break;
                     case SettingKind.Action:
-                        _action.Text = _text;
+                        var icon = SettingsScreen.ActionIcon(id);
+                        var sprite = icon.Length > 0 ? UiIcons.Get(IconGroup, icon) : null;
+                        UiElements.Use(_actionIcon, sprite);
+                        _action.Text = sprite != null ? string.Empty : _text;
                         break;
                     case SettingKind.Segments:
                         ShowSegments(id, settings, theme);

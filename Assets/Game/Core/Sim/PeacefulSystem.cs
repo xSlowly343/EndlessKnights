@@ -26,7 +26,7 @@ namespace Game.Core.Sim
         public PeacefulRules Rules => _rules;
         public PeacefulState State => _state.Peaceful;
         public bool InCamp => State.Mode == PeacefulMode.Camp;
-        public bool InHideout => InCamp && State.Place == PeacefulPlace.Hideout;
+        public bool InHideout => InCamp && State.Place == PeacefulPlace.Hideout && _state.Hideout.Tier > 0;
 
         public void SetPlace(PeacefulPlace place) => State.Place = place;
 
@@ -126,14 +126,8 @@ namespace Game.Core.Sim
         {
             if (input.WheelTicks != 0)
                 Turn(input.WheelTicks);
-            if (State.Place == PeacefulPlace.Hideout)
-            {
-                CountActions(input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks);
+            if (InHideout)
                 Add(State.HideoutWork, input, metersPerPixel);
-                if (State.Activity == ForgeSystem.Activity || State.Activity == AlchemySystem.Activity)
-                    Add(Work(State.Activity), input, metersPerPixel);
-                return;
-            }
             CountActions(input.KeyDowns + input.LeftClicks + input.RightClicks + input.MiddleClicks);
             Add(Work(Activity), input, metersPerPixel);
         }

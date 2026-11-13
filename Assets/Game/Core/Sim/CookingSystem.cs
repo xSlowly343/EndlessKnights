@@ -12,7 +12,8 @@ namespace Game.Core.Sim
         Busy,
         NoIngredients,
         NoMeal,
-        MealsFull
+        MealsFull,
+        RiftOnly
     }
 
     public sealed class CookingSystem
@@ -94,6 +95,8 @@ namespace Game.Core.Sim
             if (index < 0 || index >= State.Meals.Count)
                 return CookingResult.NoMeal;
             var dish = _rules.Dish(State.Meals[index]);
+            if (dish != null && dish.RiftOnly)
+                return CookingResult.RiftOnly;
             State.Meals.RemoveAt(index);
             if (dish == null)
                 return CookingResult.UnknownDish;
@@ -101,6 +104,14 @@ namespace Game.Core.Sim
             State.ActiveTicksLeft = (long)System.Math.Round(SecondsOf(dish) * GameLoop.TicksPerSecond);
             ApplyActive();
             return CookingResult.Done;
+        }
+
+        public bool AddMeal(string dishId)
+        {
+            if (_rules.Dish(dishId) == null || State.Meals.Count >= _rules.MealsKept)
+                return false;
+            State.Meals.Add(dishId);
+            return true;
         }
 
         public void Tick()
@@ -125,6 +136,8 @@ namespace Game.Core.Sim
             if (State.Chops < chops || State.Plates < dish.Plates)
                 return;
             State.Meals.Add(dish.Id);
+            if (_peaceful.InHideout && _state.Hideout.PotBuilt)
+                State.SharedDishes.Add(dish.Id);
             if (State.Meals.Count < _rules.MealsKept && _state.Rng.NextDouble() < _state.Perk(MuseumPerk.DoubleMeal))
                 State.Meals.Add(dish.Id);
             State.Book.Add(dish.Id);

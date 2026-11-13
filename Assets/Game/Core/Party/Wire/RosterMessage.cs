@@ -26,6 +26,19 @@ namespace Game.Core.Party.Wire
         public uint Echo1;
         public uint Echo2;
         public uint Echo3;
+        public byte Pastime0;
+        public byte Pastime1;
+        public byte Pastime2;
+        public byte Pastime3;
+
+        public PartyPastime Pastime(int slot) => PartyPastime.Unpack(slot switch
+        {
+            0 => Pastime0,
+            1 => Pastime1,
+            2 => Pastime2,
+            3 => Pastime3,
+            _ => (byte)0
+        });
 
         public uint EchoLines(int slot) => slot switch
         {
@@ -108,6 +121,10 @@ namespace Game.Core.Party.Wire
             writer.UInt(Echo1);
             writer.UInt(Echo2);
             writer.UInt(Echo3);
+            writer.Byte(Pastime0);
+            writer.Byte(Pastime1);
+            writer.Byte(Pastime2);
+            writer.Byte(Pastime3);
         }
 
         public static RosterMessage Read(ref PartyReader reader) => new RosterMessage
@@ -133,7 +150,11 @@ namespace Game.Core.Party.Wire
             Echo0 = reader.UInt(),
             Echo1 = reader.UInt(),
             Echo2 = reader.UInt(),
-            Echo3 = reader.UInt()
+            Echo3 = reader.UInt(),
+            Pastime0 = reader.Byte(),
+            Pastime1 = reader.Byte(),
+            Pastime2 = reader.Byte(),
+            Pastime3 = reader.Byte()
         };
 
         public static RosterMessage Of(PartyEncounter encounter, uint version)
@@ -147,6 +168,7 @@ namespace Game.Core.Party.Wire
                 if (encounter.Member(slot).Joined && encounter.Member(slot).Guest)
                     guests |= 1 << slot;
             }
+            byte Pastime(int slot) => encounter.Member(slot).Joined && encounter.Presence(slot) == PartyPresence.Peaceful ? encounter.Member(slot).Pastime : (byte)0;
             uint Echo(int slot) => encounter.Member(slot).Joined ? encounter.Member(slot).EchoLines : 0;
             uint Bank(int slot) => encounter.Member(slot).Joined ? (uint)(encounter.Member(slot).RestBankTicks / GameLoop.TicksPerSecond) : 0;
             return new RosterMessage
@@ -172,7 +194,11 @@ namespace Game.Core.Party.Wire
                 Echo0 = Echo(0),
                 Echo1 = Echo(1),
                 Echo2 = Echo(2),
-                Echo3 = Echo(3)
+                Echo3 = Echo(3),
+                Pastime0 = Pastime(0),
+                Pastime1 = Pastime(1),
+                Pastime2 = Pastime(2),
+                Pastime3 = Pastime(3)
             };
         }
     }

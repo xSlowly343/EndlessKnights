@@ -28,7 +28,6 @@ namespace Game.Core.Ui
             StripPlace.Rift => "strip.place.rift",
             StripPlace.Dungeon => "strip.place.dungeon",
             StripPlace.EventFight => "strip.place.eventFight",
-            StripPlace.Refuge => "strip.place.refuge",
             StripPlace.Hideout => "strip.place.hideout",
             StripPlace.ClanCamp => "strip.place.clanCamp",
             StripPlace.Town => "strip.place.town",

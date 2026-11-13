@@ -7,6 +7,7 @@ using Game.Core.Mail;
 using Game.Core.Party;
 using Game.Core.Settings;
 using Game.Core.Sim;
+using Game.Core.Text;
 using Game.Core.Ui;
 using Game.Net.Nakama;
 using Game.Presentation.Battle;
@@ -190,12 +191,140 @@ namespace Game.Bootstrap
                 _notifications.Marks.UnreadMail = _mailBox.Unread;
         }
 
+        private bool _forceCloudSave;
+
         private void OnSetting(SettingId id)
         {
+            switch (id)
+            {
+                case SettingId.AccountSignIn:
+                    SignIn();
+                    return;
+                case SettingId.CloudSave:
+                    CloudSave();
+                    return;
+                case SettingId.CloudLoad:
+                    CloudLoad();
+                    return;
+            }
             if (id != SettingId.Coupon)
                 return;
             var typed = SettingsScreen.CouponCode;
             RedeemCoupon(typed.Length > 0 ? Coupon.Normalize(typed.Text) : Coupon.Normalize(GUIUtility.systemCopyBuffer));
+        }
+
+        private void SignIn()
+        {
+            var account = SettingsScreen.Account;
+            var problem = AccountSignIn.Problem(account);
+            if (problem.Length > 0 || _session == null || _identity == null)
+            {
+                _panels.ShowNotice(Texts.Get(problem.Length > 0 ? problem : "account.offline"));
+                return;
+            }
+            var session = _session;
+            var identity = _identity;
+            var email = account.Email;
+            var password = account.Password;
+            account.ForgetPassword();
+            Task.Run(async () =>
+            {
+                var (outcome, signed) = await session.SignInAsync(email, password).ConfigureAwait(false);
+                OnlineIdentity? moved = null;
+                if (outcome == AccountOutcome.SignedIn && signed != null)
+                {
+                    var deviceId = OnlineIdentity.NewDeviceId();
+                    try
+                    {
+                        await session.MoveDeviceAsync(signed, deviceId).ConfigureAwait(false);
+                        moved = OnlineIdentity.MoveTo(SaveDriver.SaveDirectory, identity, deviceId);
+                    }
+                    catch (NakamaException)
+                    {
+                        outcome = AccountOutcome.Offline;
+                    }
+                }
+                _mainThread.Enqueue(() =>
+                {
+                    if (outcome == AccountOutcome.SignedUp || outcome == AccountOutcome.SignedIn)
+                        account.SignedInAs(email);
+                    _panels.ShowNotice(Texts.Format(AccountSignIn.Text(outcome), email));
+                    _panels.Settings.Refresh();
+                    if (outcome == AccountOutcome.SignedIn && moved != null)
+                    {
+                        _identity = moved;
+                        _session?.Dispose();
+                        _session = null;
+                        Run(StartSession, silent: true);
+                    }
+                });
+            });
+        }
+
+        private void CloudSave()
+        {
+            var saver = GetComponent<SaveDriver>();
+            if (_session == null || saver == null)
+            {
+                _panels.ShowNotice(Texts.Get("account.offline"));
+                return;
+            }
+            var session = _session;
+            var text = saver.Snapshot();
+            var force = _forceCloudSave;
+            Task.Run(async () =>
+            {
+                string notice;
+                try
+                {
+                    var reply = await session.CloudPutAsync(text, force).ConfigureAwait(false);
+                    notice = reply.Status == CloudSaveReply.Older ? "cloud.older" : "cloud.saved";
+                    _mainThread.Enqueue(() => _forceCloudSave = reply.Status == CloudSaveReply.Older);
+                }
+                catch (NakamaException)
+                {
+                    notice = "cloud.failed";
+                }
+                _mainThread.Enqueue(() => _panels.ShowNotice(Texts.Get(notice)));
+            });
+        }
+
+        private void CloudLoad()
+        {
+            var saver = GetComponent<SaveDriver>();
+            if (_session == null || saver == null)
+            {
+                _panels.ShowNotice(Texts.Get("account.offline"));
+                return;
+            }
+            var session = _session;
+            var data = _data;
+            Task.Run(async () =>
+            {
+                try
+                {
+                    var reply = await session.CloudGetAsync().ConfigureAwait(false);
+                    _mainThread.Enqueue(() =>
+                    {
+                        if (!reply.HasSave)
+                        {
+                            _panels.ShowNotice(Texts.Get("cloud.empty"));
+                            return;
+                        }
+                        if (!saver.Replace(reply.Save, data))
+                        {
+                            _panels.ShowNotice(Texts.Get("cloud.failed"));
+                            return;
+                        }
+                        _panels.ShowNotice(Texts.Get("cloud.loaded"));
+                        GameRestart.Now();
+                    });
+                }
+                catch (NakamaException)
+                {
+                    _mainThread.Enqueue(() => _panels.ShowNotice(Texts.Get("cloud.failed")));
+                }
+            });
         }
 
         private void RedeemCoupon(string code)

@@ -119,7 +119,7 @@
 
 | № | Артборд | Что на нём | Ядро | Unity |
 |---|---|---|---|---|
-| 80 | Camp | убежище и постройки; мирный режим и расписание; сад | `CampView`, `CampLevelView`, `CampModuleView`, `PeacefulView`, `GardenView` | — заглушка |
+| 80 | Camp | Пристанище (своё или отряда, `party-hideout.md` §9) и станки; мирный режим и расписание; сад | `HideoutView.Workshop`, `HideoutView.PartyStations`, `CampLevelView`, `CampModuleView`, `PeacefulView`, `GardenView` | — заглушка |
 | 81 | Crafts | рыбалка; кухня; кузница и алхимия | `FishingView`, `CookingView`, `ForgeView`, `AlchemyView` | — |
 | 82 | Edge | заказы жителей; подарки; гильдии и стройка сервера | `TownView`, `GuildView` | — |
 | 83 | Companions | спутник; походы; Зверинец и альбом | `CompanionView`, `ExpeditionView` | — |

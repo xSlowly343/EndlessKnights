@@ -8,6 +8,10 @@ const stages = JSON.parse(fs.readFileSync(path.join(data, "stages.json"), "utf8"
 const dungeons = JSON.parse(fs.readFileSync(path.join(data, "dungeons.json"), "utf8"));
 const rift = JSON.parse(fs.readFileSync(path.join(data, "rift.json"), "utf8"));
 const intake = JSON.parse(fs.readFileSync(path.join(root, "config", "intake.json"), "utf8"));
+const cloud = JSON.parse(fs.readFileSync(path.join(root, "config", "cloud.json"), "utf8"));
+if (cloud.version !== 1)
+  throw new Error("config/cloud.json: version " + cloud.version + " is not supported");
+const cloudRules = { maxBytes: cloud.maxBytes, backups: cloud.backups, playSlackSeconds: cloud.playSlackSeconds, playRate: cloud.playRate, stagesPerHour: cloud.stagesPerHour, stageSlack: cloud.stageSlack };
 const coopCurrency = JSON.parse(fs.readFileSync(path.join(data, "coop_currency.json"), "utf8"));
 const mentor = JSON.parse(fs.readFileSync(path.join(data, "mentor.json"), "utf8"));
 const clanTree = JSON.parse(fs.readFileSync(path.join(data, "clan_tree.json"), "utf8"));
@@ -425,7 +429,12 @@ const socialRules = {
 const townData = JSON.parse(fs.readFileSync(path.join(data, "town.json"), "utf8"));
 if (townData.version !== 1)
   throw new Error("town.json: version " + townData.version + " is not supported");
-const townRules = { giftsPerDay: townData.gifts.perDay, giftMaxAmount: townData.gifts.maxAmount, giftInbox: townData.gifts.inbox, giftItems: townData.gifts.items };
+const museumData = JSON.parse(fs.readFileSync(path.join(data, "museum.json"), "utf8"));
+const museumIds = museumData.collections.map((collection) => collection.id).concat(...museumData.collections.map((collection) => collection.items));
+const townRules = { museum: museumIds.filter((id, index) => museumIds.indexOf(id) === index), streetSeconds: townData.street.seconds, streetShown: townData.street.shown, giftsPerDay: townData.gifts.perDay, giftMaxAmount: townData.gifts.maxAmount, giftInbox: townData.gifts.inbox, giftItems: townData.gifts.items };
+const inflowRules = { perDay: townData.inflow.perDay.map((entry) => ({ prefix: entry.prefix, amount: entry.amount })), other: townData.inflow.other };
+if (inflowRules.perDay.some((entry) => !(entry.amount >= 1) || entry.prefix.length === 0) || !(inflowRules.other >= 1))
+  throw new Error("town.json: inflow limits are out of range");
 const marketData = townData.market;
 const marketTreats = JSON.parse(fs.readFileSync(path.join(data, "companions.json"), "utf8")).treats.recipes;
 const marketRules = {
@@ -511,20 +520,15 @@ const townBuildRules = {
   openMs: guilds.build.openHours * 3600000,
   activeDays: guilds.build.activeDays,
   minPlayers: guilds.build.minPlayers,
-  resources: guilds.build.resources.map((resource) => ({ id: resource.id, dailyCap: resource.dailyCap, guild: resource.guild || "" })),
+  paceBurst: guilds.build.pace.burstShare,
+  paceFillMs: guilds.build.pace.fillHours * 3600000,
+  resources: guilds.build.resources.map((resource) => ({ id: resource.id, dailyCap: resource.dailyCap, guild: resource.guild || "", kind: resource.kind })),
   rewards: guilds.build.rewards.map((tier) => ({ id: tier.id, points: tier.points, shards: tier.shards, friendship: tier.friendship })),
   topSize: guilds.build.top.size,
   topShards: guilds.build.top.shards,
   keptDays: 8
 };
 
-const fishingData = JSON.parse(fs.readFileSync(path.join(data, "fishing.json"), "utf8"));
-const gardenData = JSON.parse(fs.readFileSync(path.join(data, "garden.json"), "utf8"));
-const townPioneerRules = {
-  fish: Array.from(new Set(fishingData.spots.flatMap((spot) => spot.fish.map((fish) => fish.id).concat([spot.legend.id])).concat(fishingData.riftFish.map((fish) => fish.id)))),
-  plants: Array.from(new Set(gardenData.mutations.map((mutation) => mutation.child))),
-  maxClaims: 50
-};
 const townWeekRules = guilds.weekly;
 const cosmeticItems = JSON.parse(fs.readFileSync(path.join(data, "cosmetics.json"), "utf8")).items;
 for (const reward of townWeekRules.rewards) {
@@ -534,8 +538,13 @@ for (const reward of townWeekRules.rewards) {
 }
 
 const hideout = JSON.parse(fs.readFileSync(path.join(data, "party_hideout.json"), "utf8"));
+const campLevelsData = JSON.parse(fs.readFileSync(path.join(data, "camp_levels.json"), "utf8"));
+const campData = JSON.parse(fs.readFileSync(path.join(data, "camp.json"), "utf8"));
+const campModulesData = JSON.parse(fs.readFileSync(path.join(data, "camp_modules.json"), "utf8"));
 if (hideout.version !== 1)
   throw new Error("party_hideout.json: version " + hideout.version + " is not supported");
+if (!(guilds.build.pace.burstShare > 0 && guilds.build.pace.burstShare <= 1) || !(guilds.build.pace.fillHours > 0))
+  throw new Error("guilds.json: build pace is out of range");
 const hideoutRules = {
   hereMs: hideout.hereSeconds * 1000,
   maxSitStepMs: hideout.maxSitStepSeconds * 1000,
@@ -547,6 +556,11 @@ const hideoutRules = {
   fireSignMs: hideout.fire.signEveryMinutes * 60000,
   stations: { forge: hideout.crafts.forge.building, cauldron: hideout.crafts.cauldron.building },
   brewsPerDay: hideout.crafts.brewsPerDay,
+  pot: hideout.crafts.pot.building,
+  dishesPerDay: hideout.crafts.pot.dishesPerDay,
+  dishes: cooking.dishes.map((dish) => dish.id),
+  supplySends: JSON.parse(fs.readFileSync(path.join(data, "peaceful.json"), "utf8")).riftSupply.sendsPerWindow,
+  supplySource: JSON.parse(fs.readFileSync(path.join(data, "peaceful.json"), "utf8")).riftSupply.source,
   recipes: JSON.parse(fs.readFileSync(path.join(data, "alchemy.json"), "utf8")).recipes.map((recipe) => recipe.id),
   togetherBoost: hideout.fire.togetherBoost,
   bedsPerRow: hideout.sharedGarden.bedsPerRow,
@@ -568,10 +582,29 @@ const hideoutRules = {
   orderDays: hideout.order.days,
   orderFromTier: hideout.order.fromTier,
   orderSource: hideout.order.source,
+  workshop: Object.fromEntries(campLevelsData.buildings.map((building) => [building.building, {
+    materials: building.materials, branches: building.branches.map((branch) => branch.id),
+    guild: (campData.buildings.find((entry) => entry.id === building.building) || {}).guild || "" }])),
+  modules: Object.fromEntries(campModulesData.modules.map((module) => [module.id, { building: module.building,
+    materials: module.materials.map((material) => material.item), counts: module.materials.map((material) => material.count) }])),
+  moduleSockets: campModulesData.sockets,
+  street: campLevelsData.street,
+  stationMaxLevel: campLevelsData.maxLevel,
+  stationAmounts: campLevelsData.amounts,
+  stationBranchLevel: campLevelsData.branchLevel,
+  stationChangeAmounts: campLevelsData.changeAmounts,
   orderGoals: hideout.order.goals.map((goal) => ({ id: goal.id, fromTier: goal.fromTier, needs: goal.needs.map((need) => ({ counter: need.counter, target: need.target })) }))
 };
 if (!walletRules.sources.some((entry) => entry.id === hideoutRules.orderSource))
   throw new Error("coop_currency.json: the party order needs the " + hideoutRules.orderSource + " source");
+for (const id of Object.keys(hideoutRules.modules))
+  for (const item of hideoutRules.modules[id].materials)
+    if (!hideoutRules.storagePrefixes.some((prefix) => item.startsWith(prefix)) && !hideoutRules.storageItems.includes(item))
+      throw new Error("camp_modules.json: module " + id + " needs " + item + ", which the party storage does not take");
+for (const id of Object.keys(hideoutRules.workshop))
+  for (const item of hideoutRules.workshop[id].materials)
+    if (!hideoutRules.storagePrefixes.some((prefix) => item.startsWith(prefix)) && !hideoutRules.storageItems.includes(item))
+      throw new Error("camp_levels.json: station " + id + " needs " + item + ", which the party storage does not take");
 for (const row of hideoutRules.gardenRows)
   if (!hideoutRules.buildings.some((building) => building.id === row))
     throw new Error("party_hideout.json: unknown garden row " + row);
@@ -601,12 +634,15 @@ const companionRules = {
   bonesPerCompanion: companions.coop.farTrip.bonesPerCompanion,
   rarePerCompanion: companions.coop.farTrip.rarePerCompanion,
   rarePerBiome: companions.coop.farTrip.rarePerBiome,
-  soulsPerTrip: companions.coop.farTrip.souls
+  soulsPerTrip: companions.coop.farTrip.souls,
+  visitMs: companions.coop.visit.hours * 3600000,
+  visitsPerDay: companions.coop.visit.perDay,
+  visitSource: companions.coop.visit.source
 };
 for (const id of Object.keys(companionRules.companions))
   if (!companionRules.biomes[companionRules.companions[id]])
     throw new Error("companions.json: no biome entry for " + companionRules.companions[id]);
-for (const source of ["companion_pet", "companion_trip", "companion_pair"])
+for (const source of ["companion_pet", "companion_trip", "companion_pair", companions.coop.visit.source])
   if (!walletRules.sources.some((entry) => entry.id === source))
     throw new Error("coop_currency.json: companions need the " + source + " source");
 
@@ -636,4 +672,4 @@ if (!walletRules.sources.some((source) => source.id === "clan_fair"))
   throw new Error("coop_currency.json: the fair needs the clan_fair source");
 
 const code = fs.readFileSync(path.join(root, "build", "party.js"), "utf8");
-fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\nvar SeasonPassServerRules = " + JSON.stringify(seasonPassRules) + ";\nvar CrystalChangeServerRules = " + JSON.stringify(crystalChangeRules) + ";\nvar SeasonalEventServerRules = " + JSON.stringify(seasonalEventRules) + ";\nvar TownServerRules = " + JSON.stringify(townRules) + ";\nvar MarketServerRules = " + JSON.stringify(marketRules) + ";\nvar ChestServerRules = " + JSON.stringify(chestRules) + ";\nvar TournamentServerRules = " + JSON.stringify(tournamentRules) + ";\nvar ClanCampServerRules = " + JSON.stringify(clanCampRules) + ";\nvar TownBuildServerRules = " + JSON.stringify(townBuildRules) + ";\nvar TownPioneerServerRules = " + JSON.stringify(townPioneerRules) + ";\nvar TownWeekServerRules = " + JSON.stringify({ perPlayer: townWeekRules.perPlayer, minGoal: townWeekRules.minGoal, minLabour: townWeekRules.minLabour, rewards: townWeekRules.rewards.map((reward) => ({ decor: reward.decor, frame: reward.frame })) }) + ";\nvar HideoutServerRules = " + JSON.stringify(hideoutRules) + ";\nvar FairServerRules = " + JSON.stringify(fairRules) + ";\n" + "var CompanionServerRules = " + JSON.stringify(companionRules) + ";\n" + "var SocialServerRules = " + JSON.stringify(socialRules) + ";\n" + code);
+fs.writeFileSync(path.join(root, "build", "index.js"), "var PartyServerRules = " + JSON.stringify(rules) + ";\nvar RiftServerRules = " + JSON.stringify(riftRules) + ";\nvar PartyDirectoryRules = " + JSON.stringify(directoryRules) + ";\nvar IntakeRules = " + JSON.stringify(intakeRules) + ";\nvar ChronicleServerRules = " + JSON.stringify(chronicleRules) + ";\nvar GhostServerRules = " + JSON.stringify(ghostRules) + ";\nvar ClanServerRules = " + JSON.stringify(clanRules) + ";\nvar WalletServerRules = " + JSON.stringify(walletRules) + ";\nvar RaidServerRules = " + JSON.stringify(raidRules) + ";\nvar ChallengeServerRules = " + JSON.stringify(challengeRules) + ";\nvar ClanTreeServerRules = " + JSON.stringify(clanTreeRules) + ";\nvar MentorServerRules = " + JSON.stringify(mentorRules) + ";\nvar HelpServerRules = " + JSON.stringify(helpRules) + ";\nvar ClanChronicleServerRules = " + JSON.stringify(clanChronicleRules) + ";\nvar CoopHelpServerRules = " + JSON.stringify(coopHelpRules) + ";\nvar WeeklyServerRules = " + JSON.stringify(weeklyRules) + ";\nvar ClanWarServerRules = " + JSON.stringify(clanWarRules) + ";\nvar CosmeticServerRules = " + JSON.stringify(cosmeticRules) + ";\nvar SeasonPassServerRules = " + JSON.stringify(seasonPassRules) + ";\nvar CrystalChangeServerRules = " + JSON.stringify(crystalChangeRules) + ";\nvar SeasonalEventServerRules = " + JSON.stringify(seasonalEventRules) + ";\nvar TownServerRules = " + JSON.stringify(townRules) + ";\nvar InflowServerRules = " + JSON.stringify(inflowRules) + ";\nvar CloudServerRules = " + JSON.stringify(cloudRules) + ";\nvar MarketServerRules = " + JSON.stringify(marketRules) + ";\nvar ChestServerRules = " + JSON.stringify(chestRules) + ";\nvar TournamentServerRules = " + JSON.stringify(tournamentRules) + ";\nvar ClanCampServerRules = " + JSON.stringify(clanCampRules) + ";\nvar TownBuildServerRules = " + JSON.stringify(townBuildRules) + ";\nvar TownWeekServerRules = " + JSON.stringify({ perPlayer: townWeekRules.perPlayer, minGoal: townWeekRules.minGoal, minLabour: townWeekRules.minLabour, rewards: townWeekRules.rewards.map((reward) => ({ decor: reward.decor, frame: reward.frame })) }) + ";\nvar HideoutServerRules = " + JSON.stringify(hideoutRules) + ";\nvar FairServerRules = " + JSON.stringify(fairRules) + ";\n" + "var CompanionServerRules = " + JSON.stringify(companionRules) + ";\n" + "var SocialServerRules = " + JSON.stringify(socialRules) + ";\n" + code);

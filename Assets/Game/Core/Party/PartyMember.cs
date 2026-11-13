@@ -21,6 +21,7 @@ namespace Game.Core.Party
         public double BossPierce { get; internal set; }
         public double StageCarry { get; internal set; }
         public bool AtGate { get; internal set; }
+        public byte Pastime { get; internal set; }
         public int GuestTicksLeft { get; internal set; }
         public long Stage { get; internal set; }
         public double CreditRate { get; internal set; }
@@ -49,6 +50,7 @@ namespace Game.Core.Party
             BossPierce = 0;
             StageCarry = 0;
             AtGate = false;
+            Pastime = 0;
             GuestTicksLeft = 0;
             Stage = 0;
             CreditRate = 0;

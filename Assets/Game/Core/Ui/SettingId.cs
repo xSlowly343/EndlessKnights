@@ -34,6 +34,11 @@ namespace Game.Core.Ui
         BuildPaste,
         AutoHideFullscreen,
         HideHotKey,
-        AuraShow
+        AuraShow,
+        AccountEmail,
+        AccountPassword,
+        AccountSignIn,
+        CloudSave,
+        CloudLoad
     }
 }

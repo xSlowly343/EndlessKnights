@@ -45,6 +45,18 @@ namespace Game.Bootstrap
         {
             if (!Listening)
                 return;
+            var account = SettingsScreen.Account;
+            if (account.Focus != AccountField.None)
+            {
+                if (CouponEntry.IsSubmit(symbol))
+                {
+                    _panels.Settings.Press(SettingId.AccountSignIn);
+                    return;
+                }
+                if (symbol == CouponEntry.PasteKey ? account.Paste(GUIUtility.systemCopyBuffer) : account.Type(symbol))
+                    _panels.Settings.Refresh();
+                return;
+            }
             var entry = SettingsScreen.CouponCode;
             if (CouponEntry.IsSubmit(symbol))
             {

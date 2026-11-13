@@ -26,6 +26,7 @@ interface ChronicleStats {
     guardiansTogether: number;
     synergiesOnOneEnemy: number;
     wanderersBosses: number;
+    suppliesTogether: number;
 }
 
 interface ChronicleRecord {
@@ -59,7 +60,7 @@ function chronicleTicksPerHour(): number {
 }
 
 function chronicleNoStats(): ChronicleStats {
-    return { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0, synergiesOnOneEnemy: 0, wanderersBosses: 0 };
+    return { bossesTogether: 0, ticksTogether: 0, fullOrchestra: 0, nightBosses: 0, riftDepth: 0, mentorSeconds: 0, guardiansTogether: 0, synergiesOnOneEnemy: 0, wanderersBosses: 0, suppliesTogether: 0 };
 }
 
 function chronicleEmpty(): ChronicleValue {
@@ -82,6 +83,7 @@ function chronicleProgress(stats: ChronicleStats, kind: string): number {
         case "guardiansTogether": return stats.guardiansTogether || 0;
         case "synergiesOnOneEnemy": return stats.synergiesOnOneEnemy || 0;
         case "wanderersBosses": return stats.wanderersBosses || 0;
+        case "suppliesTogether": return stats.suppliesTogether || 0;
         default: return 0;
     }
 }
@@ -102,6 +104,7 @@ function chronicleAdd(value: ChronicleValue, delta: ChronicleStats, now: number,
     value.stats.guardiansTogether = (value.stats.guardiansTogether || 0) + (delta.guardiansTogether || 0);
     value.stats.synergiesOnOneEnemy = Math.max(value.stats.synergiesOnOneEnemy || 0, delta.synergiesOnOneEnemy || 0);
     value.stats.wanderersBosses = (value.stats.wanderersBosses || 0) + (delta.wanderersBosses || 0);
+    value.stats.suppliesTogether = (value.stats.suppliesTogether || 0) + (delta.suppliesTogether || 0);
     const earned: ChronicleEarned[] = [];
     for (const feat of rules.feats) {
         if (!feat.tracked)

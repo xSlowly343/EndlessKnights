@@ -24,6 +24,7 @@ declare namespace nkruntime {
     interface LeaderboardRecordList { records?: LeaderboardRecord[]; ownerRecords?: LeaderboardRecord[]; nextCursor?: string; prevCursor?: string; }
     interface Nakama {
         leaderboardCreate(id: string, authoritative: boolean, sortOrder?: string, operator?: string, resetSchedule?: string | null, metadata?: { [key: string]: any } | null): void;
+        leaderboardRecordDelete(id: string, ownerId: string): void;
         leaderboardRecordWrite(id: string, ownerId: string, username?: string, score?: number, subscore?: number, metadata?: { [key: string]: any } | null): LeaderboardRecord;
         leaderboardRecordsList(id: string, ownerIds?: string[], limit?: number, cursor?: string, overrideExpiry?: number): LeaderboardRecordList;
         matchCreate(module: string, params?: { [key: string]: any }): string;
@@ -48,6 +49,7 @@ declare namespace nkruntime {
         groupUsersPromote(groupId: string, userIds: string[], callerId?: string): void;
         groupUsersList(groupId: string, limit?: number, state?: number, cursor?: string): { groupUsers?: GroupUser[]; cursor?: string };
         userGroupsList(userId: string, limit?: number, state?: number, cursor?: string): { userGroups?: { group?: Group; state?: number }[]; cursor?: string };
+        friendsList(userId: string, limit?: number, state?: number, cursor?: string): { friends?: { user?: { userId: string }; state?: number }[]; cursor?: string };
     }
     type MatchState = { [key: string]: any };
     interface MatchHandler<T> {

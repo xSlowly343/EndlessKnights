@@ -105,6 +105,8 @@ namespace Game.Core.Save
                     ("sitSeconds", JsonValue.Of(state.Hideout.SitSeconds)),
                     ("fireLevel", JsonValue.Of(state.Hideout.FireLevel)),
                     ("claimSeq", JsonValue.Of(state.Hideout.ClaimSeq.ToString(System.Globalization.CultureInfo.InvariantCulture))),
+                    ("shareMaterials", JsonValue.Of(state.Hideout.ShareMaterials)),
+                    ("shareKeep", JsonValue.Of(state.Hideout.ShareKeep)),
                     ("buildings", WriteLevels(state.Hideout.Buildings)))),
                 ("clanCamp", Object(
                     ("level", JsonValue.Of(state.ClanCamp.Level)),
@@ -390,6 +392,11 @@ namespace Game.Core.Save
                 foreach (var item in museum.Field("shelf").Items())
                     state.Museum.Shelf.Add(item.AsString());
                 state.Museum.Title = ReadOptionalText(museum, "title");
+                if (museum.HasField("reported"))
+                {
+                    foreach (var item in museum.Field("reported").Items())
+                        state.Museum.Reported.Add(item.AsString());
+                }
             }
             if (node.HasField("forge"))
             {
@@ -940,7 +947,8 @@ namespace Game.Core.Save
             var eggs = new JsonValue[companions.Eggs.Count];
             for (var i = 0; i < eggs.Length; i++)
                 eggs[i] = Object(("biome", JsonValue.Of(companions.Eggs[i].Biome)), ("secondsLeft", JsonValue.Of(companions.Eggs[i].SecondsLeft)));
-            return Object(("day", JsonValue.Of(companions.Day)), ("home", WriteIdList(companions.Home)), ("owned", WriteIdList(owned)),
+            return Object(("day", JsonValue.Of(companions.Day)), ("visiting", OptionalText(companions.Visiting)), ("visitHost", OptionalText(companions.VisitHost)),
+                ("visitEndsUnixMs", JsonValue.Of(companions.VisitEndsUnixMs)), ("home", WriteIdList(companions.Home)), ("owned", WriteIdList(owned)),
                 ("eggs", JsonValue.Array(eggs)), ("eggCooldown", JsonValue.Of(companions.EggCooldown)), ("sparks", JsonValue.Of(companions.Sparks)),
                 ("coalToday", JsonValue.Of(companions.CoalToday)), ("hatched", JsonValue.Of(companions.Hatched)), ("shown", OptionalText(companions.Shown)), ("souls", JsonValue.Of(companions.Souls)), ("soulHours", JsonValue.Of(companions.SoulHours)), ("soulHostDay", JsonValue.Of(companions.SoulHostDay)), ("soulTrialWeek", JsonValue.Of(companions.SoulTrialWeek)), ("soulTreeWeek", JsonValue.Of(companions.SoulTreeWeek)), ("essence", JsonValue.Of(companions.Essence)), ("quickBiteSeconds", JsonValue.Of(companions.QuickBiteSeconds)), ("quickBiteFactor", JsonValue.Of(companions.QuickBiteFactor)), ("sureForge", JsonValue.Of(companions.SureForge)), ("xpBoostSeconds", JsonValue.Of(companions.XpBoostSeconds)), ("xpBoost", JsonValue.Of(companions.XpBoost)), ("hostEssenceDays", WriteNumberMap(companions.HostEssenceDays)),
                 ("gear", WriteCompanionGear(companions.Gear)), ("nextGearId", JsonValue.Of(companions.NextGearId)),
@@ -999,6 +1007,9 @@ namespace Game.Core.Save
         private static void ReadCompanions(ContentNode node, CompanionState companions)
         {
             companions.Day = node.Field("day").AsLong(-1);
+            companions.Visiting = ReadOptionalText(node, "visiting");
+            companions.VisitHost = ReadOptionalText(node, "visitHost");
+            companions.VisitEndsUnixMs = node.HasField("visitEndsUnixMs") ? node.Field("visitEndsUnixMs").AsLong(0) : 0;
             companions.Progress.Clear();
             foreach (var item in node.Field("progress").Items())
             {
@@ -1211,7 +1222,9 @@ namespace Game.Core.Save
         {
             var done = new List<string>(museum.Done);
             done.Sort(System.StringComparer.Ordinal);
-            return Object(("done", WriteIdList(done)), ("shelf", WriteIdList(museum.Shelf)), ("title", OptionalText(museum.Title)));
+            var reported = new List<string>(museum.Reported);
+            reported.Sort(System.StringComparer.Ordinal);
+            return Object(("done", WriteIdList(done)), ("shelf", WriteIdList(museum.Shelf)), ("title", OptionalText(museum.Title)), ("reported", WriteIdList(reported)));
         }
 
         private static JsonValue WriteCooking(CookingState cooking)
@@ -1414,7 +1427,7 @@ namespace Game.Core.Save
         {
             peaceful.Mode = node.Field("mode").AsString() == "camp" ? PeacefulMode.Camp : PeacefulMode.Battle;
             peaceful.Activity = ReadOptionalText(node, "activity");
-            peaceful.Place = node.HasField("place") ? PeacefulPlaces.Parse(node.Field("place").AsString()) : PeacefulPlace.Refuge;
+            peaceful.Place = node.HasField("place") ? PeacefulPlaces.Parse(node.Field("place").AsString()) : PeacefulPlace.Hideout;
             foreach (var item in node.Field("presets").Items())
                 peaceful.Presets.Add(item.AsString());
             peaceful.ScheduledBy = ReadOptionalText(node, "scheduledBy");
@@ -1576,6 +1589,8 @@ namespace Game.Core.Save
                 hideout.ClaimSeq = (long)ReadCount(node.Field("claimSeq"));
             if (node.HasField("buildings"))
                 ReadLevels(node.Field("buildings"), hideout.Buildings);
+            hideout.ShareMaterials = node.HasField("shareMaterials") && node.Field("shareMaterials").AsBool();
+            hideout.ShareKeep = node.HasField("shareKeep") ? node.Field("shareKeep").AsInt(-1, 1000) : -1;
         }
 
         private static void ReadClanCamp(ContentNode node, ClanCampState camp)
@@ -2079,6 +2094,8 @@ namespace Game.Core.Save
                 ("inside", JsonValue.Of(rift.Inside)),
                 ("shards", SaveValues.Of(rift.Shards)),
                 ("deepest", JsonValue.Of(rift.Deepest)),
+                ("supply", OptionalText(rift.Supply)),
+                ("supplyWindow", JsonValue.Of(rift.SupplyWindow)),
                 ("artifacts", JsonValue.Array(WriteArtifacts(rift.Artifacts))),
                 ("otherWorld", rift.OtherWorld == null ? JsonValue.Null() : WriteProgress(rift.OtherWorld)));
 
@@ -2109,6 +2126,8 @@ namespace Game.Core.Save
             rift.Inside = node.Field("inside").AsBool();
             rift.Shards = SaveValues.ReadBigNumber(node.Field("shards"));
             rift.Deepest = node.Field("deepest").AsLong(1);
+            rift.Supply = ReadOptionalText(node, "supply");
+            rift.SupplyWindow = node.HasField("supplyWindow") ? node.Field("supplyWindow").AsLong(0) : 0;
             ReadArtifacts(node.Field("artifacts"), rift.Artifacts);
             var other = node.Field("otherWorld");
             rift.OtherWorld = other.IsNull ? null : ReadProgress(other);
