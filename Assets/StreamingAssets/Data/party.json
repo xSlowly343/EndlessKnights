@@ -100,5 +100,42 @@
       { "from": "partyGemExperience", "to": "gemExperience", "kind": "increased" },
       { "from": "partySkillCooldown", "to": "skillCooldown", "kind": "increased", "negate": true }
     ]
+  },
+  "growth": {
+    "maxLevel": 100,
+    "levelBase": 250,
+    "levelStep": 60,
+    "experience": {
+      "perActiveMinute": 1,
+      "bossTogether": 3,
+      "guardianTogether": 10,
+      "order": 20,
+      "perBuildItem": 0.1,
+      "dailyMinutesPerMember": 600,
+      "firstReportSeconds": 900,
+      "reportSlackSeconds": 60
+    },
+    "unlocks": [
+      { "level": 5, "kind": "mascot" },
+      { "level": 10, "kind": "bannerSlot" }, { "level": 10, "kind": "look" },
+      { "level": 15, "kind": "trialTier" },
+      { "level": 20, "kind": "colossusTier" },
+      { "level": 25, "kind": "bannerSlot" }, { "level": 25, "kind": "look" },
+      { "level": 30, "kind": "mascotRite" },
+      { "level": 35, "kind": "trialTier" },
+      { "level": 40, "kind": "colossusTier" },
+      { "level": 45, "kind": "mascotRite" },
+      { "level": 50, "kind": "bannerSlot" }, { "level": 50, "kind": "look" },
+      { "level": 55, "kind": "trialTier" },
+      { "level": 60, "kind": "colossusTier" },
+      { "level": 65, "kind": "mascotRite" },
+      { "level": 70, "kind": "trialTier" },
+      { "level": 75, "kind": "bannerSlot" }, { "level": 75, "kind": "look" },
+      { "level": 80, "kind": "colossusTier" },
+      { "level": 85, "kind": "mascotRite" },
+      { "level": 90, "kind": "trialTier" },
+      { "level": 95, "kind": "colossusTier" },
+      { "level": 100, "kind": "bannerSlot" }, { "level": 100, "kind": "look" }
+    ]
   }
 }
