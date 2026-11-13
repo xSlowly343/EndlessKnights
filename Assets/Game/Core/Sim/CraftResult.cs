@@ -13,6 +13,7 @@ namespace Game.Core.Sim
         NotEnoughEssence,
         NotCraftable,
         MasteryTooLow,
-        NotFound
+        NotFound,
+        NotEnoughSparks
     }
 }

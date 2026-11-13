@@ -991,6 +991,11 @@
 - `UniquesFound` хранит голые id: id уникальных брони и оружия не пересекаются (проверено на данных 06.11.2026); если появится пересечение — разнести на два набора ключей. Запись — `HashSet.Add` без склейки строк, чтобы не аллоцировать при доставке дропа.
 - Ивентовые наборы исключены из `ItemCatalog.PickSet` по полю `Event`; `CraftSetPiece` отвечает `NotCraftable`. Выдачу шлёт `EventSystem.BossWon` (колбэк из `GameLoop`), как `DropSystem.Salvaged` для руды.
 
+### Искры и Лавка Разлома (14е.30)
+- Искры лежат в `RiftState` (окно), а не в `HeroKit`: как Осколки, они общие для входов-выходов в одном окне и сгорают в `StartWindow`/`EndWindow`. `DropSystem.CraftsForSparks` = `Rift.Inside`; оплата и проверка — `Unaffordable`/`PayCraft`.
+- Разбор внутри: `GameLoop.Salvage` → `RiftSystem.SalvageSparks`, руда в Лагерь не идёт (раньше разбор в Разломе пополнял домашнюю сумку).
+- Лавка без писем: сервер копит «Искр куплено для Разлома X» (`sparks[riftId]`), лимит — по окну расписания (`bought`), ключ хранилища `w<окно>`. Клиент зачисляет разницу с `rift.shopCredited` — идемпотентно. Отдельный счёт по `riftId` нужен, потому что вход в отрядный Разлом начинает новый `RiftState` (новый `WindowId`).
+
 ### Ключи Разлома (14е.28)
 - Связь модификатор → ключи лежит в `rift.json` → `windowSet.keys`, а не в `items.json`: так её видит и сервер (бандл читает `rift.json`, поле `keyed`), и хозяин отряда без каталога вещей. `GameData` при загрузке сверяет ключи с `riftOnly`-сетами в обе стороны (`RiftWindowSetRules.CheckSets`).
 - Ключевой модификатор окна: `RiftRules.KeyedModifier` — старт с `SplitMix(windowId, 4097) % 2` среди модификаторов окна, первый с ключами. Сервер — `riftKeyedModifier` с тем же индексом; тест `TheWindowKeyIsPickedLikeOnTheServer` держит числа одинаковыми.

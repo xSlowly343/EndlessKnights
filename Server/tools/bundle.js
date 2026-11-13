@@ -126,6 +126,8 @@ const riftRules = {
   modifiersPerWindow: rift.modifiersPerWindow,
   softenShare: rift.windowSet.softenShare || 0,
   keyed: rift.modifiers.map((modifier) => (rift.windowSet.keys || []).some((key) => key.modifier === modifier.id)),
+  shop: ((rift.forge && rift.forge.shop) || []).map((offer) => ({ id: offer.id, price: offer.price, sparks: offer.sparks, perWindow: offer.perWindow })),
+  shopCurrency: "",
   partyJoinMs: Math.round(rift.party.joinMinutes * 60 * 1000),
   partyDurationMs: Math.round(rift.party.durationHours * 3600 * 1000),
   boardUpdateMs: Math.round(rift.board.updateMinutes * 60 * 1000),
@@ -464,6 +466,8 @@ if (chests.version !== 1)
   throw new Error("chests.json: version " + chests.version + " is not supported");
 if (chests.currency !== "crystals" || !walletRules.currencies.includes(chests.currency))
   throw new Error("chests.json: chests are sold for crystals only");
+riftRules.shopCurrency = chests.currency;
+
 const chestRules = {
   currency: chests.currency,
   chests: chests.chests.map((chest) => ({ id: chest.id, price: chest.price, ingots: chest.ingots || 0, essence: chest.essence || 0, perWeek: chest.perWeek }))

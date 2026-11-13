@@ -204,11 +204,7 @@ namespace Game.Core.Sim
             _drops.GuardianKilled = _facets.NoteGuardian;
             _quests.DailyClaimed = _facets.NoteDailyClaim;
             _forge.Attack = data.Combat.Attack;
-            _drops.Salvaged = drop =>
-            {
-                _forge.SalvageOre(drop);
-                _mount.NoteSalvage(drop);
-            };
+            _drops.Salvaged = Salvage;
             _seasonal.BossWon = eventId => _drops.GiveEventPiece(eventId);
             _seasonal.CompanionEarned = companion => Nest.GiveEventCompanion(companion);
             _museum = new MuseumSystem(data.Museum, state, hero, _alchemy, Events);
@@ -1133,6 +1129,13 @@ namespace Game.Core.Sim
             _rift.UseData(data);
             RebuildTree();
             SyncPathSkill();
+        }
+
+        private void Salvage(ItemDrop drop)
+        {
+            if (!_rift.SalvageSparks(drop.Rarity))
+                _forge.SalvageOre(drop);
+            _mount.NoteSalvage(drop);
         }
 
         private void WearWindowSet()

@@ -1,5 +1,5 @@
 {
-  "checksum": "d8ddd3ba0b228e0a5b92c46dc51074861ebd0e715d6d5d66baf6412d596b5307",
+  "checksum": "e054639848aff3e6e5d79b6b79ff5a7012e1cf497f54d8e5c0fda57d81a6348c",
   "payload": {
     "clock": {
       "bootId": 1,
@@ -566,6 +566,8 @@
         "otherHero": null,
         "otherWorld": null,
         "shards": "0e0",
+        "shopCredited": 0,
+        "sparks": 0,
         "supply": null,
         "supplyWindow": 0,
         "windowEndUnixMs": 0,

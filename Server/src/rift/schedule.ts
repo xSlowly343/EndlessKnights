@@ -19,6 +19,8 @@ interface RiftRules {
     milestones: RiftMilestoneRules;
     softenShare: number;
     keyed: boolean[];
+    shop: RiftShopRule[];
+    shopCurrency: string;
 }
 
 interface RiftMilestoneStep {

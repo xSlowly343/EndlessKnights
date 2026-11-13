@@ -71,6 +71,14 @@
       { "id": "gem_scholar", "modifiers": [{ "stat": "gemExperience", "kind": "increased", "value": 0.5 }] }
     ]
   },
+  "forge": {
+    "sparks": { "boss": 2, "guardian": 6, "salvage": { "base": 1, "perRarity": 1 }, "milestone": { "every": 100, "sparks": 25 } },
+    "shop": [
+      { "id": "sparks_handful", "price": 100, "sparks": 30, "perWindow": 3 },
+      { "id": "sparks_bag", "price": 300, "sparks": 100, "perWindow": 2 },
+      { "id": "sparks_chest", "price": 800, "sparks": 300, "perWindow": 1 }
+    ]
+  },
   "modifiersPerWindow": 2,
   "modifiers": [
     { "id": "stone_skin", "unlessRoles": ["herald"], "modifiers": [{ "stat": "attackPower", "kind": "more", "value": -0.5 }] },

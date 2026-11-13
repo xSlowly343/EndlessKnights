@@ -587,6 +587,19 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void TheRiftShopIsReadPerRiftWithItsSparksAndWindowCounts()
+        {
+            Assert.That(RiftShopReply.ViewPayload(1793102400), Is.EqualTo("{\"riftId\":1793102400}"));
+            Assert.That(RiftShopReply.BuyPayload(1793102460, "sparks_bag"), Is.EqualTo("{\"riftId\":1793102460,\"id\":\"sparks_bag\"}"));
+            var shop = RiftShopReply.From(NakamaJson.Parse("{\"riftId\":1793102460,\"bought\":{\"sparks_bag\":2},\"sparks\":200,\"crystals\":150}"));
+            Assert.That(shop.RiftId, Is.EqualTo(1793102460));
+            Assert.That(shop.Sparks, Is.EqualTo(200));
+            Assert.That(shop.Crystals, Is.EqualTo(150));
+            Assert.That(shop.Bought["sparks_bag"], Is.EqualTo(2));
+            Assert.That(RiftShopReply.From(NakamaJson.Parse("{\"riftId\":1,\"bought\":{},\"sparks\":0,\"crystals\":0}")).Bought, Is.Empty);
+        }
+
+        [Test]
         public void TheSeasonPassAndCrystalChangesAreReadFromTheServer()
         {
             Assert.That(SeasonPassReply.AddPayload(450), Is.EqualTo("{\"points\":450}"));
