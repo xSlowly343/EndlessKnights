@@ -97,7 +97,7 @@ namespace Game.Core.Ui
             return string.Join(" · ", parts);
         }
 
-        private static string HallName(string id, GuildRules? guilds) => guilds?.Guild(id) is GuildDef guild ? Texts.Pick(guild.NameRu, guild.NameEn) : id;
+        private static string HallName(string id, GuildRules? guilds) => guilds == null ? id : GuildView.ProjectName(guilds, id);
 
         private static string ContestName(string id, FairRules? fair) => fair?.Contest(id) is FairContest contest ? Texts.Pick(contest.NameRu, contest.NameEn) : id;
 

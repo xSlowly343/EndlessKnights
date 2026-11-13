@@ -28,7 +28,6 @@ interface HideoutRules {
     levelTiers: number[];
     materials: { [item: string]: number };
     maxGive: number;
-    startBuilt: string[];
     orderDays: number;
     orderFromTier: number;
     orderSource: string;
@@ -169,7 +168,7 @@ function hideoutOpenBuildings(tier: number): string[] {
 }
 
 function hideoutGuildReady(nk: nkruntime.Nakama, guild: string): boolean {
-    return guild.length === 0 || HideoutServerRules.startBuilt.indexOf(guild) >= 0 || townGuilds(nk).indexOf(guild) >= 0;
+    return guild.length === 0 || townGuilds(nk).indexOf(guild) >= 0;
 }
 
 function hideoutAllLevel(nk: nkruntime.Nakama, value: HideoutValue): number {
