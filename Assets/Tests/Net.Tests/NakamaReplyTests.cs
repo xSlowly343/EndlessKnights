@@ -587,6 +587,18 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ThePartyLevelIsReadFromTheServer()
+        {
+            Assert.That(PartyGrowthReply.ReportPayload(360), Is.EqualTo("{\"activeSeconds\":360}"));
+            var reply = PartyGrowthReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"experience\":1460,\"level\":5,\"into\":100,\"need\":490}"));
+            Assert.That(reply.PartyId, Is.EqualTo("g1"));
+            Assert.That(reply.Experience, Is.EqualTo(1460));
+            Assert.That(reply.Level, Is.EqualTo(5));
+            Assert.That(reply.Into, Is.EqualTo(100));
+            Assert.That(reply.Need, Is.EqualTo(490));
+        }
+
+        [Test]
         public void TheRiftShopIsReadPerRiftWithItsSparksAndWindowCounts()
         {
             Assert.That(RiftShopReply.ViewPayload(1793102400), Is.EqualTo("{\"riftId\":1793102400}"));

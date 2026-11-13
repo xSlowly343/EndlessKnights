@@ -65,6 +65,7 @@ namespace Game.Core.Party
         public PartyGhostRules Ghost { get; }
         public PartyRelayRules Relay { get; }
         public PartyHelpRules Help { get; }
+        public PartyGrowthRules Growth { get; private set; } = PartyGrowthRules.None;
         public int MaxWeakenedSpawns { get; }
         public double MaxWeakenShare { get; }
         public double MaxWeakenGold { get; }
@@ -121,7 +122,8 @@ namespace Game.Core.Party
             {
                 PierceShare = root.HasField("pierce") ? root.Field("pierce").Field("share").AsNumber(0, 1) : 0,
                 PierceKillsPerTick = root.HasField("pierce") ? root.Field("pierce").Field("maxKillsPerTick").AsInt(0, EnemyHistory.Depth / 2) : 0,
-                PierceCaps = root.HasField("pierce") ? PierceRules.Read(root.Field("pierce")) : new PierceRules()
+                PierceCaps = root.HasField("pierce") ? PierceRules.Read(root.Field("pierce")) : new PierceRules(),
+                Growth = root.HasField("growth") ? PartyGrowthRules.Read(root.Field("growth")) : PartyGrowthRules.None
             };
         }
     }

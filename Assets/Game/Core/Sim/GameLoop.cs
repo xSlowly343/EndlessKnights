@@ -290,6 +290,7 @@ namespace Game.Core.Sim
         public PartyBuffs PartyBuffs => _partyBuffs;
         public SynergySystem Synergy => _synergy;
         public GhostSystem Ghost => _ghost;
+        public PartyActivityMeter PartyActivity { get; } = new PartyActivityMeter();
         public RaidTally Raid => _raid;
         public ClanTreeBonus ClanTree => _clanTree;
         public MentorBonus Mentor => _mentor;
@@ -1269,6 +1270,7 @@ namespace Game.Core.Sim
             _skills.CastAutomatic();
             _partyBuffs.Tick();
             _ghost.NoteInput(input.HasInput);
+            PartyActivity.NoteInput(input.HasInput);
             _ghost.Tick();
             _synergy.Tick();
             _conditions.NoteInput(input);

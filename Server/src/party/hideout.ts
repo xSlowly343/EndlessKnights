@@ -374,6 +374,8 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
             continue;
         }
     }
+    if (ordered)
+        partyGrowthAdd(nk, group.id, PartyGrowthServerRules.order);
     for (const id of ordered ? meta.members : []) {
         try {
             walletGrant(nk, id, HideoutServerRules.orderSource, 1, nowUnixMs);
@@ -436,12 +438,16 @@ function hideoutGive(nk: nkruntime.Nakama, userId: string, item: unknown, amount
     if (!partyGroupOfUser(nk, userId))
         throw new Error("not in a party");
     const receipt = inflowSpend(nk, userId, item as string, amount);
-    return inflowGuard(nk, userId, receipt, () => hideoutUpdate(nk, userId, (hideout) => {
+    const view = inflowGuard(nk, userId, receipt, () => hideoutUpdate(nk, userId, (hideout) => {
         if (!hideout.project)
             throw new Error("nothing is being built");
         hideout.project.points += points * amount;
         hideout.project.by[userId] = (hideout.project.by[userId] || 0) + points * amount;
     }, nowUnixMs));
+    const group = partyGroupOfUser(nk, userId);
+    if (group)
+        partyGrowthAdd(nk, group.id, amount * PartyGrowthServerRules.perBuildItem);
+    return view;
 }
 
 function hideoutWant(nk: nkruntime.Nakama, userId: string, building: unknown, on: unknown, nowUnixMs: number): { [key: string]: any } {

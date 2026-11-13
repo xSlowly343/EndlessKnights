@@ -275,6 +275,7 @@ function partyFlushChronicle(nk: nkruntime.Nakama, logger: nkruntime.Logger, sta
             members.push(member.playerId);
     for (const got of chronicleFlush(nk, logger, state.partyId, delta, members))
         logger.info("party %s: feat %s, level %d", state.partyId, got.feat, got.level);
+    partyGrowthBattle(nk, state.partyId, delta.bossesTogether || 0, delta.guardiansTogether || 0);
     const bosses = host.takeFriendBosses();
     walletGrantBosses(nk, logger, bosses, Date.now());
     coopHelpBosses(nk, logger, bosses);

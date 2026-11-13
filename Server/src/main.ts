@@ -117,6 +117,8 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("rift_supply", riftSupplyMineRpc);
     initializer.registerRpc("rift_rear", riftRearRpc);
     initializer.registerRpc("rift_shop", riftShopRpc);
+    initializer.registerRpc("party_growth", partyGrowthRpc);
+    initializer.registerRpc("party_growth_report", partyGrowthReportRpc);
     initializer.registerRpc("rift_shop_buy", riftShopBuyRpc);
     initializer.registerRpc("companion_visit_send", companionVisitSendRpc);
     initializer.registerRpc("companion_visit", companionVisitRpc);
