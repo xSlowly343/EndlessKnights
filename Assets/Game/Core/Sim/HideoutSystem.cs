@@ -283,8 +283,8 @@ namespace Game.Core.Sim
             State.Project.Length > 0 && _materials.PointsOf(item) > 0 && amount > 0 && amount <= _materials.MaxGive
             && State.Storage.TryGetValue(item, out var stored) && stored >= amount;
 
-        public void UseStations(IReadOnlyDictionary<string, int> levels, IReadOnlyDictionary<string, string> branches) =>
-            Stations?.UsePartyHouse(InParty, levels, branches);
+        public void UseStations(IReadOnlyDictionary<string, int> levels, IReadOnlyDictionary<string, string> branches, IReadOnlyDictionary<string, int>? modules = null, IReadOnlyList<string>? street = null) =>
+            Stations?.UsePartyHouse(InParty, levels, branches, modules, street);
 
         public void UseForBuild(long points, long fromStorage)
         {

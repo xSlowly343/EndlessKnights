@@ -73,6 +73,8 @@ namespace Game.Net.Nakama
             }
             StationLevels = levels;
             StationBranches = branches;
+            Modules = Counts(NakamaJson.Field(json, "modules"));
+            Street = CosmeticsMineView.Ids(json, "street");
             var trophies = NakamaJson.Field(json, "trophies");
             var feats = new List<TrophyFeat>();
             if (trophies != null && trophies.Kind == JsonKind.Object)
@@ -153,6 +155,8 @@ namespace Game.Net.Nakama
         public long ForBuildPoints { get; }
         public IReadOnlyDictionary<string, int> StationLevels { get; }
         public IReadOnlyDictionary<string, string> StationBranches { get; }
+        public IReadOnlyDictionary<string, int> Modules { get; }
+        public IReadOnlyList<string> Street { get; }
 
         public static string QueuePayload(string building) => NakamaJson.Object(("building", NakamaJson.Quote(building)));
 
@@ -253,6 +257,28 @@ namespace Game.Net.Nakama
 
         public static async Task<HideoutReply> StationBranchAsync(NakamaClient client, NakamaSession session, string station, string branch, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_station_branch", BranchPayload(station, branch), cancel).ConfigureAwait(false)));
+
+        public static string ModulePayload(string module) => NakamaJson.Object(("module", NakamaJson.Quote(module)));
+
+        public static string InstallPayload(string module, int socket) =>
+            NakamaJson.Object(("module", NakamaJson.Quote(module)), ("socket", socket.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
+        public static async Task<HideoutReply> ModuleMakeAsync(NakamaClient client, NakamaSession session, string module, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_module_make", ModulePayload(module), cancel).ConfigureAwait(false)));
+
+        public static async Task<HideoutReply> ModuleInstallAsync(NakamaClient client, NakamaSession session, string module, int socket, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_module_install", InstallPayload(module, socket), cancel).ConfigureAwait(false)));
+
+        public static string StreetPayload(IReadOnlyList<string> order)
+        {
+            var quoted = new string[order.Count];
+            for (var i = 0; i < quoted.Length; i++)
+                quoted[i] = NakamaJson.Quote(order[i]);
+            return NakamaJson.Object(("order", "[" + string.Join(",", quoted) + "]"));
+        }
+
+        public static async Task<HideoutReply> StreetAsync(NakamaClient client, NakamaSession session, IReadOnlyList<string> order, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_street", StreetPayload(order), cancel).ConfigureAwait(false)));
 
         public static async Task<HideoutReply> BuildFromStorageAsync(NakamaClient client, NakamaSession session, string item, int amount, CancellationToken cancel = default) =>
             From(NakamaJson.Parse(await client.RpcAsync(session, "hideout_build_store", GivePayload(item, amount), cancel).ConfigureAwait(false)));

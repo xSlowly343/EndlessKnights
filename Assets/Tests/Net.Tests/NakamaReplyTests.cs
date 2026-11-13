@@ -706,6 +706,8 @@ namespace Game.Net.Tests
             Assert.That(stations.StationBranches["garden_bed"], Is.EqualTo("greenhouse"));
             Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":0}")).StationLevels, Is.Empty);
             Assert.That(HideoutReply.BranchPayload("forge", "armory"), Is.EqualTo("{\"station\":\"forge\",\"branch\":\"armory\"}"));
+            Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":2,\"modules\":{\"iron_tripod\":0,\"signal_horn\":-1}}")).Modules["signal_horn"], Is.EqualTo(-1));
+            Assert.That(HideoutReply.InstallPayload("iron_tripod", 0), Is.EqualTo("{\"module\":\"iron_tripod\",\"socket\":0}"));
         }
 
         [Test]

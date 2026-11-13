@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Core.Content;
 
 namespace Game.Core.Sim
@@ -13,7 +14,8 @@ namespace Game.Core.Sim
         NotMade,
         NotOpen,
         WrongBuilding,
-        NoSuchSocket
+        NoSuchSocket,
+        PartyHouse
     }
 
     public sealed class CampModuleSystem
@@ -49,13 +51,32 @@ namespace Game.Core.Sim
 
         public int Sockets(string building) => _rules.SocketsAt(_levels.Level(building));
 
-        public bool Made(string module) => Camp.Modules.Contains(module);
+        public const int Stored = -1;
+
+        private bool PartyHouse => Camp.InPartyHouse;
+
+        public bool Made(string module) => PartyHouse ? Camp.PartyModules.ContainsKey(module) : Camp.Modules.Contains(module);
+
+        private IEnumerable<KeyValuePair<string, int>> Installed()
+        {
+            if (!PartyHouse)
+            {
+                foreach (var pair in Camp.Installed)
+                    yield return pair;
+                yield break;
+            }
+            foreach (var pair in Camp.PartyModules)
+            {
+                if (pair.Value != Stored)
+                    yield return pair;
+            }
+        }
 
         public bool HasBlueprint(string module) => Camp.Blueprints.Contains(module);
 
         public string InSocket(string building, int socket)
         {
-            foreach (var pair in Camp.Installed)
+            foreach (var pair in Installed())
             {
                 if (pair.Value == socket && _rules.Of(pair.Key)?.Building == building)
                     return pair.Key;
@@ -63,7 +84,12 @@ namespace Game.Core.Sim
             return string.Empty;
         }
 
-        public int SocketOf(string module) => Camp.Installed.TryGetValue(module, out var socket) ? socket : -1;
+        public int SocketOf(string module)
+        {
+            if (PartyHouse)
+                return Camp.PartyModules.TryGetValue(module, out var shared) ? shared : Stored;
+            return Camp.Installed.TryGetValue(module, out var socket) ? socket : Stored;
+        }
 
         public CampModuleResult CheckCraft(string module)
         {
@@ -72,6 +98,8 @@ namespace Game.Core.Sim
                 return CampModuleResult.NoSuchModule;
             if (Made(module))
                 return CampModuleResult.AlreadyMade;
+            if (PartyHouse)
+                return CampModuleResult.PartyHouse;
             if (!_camp.Open(_forge))
                 return CampModuleResult.ForgeClosed;
             if (def.Blueprint && !HasBlueprint(module))
@@ -108,6 +136,8 @@ namespace Game.Core.Sim
                 return CampModuleResult.NotOpen;
             if (socket < 0 || socket >= Sockets(building))
                 return CampModuleResult.NoSuchSocket;
+            if (PartyHouse)
+                return CampModuleResult.PartyHouse;
             return CampModuleResult.Done;
         }
 
@@ -126,7 +156,7 @@ namespace Game.Core.Sim
 
         public bool Remove(string module)
         {
-            if (!Camp.Installed.Remove(module))
+            if (PartyHouse || !Camp.Installed.Remove(module))
                 return false;
             _levels.Apply();
             return true;
@@ -154,7 +184,7 @@ namespace Game.Core.Sim
 
         public void AddPerks(double[] perks)
         {
-            foreach (var pair in Camp.Installed)
+            foreach (var pair in Installed())
             {
                 var def = _rules.Of(pair.Key);
                 if (def == null || pair.Value >= Sockets(def.Building))

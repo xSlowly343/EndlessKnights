@@ -526,6 +526,7 @@ const townBuildRules = {
 const hideout = JSON.parse(fs.readFileSync(path.join(data, "party_hideout.json"), "utf8"));
 const campLevelsData = JSON.parse(fs.readFileSync(path.join(data, "camp_levels.json"), "utf8"));
 const campData = JSON.parse(fs.readFileSync(path.join(data, "camp.json"), "utf8"));
+const campModulesData = JSON.parse(fs.readFileSync(path.join(data, "camp_modules.json"), "utf8"));
 if (hideout.version !== 1)
   throw new Error("party_hideout.json: version " + hideout.version + " is not supported");
 if (!(guilds.build.pace.burstShare > 0 && guilds.build.pace.burstShare <= 1) || !(guilds.build.pace.fillHours > 0))
@@ -565,6 +566,10 @@ const hideoutRules = {
   workshop: Object.fromEntries(campLevelsData.buildings.map((building) => [building.building, {
     materials: building.materials, branches: building.branches.map((branch) => branch.id),
     guild: (campData.buildings.find((entry) => entry.id === building.building) || {}).guild || "" }])),
+  modules: Object.fromEntries(campModulesData.modules.map((module) => [module.id, { building: module.building,
+    materials: module.materials.map((material) => material.item), counts: module.materials.map((material) => material.count) }])),
+  moduleSockets: campModulesData.sockets,
+  street: campLevelsData.street,
   stationMaxLevel: campLevelsData.maxLevel,
   stationAmounts: campLevelsData.amounts,
   stationBranchLevel: campLevelsData.branchLevel,
@@ -573,6 +578,10 @@ const hideoutRules = {
 };
 if (!walletRules.sources.some((entry) => entry.id === hideoutRules.orderSource))
   throw new Error("coop_currency.json: the party order needs the " + hideoutRules.orderSource + " source");
+for (const id of Object.keys(hideoutRules.modules))
+  for (const item of hideoutRules.modules[id].materials)
+    if (!hideoutRules.storagePrefixes.some((prefix) => item.startsWith(prefix)) && !hideoutRules.storageItems.includes(item))
+      throw new Error("camp_modules.json: module " + id + " needs " + item + ", which the party storage does not take");
 for (const id of Object.keys(hideoutRules.workshop))
   for (const item of hideoutRules.workshop[id].materials)
     if (!hideoutRules.storagePrefixes.some((prefix) => item.startsWith(prefix)) && !hideoutRules.storageItems.includes(item))

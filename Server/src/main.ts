@@ -109,6 +109,9 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("hideout_build_store", hideoutBuildFromStorageRpc);
     initializer.registerRpc("hideout_station_up", hideoutStationUpRpc);
     initializer.registerRpc("hideout_station_branch", hideoutStationBranchRpc);
+    initializer.registerRpc("hideout_module_make", hideoutModuleMakeRpc);
+    initializer.registerRpc("hideout_module_install", hideoutModuleInstallRpc);
+    initializer.registerRpc("hideout_street", hideoutStreetRpc);
     initializer.registerRpc("name_consent", consentRpc);
     initializer.registerRpc("hideout_brewed", hideoutBrewedRpc);
     initializer.registerRpc("hideout_order_redraw", hideoutOrderRedrawRpc);

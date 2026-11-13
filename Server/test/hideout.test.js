@@ -629,3 +629,42 @@ test("the party levels its workshop stations from the storage, the leader decide
   server.hideoutChange(nk, group.id, (value) => { for (const item of rules.workshop[forge].materials) value.storage[item] = 500; });
   assert.throws(() => call("ann", "hideoutStationUpRpc", { station: forge }), /guild hall is not built/);
 });
+
+test("the leader makes modules from the storage and sets them into the sockets of the party stations", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  const rules = server.HideoutServerRules;
+  const id = Object.keys(rules.modules).find((key) => rules.modules[key].building === "bonfire");
+  const other = Object.keys(rules.modules).find((key) => key !== id && rules.modules[key].building === "bonfire");
+  const module = rules.modules[id];
+  built(nk, "ann", { storage: 1 });
+  const group = server.partyGroupOfUser(nk, "ann");
+  server.hideoutChange(nk, group.id, (value) => {
+    for (const key of [id, other])
+      rules.modules[key].materials.forEach((item, i) => { value.storage[item] = (value.storage[item] || 0) + rules.modules[key].counts[i]; });
+  });
+  assert.throws(() => call("bob", "hideoutModuleMakeRpc", { module: id }), /only the leader/);
+  assert.throws(() => call("ann", "hideoutModuleInstallRpc", { module: id, socket: 0 }), /not made yet/);
+  let view = call("ann", "hideoutModuleMakeRpc", { module: id });
+  assert.strictEqual(view.modules[id], -1, "made, waiting in the storeroom");
+  assert.strictEqual(view.commons.storage[module.materials[0]] || 0, other && rules.modules[other].materials.includes(module.materials[0]) ? rules.modules[other].counts[rules.modules[other].materials.indexOf(module.materials[0])] : 0);
+  assert.throws(() => call("ann", "hideoutModuleMakeRpc", { module: id }), /already made/);
+  assert.throws(() => call("ann", "hideoutModuleInstallRpc", { module: id, socket: 1 }), /no such socket/, "a level 1 station has one socket");
+  view = call("ann", "hideoutModuleInstallRpc", { module: id, socket: 0 });
+  assert.strictEqual(view.modules[id], 0);
+  call("ann", "hideoutModuleMakeRpc", { module: other });
+  view = call("ann", "hideoutModuleInstallRpc", { module: other, socket: 0 });
+  assert.deepStrictEqual([view.modules[id], view.modules[other]], [-1, 0], "the new module takes the socket, the old one goes back");
+  assert.throws(() => call("ann", "hideoutModuleMakeRpc", { module: "golden_toilet" }), /no such module/);
+});
+
+test("the leader orders the party's street, so neighbours count for the party", () => {
+  const { nk, call } = world("ann", "bob");
+  party(call, ["ann", "bob"]);
+  const street = plain(server.HideoutServerRules.street).reverse();
+  assert.deepStrictEqual(call("ann", "hideoutViewRpc").street, [], "the default order until the leader moves something");
+  assert.throws(() => call("bob", "hideoutStreetRpc", { order: street }), /only the leader/);
+  assert.throws(() => call("ann", "hideoutStreetRpc", { order: street.slice(1) }), /bad request/);
+  assert.throws(() => call("ann", "hideoutStreetRpc", { order: street.slice(1).concat(["moat"]) }), /bad request/);
+  assert.deepStrictEqual(call("ann", "hideoutStreetRpc", { order: street }).street, street);
+});

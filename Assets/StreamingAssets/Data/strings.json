@@ -1482,6 +1482,7 @@
     "campModule.noBlueprint": { "ru": "нужен чертёж, он падает с боссов", "en": "needs a blueprint that drops from bosses" },
     "campModule.notEnough": { "ru": "не хватает материалов", "en": "not enough materials" },
     "campModule.ready": { "ru": "можно сделать в кузнице", "en": "can be made at the forge" },
+    "campModule.party": { "ru": "Модуль отряда: делает и ставит лидер из материалов склада", "en": "Party module: the leader makes and sets it from the storage" },
     "campLevel.party": { "ru": "Станок отряда: уровень {0} из {1}, улучшает лидер материалами со склада", "en": "Party station: level {0} of {1}, the leader levels it from the storage" },
     "campLevel.notOpen": { "ru": "Постройки ещё нет в Пристанище", "en": "The building is not in your hideout yet" },
     "campLevel.top": { "ru": "уровень {0}, выше некуда", "en": "level {0}, the top" },

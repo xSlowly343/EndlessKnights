@@ -130,11 +130,23 @@ namespace Game.Core.Sim
             return CampLevelResult.Done;
         }
 
+        public List<string> StreetIfMoved(string building, int index)
+        {
+            var street = new List<string>(Street);
+            var from = street.IndexOf(building);
+            if (from >= 0 && index >= 0 && index < street.Count)
+            {
+                street.RemoveAt(from);
+                street.Insert(index, building);
+            }
+            return street;
+        }
+
         public IReadOnlyList<string> Street
         {
             get
             {
-                var street = _state.Camp.Street;
+                var street = _state.Camp.HouseStreet;
                 if (street.Count != _rules.Street.Count || !SameSet(street, _rules.Street))
                 {
                     street.Clear();
@@ -146,6 +158,8 @@ namespace Game.Core.Sim
 
         public bool Move(string building, int index)
         {
+            if (_state.Camp.InPartyHouse)
+                return false;
             var street = (List<string>)Street;
             var from = street.IndexOf(building);
             if (from < 0 || index < 0 || index >= street.Count)
@@ -183,12 +197,21 @@ namespace Game.Core.Sim
             return true;
         }
 
-        public void UsePartyHouse(bool inParty, IReadOnlyDictionary<string, int> levels, IReadOnlyDictionary<string, string> branches)
+        public void UsePartyHouse(bool inParty, IReadOnlyDictionary<string, int> levels, IReadOnlyDictionary<string, string> branches, IReadOnlyDictionary<string, int>? modules = null, IReadOnlyList<string>? street = null)
         {
             var camp = _state.Camp;
             camp.InPartyHouse = inParty;
             camp.PartyLevels.Clear();
             camp.PartyBranches.Clear();
+            camp.PartyModules.Clear();
+            camp.PartyStreet.Clear();
+            if (street != null)
+                camp.PartyStreet.AddRange(street);
+            if (modules != null)
+            {
+                foreach (var pair in modules)
+                    camp.PartyModules[pair.Key] = pair.Value;
+            }
             foreach (var pair in levels)
                 camp.PartyLevels[pair.Key] = pair.Value;
             foreach (var pair in branches)

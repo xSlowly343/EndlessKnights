@@ -63,6 +63,26 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void InAPartyTheStreetOfThePartyDecidesTheNeighbours()
+        {
+            var loop = Camp();
+            var own = new List<string>(loop.CampLevels.Street);
+            loop.Hideout.Use(1, 2, 0, 0, 0, 0, System.Array.Empty<string>());
+            var reversed = new List<string>(own);
+            reversed.Reverse();
+            loop.Hideout.UseStations(new Dictionary<string, int>(), new Dictionary<string, string>(), null, reversed);
+            Assert.That(loop.CampLevels.Street, Is.EqualTo(reversed));
+            Assert.That(loop.CampLevels.Move(own[0], 1), Is.False, "the leader moves the party's stations through the server");
+            var asked = loop.CampLevels.StreetIfMoved(reversed[0], 1);
+            Assert.That(asked[1], Is.EqualTo(reversed[0]));
+            Assert.That(loop.CampLevels.Street, Is.EqualTo(reversed), "asking does not move anything");
+            loop.Hideout.UseStations(new Dictionary<string, int>(), new Dictionary<string, string>(), null, System.Array.Empty<string>());
+            Assert.That(loop.CampLevels.Street, Is.EqualTo(own), "an empty party street is the default order");
+            loop.Hideout.Leave();
+            Assert.That(loop.CampLevels.Street, Is.EqualTo(own));
+        }
+
+        [Test]
         public void ThePartyStationLinesShowTheStorageAndOnlyTheLeaderCanLevel()
         {
             var loop = Camp();
