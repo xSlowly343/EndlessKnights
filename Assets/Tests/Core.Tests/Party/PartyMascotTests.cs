@@ -86,14 +86,16 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void ThePhoenixHelpsAgainstTheColossusAndTheSerpentWaitsForReactions()
+        public void ThePhoenixHelpsAgainstTheColossusAndTheSerpentStrengthensRoleBuffs()
         {
             var loop = Member(1);
             loop.SetPartyMascot("phoenix", 1);
             Assert.That(loop.PartyGrowth.ColossusPower, Is.EqualTo(1.02).Within(1e-12));
-            loop.SetPartyMascot("serpent", 50);
-            Assert.That(loop.PartyGrowth.Mascot.Count, Is.EqualTo(1));
-            Assert.That(loop.PartyGrowth.Mascot[0].Stat, Is.EqualTo(CombatStats.PartyPeaceful), "only the peaceful gift");
+            var buffs = loop.Hero.Value(CombatStats.RoleBuffEffect, 1);
+            loop.SetPartyMascot("serpent", 100);
+            Assert.That(loop.Hero.Value(CombatStats.RoleBuffEffect, 1) / buffs, Is.EqualTo(1.4).Within(1e-9), "aura +40% to role buffs");
+            loop.StartPartyMascotCall();
+            Assert.That(loop.Hero.Value(CombatStats.RoleBuffEffect, 1) / buffs, Is.EqualTo(2.8).Within(1e-9), "the call doubles role buffs");
         }
 
         [Test]

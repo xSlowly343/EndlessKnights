@@ -16,11 +16,11 @@ namespace Game.Core.Tests.Party
         private static PartyTrialRules Rules => Growth.Trials;
         private static PartyTrialDef Trial(string id) => Rules.Find(id)!;
 
-        private static PartyTrialHit[] Hits(int fighters, double keys = 0, double mouse = 0, double skills = 0, double minions = 0, bool typing = true, int reactions = 0)
+        private static PartyTrialHit[] Hits(int fighters, double keys = 0, double mouse = 0, double skills = 0, double minions = 0, bool typing = true)
         {
             var hits = new PartyTrialHit[fighters];
             for (var i = 0; i < fighters; i++)
-                hits[i] = new PartyTrialHit(keys, mouse, skills, minions, typing, reactions);
+                hits[i] = new PartyTrialHit(keys, mouse, skills, minions, typing);
             return hits;
         }
 
@@ -179,18 +179,38 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
-        public void ChainStartsWeakAndGrowsWithReactionsInARow()
+        public void ChainStartsWeakAndGrowsWhileFightersTakeTurns()
         {
             var fight = Start("chain");
-            Assert.That(fight.Advance(Hits(2, keys: 0.001), 2), Is.EqualTo(0.001).Within(1e-12));
-            fight.Advance(Hits(2, reactions: 1), 2);
-            Assert.That(fight.Chain, Is.EqualTo(2));
-            Assert.That(fight.ChainFactor, Is.EqualTo(1.4).Within(1e-12));
+            Assert.That(fight.Advance(Hits(2, keys: 0.001), 2), Is.EqualTo(0.001).Within(1e-12), "x0.5 before the chain starts");
+            var first = Turn(0);
+            var second = Turn(1);
             for (var i = 0; i < 10; i++)
-                fight.Advance(Hits(1, reactions: 1), 1);
-            Assert.That(fight.ChainFactor, Is.EqualTo(3));
-            Run(fight, Hits(2), 60);
-            Assert.That(fight.ChainFactor, Is.EqualTo(0.5), "six quiet seconds break the chain");
+                fight.Advance(first, 2);
+            for (var i = 0; i < 10; i++)
+                fight.Advance(second, 2);
+            Assert.That(fight.Chain, Is.EqualTo(1), "the baton moved once");
+            Assert.That(fight.ChainFactor, Is.EqualTo(1.2).Within(1e-12));
+            for (var turn = 0; turn < 20; turn++)
+            {
+                for (var i = 0; i < 10; i++)
+                    fight.Advance(turn % 2 == 0 ? first : second, 2);
+            }
+            Assert.That(fight.ChainFactor, Is.EqualTo(3), "taking turns grows the chain up to x3");
+            var flicker = Start("chain");
+            for (var i = 0; i < 10; i++)
+                flicker.Advance(i % 2 == 0 ? first : second, 2);
+            Assert.That(flicker.Chain, Is.EqualTo(1), "a step counts at most once a second");
+            for (var i = 0; i < 61; i++)
+                fight.Advance(first, 2);
+            Assert.That(fight.ChainFactor, Is.EqualTo(0.5), "the baton passes once more, then six seconds of one fighter break the chain");
+        }
+
+        private static PartyTrialHit[] Turn(int fighter)
+        {
+            var hits = Hits(2);
+            hits[fighter].Keys = 0.0001;
+            return hits;
         }
 
         [Test]
@@ -244,10 +264,10 @@ namespace Game.Core.Tests.Party
             var top = Start("silence", tier: 35);
             Assert.That(top.Armor, Is.EqualTo(1.5 * defense.K).Within(1e-9));
             Assert.That(top.Advance(Hits(2, skills: 0.01), 2), Is.EqualTo(0.02 * 0.4).Within(1e-12), "armor at 1.5 K takes 60%");
-            var pierced = new PartyTrialHit(0, 0.01, 0, 0, true, 0, armorPen: 1, shred: 0);
+            var pierced = new PartyTrialHit(0, 0.01, 0, 0, true, armorPen: 1, shred: 0);
             var expected = defense.K / (1.5 * defense.K * (1 - defense.ArmorPenCap) + defense.K);
             Assert.That(top.ArmorFactor(pierced), Is.EqualTo(expected).Within(1e-12), "penetration stops at its cap");
-            var both = new PartyTrialHit(0, 0.01, 0, 0, true, 0, armorPen: 0.5, shred: 0.5);
+            var both = new PartyTrialHit(0, 0.01, 0, 0, true, armorPen: 0.5, shred: 0.5);
             Assert.That(top.ArmorFactor(both), Is.EqualTo(defense.K / (1.5 * defense.K * 0.25 + defense.K)).Within(1e-12));
         }
 

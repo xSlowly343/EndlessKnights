@@ -49,6 +49,7 @@ namespace Game.Core.Party
             ChainStep = Optional(node, "step", 0, 10, 0.2);
             ChainMax = Optional(node, "max", 0, 100, 3);
             KeepSeconds = Optional(node, "keepSeconds", 0.1, 600, 6);
+            StepSeconds = Optional(node, "stepSeconds", 0.1, 600, 1);
             WaveSeconds = Optional(node, "waveSeconds", 1, 600, 30);
             if (rule == PartyTrialRule.Pulse && WindowSeconds >= EverySeconds)
                 throw node.Field("windowSeconds").Error("the pulse window must be shorter than its period");
@@ -72,6 +73,7 @@ namespace Game.Core.Party
         public double ChainStep { get; }
         public double ChainMax { get; }
         public double KeepSeconds { get; }
+        public double StepSeconds { get; }
         public double WaveSeconds { get; }
         public int Waves => (int)System.Math.Floor(Seconds / WaveSeconds + 1e-9);
 

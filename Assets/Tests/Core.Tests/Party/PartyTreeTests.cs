@@ -77,7 +77,7 @@ namespace Game.Core.Tests.Party
         [Test]
         public void LinesThatWaitForTheirMechanicGiveNothingYet()
         {
-            Assert.That(Build(Levels((13, 5)), 4), Is.Empty, "reactions have no power stat yet");
+            Assert.That(Build(Levels((7, 5)), 4), Is.Empty, "the hideout pot comes later");
             Assert.That(Build(Levels((19, 5)), 4), Is.Empty, "a cheaper price is the server's business");
         }
 
@@ -106,7 +106,7 @@ namespace Game.Core.Tests.Party
             var twenty = Levels((1, 5), (2, 5), (3, 5), (4, 5));
             var plain = Build(twenty, 2);
             Assert.That(Sum(plain, CombatStats.Damage), Is.EqualTo(0.09 + 0.02).Within(1e-9), "node 1 and one bar step of damage");
-            Assert.That(Sum(plain, CombatStats.RoleBuffEffect), Is.EqualTo(0.09 + 0.02).Within(1e-9));
+            Assert.That(Sum(plain, CombatStats.RoleBuffEffect), Is.EqualTo(0.09 + 0.09 + 0.02).Within(1e-9), "node 4, Familiar Faces and one bar step");
             Assert.That(Build(twenty, 2, "party_m50_united").Count, Is.EqualTo(plain.Count), "a talent above the bar does not work");
 
             var fifty = Levels((1, 5), (2, 5), (3, 5), (4, 5), (5, 5), (6, 5), (7, 5), (8, 5), (9, 5), (10, 5));
@@ -138,6 +138,40 @@ namespace Game.Core.Tests.Party
             Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / before, Is.EqualTo(1.018).Within(1e-9));
             loop.SetPartyStanding(false, 0, 0, Now);
             Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(before).Within(1e-9));
+        }
+
+        [Test]
+        public void BondLinesStrengthenRoleBuffsAndFightingTogether()
+        {
+            Assert.That(Sum(Build(Levels((13, 1)), 4), CombatStats.RoleBuffEffect), Is.EqualTo(0.04).Within(1e-9));
+            Assert.That(Sum(Build(Levels((13, 5)), 4), CombatStats.Damage, ModifierKind.Increased, ModifierCondition.InParty), Is.EqualTo(0.08).Within(1e-9));
+            var weavers = Build(Levels((47, 1)), 4);
+            Assert.That(Sum(weavers, CombatStats.RoleBuffEffect, ModifierKind.More), Is.EqualTo(0.4).Within(1e-9));
+            Assert.That(Sum(weavers, CombatStats.Damage, ModifierKind.Increased, ModifierCondition.Solo), Is.EqualTo(-0.15).Within(1e-9));
+            var talent = Tree.Majors[3].Options[1].Lines[0].Modifier!.Value;
+            Assert.That(talent.When, Is.EqualTo(ModifierCondition.FourRoles));
+        }
+
+        [Test]
+        public void FourRolesCountTheHeroAndAllies()
+        {
+            var loop = TestWorld.Loop();
+            var bit = ModifierConditions.Bit(ModifierCondition.FourRoles);
+            Assert.That(loop.Conditions.Current() & bit, Is.Zero);
+            var rules = TestWorld.Data.Synergy;
+            var roles = rules.RoleMaskOf(loop.State.Class);
+            var slot = 0;
+            foreach (HeroClass heroClass in System.Enum.GetValues(typeof(HeroClass)))
+            {
+                var mask = rules.RoleMaskOf(heroClass);
+                if (slot >= 3 || mask == 0 || (roles & mask) != 0)
+                    continue;
+                loop.Synergy.SetAlly(slot++, true, heroClass);
+                roles |= mask;
+            }
+            Assert.That(loop.Conditions.Current() & bit, Is.Not.Zero, "four different roles in the fight");
+            loop.Synergy.ClearAllies();
+            Assert.That(loop.Conditions.Current() & bit, Is.Zero);
         }
     }
 }

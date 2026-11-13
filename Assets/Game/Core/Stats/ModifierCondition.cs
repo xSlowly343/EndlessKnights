@@ -47,6 +47,7 @@ namespace Game.Core.Stats
         AllTempered,
         Solo,
         BossShielded,
-        MascotCall
+        MascotCall,
+        FourRoles
     }
 }

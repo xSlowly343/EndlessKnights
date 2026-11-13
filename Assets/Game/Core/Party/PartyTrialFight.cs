@@ -21,7 +21,7 @@ namespace Game.Core.Party
 
     public struct PartyTrialHit
     {
-        public PartyTrialHit(double keys, double mouse, double skills, double minions, bool typing, int reactions, double armorPen = 0, double shred = 0)
+        public PartyTrialHit(double keys, double mouse, double skills, double minions, bool typing, double armorPen = 0, double shred = 0)
         {
             ArmorPen = armorPen;
             Shred = shred;
@@ -30,7 +30,6 @@ namespace Game.Core.Party
             Skills = skills;
             Minions = minions;
             Typing = typing;
-            Reactions = reactions;
         }
 
         public double Keys;
@@ -38,7 +37,6 @@ namespace Game.Core.Party
         public double Skills;
         public double Minions;
         public bool Typing;
-        public int Reactions;
         public double ArmorPen;
         public double Shred;
 
@@ -68,6 +66,8 @@ namespace Game.Core.Party
         private double _globalFactor;
         private long _quietTicks;
         private long _chainQuietTicks;
+        private long _chainStepTicks;
+        private int _lastLeader = NoKind;
 
         public PartyTrialOutcome Outcome { get; private set; }
         public PartyTrialDef? Trial => _trial;
@@ -125,6 +125,8 @@ namespace Game.Core.Party
             Chain = 0;
             _quietTicks = 0;
             _chainQuietTicks = 0;
+            _chainStepTicks = 0;
+            _lastLeader = NoKind;
             System.Array.Clear(_window, 0, Kinds);
             for (var i = 0; i < Kinds; i++)
                 _shields[i] = trial.Rule == PartyTrialRule.Shields ? trial.ShieldShare : 0;
@@ -279,17 +281,40 @@ namespace Game.Core.Party
 
         private void CountChain(PartyTrialHit[] hits, int count)
         {
-            var reactions = 0;
-            for (var i = 0; i < count; i++)
-                reactions += System.Math.Max(0, hits[i].Reactions);
-            if (reactions > 0)
+            var trial = _trial!;
+            _chainStepTicks++;
+            var leader = Leader(hits, count);
+            if (leader != NoKind && _lastLeader != NoKind && leader != _lastLeader && _chainStepTicks >= Ticks(trial.StepSeconds))
             {
-                Chain += reactions;
+                Chain++;
+                _chainStepTicks = 0;
                 _chainQuietTicks = 0;
-                return;
             }
-            if (++_chainQuietTicks >= Ticks(_trial!.KeepSeconds))
+            else if (++_chainQuietTicks >= Ticks(trial.KeepSeconds))
+            {
                 Chain = 0;
+                _chainQuietTicks = 0;
+            }
+            if (leader != NoKind)
+                _lastLeader = leader;
+        }
+
+        private static int Leader(PartyTrialHit[] hits, int count)
+        {
+            var leader = NoKind;
+            var best = 0.0;
+            for (var i = 0; i < count; i++)
+            {
+                var total = 0.0;
+                for (var kind = 0; kind < Kinds; kind++)
+                    total += System.Math.Max(0, hits[i].Of((PartyTrialDamage)kind));
+                if (total > best)
+                {
+                    best = total;
+                    leader = i;
+                }
+            }
+            return leader;
         }
 
         private void NoteQuiet(double dealt)
