@@ -51,14 +51,17 @@ namespace Game.Bootstrap
         private readonly BossShare[] _bossShares = new BossShare[PartyRules.MaxSlots];
         private int _bossKillsSeen;
         private BattleView? _battle;
+        private BattleDriver? _battleDriver;
+        private readonly ShowQueue _allyShows = new ShowQueue(ShowRules.PartySkills);
         private float _sinceAllies;
 
         public static OnlinePartyDriver Attach(GameObject host, GameLoop loop, GameData data, PanelCanvas panels, GameSettings settings, NotificationDriver? notifications,
-            BattleView? battle)
+            BattleDriver? battleDriver)
         {
             var driver = host.AddComponent<OnlinePartyDriver>();
             driver._notifications = notifications;
-            driver._battle = battle;
+            driver._battle = battleDriver?.View;
+            driver._battleDriver = battleDriver;
             driver._loop = loop;
             driver._data = data;
             driver._panels = panels;
@@ -284,6 +287,7 @@ namespace Game.Bootstrap
         {
             if (_battle == null)
                 return;
+            ShowAllyCasts();
             _sinceAllies += Time.unscaledDeltaTime;
             if (_sinceAllies < AlliesRefreshSeconds)
                 return;
@@ -307,6 +311,16 @@ namespace Game.Bootstrap
             var kill = party.LastBossKill;
             var shares = PartyStripMarks.FillBossShares(kill, party.Roster, party.OwnSlot, _bossShares);
             _battle.PartyMarks.ShowBossShares(PartyStripMarks.BossTitle(kill, party.OwnSlot), _bossShares, shares);
+        }
+
+        private void ShowAllyCasts()
+        {
+            var party = _party!;
+            var now = (double)Time.unscaledTime;
+            while (party.TakeAllyCast(out var slot, out var gem))
+                _allyShows.Offer(gem, slot, false, now);
+            while (_allyShows.TryTake(now, out var cue))
+                _battleDriver!.ShowAllyCast(cue.Gem, cue.Size);
         }
 
         private void MoveWorld(PartyRiftAction action)

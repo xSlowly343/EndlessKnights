@@ -112,7 +112,7 @@ namespace Game.Bootstrap
                 RecapDriver.Attach(host, battle.Loop, panelMode, panels, notifications);
                 SaveDriver.Attach(host, battle.Loop.State, save?.Clock);
                 TelemetryDriver.Attach(host, battle.Loop, settings.Settings);
-                OnlinePartyDriver.Attach(host, battle.Loop, data.Current, panels, settings.Settings, notifications, battle.View);
+                OnlinePartyDriver.Attach(host, battle.Loop, data.Current, panels, settings.Settings, notifications, battle);
             }
             var clickThrough = ClickThroughDriver.Attach(host, window, camera, pointer, panels, focusButton);
             FocusModeDriver.Attach(host, window, clickThrough);

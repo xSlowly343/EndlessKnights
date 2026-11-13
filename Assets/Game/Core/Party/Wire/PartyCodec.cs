@@ -5,7 +5,7 @@ namespace Game.Core.Party.Wire
         public const int MaxPacketBytes = 256;
 
         public static PartyMessageKind KindOf(byte[] buffer, int length) =>
-            length > 0 && buffer[0] <= (byte)PartyMessageKind.PartyLook ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
+            length > 0 && buffer[0] <= (byte)PartyMessageKind.PartyCast ? (PartyMessageKind)buffer[0] : PartyMessageKind.None;
 
         public static int Encode(byte[] buffer, HelloMessage message)
         {
@@ -125,6 +125,20 @@ namespace Game.Core.Party.Wire
         {
             var reader = Open(buffer, length, PartyMessageKind.PartyLook);
             message = PartyLookMessage.Read(ref reader);
+            return reader.Complete;
+        }
+
+        public static int Encode(byte[] buffer, PartyCastMessage message)
+        {
+            var writer = Start(buffer, PartyMessageKind.PartyCast);
+            message.Write(ref writer);
+            return writer.Length;
+        }
+
+        public static bool TryDecode(byte[] buffer, int length, out PartyCastMessage message)
+        {
+            var reader = Open(buffer, length, PartyMessageKind.PartyCast);
+            message = PartyCastMessage.Read(ref reader);
             return reader.Complete;
         }
 

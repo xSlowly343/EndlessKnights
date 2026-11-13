@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, BossRequest = 16, PartyLoadout = 18, PartyKeys = 19, PartyLook = 20
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, BossRequest = 16, PartyLoadout = 18, PartyKeys = 19, PartyLook = 20, PartyCast = 21
 }
 
 class PartyWriter {
@@ -115,7 +115,7 @@ function partyKindOf(data: ArrayBuffer): PartyMessageKind {
     if (data.byteLength === 0)
         return PartyMessageKind.None;
     const kind = new DataView(data).getUint8(0);
-    return kind <= PartyMessageKind.PartyLook ? kind : PartyMessageKind.None;
+    return kind <= PartyMessageKind.PartyCast ? kind : PartyMessageKind.None;
 }
 
 function partyOpen(data: ArrayBuffer, kind: PartyMessageKind): PartyReader {
@@ -223,6 +223,16 @@ function partyRelayLook(data: ArrayBuffer, slot: number): ArrayBuffer | null {
             return null;
     }
     view.setUint8(1, slot);
+    return copy;
+}
+
+const PartyCastBytes = 6;
+
+function partyRelayCast(data: ArrayBuffer, slot: number): ArrayBuffer | null {
+    if (partyKindOf(data) !== PartyMessageKind.PartyCast || data.byteLength !== PartyCastBytes)
+        return null;
+    const copy = data.slice(0);
+    new DataView(copy).setUint8(1, slot);
     return copy;
 }
 

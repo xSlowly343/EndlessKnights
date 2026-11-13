@@ -112,6 +112,8 @@ namespace Game.Bootstrap
             PlayShows();
         }
 
+        public void ShowAllyCast(GemDef gem, ShowSize size) => _effects.CastAlly(gem, _view.StrikeTarget, size);
+
         private void OfferShow(GemDef gem)
         {
             if (gem.Skill?.Effect is AuraEffect)

@@ -68,6 +68,28 @@ test("a full party refuses the fifth member and offers skip the sender", () => {
   assert.strictEqual(new Uint8Array(host.outbox[0].data)[1], 2);
 });
 
+test("a skill cast reaches the other members with the sender slot and nobody else", () => {
+  const host = new party.PartyHost(party.PartyServerRules, "5");
+  for (let i = 0; i < 3; i++)
+    host.join("user-" + i, String(100 + i));
+  host.tick();
+  kinds(host);
+  const cast = new DataView(new ArrayBuffer(6));
+  cast.setUint8(0, 21);
+  cast.setUint8(1, 3);
+  cast.setInt32(2, 777, true);
+  host.receive("user-1", cast.buffer);
+  assert.strictEqual(host.outbox.length, 1);
+  assert.deepStrictEqual(Array.from(host.outbox[0].to), [0, 2]);
+  const relayed = new DataView(host.outbox[0].data);
+  assert.strictEqual(relayed.getUint8(0), 21);
+  assert.strictEqual(relayed.getUint8(1), 1);
+  assert.strictEqual(relayed.getInt32(2, true), 777);
+  host.outbox.length = 0;
+  host.receive("user-1", new ArrayBuffer(5));
+  assert.strictEqual(host.outbox.length, 0);
+});
+
 test("the state tells every member how much each slot hit since the last state", () => {
   const host = new party.PartyHost(party.PartyServerRules, "5");
   host.join("user-a", "11");
