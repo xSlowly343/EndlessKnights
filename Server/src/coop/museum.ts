@@ -31,6 +31,10 @@ function museumFirsts(nk: nkruntime.Nakama, userId: string): { [key: string]: an
 
 function museumFound(nk: nkruntime.Nakama, userId: string, raw: unknown, nowUnixMs: number): { [key: string]: any } {
     const ids = museumIds(raw);
+    const found = cloudFound(nk, userId);
+    for (const id of ids)
+        if (found.indexOf(id) < 0)
+            throw new Error("not found by the last cloud save");
     const won: string[] = [];
     for (const id of ids) {
         try {

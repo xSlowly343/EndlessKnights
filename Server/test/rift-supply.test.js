@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert");
-const { loadModule } = require("./load");
+const { loadModule, stockBag } = require("./load");
 const { FakeNakama } = require("./fake-nakama");
 
 const server = loadModule();
@@ -12,6 +12,7 @@ const closed = server.riftNext(server.RiftServerRules, base).startUnixMs - 60000
 function world(...names) {
   const nk = new FakeNakama();
   names.forEach((name, i) => nk.addUser(name, name, "7656119800000000" + i));
+  stockBag(server, nk, names);
   const call = (user, rpc, request) => JSON.parse(server[rpc]({ userId: user, env: {} }, { info() {}, warn() {}, error() {}, debug() {} }, nk, request === undefined ? "" : JSON.stringify(request)));
   const created = call(names[0], "partyCreateRpc", {});
   for (const name of names.slice(1, 3))

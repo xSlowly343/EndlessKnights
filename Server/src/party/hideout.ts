@@ -435,8 +435,8 @@ function hideoutGive(nk: nkruntime.Nakama, userId: string, item: unknown, amount
         throw new Error("bad amount");
     if (!partyGroupOfUser(nk, userId))
         throw new Error("not in a party");
-    const receipt = inflowSpend(nk, userId, item as string, amount, nowUnixMs);
-    return inflowGuard(nk, userId, receipt, nowUnixMs, () => hideoutUpdate(nk, userId, (hideout) => {
+    const receipt = inflowSpend(nk, userId, item as string, amount);
+    return inflowGuard(nk, userId, receipt, () => hideoutUpdate(nk, userId, (hideout) => {
         if (!hideout.project)
             throw new Error("nothing is being built");
         hideout.project.points += points * amount;

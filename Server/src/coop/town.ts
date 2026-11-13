@@ -67,7 +67,7 @@ function townView(nk: nkruntime.Nakama, userId: string, nowUnixMs: number, extra
         sentToday: sent,
         giftsPerDay: rules.giftsPerDay,
         inbox: townInbox(nk, userId),
-        gatherLeft: inflowLeft(nk, userId, nowUnixMs)
+        available: inflowAvailable(nk, userId, rules.giftItems)
     };
     for (const key in extra)
         view[key] = extra[key];
@@ -99,8 +99,8 @@ function townGiftSend(nk: nkruntime.Nakama, userId: string, request: any, nowUni
         throw new Error("gifts go only to friends, clan and party");
     if (townInbox(nk, to).length >= rules.giftInbox)
         throw new Error("inbox is full");
-    const receipt = inflowSpend(nk, userId, item, amount, nowUnixMs);
-    const count = inflowGuard(nk, userId, receipt, nowUnixMs, () => townCountGift(nk, userId, nowUnixMs));
+    const receipt = inflowSpend(nk, userId, item, amount);
+    const count = inflowGuard(nk, userId, receipt, () => townCountGift(nk, userId, nowUnixMs));
     const sender = users.filter((user) => user.userId === userId)[0];
     const gift: TownGift = {
         id: userId + "_" + nowUnixMs + "_" + count,
@@ -138,7 +138,7 @@ function townGiftClaim(nk: nkruntime.Nakama, userId: string, ack: unknown, nowUn
         for (const gift of townInbox(nk, userId).filter((entry) => taken.indexOf(entry.id) >= 0))
             received[gift.item] = (received[gift.item] || 0) + gift.amount;
         nk.storageDelete(taken.map((id) => ({ collection: TownGiftCollection, key: id as string, userId: userId })));
-        inflowGrant(nk, userId, received, nowUnixMs);
+        inflowGrant(nk, userId, received);
     }
     return townView(nk, userId, nowUnixMs, { claimed: townInbox(nk, userId) });
 }

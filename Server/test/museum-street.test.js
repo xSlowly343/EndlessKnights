@@ -1,6 +1,9 @@
 const test = require("node:test");
 const assert = require("node:assert");
-const { loadModule } = require("./load");
+const { loadModule, readVectors } = require("./load");
+const fs = require("fs");
+const path = require("path");
+const cloudSave = fs.readFileSync(path.join(__dirname, "..", "test-vectors", "cloud-save.json"), "utf8");
 const { FakeNakama, logger } = require("./fake-nakama");
 
 const server = loadModule();
@@ -15,11 +18,14 @@ function world(...names) {
 
 test("the first on the server to find something is the discoverer, named only with consent", () => {
   const nk = world("ann", "bob");
-  const [fish, collection] = ["fish_hills_roach", "fish_hills"];
+  const [fish, dish, collection] = ["fish_hills_roach", "carp_pie", "fish_hills"];
+  for (const user of ["ann", "bob"])
+    assert.strictEqual(plain(server.cloudPut(nk, logger, user, { save: cloudSave }, now)).status, "saved");
   assert.throws(() => server.museumFound(nk, "ann", ["unicorn"], now), /bad request/);
   assert.throws(() => server.museumFound(nk, "ann", [], now), /bad request/);
-  const first = plain(server.museumFound(nk, "ann", [fish, collection], now));
-  assert.deepStrictEqual(first.won, [fish, collection]);
+  assert.throws(() => server.museumFound(nk, "ann", [collection], now), /not found by the last cloud save/, "the hills are not complete in the save");
+  const first = plain(server.museumFound(nk, "ann", [fish, dish], now));
+  assert.deepStrictEqual(first.won, [fish, dish]);
   const second = plain(server.museumFound(nk, "bob", [fish], now + 1000));
   assert.deepStrictEqual(second.won, [], "the second finder is not first");
   assert.deepStrictEqual(second.reported, [fish]);

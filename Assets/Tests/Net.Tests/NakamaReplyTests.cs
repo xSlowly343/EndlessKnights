@@ -700,7 +700,7 @@ namespace Game.Net.Tests
             Assert.That(NameConsentReply.SetPayload(NameConsentReply.TownTop, true), Is.EqualTo("{\"place\":\"town_top\",\"shown\":true}"));
             Assert.That(NameConsentReply.From(NakamaJson.Parse("{\"shown\":[\"town_top\"]}")).Shows(NameConsentReply.TownTop), Is.True);
             Assert.That(NameConsentReply.From(NakamaJson.Parse("{\"shown\":[]}")).Shows(NameConsentReply.Museum), Is.False);
-            Assert.That(TownReply.From(NakamaJson.Parse("{\"gatherLeft\":{\"herb_\":150}}")).GatherLeft["herb_"], Is.EqualTo(150));
+            Assert.That(TownReply.From(NakamaJson.Parse("{\"available\":{\"herb_windwort\":150}}")).Available["herb_windwort"], Is.EqualTo(150));
             var stations = HideoutReply.From(NakamaJson.Parse("{\"tier\":2,\"stations\":{\"garden_bed\":{\"level\":3,\"branch\":\"greenhouse\"}}}"));
             Assert.That(stations.StationLevels["garden_bed"], Is.EqualTo(3));
             Assert.That(stations.StationBranches["garden_bed"], Is.EqualTo("greenhouse"));
@@ -708,6 +708,20 @@ namespace Game.Net.Tests
             Assert.That(HideoutReply.BranchPayload("forge", "armory"), Is.EqualTo("{\"station\":\"forge\",\"branch\":\"armory\"}"));
             Assert.That(HideoutReply.From(NakamaJson.Parse("{\"tier\":2,\"modules\":{\"iron_tripod\":0,\"signal_horn\":-1}}")).Modules["signal_horn"], Is.EqualTo(-1));
             Assert.That(HideoutReply.InstallPayload("iron_tripod", 0), Is.EqualTo("{\"module\":\"iron_tripod\",\"socket\":0}"));
+        }
+
+        [Test]
+        public void TheCloudSaveIsSentAndRead()
+        {
+            Assert.That(CloudSaveReply.PutPayload("{\"a\":1}", true), Is.EqualTo("{\"save\":\"{\\\"a\\\":1}\",\"force\":true}"));
+            var older = CloudSaveReply.From(NakamaJson.Parse("{\"status\":\"older\",\"server\":{\"at\":1,\"record\":400,\"playSeconds\":9000,\"savedAt\":5,\"bytes\":10,\"trusted\":true,\"reason\":\"\"}}"));
+            Assert.That(older.Status, Is.EqualTo(CloudSaveReply.Older));
+            Assert.That(older.Server!.Value.Record, Is.EqualTo(400));
+            Assert.That(older.Trusted, Is.True);
+            var got = CloudSaveReply.From(NakamaJson.Parse("{\"save\":\"{}\",\"server\":null}"));
+            Assert.That(got.HasSave, Is.True);
+            Assert.That(got.Server, Is.Null);
+            Assert.That(CloudSaveReply.From(NakamaJson.Parse("{\"save\":null,\"server\":null}")).HasSave, Is.False);
         }
 
         [Test]

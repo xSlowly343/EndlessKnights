@@ -126,7 +126,7 @@ function companionVisitClaim(nk: nkruntime.Nakama, userId: string, nowUnixMs: nu
     const done: CompanionVisitOut = { host: "", hostName: "", companion: "", biome: "", endsAt: 0, day: out.day, count: out.count };
     nk.storageWrite([{ collection: CompanionVisitCollection, key: CompanionVisitKey, userId: userId, value: done as any, version: stored.version, permissionRead: 1, permissionWrite: 0 }]);
     nk.storageDelete([{ collection: CompanionGuestCollection, key: userId, userId: out.host }]);
-    inflowGrant(nk, userId, gifts, nowUnixMs);
+    inflowGrant(nk, userId, gifts);
     let hostSigns = 0;
     try {
         hostSigns = walletGrant(nk, out.host, rules.visitSource, 1, nowUnixMs);

@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert");
-const { loadModule } = require("./load");
+const { loadModule, stockBag } = require("./load");
 const { FakeNakama, logger } = require("./fake-nakama");
 
 const server = loadModule();
@@ -13,6 +13,7 @@ function world(...names) {
   const nk = new FakeNakama();
   names.forEach((name, i) => nk.addUser(name, name, "7656119800000000" + i));
   names.forEach((name, i) => names.slice(i + 1).forEach((other) => nk.addFriends(name, other)));
+  stockBag(server, nk, names);
   const call = (user, rpc, request) => JSON.parse(server[rpc]({ userId: user, env: {} }, logger, nk, request === undefined ? "" : JSON.stringify(request)));
   return { nk, call };
 }
@@ -77,6 +78,7 @@ test("gifts go only to friends, the clan and the party", () => {
   for (const name of ["ann", "bob", "cid", "dan"])
     nk.addUser(name, name, "76561198000000" + name.length + name.charCodeAt(0));
   const call = (user, rpc, request) => JSON.parse(server[rpc]({ userId: user, env: {} }, logger, nk, request === undefined ? "" : JSON.stringify(request)));
+  stockBag(server, nk, ["ann", "bob", "cid", "dan"]);
   const gift = (from, to) => server.townGiftSend(nk, from, { to: to, item: "herb_windwort", amount: 1 }, now);
   assert.throws(() => gift("ann", "bob"), /only to friends, clan and party/);
   nk.addFriends("ann", "bob");
@@ -90,21 +92,17 @@ test("gifts go only to friends, the clan and the party", () => {
   assert.strictEqual(plain(gift("dan", "bob")).sentToday, 1, "the clan");
 });
 
-test("a gift spends what the sender could have gathered today, and received gifts can be passed on", () => {
+test("a gift leaves only what the last cloud save shows, and received gifts can be passed on", () => {
   const { nk } = world("ann", "bob", "cid");
-  const limit = server.InflowServerRules.perDay.find((entry) => entry.prefix === "herb_").amount;
-  const ledger = (user) => server.inflowRead(nk, user, server.walletDayOf(now)).value;
+  server.inflowBaseline(nk, "ann", { herb_windwort: 4 });
   server.townGiftSend(nk, "ann", { to: "bob", item: "herb_windwort", amount: 4 }, now);
-  assert.strictEqual(ledger("ann").used.herb_, 4);
-  server.inflowChange(nk, "ann", now, (value) => { value.used.herb_ = limit; });
-  assert.throws(() => server.townGiftSend(nk, "ann", { to: "bob", item: "herb_windwort", amount: 1 }, now), /could have gathered today/);
+  assert.throws(() => server.townGiftSend(nk, "ann", { to: "bob", item: "herb_windwort", amount: 1 }, now), /not in your bag/);
   assert.strictEqual(plain(server.townMine(nk, "ann", now)).sentToday, 1, "a refused gift does not use up the daily count");
+  server.inflowBaseline(nk, "bob", {});
   const inbox = plain(server.townGiftClaim(nk, "bob", undefined, now)).claimed;
-  assert.strictEqual(ledger("bob").held.herb_windwort, undefined, "nothing is held until the gift is confirmed");
+  assert.strictEqual(server.inflowRead(nk, "bob").value.held.herb_windwort, undefined, "nothing is held until the gift is confirmed");
   server.townGiftClaim(nk, "bob", inbox.map((entry) => entry.id), now);
-  assert.strictEqual(ledger("bob").held.herb_windwort, 4);
-  server.inflowChange(nk, "bob", now, (value) => { value.used.herb_ = limit; });
+  assert.strictEqual(plain(server.townMine(nk, "bob", now)).available.herb_windwort, 4);
   server.townGiftSend(nk, "bob", { to: "cid", item: "herb_windwort", amount: 4 }, now);
-  assert.strictEqual(ledger("bob").held.herb_windwort, undefined, "a received gift can be passed on the same day");
-  assert.strictEqual(plain(server.townMine(nk, "bob", now)).gatherLeft.herb_, 0);
+  assert.strictEqual(plain(server.townMine(nk, "bob", now)).available.herb_windwort, 0, "a received gift can be passed on");
 });

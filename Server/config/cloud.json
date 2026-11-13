@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "maxBytes": 1500000,
+  "backups": 3,
+  "playSlackSeconds": 600,
+  "playRate": 1.05,
+  "stagesPerHour": 2000,
+  "stageSlack": 500
+}

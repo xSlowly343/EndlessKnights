@@ -122,6 +122,9 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("museum_found", museumFoundRpc);
     initializer.registerRpc("museum_firsts", museumFirstsRpc);
     initializer.registerRpc("town_street", townStreetRpc);
+    initializer.registerRpc("cloud_save_put", cloudPutRpc);
+    initializer.registerRpc("cloud_save_get", cloudGetRpc);
+    initializer.registerRpc("cloud_save_meta", cloudMetaRpc);
     initializer.registerRpc("name_consent", consentRpc);
     initializer.registerRpc("hideout_brewed", hideoutBrewedRpc);
     initializer.registerRpc("hideout_order_redraw", hideoutOrderRedrawRpc);

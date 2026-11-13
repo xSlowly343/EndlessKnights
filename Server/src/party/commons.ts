@@ -250,7 +250,7 @@ function hideoutClaim(nk: nkruntime.Nakama, userId: string, ack: unknown, nowUni
         items = claim.items;
         seq = claim.seq;
     }, nowUnixMs);
-    inflowGrant(nk, userId, delivered, nowUnixMs);
+    inflowGrant(nk, userId, delivered);
     return { seq: seq, items: items, hideout: view };
 }
 
@@ -264,8 +264,8 @@ function hideoutStore(nk: nkruntime.Nakama, userId: string, item: unknown, amoun
         return hideoutStoreTake(nk, userId, id, amount, nowUnixMs);
     if (!partyGroupOfUser(nk, userId))
         throw new Error("not in a party");
-    const receipt = inflowSpend(nk, userId, id, amount, nowUnixMs);
-    return inflowGuard(nk, userId, receipt, nowUnixMs, () => hideoutUpdate(nk, userId, (hideout) => {
+    const receipt = inflowSpend(nk, userId, id, amount);
+    return inflowGuard(nk, userId, receipt, () => hideoutUpdate(nk, userId, (hideout) => {
         if (!hideout.buildings["storage"])
             throw new Error("the storage is not built");
         hideout.storage[id] = (hideout.storage[id] || 0) + amount;
@@ -317,9 +317,9 @@ function hideoutShare(nk: nkruntime.Nakama, userId: string, raw: unknown, nowUni
         throw new Error("not in a party");
     if (!(hideoutRead(nk, group.id).value.buildings["storage"] > 0))
         throw new Error("the storage is not built");
-    const receipt = inflowTake(nk, userId, items, nowUnixMs);
+    const receipt = inflowTake(nk, userId, items);
     const accepted = inflowTaken(receipt);
-    const view = inflowGuard(nk, userId, receipt, nowUnixMs, () => hideoutUpdate(nk, userId, (hideout) => {
+    const view = inflowGuard(nk, userId, receipt, () => hideoutUpdate(nk, userId, (hideout) => {
         if (!hideout.buildings["storage"])
             throw new Error("the storage is not built");
         for (const item of Object.keys(accepted)) {

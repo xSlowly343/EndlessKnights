@@ -66,6 +66,13 @@ function riftSupplySend(nk: nkruntime.Nakama, userId: string, request: any, nowU
     const received = nk.storageRead([{ collection: RiftSupplyCollection, key: RiftSupplyKey, userId: to }]);
     if (received.length > 0 && (received[0].value as RiftSupplyValue).window === window.id)
         throw new Error("already supplied this window");
+    const receipt = inflowSpend(nk, userId, item, 1);
+    return inflowGuard(nk, userId, receipt, () => riftSupplyDeliver(nk, userId, to, item, window.id, count, sent, received, nowUnixMs));
+}
+
+function riftSupplyDeliver(nk: nkruntime.Nakama, userId: string, to: string, item: string, windowId: number, count: number,
+    sent: nkruntime.StorageObject[], received: nkruntime.StorageObject[], nowUnixMs: number): { [key: string]: any } {
+    const window = { id: windowId };
     const users = nk.usersGetId([userId]);
     const value: RiftSupplyValue = { window: window.id, from: userId, fromName: users.length > 0 ? users[0].displayName || users[0].username : "", item: item, at: nowUnixMs };
     nk.storageWrite([
