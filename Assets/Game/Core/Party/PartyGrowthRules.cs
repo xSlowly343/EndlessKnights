@@ -6,10 +6,15 @@ namespace Game.Core.Party
     public enum PartyUnlockKind
     {
         Mascot,
+        Colossus,
+        Trials,
+        Tree,
+        Banner,
+        PartySets,
+        Alliance,
         BannerSlot,
         TrialTier,
         ColossusTier,
-        MascotRite,
         Look
     }
 
@@ -47,10 +52,15 @@ namespace Game.Core.Party
         private static readonly Dictionary<string, PartyUnlockKind> Kinds = new Dictionary<string, PartyUnlockKind>
         {
             ["mascot"] = PartyUnlockKind.Mascot,
+            ["colossus"] = PartyUnlockKind.Colossus,
+            ["trials"] = PartyUnlockKind.Trials,
+            ["tree"] = PartyUnlockKind.Tree,
+            ["banner"] = PartyUnlockKind.Banner,
+            ["partySets"] = PartyUnlockKind.PartySets,
+            ["alliance"] = PartyUnlockKind.Alliance,
             ["bannerSlot"] = PartyUnlockKind.BannerSlot,
             ["trialTier"] = PartyUnlockKind.TrialTier,
             ["colossusTier"] = PartyUnlockKind.ColossusTier,
-            ["mascotRite"] = PartyUnlockKind.MascotRite,
             ["look"] = PartyUnlockKind.Look
         };
 

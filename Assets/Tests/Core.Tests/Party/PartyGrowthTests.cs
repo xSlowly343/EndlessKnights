@@ -36,7 +36,12 @@ namespace Game.Core.Tests.Party
                 Assert.That(Rules.Unlocks.Any(u => u.Level == level), Is.True, "level " + level);
             Assert.That(Rules.Opened(PartyUnlockKind.Mascot, 4), Is.False);
             Assert.That(Rules.Opened(PartyUnlockKind.Mascot, 5), Is.True);
-            Assert.That(Rules.CountOpened(PartyUnlockKind.BannerSlot, 25), Is.EqualTo(2));
+            Assert.That(Rules.Opened(PartyUnlockKind.Colossus, 10), Is.True);
+            Assert.That(Rules.Opened(PartyUnlockKind.Alliance, 59), Is.False);
+            Assert.That(Rules.Opened(PartyUnlockKind.Alliance, 60), Is.True);
+            var systems = new[] { PartyUnlockKind.Mascot, PartyUnlockKind.Colossus, PartyUnlockKind.Trials, PartyUnlockKind.Tree, PartyUnlockKind.Banner, PartyUnlockKind.PartySets, PartyUnlockKind.Alliance };
+            Assert.That(systems.Max(kind => Rules.Unlocks.First(u => u.Kind == kind).Level), Is.EqualTo(60), "the last new system opens at 60");
+            Assert.That(Rules.CountOpened(PartyUnlockKind.BannerSlot, 100), Is.EqualTo(5), "with the first slot of the banner itself six in all");
             Assert.That(Rules.NextUnlockLevel(1), Is.EqualTo(5));
             Assert.That(Rules.NextUnlockLevel(100), Is.Zero);
         }
