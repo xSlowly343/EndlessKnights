@@ -70,6 +70,7 @@ namespace Game.Core.Sim.Rift
         private static void SwapForge(GameState a, GameState b)
         {
             SwapSet(a.SetCollection, b.SetCollection);
+            SwapSet(a.UniquesFound, b.UniquesFound);
             (a.Drops.CraftSpent, b.Drops.CraftSpent) = (b.Drops.CraftSpent, a.Drops.CraftSpent);
         }
 

@@ -134,5 +134,21 @@ namespace Game.Core.Tests.Sim.Rift
             Assert.That(lines.All(line => !line.Name.StartsWith("rift.", StringComparison.Ordinal)), Is.True);
             Assert.That(RiftShopView.Sparks(loop), Does.Contain("0"));
         }
+        [Test]
+        public void TheRiftHeroKeepsItsOwnListOfFoundUniques()
+        {
+            var loop = TestWorld.Loop();
+            loop.State.UniquesFound.Add("home_unique");
+            Assert.That(loop.Rift.Enter(Inside), Is.EqualTo(RiftEntry.Entered));
+            Assert.That(loop.State.UniquesFound, Is.Empty, "home finds do not open the Rift forge");
+            loop.State.UniquesFound.Add("rift_unique");
+            var clock = ClockStamp.First(new ClockReading(Inside, 1000, 1));
+            var restored = SaveCodec.Decode(SaveCodec.Encode(loop.State, clock), TestWorld.Data).State;
+            Assert.That(restored.UniquesFound, Is.EquivalentTo(new[] { "rift_unique" }));
+            Assert.That(restored.Rift.OtherHero!.UniquesFound, Is.EquivalentTo(new[] { "home_unique" }));
+
+            loop.Rift.Leave();
+            Assert.That(loop.State.UniquesFound, Is.EquivalentTo(new[] { "home_unique" }), "a Rift find stays in the Rift");
+        }
     }
 }
