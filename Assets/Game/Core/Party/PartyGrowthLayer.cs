@@ -64,6 +64,30 @@ namespace Game.Core.Party
         public double Peaceful { get; private set; }
         public bool Capped { get; private set; }
         public IReadOnlyList<Modifier> Applied => _applied;
+        public IReadOnlyList<Modifier> Sources => _sources;
+        public PartyGrowthRules Rules => _rules;
+
+        public PartyGrowthLayer Scratch()
+        {
+            var copy = new PartyGrowthLayer(_rules, new StatSheet());
+            copy.InParty = InParty;
+            copy._joinedUnixMs = _joinedUnixMs;
+            copy.Members = Members;
+            copy._nowUnixMs = _nowUnixMs;
+            copy._sources.AddRange(_sources);
+            foreach (var pair in _treeLevels)
+                copy._treeLevels[pair.Key] = pair.Value;
+            copy._treeMajors.AddRange(_treeMajors);
+            copy._trialBest.AddRange(_trialBest);
+            foreach (var pair in _relicLevels)
+                copy._relicLevels[pair.Key] = pair.Value;
+            copy._mascotBeast = _mascotBeast;
+            copy._mascotLevel = _mascotLevel;
+            foreach (var pair in _riteLevels)
+                copy._riteLevels[pair.Key] = pair.Value;
+            copy.Rebuild();
+            return copy;
+        }
         public IReadOnlyList<Modifier> Tree => _tree;
         public IReadOnlyDictionary<int, int> TreeLevels => _treeLevels;
         public IReadOnlyList<string> TreeMajors => _treeMajors;
@@ -90,11 +114,14 @@ namespace Game.Core.Party
         {
             _mascotBeast = beast ?? string.Empty;
             _mascotLevel = System.Math.Max(0, level);
-            _riteLevels.Clear();
-            if (rites != null)
+            if (!ReferenceEquals(rites, _riteLevels))
             {
-                foreach (var pair in rites)
-                    _riteLevels[pair.Key] = pair.Value;
+                _riteLevels.Clear();
+                if (rites != null)
+                {
+                    foreach (var pair in rites)
+                        _riteLevels[pair.Key] = pair.Value;
+                }
             }
             Rebuild();
         }
@@ -138,6 +165,11 @@ namespace Game.Core.Party
 
         public void SetRelics(IReadOnlyDictionary<string, int> levels)
         {
+            if (ReferenceEquals(levels, _relicLevels))
+            {
+                Rebuild();
+                return;
+            }
             _relicLevels.Clear();
             foreach (var pair in levels)
                 _relicLevels[pair.Key] = pair.Value;
@@ -157,6 +189,11 @@ namespace Game.Core.Party
 
         public void SetTrials(IReadOnlyList<int> bestTiers)
         {
+            if (ReferenceEquals(bestTiers, _trialBest))
+            {
+                Rebuild();
+                return;
+            }
             _trialBest.Clear();
             for (var i = 0; i < bestTiers.Count; i++)
                 _trialBest.Add(bestTiers[i]);
@@ -165,12 +202,18 @@ namespace Game.Core.Party
 
         public void SetTree(IReadOnlyDictionary<int, int> levels, IReadOnlyList<string> majors)
         {
-            _treeLevels.Clear();
-            foreach (var pair in levels)
-                _treeLevels[pair.Key] = pair.Value;
-            _treeMajors.Clear();
-            for (var i = 0; i < majors.Count; i++)
-                _treeMajors.Add(majors[i]);
+            if (!ReferenceEquals(levels, _treeLevels))
+            {
+                _treeLevels.Clear();
+                foreach (var pair in levels)
+                    _treeLevels[pair.Key] = pair.Value;
+            }
+            if (!ReferenceEquals(majors, _treeMajors))
+            {
+                _treeMajors.Clear();
+                for (var i = 0; i < majors.Count; i++)
+                    _treeMajors.Add(majors[i]);
+            }
             Rebuild();
         }
 
