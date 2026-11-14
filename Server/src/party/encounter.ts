@@ -149,6 +149,7 @@ class PartyEncounter {
     private chainKills = 0;
     private readonly splash: number[] = new Array(PartyMaxSlots * PartySplashDepth).fill(0);
     trialFight = new PartyTrialFight();
+    readonly stageClears: { world: PartyWorld; depth: number }[] = [];
     trialId = 0;
     private trialPending: PartyTrialHit[] = [partyTrialEmptyHit(), partyTrialEmptyHit(), partyTrialEmptyHit(), partyTrialEmptyHit()];
     private trialSlots = [0, 0, 0, 0];
@@ -868,6 +869,8 @@ class PartyEncounter {
             this.addEvent(PartyEventKind.StageCleared);
             if (this.world === PartyWorld.Rift)
                 this.riftStagesCleared++;
+            if (this.world === PartyWorld.Rift || this.world === PartyWorld.Dungeon)
+                this.stageClears.push({ world: this.world, depth: this.world === PartyWorld.Rift ? this.riftStagesCleared : partyDungeonTier(this.riftId) });
             this.killsOnStage = 0;
             this.farming = false;
             if (this.world === PartyWorld.Dungeon && ++this.dungeonStagesCleared >= partyDungeonStages(this.riftId)) {

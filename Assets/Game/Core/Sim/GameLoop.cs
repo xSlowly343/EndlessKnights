@@ -1104,8 +1104,6 @@ namespace Game.Core.Sim
 
         public IReadOnlyList<string> CollectedPartySets() => _gear.CollectedPartySets();
 
-        public void SetPartySetsOpen(bool open) => _drops.PartySetsOpen = open && _partyGrowth.InParty;
-
         public bool GivePartySetPiece(string setId, string piece) => _drops.GivePartySetPiece(setId, piece);
 
         public int BagRoom => _drops.BagRoom;

@@ -86,6 +86,8 @@ function partyDungeonTimer(rules: PartyEncounterRules, id: number): number {
     return seconds;
 }
 
+function partyDungeonTier(id: number): number { return Math.max(1, Math.floor(id / 16777216) % 256); }
+
 function partyDungeonStages(id: number): number { return Math.max(1, Math.floor(id / 70368744177664) % 8); }
 const PartyNoWorld = 255;
 const enum PartyPresence { Fighting = 0, Resting = 1, Peaceful = 2, Offline = 3 }

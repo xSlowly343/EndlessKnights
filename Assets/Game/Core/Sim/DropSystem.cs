@@ -185,29 +185,6 @@ namespace Game.Core.Sim
             return CraftResult.NotFound;
         }
 
-        private void RollPartySet(long stage)
-        {
-            if (!PartySetsOpen)
-                return;
-            var dungeon = _state.Dungeons.Active;
-            var source = dungeon != null ? "dungeons" : _state.Rift.Inside ? "rift" : null;
-            if (source == null || !_items.PartySetDrops.TryGetValue(source, out var drop) || !_state.Drops.Rng.Chance(drop.Chance))
-                return;
-            var depth = dungeon != null ? dungeon.Tier : (int)System.Math.Min(int.MaxValue, stage);
-            var rarity = drop.Roll(depth, _state.Drops.Rng.NextDouble());
-            var candidates = new List<SetDef>();
-            foreach (var set in _items.Sets)
-            {
-                if (set.Party && set.PartySource == source && set.Rarity == rarity)
-                    candidates.Add(set);
-            }
-            if (candidates.Count == 0)
-                return;
-            var chosen = candidates[_state.Drops.Rng.NextInt(0, candidates.Count)];
-            var piece = chosen.Pieces[_state.Drops.Rng.NextInt(0, chosen.Pieces.Count)];
-            GivePartySetPiece(chosen.Id, SetDef.PieceName(piece));
-        }
-
         public bool GivePartySetPiece(string setId, string pieceName)
         {
             if (!_items.TryGetSet(setId, out var set) || !set.Party || BagFull)
@@ -451,14 +428,11 @@ namespace Game.Core.Sim
 
         public System.Action<long, bool>? GuardianKilled { get; set; }
 
-        public bool PartySetsOpen { get; set; }
-
         public void OnBossDefeated(long stage, EnemyType type, long recordBefore, bool raisesRecord)
         {
             if (!raisesRecord)
             {
                 RollRiftKey(stage, type);
-                RollPartySet(stage);
                 return;
             }
             if (type == EnemyType.Guardian)

@@ -150,3 +150,32 @@ test("a member's keys are relayed to the others under the sender's slot", () => 
   state.host.receive("bob", view.buffer);
   assert.strictEqual(state.host.outbox.filter(packet => new DataView(packet.data).getUint8(0) === 19).length, 0);
 });
+
+test("the match rolls party set pieces for every dungeon boss, at the key's tier, for each member", () => {
+  const { nk, call } = world("ann", "bob");
+  const state = match(nk, call, "ann", "bob");
+  let total = 0;
+  for (let l = 1; l < 50; l++)
+    total += party.partyGrowthNeed(l);
+  party.partyGrowthAdd(nk, state.partyId, total);
+  const drops = party.PartyGrowthServerRules.partySets.drops.dungeons;
+  const chance = drops.chance;
+  drops.chance = 1;
+  try {
+    step(nk, state, 1000);
+    launch(nk, state, "ann", keyId);
+    const encounter = state.host.encounter;
+    for (let i = 0; i < 2000 && encounter.world === dungeon; i++) {
+      killEnemy(encounter);
+      step(nk, state, 1000);
+      party.partyDropFarSets(nk, state, 1000 + i);
+    }
+  } finally {
+    drops.chance = chance;
+  }
+  assert.strictEqual(state.host.encounter.stageClears.length, 0, "the match takes every cleared stage");
+  const pending = party.partySetDropsRead(nk, state.partyId).value.pending;
+  assert.strictEqual(pending.ann.length, 2, "two bosses, one roll each");
+  assert.strictEqual(pending.bob.length, 2);
+  assert.ok(pending.ann.every((drop) => drop.source === "dungeons" && drop.set.indexOf("party_deep_key_") === 0));
+});

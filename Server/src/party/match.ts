@@ -102,6 +102,7 @@ function partyMatchLoop(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     host.tick(now);
     partyTrackRift(nk, logger, state, now);
     partySettleTrials(nk, logger, state, now);
+    partyDropFarSets(nk, state, now);
     partySeeGuestsOut(dispatcher, state);
     partySend(dispatcher, state, host);
     partyReportFlags(nk, logger, ctx.matchId || "", host);
@@ -187,6 +188,21 @@ function partyStartTrial(state: PartyMatchState, index: number, tier: number, no
     if (fighters < partyTrialRules().minFighters)
         return "a trial needs at least " + partyTrialRules().minFighters + " fighters in the party fight";
     return state.host.startTrial(index, tier, partyColossusAtNight(nowUnixMs)) ? "ok" : "the party fight cannot start the trial";
+}
+
+function partyDropFarSets(nk: nkruntime.Nakama, state: PartyMatchState, nowUnixMs: number): void {
+    const clears = state.host.encounter.stageClears;
+    if (clears.length === 0)
+        return;
+    const members: string[] = [];
+    for (const member of state.host.encounter.members)
+        if (member.joined && !member.guest)
+            members.push(member.playerId);
+    for (let i = 0; i < clears.length; i++) {
+        const source = clears[i].world === PartyWorld.Rift ? "rift" : "dungeons";
+        partySetDropRoll(nk, state.partyId, members, source, clears[i].depth, 1, state.partyId + ":" + source + ":" + nowUnixMs + ":" + i);
+    }
+    clears.length = 0;
 }
 
 function partySettleTrials(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: PartyMatchState, nowUnixMs: number): void {
