@@ -4,6 +4,7 @@ namespace Game.Core.Party
     {
         Home,
         Rift,
-        Dungeon
+        Dungeon,
+        Trial
     }
 }

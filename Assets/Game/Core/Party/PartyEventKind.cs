@@ -10,6 +10,7 @@ namespace Game.Core.Party
         WorldPending,
         WorldCancelled,
         WorldChanged,
-        GuestLeft
+        GuestLeft,
+        TrialEnded
     }
 }

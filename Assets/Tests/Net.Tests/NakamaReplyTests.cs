@@ -638,8 +638,6 @@ namespace Game.Net.Tests
         public void PartyTrialsAreReadWithBestTiersTriesTheRunAndTheResult()
         {
             Assert.That(PartyTrialsReply.StartPayload("choir", 3, new[] { "a", "b" }), Is.EqualTo("{\"trial\":\"choir\",\"tier\":3,\"fighters\":[\"a\",\"b\"]}"));
-            Assert.That(PartyTrialsReply.FinishPayload(true), Is.EqualTo("{\"cleared\":true}"));
-            Assert.That(PartyTrialsReply.MarathonPayload(12), Is.EqualTo("{\"waves\":12}"));
             var reply = PartyTrialsReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"ceiling\":15,\"carry\":true,\"weekEndsAt\":1763337600000,\"trials\":[{\"id\":\"choir\",\"open\":true,\"best\":4,\"triesLeft\":3},{\"id\":\"relay\",\"open\":false,\"best\":2,\"triesLeft\":5}],\"run\":{\"trial\":\"choir\",\"tier\":5,\"by\":\"a\",\"fighters\":[\"a\",\"b\"],\"at\":1763100000000,\"until\":1763100300000},\"result\":{\"trial\":\"choir\",\"tier\":4,\"best\":4,\"firstClear\":true,\"signs\":80,\"experience\":20,\"carried\":[\"relay\"]}}"));
             Assert.That(reply.Opened, Is.True);
             Assert.That(reply.Ceiling, Is.EqualTo(15));

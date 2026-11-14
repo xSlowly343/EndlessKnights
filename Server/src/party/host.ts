@@ -46,6 +46,11 @@ class PartyHost {
     readonly worldRequests: { slot: number; world: PartyWorld; cancel: boolean; riftId: number }[] = [];
     readonly bossRequests: number[] = [];
     riftCleared = 0;
+    readonly trialResults: { trialId: number; outcome: PartyTrialOutcome; tier: number; fighters: string[] }[] = [];
+    trialsEnded = 0;
+    private trialRoom = 0;
+    private trialBurst = 0;
+    private readonly lastKinds = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     private readonly allowance = [0, 0, 0, 0];
     private readonly hitAllowance = [0, 0, 0, 0];
     private readonly lastHeardTick = [0, 0, 0, 0];
@@ -235,6 +240,7 @@ class PartyHost {
         if (nowUnixMs !== undefined)
             this.clockUnixMs = nowUnixMs;
         this.updateRiftEnemies();
+        this.refillTrialRoom();
         this.encounter.advance();
         this.returnWhenTheRiftCloses();
         this.refill();
@@ -471,6 +477,8 @@ class PartyHost {
         this.lastSequence[slot] = 0;
         this.lastEnemy[slot] = 0;
         this.lastTotal[slot] = 0;
+        for (let kind = 0; kind < PartyTrialKinds; kind++)
+            this.lastKinds[slot * PartyTrialKinds + kind] = 0;
         this.allowance[slot] = this.config.burstBars;
         this.hitAllowance[slot] = this.hitBurst();
         this.flags[slot] = 0;
@@ -493,24 +501,91 @@ class PartyHost {
         if (batch.sequence <= this.lastSequence[slot])
             return;
         this.lastSequence[slot] = batch.sequence;
+        this.countHits(slot, batch.hits);
+        if (this.encounter.world === PartyWorld.Trial) {
+            this.trialDamage(slot, batch);
+            return;
+        }
         const total = partyBatchTotal(batch);
         const delta = batch.enemyId === this.lastEnemy[slot] ? total - this.lastTotal[slot] : total;
         if (batch.enemyId !== this.lastEnemy[slot] || total > this.lastTotal[slot]) {
             this.lastEnemy[slot] = batch.enemyId;
             this.lastTotal[slot] = total;
         }
-        if (batch.hits > this.hitAllowance[slot])
-            this.flag(slot);
-        this.hitAllowance[slot] = Math.max(0, this.hitAllowance[slot] - Math.max(0, batch.hits));
-        if (batch.hits > 0) {
-            this.encounter.reportInput(slot);
-            this.recentHits[slot] += batch.hits;
-        }
         if (!(delta > 0))
             return;
         const accepted = this.cappedDamage(slot, batch.enemyId, delta);
         this.acceptedShares += accepted;
         this.recentShares[slot] += accepted;
+    }
+
+    startTrial(index: number, tier: number, night: boolean): boolean {
+        return this.encounter.proposeWorld(PartyWorld.Trial, partyTrialIdPack(index, tier, night));
+    }
+
+    private countHits(slot: number, hits: number): void {
+        if (hits > this.hitAllowance[slot])
+            this.flag(slot);
+        this.hitAllowance[slot] = Math.max(0, this.hitAllowance[slot] - Math.max(0, hits));
+        if (hits <= 0)
+            return;
+        this.encounter.reportInput(slot);
+        this.recentHits[slot] += hits;
+    }
+
+    private trialDamage(slot: number, batch: DamageBatchMessage): void {
+        if (batch.enemyId !== this.encounter.enemyId)
+            return;
+        const same = batch.enemyId === this.lastEnemy[slot];
+        this.lastEnemy[slot] = batch.enemyId;
+        this.lastTotal[slot] = partyBatchTotal(batch);
+        const at = slot * PartyTrialKinds;
+        const keys = this.grown(at, batch.keys, same);
+        const mouse = this.grown(at + 1, batch.mouse, same);
+        const skills = this.grown(at + 2, batch.skills + batch.dot, same);
+        const minions = this.grown(at + 3, batch.summons, same);
+        const wanted = keys + mouse + skills + minions;
+        if (!(wanted > 0))
+            return;
+        let scale = 1;
+        if (wanted - this.trialRoom > PartyCutTolerance * this.encounter.barFull) {
+            this.cutShares += wanted - this.trialRoom;
+            if (wanted - this.trialBurst > PartyCutTolerance * this.encounter.barFull)
+                this.flag(slot);
+            scale = this.trialRoom / wanted;
+        }
+        const applied = this.encounter.addTrialDamage(slot, keys * scale, mouse * scale, skills * scale, minions * scale);
+        this.trialRoom = Math.max(0, this.trialRoom - applied);
+        this.acceptedShares += applied;
+        this.recentShares[slot] += applied;
+    }
+
+    private grown(at: number, total: number, same: boolean): number {
+        const last = same ? this.lastKinds[at] : 0;
+        this.lastKinds[at] = Math.max(last, total);
+        return Math.max(0, total - last);
+    }
+
+    private refillTrialRoom(): void {
+        const minMs = PartyGrowthServerRules.trials ? PartyGrowthServerRules.trials.minMs : 0;
+        if (!this.encounter.inTrial) {
+            this.trialRoom = 0;
+            return;
+        }
+        const step = minMs > 0 ? this.encounter.trialFight.hpFull * 1000 / (minMs * PartyTicksPerSecond) : Infinity;
+        this.trialBurst = step * this.hitBurst();
+        this.trialRoom = Math.min(this.trialBurst, this.trialRoom + step);
+    }
+
+    private noteTrialEnd(): void {
+        const rules = partyTrialFightRulesOrNull();
+        const fighters: string[] = [];
+        for (const member of this.encounter.members)
+            if (member.joined && !member.guest)
+                fighters.push(member.playerId);
+        this.trialsEnded++;
+        this.trialResults.push({ trialId: this.encounter.trialId, outcome: this.encounter.trialFight.outcome, tier: rules ? this.encounter.trialFight.resultTier(rules) : 0, fighters: fighters });
+        this.broadcast(partyEncodeTrialState(this.encounter), PartyNoSlot);
     }
 
     private cappedDamage(slot: number, enemyId: number, delta: number): number {
@@ -581,6 +656,8 @@ class PartyHost {
             } else if (event.kind === PartyEventKind.StageCleared && this.encounter.world === PartyWorld.Rift) {
                 this.riftCleared++;
                 this.broadcast(partyEncodeMoment(event, this.encounter.bossTicksLeft), PartyNoSlot);
+            } else if (event.kind === PartyEventKind.TrialEnded) {
+                this.noteTrialEnd();
             } else if (event.kind === PartyEventKind.GuestLeft) {
                 this.releaseGuests(event.rewarded);
             } else if (event.kind === PartyEventKind.EnemySpawned) {
@@ -601,6 +678,8 @@ class PartyHost {
         if (--this.ticksToState <= 0 && this.encounter.started) {
             this.ticksToState = Math.max(1, partyTicks(this.config.stateBroadcastSeconds));
             this.broadcast(partyEncodeEncounterState(this.encounter, ++this.stateSequence, this.recentShares, this.recentHits), PartyNoSlot);
+            if (this.encounter.inTrial)
+                this.broadcast(partyEncodeTrialState(this.encounter), PartyNoSlot);
             for (let slot = 0; slot < PartyMaxSlots; slot++) {
                 this.recentShares[slot] = 0;
                 this.recentHits[slot] = 0;

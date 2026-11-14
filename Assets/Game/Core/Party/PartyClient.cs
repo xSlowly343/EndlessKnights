@@ -195,6 +195,8 @@ namespace Game.Core.Party
         private bool FacesHostEnemy => _state.EnemyId == _localEnemyId || (_guessed && _localEnemyId == _state.EnemyId + 1);
 
         public PartyWorld World => _state.World;
+        public TrialStateMessage Trial { get; private set; }
+        public bool InTrial => InParty && _state.World == PartyWorld.Trial;
         public bool IsLeader { get; set; }
         public long RiftId => _state.World == PartyWorld.Rift ? _state.RiftId : 0;
         public long RiftEndUnixMs => _state.World == PartyWorld.Rift ? _loop.Rift.PartyRiftEnd(_state.RiftId) : 0;
@@ -420,6 +422,10 @@ namespace Game.Core.Party
                 case PartyMessageKind.EnemyKilled when PartyCodec.TryDecode(_in, length, out EnemyKilledMessage killed):
                     if (InParty)
                         OnKilled(killed);
+                    break;
+                case PartyMessageKind.TrialState when PartyCodec.TryDecode(_in, length, out TrialStateMessage trial):
+                    if (InParty && trial.Tick >= Trial.Tick)
+                        Trial = trial;
                     break;
                 case PartyMessageKind.EncounterMoment when PartyCodec.TryDecode(_in, length, out EncounterMomentMessage moment):
                     if (InParty && moment.Kind == PartyEventKind.BossFailed && moment.EnemyId == _localEnemyId)

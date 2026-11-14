@@ -33,6 +33,9 @@ namespace Game.Core.Party
         private readonly double[] _recentShares = new double[PartyRules.MaxSlots];
         private readonly double[] _totalShares = new double[PartyRules.MaxSlots];
         private readonly int[] _recentHits = new int[PartyRules.MaxSlots];
+        private readonly double[] _lastKinds = new double[PartyRules.MaxSlots * PartyTrialFight.Kinds];
+        private double _trialRoom;
+        private double _trialBurst;
         private readonly RiftRules? _rift;
         private readonly SynergyRules? _synergy;
         private long _riftEnemyFor = -1;
@@ -60,6 +63,7 @@ namespace Game.Core.Party
 
         public PartyEncounter Encounter => _encounter;
         public long Kills { get; private set; }
+        public long TrialsEnded { get; private set; }
         public double AcceptedShares { get; private set; }
         public double CutShares { get; private set; }
         public double RepeatedShares { get; private set; }
@@ -69,6 +73,9 @@ namespace Game.Core.Party
         public int Flags(int slot) => _flags[slot];
 
         public void UseRules(PartyRules rules) => _rules = rules;
+
+        public bool StartTrial(PartyTrialDef trial, int tier, bool night) =>
+            _encounter.ProposeWorld(PartyWorld.Trial, PartyTrialId.Pack(trial.Index, tier, night));
 
         public bool InviteGuest(ulong playerId, double seconds)
         {
@@ -110,6 +117,7 @@ namespace Game.Core.Party
             while (_transport.TryReceive(_in, out var length, out var from))
                 Handle(from, length);
             UpdateRiftEnemies();
+            RefillTrialRoom();
             _encounter.Advance();
             ReturnWhenTheRiftCloses();
             Refill();
@@ -212,6 +220,7 @@ namespace Game.Core.Party
             _lastSequence[slot] = 0;
             _lastEnemy[slot] = 0;
             _lastTotal[slot] = 0;
+            System.Array.Clear(_lastKinds, slot * PartyTrialFight.Kinds, PartyTrialFight.Kinds);
             _allowance[slot] = _rules.Caps.BurstBars;
             _hitAllowance[slot] = HitBurst;
             _flags[slot] = 0;
@@ -361,6 +370,12 @@ namespace Game.Core.Party
             if (batch.Sequence <= _lastSequence[slot])
                 return;
             _lastSequence[slot] = batch.Sequence;
+            CountHits(slot, batch.Hits);
+            if (_encounter.World == PartyWorld.Trial)
+            {
+                TrialDamage(slot, batch);
+                return;
+            }
             var total = batch.Total;
             var delta = batch.EnemyId == _lastEnemy[slot] ? total - _lastTotal[slot] : total;
             if (batch.EnemyId != _lastEnemy[slot] || total > _lastTotal[slot])
@@ -368,20 +383,73 @@ namespace Game.Core.Party
                 _lastEnemy[slot] = batch.EnemyId;
                 _lastTotal[slot] = total;
             }
-            if (batch.Hits > _hitAllowance[slot])
-                Flag(slot);
-            _hitAllowance[slot] = System.Math.Max(0, _hitAllowance[slot] - System.Math.Max(0, batch.Hits));
-            if (batch.Hits > 0)
-            {
-                _encounter.ReportInput(slot);
-                _recentHits[slot] += batch.Hits;
-            }
             if (!(delta > 0))
                 return;
             var accepted = CappedDamage(slot, batch.EnemyId, delta);
             AcceptedShares += accepted;
             _recentShares[slot] += accepted;
             _totalShares[slot] += accepted;
+        }
+
+        private void CountHits(int slot, int hits)
+        {
+            if (hits > _hitAllowance[slot])
+                Flag(slot);
+            _hitAllowance[slot] = System.Math.Max(0, _hitAllowance[slot] - System.Math.Max(0, hits));
+            if (hits <= 0)
+                return;
+            _encounter.ReportInput(slot);
+            _recentHits[slot] += hits;
+        }
+
+        private void TrialDamage(int slot, in DamageBatchMessage batch)
+        {
+            if (batch.EnemyId != _encounter.EnemyId)
+                return;
+            var same = batch.EnemyId == _lastEnemy[slot];
+            _lastEnemy[slot] = batch.EnemyId;
+            _lastTotal[slot] = batch.Total;
+            var at = slot * PartyTrialFight.Kinds;
+            var keys = Grown(at, batch.Keys, same);
+            var mouse = Grown(at + 1, batch.Mouse, same);
+            var skills = Grown(at + 2, batch.Skills + batch.Dot, same);
+            var minions = Grown(at + 3, batch.Summons, same);
+            var wanted = keys + mouse + skills + minions;
+            if (!(wanted > 0))
+                return;
+            var scale = 1.0;
+            if (wanted - _trialRoom > CutTolerance * _encounter.BarFull)
+            {
+                CutShares += wanted - _trialRoom;
+                if (wanted - _trialBurst > CutTolerance * _encounter.BarFull)
+                    Flag(slot);
+                scale = _trialRoom / wanted;
+            }
+            var applied = _encounter.AddTrialDamage(slot, keys * scale, mouse * scale, skills * scale, minions * scale);
+            _trialRoom = System.Math.Max(0, _trialRoom - applied);
+            AcceptedShares += applied;
+            _recentShares[slot] += applied;
+            _totalShares[slot] += applied;
+        }
+
+        private double Grown(int at, double total, bool same)
+        {
+            var last = same ? _lastKinds[at] : 0;
+            _lastKinds[at] = System.Math.Max(last, total);
+            return System.Math.Max(0, total - last);
+        }
+
+        private void RefillTrialRoom()
+        {
+            var trials = _encounter.Trials;
+            if (!_encounter.InTrial || trials == null)
+            {
+                _trialRoom = 0;
+                return;
+            }
+            var step = trials.MinSeconds > 0 ? _encounter.TrialFight.HpFull / (trials.MinSeconds * GameLoop.TicksPerSecond) : double.PositiveInfinity;
+            _trialBurst = step * HitBurst;
+            _trialRoom = System.Math.Min(_trialBurst, _trialRoom + step);
         }
 
         private double CappedDamage(int slot, uint enemyId, double delta)
@@ -456,6 +524,10 @@ namespace Game.Core.Party
                     case PartyEventKind.GuestLeft:
                         _rosterChanged = true;
                         break;
+                    case PartyEventKind.TrialEnded:
+                        TrialsEnded++;
+                        Broadcast(PartyCodec.Encode(_out, TrialStateMessage.Of(_encounter)));
+                        break;
                     case PartyEventKind.EnemySpawned:
                         _ticksToState = 0;
                         break;
@@ -495,6 +567,8 @@ namespace Game.Core.Party
                     _recentHits[slot] = 0;
                 }
                 Broadcast(PartyCodec.Encode(_out, state));
+                if (_encounter.InTrial)
+                    Broadcast(PartyCodec.Encode(_out, TrialStateMessage.Of(_encounter)));
             }
         }
 

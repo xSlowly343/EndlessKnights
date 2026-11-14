@@ -20,6 +20,7 @@ function partyRevive(stored: PartyMatchState): PartyMatchState {
     const state: PartyMatchState = JSON.parse(JSON.stringify(stored));
     Object.setPrototypeOf(state.host, PartyHost.prototype);
     Object.setPrototypeOf(state.host.encounter, PartyEncounter.prototype);
+    Object.setPrototypeOf(state.host.encounter.trialFight, PartyTrialFight.prototype);
     for (const member of state.host.encounter.members)
         Object.setPrototypeOf(member, PartyMember.prototype);
     return state;
@@ -100,6 +101,7 @@ function partyMatchLoop(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
     partyHandleWorld(nk, state, now);
     host.tick(now);
     partyTrackRift(nk, logger, state, now);
+    partySettleTrials(nk, logger, state, now);
     partySeeGuestsOut(dispatcher, state);
     partySend(dispatcher, state, host);
     partyReportFlags(nk, logger, ctx.matchId || "", host);
@@ -170,6 +172,33 @@ function partyInvite(state: PartyMatchState, userId: string, untilUnixMs: number
             delete state.helpInvites[invited];
     state.helpInvites[userId] = untilUnixMs;
     return "ok";
+}
+
+function partyStartTrial(state: PartyMatchState, index: number, tier: number, nowUnixMs: number): string {
+    const encounter = state.host.encounter;
+    if (!(index >= 0) || index !== Math.floor(index) || !(tier >= 1) || tier !== Math.floor(tier))
+        return "bad request";
+    if (encounter.world !== PartyWorld.Home || encounter.switching)
+        return "the party is not at home";
+    let fighters = 0;
+    for (const member of encounter.members)
+        if (member.joined && !member.guest)
+            fighters++;
+    if (fighters < partyTrialRules().minFighters)
+        return "a trial needs at least " + partyTrialRules().minFighters + " fighters in the party fight";
+    return state.host.startTrial(index, tier, partyColossusAtNight(nowUnixMs)) ? "ok" : "the party fight cannot start the trial";
+}
+
+function partySettleTrials(nk: nkruntime.Nakama, logger: nkruntime.Logger, state: PartyMatchState, nowUnixMs: number): void {
+    const results = state.host.trialResults;
+    for (const result of results) {
+        try {
+            partyTrialFromMatch(nk, state.partyId, result, nowUnixMs);
+        } catch (error) {
+            logger.warn("party %s: trial result was not saved: %s", state.partyId, String(error));
+        }
+    }
+    results.length = 0;
 }
 
 function partyHandleWorld(nk: nkruntime.Nakama, state: PartyMatchState, nowUnixMs: number): void {
@@ -295,6 +324,10 @@ function partyMatchSignal(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: 
         state.host.leave(request[1]);
     if (request[0] === "invite")
         return { state: state, data: partyInvite(state, request[1] || "", Number(request[2])) };
+    if (request[0] === "trial")
+        return { state: state, data: partyStartTrial(state, Number(request[1]), Number(request[2]), Date.now()) };
+    if (request[0] === "trial_stop" && state.host.encounter.inTrial)
+        state.host.encounter.switchWorld(PartyWorld.Home, 0);
     return { state: state, data: "ok" };
 }
 

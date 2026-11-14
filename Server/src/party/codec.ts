@@ -2,7 +2,7 @@ const PartyMaxPacketBytes = 256;
 
 const enum PartyMessageKind {
     None = 0, Hello = 1, DamageBatch = 2, CastEffect = 3, Presence = 4,
-    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, BossRequest = 16, PartyLoadout = 18, PartyKeys = 19, PartyLook = 20, PartyCast = 21
+    EncounterState = 5, EnemyKilled = 6, EncounterMoment = 7, Roster = 8, PartyOffer = 9, PartyReaction = 10, WorldRequest = 11, FocusRelay = 12, PartyResource = 13, BossRequest = 16, PartyLoadout = 18, PartyKeys = 19, PartyLook = 20, PartyCast = 21, TrialState = 22
 }
 
 class PartyWriter {
@@ -359,6 +359,30 @@ function partyEncodeMoment(event: PartyEvent, bossTicksLeft: number): ArrayBuffe
     w.long(event.tick);
     w.uint(event.enemyId);
     w.int(bossTicksLeft);
+    return w.bytes();
+}
+
+function partyEncodeTrialState(encounter: PartyEncounter): ArrayBuffer {
+    const fight = encounter.trialFight;
+    const rules = partyTrialFightRulesOrNull();
+    const small = (value: number) => value < 0 ? 255 : Math.min(254, value);
+    const w = partyStart(PartyMessageKind.TrialState);
+    w.long(encounter.tick);
+    w.long(encounter.trialId);
+    w.byte(fight.outcome);
+    w.int(rules ? fight.resultTier(rules) : 0);
+    w.double(fight.hpLeft);
+    w.double(fight.hpFull);
+    for (let kind = 0; kind < PartyTrialKinds; kind++)
+        w.float(fight.shields[kind]);
+    w.float(fight.skillShieldLeft);
+    w.byte(small(encounter.trialHolderSlot()));
+    w.byte(small(fight.resisted));
+    w.byte(small(fight.chain));
+    w.byte(small(fight.wave));
+    w.byte(small(fight.wavesCleared));
+    w.bool(!!rules && fight.pulseOpen(rules));
+    w.int(Math.max(0, fight.totalTicks - fight.tick));
     return w.bytes();
 }
 

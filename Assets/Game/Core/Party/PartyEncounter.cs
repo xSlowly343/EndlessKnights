@@ -31,6 +31,10 @@ namespace Game.Core.Party
         private bool _enemyKilled;
         private byte _enemyRewarded;
         private int _weakenVulnerabilityOwner = NoSlot;
+        private readonly PartyTrialHit[] _trialPending = new PartyTrialHit[PartyRules.MaxSlots];
+        private readonly PartyTrialHit[] _trialRound = new PartyTrialHit[PartyRules.MaxSlots];
+        private readonly int[] _trialSlots = new int[PartyRules.MaxSlots];
+        private int _trialCount;
 
         public PartyEncounter(PartyRules rules, StageTable stages, ulong seed)
         {
@@ -42,6 +46,12 @@ namespace Game.Core.Party
         }
 
         public Content.DungeonRules? Dungeons { get; set; }
+        public PartyTrialRules? Trials { get; set; }
+        public DefenseRules? Defense { get; set; }
+        public PartyTrialFight TrialFight { get; } = new PartyTrialFight();
+        public long TrialId { get; private set; }
+        public bool InTrial => World == PartyWorld.Trial && TrialFight.Running;
+        public int TrialHolderSlot => InTrial && TrialFight.Trial!.Rule == PartyTrialRule.Relay && TrialFight.Holder < _trialCount ? _trialSlots[TrialFight.Holder] : NoSlot;
         public long Tick { get; private set; }
         public uint EnemyId { get; private set; }
         public PartyEnemyKind EnemyKind { get; private set; }
@@ -546,7 +556,7 @@ namespace Game.Core.Party
 
         public double RepeatRecent(int slot, double seconds, double loopShare = 0)
         {
-            if (!IsMember(slot) || !Started || !(seconds > 0) || !(loopShare >= 0))
+            if (!IsMember(slot) || !Started || World == PartyWorld.Trial || !(seconds > 0) || !(loopShare >= 0))
                 return 0;
             var ticks = System.Math.Min(RecentTicks - 1, Ticks(seconds));
             var sum = 0.0;
@@ -591,7 +601,7 @@ namespace Game.Core.Party
 
         public double Wanted(int slot, uint enemyId, double share)
         {
-            if (!IsMember(slot) || !Started || !(share > 0) || double.IsInfinity(share))
+            if (!IsMember(slot) || !Started || World == PartyWorld.Trial || !(share > 0) || double.IsInfinity(share))
                 return 0;
             if (enemyId != EnemyId)
             {
@@ -646,6 +656,8 @@ namespace Game.Core.Party
         {
             if (!Started || Switching || (world == World && riftId == RiftId) || (world == PartyWorld.Home) != (riftId == 0))
                 return false;
+            if ((World == PartyWorld.Trial && world != PartyWorld.Home) || (world == PartyWorld.Trial && !TrialKnown(riftId)))
+                return false;
             PendingWorld = (byte)world;
             PendingRiftId = riftId;
             SwitchTicksLeft = System.Math.Max(1, Ticks(_rules.WorldSwitchSeconds));
@@ -664,6 +676,13 @@ namespace Game.Core.Party
 
         public void SwitchWorld(PartyWorld world, long riftId)
         {
+            if (InTrial)
+                EndTrial();
+            if (world == PartyWorld.Trial && !TrialKnown(riftId))
+            {
+                world = PartyWorld.Home;
+                riftId = 0;
+            }
             ReleaseGuests(true);
             ClearPending();
             World = world;
@@ -683,6 +702,82 @@ namespace Game.Core.Party
             Events.Add(new PartyEvent(PartyEventKind.WorldChanged, Tick, EnemyId, EnemyKind));
             if (Started)
                 Spawn(PartyEnemyKind.Normal);
+            if (World == PartyWorld.Trial && Started)
+                StartTrial();
+        }
+
+        public double AddTrialDamage(int slot, double keys, double mouse, double skills, double minions)
+        {
+            if (!InTrial || !IsMember(slot) || _members[slot].Guest)
+                return 0;
+            keys = Positive(keys);
+            mouse = Positive(mouse);
+            skills = Positive(skills);
+            minions = Positive(minions);
+            ref var pending = ref _trialPending[slot];
+            pending.Keys += keys;
+            pending.Mouse += mouse;
+            pending.Skills += skills;
+            pending.Minions += minions;
+            return keys + mouse + skills + minions;
+        }
+
+        private static double Positive(double value) => value > 0 && !double.IsInfinity(value) ? value : 0;
+
+        private bool TrialKnown(long id) => Trials != null && PartyTrialId.Valid(id) && PartyTrialId.Trial(id) < Trials.List.Count;
+
+        private void StartTrial()
+        {
+            var trials = Trials!;
+            TrialId = RiftId;
+            CollectTrialFighters();
+            TrialFight.Start(trials, Defense ?? new DefenseRules(), trials.List[PartyTrialId.Trial(RiftId)], PartyTrialId.Tier(RiftId),
+                _trialCount, 1, PartyTrialId.Night(RiftId));
+            System.Array.Clear(_trialPending, 0, _trialPending.Length);
+            MirrorTrialBar();
+        }
+
+        private void CollectTrialFighters()
+        {
+            _trialCount = 0;
+            for (var slot = 0; slot < _members.Length; slot++)
+            {
+                if (_members[slot].Joined && !_members[slot].Guest)
+                    _trialSlots[_trialCount++] = slot;
+            }
+        }
+
+        private void AdvanceTrial()
+        {
+            CollectTrialFighters();
+            for (var i = 0; i < _trialCount; i++)
+            {
+                var slot = _trialSlots[i];
+                var hit = _trialPending[slot];
+                hit.Typing = Typing(slot);
+                _trialRound[i] = hit;
+                if (hit.Keys + hit.Mouse + hit.Skills + hit.Minions > 0)
+                    _members[slot].LastContributionTick = Tick;
+            }
+            System.Array.Clear(_trialPending, 0, _trialPending.Length);
+            TrialFight.Advance(_trialRound, _trialCount);
+            MirrorTrialBar();
+            if (TrialFight.Running)
+                return;
+            Events.Add(new PartyEvent(PartyEventKind.TrialEnded, Tick, EnemyId, EnemyKind));
+            SwitchWorld(PartyWorld.Home, 0);
+        }
+
+        private void EndTrial()
+        {
+            TrialFight.Stop();
+            Events.Add(new PartyEvent(PartyEventKind.TrialEnded, Tick, EnemyId, EnemyKind));
+        }
+
+        private void MirrorTrialBar()
+        {
+            BarFull = TrialFight.HpFull;
+            BarLeft = TrialFight.HpLeft;
         }
 
         private void ClearPending()
@@ -705,6 +800,14 @@ namespace Game.Core.Party
             if (Switching && --SwitchTicksLeft <= 0)
             {
                 SwitchWorld((PartyWorld)PendingWorld, PendingRiftId);
+                return;
+            }
+            if (World == PartyWorld.Trial)
+            {
+                if (InTrial)
+                    AdvanceTrial();
+                else
+                    SwitchWorld(PartyWorld.Home, 0);
                 return;
             }
             if (Started && EnemyRegen > 0)

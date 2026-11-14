@@ -148,6 +148,11 @@ class PartyEncounter {
     private previousKilledTick = -Number.MAX_SAFE_INTEGER;
     private chainKills = 0;
     private readonly splash: number[] = new Array(PartyMaxSlots * PartySplashDepth).fill(0);
+    trialFight = new PartyTrialFight();
+    trialId = 0;
+    private trialPending: PartyTrialHit[] = [partyTrialEmptyHit(), partyTrialEmptyHit(), partyTrialEmptyHit(), partyTrialEmptyHit()];
+    private trialSlots = [0, 0, 0, 0];
+    private trialCount = 0;
 
     constructor(private rules: PartyEncounterRules, private readonly seed: string) {
         for (let i = 0; i < PartyMaxSlots; i++)
@@ -164,6 +169,13 @@ class PartyEncounter {
     get fightingBoss(): boolean { return this.enemyKind === PartyEnemyKind.Boss; }
     get enemySeed(): string { return partySeedFor(this.seed, this.enemyId); }
     get switching(): boolean { return this.pendingWorld !== PartyNoWorld; }
+    get inTrial(): boolean { return this.world === PartyWorld.Trial && this.trialFight.running(); }
+
+    trialHolderSlot(): number {
+        const rules = partyTrialFightRulesOrNull();
+        const trial = rules ? this.trialFight.trial(rules) : null;
+        return this.inTrial && trial && trial.rule === "relay" && this.trialFight.holder < this.trialCount ? this.trialSlots[this.trialFight.holder] : PartyNoSlot;
+    }
 
     useRules(rules: PartyEncounterRules): void {
         this.rules = rules;
@@ -536,7 +548,7 @@ class PartyEncounter {
     }
 
     repeatRecent(slot: number, seconds: number, loopShare = 0): number {
-        if (!this.isMember(slot) || !this.started || !(seconds > 0) || !(loopShare >= 0))
+        if (!this.isMember(slot) || !this.started || this.world === PartyWorld.Trial || !(seconds > 0) || !(loopShare >= 0))
             return 0;
         const ticks = Math.min(PartyRecentTicks - 1, partyTicks(seconds));
         let sum = 0;
@@ -558,7 +570,7 @@ class PartyEncounter {
     }
 
     wanted(slot: number, enemyId: number, share: number): number {
-        if (!this.isMember(slot) || !this.started || !(share > 0) || share === Infinity)
+        if (!this.isMember(slot) || !this.started || this.world === PartyWorld.Trial || !(share > 0) || share === Infinity)
             return 0;
         if (enemyId !== this.enemyId) {
             if (!this.isLate(enemyId))
@@ -606,6 +618,8 @@ class PartyEncounter {
     proposeWorld(world: PartyWorld, riftId: number): boolean {
         if (!this.started || this.switching || (world === this.world && riftId === this.riftId) || (world === PartyWorld.Home) !== (riftId === 0))
             return false;
+        if ((this.world === PartyWorld.Trial && world !== PartyWorld.Home) || (world === PartyWorld.Trial && !partyTrialKnown(riftId)))
+            return false;
         this.pendingWorld = world;
         this.pendingRiftId = riftId;
         this.switchTicksLeft = Math.max(1, partyTicks(this.rules.worldSwitchSeconds));
@@ -622,6 +636,12 @@ class PartyEncounter {
     }
 
     switchWorld(world: PartyWorld, riftId: number): void {
+        if (this.inTrial)
+            this.endTrial();
+        if (world === PartyWorld.Trial && !partyTrialKnown(riftId)) {
+            world = PartyWorld.Home;
+            riftId = 0;
+        }
         this.releaseGuests(true);
         this.clearPending();
         this.world = world;
@@ -644,6 +664,72 @@ class PartyEncounter {
         this.addEvent(PartyEventKind.WorldChanged);
         if (this.started)
             this.spawn(PartyEnemyKind.Normal);
+        if (this.world === PartyWorld.Trial && this.started)
+            this.startTrial();
+    }
+
+    addTrialDamage(slot: number, keys: number, mouse: number, skills: number, minions: number): number {
+        if (!this.inTrial || !this.isMember(slot) || this.members[slot].guest)
+            return 0;
+        keys = partyPositive(keys);
+        mouse = partyPositive(mouse);
+        skills = partyPositive(skills);
+        minions = partyPositive(minions);
+        const pending = this.trialPending[slot];
+        pending.keys += keys;
+        pending.mouse += mouse;
+        pending.skills += skills;
+        pending.minions += minions;
+        return keys + mouse + skills + minions;
+    }
+
+    private startTrial(): void {
+        this.trialId = this.riftId;
+        this.collectTrialFighters();
+        this.trialFight.start(partyTrialFightRulesOrNull()!, partyTrialIdIndex(this.riftId), partyTrialIdTier(this.riftId), this.trialCount, 1, partyTrialIdNight(this.riftId));
+        this.clearTrialPending();
+        this.mirrorTrialBar();
+    }
+
+    private collectTrialFighters(): void {
+        this.trialCount = 0;
+        for (let slot = 0; slot < this.members.length; slot++)
+            if (this.members[slot].joined && !this.members[slot].guest)
+                this.trialSlots[this.trialCount++] = slot;
+    }
+
+    private advanceTrial(): void {
+        this.collectTrialFighters();
+        const round: PartyTrialHit[] = [];
+        for (let i = 0; i < this.trialCount; i++) {
+            const slot = this.trialSlots[i];
+            const pending = this.trialPending[slot];
+            round.push({ keys: pending.keys, mouse: pending.mouse, skills: pending.skills, minions: pending.minions, typing: this.typing(slot), armorPen: 0, shred: 0 });
+            if (pending.keys + pending.mouse + pending.skills + pending.minions > 0)
+                this.members[slot].lastContributionTick = this.tick;
+        }
+        this.clearTrialPending();
+        this.trialFight.advance(partyTrialFightRulesOrNull()!, round, this.trialCount);
+        this.mirrorTrialBar();
+        if (this.trialFight.running())
+            return;
+        this.addEvent(PartyEventKind.TrialEnded);
+        this.switchWorld(PartyWorld.Home, 0);
+    }
+
+    private endTrial(): void {
+        this.trialFight.stop();
+        this.addEvent(PartyEventKind.TrialEnded);
+    }
+
+    private clearTrialPending(): void {
+        for (let i = 0; i < this.trialPending.length; i++)
+            this.trialPending[i] = partyTrialEmptyHit();
+    }
+
+    private mirrorTrialBar(): void {
+        this.barFull = this.trialFight.hpFull;
+        this.barLeft = this.trialFight.hpLeft;
     }
 
     advance(): void {
@@ -657,6 +743,13 @@ class PartyEncounter {
         this.dropLostFighters();
         if (this.switching && --this.switchTicksLeft <= 0) {
             this.switchWorld(this.pendingWorld, this.pendingRiftId);
+            return;
+        }
+        if (this.world === PartyWorld.Trial) {
+            if (this.inTrial)
+                this.advanceTrial();
+            else
+                this.switchWorld(PartyWorld.Home, 0);
             return;
         }
         if (this.started && this.enemyRegen > 0)
@@ -944,4 +1037,17 @@ class PartyEncounter {
     private addEvent(kind: PartyEventKind): void {
         this.events.push({ kind: kind, tick: this.tick, enemyId: this.enemyId, enemyKind: this.enemyKind, shares: [0, 0, 0, 0], rewarded: 0, loop: 0, saved: 0 });
     }
+}
+
+function partyPositive(value: number): number {
+    return value > 0 && value !== Infinity ? value : 0;
+}
+
+function partyTrialFightRulesOrNull(): PartyTrialFightRules | null {
+    return typeof PartyGrowthServerRules !== "undefined" && PartyGrowthServerRules.trials && PartyGrowthServerRules.trials.fight ? PartyGrowthServerRules.trials.fight : null;
+}
+
+function partyTrialKnown(id: number): boolean {
+    const rules = partyTrialFightRulesOrNull();
+    return !!rules && id > 0 && partyTrialIdIndex(id) >= 0 && partyTrialIdIndex(id) < rules.list.length;
 }

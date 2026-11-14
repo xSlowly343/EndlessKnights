@@ -111,21 +111,11 @@ namespace Game.Net.Nakama
                 ("fighters", "[" + string.Join(",", quoted) + "]"));
         }
 
-        public static string FinishPayload(bool cleared) => NakamaJson.Object(("cleared", cleared ? "true" : "false"));
-
-        public static string MarathonPayload(int waves) => NakamaJson.Object(("waves", waves.ToString(CultureInfo.InvariantCulture)));
-
         public static Task<PartyTrialsReply> FetchAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
             CallAsync(client, session, "party_trials", "{}", cancel);
 
         public static Task<PartyTrialsReply> StartAsync(NakamaClient client, NakamaSession session, string trial, int tier, IReadOnlyList<string> fighters, CancellationToken cancel = default) =>
             CallAsync(client, session, "party_trial_start", StartPayload(trial, tier, fighters), cancel);
-
-        public static Task<PartyTrialsReply> FinishAsync(NakamaClient client, NakamaSession session, bool cleared, CancellationToken cancel = default) =>
-            CallAsync(client, session, "party_trial_finish", FinishPayload(cleared), cancel);
-
-        public static Task<PartyTrialsReply> FinishMarathonAsync(NakamaClient client, NakamaSession session, int waves, CancellationToken cancel = default) =>
-            CallAsync(client, session, "party_trial_finish", MarathonPayload(waves), cancel);
 
         public static Task<PartyTrialsReply> AbandonAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
             CallAsync(client, session, "party_trial_abandon", "{}", cancel);

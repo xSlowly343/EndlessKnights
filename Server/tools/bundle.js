@@ -509,7 +509,53 @@ function partyTrialServerRules(growth) {
       waves: trial.rule === "marathon" ? Math.floor(trial.seconds / trial.waveSeconds + 1e-9) : 0
     })),
     extraTries: partyTrialTreeLines(growth, "trialTries"),
-    carry: partyTrialTreeLines(growth, "trialCarry")
+    carry: partyTrialTreeLines(growth, "trialCarry"),
+    fight: partyTrialFightRules(trials)
+  };
+}
+
+function partyTrialFightRules(trials) {
+  const combat = JSON.parse(fs.readFileSync(path.join(data, "combat.json"), "utf8"));
+  const or = (node, name, fallback) => node[name] !== undefined ? node[name] : fallback;
+  return {
+    hpGrowth: trials.hp.growth,
+    armorPerTier: trials.armor.perTier,
+    armorMax: trials.armor.max,
+    complicationFromTier: trials.complicationFromTier,
+    complications: trials.complications.map((item) => ({
+      kind: item.id,
+      keys: or(item, "keys", 1),
+      mouse: or(item, "mouse", 1),
+      share: or(item, "share", 0),
+      day: or(item, "day", 1),
+      night: or(item, "night", 1),
+      perSecond: or(item, "perSecond", 0),
+      afterSeconds: or(item, "afterSeconds", 0)
+    })),
+    defense: { k: combat.defense.k, armorPenCap: combat.defense.armorPenCap, shredCap: combat.defense.shredCap },
+    list: trials.list.map((trial) => {
+      const waveSeconds = or(trial, "waveSeconds", 30);
+      return {
+        id: trial.id,
+        rule: trial.rule,
+        seconds: trial.seconds,
+        passSeconds: or(trial, "passSeconds", 20),
+        bankShare: or(trial, "bankShare", 1),
+        windowSeconds: or(trial, "windowSeconds", 30),
+        resist: or(trial, "resist", 0.6),
+        everySeconds: or(trial, "everySeconds", 10),
+        inside: or(trial, "inside", 3),
+        outside: or(trial, "outside", 0.3),
+        shieldShare: or(trial, "shieldShare", 0.1),
+        chainBase: or(trial, "base", 0.5),
+        chainStep: or(trial, "step", 0.2),
+        chainMax: or(trial, "max", 3),
+        keepSeconds: or(trial, "keepSeconds", 6),
+        stepSeconds: or(trial, "stepSeconds", 1),
+        waveSeconds: waveSeconds,
+        waves: Math.floor(trial.seconds / waveSeconds + 1e-9)
+      };
+    })
   };
 }
 

@@ -26,6 +26,7 @@ interface PartyTrialRules {
     list: PartyTrialRule[];
     extraTries: PartyTrialTreeLine[];
     carry: PartyTrialTreeLine[];
+    fight: PartyTrialFightRules;
 }
 
 interface PartyTrialRun {
@@ -34,6 +35,13 @@ interface PartyTrialRun {
     by: string;
     fighters: string[];
     at: number;
+}
+
+interface PartyTrialMatchResult {
+    trialId: number;
+    outcome: PartyTrialOutcome;
+    tier: number;
+    fighters: string[];
 }
 
 interface PartyTrialValue {
@@ -201,7 +209,10 @@ function partyTrialStart(nk: nkruntime.Nakama, userId: string, request: { [key: 
     const tier = request.tier;
     if (!rule.marathon && (typeof tier !== "number" || tier !== Math.floor(tier) || tier < 1))
         throw new Error("bad request");
-    return partyTrialAct(nk, userId, nowUnixMs, (value, meta, partyId, situation) => {
+    const group = partyGroupOfUser(nk, userId);
+    const live = group ? partyLiveMatchId(nk, group.id) : null;
+    let started: PartyTrialRun | null = null;
+    const view = partyTrialAct(nk, userId, nowUnixMs, (value, meta, partyId, situation) => {
         if (situation.ceiling <= 0)
             throw new Error("party trials are not open yet");
         const fighters = partyTrialFighters(request.fighters, meta, userId);
@@ -214,9 +225,38 @@ function partyTrialStart(nk: nkruntime.Nakama, userId: string, request: { [key: 
         const reachable = Math.min(situation.ceiling, (value.best[rule.id] || 0) + 1);
         if (!rule.marathon && tier > reachable)
             throw new Error("this tier is not open yet");
+        if (!live)
+            throw new Error("a trial is fought in the party fight");
         value.used[rule.id] = (value.used[rule.id] || 0) + 1;
-        value.run = { trial: rule.id, tier: rule.marathon ? 1 : tier, by: userId, fighters: fighters, at: nowUnixMs };
+        started = { trial: rule.id, tier: rule.marathon ? 1 : tier, by: userId, fighters: fighters, at: nowUnixMs };
+        value.run = started;
         return null;
+    });
+    const run = started as PartyTrialRun | null;
+    if (!run || !live)
+        return view;
+    const reply = nk.matchSignal(live, "trial:" + partyTrialIndexOf(run.trial) + ":" + run.tier);
+    if (reply !== "ok") {
+        partyTrialUndo(nk, view.partyId, run);
+        throw new Error(reply || "the party fight did not take the trial");
+    }
+    return view;
+}
+
+function partyTrialIndexOf(id: string): number {
+    const list = partyTrialRules().list;
+    for (let i = 0; i < list.length; i++)
+        if (list[i].id === id)
+            return i;
+    return -1;
+}
+
+function partyTrialUndo(nk: nkruntime.Nakama, partyId: string, run: PartyTrialRun): void {
+    partyTrialChange(nk, partyId, (value) => {
+        if (!value.run || value.run.at !== run.at || value.run.trial !== run.trial)
+            return;
+        value.run = null;
+        value.used[run.trial] = Math.max(0, (value.used[run.trial] || 0) - 1);
     });
 }
 
@@ -243,50 +283,42 @@ function partyTrialCarry(value: PartyTrialValue, trial: string, reached: number,
     return carried;
 }
 
-function partyTrialTooFast(rule: PartyTrialRule, request: { [key: string]: any }, elapsedMs: number): boolean {
-    if (rule.marathon)
-        return request.waves > 0 && elapsedMs < Math.max(partyTrialRules().minMs, (request.waves - 1) * rule.ms / rule.waves);
-    return request.cleared === true && elapsedMs < partyTrialRules().minMs;
-}
-
-function partyTrialReached(rule: PartyTrialRule, run: PartyTrialRun, request: { [key: string]: any }, ceiling: number): number {
-    if (rule.marathon) {
-        const waves = request.waves;
-        if (typeof waves !== "number" || waves !== Math.floor(waves) || waves < 0 || waves > rule.waves)
-            throw new Error("bad request");
-        return Math.min(ceiling, waves);
-    }
-    if (typeof request.cleared !== "boolean")
-        throw new Error("bad request");
-    return request.cleared ? run.tier : 0;
-}
-
-function partyTrialFinish(nk: nkruntime.Nakama, userId: string, request: { [key: string]: any }, nowUnixMs: number): { [key: string]: any } {
+function partyTrialFromMatch(nk: nkruntime.Nakama, partyId: string, result: PartyTrialMatchResult, nowUnixMs: number): { [key: string]: any } | null {
+    const index = partyTrialIdIndex(result.trialId);
+    const list = partyTrialRules().list;
+    if (!partyId || index < 0 || index >= list.length)
+        return null;
+    const rule = list[index];
+    const situation = partyTrialSituation(nk, partyId);
     let rewards = { signs: 0, experience: 0 };
     let record: { trial: string; tier: number; fighters: string[] } | null = null;
     let fighters: string[] = [];
-    const view = partyTrialAct(nk, userId, nowUnixMs, (value, meta, partyId, situation) => {
+    let closed: { [key: string]: any } | null = null;
+    const view = partyTrialChange(nk, partyId, (value) => {
+        partyTrialSettle(value, nowUnixMs);
         const run = value.run;
-        if (!run || run.by !== userId)
-            throw new Error("no trial is being fought");
-        const rule = partyTrialRuleOf(run.trial);
-        const reached = partyTrialReached(rule, run, request, situation.ceiling);
-        if (partyTrialTooFast(rule, request, nowUnixMs - run.at))
-            throw new Error("the trial was finished too fast");
+        if (!run || run.trial !== rule.id || (!rule.marathon && run.tier !== partyTrialIdTier(result.trialId)))
+            return partyTrialView(partyId, value, situation, nowUnixMs, null);
+        const cleared = result.outcome === PartyTrialOutcome.Cleared;
+        const reached = cleared ? Math.min(situation.ceiling, rule.marathon ? result.tier : run.tier) : 0;
         value.run = null;
         fighters = run.fighters;
         const before = value.best[rule.id] || 0;
         rewards = partyTrialFirstClears(before, reached);
-        if (reached > before)
+        if (reached > before) {
             value.best[rule.id] = reached;
-        const carried = reached > 0 && situation.carry ? partyTrialCarry(value, rule.id, reached, situation.ceiling) : [];
-        if (reached > before)
             record = { trial: rule.id, tier: reached, fighters: run.fighters };
-        return { trial: rule.id, tier: reached, best: value.best[rule.id] || 0, firstClear: reached > before, signs: rewards.signs, experience: rewards.experience, carried: carried };
+        }
+        const carried = reached > 0 && situation.carry ? partyTrialCarry(value, rule.id, reached, situation.ceiling) : [];
+        closed = { trial: rule.id, tier: reached, best: value.best[rule.id] || 0, firstClear: reached > before, signs: rewards.signs, experience: rewards.experience, carried: carried };
+        return partyTrialView(partyId, value, situation, nowUnixMs, closed);
     });
-    partyTrialReward(nk, view.partyId, rewards, record, nowUnixMs);
-    if (view.result && view.result.tier > 0)
-        partySetTrialClear(nk, view.partyId, fighters, view.result.tier, view.result.firstClear, nowUnixMs);
+    const done = closed as { [key: string]: any } | null;
+    if (!done)
+        return null;
+    partyTrialReward(nk, partyId, rewards, record, nowUnixMs);
+    if (done.tier > 0)
+        partySetTrialClear(nk, partyId, fighters, done.tier, done.firstClear, nowUnixMs);
     return view;
 }
 
@@ -308,7 +340,7 @@ function partyTrialReward(nk: nkruntime.Nakama, partyId: string, rewards: { sign
 }
 
 function partyTrialAbandon(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [key: string]: any } {
-    return partyTrialAct(nk, userId, nowUnixMs, (value, meta) => {
+    const view = partyTrialAct(nk, userId, nowUnixMs, (value, meta) => {
         const run = value.run;
         if (!run)
             throw new Error("no trial is being fought");
@@ -317,6 +349,10 @@ function partyTrialAbandon(nk: nkruntime.Nakama, userId: string, nowUnixMs: numb
         value.run = null;
         return { trial: run.trial, tier: 0, best: value.best[run.trial] || 0, firstClear: false, signs: 0, experience: 0, carried: [] };
     });
+    const live = partyLiveMatchId(nk, view.partyId);
+    if (live)
+        nk.matchSignal(live, "trial_stop");
+    return view;
 }
 
 function partyTrialsRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
@@ -325,10 +361,6 @@ function partyTrialsRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nk
 
 function partyTrialStartRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
     return JSON.stringify(partyTrialStart(nk, partyCaller(ctx), partyRequest(payload), Date.now()));
-}
-
-function partyTrialFinishRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
-    return JSON.stringify(partyTrialFinish(nk, partyCaller(ctx), partyRequest(payload), Date.now()));
 }
 
 function partyTrialAbandonRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {

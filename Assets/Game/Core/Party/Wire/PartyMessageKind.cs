@@ -20,6 +20,7 @@ namespace Game.Core.Party.Wire
         PartyLoadout = 18,
         PartyKeys = 19,
         PartyLook = 20,
-        PartyCast = 21
+        PartyCast = 21,
+        TrialState = 22
     }
 }
