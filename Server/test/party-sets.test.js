@@ -127,3 +127,18 @@ test("boss kills together, colossus kills, first trial clears and mascot calls g
   server.partySetColossusKill(nk, partyId, 4, now);
   assert.strictEqual(server.walletRead(nk, "ann").value.today.oath_colossus, 20);
 });
+
+test("every trial clear rolls a party set piece, oath shards come only for the first clear of a tier", () => {
+  const { nk, partyId } = party("ann", "bob");
+  reachLevel(nk, partyId, 50);
+  for (let i = 0; i < 3; i++)
+    server.partySetTrialClear(nk, partyId, ["ann", "bob"], 5, i === 0, now + i);
+  assert.strictEqual(server.walletRead(nk, "ann").value.today.oath_trial, 25, "only the first clear pays oath shards");
+  const before = JSON.stringify(server.partySetDropsRead(nk, partyId).value.pending);
+  for (let i = 0; i < 400; i++)
+    server.partySetTrialClear(nk, partyId, ["ann", "bob"], 5, false, now + 10 + i);
+  const pending = server.partySetDropsRead(nk, partyId).value.pending;
+  const count = (pending.ann || []).length + (pending.bob || []).length;
+  assert.ok(count > 0 && JSON.stringify(pending) !== before, "repeat clears still drop pieces");
+  assert.ok(count < 800 * 0.2, "the chance stays low");
+});

@@ -199,11 +199,13 @@ function partySetColossusKill(nk: nkruntime.Nakama, partyId: string, tier: numbe
 }
 
 function partySetTrialClear(nk: nkruntime.Nakama, partyId: string, fighters: string[], tier: number, firstClear: boolean, nowUnixMs: number): void {
-    if (!firstClear)
+    if (!partySetsOpened(nk, partyId))
         return;
-    partySetReward(nk, partyId, fighters, "trials", tier, "oath_trial", tier, nowUnixMs);
+    if (firstClear)
+        partySetGrant(nk, fighters, "oath_trial", tier, nowUnixMs);
+    partySetDropRoll(nk, partyId, fighters, "trials", tier, 1, partyId + ":trials:" + nowUnixMs);
     if (tier >= 30)
         partySetDropRoll(nk, partyId, fighters, "extreme", tier, 1, partyId + ":extreme:" + nowUnixMs);
-    if (PartyGrowthServerRules.banner.trial.indexOf(tier) >= 0)
+    if (firstClear && PartyGrowthServerRules.banner.trial.indexOf(tier) >= 0)
         partySetDropRoll(nk, partyId, fighters, "banner", tier, 1, partyId + ":banner:" + nowUnixMs);
 }

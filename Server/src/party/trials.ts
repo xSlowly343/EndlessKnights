@@ -264,6 +264,7 @@ function partyTrialReached(rule: PartyTrialRule, run: PartyTrialRun, request: { 
 function partyTrialFinish(nk: nkruntime.Nakama, userId: string, request: { [key: string]: any }, nowUnixMs: number): { [key: string]: any } {
     let rewards = { signs: 0, experience: 0 };
     let record: { trial: string; tier: number; fighters: string[] } | null = null;
+    let fighters: string[] = [];
     const view = partyTrialAct(nk, userId, nowUnixMs, (value, meta, partyId, situation) => {
         const run = value.run;
         if (!run || run.by !== userId)
@@ -273,6 +274,7 @@ function partyTrialFinish(nk: nkruntime.Nakama, userId: string, request: { [key:
         if (partyTrialTooFast(rule, request, nowUnixMs - run.at))
             throw new Error("the trial was finished too fast");
         value.run = null;
+        fighters = run.fighters;
         const before = value.best[rule.id] || 0;
         rewards = partyTrialFirstClears(before, reached);
         if (reached > before)
@@ -283,8 +285,8 @@ function partyTrialFinish(nk: nkruntime.Nakama, userId: string, request: { [key:
         return { trial: rule.id, tier: reached, best: value.best[rule.id] || 0, firstClear: reached > before, signs: rewards.signs, experience: rewards.experience, carried: carried };
     });
     partyTrialReward(nk, view.partyId, rewards, record, nowUnixMs);
-    if (record)
-        partySetTrialClear(nk, view.partyId, (record as { trial: string; tier: number; fighters: string[] }).fighters, (record as { tier: number }).tier, view.result ? view.result.firstClear : false, nowUnixMs);
+    if (view.result && view.result.tier > 0)
+        partySetTrialClear(nk, view.partyId, fighters, view.result.tier, view.result.firstClear, nowUnixMs);
     return view;
 }
 
