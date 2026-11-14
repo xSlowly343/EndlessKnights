@@ -39,6 +39,14 @@ namespace Game.Core.Ui
         AccountPassword,
         AccountSignIn,
         CloudSave,
-        CloudLoad
+        CloudLoad,
+        LivingWorld,
+        WeatherShown,
+        DayNightShown,
+        WildlifeShown,
+        WorldReactions,
+        RareScenes,
+        BattleEffects,
+        BatterySaver
     }
 }

@@ -20,7 +20,7 @@ namespace Game.Core.Tests.Ui
             Assert.That(shown.Concat(offScreen), Is.EquivalentTo(all));
             foreach (var id in all)
                 Assert.That(Texts.Has("settings." + char.ToLowerInvariant(id.ToString()[0]) + id.ToString().Substring(1)), Is.True, id.ToString());
-            Assert.That(PanelSections.SubTabs(PanelSection.Settings), Is.EqualTo(new[] { "Игра", "Окно", "Звук", "Об игре" }));
+            Assert.That(PanelSections.SubTabs(PanelSection.Settings), Is.EqualTo(new[] { "Игра", "Окно", "Звук", "Эффекты", "Об игре" }));
             Assert.That(PanelSections.SubTabs(PanelSection.Hero)[2], Is.EqualTo("Облик"));
             Assert.That(SettingsScreen.Rows(SettingsScreen.LookTab), Is.EqualTo(new[] { SettingId.HeroCloak, SettingId.HeroEyes, SettingId.HeroStrike }));
             foreach (var id in shown)
@@ -36,7 +36,7 @@ namespace Game.Core.Tests.Ui
             Texts.UseLanguage("ru");
             var settings = new GameSettings();
 
-            Assert.That(SettingsScreen.Rows(0), Does.Contain(SettingId.HeroStrikeOpacity).And.Contain(SettingId.AllyStrikeOpacity));
+            Assert.That(SettingsScreen.Rows(SettingsScreen.EffectsTab), Does.Contain(SettingId.HeroStrikeOpacity).And.Contain(SettingId.AllyStrikeOpacity));
             Assert.That(SettingsScreen.Value(SettingId.HeroStrikeOpacity, settings), Is.EqualTo("100%"));
             Assert.That(SettingsScreen.Value(SettingId.AllyStrikeOpacity, settings), Is.EqualTo("50%"));
             Assert.That(SettingsScreen.Change(SettingId.HeroStrikeOpacity, settings, 1), Is.False);
@@ -258,10 +258,10 @@ namespace Game.Core.Tests.Ui
             var changed = new System.Collections.Generic.List<SettingId>();
             SettingsScreen.ResetTab(0, settings, changed);
 
-            Assert.That(changed, Is.EquivalentTo(new[] { SettingId.Language, SettingId.Decimals, SettingId.AllyStrikeOpacity }));
+            Assert.That(changed, Is.EquivalentTo(new[] { SettingId.Language, SettingId.Decimals }));
             Assert.That(settings.Language, Is.EqualTo(new GameSettings().Language));
             Assert.That(settings.NumberFormat.Decimals, Is.EqualTo(new GameSettings().NumberFormat.Decimals));
-            Assert.That(settings.AllyStrikeOpacity, Is.EqualTo(0.5).Within(1e-9));
+            Assert.That(settings.AllyStrikeOpacity, Is.EqualTo(0.9).Within(1e-9), "the effects tab is left alone");
             Assert.That(settings.AlwaysOnTop, Is.False, "another tab is left alone");
             Assert.That(SettingsScreen.AnyChanged(0, settings), Is.False);
             Assert.That(SettingsScreen.CanReset(SettingsScreen.AboutTab), Is.False);

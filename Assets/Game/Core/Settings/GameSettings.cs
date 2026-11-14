@@ -22,6 +22,14 @@ namespace Game.Core.Settings
         public double NotificationVolume { get; set; } = 0.6;
         public double HeroStrikeOpacity { get; set; } = 1;
         public double AllyStrikeOpacity { get; set; } = 0.5;
+        public double LivingWorld { get; set; } = 1;
+        public double BattleEffects { get; set; } = 1;
+        public bool WeatherShown { get; set; } = true;
+        public bool DayNightShown { get; set; } = true;
+        public bool WildlifeShown { get; set; } = true;
+        public bool WorldReactions { get; set; } = true;
+        public bool RareScenes { get; set; } = true;
+        public bool BatterySaver { get; set; } = true;
         public bool CountKeys { get; set; } = true;
         public bool CountMouseMovement { get; set; } = true;
         public bool CountClicks { get; set; } = true;
