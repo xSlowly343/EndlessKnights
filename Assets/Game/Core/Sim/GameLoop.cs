@@ -151,7 +151,7 @@ namespace Game.Core.Sim
             _combat.Dreamcatcher.UseEnemies(data.Enemies);
             _combat.Dowser.UseLoot(_drops, _loot);
             _stage.RewardListener = new KillRewardListeners(_combat.Dreamcatcher, _combat.Dowser, _combat.Soulbinder, _combat.Ghostcaptain, _combat.Mothcaller, _combat.Cartomancer, _combat.Herbwitch);
-            _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero);
+            _artifacts = new ArtifactSystem(data.Artifacts, data.Rift, state, hero, Events);
             _gates = new GateSystem(data.Stages, state, hero, Events);
             _stage.Gates = _gates;
             _chronicle = new ChronicleSystem(data.Chronicle, state, hero, Events, _levels);
@@ -879,6 +879,8 @@ namespace Game.Core.Sim
         }
 
         private long _serverUnixMs;
+
+        public long ServerUnixMs => _serverUnixMs;
         private bool _partyFromSave;
 
         private void RestorePartyGrowth()

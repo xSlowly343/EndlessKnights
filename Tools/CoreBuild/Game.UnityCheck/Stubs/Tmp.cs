@@ -17,7 +17,7 @@ namespace TMPro
         public float lineSpacing; public float characterSpacing; public bool richText; public Vector4 margin; public float preferredWidth; public float preferredHeight; public float alpha; public Color32 outlineColor; public float outlineWidth;
         public Material fontMaterial; public Material fontSharedMaterial; public TMP_TextInfo textInfo; public int maxVisibleCharacters; public bool isTextTruncated; public Bounds textBounds; public int maxVisibleLines; public float paragraphSpacing; public float wordSpacing; public bool extraPadding;
         public void ForceMeshUpdate(bool a = false, bool b = false) {}
-        public void SetText(string s) {}
+        public void SetText(string s) {} public void SetText(string s, float arg0) {}
         public Vector2 GetPreferredValues() => default; public Vector2 GetPreferredValues(string s) => default; public Vector2 GetPreferredValues(float w, float h) => default; public Vector2 GetPreferredValues(string s, float w, float h) => default;
     }
     public class TextMeshProUGUI : TMP_Text {}

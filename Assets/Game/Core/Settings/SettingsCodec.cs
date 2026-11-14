@@ -57,6 +57,17 @@ namespace Game.Core.Settings
                     ["hero"] = JsonValue.Of(settings.HeroStrikeOpacity),
                     ["allies"] = JsonValue.Of(settings.AllyStrikeOpacity)
                 }),
+                ["effects"] = JsonValue.Object(new Dictionary<string, JsonValue>
+                {
+                    ["livingWorld"] = JsonValue.Of(settings.LivingWorld),
+                    ["battle"] = JsonValue.Of(settings.BattleEffects),
+                    ["weather"] = JsonValue.Of(settings.WeatherShown),
+                    ["dayNight"] = JsonValue.Of(settings.DayNightShown),
+                    ["wildlife"] = JsonValue.Of(settings.WildlifeShown),
+                    ["reactions"] = JsonValue.Of(settings.WorldReactions),
+                    ["rareScenes"] = JsonValue.Of(settings.RareScenes),
+                    ["batterySaver"] = JsonValue.Of(settings.BatterySaver)
+                }),
                 ["input"] = JsonValue.Object(new Dictionary<string, JsonValue>
                 {
                     ["keys"] = JsonValue.Of(settings.CountKeys),
@@ -127,6 +138,18 @@ namespace Game.Core.Settings
                 var opacity = root.Field("strikeOpacity");
                 settings.HeroStrikeOpacity = Read(opacity, "hero", Volume, settings.HeroStrikeOpacity, problems);
                 settings.AllyStrikeOpacity = Read(opacity, "allies", Volume, settings.AllyStrikeOpacity, problems);
+            }
+            if (root.HasField("effects"))
+            {
+                var effects = root.Field("effects");
+                settings.LivingWorld = Read(effects, "livingWorld", Volume, settings.LivingWorld, problems);
+                settings.BattleEffects = Read(effects, "battle", Volume, settings.BattleEffects, problems);
+                settings.WeatherShown = Read(effects, "weather", node => node.AsBool(), settings.WeatherShown, problems);
+                settings.DayNightShown = Read(effects, "dayNight", node => node.AsBool(), settings.DayNightShown, problems);
+                settings.WildlifeShown = Read(effects, "wildlife", node => node.AsBool(), settings.WildlifeShown, problems);
+                settings.WorldReactions = Read(effects, "reactions", node => node.AsBool(), settings.WorldReactions, problems);
+                settings.RareScenes = Read(effects, "rareScenes", node => node.AsBool(), settings.RareScenes, problems);
+                settings.BatterySaver = Read(effects, "batterySaver", node => node.AsBool(), settings.BatterySaver, problems);
             }
             if (root.HasField("input"))
             {

@@ -83,6 +83,11 @@ namespace Game.Core.Sim
         TownSiteOpened,
         MasterTrialEnded,
         RiftFeatureOpened,
-        RiftGiftOffered
+        RiftGiftOffered,
+        ArtifactUnlocked,
+        ArtifactAwakened,
+        ArtifactEnchanted,
+        RiftGiftChosen,
+        QuestClaimed
     }
 }

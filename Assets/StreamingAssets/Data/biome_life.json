@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "weather": { "minMinutes": 15, "maxMinutes": 30, "fadeSeconds": 30, "bossDim": 0.3, "frontCover": 0.25 },
+  "day": { "morning": 5, "day": 8, "evening": 17, "night": 20, "fadeMinutes": 30 },
+  "enemyZone": { "widthPx": 120, "heightPx": 60, "stripWidthPx": 480 },
+  "reactions": { "restSeconds": 60, "streakSeconds": [3, 10, 30] },
+  "rare": { "minMinutes": 30, "maxMinutes": 60, "seconds": 20 },
+  "biomes": {
+    "green_hills": "hills",
+    "sand_ruins": "autumn",
+    "ice_peak": "snow",
+    "volcanic_forge": "rose",
+    "sky_islands": "cascades",
+    "rift_heart": "beyond"
+  },
+  "rift": "rift",
+  "looks": [
+    {
+      "id": "hills",
+      "weathers": [{ "id": "clear", "weight": 4 }, { "id": "cloudy", "weight": 3 }, { "id": "rain", "weight": 2 }, { "id": "wind", "weight": 1 }],
+      "special": { "id": "rainbow", "after": "rain", "minutes": 5 },
+      "day": { "background": ["butterflies", "starlings"], "ground": ["rabbit"] },
+      "night": { "background": ["fireflies", "owl"], "ground": [] },
+      "rare": "courierDragon"
+    },
+    {
+      "id": "autumn",
+      "weathers": [{ "id": "clear", "weight": 2 }, { "id": "leaffall", "weight": 4 }, { "id": "drizzle", "weight": 2 }, { "id": "fog", "weight": 2 }],
+      "special": { "id": "mushroomFog", "during": "fog", "phase": "morning" },
+      "day": { "background": ["jay", "deer"], "ground": ["squirrel"] },
+      "night": { "background": ["glowMushrooms"], "ground": ["hedgehog"] },
+      "rare": "giantBoar"
+    },
+    {
+      "id": "snow",
+      "weathers": [{ "id": "clear", "weight": 2 }, { "id": "snow", "weight": 4 }, { "id": "blizzard", "weight": 2 }, { "id": "frost", "weight": 2 }],
+      "special": { "id": "aurora", "phase": "night" },
+      "day": { "background": ["bullfinches"], "ground": ["hare", "tracks"] },
+      "night": { "background": ["auroraGlints"], "ground": ["arcticFox"] },
+      "rare": "snowLeopard"
+    },
+    {
+      "id": "rose",
+      "weathers": [{ "id": "still", "weight": 3 }, { "id": "fireflies", "weight": 3 }, { "id": "pollen", "weight": 2 }, { "id": "moonrain", "weight": 2 }],
+      "special": { "id": "orbs", "during": "still" },
+      "day": { "background": ["moonMoths", "fairyLights"], "ground": [] },
+      "night": { "background": ["risingOrbs"], "ground": ["grassOrbs"] },
+      "rare": "lightDance"
+    },
+    {
+      "id": "cascades",
+      "weathers": [{ "id": "clear", "weight": 3 }, { "id": "spray", "weight": 3 }, { "id": "downpour", "weight": 2 }, { "id": "fog", "weight": 2 }],
+      "special": { "id": "rainbow", "after": "downpour", "minutes": 5 },
+      "day": { "background": ["dragonflies", "heron"], "ground": ["jumpingFish"] },
+      "night": { "background": ["lanternMoths"], "ground": ["glowFish"] },
+      "rare": "cloudWhale"
+    },
+    {
+      "id": "beyond",
+      "alwaysNight": true,
+      "weathers": [{ "id": "night", "weight": 4 }, { "id": "crimsonFog", "weight": 3 }, { "id": "ash", "weight": 2 }, { "id": "storm", "weight": 1 }],
+      "special": { "id": "lightning", "during": "storm" },
+      "day": { "background": ["crows", "bats"], "ground": [] },
+      "night": { "background": ["bats", "ghostLights"], "ground": ["candles"] },
+      "rare": "colossusShadow"
+    },
+    {
+      "id": "rift",
+      "alwaysNight": true,
+      "weathers": [{ "id": "riftStorm", "weight": 1 }],
+      "special": { "id": "shards", "during": "riftStorm" },
+      "day": { "background": [], "ground": [] },
+      "night": { "background": [], "ground": [] }
+    }
+  ]
+}

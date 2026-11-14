@@ -17,26 +17,32 @@ namespace Game.Core.Ui
         private static readonly NumberFormat[] Formats = { NumberFormat.Letters, NumberFormat.Scientific, NumberFormat.Engineering, NumberFormat.Full };
 
         public const int SliderSteps = 20;
-        public const int LookTab = 4;
+        public const int EffectsTab = 3;
+        public const int LookTab = 5;
 
         private static readonly SettingGroup[][] TabGroups =
         {
             new[]
             {
                 new SettingGroup("numbers", new[] { SettingId.Language, SettingId.NumberFormat, SettingId.Decimals }),
-                new SettingGroup("strikes", new[] { SettingId.HeroStrikeOpacity, SettingId.AllyStrikeOpacity, SettingId.AuraShow }),
                 new SettingGroup("build", new[] { SettingId.BuildCopy, SettingId.BuildPaste }),
             },
             new[]
             {
                 new SettingGroup("window", new[] { SettingId.AlwaysOnTop, SettingId.ResetPosition }),
                 new SettingGroup("hiding", new[] { SettingId.AutoHideFullscreen, SettingId.HideHotKey }),
-                new SettingGroup("picture", new[] { SettingId.FrameRate, SettingId.CompanionStrip }),
+                new SettingGroup("picture", new[] { SettingId.FrameRate }),
             },
             new[]
             {
                 new SettingGroup("volume", new[] { SettingId.MasterVolume }),
                 new SettingGroup("volumeKinds", new[] { SettingId.MusicVolume, SettingId.HitVolume, SettingId.SkillVolume, SettingId.InterfaceVolume, SettingId.NotificationVolume }),
+            },
+            new[]
+            {
+                new SettingGroup("world", new[] { SettingId.LivingWorld, SettingId.WeatherShown, SettingId.DayNightShown, SettingId.WildlifeShown, SettingId.WorldReactions, SettingId.RareScenes }),
+                new SettingGroup("strikes", new[] { SettingId.HeroStrikeOpacity, SettingId.AllyStrikeOpacity, SettingId.BattleEffects, SettingId.AuraShow, SettingId.CompanionStrip }),
+                new SettingGroup("power", new[] { SettingId.BatterySaver }),
             },
             new[]
             {
@@ -108,12 +114,13 @@ namespace Game.Core.Ui
         public static SettingKind KindOf(SettingId id) => id switch
         {
             SettingId.Paused or SettingId.AlwaysOnTop or SettingId.ClickThrough or SettingId.CountKeys or SettingId.CountMouseMovement
-                or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug or SettingId.AutoHideFullscreen or SettingId.HideHotKey => SettingKind.Toggle,
+                or SettingId.CountClicks or SettingId.CountWheel or SettingId.ShowInputDebug or SettingId.AutoHideFullscreen or SettingId.HideHotKey
+                or SettingId.WeatherShown or SettingId.DayNightShown or SettingId.WildlifeShown or SettingId.WorldReactions or SettingId.RareScenes or SettingId.BatterySaver => SettingKind.Toggle,
             SettingId.ResetPosition or SettingId.InputConsent or SettingId.WhatsNew or SettingId.Coupon or SettingId.BuildCopy or SettingId.BuildPaste
                 or SettingId.AccountEmail or SettingId.AccountPassword or SettingId.AccountSignIn or SettingId.CloudSave or SettingId.CloudLoad => SettingKind.Action,
             SettingId.Language or SettingId.FrameRate or SettingId.NumberFormat or SettingId.CompanionStrip or SettingId.AuraShow => SettingKind.Segments,
             SettingId.MasterVolume or SettingId.MusicVolume or SettingId.HitVolume or SettingId.SkillVolume or SettingId.InterfaceVolume
-                or SettingId.NotificationVolume or SettingId.HeroStrikeOpacity or SettingId.AllyStrikeOpacity => SettingKind.Slider,
+                or SettingId.NotificationVolume or SettingId.HeroStrikeOpacity or SettingId.AllyStrikeOpacity or SettingId.LivingWorld or SettingId.BattleEffects => SettingKind.Slider,
             _ => SettingKind.Choice
         };
 
@@ -145,6 +152,9 @@ namespace Game.Core.Ui
             var preview = Preview(id, settings);
             return preview.Length > 0 ? Texts.Format("settings.preview", preview) : Hint(id);
         }
+
+        public static string LoadLine(GameSettings settings, bool savingPower) =>
+            Texts.Format("settings.effectsLoad", EffectLevels.Of(settings, savingPower).CpuPercent.ToString("0.0", System.Globalization.CultureInfo.InvariantCulture));
 
         public static double PreviewAlpha(SettingId id, GameSettings settings) =>
             id == SettingId.HeroStrikeOpacity || id == SettingId.AllyStrikeOpacity ? VolumeOf(id, settings) : -1;
@@ -279,7 +289,7 @@ namespace Game.Core.Ui
 
         public static string Credits => Texts.Get("settings.credits");
 
-        public const int AboutTab = 3;
+        public const int AboutTab = 4;
 
         private static readonly BigNumber PreviewNumber = BigNumber.FromDouble(1234567.891);
 
@@ -318,6 +328,12 @@ namespace Game.Core.Ui
             SettingId.CountClicks => settings.CountClicks,
             SettingId.CountWheel => settings.CountWheel,
             SettingId.ShowInputDebug => settings.ShowInputDebug,
+            SettingId.WeatherShown => settings.WeatherShown,
+            SettingId.DayNightShown => settings.DayNightShown,
+            SettingId.WildlifeShown => settings.WildlifeShown,
+            SettingId.WorldReactions => settings.WorldReactions,
+            SettingId.RareScenes => settings.RareScenes,
+            SettingId.BatterySaver => settings.BatterySaver,
             _ => false
         };
 
@@ -355,6 +371,24 @@ namespace Game.Core.Ui
                     return true;
                 case SettingId.HideHotKey:
                     settings.HideHotKey = !settings.HideHotKey;
+                    return true;
+                case SettingId.WeatherShown:
+                    settings.WeatherShown = !settings.WeatherShown;
+                    return true;
+                case SettingId.DayNightShown:
+                    settings.DayNightShown = !settings.DayNightShown;
+                    return true;
+                case SettingId.WildlifeShown:
+                    settings.WildlifeShown = !settings.WildlifeShown;
+                    return true;
+                case SettingId.WorldReactions:
+                    settings.WorldReactions = !settings.WorldReactions;
+                    return true;
+                case SettingId.RareScenes:
+                    settings.RareScenes = !settings.RareScenes;
+                    return true;
+                case SettingId.BatterySaver:
+                    settings.BatterySaver = !settings.BatterySaver;
                     return true;
                 case SettingId.ResetPosition:
                     settings.StripOffset = 0;
@@ -416,6 +450,7 @@ namespace Game.Core.Ui
         {
             2 => Texts.Get("settings.soundNote"),
             AboutTab => Texts.Get("settings.credits"),
+            EffectsTab => Texts.Get("settings.effectsNote"),
             LookTab => Texts.Get("settings.lookNote"),
             _ => string.Empty
         };
@@ -467,6 +502,8 @@ namespace Game.Core.Ui
                 case SettingId.NotificationVolume: settings.NotificationVolume = after; break;
                 case SettingId.HeroStrikeOpacity: settings.HeroStrikeOpacity = after; break;
                 case SettingId.AllyStrikeOpacity: settings.AllyStrikeOpacity = after; break;
+                case SettingId.LivingWorld: settings.LivingWorld = after; break;
+                case SettingId.BattleEffects: settings.BattleEffects = after; break;
                 default: return false;
             }
             return true;
@@ -482,6 +519,8 @@ namespace Game.Core.Ui
             SettingId.NotificationVolume => settings.NotificationVolume,
             SettingId.HeroStrikeOpacity => settings.HeroStrikeOpacity,
             SettingId.AllyStrikeOpacity => settings.AllyStrikeOpacity,
+            SettingId.LivingWorld => settings.LivingWorld,
+            SettingId.BattleEffects => settings.BattleEffects,
             _ => 0
         };
 

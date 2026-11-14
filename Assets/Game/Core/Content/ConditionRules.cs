@@ -48,6 +48,12 @@ namespace Game.Core.Content
             return (int)(((hours % 24) + 24) % 24);
         }
 
+        public double ServerDayHours(long utcUnixMs)
+        {
+            var hours = utcUnixMs / 3_600_000.0 + ServerUtcOffsetHours;
+            return ((hours % 24) + 24) % 24;
+        }
+
         public static ConditionRules Read(ContentNode node)
         {
             var streak = node.Field("killStreak");

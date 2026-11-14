@@ -26,8 +26,11 @@ namespace Game.Core.Sim
         private ArtifactCatalog _catalog;
         private RiftRules _rift;
 
-        public ArtifactSystem(ArtifactCatalog catalog, RiftRules rift, GameState state, StatSheet hero)
+        private readonly EventQueue? _events;
+
+        public ArtifactSystem(ArtifactCatalog catalog, RiftRules rift, GameState state, StatSheet hero, EventQueue? events = null)
         {
+            _events = events;
             _catalog = catalog;
             _rift = rift;
             _state = state;
@@ -82,7 +85,7 @@ namespace Game.Core.Sim
         {
             if (!EnchantOpen)
                 return EnchantResult.Closed;
-            if (!_catalog.TryGet(id, out _) || !_state.Artifacts.ContainsKey(id))
+            if (!_catalog.TryGet(id, out var artifact) || !_state.Artifacts.ContainsKey(id))
                 return EnchantResult.Unknown;
             var awakening = _state.Awakening;
             if (awakening.Enchanted.Contains(id))
@@ -95,6 +98,7 @@ namespace Game.Core.Sim
             if (!awakening.Progress.ContainsKey(id))
                 awakening.Progress[id] = 0;
             Rebuild();
+            _events?.Add(GameEvent.ForStage(GameEventKind.ArtifactEnchanted, _state.Tick, artifact.Group));
             return EnchantResult.Done;
         }
 
@@ -147,7 +151,12 @@ namespace Game.Core.Sim
                 var id = ids[i];
                 var before = awakening.Progress.TryGetValue(id, out var progress) ? progress : 0;
                 awakening.Progress[id] = before + amount;
-                changed |= Awakening.LevelAt(input, before + amount) != Awakening.LevelAt(input, before);
+                var level = Awakening.LevelAt(input, before + amount);
+                if (level == Awakening.LevelAt(input, before))
+                    continue;
+                changed = true;
+                if (_events != null && _catalog.TryGet(id, out var artifact))
+                    _events.Add(GameEvent.WithAmount(GameEventKind.ArtifactAwakened, _state.Tick, BigNumber.FromDouble(level), artifact.Group));
             }
             return changed;
         }
@@ -231,6 +240,7 @@ namespace Game.Core.Sim
             var artifact = locked[_state.Rng.NextInt(0, locked.Count)];
             OwnedLevels[artifact.Id] = 1;
             Rebuild();
+            _events?.Add(GameEvent.ForStage(GameEventKind.ArtifactUnlocked, _state.Tick, artifact.Group));
             return artifact;
         }
 
