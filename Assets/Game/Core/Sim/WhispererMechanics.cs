@@ -44,7 +44,7 @@ namespace Game.Core.Sim
         public double NamePower => Positive(WhispererStats.NamePower);
         public double VowPower => Positive(WhispererStats.VowPower);
 
-        public double CurseMultiplier => System.Math.Max(0, _hero.Value(CombatStats.CurseEffect, 1))
+        public double CurseMultiplier => System.Math.Max(0, _hero.Value(CombatStats.CurseEffect, 1)) * _combat.DebuffPower
             * (Vow ? (_rules.VowCurse + Positive(WhispererStats.VowCurse)) * (1 + S.Grow) * (S.BreakTicks > 0 ? _rules.VowBreakCurse : 1) : 1);
 
         public int KnotHits
@@ -87,7 +87,12 @@ namespace Game.Core.Sim
 
         public double HushPower => VowPower * (1 + CurseShare);
 
-        public double CurseShare => S.CurseTicks > 0 ? S.Curse : 0;
+        public double CurseShare => S.Curse;
+
+        public int CurseLimit => System.Math.Max(1, System.Math.Min(WhispererState.MaxCurses,
+            _combat.Curses.MaxOnEnemy + (int)System.Math.Floor(Positive(CombatStats.CursesOnEnemy) + 1e-9)));
+
+        private double CurseDamage => System.Math.Max(0, _hero.Value(CombatStats.CurseDamage, 1));
 
         public double StrikeMultiplier() => Vow && S.BreakTicks <= 0 ? 0 : 1;
 
@@ -116,11 +121,11 @@ namespace Game.Core.Sim
             if (!On || !((variant ?? skill.Skill)?.CastStrike is StrikeEffect strike))
                 return;
             if (strike.Curse > 0)
-                Curse(strike.Curse, strike.CurseSeconds);
+                Curse(skill.NetId, strike.Curse, strike.CurseSeconds);
             if (strike.CurseHit > 0 && (CurseShare > 0 || KnotDamageTaken > 0))
-                TraitHit(strike.CurseHit * (CurseShare + KnotDamageTaken + NameBonus));
-            if (strike.ExtendCurse > 0 && S.CurseTicks > 0)
-                S.CurseTicks += Ticks(strike.ExtendCurse);
+                TraitHit(strike.CurseHit * (CurseShare + KnotDamageTaken + NameBonus) * CurseDamage);
+            if (strike.ExtendCurse > 0)
+                S.ExtendCurses(Ticks(strike.ExtendCurse));
             if (strike.Whisper > 0)
                 _state.PendingResource += strike.Whisper;
             if (strike.Knots > 0 && Knots)
@@ -141,8 +146,8 @@ namespace Game.Core.Sim
                 return;
             if (S.SpawnPending)
                 OnNewEnemy();
-            if (_state.InputStreakTicks > 0 && S.CurseTicks > 0 && --S.CurseTicks == 0)
-                S.Curse = 0;
+            if (_state.InputStreakTicks > 0)
+                S.FadeCurses();
             if (Vow)
                 TickVow();
             _state.TraitShareCritMultiplier = KnotCritMultiplier;
@@ -158,8 +163,7 @@ namespace Game.Core.Sim
             if (!Vow || count <= 0)
                 return;
             S.HushHitsBack += count;
-            if (S.CurseTicks > 0)
-                S.CurseTicks += Ticks(_rules.HushExtendSeconds * count);
+            S.ExtendCurses(Ticks(_rules.HushExtendSeconds * count));
         }
 
         private void OnNewEnemy()
@@ -171,8 +175,7 @@ namespace Game.Core.Sim
             S.BossHits = 0;
             S.Named = false;
             S.Grow = 0;
-            S.Curse = 0;
-            S.CurseTicks = 0;
+            S.ClearCurses();
             _knotResendTicks = 0;
             _nameResendTicks = 0;
             _curseResendTicks = 0;
@@ -272,12 +275,10 @@ namespace Game.Core.Sim
             Boons.Hush(count * (Flag(WhispererStats.HushAll) ? 2 : 1), power, _rules.HushMax);
         }
 
-        private void Curse(double share, double seconds)
+        private void Curse(int gem, double share, double seconds)
         {
-            var strength = share * CurseMultiplier;
-            S.Curse = System.Math.Max(CurseShare, strength);
             var ticks = Ticks((seconds > 0 ? seconds : _rules.CurseSeconds) + Positive(CombatStats.CurseSeconds));
-            S.CurseTicks = System.Math.Max(S.CurseTicks, ticks);
+            S.LayCurse(gem, share * CurseMultiplier, ticks, CurseLimit);
             _curseResendTicks = 0;
         }
 

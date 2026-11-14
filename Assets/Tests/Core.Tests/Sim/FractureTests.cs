@@ -57,6 +57,18 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void DebuffEffectMakesEveryStackHitHarder()
+        {
+            var hero = Breaker(1);
+            hero.Add(new Modifier(CombatStats.EnemyDebuffEffect, ModifierKind.Increased, 0.5));
+            var (loop, input) = Fighting(hero);
+            Strike(loop, input, 30);
+            Assert.That(loop.State.FractureStacks, Is.EqualTo(25), "the cap stays");
+            Assert.That(loop.Combat.FractureBonus, Is.EqualTo(0.75).Within(1e-9));
+            Assert.That(loop.Combat.FractureTaken(), Is.EqualTo(1.75).Within(1e-9));
+        }
+
+        [Test]
         public void DepthRaisesTheCapUpToForty()
         {
             var hero = Breaker(1);

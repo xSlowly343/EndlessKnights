@@ -562,7 +562,7 @@ namespace Game.Core.Sim
             if (_state.HunterMarkTicks <= 0)
                 return 1;
             var bonus = ((tags & StatTags.Strike) != 0 ? _rules.Classes.HunterMark.StrikeDamage : 0) + System.Math.Max(0, _hero.Value(CombatStats.MarkDamage, 0, tags));
-            return 1 + bonus * (1 + System.Math.Max(0, _hero.Value(CombatStats.MarkPower, 0)));
+            return 1 + bonus * (1 + System.Math.Max(0, _hero.Value(CombatStats.MarkPower, 0))) * DebuffPower;
         }
 
         private void PierceQueue(BigNumber damage)
@@ -775,7 +775,9 @@ namespace Game.Core.Sim
 
         public double FracturePerStack => _rules.Fracture.PerStack * (1 + System.Math.Max(0, _hero.Value(CombatStats.FractureEffect, 0)));
 
-        public double FractureBonus => _state.FractureStacks * FracturePerStack;
+        public double FractureBonus => _state.FractureStacks * FracturePerStack * DebuffPower;
+
+        public double DebuffPower => System.Math.Max(0, _hero.Value(CombatStats.EnemyDebuffEffect, 1));
 
         public double Giving => PartyRole.Giving(_hero);
 

@@ -37,6 +37,7 @@ namespace Game.Core.Party
             System.Array.Clear(Allies, 0, Allies.Length);
             EnemyDamageTaken = 0;
             EnemyTimerSlow = 0;
+            var debuffPower = System.Math.Max(0, hero.Value(CombatStats.EnemyDebuffEffect, 1));
             for (var i = 0; i < _count; i++)
             {
                 var line = _lines[i]!;
@@ -47,16 +48,16 @@ namespace Game.Core.Party
                 value *= Multiplier(i, line, hero, state);
                 if (!(value > 0))
                     continue;
-                Route(i, line, value, modeSelf, modePower);
+                Route(i, line, value, modeSelf, modePower, debuffPower);
             }
         }
 
-        private void Route(int index, CoopLine line, double value, double modeSelf, double modePower)
+        private void Route(int index, CoopLine line, double value, double modeSelf, double modePower, double debuffPower)
         {
             if (line.To == CoopTarget.Enemy)
             {
                 if (line.Target == CoopRules.EnemyDamageTaken)
-                    EnemyDamageTaken += value * modePower;
+                    EnemyDamageTaken += value * modePower * debuffPower;
                 else
                     EnemyTimerSlow += value * modePower;
                 return;

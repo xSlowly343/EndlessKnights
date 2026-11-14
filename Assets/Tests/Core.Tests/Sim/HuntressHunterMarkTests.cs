@@ -105,6 +105,15 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void DebuffEffectMakesTheMarkHitHarder()
+        {
+            var (loop, input) = Hero(HeroClass.Windshot, new Modifier(CombatStats.EnemyDebuffEffect, ModifierKind.Increased, 0.5));
+            Assert.That(MarkAt(loop, input, ShotEvery), Is.EqualTo(ShotEvery));
+            Assert.That(loop.Combat.MarkedMultiplier(StatTags.Strike), Is.EqualTo(1 + Rules.StrikeDamage * 1.5).Within(1e-9));
+            Assert.That(loop.Combat.MarkedMultiplier(StatTags.Mouse), Is.EqualTo(1), "no mark line for the mouse");
+        }
+
+        [Test]
         public void AForeverMarkStaysAndAJumpingMarkMovesToTheNextEnemy()
         {
             var (loop, input) = Hero(HeroClass.Windshot,

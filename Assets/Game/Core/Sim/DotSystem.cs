@@ -23,8 +23,10 @@ namespace Game.Core.Sim
 
         public void HitWith(double hits) => Hit(hits);
 
-        public double PoisonMax => (Rules.PoisonMax + System.Math.Max(0, _hero.Value(CombatStats.PoisonStacks, 0, StatTags.DoT))) * _state.SupportStackCap;
-        public double BurnMax => Rules.BurnMax * _state.SupportStackCap;
+        public double PoisonMax => (Rules.PoisonMax + ExtraStacks + System.Math.Max(0, _hero.Value(CombatStats.PoisonStacks, 0, StatTags.DoT))) * _state.SupportStackCap;
+        public double BurnMax => (Rules.BurnMax + ExtraStacks) * _state.SupportStackCap;
+
+        private double ExtraStacks => System.Math.Max(0, _hero.Value(CombatStats.DotStacks, 0, StatTags.DoT));
         public long PoisonTicks { get; private set; }
 
 

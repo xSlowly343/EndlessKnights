@@ -97,6 +97,23 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void DotStacksRaiseBothCaps()
+        {
+            var rules = TestWorld.Data.Combat.Dots;
+            var (plain, _) = Hero(HeroClass.Alchemist);
+            Assert.That(plain.Skills.Dots.PoisonMax, Is.EqualTo(rules.PoisonMax));
+            Assert.That(plain.Skills.Dots.BurnMax, Is.EqualTo(rules.BurnMax));
+
+            var (loop, _) = Hero(HeroClass.Alchemist, new Modifier(CombatStats.DotStacks, ModifierKind.Flat, 5));
+            Assert.That(loop.Skills.Dots.PoisonMax, Is.EqualTo(rules.PoisonMax + 5));
+            Assert.That(loop.Skills.Dots.BurnMax, Is.EqualTo(rules.BurnMax + 5));
+
+            var (both, _) = Hero(HeroClass.Alchemist, new Modifier(CombatStats.DotStacks, ModifierKind.Flat, 5), new Modifier(CombatStats.PoisonStacks, ModifierKind.Flat, 10));
+            Assert.That(both.Skills.Dots.PoisonMax, Is.EqualTo(rules.PoisonMax + 15), "poison stacks add on top");
+            Assert.That(both.Skills.Dots.BurnMax, Is.EqualTo(rules.BurnMax + 5));
+        }
+
+        [Test]
         public void DotAlsoHitsTheWholeQueue()
         {
             var (loop, _) = Hero(HeroClass.Dowser, new Modifier(CombatStats.DotQueueShare, ModifierKind.Flat, 0.5));

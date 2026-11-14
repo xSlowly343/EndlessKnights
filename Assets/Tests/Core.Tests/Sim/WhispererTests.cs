@@ -275,6 +275,94 @@ namespace Game.Core.Tests.Sim
         }
 
         [Test]
+        public void OneCurseHoldsOnTheEnemyByDefault()
+        {
+            Assert.That(TestWorld.Data.Combat.Curses.MaxOnEnemy, Is.EqualTo(1));
+            var (loop, _) = Hero();
+            Assert.That(loop.Combat.Whisperer.CurseLimit, Is.EqualTo(1));
+            Cast(loop, "whisperer_queue_1");
+            Cast(loop, "whisperer_auto_1");
+            Assert.That(loop.State.Whisperer.CursesLaid, Is.EqualTo(1));
+            Assert.That(loop.Combat.Whisperer.CurseShare, Is.EqualTo(0.08).Within(1e-9), "the stronger curse stays");
+        }
+
+        [Test]
+        public void AnExtraCurseSlotAddsTheSecondCurse()
+        {
+            var (loop, _) = Hero(Flat(CombatStats.CursesOnEnemy, 1));
+            Assert.That(loop.Combat.Whisperer.CurseLimit, Is.EqualTo(2));
+            Cast(loop, "whisperer_queue_1");
+            Cast(loop, "whisperer_auto_1");
+            Assert.That(loop.State.Whisperer.CursesLaid, Is.EqualTo(2));
+            Assert.That(loop.Combat.Whisperer.CurseShare, Is.EqualTo(0.14).Within(1e-9));
+
+            Cast(loop, "whisperer_queue_1");
+            Assert.That(loop.Combat.Whisperer.CurseShare, Is.EqualTo(0.14).Within(1e-9), "the same skill refreshes its own curse");
+
+            Cast(loop, "whisperer_path_3");
+            Assert.That(loop.State.Whisperer.CursesLaid, Is.EqualTo(2));
+            Assert.That(loop.Combat.Whisperer.CurseShare, Is.EqualTo(0.18).Within(1e-9), "a third curse replaces the weakest");
+        }
+
+        [Test]
+        public void TheCurseSlotsAreCappedAndFractionsDoNotCount()
+        {
+            var (half, _) = Hero(Flat(CombatStats.CursesOnEnemy, 1.3));
+            Assert.That(half.Combat.Whisperer.CurseLimit, Is.EqualTo(2));
+            var (many, _) = Hero(Flat(CombatStats.CursesOnEnemy, 10));
+            Assert.That(many.Combat.Whisperer.CurseLimit, Is.EqualTo(WhispererState.MaxCurses));
+        }
+
+        [Test]
+        public void ExtraCursesFadeAndClearWithTheEnemy()
+        {
+            var (loop, input) = Hero(Flat(CombatStats.CursesOnEnemy, 1));
+            Cast(loop, "whisperer_queue_1");
+            Cast(loop, "whisperer_auto_1");
+            Assert.That(loop.State.Whisperer.CursesLaid, Is.EqualTo(2));
+            Spawn(loop, EnemyType.Normal);
+            loop.State.Whisperer.OnSpawn();
+            loop.Tick();
+            Assert.That(loop.State.Whisperer.CursesLaid, Is.Zero);
+            Assert.That(loop.Combat.Whisperer.CurseShare, Is.Zero);
+        }
+
+        [Test]
+        public void DebuffEffectStrengthensCurses()
+        {
+            var (loop, _) = Hero(new Modifier(CombatStats.EnemyDebuffEffect, ModifierKind.Increased, 0.2));
+            Cast(loop, "whisperer_queue_1");
+            Assert.That(loop.Combat.Whisperer.CurseShare, Is.EqualTo(0.08 * 1.2).Within(1e-9));
+        }
+
+        [Test]
+        public void CurseDamageMakesCurseHitsHarder()
+        {
+            var (plain, _) = Hero();
+            Cast(plain, "whisperer_queue_1");
+            var basic = Cast(plain, "whisperer_hit_2");
+            var (loop, _) = Hero(new Modifier(CombatStats.CurseDamage, ModifierKind.Increased, 0.5));
+            Cast(loop, "whisperer_queue_1");
+            var strong = Cast(loop, "whisperer_hit_2");
+            Assert.That(basic, Has.Count.EqualTo(1));
+            Assert.That(strong, Has.Count.EqualTo(1));
+            Assert.That(strong[0] / basic[0], Is.EqualTo(1.5).Within(1e-6));
+        }
+
+        [Test]
+        public void SavedCursesComeBackInTheirSlots()
+        {
+            var (loop, _) = Hero(Flat(CombatStats.CursesOnEnemy, 1));
+            Cast(loop, "whisperer_queue_1");
+            Cast(loop, "whisperer_auto_1");
+            var clock = Game.Core.Clock.ClockStamp.First(new Game.Core.Clock.ClockReading(1_800_000_000_000, 5, 1));
+            var stored = Game.Core.Save.SaveCodec.Decode(Game.Core.Save.SaveCodec.Encode(loop.State, clock), TestWorld.Data).State;
+            Assert.That(stored.Whisperer.CursesLaid, Is.EqualTo(2));
+            Assert.That(stored.Whisperer.Curse, Is.EqualTo(0.14).Within(1e-9));
+            Assert.That(stored.Whisperer.CurseSlotGems, Is.EqualTo(loop.State.Whisperer.CurseSlotGems));
+        }
+
+        [Test]
         public void BrokenGrowingAndWavingVowsAreRules()
         {
             var (broken, brokenInput) = Hero(Flat(WhispererStats.VowPower, 3), Flat(WhispererStats.VowBreak, 1));
