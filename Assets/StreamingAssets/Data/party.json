@@ -135,7 +135,7 @@
       "maxPoints": 180,
       "maxRank": 5,
       "rows": [0, 5, 15, 30, 50, 75, 105],
-      "rowPrices": [100, 150, 200, 300, 400, 550, 700],
+      "rowPrices": [170, 250, 340, 500, 680, 940, 1200],
       "majorChangeHours": 24,
       "bar": { "every": 10, "passives": [{"stat": "attackPower", "kind": "increased", "value": 0.02}, {"stat": "roleBuffEffect", "kind": "increased", "value": 0.02}, {"stat": "colossusDamage", "kind": "increased", "value": 0.03}] },
       "majors": [

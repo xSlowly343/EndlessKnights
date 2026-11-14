@@ -33,7 +33,7 @@ namespace Game.Core.Tests.Party
             Assert.That(Tree.Nodes.Count, Is.EqualTo(50));
             Assert.That(Enumerable.Range(1, 7).Select(row => Tree.Nodes.Count(n => n.Row == row)), Is.EqualTo(new[] { 10, 9, 8, 7, 6, 5, 5 }));
             Assert.That(Tree.RowThresholds, Is.EqualTo(new[] { 0, 5, 15, 30, 50, 75, 105 }));
-            Assert.That(Tree.RowPrices, Is.EqualTo(new[] { 100, 150, 200, 300, 400, 550, 700 }));
+            Assert.That(Tree.RowPrices, Is.EqualTo(new[] { 170, 250, 340, 500, 680, 940, 1200 }));
             Assert.That(Tree.MaxPoints, Is.EqualTo(180));
             Assert.That(Tree.Majors.Select(m => m.At), Is.EqualTo(new[] { 20, 50, 90, 140 }));
             Assert.That(Tree.Majors.All(m => m.Options.Count == 3));
@@ -44,10 +44,10 @@ namespace Game.Core.Tests.Party
         public void PricesFallWithBookkeepingTheSameWayAsOnTheServer()
         {
             var levels = Levels((1, 5), (9, 1), (19, 4));
-            Assert.That(Tree.Price(2, levels), Is.EqualTo(91));
-            Assert.That(Tree.Price(11, levels), Is.EqualTo(137));
-            Assert.That(Tree.Price(20, levels), Is.EqualTo(200));
-            Assert.That(Tree.Price(46, Levels()), Is.EqualTo(700));
+            Assert.That(Tree.Price(2, levels), Is.EqualTo(155));
+            Assert.That(Tree.Price(11, levels), Is.EqualTo(228));
+            Assert.That(Tree.Price(20, levels), Is.EqualTo(340));
+            Assert.That(Tree.Price(46, Levels()), Is.EqualTo(1200));
         }
 
         [Test]
