@@ -68,14 +68,62 @@ def montage(name, place):
     return True
 
 
+def overview(places):
+    shots = []
+    for key, place in places.items():
+        idle = frames(place["portalIdle"])
+        ally = frames(place["allyOut"])
+        if idle and ally:
+            shots.append((idle[2], ally[4]))
+    if not shots:
+        return
+    width = PAD + sum(big.width * 3 + PAD + small.width * 2 + PAD for big, small in shots)
+    height = PAD * 2 + max(big.height * 3 for big, _ in shots)
+    sheet = Image.new("RGBA", (width, height * 2), DARK)
+    sheet.paste(LIGHT, (0, height, width, height * 2))
+    x = PAD
+    for big, small in shots:
+        for clip, scale in ((big, 3), (small, 2)):
+            scaled = clip.resize((clip.width * scale, clip.height * scale), Image.NEAREST)
+            for row in (0, height):
+                sheet.alpha_composite(scaled, (x, row + height - PAD - scaled.height))
+            x += scaled.width + PAD
+    sheet.save(OUT / "all-places.png")
+
+
+def rift_world(data):
+    sky = data["riftSky"]
+    parts = {name: frames(sky[name]) for name in ("sky", "edgeLeft", "edgeRight", "motes")}
+    loading = frames(data["places"]["rift"]["loading"])
+    if not loading or not all(parts.values()):
+        return
+    shots = []
+    for tick in range(48):
+        shot = Image.new("RGBA", (160 * 3 + PAD * 2, 60 * 3 * 3 + PAD * 4), (48, 48, 56, 255))
+        for row, fill in enumerate((DARK, LIGHT)):
+            strip = Image.new("RGBA", (160, 60), fill)
+            strip.alpha_composite(parts["sky"][tick * 8 // 24 % 16], (0, 0))
+            strip.alpha_composite(parts["motes"][tick * 12 // 24 % 24], (0, 0))
+            strip.alpha_composite(parts["edgeLeft"][tick * 10 // 24 % 12], (0, 0))
+            strip.alpha_composite(parts["edgeRight"][tick * 10 // 24 % 12], (146, 0))
+            shot.paste(strip.resize((480, 180), Image.NEAREST), (PAD, PAD + row * (180 + PAD)))
+        shot.paste(loading[tick // 2 % 24].resize((480, 180), Image.NEAREST), (PAD, PAD + 2 * (180 + PAD)))
+        shots.append(shot.convert("P", palette=Image.ADAPTIVE, colors=255))
+    shots[0].save(OUT / "rift-world.gif", save_all=True, append_images=shots[1:], duration=1000 // TICKS, loop=0)
+
+
 def main():
-    places = json.loads((SHEETS / "transitions.json").read_text())["places"]
+    data = json.loads((SHEETS / "transitions.json").read_text())
+    places = data["places"]
     wanted = sys.argv[1:]
     for key, place in places.items():
         name = place["portalOpen"]["file"].split("_")[1].lower()
         if wanted and name not in wanted:
             continue
         print(name, "ok" if montage(name, place) else "no sheets")
+    if not wanted:
+        overview(places)
+        rift_world(data)
 
 
 if __name__ == "__main__":
