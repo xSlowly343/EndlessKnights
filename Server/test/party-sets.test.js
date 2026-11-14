@@ -54,11 +54,11 @@ test("eternal hunter jewelry raises trophies, the armour softens hardships, tria
   reachLevel(nk, partyId, 50);
   server.partySetsReport(nk, "ann", ["party_eternal_hunters_jewelry_rare", "party_trial_seal_armor_rift"]);
   server.partySetsReport(nk, "bob", ["party_eternal_hunters_jewelry_rare", "party_eternal_hunters_armor_rift"]);
-  assert.ok(Math.abs(server.partySetsSum(nk, partyId, "colossusTrophies") - 0.1) < 1e-9, "two copies of +5%");
-  assert.ok(Math.abs(server.partySetsSum(nk, partyId, "colossusHardship") + 0.15) < 1e-9);
+  assert.ok(Math.abs(server.partySetsSum(nk, partyId, "colossusTrophies") - 0.16) < 1e-9, "two copies of +8%");
+  assert.ok(Math.abs(server.partySetsSum(nk, partyId, "colossusHardship") + 0.2) < 1e-9);
   assert.strictEqual(server.partySetsSum(nk, partyId, "trialTries"), 1);
   const situation = server.partyColossusSituation(nk, partyId, "ann", now);
-  assert.ok(Math.abs(situation.soften - 0.15) < 1e-9);
+  assert.ok(Math.abs(situation.soften - 0.2) < 1e-9);
   const trials = server.partyTrialMine(nk, "ann", now);
   assert.ok(trials.trials.every((t) => t.triesLeft === server.PartyGrowthServerRules.trials.tries + 1));
 });

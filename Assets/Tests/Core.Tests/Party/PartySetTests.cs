@@ -56,7 +56,7 @@ namespace Game.Core.Tests.Party
             var astral = Set("eternal_hunters", "armor", ItemRarity.Astral).PartyBonus;
             Assert.That(astral.Count(m => m.Kind == ModifierKind.More), Is.EqualTo(2));
             Assert.That(Set("eternal_hunters", "armor", ItemRarity.Primordial).PartyBonus.Count, Is.EqualTo(6));
-            Assert.That(Set("eternal_hunters", "armor", ItemRarity.Primordial).PartyBonus[0].Value, Is.EqualTo(0.28));
+            Assert.That(Set("eternal_hunters", "armor", ItemRarity.Primordial).PartyBonus[0].Value, Is.EqualTo(0.42));
         }
 
         [Test]
@@ -79,12 +79,12 @@ namespace Game.Core.Tests.Party
             var damage = loop.Hero.Value(CombatStats.Damage, 1);
             var id = PartySetReader.IdOf("standard_bearers", "armor", ItemRarity.Mythic);
             loop.SetPartySets(new Dictionary<string, int> { [id] = 1 });
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / damage, Is.EqualTo(1.14 * 1.03).Within(1e-9));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / damage, Is.EqualTo(1.2 * 1.04).Within(1e-9));
             loop.SetPartySets(new Dictionary<string, int> { [id] = 3 });
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / damage, Is.EqualTo((1 + 0.14 * 3) * System.Math.Pow(1.03, 3)).Within(1e-9), "three members, three copies");
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / damage, Is.EqualTo((1 + 0.2 * 3) * System.Math.Pow(1.04, 3)).Within(1e-9), "three members, three copies");
             var colossus = PartySetReader.IdOf("eternal_hunters", "armor", ItemRarity.Rare);
             loop.SetPartySets(new Dictionary<string, int> { [colossus] = 2 });
-            Assert.That(loop.PartyGrowth.ColossusPower, Is.EqualTo(1.1).Within(1e-12));
+            Assert.That(loop.PartyGrowth.ColossusPower, Is.EqualTo(1.16).Within(1e-12));
             loop.SetPartyStanding(false, 0, 0, Now);
             Assert.That(loop.Hero.Value(CombatStats.Damage, 1), Is.EqualTo(damage).Within(1e-9));
         }
@@ -96,10 +96,10 @@ namespace Game.Core.Tests.Party
             var loop = Member();
             var id = PartySetReader.IdOf("standard_bearers", "armor", ItemRarity.Rare);
             var gain = PartyGrowthPreview.Of(loop.PartyGrowth, PartyUpgrade.PartySet(id));
-            Assert.That(gain.After.Damage, Is.EqualTo(1.05).Within(1e-9));
+            Assert.That(gain.After.Damage, Is.EqualTo(1.08).Within(1e-9));
             loop.SetPartySets(new Dictionary<string, int> { [id] = 2 });
             var lines = Game.Core.Ui.PartyGrowthView.Window(loop.PartyGrowth);
-            Assert.That(lines.Any(line => line.Label == "Наборы отряда" && line.Value == "×1.1"), Is.True);
+            Assert.That(lines.Any(line => line.Label == "Наборы отряда" && line.Value == "×1.16"), Is.True);
         }
 
         [Test]
@@ -124,7 +124,7 @@ namespace Game.Core.Tests.Party
         {
             var drops = Items.PartySetDrops;
             Assert.That(drops.Keys, Is.SupersetOf(new[] { "battle", "orders", "mascot", "trials", "colossus", "banner", "extreme", "dungeons", "rift" }));
-            Assert.That(drops["dungeons"].Chance, Is.EqualTo(0.01));
+            Assert.That(drops["dungeons"].Chance, Is.EqualTo(0.004));
             Assert.That(drops["colossus"].Roll(50, 0), Is.EqualTo(ItemRarity.Rift));
             Assert.That(drops["colossus"].Roll(50, 0.9999), Is.EqualTo(ItemRarity.Primordial));
             Assert.That(drops["colossus"].Roll(5, 0), Is.EqualTo(ItemRarity.Legendary));
