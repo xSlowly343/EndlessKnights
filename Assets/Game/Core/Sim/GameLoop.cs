@@ -943,18 +943,24 @@ namespace Game.Core.Sim
 
         public int TakeMascotFood(string food, int amount)
         {
+            var picked = PickMascotFood(food, amount);
+            return TakeMascotItems(picked) ? Total(picked) : 0;
+        }
+
+        public Dictionary<string, int> PickMascotFood(string food, int amount)
+        {
+            var picked = new Dictionary<string, int>();
             var def = _data.Party.Growth.Mascot.Food(food);
             if (def == null || amount <= 0)
-                return 0;
-            var taken = 0;
+                return picked;
             if (def.IsDish)
             {
-                while (taken < amount && State.Cooking.Meals.Count > 0)
+                for (var i = State.Cooking.Meals.Count - 1; i >= 0 && Total(picked) < amount; i--)
                 {
-                    State.Cooking.Meals.RemoveAt(State.Cooking.Meals.Count - 1);
-                    taken++;
+                    var item = DishItem + State.Cooking.Meals[i];
+                    picked[item] = picked.TryGetValue(item, out var have) ? have + 1 : 1;
                 }
-                return taken;
+                return picked;
             }
             var items = new List<string>();
             foreach (var pair in State.Camp.Bag)
@@ -963,15 +969,60 @@ namespace Game.Core.Sim
                     items.Add(pair.Key);
             }
             items.Sort(System.StringComparer.Ordinal);
+            var left = amount;
             foreach (var item in items)
             {
-                var take = (int)System.Math.Min(amount - taken, _camp.Count(item));
-                if (take > 0 && _camp.Take(item, take))
-                    taken += take;
-                if (taken >= amount)
+                var take = (int)System.Math.Min(left, _camp.Count(item));
+                if (take <= 0)
+                    continue;
+                picked[item] = take;
+                left -= take;
+                if (left == 0)
                     break;
             }
-            return taken;
+            return picked;
+        }
+
+        public bool TakeMascotItems(IReadOnlyDictionary<string, int> items)
+        {
+            foreach (var pair in items)
+            {
+                if (pair.Value < 0 || (pair.Key.StartsWith(DishItem, System.StringComparison.Ordinal) ? MealCount(pair.Key.Substring(DishItem.Length)) : _camp.Count(pair.Key)) < pair.Value)
+                    return false;
+            }
+            foreach (var pair in items)
+            {
+                if (!pair.Key.StartsWith(DishItem, System.StringComparison.Ordinal))
+                {
+                    _camp.Take(pair.Key, pair.Value);
+                    continue;
+                }
+                var meal = pair.Key.Substring(DishItem.Length);
+                for (var i = 0; i < pair.Value; i++)
+                    State.Cooking.Meals.RemoveAt(State.Cooking.Meals.LastIndexOf(meal));
+            }
+            return true;
+        }
+
+        private const string DishItem = "dish:";
+
+        private int MealCount(string meal)
+        {
+            var count = 0;
+            foreach (var each in State.Cooking.Meals)
+            {
+                if (each == meal)
+                    count++;
+            }
+            return count;
+        }
+
+        private static int Total(IReadOnlyDictionary<string, int> items)
+        {
+            var total = 0;
+            foreach (var pair in items)
+                total += pair.Value;
+            return total;
         }
 
         public void SetPartyMascot(string beast, int level, IReadOnlyDictionary<string, int>? rites = null)

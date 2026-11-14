@@ -700,11 +700,12 @@ namespace Game.Net.Tests
         public void ThePartyMascotIsReadWithItsLevelLookBondsAndFeeding()
         {
             Assert.That(PartyMascotReply.ChoosePayload("wolf"), Is.EqualTo("{\"beast\":\"wolf\"}"));
-            Assert.That(PartyMascotReply.FeedPayload("fish", 3), Is.EqualTo("{\"food\":\"fish\",\"amount\":3}"));
+            Assert.That(PartyMascotReply.FeedPayload("fish", new Dictionary<string, int> { ["fish_hills_roach"] = 2, ["fish_dunes_carp"] = 1 }),
+                Is.EqualTo("{\"food\":\"fish\",\"items\":{\"fish_dunes_carp\":1,\"fish_hills_roach\":2}}"));
             Assert.That(PartyMascotReply.BranchPayload("stone"), Is.EqualTo("{\"branch\":\"stone\"}"));
             Assert.That(PartyMascotReply.LookPayload("rift", new Dictionary<string, string> { ["back"] = "blanket" }), Is.EqualTo("{\"coat\":\"rift\",\"gear\":{\"back\":\"blanket\"}}"));
             Assert.That(PartyMascotReply.LookPayload(null, null), Is.EqualTo("{}"));
-            var reply = PartyMascotReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"leader\":true,\"beast\":\"wolf\",\"experience\":700,\"level\":2,\"into\":200,\"need\":590,\"stage\":\"cub\",\"temper\":\"brave\",\"branch\":\"\",\"branchOpen\":false,\"votes\":{\"a\":\"ash\"},\"coat\":\"common\",\"coats\":[\"common\",\"rift\"],\"gear\":{\"back\":\"blanket\"},\"gearOwned\":[\"blanket\"],\"changeAt\":1765000000000,\"feedLeft\":17,\"petsLeft\":2,\"bonds\":[{\"userId\":\"a\",\"name\":\"Ann\",\"bond\":250,\"hearts\":2}],\"yourBond\":250,\"yourHearts\":2,\"accepted\":{\"portions\":3,\"experience\":30,\"favourite\":true}}"));
+            var reply = PartyMascotReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"leader\":true,\"beast\":\"wolf\",\"experience\":700,\"level\":2,\"into\":200,\"need\":590,\"stage\":\"cub\",\"temper\":\"brave\",\"branch\":\"\",\"branchOpen\":false,\"votes\":{\"a\":\"ash\"},\"coat\":\"common\",\"coats\":[\"common\",\"rift\"],\"gear\":{\"back\":\"blanket\"},\"gearOwned\":[\"blanket\"],\"changeAt\":1765000000000,\"feedLeft\":17,\"petsLeft\":2,\"bonds\":[{\"userId\":\"a\",\"name\":\"Ann\",\"bond\":250,\"hearts\":2}],\"yourBond\":250,\"yourHearts\":2,\"accepted\":{\"portions\":3,\"experience\":30,\"favourite\":true,\"items\":{\"fish_hills_roach\":3}}}"));
             Assert.That(reply.Beast, Is.EqualTo("wolf"));
             Assert.That(reply.Level, Is.EqualTo(2));
             Assert.That(reply.Need, Is.EqualTo(590));
@@ -715,6 +716,7 @@ namespace Game.Net.Tests
             Assert.That(reply.FeedLeft, Is.EqualTo(17));
             Assert.That(reply.Bonds[0].Hearts, Is.EqualTo(2));
             Assert.That(reply.FedPortions, Is.EqualTo(3));
+            Assert.That(reply.FedItems, Is.EqualTo(new Dictionary<string, int> { ["fish_hills_roach"] = 3 }));
             Assert.That(reply.FedFavourite, Is.True);
             Assert.That(PartyMascotReply.From(NakamaJson.Parse("{\"accepted\":null}")).FedPortions, Is.Zero);
             Assert.That(PartyMascotReply.RitePayload("power_aura"), Is.EqualTo("{\"id\":\"power_aura\"}"));

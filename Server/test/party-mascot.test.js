@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert");
-const { loadModule } = require("./load");
+const { loadModule, stockBag } = require("./load");
 const { FakeNakama, logger } = require("./fake-nakama");
 
 const server = loadModule();
@@ -16,7 +16,14 @@ function party(...names) {
   const view = call(names[0], "partyCreateRpc", {});
   for (const name of names.slice(1))
     call(name, "partyJoinRpc", { code: view.code });
+  stockBag(server, nk, names);
   return { nk, call, partyId: view.id };
+}
+
+const foodItem = { fish: "fish_hills_roach", herb: "herb_knockbloom", ore: "ore_hills", dish: "dish:" + server.HideoutServerRules.dishes[0], cake: "cake_cream" };
+
+function feed(nk, user, food, amount, at) {
+  return server.partyMascotFeed(nk, user, { food: food, items: { [foodItem[food]]: amount } }, at);
 }
 
 function reachLevel(nk, partyId, level) {
@@ -69,21 +76,38 @@ test("the leader chooses the mascot on party level 5, a new beast only after 30 
 test("every member feeds the mascot up to 20 portions a day, the favourite food gives double", () => {
   const { nk, partyId } = party("ann", "bob");
   reachLevel(nk, partyId, 5);
-  assert.throws(() => server.partyMascotFeed(nk, "ann", { food: "fish", amount: 1 }, now), /choose a mascot/);
+  assert.throws(() => feed(nk, "ann", "fish", 1, now), /choose a mascot/);
   server.partyMascotChoose(nk, "ann", "wolf", now);
-  let view = server.partyMascotFeed(nk, "ann", { food: "fish", amount: 3 }, now);
+  let view = feed(nk, "ann", "fish", 3, now);
   assert.strictEqual(view.accepted.portions, 3);
   assert.strictEqual(view.accepted.favourite, true);
   assert.strictEqual(view.experience, 3 * 5 * 2);
-  view = server.partyMascotFeed(nk, "ann", { food: "herb", amount: 30 }, now);
+  view = feed(nk, "ann", "herb", 30, now);
   assert.strictEqual(view.accepted.portions, 17, "the day limit cuts the rest");
   assert.strictEqual(view.feedLeft, 0);
-  assert.throws(() => server.partyMascotFeed(nk, "ann", { food: "herb", amount: 1 }, now), /eaten enough/);
-  view = server.partyMascotFeed(nk, "bob", { food: "ore", amount: 2 }, now);
+  assert.throws(() => feed(nk, "ann", "herb", 1, now), /eaten enough/);
+  view = feed(nk, "bob", "ore", 2, now);
   assert.strictEqual(view.accepted.portions, 2, "each member has their own limit");
-  assert.strictEqual(server.partyMascotFeed(nk, "ann", { food: "dish", amount: 1 }, now + day).accepted.portions, 1, "a new day, a new limit");
-  assert.throws(() => server.partyMascotFeed(nk, "ann", { food: "cake", amount: 1 }, now), /bad request/);
+  assert.strictEqual(feed(nk, "ann", "dish", 1, now + day).accepted.portions, 1, "a new day, a new limit");
+  assert.throws(() => feed(nk, "ann", "cake", 1, now), /bad request/);
   assert.strictEqual(view.yourBond, 2 * rules.bond.feed);
+});
+
+test("the mascot eats only food the last cloud save shows in the bag, and the server says what it ate", () => {
+  const { nk, partyId } = party("ann", "bob");
+  reachLevel(nk, partyId, 5);
+  server.partyMascotChoose(nk, "ann", "wolf", now);
+  const bag = (item) => server.inflowAvailable(nk, "ann", [item])[item];
+  const before = bag("fish_hills_roach");
+  assert.throws(() => server.partyMascotFeed(nk, "ann", { food: "fish", items: { herb_knockbloom: 1 } }, now), /bad request/, "herbs are not fish");
+  assert.throws(() => server.partyMascotFeed(nk, "ann", { food: "fish", items: { fish_hills_roach: 1, fish_unseen_eel: 2 } }, now), /not in your bag/);
+  assert.strictEqual(bag("fish_hills_roach"), before, "a refused meal spends nothing");
+  assert.strictEqual(server.partyMascotMine(nk, "ann", now).experience, 0);
+  const view = server.partyMascotFeed(nk, "ann", { food: "fish", items: { fish_hills_roach: 25 } }, now);
+  assert.deepStrictEqual(plain(view.accepted.items), { fish_hills_roach: 20 }, "the day limit leaves the rest in the bag");
+  assert.strictEqual(bag("fish_hills_roach"), before - 20);
+  assert.throws(() => server.partyMascotFeed(nk, "ann", { food: "fish", items: { fish_hills_roach: 1 } }, now), /eaten enough/);
+  assert.strictEqual(bag("fish_hills_roach"), before - 20, "a full mascot takes nothing");
 });
 
 test("petting raises the bond three times a day, hearts count every hundred", () => {
@@ -173,7 +197,7 @@ test("the party tree feeds more, faster and pricier, and Ancient comes ten level
   server.partyTreasuryChange(nk, partyId, (value) => {
     value.levels = { "5": 2, "16": 3, "45": 5 };
   });
-  let view = server.partyMascotFeed(nk, "ann", { food: "herb", amount: 21 }, now);
+  let view = feed(nk, "ann", "herb", 21, now);
   assert.strictEqual(view.accepted.portions, 21, "Fed Beast gives one more portion a day");
   const expected = 21 * 3 * (1 + 0.2) * (1 + 0.1);
   assert.ok(Math.abs(view.accepted.experience - expected) < 1e-9, "Fed Beast A is doubled on level 3, Warm Beast A on level 2");
@@ -185,7 +209,7 @@ test("the party tree feeds more, faster and pricier, and Ancient comes ten level
   server.partyTreasuryChange(nk, partyId, (value) => {
     value.levels = { "50": 1 };
   });
-  view = server.partyMascotFeed(nk, "bob", { food: "fish", amount: 1 }, now);
+  view = feed(nk, "bob", "fish", 1, now);
   assert.ok(Math.abs(view.accepted.experience - 10 / 2) < 1e-9, "Beast Soul makes feeding twice as dear");
 });
 
@@ -231,7 +255,7 @@ test("favourite food seven days in a row, bosses together and colossus kills ope
     value.trialsDone = ["pets"];
   });
   for (let i = 0; i < 7; i++)
-    server.partyMascotFeed(nk, "ann", { food: "fish", amount: 1 }, now + i * day);
+    feed(nk, "ann", "fish", 1, now + i * day);
   let view = server.partyMascotMine(nk, "ann", now + 7 * day);
   assert.strictEqual(view.trials[1].count, 7);
   server.partyGrowthBattle(nk, partyId, 40, 10);
@@ -306,12 +330,12 @@ test("the hungry beast gives double for the first portion of the day, the weekly
   const favourite = server.partyMascotMine(nk, "ann", now).favourite;
   const food = rules.foods.filter((f) => f.id === favourite)[0];
   const other = rules.foods.filter((f) => f.id !== favourite)[0];
-  const feed = 1 + 0.1 * 3;
+  const fed = 1 + 0.1 * 3;
   const grow = 1 + 0.05 * 3;
-  let view = server.partyMascotFeed(nk, "ann", { food: other.id, amount: 1 }, now);
-  assert.ok(Math.abs(view.accepted.experience - 2 * other.experience * feed * grow) < 1e-9, "hunger doubles the first portion");
-  view = server.partyMascotFeed(nk, "ann", { food: favourite, amount: 1 }, now);
-  assert.ok(Math.abs(view.accepted.experience - food.experience * 4 * feed * grow) < 1e-9, "favourite x2 and Fed Beast +2: x4");
+  let view = feed(nk, "ann", other.id, 1, now);
+  assert.ok(Math.abs(view.accepted.experience - 2 * other.experience * fed * grow) < 1e-9, "hunger doubles the first portion");
+  view = feed(nk, "ann", favourite, 1, now);
+  assert.ok(Math.abs(view.accepted.experience - food.experience * 4 * fed * grow) < 1e-9, "favourite x2 and Fed Beast +2: x4");
 });
 
 test("the mascot hits the colossus once an hour, even when the party sleeps", () => {

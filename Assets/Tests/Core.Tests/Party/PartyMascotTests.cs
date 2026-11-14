@@ -130,6 +130,23 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void TheFeedSendsTheItemsItPicksAndTakesWhatTheServerAte()
+        {
+            var loop = Member();
+            loop.State.Camp.Bag["fish_hills_roach"] = 2;
+            loop.State.Camp.Bag["fish_ice_crucian"] = 3;
+            loop.State.Cooking.Meals.Add("fish_soup");
+            loop.State.Cooking.Meals.Add("fish_soup");
+            Assert.That(loop.PickMascotFood("fish", 4), Is.EqualTo(new Dictionary<string, int> { ["fish_hills_roach"] = 2, ["fish_ice_crucian"] = 2 }));
+            Assert.That(loop.PickMascotFood("dish", 5), Is.EqualTo(new Dictionary<string, int> { ["dish:fish_soup"] = 2 }));
+            Assert.That(loop.TakeMascotItems(new Dictionary<string, int> { ["fish_ice_crucian"] = 4 }), Is.False, "more than the bag holds takes nothing");
+            Assert.That(loop.State.Camp.Bag["fish_ice_crucian"], Is.EqualTo(3));
+            Assert.That(loop.TakeMascotItems(new Dictionary<string, int> { ["fish_ice_crucian"] = 1, ["dish:fish_soup"] = 1 }), Is.True);
+            Assert.That(loop.State.Camp.Bag["fish_ice_crucian"], Is.EqualTo(2));
+            Assert.That(loop.State.Cooking.Meals.Count, Is.EqualTo(1));
+        }
+
+        [Test]
         public void ThreeBranchesOfFiveRitesAPointEveryFiveLevels()
         {
             Assert.That(Rules.RiteBranches.Count, Is.EqualTo(3));

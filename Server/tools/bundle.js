@@ -683,7 +683,7 @@ const partyGrowthRules = {
     perMinute: growth.mascot.perMinute,
     stages: growth.mascot.stages.map((stage) => ({ from: stage.from, id: stage.id })),
     branchFrom: growth.mascot.branchFrom,
-    foods: growth.mascot.foods.map((food) => ({ id: food.id, experience: food.experience })),
+    foods: growth.mascot.foods.map((food) => ({ id: food.id, prefix: food.prefix || "dish:", experience: food.experience })),
     favouriteMultiplier: growth.mascot.favouriteMultiplier,
     feedPerDay: growth.mascot.feedPerDay,
     changeMs: growth.mascot.changeDays * 86400000,

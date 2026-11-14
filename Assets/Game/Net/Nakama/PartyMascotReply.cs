@@ -95,10 +95,14 @@ namespace Game.Net.Nakama
                 trials.Add(new PartyMascotTrialView(NakamaJson.Text(trial, "id"), NakamaJson.Text(trial, "stage"), (int)NakamaJson.Number(trial, "need"),
                     (int)NakamaJson.Number(trial, "count"), NakamaJson.Flag(trial, "done")));
             Trials = trials;
+            var fed = new Dictionary<string, int>();
+            FedItems = fed;
             var accepted = NakamaJson.Field(json, "accepted");
             if (accepted != null && accepted.Kind == JsonKind.Object)
             {
                 FedPortions = (int)NakamaJson.Number(accepted, "portions");
+                foreach (var pair in HideoutReply.Amounts(NakamaJson.Field(accepted, "items")))
+                    fed[pair.Key] = (int)System.Math.Min(int.MaxValue, pair.Value);
                 FedExperience = NakamaJson.Number(accepted, "experience");
                 FedFavourite = NakamaJson.Flag(accepted, "favourite");
                 Call = NakamaJson.Flag(accepted, "call");
@@ -130,6 +134,7 @@ namespace Game.Net.Nakama
         public int YourHearts { get; }
         public IReadOnlyList<PartyMascotBond> Bonds { get; }
         public int FedPortions { get; }
+        public IReadOnlyDictionary<string, int> FedItems { get; }
         public double FedExperience { get; }
         public bool FedFavourite { get; }
         public bool Call { get; }
@@ -151,8 +156,15 @@ namespace Game.Net.Nakama
 
         public static string ChoosePayload(string beast) => NakamaJson.Object(("beast", NakamaJson.Quote(beast)));
 
-        public static string FeedPayload(string food, int amount) =>
-            NakamaJson.Object(("food", NakamaJson.Quote(food)), ("amount", amount.ToString(CultureInfo.InvariantCulture)));
+        public static string FeedPayload(string food, IReadOnlyDictionary<string, int> items)
+        {
+            var ids = new List<string>(items.Keys);
+            ids.Sort(System.StringComparer.Ordinal);
+            var fields = new (string, string)[ids.Count];
+            for (var i = 0; i < ids.Count; i++)
+                fields[i] = (ids[i], items[ids[i]].ToString(CultureInfo.InvariantCulture));
+            return NakamaJson.Object(("food", NakamaJson.Quote(food)), ("items", NakamaJson.Object(fields)));
+        }
 
         public static string BranchPayload(string branch) => NakamaJson.Object(("branch", NakamaJson.Quote(branch)));
 
@@ -194,8 +206,8 @@ namespace Game.Net.Nakama
         public static Task<PartyMascotReply> ChooseAsync(NakamaClient client, NakamaSession session, string beast, CancellationToken cancel = default) =>
             CallAsync(client, session, "party_mascot_choose", ChoosePayload(beast), cancel);
 
-        public static Task<PartyMascotReply> FeedAsync(NakamaClient client, NakamaSession session, string food, int amount, CancellationToken cancel = default) =>
-            CallAsync(client, session, "party_mascot_feed", FeedPayload(food, amount), cancel);
+        public static Task<PartyMascotReply> FeedAsync(NakamaClient client, NakamaSession session, string food, IReadOnlyDictionary<string, int> items, CancellationToken cancel = default) =>
+            CallAsync(client, session, "party_mascot_feed", FeedPayload(food, items), cancel);
 
         public static Task<PartyMascotReply> PetAsync(NakamaClient client, NakamaSession session, CancellationToken cancel = default) =>
             CallAsync(client, session, "party_mascot_pet", "{}", cancel);

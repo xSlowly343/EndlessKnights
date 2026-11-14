@@ -117,6 +117,19 @@ function inflowSpend(nk: nkruntime.Nakama, userId: string, item: string, amount:
     });
 }
 
+function inflowSpendAll(nk: nkruntime.Nakama, userId: string, items: { [item: string]: number }): InflowReceipt {
+    return inflowChange(nk, userId, (value) => {
+        inflowNeedsBase(value);
+        for (const item of Object.keys(items))
+            if (inflowRoom(value, item) < items[item])
+                throw new Error("not in your bag by the last cloud save");
+        const receipt: InflowReceipt = { items: {} };
+        for (const item of Object.keys(items))
+            inflowUse(value, item, items[item], receipt);
+        return receipt;
+    });
+}
+
 function inflowGrant(nk: nkruntime.Nakama, userId: string, items: { [item: string]: number }): void {
     const known = Object.keys(items).filter((item) => items[item] > 0);
     if (known.length === 0)

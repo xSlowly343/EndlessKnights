@@ -5,7 +5,7 @@ interface PartyMascotRules {
     perMinute: number;
     stages: { from: number; id: string }[];
     branchFrom: number;
-    foods: { id: string; experience: number }[];
+    foods: { id: string; prefix: string; experience: number }[];
     favouriteMultiplier: number;
     feedPerDay: number;
     changeMs: number;
@@ -501,12 +501,52 @@ function partyMascotChoose(nk: nkruntime.Nakama, userId: string, id: unknown, no
     });
 }
 
+function partyMascotFeedItems(food: { prefix: string }, raw: unknown): { [item: string]: number } {
+    if (!raw || typeof raw !== "object" || Array.isArray(raw))
+        throw new Error("bad request");
+    const items: { [item: string]: number } = {};
+    let total = 0;
+    for (const item of Object.keys(raw as object)) {
+        const count = (raw as { [item: string]: unknown })[item];
+        if (item.indexOf(food.prefix) !== 0 || item.length === food.prefix.length || typeof count !== "number" || count !== Math.floor(count) || count < 1)
+            throw new Error("bad request");
+        items[item] = count;
+        total += count;
+    }
+    if (total < 1 || total > 1000)
+        throw new Error("bad request");
+    return items;
+}
+
+function partyMascotEaten(items: { [item: string]: number }, room: number): { [item: string]: number } {
+    const eaten: { [item: string]: number } = {};
+    let left = Math.max(0, room);
+    for (const item of Object.keys(items).sort()) {
+        const take = Math.min(left, items[item]);
+        if (take <= 0)
+            break;
+        eaten[item] = take;
+        left -= take;
+    }
+    return eaten;
+}
+
+function partyMascotFeedRoom(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): number {
+    const situation = partyMascotSituation(nk, userId);
+    const member = partyMascotMember(partyMascotRead(nk, situation.partyId).value, userId, nowUnixMs);
+    return partyMascotFeedLimit(situation) - member.fed;
+}
+
 function partyMascotFeed(nk: nkruntime.Nakama, userId: string, request: { [key: string]: any }, nowUnixMs: number): { [key: string]: any } {
     const food = typeof request.food === "string" ? partyMascotRules().foods.filter((item) => item.id === request.food)[0] : undefined;
-    const amount = request.amount;
-    if (!food || typeof amount !== "number" || amount !== Math.floor(amount) || amount < 1 || amount > 1000)
+    if (!food)
         throw new Error("bad request");
-    return partyMascotAct(nk, userId, nowUnixMs, (value, situation) => {
+    const items = partyMascotEaten(partyMascotFeedItems(food, request.items), partyMascotFeedRoom(nk, userId, nowUnixMs));
+    const amount = Object.keys(items).reduce((sum, item) => sum + items[item], 0);
+    if (amount === 0)
+        throw new Error("the mascot has eaten enough from you today");
+    const receipt = inflowSpendAll(nk, userId, items);
+    return inflowGuard(nk, userId, receipt, () => partyMascotAct(nk, userId, nowUnixMs, (value, situation) => {
         const beast = partyMascotBeast(value.beast);
         if (!beast)
             throw new Error("choose a mascot first");
@@ -528,11 +568,13 @@ function partyMascotFeed(nk: nkruntime.Nakama, userId: string, request: { [key: 
         const feedBonus = 1 + partyTrialTreeValue(situation.levels, rules.treeFeedExperience);
         const cost = 1 + partyTrialTreeValue(situation.levels, rules.treeFeedCost);
         const experience = (portions + hunger) * food.experience * favourite * feedBonus / Math.max(0.1, cost) * partyMascotExperienceScale(situation, value);
+        if (portions < amount)
+            throw new Error("the mascot has eaten enough from you today");
         member.fed += portions;
         value.experience += experience;
         value.bonds[userId] = (value.bonds[userId] || 0) + portions * rules.bond.feed * partyMascotBondScale(value);
-        return { portions: portions, experience: experience, favourite: favourite > 1 };
-    });
+        return { portions: portions, experience: experience, favourite: favourite > 1, items: items };
+    }));
 }
 
 function partyMascotPet(nk: nkruntime.Nakama, userId: string, nowUnixMs: number): { [key: string]: any } {
