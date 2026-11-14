@@ -368,6 +368,8 @@ namespace Game.Core.Content.Items
                 }
                 sets.Add(set);
             }
+            if (root.HasField("partySets"))
+                PartySetReader.Read(root.Field("partySets"), sets, setIds);
             foreach (var affix in affixes)
             {
                 affix.UseTierCount(tiers);

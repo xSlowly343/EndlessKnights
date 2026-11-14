@@ -45,6 +45,8 @@ namespace Game.Core.Party
         private readonly List<Modifier> _mascot = new List<Modifier>();
         private readonly List<Modifier> _rites = new List<Modifier>();
         private readonly List<Modifier> _banner = new List<Modifier>();
+        private readonly List<Modifier> _partySets = new List<Modifier>();
+        private readonly Dictionary<string, int> _partySetCounts = new Dictionary<string, int>();
         private readonly List<string> _crests = new List<string>();
         private readonly Dictionary<string, int> _riteLevels = new Dictionary<string, int>();
         private string _mascotBeast = string.Empty;
@@ -72,7 +74,9 @@ namespace Game.Core.Party
 
         public PartyGrowthLayer Scratch()
         {
-            var copy = new PartyGrowthLayer(_rules, new StatSheet());
+            var copy = new PartyGrowthLayer(_rules, new StatSheet()) { Items = Items };
+            foreach (var pair in _partySetCounts)
+                copy._partySetCounts[pair.Key] = pair.Value;
             copy.InParty = InParty;
             copy._joinedUnixMs = _joinedUnixMs;
             copy.Members = Members;
@@ -106,6 +110,41 @@ namespace Game.Core.Party
         public int MascotLevel => _mascotLevel;
         public double MascotAura { get; private set; }
         public PartyMascotStage? MascotStage { get; private set; }
+
+        public Content.Items.ItemCatalog? Items { get; set; }
+        public IReadOnlyList<Modifier> PartySets => _partySets;
+        public IReadOnlyDictionary<string, int> PartySetCounts => _partySetCounts;
+
+        public void SetPartySets(IReadOnlyDictionary<string, int> counts)
+        {
+            if (!ReferenceEquals(counts, _partySetCounts))
+            {
+                _partySetCounts.Clear();
+                foreach (var pair in counts)
+                {
+                    if (pair.Value > 0)
+                        _partySetCounts[pair.Key] = pair.Value;
+                }
+            }
+            Rebuild();
+        }
+
+        private void BuildPartySets()
+        {
+            _partySets.Clear();
+            if (Items == null)
+                return;
+            foreach (var pair in _partySetCounts)
+            {
+                if (!Items.TryGetSet(pair.Key, out var set) || !set.Party)
+                    continue;
+                foreach (var line in set.PartyBonus)
+                {
+                    var value = line.Kind == ModifierKind.More ? System.Math.Pow(1 + line.Value, pair.Value) - 1 : line.Value * pair.Value;
+                    _partySets.Add(line.WithValue(value));
+                }
+            }
+        }
 
         public IReadOnlyList<string> Crests => _crests;
         public IReadOnlyList<Modifier> Banner => _banner;
@@ -303,6 +342,7 @@ namespace Game.Core.Party
             Capped = false;
             PartyTreeBonus.Build(_rules.Tree, _treeLevels, _treeMajors, Members, _tree);
             BuildRelics();
+            BuildPartySets();
             BuildRites();
             BuildMascot();
             BuildBanner();
@@ -338,6 +378,11 @@ namespace Game.Core.Party
                     if (!IsPartyOnlyLine(line))
                         _applied.Add(line.WithValue(line.Value * Share));
                 }
+                foreach (var line in _partySets)
+                {
+                    if (!IsPartyOnlyLine(line))
+                        _applied.Add(line.WithValue(line.Value * Share));
+                }
                 if (Seals > 0)
                     _applied.Add(new Modifier(CombatStats.Damage, ModifierKind.Increased, Seals * Share));
             }
@@ -354,6 +399,7 @@ namespace Game.Core.Party
             Collect(_relics, stat, ref increased, ref more);
             Collect(_mascot, stat, ref increased, ref more);
             Collect(_rites, stat, ref increased, ref more);
+            Collect(_partySets, stat, ref increased, ref more);
             return System.Math.Max(0, (1 + increased) * more);
         }
 
@@ -366,6 +412,11 @@ namespace Game.Core.Party
                     total += line.Value;
             }
             foreach (var line in _rites)
+            {
+                if (line.Stat == stat && line.Kind == ModifierKind.Flat)
+                    total += line.Value;
+            }
+            foreach (var line in _partySets)
             {
                 if (line.Stat == stat && line.Kind == ModifierKind.Flat)
                     total += line.Value;

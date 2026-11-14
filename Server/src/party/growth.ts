@@ -23,6 +23,7 @@ interface PartyGrowthRules {
     colossus: PartyColossusRules;
     mascot: PartyMascotRules;
     banner: { trial: number[]; colossus: number[]; trials: string[] };
+    partySets: { sets: { id: string; server: { stat: string; kind: string; value: number }[] }[] };
     unlocks: PartyGrowthUnlock[];
 }
 

@@ -258,7 +258,7 @@ namespace Game.Core.Sim
             _raid = new RaidTally(data.Raid, state, _stage, _ghost, Events, hero);
             _clanTree = new ClanTreeBonus(data.ClanTree, hero, state.ClanBonus);
             _mentor = new MentorBonus(data.Mentor, hero, _levels, state);
-            _partyGrowth = new PartyGrowthLayer(data.Party.Growth, hero);
+            _partyGrowth = new PartyGrowthLayer(data.Party.Growth, hero) { Items = data.Items };
             PartyColossus = new PartyColossusMeter(data.Party.Growth.Colossus);
             MascotStrip = new MascotStrip(data.Party.Growth.Mascot, state, _partyGrowth, Events);
             _homeOnly = new[] { _clanTree.Layer, _mentor.Layer, _alchemy.Layer, _museum.Layer, _cooking.Layer, _clanCamp.Layer, _gates.Layer, _chronicle.Layer };
@@ -1005,6 +1005,14 @@ namespace Game.Core.Sim
             _callColossus = 1;
             _callLayer?.Set(System.Array.Empty<Modifier>());
         }
+
+        public void SetPartySets(IReadOnlyDictionary<string, int> counts)
+        {
+            _partyGrowth.SetPartySets(counts);
+            RefreshPeacefulBonus();
+        }
+
+        public IReadOnlyList<string> CollectedPartySets() => _gear.CollectedPartySets();
 
         public void SetPartyBanner(IReadOnlyList<string> crests)
         {

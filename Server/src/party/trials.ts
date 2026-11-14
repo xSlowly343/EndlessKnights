@@ -143,7 +143,7 @@ function partyTrialSituation(nk: nkruntime.Nakama, partyId: string): { ceiling: 
     const levels = partyTreasuryRead(nk, partyId).value.levels;
     return {
         ceiling: partyTrialCeiling(level),
-        tries: partyTrialRules().tries + Math.floor(partyTrialTreeValue(levels, partyTrialRules().extraTries)),
+        tries: partyTrialRules().tries + Math.floor(partyTrialTreeValue(levels, partyTrialRules().extraTries) + partySetsSum(nk, partyId, "trialTries") + 1e-9),
         carry: partyTrialTreeValue(levels, partyTrialRules().carry) > 0
     };
 }

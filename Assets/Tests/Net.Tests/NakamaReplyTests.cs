@@ -744,6 +744,17 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void PartySetsAreReadWithCountsPerSetAndEachMembersCollection()
+        {
+            Assert.That(PartySetsReply.ReportPayload(new[] { "party_common_pot_armor_rare" }), Is.EqualTo("{\"sets\":[\"party_common_pot_armor_rare\"]}"));
+            var reply = PartySetsReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"counts\":{\"party_common_pot_armor_rare\":2},\"yours\":[\"party_common_pot_armor_rare\"],\"members\":[{\"userId\":\"a\",\"name\":\"Ann\",\"sets\":[\"party_common_pot_armor_rare\"]}]}"));
+            Assert.That(reply.Opened, Is.True);
+            Assert.That(reply.Counts["party_common_pot_armor_rare"], Is.EqualTo(2));
+            Assert.That(reply.Yours.Count, Is.EqualTo(1));
+            Assert.That(reply.Members[0].Name, Is.EqualTo("Ann"));
+        }
+
+        [Test]
         public void TheRiftShopIsReadPerRiftWithItsSparksAndWindowCounts()
         {
             Assert.That(RiftShopReply.ViewPayload(1793102400), Is.EqualTo("{\"riftId\":1793102400}"));

@@ -86,7 +86,7 @@ interface PartyColossusSituation {
     partyId: string;
     ceiling: number;
     activeSeconds: number;
-    soften: boolean;
+    soften: number;
     switchOff: boolean;
     noHeal: boolean;
     leader: boolean;
@@ -174,8 +174,8 @@ function partyColossusFactor(value: PartyColossusValue, situation: PartyColossus
         return fallback;
     const rule = partyColossusHardship(id);
     const number = rule && typeof rule[key] === "number" ? rule[key] as number : fallback;
-    const softened = situation.soften && value.mandatory[0] === id;
-    return softened ? 1 + (number - 1) * (1 - partyColossusRules().hardshipSoften) : number;
+    const softened = situation.soften > 0 && value.mandatory[0] === id;
+    return softened ? 1 + (number - 1) * (1 - situation.soften) : number;
 }
 
 function partyColossusFull(value: PartyColossusValue, situation: PartyColossusSituation): number {
@@ -309,10 +309,10 @@ function partyColossusSituation(nk: nkruntime.Nakama, partyId: string, userId: s
         partyId: partyId,
         ceiling: partyColossusCeiling(partyGrowthLevel(growth.experience).level),
         activeSeconds: member && member.day === today ? member.minutes * 60 + member.carry : 0,
-        soften: partyTrialTreeValue(levels, partyColossusRules().soften) !== 0,
+        soften: Math.min(0.9, (partyTrialTreeValue(levels, partyColossusRules().soften) !== 0 ? partyColossusRules().hardshipSoften : 0) - partySetsSum(nk, partyId, "colossusHardship")),
         switchOff: partyTrialTreeValue(levels, partyColossusRules().switchOff) > 0,
         noHeal: partyTrialTreeValue(levels, partyColossusRules().noHeal) > 0,
-        trophyBonus: partyTrialTreeValue(levels, partyColossusRules().treeTrophies),
+        trophyBonus: partyTrialTreeValue(levels, partyColossusRules().treeTrophies) + partySetsSum(nk, partyId, "colossusTrophies"),
         trophyChance: partyTrialTreeValue(levels, partyColossusRules().treeTrophyChance),
         trophyFlat: partyTrialTreeValue(levels, partyColossusRules().treeTrophyFlat),
         mascotPower: mascot.power,
@@ -341,7 +341,7 @@ function partyColossusView(nk: nkruntime.Nakama, partyId: string, value: PartyCo
         ceiling: situation.ceiling, waiting: value.waiting, kills: value.kills,
         mandatory: value.mandatory, optional: value.optional, active: partyColossusActive(value, situation),
         optionalSlots: partyColossusSlots(value), touched: value.touched, disabled: value.disabled, canSwitchOff: situation.switchOff,
-        softened: situation.soften, shield: value.shield, shieldFull: partyColossusShieldFull(value, situation),
+        softened: situation.soften > 0, shield: value.shield, shieldFull: partyColossusShieldFull(value, situation),
         weakClass: partyColossusWeakClass(value, nowUnixMs), night: partyColossusAtNight(nowUnixMs),
         hittersToday: value.hitters.day === today ? value.hitters.ids.length : 0, leader: situation.leader,
         shares: ids.map((id) => ({ userId: id, name: names[id] || "", points: Math.floor(value.shares[id]), share: total > 0 ? value.shares[id] / total : 0 })),

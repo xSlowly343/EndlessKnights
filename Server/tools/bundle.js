@@ -513,6 +513,47 @@ function partyTrialServerRules(growth) {
   };
 }
 
+function partySetsExpand(items) {
+  const scale = items.partySets;
+  if (!scale)
+    return [];
+  const order = ["simple", "fine", "uncommon", "rare", "epic", "legendary", "mythic", "ancient", "rift", "astral", "primordial"];
+  const rank = (name) => order.indexOf(name);
+  const sets = [];
+  for (const line of scale.lines) {
+    const from = line.from ? rank(line.from) : rank(scale.rarities[0]);
+    for (const kind of ["armor", "jewelry"]) {
+      const templates = line[kind];
+      const other = line[kind === "armor" ? "jewelry" : "armor"];
+      scale.rarities.forEach((rarity, index) => {
+        const r = rank(rarity);
+        if (r < from)
+          return;
+        const main = scale.main[index];
+        const bonus = [{ stat: templates.main.stat, kind: templates.main.kind, value: main }];
+        if (r >= rank(scale.secondFrom))
+          bonus.push({ stat: templates.second.stat, kind: templates.second.kind, value: main * scale.secondShare });
+        if (r >= rank(scale.moreFrom))
+          bonus.push({ stat: templates.more.stat, kind: templates.more.kind, value: scale.more[index] });
+        if (r >= rank(scale.moreTwoFrom) && templates.main.kind !== "flat")
+          bonus.push({ stat: templates.main.stat, kind: "more", value: scale.more[index] * scale.moreTwoShare });
+        if (r >= rank(scale.specialFrom)) {
+          const values = templates.special.values || [];
+          const step = r - rank(scale.specialFrom);
+          bonus.push({ stat: templates.special.stat, kind: templates.special.kind, value: values.length > 0 ? values[Math.min(step, values.length - 1)] : main * 0.5 });
+        }
+        if (r >= rank(scale.specialTwoFrom))
+          bonus.push({ stat: other.main.stat, kind: other.main.kind, value: main * 0.5 });
+        sets.push({ id: "party_" + line.id + "_" + kind + "_" + rarity, line: line.id, kind: kind, rarity: rarity, source: line.source, bonus: bonus });
+      });
+    }
+  }
+  return sets;
+}
+
+const partyItems = JSON.parse(fs.readFileSync(path.join(data, "items.json"), "utf8"));
+const partySetList = partySetsExpand(partyItems);
+
 const partyGrowthRules = {
   maxLevel: growth.maxLevel,
   levelBase: growth.levelBase,
@@ -628,6 +669,12 @@ const partyGrowthRules = {
     treeFavourite: partyTrialTreeLines(growth, "mascotFavourite"),
     treeOfflineHit: partyTrialTreeLines(growth, "mascotOfflineHit").concat(partyTrialTreeLines(growth, "mascotColossusDamage")),
     relicExperience: growth.colossus.relics.filter((relic) => relic.stat === "mascotExperience" && !relic.waits).map((relic) => ({ id: relic.id, value: relic.value }))
+  },
+  partySets: {
+    sets: partySetList.map((set) => ({
+      id: set.id,
+      server: set.bonus.filter((line) => ["colossusTrophies", "colossusHardship", "trialTries"].indexOf(line.stat) >= 0)
+    }))
   },
   banner: {
     trial: growth.banner.milestones.trial,
