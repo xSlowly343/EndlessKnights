@@ -1,0 +1,567 @@
+{
+ "frames": [
+  {
+   "filename": "aura-surge 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 1",
+   "frame": {
+    "x": 24,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 2",
+   "frame": {
+    "x": 48,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 3",
+   "frame": {
+    "x": 72,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 4",
+   "frame": {
+    "x": 96,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 5",
+   "frame": {
+    "x": 120,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 6",
+   "frame": {
+    "x": 0,
+    "y": 28,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 7",
+   "frame": {
+    "x": 24,
+    "y": 28,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 8",
+   "frame": {
+    "x": 48,
+    "y": 28,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 9",
+   "frame": {
+    "x": 72,
+    "y": 28,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 10",
+   "frame": {
+    "x": 96,
+    "y": 28,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 11",
+   "frame": {
+    "x": 120,
+    "y": 28,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 12",
+   "frame": {
+    "x": 0,
+    "y": 56,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 13",
+   "frame": {
+    "x": 24,
+    "y": 56,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 14",
+   "frame": {
+    "x": 48,
+    "y": 56,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 15",
+   "frame": {
+    "x": 72,
+    "y": 56,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 16",
+   "frame": {
+    "x": 96,
+    "y": 56,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 17",
+   "frame": {
+    "x": 120,
+    "y": 56,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 18",
+   "frame": {
+    "x": 0,
+    "y": 84,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 19",
+   "frame": {
+    "x": 24,
+    "y": 84,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 20",
+   "frame": {
+    "x": 48,
+    "y": 84,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 21",
+   "frame": {
+    "x": 72,
+    "y": 84,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 22",
+   "frame": {
+    "x": 96,
+    "y": 84,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-surge 23",
+   "frame": {
+    "x": 120,
+    "y": 84,
+    "w": 24,
+    "h": 28
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 24,
+    "h": 28
+   },
+   "sourceSize": {
+    "w": 24,
+    "h": 28
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "aura-surge.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 144,
+   "h": 112
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "aura-surge",
+    "from": 0,
+    "to": 23,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/aura-surge",
+   "name": "Aura surge",
+   "fps": 30,
+   "loop": true,
+   "frames": 24,
+   "frameSize": [
+    24,
+    28
+   ],
+   "pivot": [
+    12,
+    27
+   ],
+   "columns": 6
+  }
+ }
+}

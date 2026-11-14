@@ -1695,5 +1695,358 @@
       ],
       "fps": 30
     }
+  },
+  "auras": {
+    "sigils": {
+      "common": {
+        "file": "Aura_Sigil_Common_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "runedancer": {
+        "file": "Aura_Sigil_Runedancer_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "duelist": {
+        "file": "Aura_Sigil_Duelist_31x7_60f",
+        "width": 31,
+        "height": 7,
+        "frames": 60,
+        "pivot": [
+          15,
+          3
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "windshot": {
+        "file": "Aura_Sigil_Windshot_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "shardcaller": {
+        "file": "Aura_Sigil_Shardcaller_28x10_60f",
+        "width": 28,
+        "height": 10,
+        "frames": 60,
+        "pivot": [
+          14,
+          5
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "alchemist": {
+        "file": "Aura_Sigil_Alchemist_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "minstrel": {
+        "file": "Aura_Sigil_Minstrel_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "lanternbearer": {
+        "file": "Aura_Sigil_Lanternbearer_30x10_60f",
+        "width": 30,
+        "height": 10,
+        "frames": 60,
+        "pivot": [
+          15,
+          5
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "whisperer": {
+        "file": "Aura_Sigil_Whisperer_30x10_60f",
+        "width": 30,
+        "height": 10,
+        "frames": 60,
+        "pivot": [
+          14,
+          5
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "cartomancer": {
+        "file": "Aura_Sigil_Cartomancer_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "herbwitch": {
+        "file": "Aura_Sigil_Herbwitch_29x10_60f",
+        "width": 29,
+        "height": 10,
+        "frames": 60,
+        "pivot": [
+          14,
+          5
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "mothcaller": {
+        "file": "Aura_Sigil_Mothcaller_29x10_60f",
+        "width": 29,
+        "height": 10,
+        "frames": 60,
+        "pivot": [
+          14,
+          5
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "soulbinder": {
+        "file": "Aura_Sigil_Soulbinder_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "ghostcaptain": {
+        "file": "Aura_Sigil_Ghostcaptain_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "golemancer": {
+        "file": "Aura_Sigil_Golemancer_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "clockwright": {
+        "file": "Aura_Sigil_Clockwright_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "sandwalker": {
+        "file": "Aura_Sigil_Sandwalker_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          5
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "dowser": {
+        "file": "Aura_Sigil_Dowser_28x9_60f",
+        "width": 28,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "dreamcatcher": {
+        "file": "Aura_Sigil_Dreamcatcher_29x9_60f",
+        "width": 29,
+        "height": 9,
+        "frames": 60,
+        "pivot": [
+          14,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      }
+    },
+    "motes": {
+      "might": {
+        "file": "Aura_Mote_Might_5x7_36f",
+        "width": 5,
+        "height": 7,
+        "frames": 36,
+        "pivot": [
+          2,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "edge": {
+        "file": "Aura_Mote_Edge_6x6_36f",
+        "width": 6,
+        "height": 6,
+        "frames": 36,
+        "pivot": [
+          2,
+          3
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "hunt": {
+        "file": "Aura_Mote_Hunt_5x5_36f",
+        "width": 5,
+        "height": 5,
+        "frames": 36,
+        "pivot": [
+          2,
+          2
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "flow": {
+        "file": "Aura_Mote_Flow_9x9_36f",
+        "width": 9,
+        "height": 9,
+        "frames": 36,
+        "pivot": [
+          4,
+          4
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "fortune": {
+        "file": "Aura_Mote_Fortune_7x7_36f",
+        "width": 7,
+        "height": 7,
+        "frames": 36,
+        "pivot": [
+          3,
+          3
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "hex": {
+        "file": "Aura_Mote_Hex_5x5_36f",
+        "width": 5,
+        "height": 5,
+        "frames": 36,
+        "pivot": [
+          2,
+          2
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "kin": {
+        "file": "Aura_Mote_Kin_7x7_36f",
+        "width": 7,
+        "height": 7,
+        "frames": 36,
+        "pivot": [
+          3,
+          3
+        ],
+        "fps": 30,
+        "loops": true
+      },
+      "calm": {
+        "file": "Aura_Mote_Calm_6x6_36f",
+        "width": 6,
+        "height": 6,
+        "frames": 36,
+        "pivot": [
+          2,
+          3
+        ],
+        "fps": 30,
+        "loops": true
+      }
+    },
+    "surge": {
+      "file": "Aura_Surge_22x27_24f",
+      "width": 22,
+      "height": 27,
+      "frames": 24,
+      "pivot": [
+        10,
+        26
+      ],
+      "fps": 30,
+      "loops": true
+    },
+    "off": {
+      "file": "Aura_Off_12x13_9f",
+      "width": 12,
+      "height": 13,
+      "frames": 9,
+      "pivot": [
+        5,
+        6
+      ],
+      "fps": 30
+    }
   }
 }

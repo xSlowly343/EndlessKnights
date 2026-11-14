@@ -1,0 +1,1359 @@
+{
+ "frames": [
+  {
+   "filename": "aura-sigil-runedancer 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 1",
+   "frame": {
+    "x": 32,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 2",
+   "frame": {
+    "x": 64,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 3",
+   "frame": {
+    "x": 96,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 4",
+   "frame": {
+    "x": 128,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 5",
+   "frame": {
+    "x": 0,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 6",
+   "frame": {
+    "x": 32,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 7",
+   "frame": {
+    "x": 64,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 8",
+   "frame": {
+    "x": 96,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 9",
+   "frame": {
+    "x": 128,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 10",
+   "frame": {
+    "x": 0,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 11",
+   "frame": {
+    "x": 32,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 12",
+   "frame": {
+    "x": 64,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 13",
+   "frame": {
+    "x": 96,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 14",
+   "frame": {
+    "x": 128,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 15",
+   "frame": {
+    "x": 0,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 16",
+   "frame": {
+    "x": 32,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 17",
+   "frame": {
+    "x": 64,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 18",
+   "frame": {
+    "x": 96,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 19",
+   "frame": {
+    "x": 128,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 20",
+   "frame": {
+    "x": 0,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 21",
+   "frame": {
+    "x": 32,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 22",
+   "frame": {
+    "x": 64,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 23",
+   "frame": {
+    "x": 96,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 24",
+   "frame": {
+    "x": 128,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 25",
+   "frame": {
+    "x": 0,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 26",
+   "frame": {
+    "x": 32,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 27",
+   "frame": {
+    "x": 64,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 28",
+   "frame": {
+    "x": 96,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 29",
+   "frame": {
+    "x": 128,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 30",
+   "frame": {
+    "x": 0,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 31",
+   "frame": {
+    "x": 32,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 32",
+   "frame": {
+    "x": 64,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 33",
+   "frame": {
+    "x": 96,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 34",
+   "frame": {
+    "x": 128,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 35",
+   "frame": {
+    "x": 0,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 36",
+   "frame": {
+    "x": 32,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 37",
+   "frame": {
+    "x": 64,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 38",
+   "frame": {
+    "x": 96,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 39",
+   "frame": {
+    "x": 128,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 40",
+   "frame": {
+    "x": 0,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 41",
+   "frame": {
+    "x": 32,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 42",
+   "frame": {
+    "x": 64,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 43",
+   "frame": {
+    "x": 96,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 44",
+   "frame": {
+    "x": 128,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 45",
+   "frame": {
+    "x": 0,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 46",
+   "frame": {
+    "x": 32,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 47",
+   "frame": {
+    "x": 64,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 48",
+   "frame": {
+    "x": 96,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 49",
+   "frame": {
+    "x": 128,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 50",
+   "frame": {
+    "x": 0,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 51",
+   "frame": {
+    "x": 32,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 52",
+   "frame": {
+    "x": 64,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 53",
+   "frame": {
+    "x": 96,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 54",
+   "frame": {
+    "x": 128,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 55",
+   "frame": {
+    "x": 0,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 56",
+   "frame": {
+    "x": 32,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 57",
+   "frame": {
+    "x": 64,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 58",
+   "frame": {
+    "x": 96,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-runedancer 59",
+   "frame": {
+    "x": 128,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "aura-sigil-runedancer.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 160,
+   "h": 120
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "aura-sigil-runedancer",
+    "from": 0,
+    "to": 59,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/aura-sigil-runedancer",
+   "name": "Aura sigil: runedancer",
+   "fps": 30,
+   "loop": true,
+   "frames": 60,
+   "frameSize": [
+    32,
+    10
+   ],
+   "pivot": [
+    16,
+    5
+   ],
+   "columns": 5
+  }
+ }
+}

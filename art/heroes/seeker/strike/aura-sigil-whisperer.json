@@ -1,0 +1,1359 @@
+{
+ "frames": [
+  {
+   "filename": "aura-sigil-whisperer 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 1",
+   "frame": {
+    "x": 32,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 2",
+   "frame": {
+    "x": 64,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 3",
+   "frame": {
+    "x": 96,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 4",
+   "frame": {
+    "x": 128,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 5",
+   "frame": {
+    "x": 0,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 6",
+   "frame": {
+    "x": 32,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 7",
+   "frame": {
+    "x": 64,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 8",
+   "frame": {
+    "x": 96,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 9",
+   "frame": {
+    "x": 128,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 10",
+   "frame": {
+    "x": 0,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 11",
+   "frame": {
+    "x": 32,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 12",
+   "frame": {
+    "x": 64,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 13",
+   "frame": {
+    "x": 96,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 14",
+   "frame": {
+    "x": 128,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 15",
+   "frame": {
+    "x": 0,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 16",
+   "frame": {
+    "x": 32,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 17",
+   "frame": {
+    "x": 64,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 18",
+   "frame": {
+    "x": 96,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 19",
+   "frame": {
+    "x": 128,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 20",
+   "frame": {
+    "x": 0,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 21",
+   "frame": {
+    "x": 32,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 22",
+   "frame": {
+    "x": 64,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 23",
+   "frame": {
+    "x": 96,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 24",
+   "frame": {
+    "x": 128,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 25",
+   "frame": {
+    "x": 0,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 26",
+   "frame": {
+    "x": 32,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 27",
+   "frame": {
+    "x": 64,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 28",
+   "frame": {
+    "x": 96,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 29",
+   "frame": {
+    "x": 128,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 30",
+   "frame": {
+    "x": 0,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 31",
+   "frame": {
+    "x": 32,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 32",
+   "frame": {
+    "x": 64,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 33",
+   "frame": {
+    "x": 96,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 34",
+   "frame": {
+    "x": 128,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 35",
+   "frame": {
+    "x": 0,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 36",
+   "frame": {
+    "x": 32,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 37",
+   "frame": {
+    "x": 64,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 38",
+   "frame": {
+    "x": 96,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 39",
+   "frame": {
+    "x": 128,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 40",
+   "frame": {
+    "x": 0,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 41",
+   "frame": {
+    "x": 32,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 42",
+   "frame": {
+    "x": 64,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 43",
+   "frame": {
+    "x": 96,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 44",
+   "frame": {
+    "x": 128,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 45",
+   "frame": {
+    "x": 0,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 46",
+   "frame": {
+    "x": 32,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 47",
+   "frame": {
+    "x": 64,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 48",
+   "frame": {
+    "x": 96,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 49",
+   "frame": {
+    "x": 128,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 50",
+   "frame": {
+    "x": 0,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 51",
+   "frame": {
+    "x": 32,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 52",
+   "frame": {
+    "x": 64,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 53",
+   "frame": {
+    "x": 96,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 54",
+   "frame": {
+    "x": 128,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 55",
+   "frame": {
+    "x": 0,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 56",
+   "frame": {
+    "x": 32,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 57",
+   "frame": {
+    "x": 64,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 58",
+   "frame": {
+    "x": 96,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-whisperer 59",
+   "frame": {
+    "x": 128,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "aura-sigil-whisperer.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 160,
+   "h": 120
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "aura-sigil-whisperer",
+    "from": 0,
+    "to": 59,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/aura-sigil-whisperer",
+   "name": "Aura sigil: whisperer",
+   "fps": 30,
+   "loop": true,
+   "frames": 60,
+   "frameSize": [
+    32,
+    10
+   ],
+   "pivot": [
+    16,
+    5
+   ],
+   "columns": 5
+  }
+ }
+}

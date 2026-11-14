@@ -1,0 +1,1359 @@
+{
+ "frames": [
+  {
+   "filename": "aura-sigil-lanternbearer 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 1",
+   "frame": {
+    "x": 32,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 2",
+   "frame": {
+    "x": 64,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 3",
+   "frame": {
+    "x": 96,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 4",
+   "frame": {
+    "x": 128,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 5",
+   "frame": {
+    "x": 0,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 6",
+   "frame": {
+    "x": 32,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 7",
+   "frame": {
+    "x": 64,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 8",
+   "frame": {
+    "x": 96,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 9",
+   "frame": {
+    "x": 128,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 10",
+   "frame": {
+    "x": 0,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 11",
+   "frame": {
+    "x": 32,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 12",
+   "frame": {
+    "x": 64,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 13",
+   "frame": {
+    "x": 96,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 14",
+   "frame": {
+    "x": 128,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 15",
+   "frame": {
+    "x": 0,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 16",
+   "frame": {
+    "x": 32,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 17",
+   "frame": {
+    "x": 64,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 18",
+   "frame": {
+    "x": 96,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 19",
+   "frame": {
+    "x": 128,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 20",
+   "frame": {
+    "x": 0,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 21",
+   "frame": {
+    "x": 32,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 22",
+   "frame": {
+    "x": 64,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 23",
+   "frame": {
+    "x": 96,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 24",
+   "frame": {
+    "x": 128,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 25",
+   "frame": {
+    "x": 0,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 26",
+   "frame": {
+    "x": 32,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 27",
+   "frame": {
+    "x": 64,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 28",
+   "frame": {
+    "x": 96,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 29",
+   "frame": {
+    "x": 128,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 30",
+   "frame": {
+    "x": 0,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 31",
+   "frame": {
+    "x": 32,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 32",
+   "frame": {
+    "x": 64,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 33",
+   "frame": {
+    "x": 96,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 34",
+   "frame": {
+    "x": 128,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 35",
+   "frame": {
+    "x": 0,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 36",
+   "frame": {
+    "x": 32,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 37",
+   "frame": {
+    "x": 64,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 38",
+   "frame": {
+    "x": 96,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 39",
+   "frame": {
+    "x": 128,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 40",
+   "frame": {
+    "x": 0,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 41",
+   "frame": {
+    "x": 32,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 42",
+   "frame": {
+    "x": 64,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 43",
+   "frame": {
+    "x": 96,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 44",
+   "frame": {
+    "x": 128,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 45",
+   "frame": {
+    "x": 0,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 46",
+   "frame": {
+    "x": 32,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 47",
+   "frame": {
+    "x": 64,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 48",
+   "frame": {
+    "x": 96,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 49",
+   "frame": {
+    "x": 128,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 50",
+   "frame": {
+    "x": 0,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 51",
+   "frame": {
+    "x": 32,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 52",
+   "frame": {
+    "x": 64,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 53",
+   "frame": {
+    "x": 96,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 54",
+   "frame": {
+    "x": 128,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 55",
+   "frame": {
+    "x": 0,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 56",
+   "frame": {
+    "x": 32,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 57",
+   "frame": {
+    "x": 64,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 58",
+   "frame": {
+    "x": 96,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-lanternbearer 59",
+   "frame": {
+    "x": 128,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "aura-sigil-lanternbearer.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 160,
+   "h": 120
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "aura-sigil-lanternbearer",
+    "from": 0,
+    "to": 59,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/aura-sigil-lanternbearer",
+   "name": "Aura sigil: lanternbearer",
+   "fps": 30,
+   "loop": true,
+   "frames": 60,
+   "frameSize": [
+    32,
+    10
+   ],
+   "pivot": [
+    16,
+    5
+   ],
+   "columns": 5
+  }
+ }
+}

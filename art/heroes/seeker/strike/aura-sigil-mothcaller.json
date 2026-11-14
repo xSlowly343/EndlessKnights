@@ -1,0 +1,1359 @@
+{
+ "frames": [
+  {
+   "filename": "aura-sigil-mothcaller 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 1",
+   "frame": {
+    "x": 32,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 2",
+   "frame": {
+    "x": 64,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 3",
+   "frame": {
+    "x": 96,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 4",
+   "frame": {
+    "x": 128,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 5",
+   "frame": {
+    "x": 0,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 6",
+   "frame": {
+    "x": 32,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 7",
+   "frame": {
+    "x": 64,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 8",
+   "frame": {
+    "x": 96,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 9",
+   "frame": {
+    "x": 128,
+    "y": 10,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 10",
+   "frame": {
+    "x": 0,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 11",
+   "frame": {
+    "x": 32,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 12",
+   "frame": {
+    "x": 64,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 13",
+   "frame": {
+    "x": 96,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 14",
+   "frame": {
+    "x": 128,
+    "y": 20,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 15",
+   "frame": {
+    "x": 0,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 16",
+   "frame": {
+    "x": 32,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 17",
+   "frame": {
+    "x": 64,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 18",
+   "frame": {
+    "x": 96,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 19",
+   "frame": {
+    "x": 128,
+    "y": 30,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 20",
+   "frame": {
+    "x": 0,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 21",
+   "frame": {
+    "x": 32,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 22",
+   "frame": {
+    "x": 64,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 23",
+   "frame": {
+    "x": 96,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 24",
+   "frame": {
+    "x": 128,
+    "y": 40,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 25",
+   "frame": {
+    "x": 0,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 26",
+   "frame": {
+    "x": 32,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 27",
+   "frame": {
+    "x": 64,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 28",
+   "frame": {
+    "x": 96,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 29",
+   "frame": {
+    "x": 128,
+    "y": 50,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 30",
+   "frame": {
+    "x": 0,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 31",
+   "frame": {
+    "x": 32,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 32",
+   "frame": {
+    "x": 64,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 33",
+   "frame": {
+    "x": 96,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 34",
+   "frame": {
+    "x": 128,
+    "y": 60,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 35",
+   "frame": {
+    "x": 0,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 36",
+   "frame": {
+    "x": 32,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 37",
+   "frame": {
+    "x": 64,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 38",
+   "frame": {
+    "x": 96,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 39",
+   "frame": {
+    "x": 128,
+    "y": 70,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 40",
+   "frame": {
+    "x": 0,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 41",
+   "frame": {
+    "x": 32,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 42",
+   "frame": {
+    "x": 64,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 43",
+   "frame": {
+    "x": 96,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 44",
+   "frame": {
+    "x": 128,
+    "y": 80,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 45",
+   "frame": {
+    "x": 0,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 46",
+   "frame": {
+    "x": 32,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 47",
+   "frame": {
+    "x": 64,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 48",
+   "frame": {
+    "x": 96,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 49",
+   "frame": {
+    "x": 128,
+    "y": 90,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 50",
+   "frame": {
+    "x": 0,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 51",
+   "frame": {
+    "x": 32,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 52",
+   "frame": {
+    "x": 64,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 53",
+   "frame": {
+    "x": 96,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 54",
+   "frame": {
+    "x": 128,
+    "y": 100,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 55",
+   "frame": {
+    "x": 0,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 56",
+   "frame": {
+    "x": 32,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 57",
+   "frame": {
+    "x": 64,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 58",
+   "frame": {
+    "x": 96,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-sigil-mothcaller 59",
+   "frame": {
+    "x": 128,
+    "y": 110,
+    "w": 32,
+    "h": 10
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 32,
+    "h": 10
+   },
+   "sourceSize": {
+    "w": 32,
+    "h": 10
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "aura-sigil-mothcaller.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 160,
+   "h": 120
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "aura-sigil-mothcaller",
+    "from": 0,
+    "to": 59,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/aura-sigil-mothcaller",
+   "name": "Aura sigil: mothcaller",
+   "fps": 30,
+   "loop": true,
+   "frames": 60,
+   "frameSize": [
+    32,
+    10
+   ],
+   "pivot": [
+    16,
+    5
+   ],
+   "columns": 5
+  }
+ }
+}
