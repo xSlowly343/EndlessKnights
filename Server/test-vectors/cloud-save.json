@@ -1,5 +1,5 @@
 {
-  "checksum": "e054639848aff3e6e5d79b6b79ff5a7012e1cf497f54d8e5c0fda57d81a6348c",
+  "checksum": "4092098721366b2aebd0ba0d5434aa3d91863884cc0616d31985f4e868065768",
   "payload": {
     "clock": {
       "bootId": 1,
@@ -485,6 +485,21 @@
       },
       "openedFeatures": [],
       "ownedGems": [],
+      "partyGrowth": {
+        "answeredUnixMs": "0",
+        "crests": [],
+        "inParty": false,
+        "joinedUnixMs": "0",
+        "majors": [],
+        "mascotLevel": 0,
+        "members": 0,
+        "partySets": [],
+        "relics": [],
+        "rites": [],
+        "seenUnixMs": "0",
+        "tree": [],
+        "trialBest": []
+      },
       "peaceful": {
         "activity": null,
         "battleSeconds": 0,

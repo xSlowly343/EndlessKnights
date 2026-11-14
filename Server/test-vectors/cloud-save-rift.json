@@ -1,5 +1,5 @@
 {
-  "checksum": "75d537fd4faef96dc1035e5c55f18605f118c08074cf61a6cd066d24b3959651",
+  "checksum": "c7dfa143f80dd7d3556be135d270a740642f98ae1afa65d9f3360281eabc613a",
   "payload": {
     "clock": {
       "bootId": 1,
@@ -642,6 +642,21 @@
       "ownedGems": [
         "lull"
       ],
+      "partyGrowth": {
+        "answeredUnixMs": "0",
+        "crests": [],
+        "inParty": false,
+        "joinedUnixMs": "0",
+        "majors": [],
+        "mascotLevel": 0,
+        "members": 0,
+        "partySets": [],
+        "relics": [],
+        "rites": [],
+        "seenUnixMs": "0",
+        "tree": [],
+        "trialBest": []
+      },
       "peaceful": {
         "activity": null,
         "battleSeconds": 0,
@@ -1166,6 +1181,21 @@
           },
           "openedFeatures": [],
           "ownedGems": [],
+          "partyGrowth": {
+            "answeredUnixMs": "0",
+            "crests": [],
+            "inParty": false,
+            "joinedUnixMs": "0",
+            "majors": [],
+            "mascotLevel": 0,
+            "members": 0,
+            "partySets": [],
+            "relics": [],
+            "rites": [],
+            "seenUnixMs": "0",
+            "tree": [],
+            "trialBest": []
+          },
           "peaceful": {
             "activity": null,
             "battleSeconds": 0,

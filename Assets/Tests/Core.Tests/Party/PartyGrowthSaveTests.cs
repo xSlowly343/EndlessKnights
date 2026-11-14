@@ -77,8 +77,8 @@ namespace Game.Core.Tests.Party
             var loop = Member();
             loop.SetServerTime(Now + 20 * Hour);
             loop.SetPartyTrials(new[] { 5, 2 });
-            loop.SetServerTime(Now + 40 * Hour);
-            Assert.That(loop.PartyGrowth.InParty, Is.True, "the last answer was twenty hours ago");
+            loop.SetServerTime(Now + 80 * Hour);
+            Assert.That(loop.PartyGrowth.InParty, Is.True, "while the game runs the answers it got stay");
             loop.SetPartyStanding(false, 0, 0, Now + 40 * Hour);
             var back = TestWorld.Loop(state: Reloaded(loop.State));
             Assert.That(back.PartyGrowth.InParty, Is.False);

@@ -877,6 +877,7 @@ namespace Game.Core.Sim
         }
 
         private long _serverUnixMs;
+        private bool _partyFromSave;
 
         private void RestorePartyGrowth()
         {
@@ -887,6 +888,7 @@ namespace Game.Core.Sim
                 return;
             }
             saved.GiveTo(_partyGrowth);
+            _partyFromSave = true;
             RefreshPeacefulBonus();
         }
 
@@ -895,8 +897,9 @@ namespace Game.Core.Sim
             var saved = State.PartyGrowth;
             if (utcUnixMs > saved.SeenUnixMs)
                 saved.SeenUnixMs = utcUnixMs;
-            if (!saved.InParty || saved.FreshFor(_data.Party.Growth.OfflineHours))
+            if (!_partyFromSave || saved.FreshFor(_data.Party.Growth.OfflineHours))
                 return false;
+            _partyFromSave = false;
             saved.Clear();
             _partyGrowth.SetStanding(false, 0, 0, utcUnixMs);
             return true;
@@ -904,6 +907,7 @@ namespace Game.Core.Sim
 
         private void NotePartyAnswer()
         {
+            _partyFromSave = false;
             State.PartyGrowth.Take(_partyGrowth, _serverUnixMs);
             RefreshPeacefulBonus();
         }
