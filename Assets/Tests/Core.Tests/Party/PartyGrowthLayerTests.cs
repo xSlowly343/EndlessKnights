@@ -20,8 +20,8 @@ namespace Game.Core.Tests.Party
         [Test]
         public void TheBasketRulesAreRead()
         {
-            Assert.That(Rules.DamageCap, Is.EqualTo(3));
-            Assert.That(Rules.PeacefulCap, Is.EqualTo(2));
+            Assert.That(Rules.DamageCap, Is.EqualTo(4));
+            Assert.That(Rules.PeacefulCap, Is.EqualTo(2.5));
             Assert.That(Rules.NewcomerShare(0), Is.EqualTo(0.3));
             Assert.That(Rules.NewcomerShare(1), Is.EqualTo(0.6));
             Assert.That(Rules.NewcomerShare(2), Is.EqualTo(1));

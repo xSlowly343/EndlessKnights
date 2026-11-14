@@ -116,8 +116,8 @@
       "reportSlackSeconds": 60
     },
     "basket": {
-      "damageCap": 3,
-      "peacefulCap": 2,
+      "damageCap": 4,
+      "peacefulCap": 2.5,
       "newcomerShares": [0.3, 0.6, 1.0],
       "rejoinHours": 24,
       "kickedRejoinHours": 8
@@ -369,7 +369,7 @@
         {"id": "mammoth", "name": {"ru": "Тень-Мамонт", "en": "Shadow Mammoth"}, "biome": "rift_heart", "favourite": "herb", "aura": [{"stat": "damageVsGuardian", "kind": "increased"}], "call": [{"stat": "enemyRegen", "kind": "more", "value": -1}, {"stat": "bossShield", "kind": "more", "value": -1}], "gestures": ["trumpet", "trunk_swing", "stomp"], "gift": "digSpeed", "branches": [{"id": "glacier", "name": {"ru": "Ледниковый", "en": "Glacier"}}, {"id": "bone", "name": {"ru": "Костяной", "en": "Bone"}}]}
       ]
     },
-    "banner": {"milestones": {"trial": [10, 15, 20], "colossus": [25, 50, 100]}, "values": [0.05, 0.075, 0.1], "peaceful": [0.06, 0.08, 0.1], "trials": {"choir": {"stat": "attackPower", "kind": "increased"}, "relay": {"stat": "roleBuffEffect", "kind": "increased"}, "mirror": {"stat": "critMultiplier", "kind": "increased"}, "silence": {"stat": "attackPower", "kind": "increased", "tags": ["Skill"]}, "pulse": {"stat": "damageVsBoss", "kind": "increased"}, "shields": {"stat": "damageVsGuardian", "kind": "increased"}, "chain": {"stat": "attackPower", "kind": "increased", "when": "InParty"}, "marathon": {"stat": "partyPeaceful", "kind": "flat"}}, "colossus": {"stat": "attackPower", "kind": "increased"}},
+    "banner": {"milestones": {"trial": [10, 15, 20], "colossus": [25, 50, 100]}, "values": [0.08, 0.12, 0.16], "peaceful": [0.1, 0.14, 0.18], "trials": {"choir": {"stat": "attackPower", "kind": "increased"}, "relay": {"stat": "roleBuffEffect", "kind": "increased"}, "mirror": {"stat": "critMultiplier", "kind": "increased"}, "silence": {"stat": "attackPower", "kind": "increased", "tags": ["Skill"]}, "pulse": {"stat": "damageVsBoss", "kind": "increased"}, "shields": {"stat": "damageVsGuardian", "kind": "increased"}, "chain": {"stat": "attackPower", "kind": "increased", "when": "InParty"}, "marathon": {"stat": "partyPeaceful", "kind": "flat"}}, "colossus": {"stat": "attackPower", "kind": "increased"}},
     "unlocks": [
       { "level": 5, "kind": "mascot" },
       { "level": 10, "kind": "colossus" },

@@ -114,7 +114,7 @@ namespace Game.Core.Tests.Ui
             Assert.That(ValueOf(PartyGrowthView.Window(loop.PartyGrowth), "party.view.newcomer"), Is.EqualTo("30%"));
             loop.SetPartyGrowthSources(new[] { new Game.Core.Stats.Modifier(CombatStats.Damage, Game.Core.Stats.ModifierKind.More, 5) });
             loop.SetPartyStanding(true, Now - 10 * Day, 4, Now);
-            Assert.That(ValueOf(PartyGrowthView.Window(loop.PartyGrowth), "party.view.capped"), Is.EqualTo("×3"));
+            Assert.That(ValueOf(PartyGrowthView.Window(loop.PartyGrowth), "party.view.capped"), Is.EqualTo("×4"));
         }
 
         [Test]

@@ -26,10 +26,10 @@ namespace Game.Core.Tests.Party
         public void TwentySevenCrestsFromTrialsAndTheColossus()
         {
             Assert.That(Rules.Crests.Count, Is.EqualTo(27));
-            Assert.That(Rules.Crest("choir_10")!.Modifier.Value, Is.EqualTo(0.05));
-            Assert.That(Rules.Crest("choir_20")!.Modifier.Value, Is.EqualTo(0.1));
+            Assert.That(Rules.Crest("choir_10")!.Modifier.Value, Is.EqualTo(0.08));
+            Assert.That(Rules.Crest("choir_20")!.Modifier.Value, Is.EqualTo(0.16));
             Assert.That(Rules.Crest("marathon_15")!.Modifier.Stat, Is.EqualTo(CombatStats.PartyPeaceful));
-            Assert.That(Rules.Crest("marathon_15")!.Modifier.Value, Is.EqualTo(0.08));
+            Assert.That(Rules.Crest("marathon_15")!.Modifier.Value, Is.EqualTo(0.14));
             Assert.That(Rules.Crest("colossus_100")!.FromColossus, Is.True);
             var growth = TestWorld.Data.Party.Growth;
             Assert.That(Rules.Slots(growth, 39), Is.Zero);
@@ -50,9 +50,9 @@ namespace Game.Core.Tests.Party
             var boss = loop.Hero.Value(new StatId("damageVsBoss"), 1);
             loop.SetPartyBanner(new[] { "choir_20", "pulse_10", "marathon_10", "", "choir_20" });
             Assert.That(loop.PartyGrowth.Crests.Count, Is.EqualTo(3), "empty places and doubles are skipped");
-            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / damage, Is.EqualTo(1.1).Within(1e-9));
-            Assert.That(loop.Hero.Value(new StatId("damageVsBoss"), 1) - boss, Is.EqualTo(0.05 * boss).Within(1e-9));
-            Assert.That(loop.PartyGrowth.Peaceful, Is.EqualTo(0.06).Within(1e-12));
+            Assert.That(loop.Hero.Value(CombatStats.Damage, 1) / damage, Is.EqualTo(1.16).Within(1e-9));
+            Assert.That(loop.Hero.Value(new StatId("damageVsBoss"), 1) - boss, Is.EqualTo(0.08 * boss).Within(1e-9));
+            Assert.That(loop.PartyGrowth.Peaceful, Is.EqualTo(0.1).Within(1e-12));
         }
 
         [Test]
@@ -76,10 +76,10 @@ namespace Game.Core.Tests.Party
             Game.Core.Text.Texts.UseLanguage("ru");
             var loop = Member();
             var gain = PartyGrowthPreview.Of(loop.PartyGrowth, PartyUpgrade.Crest("choir_15"));
-            Assert.That(gain.After.Damage, Is.EqualTo(1.075).Within(1e-9));
+            Assert.That(gain.After.Damage, Is.EqualTo(1.12).Within(1e-9));
             loop.SetPartyBanner(new[] { "choir_15" });
             var lines = Game.Core.Ui.PartyGrowthView.Window(loop.PartyGrowth);
-            Assert.That(lines.Any(line => line.Label == "Гербы знамени" && line.Value == Game.Core.Ui.HeroStatsView.Factor(1.075)), Is.True);
+            Assert.That(lines.Any(line => line.Label == "Гербы знамени" && line.Value == Game.Core.Ui.HeroStatsView.Factor(1.12)), Is.True);
         }
     }
 }
