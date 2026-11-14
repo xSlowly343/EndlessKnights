@@ -879,6 +879,8 @@ namespace Game.Core.Sim
         }
 
         private long _serverUnixMs;
+
+        public long ServerUnixMs => _serverUnixMs;
         private bool _partyFromSave;
 
         private void RestorePartyGrowth()
