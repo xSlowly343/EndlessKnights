@@ -155,6 +155,7 @@ namespace Game.Core.Save
                     ("nodes", WriteIds(state.ClanBonus.Nodes)),
                     ("answeredUnixMs", JsonValue.Of(state.ClanBonus.AnsweredUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))),
                     ("seenUnixMs", JsonValue.Of(state.ClanBonus.SeenUnixMs.ToString(System.Globalization.CultureInfo.InvariantCulture))))),
+                ("partyGrowth", PartyGrowthStateJson.Write(state.PartyGrowth)),
                 ("dungeons", WriteDungeons(state.Dungeons)),
                 ("setCollection", JsonValue.Array(WriteCollection(state.SetCollection))),
                 ("uniquesFound", JsonValue.Array(WriteCollection(state.UniquesFound))),
@@ -486,6 +487,8 @@ namespace Game.Core.Save
             }
             if (node.HasField("clanBonus"))
                 ReadClanBonus(node.Field("clanBonus"), state.ClanBonus);
+            if (node.HasField("partyGrowth"))
+                PartyGrowthStateJson.Read(node.Field("partyGrowth"), state.PartyGrowth);
             if (node.HasField("setCollection"))
             {
                 foreach (var key in node.Field("setCollection").Items())

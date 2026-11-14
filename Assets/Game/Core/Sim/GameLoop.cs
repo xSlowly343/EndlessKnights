@@ -268,6 +268,7 @@ namespace Game.Core.Sim
             _dps = new DpsMeter(data.Combat.Offline, data.Combat.Focus, state);
             _tutorial = new TutorialSystem(data.Tutorial, state, _upgrades);
             _stage.EnsureEnemy();
+            RestorePartyGrowth();
         }
 
         public StatSheet Hero { get; }
@@ -870,20 +871,54 @@ namespace Game.Core.Sim
         public void SetServerTime(long utcUnixMs)
         {
             State.ServerHour = _data.Combat.Conditions.ServerHour(utcUnixMs);
-            if (_partyGrowth.Refresh(utcUnixMs))
+            _serverUnixMs = utcUnixMs;
+            if (ForgetStalePartyGrowth(utcUnixMs) | _partyGrowth.Refresh(utcUnixMs))
                 RefreshPeacefulBonus();
+        }
+
+        private long _serverUnixMs;
+
+        private void RestorePartyGrowth()
+        {
+            var saved = State.PartyGrowth;
+            if (!saved.FreshFor(_data.Party.Growth.OfflineHours))
+            {
+                saved.Clear();
+                return;
+            }
+            saved.GiveTo(_partyGrowth);
+            RefreshPeacefulBonus();
+        }
+
+        private bool ForgetStalePartyGrowth(long utcUnixMs)
+        {
+            var saved = State.PartyGrowth;
+            if (utcUnixMs > saved.SeenUnixMs)
+                saved.SeenUnixMs = utcUnixMs;
+            if (!saved.InParty || saved.FreshFor(_data.Party.Growth.OfflineHours))
+                return false;
+            saved.Clear();
+            _partyGrowth.SetStanding(false, 0, 0, utcUnixMs);
+            return true;
+        }
+
+        private void NotePartyAnswer()
+        {
+            State.PartyGrowth.Take(_partyGrowth, _serverUnixMs);
+            RefreshPeacefulBonus();
         }
 
         public void SetPartyStanding(bool inParty, long joinedUnixMs, int members, long nowUnixMs)
         {
+            _serverUnixMs = System.Math.Max(_serverUnixMs, nowUnixMs);
             _partyGrowth.SetStanding(inParty, joinedUnixMs, members, nowUnixMs);
-            RefreshPeacefulBonus();
+            NotePartyAnswer();
         }
 
         public void SetPartyTree(IReadOnlyDictionary<int, int> levels, IReadOnlyList<string> majors)
         {
             _partyGrowth.SetTree(levels, majors);
-            RefreshPeacefulBonus();
+            NotePartyAnswer();
         }
 
         public int MascotFoodCount(string food)
@@ -938,7 +973,7 @@ namespace Game.Core.Sim
         public void SetPartyMascot(string beast, int level, IReadOnlyDictionary<string, int>? rites = null)
         {
             _partyGrowth.SetMascot(beast, level, rites);
-            RefreshPeacefulBonus();
+            NotePartyAnswer();
         }
 
         private ModifierLayer? _callLayer;
@@ -1009,7 +1044,7 @@ namespace Game.Core.Sim
         public void SetPartySets(IReadOnlyDictionary<string, int> counts)
         {
             _partyGrowth.SetPartySets(counts);
-            RefreshPeacefulBonus();
+            NotePartyAnswer();
         }
 
         public IReadOnlyList<string> CollectedPartySets() => _gear.CollectedPartySets();
@@ -1023,19 +1058,19 @@ namespace Game.Core.Sim
         public void SetPartyBanner(IReadOnlyList<string> crests)
         {
             _partyGrowth.SetBanner(crests);
-            RefreshPeacefulBonus();
+            NotePartyAnswer();
         }
 
         public void SetPartyRelics(IReadOnlyDictionary<string, int> levels)
         {
             _partyGrowth.SetRelics(levels);
-            RefreshPeacefulBonus();
+            NotePartyAnswer();
         }
 
         public void SetPartyTrials(IReadOnlyList<int> bestTiers)
         {
             _partyGrowth.SetTrials(bestTiers);
-            RefreshPeacefulBonus();
+            NotePartyAnswer();
         }
 
         public void SetPartyGrowthSources(IReadOnlyList<Modifier> sources)

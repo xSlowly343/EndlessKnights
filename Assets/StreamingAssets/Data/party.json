@@ -120,7 +120,8 @@
       "peacefulCap": 2.5,
       "newcomerShares": [0.3, 0.6, 1.0],
       "rejoinHours": 24,
-      "kickedRejoinHours": 8
+      "kickedRejoinHours": 8,
+      "offlineHours": 24
     },
     "treasury": {
       "currency": "friendship",

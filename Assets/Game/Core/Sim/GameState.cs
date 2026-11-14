@@ -294,6 +294,7 @@ namespace Game.Core.Sim
         public int CoopHelpPoints => System.Math.Max(MentorCoopPoints, ServerCoopHelpPoints);
         public bool EarlyBookSlot { get; set; }
         public ClanBonusState ClanBonus { get; } = new ClanBonusState();
+        public PartyGrowthSave PartyGrowth { get; } = new PartyGrowthSave();
         public BigNumber EnemyShieldFloor { get; set; }
         public DungeonState Dungeons { get; } = new DungeonState();
         public double IdleHitCarry { get; set; }

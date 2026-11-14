@@ -84,6 +84,7 @@ namespace Game.Core.Party
         public IReadOnlyList<double> NewcomerShares { get; private set; } = FullShare;
         public double RejoinHours { get; private set; }
         public double KickedRejoinHours { get; private set; }
+        public double OfflineHours { get; private set; } = 24;
         public int TreeNodes { get; private set; }
         public int MaxVotes { get; private set; }
         public double FreeResetDays { get; private set; }
@@ -209,6 +210,8 @@ namespace Game.Core.Party
             rules.NewcomerShares = shares;
             rules.RejoinHours = basket.Field("rejoinHours").AsNumber(0, 24 * 30);
             rules.KickedRejoinHours = basket.Field("kickedRejoinHours").AsNumber(0, rules.RejoinHours);
+            if (basket.HasField("offlineHours"))
+                rules.OfflineHours = basket.Field("offlineHours").AsNumber(0, 24 * 30);
         }
     }
 }

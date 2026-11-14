@@ -63,6 +63,7 @@ namespace Game.Core.Party
         }
 
         public bool InParty { get; private set; }
+        public long JoinedUnixMs => _joinedUnixMs;
         public int Members { get; private set; }
         public double Share { get; private set; }
         public double DamageMultiplier { get; private set; } = 1;
