@@ -83,6 +83,20 @@ namespace Game.Core.Sim
         public HerbwitchMechanics Herbwitch => _herbwitch;
         public GolemancerMechanics Golemancer => _golemancer;
         public BigNumber LastTickDamage { get; private set; }
+        private readonly BigNumber[] _tickByKind = new BigNumber[Party.PartyTrialFight.Kinds];
+
+        public BigNumber TickDamage(Party.PartyTrialDamage kind) => _tickByKind[(int)kind];
+
+        public static Party.PartyTrialDamage KindOf(DamageSource source, StatTags tags)
+        {
+            if ((tags & (StatTags.Minion | StatTags.DoT)) != 0)
+                return Party.PartyTrialDamage.Minions;
+            if (source == DamageSource.Mouse || source == DamageSource.Click || (tags & (StatTags.Mouse | StatTags.Click)) != 0)
+                return Party.PartyTrialDamage.Mouse;
+            if (source == DamageSource.Strike || ((tags & StatTags.Strike) != 0 && (tags & StatTags.Skill) == 0))
+                return Party.PartyTrialDamage.Keys;
+            return Party.PartyTrialDamage.Skills;
+        }
 
         public void UseRules(CombatRules rules)
         {
@@ -316,12 +330,15 @@ namespace Game.Core.Sim
             _golemancer.AfterStrike();
         }
 
-        public void DirectHit(BigNumber damage)
+        public void DirectHit(BigNumber damage) => DirectHit(damage, StatTags.None);
+
+        public void DirectHit(BigNumber damage, StatTags tags)
         {
             if (!_state.EnemyAlive || damage.Sign <= 0)
                 return;
             _state.EnemyHp -= damage;
             LastTickDamage += damage;
+            _tickByKind[(int)KindOf(DamageSource.Skill, tags)] += damage;
             NoteDamage(damage);
             _events.Add(GameEvent.Damage(_state.Tick, damage, DamageSource.Skill, HitFlags.None));
             if (_state.EnemyAlive)
@@ -333,6 +350,7 @@ namespace Game.Core.Sim
         public void Tick(in EffectiveInput input)
         {
             LastTickDamage = BigNumber.Zero;
+            System.Array.Clear(_tickByKind, 0, _tickByKind.Length);
             ArmSureCrits();
             if (_state.VulnerabilityTicks > 0 && --_state.VulnerabilityTicks == 0)
                 _state.VulnerabilityShare = 0;
@@ -488,6 +506,7 @@ namespace Game.Core.Sim
             ElementAfterHit(damage);
             NoteDamage(damage);
             LastTickDamage += damage;
+            _tickByKind[(int)KindOf(source, tags)] += damage;
             _events.Add(GameEvent.Damage(_state.Tick, damage, source, flags));
             Splash(damage, tags);
             if (source == DamageSource.Strike)
@@ -672,7 +691,8 @@ namespace Game.Core.Sim
         public double Overcrit(StatTags tags) => System.Math.Min(1, System.Math.Max(0, RawCritChance(tags) - 1));
 
         public double OvercritMultiplier(StatTags tags) =>
-            CritMultiplier(tags) * System.Math.Max(0, 1 + _hero.Value(CombatStats.OvercritMultiplier, 0, tags | StatTags.Crit));
+            CritMultiplier(tags) * System.Math.Max(0, 1 + _hero.Value(CombatStats.OvercritMultiplier, 0, tags | StatTags.Crit))
+            * System.Math.Max(0, _hero.Value(CombatStats.OvercritDamage, 1, tags | StatTags.Crit));
 
         private double RawCritChance(StatTags tags)
         {
@@ -960,7 +980,7 @@ namespace Game.Core.Sim
             var burn = _state.EmberPool * (1.0 / _state.EmberTicks);
             _state.EmberPool -= burn;
             _state.EmberTicks--;
-            DirectHit(burn);
+            DirectHit(burn, StatTags.DoT);
         }
 
         private bool RollDoubleHit(StatTags tags)

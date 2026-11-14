@@ -45,6 +45,8 @@ namespace Game.Core.Sim
         public int BagCount => _state.Weapons.Bag.Count + _state.Drops.Gear.Count;
         public bool BagFull => BagCount >= _rules.BagSize;
 
+        public int BagRoom => System.Math.Max(0, _rules.BagSize - BagCount);
+
         public void UseData(DropRules rules, StageTable stages, ItemCatalog items)
         {
             _rules = rules;
@@ -181,6 +183,59 @@ namespace Game.Core.Sim
                 return CraftResult.Crafted;
             }
             return CraftResult.NotFound;
+        }
+
+        private void RollPartySet(long stage)
+        {
+            if (!PartySetsOpen)
+                return;
+            var dungeon = _state.Dungeons.Active;
+            var source = dungeon != null ? "dungeons" : _state.Rift.Inside ? "rift" : null;
+            if (source == null || !_items.PartySetDrops.TryGetValue(source, out var drop) || !_state.Drops.Rng.Chance(drop.Chance))
+                return;
+            var depth = dungeon != null ? dungeon.Tier : (int)System.Math.Min(int.MaxValue, stage);
+            var rarity = drop.Roll(depth, _state.Drops.Rng.NextDouble());
+            var candidates = new List<SetDef>();
+            foreach (var set in _items.Sets)
+            {
+                if (set.Party && set.PartySource == source && set.Rarity == rarity)
+                    candidates.Add(set);
+            }
+            if (candidates.Count == 0)
+                return;
+            var chosen = candidates[_state.Drops.Rng.NextInt(0, candidates.Count)];
+            var piece = chosen.Pieces[_state.Drops.Rng.NextInt(0, chosen.Pieces.Count)];
+            GivePartySetPiece(chosen.Id, SetDef.PieceName(piece));
+        }
+
+        public bool GivePartySetPiece(string setId, string pieceName)
+        {
+            if (!_items.TryGetSet(setId, out var set) || !set.Party || BagFull)
+                return false;
+            SetPiece? found = null;
+            foreach (var piece in set.Pieces)
+            {
+                if (SetDef.PieceName(piece) == pieceName)
+                    found = piece;
+            }
+            if (found == null)
+                return false;
+            var stage = System.Math.Max(1, _state.RecordStage);
+            if (found.Value.Slot == ItemSlot.Weapon)
+            {
+                var weapon = RollWeapon(OwnType, set.Rarity, stage, _state.Drops.Rng).InSet(set);
+                _weapons.Give(weapon);
+                _gear.NoteFound(set, ItemSlot.Weapon);
+                _state.Drops.ItemsFound++;
+                _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Party, _state.Stage, weapon, null, false, 0)));
+                return true;
+            }
+            var item = _items.RollSetPiece(set, found.Value.Slot, null, set.Rarity, BiomeNumber(stage), _state.Drops.Rng, found.Value.SecondRing);
+            _gear.NoteFound(item);
+            _state.Drops.Gear.Add(item);
+            _state.Drops.ItemsFound++;
+            _events.Add(GameEvent.ForDrop(_state.Tick, new ItemDrop(DropSource.Party, _state.Stage, null, item, false, 0)));
+            return true;
         }
 
         public bool GiveEventPiece(string eventId)
@@ -396,11 +451,14 @@ namespace Game.Core.Sim
 
         public System.Action<long, bool>? GuardianKilled { get; set; }
 
+        public bool PartySetsOpen { get; set; }
+
         public void OnBossDefeated(long stage, EnemyType type, long recordBefore, bool raisesRecord)
         {
             if (!raisesRecord)
             {
                 RollRiftKey(stage, type);
+                RollPartySet(stage);
                 return;
             }
             if (type == EnemyType.Guardian)

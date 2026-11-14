@@ -124,12 +124,14 @@ namespace Game.Core.Sim
             System.Array.Clear(_collectedByRarity, 0, _collectedByRarity.Length);
             foreach (var set in _catalog.Sets)
             {
-                if (Collected(set))
+                if (!set.Party && Collected(set))
                     _collectedByRarity[(int)set.Rarity]++;
             }
             var scale = MasteryScale;
             foreach (var set in _catalog.Sets)
             {
+                if (set.Party)
+                    continue;
                 if (!Collected(set))
                 {
                     if (CarriedFromHome(set))
@@ -206,6 +208,17 @@ namespace Game.Core.Sim
         }
 
         private const double RarityStep = 1.5;
+
+        public IReadOnlyList<string> CollectedPartySets()
+        {
+            var sets = new List<string>();
+            foreach (var set in _catalog.Sets)
+            {
+                if (set.Party && Collected(set))
+                    sets.Add(set.Id);
+            }
+            return sets;
+        }
 
         public uint EchoMask
         {

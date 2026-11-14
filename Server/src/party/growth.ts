@@ -19,6 +19,12 @@ interface PartyGrowthRules {
     kickedRejoinHours: number;
     treasury: PartyTreasuryRules;
     tree: PartyTreeRules;
+    trials: PartyTrialRules;
+    colossus: PartyColossusRules;
+    mascot: PartyMascotRules;
+    banner: { trial: number[]; colossus: number[]; trials: string[] };
+    partySets: PartySetRules;
+    alliance: { helpShare: number; signs: number; proposalMs: number };
     unlocks: PartyGrowthUnlock[];
 }
 
@@ -185,16 +191,22 @@ function partyGrowthReport(nk: nkruntime.Nakama, userId: string, activeSeconds: 
     const group = partyGroupOfUser(nk, userId);
     if (!group)
         throw new Error("not in a party");
-    return partyGrowthChange(nk, group.id, (value) => {
+    let minutes = 0;
+    const view = partyGrowthChange(nk, group.id, (value) => {
         const member = value.members[userId] || { day: 0, minutes: 0, at: 0, carry: 0 };
         value.members[userId] = member;
-        value.experience += partyGrowthMinutes(member, activeSeconds, nowUnixMs) * PartyGrowthServerRules.perActiveMinute;
+        minutes = partyGrowthMinutes(member, activeSeconds, nowUnixMs);
+        value.experience += minutes * PartyGrowthServerRules.perActiveMinute;
         return partyGrowthView(group.id, value, userId, partyMetaOf(group).members.length);
     });
+    partyMascotBattle(nk, group.id, userId, minutes);
+    return view;
 }
 
 function partyGrowthBattle(nk: nkruntime.Nakama, partyId: string, bosses: number, guardians: number): void {
     const rules = PartyGrowthServerRules;
+    partyMascotBosses(nk, partyId, Math.max(0, bosses) + Math.max(0, guardians));
+    partySetBattle(nk, partyId, Math.max(0, bosses) + Math.max(0, guardians));
     partyGrowthAdd(nk, partyId, Math.max(0, bosses) * rules.bossTogether + Math.max(0, guardians) * rules.guardianTogether);
 }
 

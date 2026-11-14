@@ -61,7 +61,13 @@ namespace Game.Core.Content.Items
         public string? Event { get; internal set; }
         public bool RiftOnly { get; internal set; }
         public bool CarriedToRift { get; internal set; }
-        public bool Ordinary => Event == null && !RiftOnly;
+        public bool Ordinary => Event == null && !RiftOnly && !Party;
+        public bool Party => PartyLine.Length > 0;
+        public string PartyLine { get; internal set; } = string.Empty;
+        public string PartyKind { get; internal set; } = string.Empty;
+        public string PartySource { get; internal set; } = string.Empty;
+        public IReadOnlyList<Modifier> PartyBonus { get; internal set; } = System.Array.Empty<Modifier>();
+        public bool AnyWeapon { get; internal set; }
         public IReadOnlyList<Modifier> PerMuseumCollection { get; internal set; } = System.Array.Empty<Modifier>();
         public IReadOnlyList<Modifier> Echo { get; internal set; } = System.Array.Empty<Modifier>();
         public int EchoBit { get; internal set; } = -1;
@@ -73,6 +79,8 @@ namespace Game.Core.Content.Items
 
         public bool AllowsType(string typeId)
         {
+            if (AnyWeapon)
+                return true;
             foreach (var type in WeaponTypes)
             {
                 if (string.Equals(type, typeId, System.StringComparison.Ordinal))
@@ -94,5 +102,7 @@ namespace Game.Core.Content.Items
             setId + ":" + (secondRing && slot == ItemSlot.Ring ? SecondRingKey : ItemSlotNames.Of(slot));
 
         public static string PieceKey(string setId, SetPiece piece) => PieceKey(setId, piece.Slot, piece.SecondRing);
+
+        public static string PieceName(SetPiece piece) => piece.SecondRing && piece.Slot == ItemSlot.Ring ? SecondRingKey : ItemSlotNames.Of(piece.Slot);
     }
 }

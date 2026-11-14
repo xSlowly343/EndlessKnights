@@ -20,8 +20,8 @@ namespace Game.Core.Tests.Party
         [Test]
         public void TheBasketRulesAreRead()
         {
-            Assert.That(Rules.DamageCap, Is.EqualTo(3));
-            Assert.That(Rules.PeacefulCap, Is.EqualTo(2));
+            Assert.That(Rules.DamageCap, Is.EqualTo(4));
+            Assert.That(Rules.PeacefulCap, Is.EqualTo(2.5));
             Assert.That(Rules.NewcomerShare(0), Is.EqualTo(0.3));
             Assert.That(Rules.NewcomerShare(1), Is.EqualTo(0.6));
             Assert.That(Rules.NewcomerShare(2), Is.EqualTo(1));
@@ -98,6 +98,21 @@ namespace Game.Core.Tests.Party
             loop.SetPartyGrowthSources(new[] { new Modifier(CombatStats.PartyPeaceful, ModifierKind.Flat, 1.5) });
             Assert.That(loop.PartyGrowth.Peaceful, Is.EqualTo(Rules.PeacefulCap - 1).Within(1e-9));
             Assert.That(loop.State.PeacefulBonus.Party, Is.EqualTo(Rules.PeacefulCap - 1).Within(1e-9));
+        }
+
+        [Test]
+        public void PassingTheLayersOwnListsKeepsThem()
+        {
+            var loop = TestWorld.Loop();
+            loop.SetPartyStanding(true, Now - 10 * Day, 4, Now);
+            loop.SetPartyTree(new System.Collections.Generic.Dictionary<int, int> { [1] = 2 }, new[] { "party_m20_morning" });
+            var layer = loop.PartyGrowth;
+            layer.SetTree(layer.TreeLevels, layer.TreeMajors);
+            Assert.That(layer.TreeLevels[1], Is.EqualTo(2));
+            Assert.That(layer.TreeMajors, Is.EqualTo(new[] { "party_m20_morning" }));
+            layer.SetMascot("wolf", 10, new System.Collections.Generic.Dictionary<string, int> { ["power_aura"] = 1 });
+            layer.SetMascot("wolf", 11, layer.RiteLevels);
+            Assert.That(layer.RiteLevels["power_aura"], Is.EqualTo(1));
         }
     }
 }

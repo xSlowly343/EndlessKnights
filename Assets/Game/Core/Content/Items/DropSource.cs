@@ -13,5 +13,6 @@ namespace Game.Core.Content.Items
         Dungeon,
         Find,
         Event,
+        Party,
     }
 }

@@ -44,6 +44,8 @@ namespace Game.Sim
                 return RunSupports(data, options);
             if (options.SynergyHours > 0)
                 return SynergyReport.Run(data, folder, profile, options);
+            if (options.PartyGrowthDays > 0)
+                return RunPartyGrowth(data, profile, options);
             if (options.Days > 0)
                 return RunPlayer(data, profile, options);
             if (options.Party != null && options.IdleMembers > 0)
@@ -70,6 +72,59 @@ namespace Game.Sim
                 result.FinalStage, result.HighestStage, StageRecord.Number(result.GoldEarned), result.BossFails, result.Stuck ? ", stuck" : string.Empty,
                 watch.Elapsed.TotalSeconds));
             return 0;
+        }
+
+        private static int RunPartyGrowth(GameData data, BotProfile profile, SimOptions options)
+        {
+            var rate = options.ColossusRate > 0 ? options.ColossusRate : MeasureColossusRate(data, profile, options);
+            var model = new PartyGrowthModel(data, options.Members, options.ActiveHours, rate);
+            var days = model.Run(options.PartyGrowthDays);
+            var output = options.OutFile == null ? Console.Out : new StreamWriter(options.OutFile);
+            output.WriteLine("day,party_level,tree_points,seal_tiers,colossus_tier,relic_levels,mascot_level,crests,uncapped,damage,peaceful,colossus_power,keys,boss,capped");
+            foreach (var day in days)
+            {
+                if (day.Day % 7 != 0 && day.Day != days.Count)
+                    continue;
+                output.WriteLine(string.Format(CultureInfo.InvariantCulture, "{0},{1},{2},{3},{4},{5},{6},{7},{8:0.###},{9:0.###},{10:0.###},{11:0.###},{13:0.###},{14:0.###},{12}",
+                    day.Day, day.PartyLevel, day.TreePoints, day.SealTiers, day.ColossusTier, day.RelicLevels, day.MascotLevel, day.Crests,
+                    day.Uncapped, day.Damage, day.Peaceful, day.ColossusPower, day.Capped ? "yes" : "no", day.Keys, day.Boss));
+            }
+            output.Flush();
+            if (options.OutFile != null)
+                output.Dispose();
+            var last = days[days.Count - 1];
+            Console.Error.WriteLine(string.Format(CultureInfo.InvariantCulture,
+                "{0} members x {1:0.##} h a day, colossus {2:0.#} points/h: day {3} party level {4}, damage x{5:0.##} (x{6:0.##} before the cap), colossus tier {7}",
+                options.Members, options.ActiveHours, rate, last.Day, last.PartyLevel, last.Damage, last.Uncapped, last.ColossusTier));
+            return 0;
+        }
+
+        private static double MeasureColossusRate(GameData data, BotProfile profile, SimOptions options)
+        {
+            var points = 0.0;
+            var hours = 0.0;
+            var direct = new double[4];
+            var background = new double[4];
+            var simulation = new PlayerSimulation(data, profile, options.HeroClass, options.Seed, options.StuckMinutes, options.Path)
+            {
+                Gear = options.Gear,
+                Prepare = loop =>
+                {
+                    loop.SetPartyStanding(true, 1, options.Members, 1);
+                    loop.SetPartyColossusOpen(true);
+                },
+                DayEnded = (day, loop) =>
+                {
+                    loop.PartyColossus.TakePending(direct, background);
+                    if (day < 2)
+                        return;
+                    foreach (var value in background)
+                        points += value;
+                    hours += options.ActiveHours;
+                }
+            };
+            simulation.Run(3, options.ActiveHours);
+            return hours > 0 ? points / hours : 0;
         }
 
         private static int RunPlayer(GameData data, BotProfile profile, SimOptions options)

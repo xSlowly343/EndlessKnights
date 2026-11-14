@@ -13,6 +13,7 @@ namespace Game.Net.Nakama
             Friendship = balances == null ? 0 : (long)NakamaJson.Number(balances, "friendship");
             Seals = balances == null ? 0 : (long)NakamaJson.Number(balances, "seals");
             Crystals = balances == null ? 0 : (long)NakamaJson.Number(balances, "crystals");
+            Oath = balances == null ? 0 : (long)NakamaJson.Number(balances, "oath");
             var today = new List<CoopWalletToday>();
             foreach (var item in NakamaJson.Items(json, "today"))
                 today.Add(new CoopWalletToday(NakamaJson.Text(item, "source"), NakamaJson.Text(item, "currency"), (int)NakamaJson.Number(item, "earned"), (int)NakamaJson.Number(item, "cap")));
@@ -26,6 +27,7 @@ namespace Game.Net.Nakama
         public long Friendship { get; }
         public long Seals { get; }
         public long Crystals { get; }
+        public long Oath { get; }
         public IReadOnlyList<CoopWalletToday> Today { get; }
         public IReadOnlyList<CoopWalletEntry> Ledger { get; }
 

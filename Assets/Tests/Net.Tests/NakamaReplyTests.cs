@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Text;
@@ -631,6 +632,150 @@ namespace Game.Net.Tests
             Assert.That(tree.Majors, Is.EqualTo(new[] { "party_m20_morning" }));
             Assert.That(tree.MajorChangeAt, Is.EqualTo(1763100000000));
             Assert.That(tree.Outcome, Is.EqualTo(PartyResetOutcome.Bought));
+        }
+
+        [Test]
+        public void PartyTrialsAreReadWithBestTiersTriesTheRunAndTheResult()
+        {
+            Assert.That(PartyTrialsReply.StartPayload("choir", 3, new[] { "a", "b" }), Is.EqualTo("{\"trial\":\"choir\",\"tier\":3,\"fighters\":[\"a\",\"b\"]}"));
+            Assert.That(PartyTrialsReply.FinishPayload(true), Is.EqualTo("{\"cleared\":true}"));
+            Assert.That(PartyTrialsReply.MarathonPayload(12), Is.EqualTo("{\"waves\":12}"));
+            var reply = PartyTrialsReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"ceiling\":15,\"carry\":true,\"weekEndsAt\":1763337600000,\"trials\":[{\"id\":\"choir\",\"open\":true,\"best\":4,\"triesLeft\":3},{\"id\":\"relay\",\"open\":false,\"best\":2,\"triesLeft\":5}],\"run\":{\"trial\":\"choir\",\"tier\":5,\"by\":\"a\",\"fighters\":[\"a\",\"b\"],\"at\":1763100000000,\"until\":1763100300000},\"result\":{\"trial\":\"choir\",\"tier\":4,\"best\":4,\"firstClear\":true,\"signs\":80,\"experience\":20,\"carried\":[\"relay\"]}}"));
+            Assert.That(reply.Opened, Is.True);
+            Assert.That(reply.Ceiling, Is.EqualTo(15));
+            Assert.That(reply.Carry, Is.True);
+            Assert.That(reply.WeekEndsAt, Is.EqualTo(1763337600000));
+            Assert.That(reply.Trials[0].Open, Is.True);
+            Assert.That(reply.Trials[1].TriesLeft, Is.EqualTo(5));
+            Assert.That(reply.Best, Is.EqualTo(new[] { 4, 2 }));
+            Assert.That(reply.Run!.Fighters, Is.EqualTo(new[] { "a", "b" }));
+            Assert.That(reply.Run.Until, Is.EqualTo(1763100300000));
+            Assert.That(reply.Result!.FirstClear, Is.True);
+            Assert.That(reply.Result.Signs, Is.EqualTo(80));
+            Assert.That(reply.Result.Carried, Is.EqualTo(new[] { "relay" }));
+            var empty = PartyTrialsReply.From(NakamaJson.Parse("{\"run\":null,\"result\":null}"));
+            Assert.That(empty.Run, Is.Null);
+            Assert.That(empty.Result, Is.Null);
+            Assert.That(empty.Trials, Is.Empty);
+        }
+
+        [Test]
+        public void ThePartyColossusIsReadWithTierHpTheWeeklyTableAndWhatWasAccepted()
+        {
+            Assert.That(PartyColossusReply.ReportPayload(new[] { 120.5, 0, 3, 0 }, new[] { 1.25, 0, 0, 0 }, 0, 3600, 4),
+                Is.EqualTo("{\"direct\":[120.5,0,3,0],\"background\":[1.25,0,0,0],\"offlinePoints\":0,\"offlineSeconds\":3600,\"heroClass\":4}"));
+            Assert.That(PartyColossusReply.ChoosePayload(new[] { "night", "rift" }), Is.EqualTo("{\"ids\":[\"night\",\"rift\"]}"));
+            Assert.That(PartyColossusReply.SwitchOffPayload("carapace"), Is.EqualTo("{\"id\":\"carapace\"}"));
+            var hard = PartyColossusReply.From(NakamaJson.Parse("{\"mandatory\":[\"carapace\"],\"optional\":[\"rift\"],\"active\":[\"carapace\"],\"optionalSlots\":1,\"touched\":true,\"disabled\":\"\",\"canSwitchOff\":true,\"softened\":true,\"shield\":10,\"shieldFull\":50,\"weakClass\":7,\"night\":true,\"hittersToday\":2,\"leader\":true}"));
+            Assert.That(hard.Mandatory, Is.EqualTo(new[] { "carapace" }));
+            Assert.That(hard.Optional, Is.EqualTo(new[] { "rift" }));
+            Assert.That(hard.Active, Is.EqualTo(new[] { "carapace" }));
+            Assert.That(hard.OptionalSlots, Is.EqualTo(1));
+            Assert.That(hard.CanSwitchOff && hard.Softened && hard.Night && hard.Leader && hard.Touched, Is.True);
+            Assert.That(hard.ShieldFull, Is.EqualTo(50));
+            Assert.That(hard.WeakClass, Is.EqualTo(7));
+            Assert.That(hard.HittersToday, Is.EqualTo(2));
+            Assert.That(PartyColossusReply.RelicPayload("colossus_fang"), Is.EqualTo("{\"id\":\"colossus_fang\"}"));
+            var relics = PartyColossusReply.From(NakamaJson.Parse("{\"trophies\":42,\"relics\":{\"colossus_fang\":3,\"hunt_horn\":1},\"relicsOpen\":2,\"best\":5,\"topLastWeek\":\"a\",\"accepted\":{\"signs\":50,\"weekly\":true}}"));
+            Assert.That(relics.Trophies, Is.EqualTo(42));
+            Assert.That(relics.Relics["colossus_fang"], Is.EqualTo(3));
+            Assert.That(relics.RelicsOpen, Is.EqualTo(2));
+            Assert.That(relics.Best, Is.EqualTo(5));
+            Assert.That(relics.TopLastWeek, Is.EqualTo("a"));
+            Assert.That(relics.Accepted!.Signs, Is.EqualTo(50));
+            Assert.That(relics.Accepted.Weekly, Is.True);
+            var reply = PartyColossusReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"tier\":3,\"hp\":7000,\"hpFull\":31537.5,\"ceiling\":10,\"waiting\":false,\"kills\":2,\"shares\":[{\"userId\":\"a\",\"name\":\"Ann\",\"points\":900,\"share\":0.75}],\"yours\":900,\"reportSeconds\":300,\"accepted\":{\"live\":400,\"offline\":100,\"counted\":450,\"killed\":[2]}}"));
+            Assert.That(reply.Opened, Is.True);
+            Assert.That(reply.Tier, Is.EqualTo(3));
+            Assert.That(reply.HpShare, Is.EqualTo(7000 / 31537.5).Within(1e-12));
+            Assert.That(reply.Kills, Is.EqualTo(2));
+            Assert.That(reply.Shares[0].Name, Is.EqualTo("Ann"));
+            Assert.That(reply.Shares[0].Share, Is.EqualTo(0.75));
+            Assert.That(reply.ReportSeconds, Is.EqualTo(300));
+            Assert.That(reply.Accepted!.Live, Is.EqualTo(400));
+            Assert.That(reply.Accepted.Killed, Is.EqualTo(new[] { 2 }));
+            Assert.That(reply.Accepted.Counted, Is.EqualTo(450));
+            Assert.That(PartyColossusReply.From(NakamaJson.Parse("{\"accepted\":null}")).Accepted, Is.Null);
+        }
+
+        [Test]
+        public void ThePartyMascotIsReadWithItsLevelLookBondsAndFeeding()
+        {
+            Assert.That(PartyMascotReply.ChoosePayload("wolf"), Is.EqualTo("{\"beast\":\"wolf\"}"));
+            Assert.That(PartyMascotReply.FeedPayload("fish", 3), Is.EqualTo("{\"food\":\"fish\",\"amount\":3}"));
+            Assert.That(PartyMascotReply.BranchPayload("stone"), Is.EqualTo("{\"branch\":\"stone\"}"));
+            Assert.That(PartyMascotReply.LookPayload("rift", new Dictionary<string, string> { ["back"] = "blanket" }), Is.EqualTo("{\"coat\":\"rift\",\"gear\":{\"back\":\"blanket\"}}"));
+            Assert.That(PartyMascotReply.LookPayload(null, null), Is.EqualTo("{}"));
+            var reply = PartyMascotReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"leader\":true,\"beast\":\"wolf\",\"experience\":700,\"level\":2,\"into\":200,\"need\":590,\"stage\":\"cub\",\"temper\":\"brave\",\"branch\":\"\",\"branchOpen\":false,\"votes\":{\"a\":\"ash\"},\"coat\":\"common\",\"coats\":[\"common\",\"rift\"],\"gear\":{\"back\":\"blanket\"},\"gearOwned\":[\"blanket\"],\"changeAt\":1765000000000,\"feedLeft\":17,\"petsLeft\":2,\"bonds\":[{\"userId\":\"a\",\"name\":\"Ann\",\"bond\":250,\"hearts\":2}],\"yourBond\":250,\"yourHearts\":2,\"accepted\":{\"portions\":3,\"experience\":30,\"favourite\":true}}"));
+            Assert.That(reply.Beast, Is.EqualTo("wolf"));
+            Assert.That(reply.Level, Is.EqualTo(2));
+            Assert.That(reply.Need, Is.EqualTo(590));
+            Assert.That(reply.Temper, Is.EqualTo("brave"));
+            Assert.That(reply.Votes["a"], Is.EqualTo("ash"));
+            Assert.That(reply.Coats, Is.EqualTo(new[] { "common", "rift" }));
+            Assert.That(reply.Gear["back"], Is.EqualTo("blanket"));
+            Assert.That(reply.FeedLeft, Is.EqualTo(17));
+            Assert.That(reply.Bonds[0].Hearts, Is.EqualTo(2));
+            Assert.That(reply.FedPortions, Is.EqualTo(3));
+            Assert.That(reply.FedFavourite, Is.True);
+            Assert.That(PartyMascotReply.From(NakamaJson.Parse("{\"accepted\":null}")).FedPortions, Is.Zero);
+            Assert.That(PartyMascotReply.RitePayload("power_aura"), Is.EqualTo("{\"id\":\"power_aura\"}"));
+            Assert.That(PartyMascotReply.ActionsPayload(1234.567), Is.EqualTo("{\"actions\":1234.57}"));
+            var rites = PartyMascotReply.From(NakamaJson.Parse("{\"held\":\"pets\",\"trials\":[{\"id\":\"pets\",\"stage\":\"youngling\",\"need\":10,\"count\":4,\"done\":false}],\"rites\":{\"power_aura\":2},\"ritePoints\":1,\"riteMaxRank\":3,\"riteResetAt\":1765000000000,\"favourite\":\"fish\",\"gauge\":750,\"gaugeFull\":1500,\"callId\":4,\"callPending\":true,\"accepted\":{\"call\":true,\"calls\":1}}"));
+            Assert.That(rites.Held, Is.EqualTo("pets"));
+            Assert.That(rites.Trials[0].Count, Is.EqualTo(4));
+            Assert.That(rites.Rites["power_aura"], Is.EqualTo(2));
+            Assert.That(rites.RitePoints, Is.EqualTo(1));
+            Assert.That(rites.Favourite, Is.EqualTo("fish"));
+            Assert.That(rites.GaugeShare, Is.EqualTo(0.5));
+            Assert.That(rites.CallPending && rites.Call, Is.True);
+            Assert.That(rites.Calls, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void ThePartyBannerIsReadWithItsPlacesAndEarnedCrests()
+        {
+            Assert.That(PartyBannerReply.SetPayload(1, "choir_15"), Is.EqualTo("{\"slot\":1,\"crest\":\"choir_15\"}"));
+            var reply = PartyBannerReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"leader\":true,\"slots\":[\"choir_15\",\"\"],\"earned\":[\"choir_10\",\"choir_15\"]}"));
+            Assert.That(reply.Opened && reply.Leader, Is.True);
+            Assert.That(reply.Slots, Is.EqualTo(new[] { "choir_15", "" }));
+            Assert.That(reply.Placed, Is.EqualTo(new[] { "choir_15" }));
+            Assert.That(reply.Earned.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void PartySetsAreReadWithCountsPerSetAndEachMembersCollection()
+        {
+            Assert.That(PartySetsReply.ReportPayload(new[] { "party_common_pot_armor_rare" }), Is.EqualTo("{\"sets\":[\"party_common_pot_armor_rare\"]}"));
+            var reply = PartySetsReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"counts\":{\"party_common_pot_armor_rare\":2},\"yours\":[\"party_common_pot_armor_rare\"],\"members\":[{\"userId\":\"a\",\"name\":\"Ann\",\"sets\":[\"party_common_pot_armor_rare\"]}]}"));
+            Assert.That(reply.Opened, Is.True);
+            Assert.That(reply.Counts["party_common_pot_armor_rare"], Is.EqualTo(2));
+            Assert.That(reply.Yours.Count, Is.EqualTo(1));
+            Assert.That(reply.Members[0].Name, Is.EqualTo("Ann"));
+            Assert.That(PartySetDropsReply.ClaimPayload(3), Is.EqualTo("{\"room\":3}"));
+            var drops = PartySetDropsReply.From(NakamaJson.Parse("{\"drops\":[{\"set\":\"party_common_pot_armor_rare\",\"piece\":\"helmet\",\"source\":\"battle\"}],\"left\":2}"));
+            Assert.That(drops.Drops[0].Piece, Is.EqualTo("helmet"));
+            Assert.That(drops.Left, Is.EqualTo(2));
+            Assert.That(PartySetCraftReply.CraftPayload("party_common_pot_armor_rare", "ring_right"), Is.EqualTo("{\"set\":\"party_common_pot_armor_rare\",\"piece\":\"ring_right\"}"));
+            var craft = PartySetCraftReply.From(NakamaJson.Parse("{\"set\":\"party_common_pot_armor_rare\",\"piece\":\"helmet\",\"cost\":20,\"oath\":40}"));
+            Assert.That(craft.Cost, Is.EqualTo(20));
+            Assert.That(craft.Oath, Is.EqualTo(40));
+        }
+
+        [Test]
+        public void ThePartyAllianceIsReadWithTheAllyProposalsAndWeeklyHelp()
+        {
+            Assert.That(PartyAllianceReply.ProposePayload("ABC123"), Is.EqualTo("{\"code\":\"ABC123\"}"));
+            Assert.That(PartyAllianceReply.AnswerPayload("g2", true), Is.EqualTo("{\"partyId\":\"g2\",\"accept\":true}"));
+            var reply = PartyAllianceReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"leader\":true,\"ally\":{\"partyId\":\"g2\",\"name\":\"Wolves\",\"level\":61,\"members\":3},\"since\":1763000000000,\"incoming\":[{\"partyId\":\"g3\",\"name\":\"Owls\",\"level\":60,\"members\":2}],\"outgoing\":null,\"helpReady\":true,\"helpPoints\":500,\"result\":{\"points\":500,\"killed\":[],\"signs\":50}}"));
+            Assert.That(reply.Ally!.Name, Is.EqualTo("Wolves"));
+            Assert.That(reply.Ally.Level, Is.EqualTo(61));
+            Assert.That(reply.Incoming[0].PartyId, Is.EqualTo("g3"));
+            Assert.That(reply.Outgoing, Is.Null);
+            Assert.That(reply.HelpReady, Is.True);
+            Assert.That(reply.HelpPoints, Is.EqualTo(500));
+            Assert.That(reply.SentPoints, Is.EqualTo(500));
+            Assert.That(reply.Signs, Is.EqualTo(50));
         }
 
         [Test]

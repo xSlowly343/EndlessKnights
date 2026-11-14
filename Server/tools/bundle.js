@@ -469,12 +469,91 @@ if (chests.currency !== "crystals" || !walletRules.currencies.includes(chests.cu
 riftRules.shopCurrency = chests.currency;
 
 const growth = party.growth;
+if (!walletRules.sources.some((source) => source.id === growth.colossus.weekly.source))
+  throw new Error("party.json: the colossus weekly reward needs wallet source " + growth.colossus.weekly.source);
 if (!walletRules.currencies.includes(growth.treasury.currency))
   throw new Error("party.json: the party treasury currency is not a wallet currency");
 if (!(growth.treasury.nodes >= 1) || !(growth.treasury.maxVotes >= 1) || !(growth.treasury.resetFeeShare >= 0 && growth.treasury.resetFeeShare < 1) || !(growth.treasury.resetVoteHours > 0))
   throw new Error("party.json: party treasury limits are out of range");
 if (growth.tree.nodes.length !== growth.treasury.nodes)
   throw new Error("party.json: the party tree has " + growth.tree.nodes.length + " nodes, the treasury votes on " + growth.treasury.nodes);
+function partyTrialTreeLines(growth, stat) {
+  const found = [];
+  growth.tree.nodes.forEach((node, index) => {
+    [["a", 1], ["b", 3], ["c", 5]].forEach(([part, rank]) => {
+      for (const line of node[part] || [])
+        if (line.stat === stat && !line.waits)
+          found.push({ node: index + 1, rank: rank, value: line.value, part: part });
+    });
+  });
+  return found;
+}
+
+function partyTrialServerRules(growth) {
+  const trials = growth.trials;
+  return {
+    perWeek: trials.perWeek,
+    tries: trials.tries,
+    minFighters: trials.minFighters,
+    maxTier: trials.maxTier,
+    ceilingBase: trials.ceilingBase,
+    ceilingStep: trials.ceilingStep,
+    firstClearSigns: trials.firstClearSigns,
+    experiencePerTier: trials.experiencePerTier,
+    minMs: trials.minSeconds * 1000,
+    slackMs: trials.slackSeconds * 1000,
+    list: trials.list.map((trial) => ({
+      id: trial.id,
+      marathon: trial.rule === "marathon",
+      ms: trial.seconds * 1000,
+      waves: trial.rule === "marathon" ? Math.floor(trial.seconds / trial.waveSeconds + 1e-9) : 0
+    })),
+    extraTries: partyTrialTreeLines(growth, "trialTries"),
+    carry: partyTrialTreeLines(growth, "trialCarry")
+  };
+}
+
+function partySetsExpand(items) {
+  const scale = items.partySets;
+  if (!scale)
+    return [];
+  const order = ["simple", "fine", "uncommon", "rare", "epic", "legendary", "mythic", "ancient", "rift", "astral", "primordial"];
+  const rank = (name) => order.indexOf(name);
+  const sets = [];
+  for (const line of scale.lines) {
+    const from = line.from ? rank(line.from) : rank(scale.rarities[0]);
+    for (const kind of ["armor", "jewelry"]) {
+      const templates = line[kind];
+      const other = line[kind === "armor" ? "jewelry" : "armor"];
+      scale.rarities.forEach((rarity, index) => {
+        const r = rank(rarity);
+        if (r < from)
+          return;
+        const main = scale.main[index];
+        const bonus = [{ stat: templates.main.stat, kind: templates.main.kind, value: main }];
+        if (r >= rank(scale.secondFrom))
+          bonus.push({ stat: templates.second.stat, kind: templates.second.kind, value: main * scale.secondShare });
+        if (r >= rank(scale.moreFrom))
+          bonus.push({ stat: templates.more.stat, kind: templates.more.kind, value: scale.more[index] });
+        if (r >= rank(scale.moreTwoFrom) && templates.main.kind !== "flat")
+          bonus.push({ stat: templates.main.stat, kind: "more", value: scale.more[index] * scale.moreTwoShare });
+        if (r >= rank(scale.specialFrom)) {
+          const values = templates.special.values || [];
+          const step = r - rank(scale.specialFrom);
+          bonus.push({ stat: templates.special.stat, kind: templates.special.kind, value: values.length > 0 ? values[Math.min(step, values.length - 1)] : main * 0.5 });
+        }
+        if (r >= rank(scale.specialTwoFrom))
+          bonus.push({ stat: other.main.stat, kind: other.main.kind, value: main * 0.5 });
+        sets.push({ id: "party_" + line.id + "_" + kind + "_" + rarity, line: line.id, kind: kind, rarity: rarity, source: line.source, bonus: bonus, pieces: scale.pieces[kind] });
+      });
+    }
+  }
+  return sets;
+}
+
+const partyItems = JSON.parse(fs.readFileSync(path.join(data, "items.json"), "utf8"));
+const partySetList = partySetsExpand(partyItems);
+
 const partyGrowthRules = {
   maxLevel: growth.maxLevel,
   levelBase: growth.levelBase,
@@ -511,6 +590,105 @@ const partyGrowthRules = {
       prices: node.a.filter((line) => line.price !== undefined).map((line) => ({ basisPoints: Math.round(line.price * 10000), rows: line.rows }))
     })),
     majors: growth.tree.majors.map((slot) => ({ at: slot.at, options: slot.options.map((option) => option.id) }))
+  },
+  trials: partyTrialServerRules(growth),
+  colossus: {
+    hpBase: growth.colossus.hp.base,
+    hpGrowth: growth.colossus.hp.growth,
+    ceilingBase: growth.colossus.ceilingBase,
+    ceilingStep: growth.colossus.ceilingStep,
+    maxPointsPerSecond: growth.colossus.maxPointsPerSecond,
+    maxOfflinePointsPerSecond: growth.colossus.maxOfflinePointsPerSecond,
+    reportSeconds: growth.colossus.reportSeconds,
+    experiencePerPercent: growth.colossus.experiencePerPercent,
+    maxHardships: growth.colossus.maxHardships,
+    mandatory: growth.colossus.mandatory.map((step) => ({ upTo: step.upTo || 0, min: step.min, max: step.max })),
+    optionalMax: growth.colossus.optionalMax,
+    optionalTrophyBonus: growth.colossus.optionalTrophyBonus,
+    hardshipSoften: growth.colossus.hardshipSoften,
+    logSize: growth.colossus.logSize,
+    classes: Object.keys(party.search.classRoles).length,
+    hardships: growth.colossus.hardships.map((hardship) => {
+      const numbers = Object.assign({}, hardship);
+      delete numbers.name;
+      return numbers;
+    }),
+    trophyBase: growth.colossus.trophies.base,
+    trophyPerTiers: growth.colossus.trophies.perTiers,
+    signsPerTier: growth.colossus.trophies.signsPerTier,
+    relicEvery: growth.colossus.relicEvery,
+    relicMaxLevel: growth.colossus.relicMaxLevel,
+    relicCost: growth.colossus.relicCost,
+    weeklyMinShare: growth.colossus.weekly.minShare,
+    weeklySource: growth.colossus.weekly.source,
+    relics: growth.colossus.relics.map((relic) => ({ id: relic.id, stat: relic.stat, value: relic.value, works: !relic.waits })),
+    treeTrophies: partyTrialTreeLines(growth, "colossusTrophies").concat(partyTrialTreeLines(growth, "colossusLoot")),
+    treeTrophyChance: partyTrialTreeLines(growth, "colossusTrophyChance"),
+    treeTrophyFlat: partyTrialTreeLines(growth, "colossusTrophyFlat"),
+    treeSigns: partyTrialTreeLines(growth, "signsColossus"),
+    soften: partyTrialTreeLines(growth, "colossusHardship"),
+    switchOff: partyTrialTreeLines(growth, "colossusHardshipOff"),
+    noHeal: partyTrialTreeLines(growth, "colossusNoHeal")
+  },
+  mascot: {
+    maxLevel: growth.mascot.maxLevel,
+    levelBase: growth.mascot.levelBase,
+    levelStep: growth.mascot.levelStep,
+    perMinute: growth.mascot.perMinute,
+    stages: growth.mascot.stages.map((stage) => ({ from: stage.from, id: stage.id })),
+    branchFrom: growth.mascot.branchFrom,
+    foods: growth.mascot.foods.map((food) => ({ id: food.id, experience: food.experience })),
+    favouriteMultiplier: growth.mascot.favouriteMultiplier,
+    feedPerDay: growth.mascot.feedPerDay,
+    changeMs: growth.mascot.changeDays * 86400000,
+    changeKeep: growth.mascot.changeKeep,
+    tempers: growth.mascot.tempers,
+    bond: growth.mascot.bond,
+    coats: growth.mascot.coats.map((coat) => ({ id: coat.id, partyLevel: coat.partyLevel || 0, trialTier: coat.trialTier || 0, colossusKills: coat.colossusKills || 0, event: !!coat.event })),
+    gear: growth.mascot.gear.map((item) => ({ id: item.id, slot: item.slot, level: item.level || 0, colossusTier: item.colossusTier || 0 })),
+    beasts: growth.mascot.beasts.map((beast) => ({ id: beast.id, favourite: beast.favourite, branches: beast.branches.map((branch) => branch.id) })),
+    treeExperience: partyTrialTreeLines(growth, "mascotExperience"),
+    treeFeedExperience: partyTrialTreeLines(growth, "mascotFeedExperience"),
+    treeFeeds: partyTrialTreeLines(growth, "mascotFeedsPerDay"),
+    treeFeedCost: partyTrialTreeLines(growth, "mascotFeedCost"),
+    treeStageEarly: partyTrialTreeLines(growth, "mascotStageEarly"),
+    rites: growth.mascot.rites.branches.map((branch) => branch.nodes.map((node) => ({ id: node.id, stat: node.stat, value: node.value }))).reduce((all, nodes) => all.concat(nodes), []),
+    riteEvery: growth.mascot.rites.pointEvery,
+    riteMaxRank: growth.mascot.rites.maxRank,
+    riteSignsPerRank: growth.mascot.rites.signsPerRank,
+    riteResetMs: growth.mascot.rites.freeResetDays * 86400000,
+    call: growth.mascot.call,
+    trials: growth.mascot.trials.map((trial) => ({ stage: trial.stage, id: trial.id, need: trial.need })),
+    offlineShare: growth.mascot.offline.share,
+    offlineMaxHours: growth.mascot.offline.maxHours,
+    treeCallGain: partyTrialTreeLines(growth, "mascotCallGain"),
+    treeRiteCost: partyTrialTreeLines(growth, "mascotRiteCost"),
+    treeMinorRites: partyTrialTreeLines(growth, "mascotMinorRites"),
+    treeRiteLevels: partyTrialTreeLines(growth, "mascotRiteLevels"),
+    treeHunger: partyTrialTreeLines(growth, "mascotHunger"),
+    treeFavourite: partyTrialTreeLines(growth, "mascotFavourite"),
+    treeOfflineHit: partyTrialTreeLines(growth, "mascotOfflineHit").concat(partyTrialTreeLines(growth, "mascotColossusDamage")),
+    relicExperience: growth.colossus.relics.filter((relic) => relic.stat === "mascotExperience" && !relic.waits).map((relic) => ({ id: relic.id, value: relic.value }))
+  },
+  partySets: {
+    drops: partyItems.partySets.drops,
+    sourceOf: partyItems.partySets.sourceOf || {},
+    craft: partyItems.partySets.craft,
+    sets: partySetList.map((set) => ({
+      id: set.id,
+      line: set.line,
+      kind: set.kind,
+      rarity: set.rarity,
+      source: set.source,
+      pieces: set.pieces,
+      server: set.bonus.filter((line) => ["colossusTrophies", "colossusHardship", "trialTries"].indexOf(line.stat) >= 0)
+    }))
+  },
+  alliance: { helpShare: growth.alliance.helpShare, signs: growth.alliance.signs, proposalMs: growth.alliance.proposalHours * 3600000 },
+  banner: {
+    trial: growth.banner.milestones.trial,
+    colossus: growth.banner.milestones.colossus,
+    trials: growth.trials.list.map((trial) => trial.id)
   },
   unlocks: growth.unlocks.map((unlock) => ({ level: unlock.level, kind: unlock.kind }))
 };

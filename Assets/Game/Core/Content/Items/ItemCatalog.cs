@@ -76,6 +76,8 @@ namespace Game.Core.Content.Items
 
         public bool TryGetSet(string id, out SetDef set) => _sets.TryGetValue(id, out set!);
 
+        public IReadOnlyDictionary<string, PartySetReader.Drop> PartySetDrops { get; private set; } = new Dictionary<string, PartySetReader.Drop>();
+
         public double[] CraftBaseCost { get; private set; } = new double[Enum.GetValues(typeof(ItemRarity)).Length];
         public IReadOnlyList<double> CraftSteps { get; private set; } = new[] { 1.0 };
         public double JewelryCraftMultiplier { get; private set; } = 1;
@@ -368,6 +370,9 @@ namespace Game.Core.Content.Items
                 }
                 sets.Add(set);
             }
+            var partyDrops = root.HasField("partySets") ? PartySetReader.ReadDrops(root.Field("partySets")) : new Dictionary<string, PartySetReader.Drop>(StringComparer.Ordinal);
+            if (root.HasField("partySets"))
+                PartySetReader.Read(root.Field("partySets"), sets, setIds);
             foreach (var affix in affixes)
             {
                 affix.UseTierCount(tiers);
@@ -378,6 +383,7 @@ namespace Game.Core.Content.Items
             var catalog = new ItemCatalog(bases, affixes, sets, rarities, tiers,
                 weights.Field("top").AsNumber(0, 1), weights.Field("next").AsNumber(0, 1), weights.Field("rest").AsNumber(0, 1));
             catalog.TierLevels = ReadTierLevels(root.Field("tierLevels"), tiers);
+            catalog.PartySetDrops = partyDrops;
             ReadCraft(root.Field("craft"), catalog);
             if (root.HasField("implicitPools"))
                 ReadImplicits(root.Field("implicitPools"), catalog);

@@ -26,6 +26,19 @@ namespace Game.Core.Sim
         public const int FateBoth = 3;
         public StageTable? Stages { get; set; }
         public ForgeRules? Forge { get; set; }
+        public Party.SynergySystem? Synergy { get; set; }
+
+        private bool FourRoles()
+        {
+            var roles = Synergy?.PartyRoles ?? 0;
+            var count = 0;
+            while (roles != 0)
+            {
+                count += roles & 1;
+                roles >>= 1;
+            }
+            return count >= 4;
+        }
         private int _ticksSinceKeys = int.MaxValue / 2;
 
         public void NoteInput(in EffectiveInput input)
@@ -149,6 +162,10 @@ namespace Game.Core.Sim
                 conditions |= ModifierConditions.Bit(ModifierCondition.BossShielded);
             if (_state.Rift.Inside || _state.Dungeons.Inside)
                 conditions |= ModifierConditions.Bit(ModifierCondition.InRift);
+            if (_state.MascotCallTicks > 0)
+                conditions |= ModifierConditions.Bit(ModifierCondition.MascotCall);
+            if (FourRoles())
+                conditions |= ModifierConditions.Bit(ModifierCondition.FourRoles);
             if (_state.AfterFastKillTicks > 0)
                 conditions |= ModifierConditions.Bit(ModifierCondition.AfterFastKill);
             if (_state.AfterCircleTicks > 0)

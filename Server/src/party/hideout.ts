@@ -374,8 +374,10 @@ function hideoutUpdate(nk: nkruntime.Nakama, userId: string, change: (value: Hid
             continue;
         }
     }
-    if (ordered)
+    if (ordered) {
         partyGrowthAdd(nk, group.id, PartyGrowthServerRules.order);
+        partySetReward(nk, group.id, meta.members, "orders", partyGrowthLevel(partyGrowthRead(nk, group.id).value.experience).level, "oath_order", 1, nowUnixMs);
+    }
     for (const id of ordered ? meta.members : []) {
         try {
             walletGrant(nk, id, HideoutServerRules.orderSource, 1, nowUnixMs);

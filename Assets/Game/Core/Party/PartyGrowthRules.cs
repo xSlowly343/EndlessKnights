@@ -90,6 +90,10 @@ namespace Game.Core.Party
         public double ResetFeeShare { get; private set; }
         public double ResetVoteHours { get; private set; }
         public PartyTreeRules Tree { get; private set; } = PartyTreeRules.None;
+        public PartyTrialRules Trials { get; private set; } = PartyTrialRules.None;
+        public PartyColossusRules Colossus { get; private set; } = PartyColossusRules.None;
+        public PartyMascotRules Mascot { get; private set; } = PartyMascotRules.None;
+        public PartyBannerRules Banner { get; private set; } = PartyBannerRules.None;
 
         public long ResetFee(long spent, bool free) => free ? 0 : (long)System.Math.Ceiling(spent * ResetFeeShare);
 
@@ -173,6 +177,14 @@ namespace Game.Core.Party
                 ReadTreasury(node.Field("treasury"), rules);
             if (node.HasField("tree"))
                 rules.Tree = PartyTreeRules.Read(node.Field("tree"));
+            if (node.HasField("trials"))
+                rules.Trials = PartyTrialRules.Read(node.Field("trials"));
+            if (node.HasField("colossus"))
+                rules.Colossus = PartyColossusRules.Read(node.Field("colossus"));
+            if (node.HasField("mascot"))
+                rules.Mascot = PartyMascotRules.Read(node.Field("mascot"));
+            if (node.HasField("banner"))
+                rules.Banner = PartyBannerRules.Read(node.Field("banner"), rules.Trials);
             return rules;
         }
 
