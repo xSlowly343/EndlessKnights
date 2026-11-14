@@ -646,6 +646,7 @@ const partyGrowthRules = {
     maxPointsPerSecond: growth.colossus.maxPointsPerSecond,
     maxOfflinePointsPerSecond: growth.colossus.maxOfflinePointsPerSecond,
     reportSeconds: growth.colossus.reportSeconds,
+    liveWindowSeconds: growth.colossus.liveWindowSeconds || growth.colossus.reportSeconds * 2,
     experiencePerPercent: growth.colossus.experiencePerPercent,
     maxHardships: growth.colossus.maxHardships,
     mandatory: growth.colossus.mandatory.map((step) => ({ upTo: step.upTo || 0, min: step.min, max: step.max })),

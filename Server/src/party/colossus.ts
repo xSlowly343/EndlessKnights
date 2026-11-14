@@ -30,6 +30,7 @@ interface PartyColossusRules {
     maxPointsPerSecond: number;
     maxOfflinePointsPerSecond: number;
     reportSeconds: number;
+    liveWindowSeconds: number;
     experiencePerPercent: number;
 }
 
@@ -385,7 +386,7 @@ function partyColossusOffline(member: PartyColossusMember, points: number, secon
 
 function partyColossusLiveScale(member: PartyColossusMember, raw: number, nowUnixMs: number): number {
     const rules = partyColossusRules();
-    const elapsed = member.at > 0 ? Math.max(0, nowUnixMs - member.at) / 1000 : rules.reportSeconds;
+    const elapsed = member.at > 0 ? Math.min(rules.liveWindowSeconds, Math.max(0, nowUnixMs - member.at) / 1000) : rules.reportSeconds;
     const cap = elapsed * rules.maxPointsPerSecond;
     return raw > cap ? cap / raw : 1;
 }
