@@ -1,10 +1,10 @@
 {
   "id": "dead_forest",
   "source": "rift_beyond/dead_forest",
-  "scale": 0.125,
+  "scale": 0.24,
   "canvas": [
-    3840,
-    2160
+    2000,
+    1125
   ],
   "window": {
     "top": 0,
@@ -14,25 +14,28 @@
   "layers": {
     "back": [
       "sky.png",
-      "far_trees.png"
+      {
+        "file": "far_trees.png",
+        "y": -90
+      }
     ],
     "ground": [
       {
         "file": "ground.png",
-        "y": 336
+        "y": 172
       }
     ],
     "mid": [
       {
         "file": "trees.png",
-        "x": 240
+        "y": -40
       },
       "fence.png"
     ],
     "front": [
       {
         "file": "thorns.png",
-        "y": 1049
+        "y": 843
       }
     ]
   },

@@ -1,10 +1,10 @@
 {
   "id": "rift_castle",
   "source": "rift_beyond/castle",
-  "scale": 0.125,
+  "scale": 0.24,
   "canvas": [
-    3840,
-    2160
+    2000,
+    1125
   ],
   "window": {
     "top": 0,
@@ -14,15 +14,12 @@
   "layers": {
     "back": [
       "sky.png",
-      {
-        "file": "castle.png",
-        "x": 424
-      }
+      "castle.png"
     ],
     "ground": [
       {
         "file": "ground.png",
-        "y": 792
+        "y": 410
       }
     ],
     "mid": [
@@ -31,7 +28,7 @@
     "front": [
       {
         "file": "thorns.png",
-        "y": 1022
+        "y": 829
       }
     ]
   },
