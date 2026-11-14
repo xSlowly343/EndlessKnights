@@ -64,6 +64,7 @@ namespace Game.Presentation.Battle
         private const int FighterSortingOrder = 10;
         private const int StrikeSortingOrder = 11;
         private const int LootSortingOrder = 13;
+        private const int MilestoneSortingOrder = 14;
         private const float StrikeDepthIntoEnemy = 0.25f;
         private const float SkillStrikeDim = 0.5f;
 
@@ -72,6 +73,9 @@ namespace Game.Presentation.Battle
         private static readonly float GroundY = StripSpace.AtPx(0f, 150f).y;
         private static readonly Vector2 LootGround = StripSpace.AtPx(352f, 150f);
         private static readonly Vector2 LootOpening = StripSpace.AtPx(150f, 150f);
+        private static readonly Vector2 MilestoneCorner = StripSpace.AtPx(440f, 44f);
+        private static readonly Vector2 LevelLabel = StripSpace.AtPx(122f, 96f);
+        private static readonly Color LevelColor = new Color32(0xFF, 0xD2, 0x7A, 0xFF);
         private static readonly float EnemySize = 6f;
         private static readonly float BossSize = 7.4f;
         private static readonly Vector2 CoinTarget = StripSpace.AtPx(MarginPx + CoinPx / 2f, RowCentrePx);
@@ -127,6 +131,7 @@ namespace Game.Presentation.Battle
         private PartyEnemyMarks _marks = null!;
         private EnemyStatusView _statuses = null!;
         private LootBeams _loot = null!;
+        private MilestoneView _milestones = null!;
         private EnemyStatusShow? _statusShow;
         private UiTheme _theme = null!;
         private RectTransform _hpTrack = null!;
@@ -242,6 +247,8 @@ namespace Game.Presentation.Battle
         public void OpenChest() => _loot.OpenChest();
 
         public void OpenLetter() => _loot.OpenLetter();
+
+        public void ShowMilestone(MilestoneCue cue) => _milestones.Show(cue);
 
         public void BurstGems(int count) => _coins.BurstGems(EnemyCentre, count, Color.white);
 
@@ -382,6 +389,10 @@ namespace Game.Presentation.Battle
             var notice = StripCanvas.PxOf(NoticePosition);
             StripCanvas.Place(_noticeText.rectTransform, notice.x, StripSpace.BaseHeightPx - notice.y, new Vector2(320f, 20f), new Vector2(0.5f, 0.5f));
             _noticeText.gameObject.SetActive(false);
+            var level = Label("Milestone level", texts, _theme.BoldFont, 16f, LevelColor, TextAlignmentOptions.Center);
+            var levelAt = StripCanvas.PxOf(LevelLabel);
+            StripCanvas.Place(level.rectTransform, levelAt.x, StripSpace.BaseHeightPx - levelAt.y, new Vector2(60f, 22f), new Vector2(0.5f, 0.5f));
+            _milestones = MilestoneView.Create(HeroFeet, MilestoneCorner, MilestoneSortingOrder, _scene, level);
             _allies = AllySilhouettes.Create(_scene, texts, _theme, FighterSortingOrder, StrikeSortingOrder);
             _allies.StrikeLanded += ShowAllyHit;
             _transition = TransitionView.Create(_scene);
@@ -541,6 +552,7 @@ namespace Game.Presentation.Battle
             _riftSky.Animate(_inRift, Time.unscaledTime, delta);
             _marks.Animate(delta);
             _loot.Animate(delta);
+            _milestones.Animate(delta);
             AnimateEffects(delta);
         }
 

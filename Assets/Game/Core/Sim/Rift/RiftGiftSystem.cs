@@ -62,6 +62,7 @@ namespace Game.Core.Sim.Rift
             rift.Gifts.Add(id);
             rift.GiftOffer.Clear();
             Rebuild();
+            _events.Add(GameEvent.ForStage(GameEventKind.RiftGiftChosen, _state.Tick, rift.Gifts.Count));
             return RiftGiftResult.Taken;
         }
 

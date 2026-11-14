@@ -107,6 +107,7 @@ namespace Game.Core.Sim
                 DailyClaimed?.Invoke();
             if (reward.Friendship > 0)
                 State.PartyClaimBosses = System.Math.Max(State.PartyClaimBosses, (int)System.Math.Ceiling(entry.Target));
+            _events.Add(GameEvent.ForStage(GameEventKind.QuestClaimed, _state.Tick, weekly ? 1 : 0));
             return QuestResult.Done;
         }
 

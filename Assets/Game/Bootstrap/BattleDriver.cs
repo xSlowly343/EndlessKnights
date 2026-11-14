@@ -22,6 +22,7 @@ namespace Game.Bootstrap
         private SkillEffects _effects = null!;
         private readonly ShowQueue _shows = new ShowQueue(ShowRules.OwnSkills);
         private readonly EnemyStatusShow _statusShow = new EnemyStatusShow();
+        private readonly MilestoneShow _milestones = new MilestoneShow();
         private const int ShardPieces = 3;
         private const int MaxSparkPieces = 8;
         private long _sparksSeen = -1;
@@ -89,6 +90,7 @@ namespace Game.Bootstrap
             for (var i = 0; i < events.Count; i++)
             {
                 var gameEvent = events[i];
+                _milestones.Offer(gameEvent);
                 switch (gameEvent.Kind)
                 {
                     case GameEventKind.Damage:
@@ -134,6 +136,7 @@ namespace Game.Bootstrap
             }
             events.Clear();
             PlayShows();
+            PlayMilestones();
         }
 
         public void ShowAllyCast(GemDef gem, ShowSize size) => _effects.CastAlly(gem, _view.StrikeTarget, size);
@@ -152,6 +155,12 @@ namespace Game.Bootstrap
             while (_shows.TryTake(now, out var cue))
                 Show(cue);
             _view.DimStrikes(_shows.UrgentBusy(now));
+        }
+
+        private void PlayMilestones()
+        {
+            while (_milestones.TryTake(Time.unscaledTime, out var cue))
+                _view.ShowMilestone(cue);
         }
 
         private void Show(ShowCue cue)

@@ -1,0 +1,293 @@
+{
+  "version": 1,
+  "sheets": {
+    "levelUp": {
+      "file": "Milestone_LevelUp_40x50_12f",
+      "width": 40,
+      "height": 50,
+      "frames": 12,
+      "pivot": [
+        20,
+        46
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "prestige": {
+      "file": "Milestone_Prestige_160x60_15f",
+      "width": 160,
+      "height": 60,
+      "frames": 15,
+      "pivot": [
+        28,
+        50
+      ],
+      "fps": 15,
+      "size": "large"
+    },
+    "artifactOpen0": {
+      "file": "Milestone_ArtifactOpen1_40x50_14f",
+      "width": 40,
+      "height": 50,
+      "frames": 14,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactOpen1": {
+      "file": "Milestone_ArtifactOpen2_40x50_14f",
+      "width": 40,
+      "height": 50,
+      "frames": 14,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactOpen2": {
+      "file": "Milestone_ArtifactOpen3_40x50_14f",
+      "width": 40,
+      "height": 50,
+      "frames": 14,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactOpen3": {
+      "file": "Milestone_ArtifactOpen4_40x50_14f",
+      "width": 40,
+      "height": 50,
+      "frames": 14,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactAwaken0": {
+      "file": "Milestone_ArtifactAwaken1_40x50_11f",
+      "width": 40,
+      "height": 50,
+      "frames": 11,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactAwaken1": {
+      "file": "Milestone_ArtifactAwaken2_40x50_11f",
+      "width": 40,
+      "height": 50,
+      "frames": 11,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactAwaken2": {
+      "file": "Milestone_ArtifactAwaken3_40x50_11f",
+      "width": 40,
+      "height": 50,
+      "frames": 11,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactAwaken3": {
+      "file": "Milestone_ArtifactAwaken4_40x50_11f",
+      "width": 40,
+      "height": 50,
+      "frames": 11,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactEnchant0": {
+      "file": "Milestone_ArtifactEnchant1_40x50_11f",
+      "width": 40,
+      "height": 50,
+      "frames": 11,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactEnchant1": {
+      "file": "Milestone_ArtifactEnchant2_40x50_11f",
+      "width": 40,
+      "height": 50,
+      "frames": 11,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactEnchant2": {
+      "file": "Milestone_ArtifactEnchant3_40x50_11f",
+      "width": 40,
+      "height": 50,
+      "frames": 11,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "artifactEnchant3": {
+      "file": "Milestone_ArtifactEnchant4_40x50_11f",
+      "width": 40,
+      "height": 50,
+      "frames": 11,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "riftStep": {
+      "file": "Milestone_RiftStep_40x50_12f",
+      "width": 40,
+      "height": 50,
+      "frames": 12,
+      "pivot": [
+        6,
+        47
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "featureOpen": {
+      "file": "Milestone_FeatureOpen_40x50_12f",
+      "width": 40,
+      "height": 50,
+      "frames": 12,
+      "pivot": [
+        6,
+        47
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "giftOffer": {
+      "file": "Milestone_GiftOffer_40x50_9f",
+      "width": 40,
+      "height": 50,
+      "frames": 9,
+      "pivot": [
+        20,
+        49
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "giftChosen": {
+      "file": "Milestone_GiftChosen_40x50_9f",
+      "width": 40,
+      "height": 50,
+      "frames": 9,
+      "pivot": [
+        20,
+        46
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "gate": {
+      "file": "Milestone_Gate_40x50_12f",
+      "width": 40,
+      "height": 50,
+      "frames": 12,
+      "pivot": [
+        3,
+        47
+      ],
+      "fps": 15,
+      "size": "medium"
+    },
+    "achievement": {
+      "file": "Milestone_Achievement_24x24_12f",
+      "width": 24,
+      "height": 24,
+      "frames": 12,
+      "pivot": [
+        12,
+        12
+      ],
+      "fps": 15,
+      "size": "small"
+    },
+    "collection": {
+      "file": "Milestone_Collection_24x24_12f",
+      "width": 24,
+      "height": 24,
+      "frames": 12,
+      "pivot": [
+        12,
+        12
+      ],
+      "fps": 15,
+      "size": "small"
+    },
+    "campTier": {
+      "file": "Milestone_CampTier_24x24_12f",
+      "width": 24,
+      "height": 24,
+      "frames": 12,
+      "pivot": [
+        12,
+        12
+      ],
+      "fps": 15,
+      "size": "small"
+    },
+    "quest": {
+      "file": "Milestone_Quest_24x24_9f",
+      "width": 24,
+      "height": 24,
+      "frames": 9,
+      "pivot": [
+        12,
+        12
+      ],
+      "fps": 15,
+      "size": "small"
+    },
+    "trial": {
+      "file": "Milestone_Trial_24x24_9f",
+      "width": 24,
+      "height": 24,
+      "frames": 9,
+      "pivot": [
+        12,
+        12
+      ],
+      "fps": 15,
+      "size": "small"
+    }
+  }
+}
