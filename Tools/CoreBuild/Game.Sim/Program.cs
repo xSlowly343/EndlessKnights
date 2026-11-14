@@ -44,6 +44,8 @@ namespace Game.Sim
                 return RunSupports(data, options);
             if (options.SynergyHours > 0)
                 return SynergyReport.Run(data, folder, profile, options);
+            if (options.PartyCapsDays > 0)
+                return CapsReport.Run(data, profile, options);
             if (options.PartyGrowthDays > 0)
                 return RunPartyGrowth(data, profile, options);
             if (options.Days > 0)

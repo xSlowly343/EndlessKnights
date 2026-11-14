@@ -41,6 +41,7 @@ namespace Game.Core.Sim.Headless
         public System.Action<GameLoop>? Prepare { get; set; }
 
         public System.Action<int, GameLoop>? DayEnded { get; set; }
+        public System.Action<int, GameLoop>? MinutePassed { get; set; }
 
         public IReadOnlyList<DayRecord> Run(int days, double activeHoursPerDay)
         {
@@ -70,8 +71,10 @@ namespace Game.Core.Sim.Headless
                     loop.Tick();
                     loop.Drops.Flush();
                     loop.Events.Clear();
-                    if (tick % ActEveryTicks == 0)
-                        Act(bot, state, ActEveryTicks * GameLoop.TickSeconds);
+                    if (tick % ActEveryTicks != 0)
+                        continue;
+                    Act(bot, state, ActEveryTicks * GameLoop.TickSeconds);
+                    MinutePassed?.Invoke(day, loop);
                 }
                 DayEnded?.Invoke(day, loop);
                 loop.ReturnHomeIfAway(offlineSeconds);

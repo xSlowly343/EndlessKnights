@@ -8,7 +8,7 @@ namespace Game.Sim
     public sealed class SimOptions
     {
         public const string Usage =
-            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class runedancer|duelist|windshot|shardcaller|sandwalker|minstrel|dreamcatcher|lanternbearer|whisperer|clockwright|alchemist|dowser|soulbinder|ghostcaptain] [--path <subclass id>] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20] [--gear true]] [--party runedancer,duelist,... | standard [--loss 0] [--idle <members> [--idle-after <minutes>]]] [--supports <hours>] [--synergy <hours> [--drops true] [--hero-level 0]] [--start-stage 1] [--party-growth <days> [--members 4] [--colossus-rate <points per hour>]] [--data <folder>] [--out <file.csv>]";
+            "sim [--kps 6] [--cps 0] [--mouse 0] [--hours 1] [--class runedancer|duelist|windshot|shardcaller|sandwalker|minstrel|dreamcatcher|lanternbearer|whisperer|clockwright|alchemist|dowser|soulbinder|ghostcaptain] [--path <subclass id>] [--seed 1] [--damage 1] [--stop-after-fails 0] [--days 0 [--active-hours 2] [--stuck-minutes 20] [--gear true]] [--party runedancer,duelist,... | standard [--loss 0] [--idle <members> [--idle-after <minutes>]]] [--supports <hours>] [--synergy <hours> [--drops true] [--hero-level 0]] [--start-stage 1] [--party-growth <days> [--members 4] [--colossus-rate <points per hour>]] [--party-caps <days>] [--data <folder>] [--out <file.csv>]";
 
         public double KeysPerSecond { get; private set; } = 6;
         public double ClicksPerSecond { get; private set; }
@@ -33,6 +33,7 @@ namespace Game.Sim
         public long StartStage { get; private set; }
         public int IdleMembers { get; private set; }
         public int PartyGrowthDays { get; private set; }
+        public int PartyCapsDays { get; private set; }
         public int Members { get; private set; } = 4;
         public double ColossusRate { get; private set; }
         public double IdleAfterMinutes { get; private set; } = 60;
@@ -71,6 +72,7 @@ namespace Game.Sim
                     case "--start-stage": options.StartStage = (long)Number(value); break;
                     case "--idle": options.IdleMembers = int.Parse(value, CultureInfo.InvariantCulture); break;
                     case "--party-growth": options.PartyGrowthDays = int.Parse(value, CultureInfo.InvariantCulture); break;
+                    case "--party-caps": options.PartyCapsDays = int.Parse(value, CultureInfo.InvariantCulture); break;
                     case "--members": options.Members = int.Parse(value, CultureInfo.InvariantCulture); break;
                     case "--colossus-rate": options.ColossusRate = Number(value); break;
                     case "--idle-after": options.IdleAfterMinutes = Number(value); break;
