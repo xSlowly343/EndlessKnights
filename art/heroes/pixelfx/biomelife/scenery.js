@@ -14,6 +14,7 @@ export default function scenery(fx) {
   const LAMP = S.ramp(["#fff3b0", "#ffd24a", "#ff9d3c"]);
   const MILL = S.ramp(["#e4e6d6", "#c0cab8", "#9aa898", "#b47c68", "#8a5e54", "#f6f1e2", "#8f7a66"]);
 
+  const FOOTING = 6;
   const tall = (x, seed = 401) => {
     const patch = 0.5 + 0.5 * noise(x * 0.09, seed);
     return rand(x, seed) < 0.25 + patch * 0.55 ? 1 + Math.floor(rand(x, seed + 1) * (1.6 + patch * 2.6)) : 0;
@@ -116,7 +117,7 @@ export default function scenery(fx) {
   }
 
   function mill(p, u) {
-    for (let k = 0; k < 9; k++) {
+    for (let k = -FOOTING; k < 9; k++) {
       const half = k < 3 ? 2 : k < 7 ? 1.5 : 1;
       for (let x = -Math.ceil(half); x <= Math.ceil(half); x++) {
         if (Math.abs(x) > half + 0.5) continue;
@@ -146,7 +147,7 @@ export default function scenery(fx) {
   function block(p, x0, x1, top, crenels) {
     for (let x = x0; x <= x1; x++) {
       const notch = crenels && (x - x0) % 2 === 1 ? 1 : 0;
-      for (let y = top + notch; y <= -1; y++) p.px(x, y, x === x0 ? STONE[0] : x === x1 ? STONE[2] : STONE[1]);
+      for (let y = top + notch; y <= FOOTING; y++) p.px(x, y, x === x0 ? STONE[0] : x === x1 ? STONE[2] : STONE[1]);
     }
   }
 

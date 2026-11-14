@@ -111,16 +111,15 @@ export default function weather(fx) {
 
   function windFar(p) {
     const t = S.tile(p);
-    for (let i = 0; i < 6; i++) {
-      const x = i * 27 + rand(i, 1, 131) * 8, y = 4 + Math.floor(rand(i, 2, 131) * 14), len = 16 + Math.floor(rand(i, 3, 131) * 12);
-      for (let k = 0; k < len; k++) {
-        const v = k / len, lift = Math.round(Math.sin(v * 2.6) * 1.5);
-        t.dot(x + k, y - lift, FAIR[0], v < 0.3 ? 0.3 + v * 2 : 1);
-        if (v > 0.5) t.px(x + k, y - lift + 1, FAIR[1]);
-        if (v > 0.75) t.px(x + k, y - lift - 1, FAIR[0]);
+    const swept = [[18, 6, 20, 3], [58, 14, 26, 3], [92, 5, 16, 2], [126, 11, 22, 3], [150, 18, 14, 2]];
+    swept.forEach(([x, y, wide, tall], i) => {
+      for (let n = 0; n < 3; n++) {
+        const len = wide * (0.9 - n * 0.2), row = y - n * (tall > 2 ? 1 : 0) - (n === 2 ? 1 : 0), from = x - wide / 2 + n * 2;
+        for (let k = 0; k < len; k++) t.dot(from - k, row + (k > len * 0.6 ? 1 : 0), n ? PUFF[1] : PUFF[2], 0.95 - (k / len) * 0.8);
       }
-      S.cloud(t, x + len + 3, y + 1, 7, 3, 141 + i, FAIR);
-    }
+      S.cloud(t, x, y, wide, tall, 141 + i, PUFF);
+      S.cloud(t, x + wide * 0.45, y - 1, wide * 0.5, tall, 151 + i, PUFF);
+    });
   }
 
   function gust(t, head, y, len, curl, alpha) {

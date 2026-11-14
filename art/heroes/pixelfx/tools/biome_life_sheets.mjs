@@ -119,12 +119,12 @@ const HILLS = {
       grass: ["grass", "Grass", TURF, "ground", loop(16, 8)],
       flowersClose: ["flowersClose", "FlowersClose", TURF, "ground", once(6, 8)],
       flowers: ["flowersNight", "FlowersNight", TURF, "ground", still()],
-      castleLights: ["castleLights", "CastleLights", [[30, 20], [15, 19]], "far", loop(8, 6, { ...GLOW, at: [43, 27] })],
+      castleLights: ["castleLights", "CastleLights", [[30, 20], [15, 19]], "hill", loop(8, 6, { ...GLOW, at: [43, 25] })],
       mist: ["nightMist", "NightMist", FULL, "ground", loop(16, 6)],
     },
     always: {
-      castle: ["castle", "Castle", [[30, 20], [15, 19]], "far", still({ at: [43, 27] })],
-      mill: ["mill", "Mill", [[21, 24], [10, 23]], "far", loop(8, 8, { at: [99, 31] })],
+      castle: ["castle", "Castle", [[30, 26], [15, 19]], "hill", still({ at: [43, 25] })],
+      mill: ["mill", "Mill", [[21, 30], [10, 23]], "hill", loop(8, 8, { at: [99, 32] })],
     },
   },
 };

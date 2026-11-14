@@ -23,11 +23,11 @@ HERO_PIVOT = (15, 28)
 HERO_HEAD = (29, 27)
 ENEMY_FEET = (139, 52)
 BOSS_SCALE = 2
-ORDER = ["back", "light", "sky", "mid", "far", "turf", "ground", "actors", "front"]
+ORDER = ["back", "light", "sky", "hill", "mid", "far", "turf", "ground", "actors", "front"]
 SPOTS = {
     "sun": (140, 8), "sunLow": (22, 20), "sunSet": (136, 21), "moon": (114, 9),
     "butterflies": (66, 40), "starlings": (72, 11), "rabbit": (92, 52), "fireflies": (70, 38), "owl": (100, 52),
-    "mill": (99, 31), "castle": (43, 27),
+    "mill": (99, 32), "castle": (43, 25),
 }
 PHASE_SKY = {"day": [("sky.sun", "sun")], "morning": [("sky.sunLow", "sunLow")], "evening": [("sky.sunLow", "sunSet")], "night": [("sky.stars", (0, 0)), ("sky.moon", "moon")]}
 
