@@ -13,6 +13,7 @@ interface CloudFacts {
     savedAt: number;
     bag: { [item: string]: number };
     found: string[];
+    partyPieces?: string[];
 }
 
 interface CloudMeta {
@@ -77,7 +78,8 @@ function cloudFacts(text: string): CloudFacts {
         playSeconds: cloudNumber(state.inputStats && state.inputStats.playSeconds),
         savedAt: cloudNumber(payload.savedAt),
         bag: bag,
-        found: found.filter((id, index) => found.indexOf(id) === index)
+        found: found.filter((id, index) => found.indexOf(id) === index),
+        partyPieces: cloudIds(state.setCollection, null).filter((key) => key.indexOf("party_") === 0)
     };
 }
 

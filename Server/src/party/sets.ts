@@ -86,10 +86,27 @@ function partySetsReport(nk: nkruntime.Nakama, userId: string, sets: unknown): {
     if (!group)
         throw new Error("not in a party");
     const unique = (sets as string[]).filter((id, index, all) => all.indexOf(id) === index).sort();
+    const pieces = partySetsProvenPieces(nk, userId);
+    const proven = unique.filter((id) => partySetsCollectedIn(id, pieces));
     partySetsChange(nk, group.id, (value) => {
-        value.members[userId] = unique;
+        value.members[userId] = proven;
     });
-    return partySetsView(nk, group.id, userId, partyMetaOf(group));
+    const view = partySetsView(nk, group.id, userId, partyMetaOf(group));
+    view.refused = unique.filter((id) => proven.indexOf(id) < 0);
+    return view;
+}
+
+function partySetsProvenPieces(nk: nkruntime.Nakama, userId: string): { [key: string]: boolean } {
+    const trusted = cloudTrustedRead(nk, userId);
+    const pieces: { [key: string]: boolean } = {};
+    for (const key of (trusted && trusted.facts.partyPieces) || [])
+        pieces[key] = true;
+    return pieces;
+}
+
+function partySetsCollectedIn(id: string, pieces: { [key: string]: boolean }): boolean {
+    const set = PartyGrowthServerRules.partySets.sets.filter((each) => each.id === id)[0];
+    return !!set && set.pieces.every((piece) => pieces[id + ":" + piece] === true);
 }
 
 function partySetsRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {

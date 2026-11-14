@@ -18,6 +18,19 @@ function party(...names) {
   return { nk, call, partyId: view.id };
 }
 
+function prove(nk, user, sets) {
+  const pieces = [];
+  for (const id of sets)
+    for (const piece of rules.sets.filter((set) => set.id === id)[0].pieces)
+      pieces.push(id + ":" + piece);
+  nk.storageWrite([{ collection: "cloud_save", key: "trusted", userId: user, value: { facts: { record: 1, playSeconds: 1, savedAt: 1, bag: {}, found: [], partyPieces: pieces }, at: now } }]);
+}
+
+function report(nk, user, sets) {
+  prove(nk, user, sets.filter((id) => rules.sets.some((set) => set.id === id)));
+  return server.partySetsReport(nk, user, sets);
+}
+
 function reachLevel(nk, partyId, level) {
   let total = 0;
   for (let l = 1; l < level; l++)
@@ -35,8 +48,8 @@ test("182 party sets: 12 lines of armour and jewelry from rare to primordial, th
 test("every member reports collected party sets, the party counts them from level 50, stacking copies", () => {
   const { nk, call, partyId } = party("ann", "bob", "cid");
   assert.throws(() => server.partySetsReport(nk, "ann", ["dragon"]), /bad request/);
-  server.partySetsReport(nk, "ann", ["party_common_pot_armor_rare", "party_rank_oath_jewelry_epic"]);
-  server.partySetsReport(nk, "bob", ["party_common_pot_armor_rare", "party_common_pot_armor_rare"]);
+  report(nk, "ann", ["party_common_pot_armor_rare", "party_rank_oath_jewelry_epic"]);
+  report(nk, "bob", ["party_common_pot_armor_rare", "party_common_pot_armor_rare"]);
   let view = call("cid", "partySetsRpc");
   assert.strictEqual(view.opened, false);
   assert.deepStrictEqual(plain(view.counts), {});
@@ -52,8 +65,8 @@ test("every member reports collected party sets, the party counts them from leve
 test("eternal hunter jewelry raises trophies, the armour softens hardships, trial seal armour adds tries", () => {
   const { nk, partyId } = party("ann", "bob");
   reachLevel(nk, partyId, 50);
-  server.partySetsReport(nk, "ann", ["party_eternal_hunters_jewelry_rare", "party_trial_seal_armor_rift"]);
-  server.partySetsReport(nk, "bob", ["party_eternal_hunters_jewelry_rare", "party_eternal_hunters_armor_rift"]);
+  report(nk, "ann", ["party_eternal_hunters_jewelry_rare", "party_trial_seal_armor_rift"]);
+  report(nk, "bob", ["party_eternal_hunters_jewelry_rare", "party_eternal_hunters_armor_rift"]);
   assert.ok(Math.abs(server.partySetsSum(nk, partyId, "colossusTrophies") - 0.16) < 1e-9, "two copies of +8%");
   assert.ok(Math.abs(server.partySetsSum(nk, partyId, "colossusHardship") + 0.2) < 1e-9);
   assert.strictEqual(server.partySetsSum(nk, partyId, "trialTries"), 1);
@@ -141,4 +154,21 @@ test("every trial clear rolls a party set piece, oath shards come only for the f
   const count = (pending.ann || []).length + (pending.bob || []).length;
   assert.ok(count > 0 && JSON.stringify(pending) !== before, "repeat clears still drop pieces");
   assert.ok(count < 800 * 0.2, "the chance stays low");
+});
+
+test("only sets the last trusted cloud save shows in full are counted", () => {
+  const { nk, partyId } = party("ann", "bob");
+  reachLevel(nk, partyId, 50);
+  const whole = "party_common_pot_armor_rare";
+  const half = "party_rank_oath_jewelry_epic";
+  let view = server.partySetsReport(nk, "ann", [whole]);
+  assert.deepStrictEqual(plain(view.refused), [whole], "no trusted cloud save, nothing is proven");
+  prove(nk, "ann", [whole]);
+  const pieces = rules.sets.filter((set) => set.id === half)[0].pieces;
+  const facts = nk.storageRead([{ collection: "cloud_save", key: "trusted", userId: "ann" }])[0].value;
+  facts.facts.partyPieces.push(half + ":" + pieces[0]);
+  nk.storageWrite([{ collection: "cloud_save", key: "trusted", userId: "ann", value: facts }]);
+  view = server.partySetsReport(nk, "ann", [whole, half]);
+  assert.deepStrictEqual(plain(view.refused), [half], "one piece of four is not a set");
+  assert.deepStrictEqual(plain(server.partySetsRead(nk, partyId).value.members.ann), [whole]);
 });

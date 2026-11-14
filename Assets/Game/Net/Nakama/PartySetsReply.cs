@@ -81,6 +81,7 @@ namespace Game.Net.Nakama
             PartyId = NakamaJson.Text(json, "partyId");
             Opened = NakamaJson.Flag(json, "opened");
             Yours = PartyTreasuryReply.Texts(NakamaJson.Items(json, "yours"));
+            Refused = PartyTreasuryReply.Texts(NakamaJson.Items(json, "refused"));
             var counts = new Dictionary<string, int>();
             var field = NakamaJson.Field(json, "counts");
             if (field != null && field.Kind == JsonKind.Object)
@@ -101,6 +102,7 @@ namespace Game.Net.Nakama
         public string PartyId { get; }
         public bool Opened { get; }
         public IReadOnlyDictionary<string, int> Counts { get; }
+        public IReadOnlyList<string> Refused { get; }
         public IReadOnlyList<string> Yours { get; }
         public IReadOnlyList<PartySetsMember> Members { get; }
 

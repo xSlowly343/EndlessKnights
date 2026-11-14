@@ -747,7 +747,8 @@ namespace Game.Net.Tests
         public void PartySetsAreReadWithCountsPerSetAndEachMembersCollection()
         {
             Assert.That(PartySetsReply.ReportPayload(new[] { "party_common_pot_armor_rare" }), Is.EqualTo("{\"sets\":[\"party_common_pot_armor_rare\"]}"));
-            var reply = PartySetsReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"counts\":{\"party_common_pot_armor_rare\":2},\"yours\":[\"party_common_pot_armor_rare\"],\"members\":[{\"userId\":\"a\",\"name\":\"Ann\",\"sets\":[\"party_common_pot_armor_rare\"]}]}"));
+            var reply = PartySetsReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"counts\":{\"party_common_pot_armor_rare\":2},\"yours\":[\"party_common_pot_armor_rare\"],\"refused\":[\"party_rank_oath_jewelry_epic\"],\"members\":[{\"userId\":\"a\",\"name\":\"Ann\",\"sets\":[\"party_common_pot_armor_rare\"]}]}"));
+            Assert.That(reply.Refused, Is.EqualTo(new[] { "party_rank_oath_jewelry_epic" }));
             Assert.That(reply.Opened, Is.True);
             Assert.That(reply.Counts["party_common_pot_armor_rare"], Is.EqualTo(2));
             Assert.That(reply.Yours.Count, Is.EqualTo(1));
