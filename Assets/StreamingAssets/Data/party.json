@@ -250,7 +250,7 @@
       "pointsPerBoss": 100,
       "background": 0.1,
       "offline": 0.25,
-      "hp": { "base": 15000, "growth": 1.45 },
+      "hp": { "base": 15000, "growth": 1.2 },
       "ceilingBase": 10,
       "ceilingStep": 10,
       "maxPointsPerSecond": 40,

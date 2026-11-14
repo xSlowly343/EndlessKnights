@@ -35,8 +35,8 @@ function played(nk, user, seconds, at) {
 
 test("colossus rules come from party.json", () => {
   assert.strictEqual(rules.hpBase, 15000);
-  assert.strictEqual(rules.hpGrowth, 1.45);
-  assert.strictEqual(server.partyColossusHp(3), 15000 * 1.45 * 1.45);
+  assert.strictEqual(rules.hpGrowth, 1.2);
+  assert.ok(Math.abs(server.partyColossusHp(3) - 15000 * 1.2 * 1.2) < 1e-6);
   assert.strictEqual(server.partyColossusCeiling(9), 0);
   assert.strictEqual(server.partyColossusCeiling(10), 10);
   assert.strictEqual(server.partyColossusCeiling(15), 20);

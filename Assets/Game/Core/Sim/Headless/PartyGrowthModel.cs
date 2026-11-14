@@ -154,7 +154,7 @@ namespace Game.Core.Sim.Headless
         {
             var colossus = _rules.Colossus;
             var ceiling = colossus.Ceiling(_rules, level);
-            var points = _colossusPointsPerHour * _hoursPerDay * _members * Layer().ColossusPower;
+            var points = _colossusPointsPerHour * _hoursPerDay * _members * Layer().ColossusPoints;
             while (points > 0 && _colossusTier <= ceiling)
             {
                 var hit = System.Math.Min(points, _colossusHp);

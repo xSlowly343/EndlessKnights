@@ -342,7 +342,7 @@ namespace Game.Core.Sim
         {
             var active = State.IdleTicks <= _data.Party.Contribution.ActiveInputSeconds * TicksPerSecond;
             var before = PartyColossus.Direct;
-            PartyColossus.Note(_combat, _data.Stages, State.RecordStage, _stage.AtColossus, active, ColossusCounts, _partyGrowth.ColossusPower * ColossusCallFactor);
+            PartyColossus.Note(_combat, _data.Stages, State.RecordStage, _stage.AtColossus, active, ColossusCounts, _partyGrowth.ColossusPoints * ColossusCallFactor);
             if (_curse != null && PartyColossus.Direct > before)
                 _curseTicks = (long)System.Math.Round(_curse.Number("minutes") * 60 * TicksPerSecond);
             else if (_curseTicks > 0)
@@ -1092,7 +1092,7 @@ namespace Game.Core.Sim
         public void ApplyOffline(OfflineResult result)
         {
             _drops.ApplyOffline(result);
-            PartyColossus.NoteOffline(result, _data.Stages, State.RecordStage, ColossusCounts, _partyGrowth.ColossusPower);
+            PartyColossus.NoteOffline(result, _data.Stages, State.RecordStage, ColossusCounts, _partyGrowth.ColossusPoints);
             OfflineCalculator.Apply(State, result);
             AddIdleSeconds(result.AwaySeconds);
             RefreshPeacefulBonus();

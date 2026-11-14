@@ -104,6 +104,7 @@ namespace Game.Core.Party
         public double Seals { get; private set; }
         public double TrialPower { get; private set; } = 1;
         public double ColossusPower { get; private set; } = 1;
+        public double ColossusPoints => ColossusPower * DamageMultiplier;
 
         public IReadOnlyList<Modifier> Relics => _relics;
         public IReadOnlyList<Modifier> Mascot => _mascot;

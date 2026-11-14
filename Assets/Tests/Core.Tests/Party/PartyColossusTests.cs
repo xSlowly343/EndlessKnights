@@ -44,7 +44,7 @@ namespace Game.Core.Tests.Party
             Assert.That(Rules.Background, Is.EqualTo(0.1));
             Assert.That(Rules.Offline, Is.EqualTo(0.25));
             Assert.That(Rules.Hp(1), Is.EqualTo(15000));
-            Assert.That(Rules.Hp(3), Is.EqualTo(15000 * 1.45 * 1.45).Within(1e-6));
+            Assert.That(Rules.Hp(3), Is.EqualTo(15000 * 1.2 * 1.2).Within(1e-6));
             Assert.That(Rules.Ceiling(Growth, 9), Is.EqualTo(0));
             Assert.That(Rules.Ceiling(Growth, 10), Is.EqualTo(10));
             Assert.That(Rules.Ceiling(Growth, 15), Is.EqualTo(20));
@@ -248,6 +248,14 @@ namespace Game.Core.Tests.Party
             var before = loop.Combat.OvercritMultiplier(StatTags.Strike);
             loop.SetPartyRelics(new Dictionary<string, int> { ["overcrit_mask"] = 30 });
             Assert.That(loop.Combat.OvercritMultiplier(StatTags.Strike) / before, Is.EqualTo(System.Math.Pow(1.005, 30)).Within(1e-9));
+        }
+
+        [Test]
+        public void ThePartyMultiplierSpeedsColossusPointsToo()
+        {
+            var (loop, _) = Member();
+            loop.SetPartyTree(new Dictionary<int, int> { [1] = 2, [6] = 1 }, new string[0]);
+            Assert.That(loop.PartyGrowth.ColossusPoints, Is.EqualTo(1.06 * 1.05).Within(1e-12), "party damage x1.06 and colossus damage x1.05");
         }
     }
 }
