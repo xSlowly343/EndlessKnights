@@ -370,6 +370,7 @@
       ]
     },
     "banner": {"milestones": {"trial": [10, 15, 20], "colossus": [25, 50, 100]}, "values": [0.08, 0.12, 0.16], "peaceful": [0.1, 0.14, 0.18], "trials": {"choir": {"stat": "attackPower", "kind": "increased"}, "relay": {"stat": "roleBuffEffect", "kind": "increased"}, "mirror": {"stat": "critMultiplier", "kind": "increased"}, "silence": {"stat": "attackPower", "kind": "increased", "tags": ["Skill"]}, "pulse": {"stat": "damageVsBoss", "kind": "increased"}, "shields": {"stat": "damageVsGuardian", "kind": "increased"}, "chain": {"stat": "attackPower", "kind": "increased", "when": "InParty"}, "marathon": {"stat": "partyPeaceful", "kind": "flat"}}, "colossus": {"stat": "attackPower", "kind": "increased"}},
+    "alliance": { "helpShare": 0.1, "signs": 50, "proposalHours": 72 },
     "unlocks": [
       { "level": 5, "kind": "mascot" },
       { "level": 10, "kind": "colossus" },

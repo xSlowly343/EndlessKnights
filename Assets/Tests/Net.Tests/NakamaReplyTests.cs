@@ -763,6 +763,22 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ThePartyAllianceIsReadWithTheAllyProposalsAndWeeklyHelp()
+        {
+            Assert.That(PartyAllianceReply.ProposePayload("ABC123"), Is.EqualTo("{\"code\":\"ABC123\"}"));
+            Assert.That(PartyAllianceReply.AnswerPayload("g2", true), Is.EqualTo("{\"partyId\":\"g2\",\"accept\":true}"));
+            var reply = PartyAllianceReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"leader\":true,\"ally\":{\"partyId\":\"g2\",\"name\":\"Wolves\",\"level\":61,\"members\":3},\"since\":1763000000000,\"incoming\":[{\"partyId\":\"g3\",\"name\":\"Owls\",\"level\":60,\"members\":2}],\"outgoing\":null,\"helpReady\":true,\"helpPoints\":500,\"result\":{\"points\":500,\"killed\":[],\"signs\":50}}"));
+            Assert.That(reply.Ally!.Name, Is.EqualTo("Wolves"));
+            Assert.That(reply.Ally.Level, Is.EqualTo(61));
+            Assert.That(reply.Incoming[0].PartyId, Is.EqualTo("g3"));
+            Assert.That(reply.Outgoing, Is.Null);
+            Assert.That(reply.HelpReady, Is.True);
+            Assert.That(reply.HelpPoints, Is.EqualTo(500));
+            Assert.That(reply.SentPoints, Is.EqualTo(500));
+            Assert.That(reply.Signs, Is.EqualTo(50));
+        }
+
+        [Test]
         public void TheRiftShopIsReadPerRiftWithItsSparksAndWindowCounts()
         {
             Assert.That(RiftShopReply.ViewPayload(1793102400), Is.EqualTo("{\"riftId\":1793102400}"));

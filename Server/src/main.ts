@@ -152,6 +152,11 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("party_sets_report", partySetsReportRpc);
     initializer.registerRpc("party_set_drops", partySetDropsClaimRpc);
     initializer.registerRpc("party_set_craft", partySetCraftRpc);
+    initializer.registerRpc("party_alliance", partyAllianceRpc);
+    initializer.registerRpc("party_alliance_propose", partyAllianceProposeRpc);
+    initializer.registerRpc("party_alliance_answer", partyAllianceAnswerRpc);
+    initializer.registerRpc("party_alliance_break", partyAllianceBreakRpc);
+    initializer.registerRpc("party_alliance_help", partyAllianceHelpRpc);
     initializer.registerRpc("rift_shop_buy", riftShopBuyRpc);
     initializer.registerRpc("companion_visit_send", companionVisitSendRpc);
     initializer.registerRpc("companion_visit", companionVisitRpc);

@@ -24,6 +24,7 @@ interface PartyGrowthRules {
     mascot: PartyMascotRules;
     banner: { trial: number[]; colossus: number[]; trials: string[] };
     partySets: PartySetRules;
+    alliance: { helpShare: number; signs: number; proposalMs: number };
     unlocks: PartyGrowthUnlock[];
 }
 

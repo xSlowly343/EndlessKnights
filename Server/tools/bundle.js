@@ -684,6 +684,7 @@ const partyGrowthRules = {
       server: set.bonus.filter((line) => ["colossusTrophies", "colossusHardship", "trialTries"].indexOf(line.stat) >= 0)
     }))
   },
+  alliance: { helpShare: growth.alliance.helpShare, signs: growth.alliance.signs, proposalMs: growth.alliance.proposalHours * 3600000 },
   banner: {
     trial: growth.banner.milestones.trial,
     colossus: growth.banner.milestones.colossus,

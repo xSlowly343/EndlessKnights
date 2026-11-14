@@ -80,6 +80,7 @@ interface PartyColossusValue {
     lastWeek: { week: number; shares: { [userId: string]: number }; paid: string[] } | null;
     mascotAt: number;
     pendingSigns: number;
+    backgroundWeek: number;
 }
 
 interface PartyColossusSituation {
@@ -190,7 +191,7 @@ function partyColossusEmpty(): PartyColossusValue {
     return {
         tier: 1, hp: partyColossusBaseHp(1), waiting: false, kills: 0, week: -1, shares: {}, members: {},
         mandatory: [], drawnTier: 0, optional: [], disabled: "", touched: false, shield: 0, shieldAt: 0, lastHit: 0, furyAt: 0, regenAt: 0,
-        hitters: { day: -1, ids: [] }, log: [], trophies: 0, trophyCarry: 0, relics: {}, best: 0, lastWeek: null, mascotAt: 0, pendingSigns: 0
+        hitters: { day: -1, ids: [] }, log: [], trophies: 0, trophyCarry: 0, relics: {}, best: 0, lastWeek: null, mascotAt: 0, pendingSigns: 0, backgroundWeek: 0
     };
 }
 
@@ -281,6 +282,7 @@ function partyColossusSettle(value: PartyColossusValue, situation: PartyColossus
         value.lastWeek = value.week >= 0 ? { week: value.week, shares: value.shares, paid: [] } : null;
         value.week = week;
         value.shares = {};
+        value.backgroundWeek = 0;
     }
     if (value.drawnTier !== value.tier && !value.touched)
         partyColossusNewTier(value, situation, nowUnixMs);
@@ -522,6 +524,7 @@ function partyColossusReport(nk: nkruntime.Nakama, userId: string, request: { [k
         const raw = direct.concat(background).reduce((sum, points) => sum + points, 0);
         const scale = partyColossusLiveScale(member, raw, nowUnixMs);
         const live = raw * scale;
+        value.backgroundWeek += background.reduce((sum, points) => sum + points, 0) * scale;
         const offline = partyColossusOffline(member, offlinePoints, offlineSeconds, situation.activeSeconds, nowUnixMs);
         member.at = nowUnixMs;
         if (value.waiting) {
