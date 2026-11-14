@@ -23,7 +23,7 @@ interface PartyGrowthRules {
     colossus: PartyColossusRules;
     mascot: PartyMascotRules;
     banner: { trial: number[]; colossus: number[]; trials: string[] };
-    partySets: { sets: { id: string; server: { stat: string; kind: string; value: number }[] }[] };
+    partySets: PartySetRules;
     unlocks: PartyGrowthUnlock[];
 }
 
@@ -205,6 +205,7 @@ function partyGrowthReport(nk: nkruntime.Nakama, userId: string, activeSeconds: 
 function partyGrowthBattle(nk: nkruntime.Nakama, partyId: string, bosses: number, guardians: number): void {
     const rules = PartyGrowthServerRules;
     partyMascotBosses(nk, partyId, Math.max(0, bosses) + Math.max(0, guardians));
+    partySetBattle(nk, partyId, Math.max(0, bosses) + Math.max(0, guardians));
     partyGrowthAdd(nk, partyId, Math.max(0, bosses) * rules.bossTogether + Math.max(0, guardians) * rules.guardianTogether);
 }
 

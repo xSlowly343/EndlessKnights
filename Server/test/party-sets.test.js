@@ -62,3 +62,68 @@ test("eternal hunter jewelry raises trophies, the armour softens hardships, tria
   const trials = server.partyTrialMine(nk, "ann", now);
   assert.ok(trials.trials.every((t) => t.triesLeft === server.PartyGrowthServerRules.trials.tries + 1));
 });
+
+test("each source drops lines of its own kind and rarities by depth", () => {
+  const lines = (source) => plain(server.partySetLinesOf(source)).sort();
+  assert.deepStrictEqual(lines("colossus"), ["eternal_hunters"]);
+  assert.deepStrictEqual(lines("orders"), ["party_forge", "peace_guild", "rank_oath"]);
+  assert.deepStrictEqual(lines("battle"), ["common_pot", "night_watch"]);
+  assert.deepStrictEqual(lines("extreme"), ["primal_flame"]);
+  const counts = {};
+  const random = server.partyColossusSeed("x");
+  for (let i = 0; i < 2000; i++) {
+    const rarity = server.partySetRarity("colossus", 50, random);
+    counts[rarity] = (counts[rarity] || 0) + 1;
+  }
+  assert.ok(counts.rift > counts.astral && counts.astral > (counts.primordial || 0), "harder drops are rarer");
+  assert.ok(!counts.rare && !counts.epic, "a colossus beyond tier 45 drops only the high rarities");
+  assert.ok(Object.keys(counts).every((r) => ["rift", "astral", "primordial"].includes(r)));
+});
+
+test("drops wait on the server for each member and are claimed up to the free bag room", () => {
+  const { nk, call, partyId } = party("ann", "bob");
+  reachLevel(nk, partyId, 50);
+  const found = server.partySetDropRoll(nk, partyId, ["ann", "bob"], "trials", 20, 40, "seed");
+  assert.ok(found > 0);
+  const pending = server.partySetDropsRead(nk, partyId).value.pending;
+  const ann = pending.ann ? pending.ann.length : 0;
+  assert.ok(ann + (pending.bob ? pending.bob.length : 0) === found);
+  const first = server.partySetDropsClaim(nk, "ann", 1);
+  assert.strictEqual(first.drops.length, Math.min(1, ann));
+  assert.strictEqual(first.left, Math.max(0, ann - 1));
+  if (ann > 0) {
+    const drop = first.drops[0];
+    assert.ok(drop.set.startsWith("party_trial_seal_"));
+    assert.ok(["helmet", "chest", "gloves", "boots", "amulet", "ring", "ring_right", "weapon"].includes(drop.piece));
+  }
+  const rest = call("ann", "partySetDropsClaimRpc", { room: 100 });
+  assert.strictEqual(rest.left, 0);
+  assert.throws(() => server.partySetDropsClaim(nk, "ann", -1), /bad request/);
+});
+
+test("nothing drops before party level 50", () => {
+  const { nk, partyId } = party("ann", "bob");
+  assert.strictEqual(server.partySetDropRoll(nk, partyId, ["ann"], "colossus", 10, 100, "seed"), 0);
+});
+
+test("crafting a piece costs oath shards by rarity, astral and primordial only drop", () => {
+  const { nk, partyId } = party("ann", "bob");
+  reachLevel(nk, partyId, 50);
+  assert.throws(() => server.partySetCraft(nk, "ann", { set: "party_common_pot_armor_rare", piece: "helmet" }, now), /not enough oath/);
+  server.walletGrant(nk, "ann", "oath_order", 1, now);
+  server.walletGrant(nk, "ann", "oath_trial", 10, now);
+  const view = server.partySetCraft(nk, "ann", { set: "party_common_pot_armor_rare", piece: "helmet" }, now);
+  assert.strictEqual(view.cost, 20);
+  assert.strictEqual(view.oath, 10 + 50 - 20);
+  assert.throws(() => server.partySetCraft(nk, "ann", { set: "party_common_pot_armor_astral", piece: "helmet" }, now), /only drops/);
+  assert.throws(() => server.partySetCraft(nk, "ann", { set: "party_common_pot_armor_rare", piece: "amulet" }, now), /bad request/);
+});
+
+test("boss kills together, colossus kills, first trial clears and mascot calls give oath shards", () => {
+  const { nk, partyId } = party("ann", "bob");
+  reachLevel(nk, partyId, 50);
+  server.partyGrowthBattle(nk, partyId, 3, 0);
+  assert.strictEqual(server.walletRead(nk, "bob").value.today.oath_battle, 3);
+  server.partySetColossusKill(nk, partyId, 4, now);
+  assert.strictEqual(server.walletRead(nk, "ann").value.today.oath_colossus, 20);
+});

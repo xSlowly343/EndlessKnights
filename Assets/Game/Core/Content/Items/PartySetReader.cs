@@ -38,6 +38,80 @@ namespace Game.Core.Content.Items
 
         public static string IdOf(string line, string kind, ItemRarity rarity) => Prefix + line + "_" + kind + "_" + ItemRarityNames.Of(rarity);
 
+        public sealed class Drop
+        {
+            internal Drop(double chance, List<(int UpTo, List<(ItemRarity Rarity, double Weight)> Weights)> steps)
+            {
+                Chance = chance;
+                Steps = steps;
+            }
+
+            public double Chance { get; }
+            public IReadOnlyList<(int UpTo, List<(ItemRarity Rarity, double Weight)> Weights)> Steps { get; }
+
+            public ItemRarity Roll(int depth, double roll)
+            {
+                var step = Steps[Steps.Count - 1];
+                foreach (var candidate in Steps)
+                {
+                    if (candidate.UpTo == 0 || depth <= candidate.UpTo)
+                    {
+                        step = candidate;
+                        break;
+                    }
+                }
+                var total = 0.0;
+                foreach (var weight in step.Weights)
+                    total += weight.Weight;
+                var left = roll * total;
+                foreach (var weight in step.Weights)
+                {
+                    left -= weight.Weight;
+                    if (left < 0)
+                        return weight.Rarity;
+                }
+                return step.Weights[step.Weights.Count - 1].Rarity;
+            }
+        }
+
+        internal static Dictionary<string, Drop> ReadDrops(ContentNode node)
+        {
+            var drops = new Dictionary<string, Drop>(StringComparer.Ordinal);
+            if (!node.HasField("drops"))
+                return drops;
+            var field = node.Field("drops");
+            foreach (var source in field.FieldNames())
+            {
+                var entry = field.Field(source);
+                var steps = new List<(int, List<(ItemRarity, double)>)>();
+                foreach (var step in entry.Field("steps").Items())
+                {
+                    var weights = new List<(ItemRarity, double)>();
+                    var rarities = step.Field("rarities");
+                    foreach (var name in rarities.FieldNames())
+                    {
+                        if (!ItemRarityNames.ByName.TryGetValue(name, out var rarity))
+                            throw rarities.Field(name).Error($"unknown rarity '{name}'");
+                        weights.Add((rarity, rarities.Field(name).AsNumber(0, 1e6)));
+                    }
+                    steps.Add((step.HasField("upTo") ? step.Field("upTo").AsInt(1, 10_000_000) : 0, weights));
+                }
+                drops[source] = new Drop(entry.Field("chance").AsNumber(0, 1), steps);
+            }
+            return drops;
+        }
+
+        internal static Dictionary<string, string> ReadSourceLinks(ContentNode node)
+        {
+            var links = new Dictionary<string, string>(StringComparer.Ordinal);
+            if (!node.HasField("sourceOf"))
+                return links;
+            var field = node.Field("sourceOf");
+            foreach (var name in field.FieldNames())
+                links[name] = field.Field(name).AsString();
+            return links;
+        }
+
         internal static void Read(ContentNode node, List<SetDef> sets, HashSet<string> ids)
         {
             var scale = ReadScale(node);
@@ -56,7 +130,9 @@ namespace Game.Core.Content.Items
                         var rarity = scale.Rarities[i];
                         if (rarity < from)
                             continue;
-                        var set = Build(lineId, kind, rarity, i, name, templates, other, pieces.Field(kind), scale, line.Field("source").AsString());
+                        var source = line.Field("source").AsString();
+                        var links = ReadSourceLinks(node);
+                        var set = Build(lineId, kind, rarity, i, name, templates, other, pieces.Field(kind), scale, links.TryGetValue(source, out var linked) ? linked : source);
                         if (!ids.Add(set.Id))
                             throw line.Field("id").Error($"set id '{set.Id}' is used twice");
                         sets.Add(set);

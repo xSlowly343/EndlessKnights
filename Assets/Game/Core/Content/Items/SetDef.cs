@@ -102,5 +102,7 @@ namespace Game.Core.Content.Items
             setId + ":" + (secondRing && slot == ItemSlot.Ring ? SecondRingKey : ItemSlotNames.Of(slot));
 
         public static string PieceKey(string setId, SetPiece piece) => PieceKey(setId, piece.Slot, piece.SecondRing);
+
+        public static string PieceName(SetPiece piece) => piece.SecondRing && piece.Slot == ItemSlot.Ring ? SecondRingKey : ItemSlotNames.Of(piece.Slot);
     }
 }

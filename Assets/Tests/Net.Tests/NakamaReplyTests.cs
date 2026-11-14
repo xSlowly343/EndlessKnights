@@ -752,6 +752,14 @@ namespace Game.Net.Tests
             Assert.That(reply.Counts["party_common_pot_armor_rare"], Is.EqualTo(2));
             Assert.That(reply.Yours.Count, Is.EqualTo(1));
             Assert.That(reply.Members[0].Name, Is.EqualTo("Ann"));
+            Assert.That(PartySetDropsReply.ClaimPayload(3), Is.EqualTo("{\"room\":3}"));
+            var drops = PartySetDropsReply.From(NakamaJson.Parse("{\"drops\":[{\"set\":\"party_common_pot_armor_rare\",\"piece\":\"helmet\",\"source\":\"battle\"}],\"left\":2}"));
+            Assert.That(drops.Drops[0].Piece, Is.EqualTo("helmet"));
+            Assert.That(drops.Left, Is.EqualTo(2));
+            Assert.That(PartySetCraftReply.CraftPayload("party_common_pot_armor_rare", "ring_right"), Is.EqualTo("{\"set\":\"party_common_pot_armor_rare\",\"piece\":\"ring_right\"}"));
+            var craft = PartySetCraftReply.From(NakamaJson.Parse("{\"set\":\"party_common_pot_armor_rare\",\"piece\":\"helmet\",\"cost\":20,\"oath\":40}"));
+            Assert.That(craft.Cost, Is.EqualTo(20));
+            Assert.That(craft.Oath, Is.EqualTo(40));
         }
 
         [Test]

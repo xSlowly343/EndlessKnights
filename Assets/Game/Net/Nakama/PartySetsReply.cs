@@ -19,6 +19,61 @@ namespace Game.Net.Nakama
         public IReadOnlyList<string> Sets { get; }
     }
 
+    public readonly struct PartySetPieceDrop
+    {
+        public PartySetPieceDrop(string set, string piece)
+        {
+            Set = set;
+            Piece = piece;
+        }
+
+        public string Set { get; }
+        public string Piece { get; }
+    }
+
+    public sealed class PartySetDropsReply
+    {
+        private PartySetDropsReply(JsonValue json)
+        {
+            var drops = new List<PartySetPieceDrop>();
+            foreach (var drop in NakamaJson.Items(json, "drops"))
+                drops.Add(new PartySetPieceDrop(NakamaJson.Text(drop, "set"), NakamaJson.Text(drop, "piece")));
+            Drops = drops;
+            Left = (int)NakamaJson.Number(json, "left");
+        }
+
+        public IReadOnlyList<PartySetPieceDrop> Drops { get; }
+        public int Left { get; }
+
+        public static PartySetDropsReply From(JsonValue json) => new PartySetDropsReply(json);
+
+        public static string ClaimPayload(int room) => NakamaJson.Object(("room", room.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
+        public static async Task<PartySetDropsReply> ClaimAsync(NakamaClient client, NakamaSession session, int room, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "party_set_drops", ClaimPayload(room), cancel).ConfigureAwait(false)));
+    }
+
+    public sealed class PartySetCraftReply
+    {
+        private PartySetCraftReply(JsonValue json)
+        {
+            Piece = new PartySetPieceDrop(NakamaJson.Text(json, "set"), NakamaJson.Text(json, "piece"));
+            Cost = (long)NakamaJson.Number(json, "cost");
+            Oath = (long)NakamaJson.Number(json, "oath");
+        }
+
+        public PartySetPieceDrop Piece { get; }
+        public long Cost { get; }
+        public long Oath { get; }
+
+        public static PartySetCraftReply From(JsonValue json) => new PartySetCraftReply(json);
+
+        public static string CraftPayload(string set, string piece) => NakamaJson.Object(("set", NakamaJson.Quote(set)), ("piece", NakamaJson.Quote(piece)));
+
+        public static async Task<PartySetCraftReply> CraftAsync(NakamaClient client, NakamaSession session, string set, string piece, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "party_set_craft", CraftPayload(set, piece), cancel).ConfigureAwait(false)));
+    }
+
     public sealed class PartySetsReply
     {
         private PartySetsReply(JsonValue json)

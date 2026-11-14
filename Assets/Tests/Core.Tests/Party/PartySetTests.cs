@@ -101,5 +101,35 @@ namespace Game.Core.Tests.Party
             var lines = Game.Core.Ui.PartyGrowthView.Window(loop.PartyGrowth);
             Assert.That(lines.Any(line => line.Label == "Наборы отряда" && line.Value == "×1.1"), Is.True);
         }
+
+        [Test]
+        public void ServerDropsAndCraftsBecomeRealPiecesAndFillTheCollection()
+        {
+            var loop = TestWorld.Loop();
+            var set = Set("common_pot", "jewelry", ItemRarity.Epic);
+            var room = loop.BagRoom;
+            Assert.That(loop.GivePartySetPiece(set.Id, "amulet"), Is.True);
+            Assert.That(loop.GivePartySetPiece(set.Id, "ring"), Is.True);
+            Assert.That(loop.GivePartySetPiece(set.Id, "ring_right"), Is.True);
+            Assert.That(loop.BagRoom, Is.EqualTo(room - 3));
+            Assert.That(loop.CollectedPartySets(), Is.Empty);
+            Assert.That(loop.GivePartySetPiece(set.Id, "weapon"), Is.True, "the weapon piece fits any class");
+            Assert.That(loop.CollectedPartySets(), Is.EqualTo(new[] { set.Id }));
+            Assert.That(loop.GivePartySetPiece(set.Id, "boots"), Is.False, "a jewelry set has no boots");
+            Assert.That(loop.GivePartySetPiece("dragon", "ring"), Is.False);
+        }
+
+        [Test]
+        public void DropSourcesComeFromTheData()
+        {
+            var drops = Items.PartySetDrops;
+            Assert.That(drops.Keys, Is.SupersetOf(new[] { "battle", "orders", "mascot", "trials", "colossus", "banner", "extreme", "dungeons", "rift" }));
+            Assert.That(drops["dungeons"].Chance, Is.EqualTo(0.01));
+            Assert.That(drops["colossus"].Roll(50, 0), Is.EqualTo(ItemRarity.Rift));
+            Assert.That(drops["colossus"].Roll(50, 0.9999), Is.EqualTo(ItemRarity.Primordial));
+            Assert.That(drops["colossus"].Roll(5, 0), Is.EqualTo(ItemRarity.Legendary));
+            Assert.That(Set("peace_guild", "armor", ItemRarity.Rare).PartySource, Is.EqualTo("orders"), "peaceful lines drop from orders");
+            Assert.That(Set("deep_key", "armor", ItemRarity.Rare).PartySource, Is.EqualTo("dungeons"));
+        }
     }
 }

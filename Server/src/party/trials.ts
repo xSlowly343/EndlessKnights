@@ -283,6 +283,8 @@ function partyTrialFinish(nk: nkruntime.Nakama, userId: string, request: { [key:
         return { trial: rule.id, tier: reached, best: value.best[rule.id] || 0, firstClear: reached > before, signs: rewards.signs, experience: rewards.experience, carried: carried };
     });
     partyTrialReward(nk, view.partyId, rewards, record, nowUnixMs);
+    if (record)
+        partySetTrialClear(nk, view.partyId, (record as { trial: string; tier: number; fighters: string[] }).fighters, (record as { tier: number }).tier, view.result ? view.result.firstClear : false, nowUnixMs);
     return view;
 }
 

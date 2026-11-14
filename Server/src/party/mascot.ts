@@ -650,8 +650,19 @@ function partyMascotRiteResetRpc(ctx: nkruntime.Context, logger: nkruntime.Logge
     return JSON.stringify(partyMascotRiteReset(nk, partyCaller(ctx), Date.now()));
 }
 
+function partyMascotActionsRewarded(nk: nkruntime.Nakama, userId: string, actions: unknown, nowUnixMs: number): { [key: string]: any } {
+    const view = partyMascotActions(nk, userId, actions, nowUnixMs);
+    const calls = view.accepted ? view.accepted.calls : 0;
+    if (calls > 0) {
+        const group = partyGroupOfUser(nk, userId);
+        if (group)
+            partySetReward(nk, group.id, partyMetaOf(group).members, "mascot", view.level, "oath_mascot", calls, nowUnixMs);
+    }
+    return view;
+}
+
 function partyMascotActionsRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
-    return JSON.stringify(partyMascotActions(nk, partyCaller(ctx), partyRequest(payload).actions, Date.now()));
+    return JSON.stringify(partyMascotActionsRewarded(nk, partyCaller(ctx), partyRequest(payload).actions, Date.now()));
 }
 
 function partyMascotCallTakeRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {

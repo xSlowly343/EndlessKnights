@@ -544,8 +544,10 @@ function partyColossusReport(nk: nkruntime.Nakama, userId: string, request: { [k
         });
     if (weekly)
         walletGrant(nk, userId, partyColossusRules().weeklySource, 1, nowUnixMs);
-    for (const tier of gained.killed)
+    for (const tier of gained.killed) {
         partyColossusChronicle(nk, view.partyId, tier, nowUnixMs);
+        partySetColossusKill(nk, view.partyId, tier, nowUnixMs);
+    }
     return view;
 }
 

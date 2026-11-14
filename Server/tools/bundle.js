@@ -544,7 +544,7 @@ function partySetsExpand(items) {
         }
         if (r >= rank(scale.specialTwoFrom))
           bonus.push({ stat: other.main.stat, kind: other.main.kind, value: main * 0.5 });
-        sets.push({ id: "party_" + line.id + "_" + kind + "_" + rarity, line: line.id, kind: kind, rarity: rarity, source: line.source, bonus: bonus });
+        sets.push({ id: "party_" + line.id + "_" + kind + "_" + rarity, line: line.id, kind: kind, rarity: rarity, source: line.source, bonus: bonus, pieces: scale.pieces[kind] });
       });
     }
   }
@@ -671,8 +671,16 @@ const partyGrowthRules = {
     relicExperience: growth.colossus.relics.filter((relic) => relic.stat === "mascotExperience" && !relic.waits).map((relic) => ({ id: relic.id, value: relic.value }))
   },
   partySets: {
+    drops: partyItems.partySets.drops,
+    sourceOf: partyItems.partySets.sourceOf || {},
+    craft: partyItems.partySets.craft,
     sets: partySetList.map((set) => ({
       id: set.id,
+      line: set.line,
+      kind: set.kind,
+      rarity: set.rarity,
+      source: set.source,
+      pieces: set.pieces,
       server: set.bonus.filter((line) => ["colossusTrophies", "colossusHardship", "trialTries"].indexOf(line.stat) >= 0)
     }))
   },
