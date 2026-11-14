@@ -3,6 +3,7 @@ using Game.Core.Content;
 using Game.Core.Party;
 using Game.Core.Save;
 using Game.Core.Sim;
+using Game.Core.Stats;
 using Game.Core.Tests.Sim;
 using NUnit.Framework;
 
@@ -101,6 +102,35 @@ namespace Game.Core.Tests.Party
             Assert.That(back.PartyGrowth.InParty, Is.True, "the save was fresh when the game closed");
             back.SetServerTime(Now + 72 * Hour);
             Assert.That(back.PartyGrowth.InParty, Is.False);
+        }
+
+        [Test]
+        public void OnlyTheFirstDayAwayCountsWithThePartyOffline()
+        {
+            var loop = Member();
+            loop.SetServerTime(Now + 10 * Hour);
+            Assert.That(loop.PartyOfflineShare(28 * 3600), Is.EqualTo(0.5).Within(1e-12), "14 of 28 hours fall into the day after the last answer");
+            Assert.That(loop.PartyOfflineShare(10 * 3600), Is.EqualTo(1));
+            loop.SetServerTime(Now + 30 * Hour);
+            Assert.That(loop.PartyOfflineShare(3600), Is.EqualTo(0));
+            Assert.That(TestWorld.Loop().PartyOfflineShare(3600), Is.EqualTo(1), "without a party there is nothing to cut");
+        }
+
+        [Test]
+        public void TheOfflinePeacefulBonusIsCutAndComesBackAfter()
+        {
+            var loop = Member();
+            loop.SetPartyGrowthSources(new[] { new Modifier(CombatStats.PartyPeaceful, ModifierKind.Flat, 0.4) });
+            var full = loop.State.PeacefulBonus.Party;
+            Assert.That(full, Is.GreaterThan(0));
+            loop.UseOfflinePeacefulBonus(0.5);
+            Assert.That(loop.State.PeacefulBonus.Party, Is.EqualTo(full * 0.5).Within(1e-12), "half the time away goes with the party");
+            Assert.That(loop.PartyGrowth.InParty, Is.True, "the cut leaves the party standing");
+            loop.SetServerTime(Now + 20 * Hour);
+            var result = new OfflineCalculator(TestWorld.Data, loop.Hero).Simulate(loop.State, 40 * 3600);
+            loop.ApplyOffline(result);
+            Assert.That(loop.State.PeacefulBonus.Party, Is.EqualTo(full).Within(1e-12), "after the offline step the live bonus is back");
+            Assert.That(loop.PartyGrowth.InParty, Is.True);
         }
     }
 }

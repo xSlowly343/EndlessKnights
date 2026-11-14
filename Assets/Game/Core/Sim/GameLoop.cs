@@ -1131,10 +1131,11 @@ namespace Game.Core.Sim
         public void ApplyOffline(OfflineResult result)
         {
             _drops.ApplyOffline(result);
-            PartyColossus.NoteOffline(result, _data.Stages, State.RecordStage, ColossusCounts, _partyGrowth.ColossusPoints);
+            var partyShare = PartyOfflineShare(result.AwaySeconds);
+            PartyColossus.NoteOffline(result, _data.Stages, State.RecordStage, ColossusCounts, _partyGrowth.ColossusPoints * partyShare);
             OfflineCalculator.Apply(State, result);
             AddIdleSeconds(result.AwaySeconds);
-            RefreshPeacefulBonus();
+            UseOfflinePeacefulBonus(partyShare);
             _garden.Advance(result.AwaySeconds);
             _expeditions.Advance(result.AwaySeconds);
             _companions.Advance(result.AwaySeconds);
@@ -1143,7 +1144,37 @@ namespace Game.Core.Sim
             _caravan.Collect();
             _colossus.Advance(result.AwaySeconds);
             _colossus.Collect();
+            RefreshPeacefulBonus();
             _stage.EnsureEnemy();
+        }
+
+        public double PartyOfflineShare(double awaySeconds)
+        {
+            var saved = State.PartyGrowth;
+            if (!_partyGrowth.InParty || !(awaySeconds > 0))
+                return 1;
+            var awayMs = awaySeconds * 1000;
+            var coveredMs = saved.AnsweredUnixMs + _data.Party.Growth.OfflineHours * 3_600_000 - saved.SeenUnixMs;
+            return System.Math.Max(0, System.Math.Min(awayMs, coveredMs)) / awayMs;
+        }
+
+        public void UseOfflinePeacefulBonus(double partyShare)
+        {
+            RefreshPeacefulBonus();
+            if (partyShare >= 1)
+                return;
+            var bonus = State.PeacefulBonus;
+            var full = (bonus.Party, bonus.Speed, bonus.Yield, bonus.Luck, bonus.Mastery);
+            var joined = _partyGrowth.JoinedUnixMs;
+            var members = _partyGrowth.Members;
+            _partyGrowth.SetStanding(false, 0, 0, State.PartyGrowth.SeenUnixMs);
+            RefreshPeacefulBonus();
+            _partyGrowth.SetStanding(true, joined, members, State.PartyGrowth.SeenUnixMs);
+            bonus.Party += (full.Party - bonus.Party) * partyShare;
+            bonus.Speed += (full.Speed - bonus.Speed) * partyShare;
+            bonus.Yield += (full.Yield - bonus.Yield) * partyShare;
+            bonus.Luck += (full.Luck - bonus.Luck) * partyShare;
+            bonus.Mastery += (full.Mastery - bonus.Mastery) * partyShare;
         }
 
         public bool RebirthGem(GemDef gem) => _book.Rebirth(gem, _data.Gems.Levels.Max);
