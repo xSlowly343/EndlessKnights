@@ -5,7 +5,7 @@ export default function reactions(fx) {
   const VOID = S.ramp(["#2e1870", "#4a2a9a", "#8f5bff", "#b79cff", "#e8daff"]);
   const STORM = S.ramp(["#6f7b90", "#525f76", "#3a445a"]);
   const GUST = S.ramp(["#ffffff", "#dfe8ee"]);
-  const LEAF = S.ramp(["#b5d95a", "#7fb648", "#e9e2c4"]);
+  const HILL_LEAF = S.ramp(["#b5d95a", "#7fb648", "#e9e2c4"]);
   const GOLD = S.ramp(["#fffbe6", "#fff0b0", "#ffd86a", "#ffb84a"]);
 
   const crackX = (y) => noise(y * 0.22, 501) * 3.2 + noise(y * 0.7, 502) * 1.3;
@@ -33,35 +33,39 @@ export default function reactions(fx) {
     }
   }
 
-  function bossOut(p, u, info) {
-    const i = Math.round(u * (info.frames - 1));
-    if (i >= info.frames - 1) return;
-    const strength = Math.sin(clamp(u * 1.15) * Math.PI);
-    for (let n = 0; n < 7; n++) {
-      const start = rand(n, 1, 511) * 0.35, k = (u - start) / 0.6;
-      if (k <= 0 || k >= 1) continue;
-      const head = 128 - k * 170, y = 8 + n * 6 + rand(n, 2, 511) * 3, len = 22 + rand(n, 3, 511) * 16;
-      for (let s = 0; s < len; s++) {
-        const x = head + s, yy = y + Math.sin(s * 0.16 + n) * 1.8;
-        if (x < 0 || x >= W || S.inZone(x, yy)) continue;
-        p.dot(x, yy, s < 3 ? GUST[0] : GUST[1], Math.sin(k * Math.PI) * (1 - s / len));
+  function gustKind(LEAF) {
+    return function bossOut(p, u, info) {
+      const i = Math.round(u * (info.frames - 1));
+      if (i >= info.frames - 1) return;
+      const strength = Math.sin(clamp(u * 1.15) * Math.PI);
+      for (let n = 0; n < 7; n++) {
+        const start = rand(n, 1, 511) * 0.35, k = (u - start) / 0.6;
+        if (k <= 0 || k >= 1) continue;
+        const head = 128 - k * 170, y = 8 + n * 6 + rand(n, 2, 511) * 3, len = 22 + rand(n, 3, 511) * 16;
+        for (let s = 0; s < len; s++) {
+          const x = head + s, yy = y + Math.sin(s * 0.16 + n) * 1.8;
+          if (x < 0 || x >= W || S.inZone(x, yy)) continue;
+          p.dot(x, yy, s < 3 ? GUST[0] : GUST[1], Math.sin(k * Math.PI) * (1 - s / len));
+        }
       }
-    }
-    for (let n = 0; n < 16; n++) {
-      const start = rand(n, 4, 511) * 0.3, k = (u - start) / 0.65;
-      if (k <= 0 || k >= 1) continue;
-      const x = 118 - k * (120 + rand(n, 5, 511) * 60), y = 46 - rand(n, 6, 511) * 30 - Math.sin(k * 3.2) * 6 + k * 8;
-      if (x < 0 || S.inZone(x, y)) continue;
-      const color = LEAF[n % 3], turn = (i + n) % 3;
-      p.dot(x, y, color, 1 - k * 0.5);
-      p.dot(x + (turn === 0 ? 1 : 0), y + (turn === 1 ? 1 : turn === 2 ? -1 : 0), color, 1 - k * 0.5);
-    }
-    for (let n = 0; n < 9; n++) {
-      const k = clamp(u * 1.3 - n * 0.04), x = 116 - k * (60 + n * 9) - n * 3;
-      if (k <= 0 || k >= 1 || x < 0) continue;
-      fx.kit.puff(p, x, GROUND - 1 - k * 3, 1.5 + k * 2, LEAF[2], 0.42 * strength);
-    }
+      for (let n = 0; n < 16; n++) {
+        const start = rand(n, 4, 511) * 0.3, k = (u - start) / 0.65;
+        if (k <= 0 || k >= 1) continue;
+        const x = 118 - k * (120 + rand(n, 5, 511) * 60), y = 46 - rand(n, 6, 511) * 30 - Math.sin(k * 3.2) * 6 + k * 8;
+        if (x < 0 || S.inZone(x, y)) continue;
+        const color = LEAF[n % 3], turn = (i + n) % 3;
+        p.dot(x, y, color, 1 - k * 0.5);
+        p.dot(x + (turn === 0 ? 1 : 0), y + (turn === 1 ? 1 : turn === 2 ? -1 : 0), color, 1 - k * 0.5);
+      }
+      for (let n = 0; n < 9; n++) {
+        const k = clamp(u * 1.3 - n * 0.04), x = 116 - k * (60 + n * 9) - n * 3;
+        if (k <= 0 || k >= 1 || x < 0) continue;
+        fx.kit.puff(p, x, GROUND - 1 - k * 3, 1.5 + k * 2, LEAF[2], 0.42 * strength);
+      }
+    };
   }
+
+  const bossOut = gustKind(HILL_LEAF);
 
   function bossSky(p, u) {
     const t = S.tile(p);
@@ -168,5 +172,5 @@ export default function reactions(fx) {
     });
   }
 
-  return { enemyFlash, bossOut, bossSky, bossDown, guardianCrack, prestigeWave };
+  return { enemyFlash, bossOut, bossSky, bossDown, guardianCrack, prestigeWave, reactionKinds: { gustKind } };
 }

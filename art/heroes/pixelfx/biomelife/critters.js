@@ -4,7 +4,7 @@ export default function critters(fx) {
   const K = fx.kit;
   const pal = (map) => Object.fromEntries(Object.entries(map).map(([k, v]) => [k, hex(v)]));
   const GRASS = S.ramp(["#3f8f4a", "#5aa85a", "#8ccf5a"]);
-  const DUST = hex("#e9e2c4");
+  const HILL_DUST = hex("#e9e2c4");
 
   function blit(p, rows, colors, x, y, o = {}) {
     const wide = rows[0].length;
@@ -31,7 +31,7 @@ export default function critters(fx) {
     }
   }
 
-  const RABBIT = pal({ b: "#c8a37a", s: "#9a7a56", w: "#f4ead6", k: "#2a1c1a", e: "#b8926a", i: "#e8a59c", n: "#e07a80" });
+  const HILL_RABBIT = pal({ b: "#c8a37a", s: "#9a7a56", w: "#f4ead6", k: "#2a1c1a", e: "#b8926a", i: "#e8a59c", n: "#e07a80" });
   const SIT = [
     "...e.e....",
     "...i.e....",
@@ -76,62 +76,68 @@ export default function critters(fx) {
   const HOPS = [CROUCH, LEAP, LEAP, LAND, CROUCH, CROUCH];
   const HOP_LIFT = [0, 2, 3, 1, 0, 0];
 
-  function rabbitFace(i) {
-    const swap = {};
-    if (i % 4 === 1) swap.n = "b";
-    return swap;
-  }
-
-  function rabbitCalm(p, u, info) {
-    const i = Math.round(u * info.frames);
-    const sink = i < 5 ? 9 : i < 8 ? [6, 4, 2][i - 5] : i < 23 ? 1 : i < 26 ? [3, 6, 8][i - 23] : 9;
-    if (sink < 9) {
-      const swap = rabbitFace(i);
-      if (i === 17 || i === 18) swap.k = "s";
-      blit(p, i === 13 || i === 14 ? SIT_FLICK : SIT, RABBIT, -4, -7 + sink, { clip: 1, swap });
+  function rabbitKind(RABBIT, cover, DUST) {
+    function rabbitFace(i) {
+      const swap = {};
+      if (i % 4 === 1) swap.n = "b";
+      return swap;
     }
-    tuft(p, 0.5, 13, 311, i >= 5 && i < 8 ? 1 : i >= 23 && i < 26 ? -1 : 0);
-  }
 
-  function rabbitFriendly(p, u, info) {
-    const i = Math.round(u * info.frames), swap = rabbitFace(i);
-    if (i === 10) swap.k = "s";
-    if (i >= 12) return blit(p, CROUCH, RABBIT, -4, -7, { swap: i % 2 ? swap : { n: "b" } });
-    blit(p, i === 5 || i === 6 ? SIT_FLICK : SIT, RABBIT, -4, -7, { swap });
-  }
-
-  function rabbitHop(p, u, info) {
-    const i = Math.round(u * info.frames) % 6;
-    blit(p, HOPS[i], RABBIT, HOPS[i][0].length === 12 ? -5 : -4, -7 - HOP_LIFT[i]);
-  }
-
-  function rabbitAlarmed(p, u, info) {
-    const i = Math.round(u * (info.frames - 1));
-    if (i >= info.frames - 1) return;
-    if (i < 3) {
-      blit(p, SIT, RABBIT, -4, -7 - (i === 1 ? 2 : i === 2 ? 1 : 0), { swap: { n: "b" } });
-      if (i > 0) {
-        p.px(-1, -11 - (i === 1 ? 2 : 1), RABBIT.w);
-        p.px(3, -10 - (i === 1 ? 2 : 1), RABBIT.w);
+    function rabbitCalm(p, u, info) {
+      const i = Math.round(u * info.frames);
+      const sink = i < 5 ? 9 : i < 8 ? [6, 4, 2][i - 5] : i < 23 ? 1 : i < 26 ? [3, 6, 8][i - 23] : 9;
+      if (sink < 9) {
+        const swap = rabbitFace(i);
+        if (i === 17 || i === 18) swap.k = "s";
+        blit(p, i === 13 || i === 14 ? SIT_FLICK : SIT, RABBIT, -4, -7 + sink, { clip: 1, swap });
       }
-      return;
+      cover(p, i >= 5 && i < 8 ? 1 : i >= 23 && i < 26 ? -1 : 0, 1);
     }
-    const step = i - 3, x = -4 - step * 3.1, pose = (step + 1) % 6, a = step > 6 ? 1 - (step - 6) / 4 : 1;
-    blit(p, HOPS[pose], RABBIT, x - 1, -7 - HOP_LIFT[pose], { a });
-    for (let k = 0; k < 3; k++) {
-      const age = step - k * 2;
-      if (age < 0 || age > 4) continue;
-      K.puff(p, 4 - k * 9 + age * 0.6, -1 - age * 0.5, 1.2 + age * 0.4, DUST, 0.5 * (1 - age / 5));
+
+    function rabbitFriendly(p, u, info) {
+      const i = Math.round(u * info.frames), swap = rabbitFace(i);
+      if (i === 10) swap.k = "s";
+      if (i >= 12) return blit(p, CROUCH, RABBIT, -4, -7, { swap: i % 2 ? swap : { n: "b" } });
+      blit(p, i === 5 || i === 6 ? SIT_FLICK : SIT, RABBIT, -4, -7, { swap });
     }
+
+    function rabbitHop(p, u, info) {
+      const i = Math.round(u * info.frames) % 6;
+      blit(p, HOPS[i], RABBIT, HOPS[i][0].length === 12 ? -5 : -4, -7 - HOP_LIFT[i]);
+    }
+
+    function rabbitAlarmed(p, u, info) {
+      const i = Math.round(u * (info.frames - 1));
+      if (i >= info.frames - 1) return;
+      if (i < 3) {
+        blit(p, SIT, RABBIT, -4, -7 - (i === 1 ? 2 : i === 2 ? 1 : 0), { swap: { n: "b" } });
+        if (i > 0) {
+          p.px(-1, -11 - (i === 1 ? 2 : 1), RABBIT.w);
+          p.px(3, -10 - (i === 1 ? 2 : 1), RABBIT.w);
+        }
+        return;
+      }
+      const step = i - 3, x = -4 - step * 3.1, pose = (step + 1) % 6, a = step > 6 ? 1 - (step - 6) / 4 : 1;
+      blit(p, HOPS[pose], RABBIT, x - 1, -7 - HOP_LIFT[pose], { a });
+      for (let k = 0; k < 3; k++) {
+        const age = step - k * 2;
+        if (age < 0 || age > 4) continue;
+        K.puff(p, 4 - k * 9 + age * 0.6, -1 - age * 0.5, 1.2 + age * 0.4, DUST, 0.5 * (1 - age / 5));
+      }
+    }
+
+    function rabbitHidden(p, u, info) {
+      const i = Math.round(u * (info.frames - 1));
+      if (i >= info.frames - 1) return;
+      const sink = [0, 2, 5, 8, 9][i];
+      if (sink < 9) blit(p, SIT, RABBIT, -4, -7 + sink, { clip: 1 });
+      cover(p, i < 3 ? -1 : 0, i < 4 ? 1 : 0.5);
+    }
+
+    return { calm: rabbitCalm, friendly: rabbitFriendly, hop: rabbitHop, alarmed: rabbitAlarmed, hidden: rabbitHidden };
   }
 
-  function rabbitHidden(p, u, info) {
-    const i = Math.round(u * (info.frames - 1));
-    if (i >= info.frames - 1) return;
-    const sink = [0, 2, 5, 8, 9][i];
-    if (sink < 9) blit(p, SIT, RABBIT, -4, -7 + sink, { clip: 1 });
-    tuft(p, 0.5, 13, 311, i < 3 ? -1 : 0, i < 4 ? 1 : 0.5);
-  }
+  const hillRabbit = rabbitKind(HILL_RABBIT, (p, lean, a) => tuft(p, 0.5, 13, 311, lean, a), HILL_DUST);
 
   const WINGS = [
     S.ramp(["#ffe066", "#fff3b0", "#3a2a1a"]),
@@ -270,53 +276,59 @@ export default function critters(fx) {
     }
   }
 
-  const FLY = S.ramp(["#fbffb8", "#d8f76a", "#8fb347"]);
+  const HILL_FLY = S.ramp(["#fbffb8", "#d8f76a", "#8fb347"]);
 
-  function firefly(p, x, y, bright) {
-    if (bright <= 0.08) return;
-    if (bright > 0.45) p.px(x, y, bright > 0.8 ? FLY[0] : FLY[1]);
-    else p.dot(x, y, FLY[2], 0.35 + bright);
-    p.glow(Math.floor(x) + 0.5, Math.floor(y) + 0.5, 4, FLY[1], bright * 0.6);
-  }
-
-  const blink = (u, i, seed) => Math.max(0, Math.sin((u * (1 + (i % 3)) + rand(i, 1, seed)) * TAU)) ** 1.5;
-
-  function flyAt(i, u, wide, tall, seed) {
-    const turn = i % 2 ? 1 : -1;
-    const x = (rand(i, 2, seed) - 0.5) * wide * 1.5 + wide * 0.22 * Math.sin((u * turn + rand(i, 3, seed)) * TAU);
-    const y = (rand(i, 4, seed) - 0.5) * tall * 1.4 + tall * 0.25 * Math.sin((u * 2 * turn + rand(i, 5, seed)) * TAU);
-    return [x, y];
-  }
-
-  function firefliesCalm(p, u) {
-    for (let i = 0; i < 7; i++) {
-      const [x, y] = flyAt(i, u, 20, 10, 351);
-      firefly(p, x, y, blink(u, i, 351));
+  function fliesKind(FLY) {
+    function firefly(p, x, y, bright) {
+      if (bright <= 0.08) return;
+      if (bright > 0.45) p.px(x, y, bright > 0.8 ? FLY[0] : FLY[1]);
+      else p.dot(x, y, FLY[2], 0.35 + bright);
+      p.glow(Math.floor(x) + 0.5, Math.floor(y) + 0.5, 4, FLY[1], bright * 0.6);
     }
+
+    const blink = (u, i, seed) => Math.max(0, Math.sin((u * (1 + (i % 3)) + rand(i, 1, seed)) * TAU)) ** 1.5;
+
+    function flyAt(i, u, wide, tall, seed) {
+      const turn = i % 2 ? 1 : -1;
+      const x = (rand(i, 2, seed) - 0.5) * wide * 1.5 + wide * 0.22 * Math.sin((u * turn + rand(i, 3, seed)) * TAU);
+      const y = (rand(i, 4, seed) - 0.5) * tall * 1.4 + tall * 0.25 * Math.sin((u * 2 * turn + rand(i, 5, seed)) * TAU);
+      return [x, y];
+    }
+
+    function firefliesCalm(p, u) {
+      for (let i = 0; i < 7; i++) {
+        const [x, y] = flyAt(i, u, 20, 10, 351);
+        firefly(p, x, y, blink(u, i, 351));
+      }
+    }
+
+    function firefliesFriendly(p, u) {
+      for (let i = 0; i < 6; i++) {
+        const a = (u * (i % 2 ? 1 : -1) + i / 6) * TAU, r = 6 + (i % 3) * 2;
+        firefly(p, Math.cos(a) * r, Math.sin(a) * r * 0.6 + Math.sin((u * 2 + i * 0.3) * TAU) * 2, 0.55 + 0.45 * blink(u, i, 361));
+      }
+    }
+
+    function firefliesAlarmed(p, u, info) {
+      if (Math.round(u * (info.frames - 1)) >= info.frames - 1) return;
+      for (let i = 0; i < 7; i++) {
+        const [x, y] = flyAt(i, 0, 20, 10, 351), k = ease.outQuad(u);
+        firefly(p, x * (1 + k * 0.7) + Math.sin(u * 20 + i) * 1.2, y * (1 + k * 0.5) - k * 3, (1 - u) * (0.5 + 0.5 * ((Math.round(u * 9) + i) % 2)));
+      }
+    }
+
+    function firefliesHidden(p, u, info) {
+      if (Math.round(u * (info.frames - 1)) >= info.frames - 1) return;
+      for (let i = 0; i < 7; i++) {
+        const [x, y] = flyAt(i, 0, 20, 10, 351);
+        firefly(p, x, y + u * 6, (1 - u) * Math.max(0.3, blink(0, i, 351)));
+      }
+    }
+
+    return { calm: firefliesCalm, friendly: firefliesFriendly, alarmed: firefliesAlarmed, hidden: firefliesHidden };
   }
 
-  function firefliesFriendly(p, u) {
-    for (let i = 0; i < 6; i++) {
-      const a = (u * (i % 2 ? 1 : -1) + i / 6) * TAU, r = 6 + (i % 3) * 2;
-      firefly(p, Math.cos(a) * r, Math.sin(a) * r * 0.6 + Math.sin((u * 2 + i * 0.3) * TAU) * 2, 0.55 + 0.45 * blink(u, i, 361));
-    }
-  }
-
-  function firefliesAlarmed(p, u, info) {
-    if (Math.round(u * (info.frames - 1)) >= info.frames - 1) return;
-    for (let i = 0; i < 7; i++) {
-      const [x, y] = flyAt(i, 0, 20, 10, 351), k = ease.outQuad(u);
-      firefly(p, x * (1 + k * 0.7) + Math.sin(u * 20 + i) * 1.2, y * (1 + k * 0.5) - k * 3, (1 - u) * (0.5 + 0.5 * ((Math.round(u * 9) + i) % 2)));
-    }
-  }
-
-  function firefliesHidden(p, u, info) {
-    if (Math.round(u * (info.frames - 1)) >= info.frames - 1) return;
-    for (let i = 0; i < 7; i++) {
-      const [x, y] = flyAt(i, 0, 20, 10, 351);
-      firefly(p, x, y + u * 6, (1 - u) * Math.max(0.3, blink(0, i, 351)));
-    }
-  }
+  const hillFlies = fliesKind(HILL_FLY);
 
   const OWL = pal({ b: "#8a6b4e", t: "#5e4632", m: "#c9ab82", y: "#ffd84a", k: "#1c1410", n: "#f09a3a", f: "#f0b050", s: "#5e4632" });
   const OWL_BODY = [
@@ -420,11 +432,11 @@ export default function critters(fx) {
   }
 
   return {
-    rabbitCalm, rabbitFriendly, rabbitAlarmed, rabbitHidden, rabbitHop,
+    rabbitCalm: hillRabbit.calm, rabbitFriendly: hillRabbit.friendly, rabbitAlarmed: hillRabbit.alarmed, rabbitHidden: hillRabbit.hidden, rabbitHop: hillRabbit.hop,
     butterfliesCalm, butterfliesFriendly, butterfliesAlarmed, butterfliesHidden,
     starlingsCalm, starlingsFriendly, starlingsAlarmed, starlingsHidden,
-    firefliesCalm, firefliesFriendly, firefliesAlarmed, firefliesHidden,
+    firefliesCalm: hillFlies.calm, firefliesFriendly: hillFlies.friendly, firefliesAlarmed: hillFlies.alarmed, firefliesHidden: hillFlies.hidden,
     owlCalm, owlFriendly, owlAlarmed, owlHidden, owlPerch,
-    tuft,
+    critterKinds: { rabbitKind, fliesKind, blit, pal, wing, FLAP },
   };
 }
