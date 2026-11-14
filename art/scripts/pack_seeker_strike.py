@@ -1,4 +1,5 @@
 import json
+import sys
 import uuid
 from pathlib import Path
 
@@ -151,6 +152,32 @@ SKILLS = [
 ]
 
 
+SIGILS = ["common", "runedancer", "duelist", "windshot", "shardcaller", "alchemist", "minstrel", "lanternbearer", "whisperer", "cartomancer",
+          "herbwitch", "mothcaller", "soulbinder", "ghostcaptain", "golemancer", "clockwright", "sandwalker", "dowser", "dreamcatcher"]
+MOTES = ["might", "edge", "hunt", "flow", "fortune", "hex", "kin", "calm"]
+
+
+def pack_loop(source, prefix):
+    sheet = pack_effect(source, prefix)
+    sheet["loops"] = True
+    return sheet
+
+
+def pack_auras():
+    return {
+        "sigils": {name: pack_loop(f"aura-sigil-{name}", f"Aura_Sigil_{name.capitalize()}") for name in SIGILS},
+        "motes": {name: pack_loop(f"aura-mote-{name}", f"Aura_Mote_{name.capitalize()}") for name in MOTES},
+        "surge": pack_loop("aura-surge", "Aura_Surge"),
+        "off": pack_effect("aura-off", "Aura_Off"),
+    }
+
+
+def pack_auras_only():
+    manifest = json.loads(MANIFEST.read_text())
+    manifest["auras"] = pack_auras()
+    MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n")
+
+
 def pack_tiers(strike, burst):
     prefix = strike["burst"][1].rsplit("_", 1)[0]
     return [pack_effect(f"{strike['id']}-{source}", f"{prefix}_{name}") for source, name in TIER_SUFFIXES] + [burst]
@@ -167,6 +194,9 @@ def pack_skills():
 
 
 def main():
+    if "--auras" in sys.argv:
+        pack_auras_only()
+        return
     split_attack()
     strikes = []
     for strike in STRIKES:
@@ -176,7 +206,7 @@ def main():
             "burstAt": strike["burstAt"], "slash": strike["slash"],
             "flight": pack_effect(*strike["flight"]), "burst": burst, "tiers": pack_tiers(strike, burst),
         })
-    MANIFEST.write_text(json.dumps({"version": 1, "strikes": strikes, "skills": pack_skills()}, indent=2) + "\n")
+    MANIFEST.write_text(json.dumps({"version": 1, "strikes": strikes, "skills": pack_skills(), "auras": pack_auras()}, indent=2) + "\n")
 
 
 if __name__ == "__main__":

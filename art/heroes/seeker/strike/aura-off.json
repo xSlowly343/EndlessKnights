@@ -1,0 +1,259 @@
+{
+ "frames": [
+  {
+   "filename": "aura-off 0",
+   "frame": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 15,
+    "h": 15
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-off 1",
+   "frame": {
+    "x": 15,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 15,
+    "h": 15
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-off 2",
+   "frame": {
+    "x": 30,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 15,
+    "h": 15
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-off 3",
+   "frame": {
+    "x": 45,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 15,
+    "h": 15
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-off 4",
+   "frame": {
+    "x": 0,
+    "y": 15,
+    "w": 15,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 15,
+    "h": 15
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-off 5",
+   "frame": {
+    "x": 15,
+    "y": 15,
+    "w": 15,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 15,
+    "h": 15
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-off 6",
+   "frame": {
+    "x": 30,
+    "y": 15,
+    "w": 15,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 15,
+    "h": 15
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-off 7",
+   "frame": {
+    "x": 45,
+    "y": 15,
+    "w": 15,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 15,
+    "h": 15
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-off 8",
+   "frame": {
+    "x": 0,
+    "y": 30,
+    "w": 15,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 15,
+    "h": 15
+   },
+   "duration": 33
+  },
+  {
+   "filename": "aura-off 9",
+   "frame": {
+    "x": 15,
+    "y": 30,
+    "w": 15,
+    "h": 15
+   },
+   "rotated": false,
+   "trimmed": false,
+   "spriteSourceSize": {
+    "x": 0,
+    "y": 0,
+    "w": 15,
+    "h": 15
+   },
+   "sourceSize": {
+    "w": 15,
+    "h": 15
+   },
+   "duration": 33
+  }
+ ],
+ "meta": {
+  "app": "https://github.com/patch-gg/pixelfx",
+  "version": "1",
+  "image": "aura-off.png",
+  "format": "RGBA8888",
+  "size": {
+   "w": 60,
+   "h": 45
+  },
+  "scale": "1",
+  "frameTags": [
+   {
+    "name": "aura-off",
+    "from": 0,
+    "to": 9,
+    "direction": "forward"
+   }
+  ],
+  "pixelfx": {
+   "id": "riftwarden/aura-off",
+   "name": "Aura off",
+   "fps": 30,
+   "loop": false,
+   "frames": 10,
+   "frameSize": [
+    15,
+    15
+   ],
+   "pivot": [
+    7,
+    7
+   ],
+   "columns": 4
+  }
+ }
+}
