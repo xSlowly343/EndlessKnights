@@ -1,0 +1,2005 @@
+{
+  "version": 1,
+  "scale": 3,
+  "strip": [
+    160,
+    60
+  ],
+  "groundY": 52,
+  "tints": {
+    "morning": "#ffe6ea",
+    "day": "#ffffff",
+    "evening": "#ffd2b0",
+    "night": "#6f82c8"
+  },
+  "looks": {
+    "hills": {
+      "order": [
+        "bg:back",
+        "light",
+        "sky",
+        "hill",
+        "bg:mid",
+        "far",
+        "bg:ground",
+        "ground",
+        "actors",
+        "front"
+      ],
+      "weather": {
+        "clear": {
+          "far": {
+            "file": "BiomeLife_Hills_ClearFar_160x24_1f",
+            "width": 160,
+            "height": 24,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "sky",
+            "frames": 1,
+            "fps": 0,
+            "loop": true,
+            "scroll": 1.2
+          },
+          "near": {
+            "file": "BiomeLife_Hills_ClearNear_160x60_24f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "front",
+            "frames": 24,
+            "fps": 8,
+            "loop": true
+          },
+          "mist": {
+            "file": "BiomeLife_Hills_ClearMist_160x60_24f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 24,
+            "fps": 6,
+            "loop": true
+          }
+        },
+        "cloudy": {
+          "far": {
+            "file": "BiomeLife_Hills_CloudyFar_160x28_1f",
+            "width": 160,
+            "height": 28,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "sky",
+            "frames": 1,
+            "fps": 0,
+            "loop": true,
+            "scroll": 2
+          },
+          "near": {
+            "file": "BiomeLife_Hills_CloudyNear_160x24_1f",
+            "width": 160,
+            "height": 24,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "sky",
+            "frames": 1,
+            "fps": 0,
+            "loop": true,
+            "scroll": 5
+          },
+          "mist": {
+            "file": "BiomeLife_Hills_CloudyMist_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "far",
+            "frames": 16,
+            "fps": 4,
+            "loop": true
+          }
+        },
+        "rain": {
+          "far": {
+            "file": "BiomeLife_Hills_RainFar_160x60_12f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "sky",
+            "frames": 12,
+            "fps": 12,
+            "loop": true
+          },
+          "near": {
+            "file": "BiomeLife_Hills_RainNear_160x60_12f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "front",
+            "frames": 12,
+            "fps": 15,
+            "loop": true
+          },
+          "mist": {
+            "file": "BiomeLife_Hills_RainMist_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 8,
+            "loop": true
+          }
+        },
+        "wind": {
+          "far": {
+            "file": "BiomeLife_Hills_WindFar_160x24_1f",
+            "width": 160,
+            "height": 24,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "sky",
+            "frames": 1,
+            "fps": 0,
+            "loop": true,
+            "scroll": 9
+          },
+          "near": {
+            "file": "BiomeLife_Hills_WindNear_160x60_24f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "front",
+            "frames": 24,
+            "fps": 12,
+            "loop": true
+          },
+          "mist": {
+            "file": "BiomeLife_Hills_WindMist_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 12,
+            "loop": true
+          }
+        }
+      },
+      "special": {
+        "rainbow": {
+          "file": "BiomeLife_Hills_Rainbow_160x60_8f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "sky",
+          "frames": 8,
+          "fps": 4,
+          "loop": true,
+          "glow": true
+        }
+      },
+      "light": {
+        "morning": {
+          "file": "BiomeLife_Common_LightMorning_160x60_1f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "light",
+          "frames": 1,
+          "fps": 0,
+          "loop": true,
+          "glow": true
+        },
+        "evening": {
+          "file": "BiomeLife_Common_LightEvening_160x60_1f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "light",
+          "frames": 1,
+          "fps": 0,
+          "loop": true,
+          "glow": true
+        },
+        "night": {
+          "file": "BiomeLife_Common_LightNight_160x60_1f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "light",
+          "frames": 1,
+          "fps": 0,
+          "loop": true,
+          "glow": true
+        }
+      },
+      "sky": {
+        "sun": {
+          "file": "BiomeLife_Common_Sun_21x21_8f",
+          "width": 21,
+          "height": 21,
+          "pivot": [
+            10,
+            10
+          ],
+          "layer": "sky",
+          "frames": 8,
+          "fps": 4,
+          "loop": true,
+          "glow": true,
+          "at": [
+            140,
+            8
+          ]
+        },
+        "sunRise": {
+          "file": "BiomeLife_Common_SunLow_27x27_8f",
+          "width": 27,
+          "height": 27,
+          "pivot": [
+            13,
+            13
+          ],
+          "layer": "sky",
+          "frames": 8,
+          "fps": 4,
+          "loop": true,
+          "glow": true,
+          "at": [
+            22,
+            20
+          ]
+        },
+        "sunSet": {
+          "file": "BiomeLife_Common_SunLow_27x27_8f",
+          "width": 27,
+          "height": 27,
+          "pivot": [
+            13,
+            13
+          ],
+          "layer": "sky",
+          "frames": 8,
+          "fps": 4,
+          "loop": true,
+          "glow": true,
+          "at": [
+            136,
+            21
+          ]
+        },
+        "moon": {
+          "file": "BiomeLife_Common_Moon_23x23_8f",
+          "width": 23,
+          "height": 23,
+          "pivot": [
+            11,
+            11
+          ],
+          "layer": "sky",
+          "frames": 8,
+          "fps": 4,
+          "loop": true,
+          "glow": true,
+          "at": [
+            114,
+            9
+          ]
+        },
+        "stars": {
+          "file": "BiomeLife_Common_Stars_160x24_16f",
+          "width": 160,
+          "height": 24,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "sky",
+          "frames": 16,
+          "fps": 4,
+          "loop": true,
+          "glow": true
+        }
+      },
+      "creatures": {
+        "butterflies": {
+          "calm": {
+            "file": "BiomeLife_Hills_ButterfliesCalm_28x22_24f",
+            "width": 28,
+            "height": 22,
+            "pivot": [
+              14,
+              11
+            ],
+            "layer": "ground",
+            "frames": 24,
+            "fps": 12,
+            "loop": true,
+            "at": [
+              66,
+              40
+            ]
+          },
+          "friendly": {
+            "file": "BiomeLife_Hills_ButterfliesFriendly_11x9_16f",
+            "width": 11,
+            "height": 9,
+            "pivot": [
+              5,
+              8
+            ],
+            "layer": "front",
+            "frames": 16,
+            "fps": 8,
+            "loop": true,
+            "at": "heroHead"
+          },
+          "alarmed": {
+            "file": "BiomeLife_Hills_ButterfliesAlarmed_28x30_10f",
+            "width": 28,
+            "height": 30,
+            "pivot": [
+              14,
+              19
+            ],
+            "layer": "ground",
+            "frames": 10,
+            "fps": 15,
+            "loop": false,
+            "at": [
+              66,
+              40
+            ]
+          },
+          "hidden": {
+            "file": "BiomeLife_Hills_ButterfliesHidden_28x22_8f",
+            "width": 28,
+            "height": 22,
+            "pivot": [
+              14,
+              11
+            ],
+            "layer": "ground",
+            "frames": 8,
+            "fps": 12,
+            "loop": false,
+            "at": [
+              66,
+              40
+            ]
+          }
+        },
+        "starlings": {
+          "calm": {
+            "file": "BiomeLife_Hills_StarlingsCalm_56x24_24f",
+            "width": 56,
+            "height": 24,
+            "pivot": [
+              28,
+              12
+            ],
+            "layer": "sky",
+            "frames": 24,
+            "fps": 12,
+            "loop": true,
+            "drift": 3,
+            "at": [
+              72,
+              11
+            ]
+          },
+          "friendly": {
+            "file": "BiomeLife_Hills_StarlingsFriendly_34x8_16f",
+            "width": 34,
+            "height": 8,
+            "pivot": [
+              17,
+              7
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              98,
+              52
+            ]
+          },
+          "alarmed": {
+            "file": "BiomeLife_Hills_StarlingsAlarmed_72x44_16f",
+            "width": 72,
+            "height": 44,
+            "pivot": [
+              36,
+              40
+            ],
+            "layer": "far",
+            "frames": 16,
+            "fps": 15,
+            "loop": false,
+            "at": [
+              72,
+              40
+            ]
+          },
+          "hidden": {
+            "file": "BiomeLife_Hills_StarlingsHidden_56x24_10f",
+            "width": 56,
+            "height": 24,
+            "pivot": [
+              28,
+              12
+            ],
+            "layer": "sky",
+            "frames": 10,
+            "fps": 12,
+            "loop": false,
+            "at": [
+              72,
+              11
+            ]
+          }
+        },
+        "rabbit": {
+          "calm": {
+            "file": "BiomeLife_Hills_RabbitCalm_18x16_32f",
+            "width": 18,
+            "height": 16,
+            "pivot": [
+              9,
+              14
+            ],
+            "layer": "ground",
+            "frames": 32,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              92,
+              52
+            ]
+          },
+          "friendly": {
+            "file": "BiomeLife_Hills_RabbitFriendly_18x16_16f",
+            "width": 18,
+            "height": 16,
+            "pivot": [
+              9,
+              14
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              92,
+              52
+            ]
+          },
+          "alarmed": {
+            "file": "BiomeLife_Hills_RabbitAlarmed_44x18_14f",
+            "width": 44,
+            "height": 18,
+            "pivot": [
+              34,
+              16
+            ],
+            "layer": "ground",
+            "frames": 14,
+            "fps": 15,
+            "loop": false,
+            "at": [
+              92,
+              52
+            ]
+          },
+          "hidden": {
+            "file": "BiomeLife_Hills_RabbitHidden_18x16_6f",
+            "width": 18,
+            "height": 16,
+            "pivot": [
+              9,
+              14
+            ],
+            "layer": "ground",
+            "frames": 6,
+            "fps": 12,
+            "loop": false,
+            "at": [
+              92,
+              52
+            ]
+          },
+          "hop": {
+            "file": "BiomeLife_Hills_RabbitHop_18x16_6f",
+            "width": 18,
+            "height": 16,
+            "pivot": [
+              9,
+              14
+            ],
+            "layer": "ground",
+            "frames": 6,
+            "fps": 12,
+            "loop": true,
+            "step": 10,
+            "at": [
+              92,
+              52
+            ]
+          }
+        },
+        "fireflies": {
+          "calm": {
+            "file": "BiomeLife_Hills_FirefliesCalm_48x28_32f",
+            "width": 48,
+            "height": 28,
+            "pivot": [
+              24,
+              14
+            ],
+            "layer": "front",
+            "frames": 32,
+            "fps": 8,
+            "loop": true,
+            "glow": true,
+            "at": [
+              70,
+              38
+            ]
+          },
+          "friendly": {
+            "file": "BiomeLife_Hills_FirefliesFriendly_26x22_24f",
+            "width": 26,
+            "height": 22,
+            "pivot": [
+              13,
+              11
+            ],
+            "layer": "front",
+            "frames": 24,
+            "fps": 8,
+            "loop": true,
+            "glow": true,
+            "at": "hero"
+          },
+          "alarmed": {
+            "file": "BiomeLife_Hills_FirefliesAlarmed_48x28_10f",
+            "width": 48,
+            "height": 28,
+            "pivot": [
+              24,
+              14
+            ],
+            "layer": "front",
+            "frames": 10,
+            "fps": 15,
+            "loop": false,
+            "glow": true,
+            "at": [
+              70,
+              38
+            ]
+          },
+          "hidden": {
+            "file": "BiomeLife_Hills_FirefliesHidden_48x28_8f",
+            "width": 48,
+            "height": 28,
+            "pivot": [
+              24,
+              14
+            ],
+            "layer": "front",
+            "frames": 8,
+            "fps": 12,
+            "loop": false,
+            "glow": true,
+            "at": [
+              70,
+              38
+            ]
+          }
+        },
+        "owl": {
+          "calm": {
+            "file": "BiomeLife_Hills_OwlCalm_13x12_32f",
+            "width": 13,
+            "height": 12,
+            "pivot": [
+              6,
+              11
+            ],
+            "layer": "ground",
+            "frames": 32,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              100,
+              41
+            ]
+          },
+          "friendly": {
+            "file": "BiomeLife_Hills_OwlFriendly_13x12_16f",
+            "width": 13,
+            "height": 12,
+            "pivot": [
+              6,
+              11
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              100,
+              41
+            ]
+          },
+          "alarmed": {
+            "file": "BiomeLife_Hills_OwlAlarmed_44x34_14f",
+            "width": 44,
+            "height": 34,
+            "pivot": [
+              36,
+              31
+            ],
+            "layer": "ground",
+            "frames": 14,
+            "fps": 15,
+            "loop": false,
+            "at": [
+              100,
+              41
+            ]
+          },
+          "hidden": {
+            "file": "BiomeLife_Hills_OwlHidden_13x12_8f",
+            "width": 13,
+            "height": 12,
+            "pivot": [
+              6,
+              11
+            ],
+            "layer": "ground",
+            "frames": 8,
+            "fps": 12,
+            "loop": false,
+            "at": [
+              100,
+              41
+            ]
+          },
+          "perch": {
+            "file": "BiomeLife_Hills_OwlPerch_13x16_1f",
+            "width": 13,
+            "height": 16,
+            "pivot": [
+              6,
+              15
+            ],
+            "layer": "ground",
+            "frames": 1,
+            "fps": 0,
+            "loop": true,
+            "at": [
+              100,
+              52
+            ]
+          }
+        }
+      },
+      "reactions": {
+        "enemyFlash": {
+          "file": "BiomeLife_Common_EnemyFlash_22x40_10f",
+          "width": 22,
+          "height": 40,
+          "pivot": [
+            11,
+            38
+          ],
+          "layer": "ground",
+          "frames": 10,
+          "fps": 15,
+          "loop": false,
+          "glow": true,
+          "at": "enemy"
+        },
+        "bossOut": {
+          "file": "BiomeLife_Hills_BossOut_160x60_16f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "front",
+          "frames": 16,
+          "fps": 15,
+          "loop": false
+        },
+        "bossSky": {
+          "file": "BiomeLife_Hills_BossSky_160x28_16f",
+          "width": 160,
+          "height": 28,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "sky",
+          "frames": 16,
+          "fps": 6,
+          "loop": true
+        },
+        "bossGround": {
+          "file": "BiomeLife_Hills_BossGrass_160x12_8f",
+          "width": 160,
+          "height": 12,
+          "pivot": [
+            0,
+            10
+          ],
+          "layer": "ground",
+          "frames": 8,
+          "fps": 12,
+          "loop": true,
+          "at": [
+            0,
+            52
+          ]
+        },
+        "bossDown": {
+          "file": "BiomeLife_Hills_BossDown_160x60_20f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "ground",
+          "frames": 20,
+          "fps": 12,
+          "loop": false,
+          "glow": true
+        },
+        "guardianCrack": {
+          "file": "BiomeLife_Common_GuardianCrack_160x30_14f",
+          "width": 160,
+          "height": 30,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "sky",
+          "frames": 14,
+          "fps": 12,
+          "loop": false,
+          "glow": true
+        },
+        "prestigeWave": {
+          "file": "BiomeLife_Common_PrestigeWave_160x60_16f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "front",
+          "frames": 16,
+          "fps": 15,
+          "loop": false,
+          "glow": true
+        },
+        "sway1": {
+          "file": "BiomeLife_Hills_Sway1_40x14_8f",
+          "width": 40,
+          "height": 14,
+          "pivot": [
+            20,
+            11
+          ],
+          "layer": "ground",
+          "frames": 8,
+          "fps": 8,
+          "loop": true,
+          "at": "hero"
+        },
+        "sway2": {
+          "file": "BiomeLife_Hills_Sway2_40x14_8f",
+          "width": 40,
+          "height": 14,
+          "pivot": [
+            20,
+            11
+          ],
+          "layer": "ground",
+          "frames": 8,
+          "fps": 12,
+          "loop": true,
+          "at": "hero"
+        },
+        "sway3": {
+          "file": "BiomeLife_Hills_Sway3_40x22_12f",
+          "width": 40,
+          "height": 22,
+          "pivot": [
+            20,
+            19
+          ],
+          "layer": "ground",
+          "frames": 12,
+          "fps": 15,
+          "loop": true,
+          "at": "hero"
+        }
+      },
+      "scenery": {
+        "day": {
+          "grass": {
+            "file": "BiomeLife_Hills_Grass_160x12_16f",
+            "width": 160,
+            "height": 12,
+            "pivot": [
+              0,
+              10
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              0,
+              52
+            ]
+          },
+          "cloudShadows": {
+            "file": "BiomeLife_Hills_CloudShadows_160x20_1f",
+            "width": 160,
+            "height": 20,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 1,
+            "fps": 0,
+            "loop": true,
+            "scroll": 4,
+            "at": [
+              0,
+              34
+            ]
+          },
+          "flowers": {
+            "file": "BiomeLife_Hills_Flowers_160x12_8f",
+            "width": 160,
+            "height": 12,
+            "pivot": [
+              0,
+              10
+            ],
+            "layer": "ground",
+            "frames": 8,
+            "fps": 6,
+            "loop": true,
+            "at": [
+              0,
+              52
+            ]
+          }
+        },
+        "night": {
+          "grass": {
+            "file": "BiomeLife_Hills_Grass_160x12_16f",
+            "width": 160,
+            "height": 12,
+            "pivot": [
+              0,
+              10
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              0,
+              52
+            ]
+          },
+          "flowersClose": {
+            "file": "BiomeLife_Hills_FlowersClose_160x12_6f",
+            "width": 160,
+            "height": 12,
+            "pivot": [
+              0,
+              10
+            ],
+            "layer": "ground",
+            "frames": 6,
+            "fps": 8,
+            "loop": false,
+            "at": [
+              0,
+              52
+            ]
+          },
+          "flowers": {
+            "file": "BiomeLife_Hills_FlowersNight_160x12_1f",
+            "width": 160,
+            "height": 12,
+            "pivot": [
+              0,
+              10
+            ],
+            "layer": "ground",
+            "frames": 1,
+            "fps": 0,
+            "loop": true,
+            "at": [
+              0,
+              52
+            ]
+          },
+          "castleLights": {
+            "file": "BiomeLife_Hills_CastleLights_30x20_8f",
+            "width": 30,
+            "height": 20,
+            "pivot": [
+              15,
+              19
+            ],
+            "layer": "hill",
+            "frames": 8,
+            "fps": 6,
+            "loop": true,
+            "glow": true,
+            "at": [
+              43,
+              25
+            ]
+          },
+          "mist": {
+            "file": "BiomeLife_Hills_NightMist_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 6,
+            "loop": true
+          }
+        },
+        "always": {
+          "castle": {
+            "file": "BiomeLife_Hills_Castle_30x26_1f",
+            "width": 30,
+            "height": 26,
+            "pivot": [
+              15,
+              19
+            ],
+            "layer": "hill",
+            "frames": 1,
+            "fps": 0,
+            "loop": true,
+            "at": [
+              43,
+              25
+            ]
+          },
+          "mill": {
+            "file": "BiomeLife_Hills_Mill_21x30_8f",
+            "width": 21,
+            "height": 30,
+            "pivot": [
+              10,
+              23
+            ],
+            "layer": "hill",
+            "frames": 8,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              99,
+              32
+            ]
+          }
+        }
+      }
+    },
+    "snow": {
+      "order": [
+        "bg:back",
+        "light",
+        "sky",
+        "bg:mid",
+        "far",
+        "bg:ground",
+        "bg:front",
+        "ground",
+        "actors",
+        "front"
+      ],
+      "weather": {
+        "clear": {
+          "far": {
+            "file": "BiomeLife_Snow_ClearFar_160x24_1f",
+            "width": 160,
+            "height": 24,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "sky",
+            "frames": 1,
+            "fps": 0,
+            "loop": true,
+            "scroll": 1.2
+          },
+          "near": {
+            "file": "BiomeLife_Snow_ClearNear_160x60_24f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "front",
+            "frames": 24,
+            "fps": 8,
+            "loop": true,
+            "glow": true
+          },
+          "mist": {
+            "file": "BiomeLife_Snow_ClearMist_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 4,
+            "loop": true
+          }
+        },
+        "snow": {
+          "far": {
+            "file": "BiomeLife_Snow_SnowFar_160x60_24f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "sky",
+            "frames": 24,
+            "fps": 8,
+            "loop": true
+          },
+          "near": {
+            "file": "BiomeLife_Snow_SnowNear_160x60_24f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "front",
+            "frames": 24,
+            "fps": 8,
+            "loop": true
+          },
+          "mist": {
+            "file": "BiomeLife_Snow_SnowMist_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 4,
+            "loop": true
+          }
+        },
+        "blizzard": {
+          "far": {
+            "file": "BiomeLife_Snow_BlizzardFar_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "far",
+            "frames": 16,
+            "fps": 12,
+            "loop": true
+          },
+          "near": {
+            "file": "BiomeLife_Snow_BlizzardNear_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "front",
+            "frames": 16,
+            "fps": 15,
+            "loop": true
+          },
+          "mist": {
+            "file": "BiomeLife_Snow_BlizzardMist_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 12,
+            "loop": true
+          }
+        },
+        "frost": {
+          "far": {
+            "file": "BiomeLife_Snow_FrostFar_160x34_16f",
+            "width": 160,
+            "height": 34,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "sky",
+            "frames": 16,
+            "fps": 4,
+            "loop": true,
+            "glow": true
+          },
+          "near": {
+            "file": "BiomeLife_Snow_FrostNear_160x60_24f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "front",
+            "frames": 24,
+            "fps": 8,
+            "loop": true,
+            "glow": true
+          },
+          "mist": {
+            "file": "BiomeLife_Snow_FrostMist_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 4,
+            "loop": true
+          }
+        }
+      },
+      "special": {
+        "aurora": {
+          "file": "BiomeLife_Snow_Aurora_160x28_24f",
+          "width": 160,
+          "height": 28,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "sky",
+          "frames": 24,
+          "fps": 6,
+          "loop": true,
+          "glow": true
+        }
+      },
+      "light": {
+        "morning": {
+          "file": "BiomeLife_Common_LightMorning_160x60_1f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "light",
+          "frames": 1,
+          "fps": 0,
+          "loop": true,
+          "glow": true
+        },
+        "evening": {
+          "file": "BiomeLife_Common_LightEvening_160x60_1f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "light",
+          "frames": 1,
+          "fps": 0,
+          "loop": true,
+          "glow": true
+        },
+        "night": {
+          "file": "BiomeLife_Common_LightNight_160x60_1f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "light",
+          "frames": 1,
+          "fps": 0,
+          "loop": true,
+          "glow": true
+        }
+      },
+      "sky": {
+        "sun": {
+          "file": "BiomeLife_Common_Sun_21x21_8f",
+          "width": 21,
+          "height": 21,
+          "pivot": [
+            10,
+            10
+          ],
+          "layer": "sky",
+          "frames": 8,
+          "fps": 4,
+          "loop": true,
+          "glow": true,
+          "at": [
+            128,
+            6
+          ]
+        },
+        "sunRise": {
+          "file": "BiomeLife_Common_SunLow_27x27_8f",
+          "width": 27,
+          "height": 27,
+          "pivot": [
+            13,
+            13
+          ],
+          "layer": "sky",
+          "frames": 8,
+          "fps": 4,
+          "loop": true,
+          "glow": true,
+          "at": [
+            20,
+            9
+          ]
+        },
+        "sunSet": {
+          "file": "BiomeLife_Common_SunLow_27x27_8f",
+          "width": 27,
+          "height": 27,
+          "pivot": [
+            13,
+            13
+          ],
+          "layer": "sky",
+          "frames": 8,
+          "fps": 4,
+          "loop": true,
+          "glow": true,
+          "at": [
+            140,
+            9
+          ]
+        },
+        "moon": {
+          "file": "BiomeLife_Common_Moon_23x23_8f",
+          "width": 23,
+          "height": 23,
+          "pivot": [
+            11,
+            11
+          ],
+          "layer": "sky",
+          "frames": 8,
+          "fps": 4,
+          "loop": true,
+          "glow": true,
+          "at": [
+            118,
+            6
+          ]
+        },
+        "stars": {
+          "file": "BiomeLife_Common_Stars_160x24_16f",
+          "width": 160,
+          "height": 24,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "sky",
+          "frames": 16,
+          "fps": 4,
+          "loop": true,
+          "glow": true
+        }
+      },
+      "creatures": {
+        "bullfinches": {
+          "calm": {
+            "file": "BiomeLife_Snow_BullfinchesCalm_40x24_24f",
+            "width": 40,
+            "height": 24,
+            "pivot": [
+              20,
+              12
+            ],
+            "layer": "ground",
+            "frames": 24,
+            "fps": 12,
+            "loop": true,
+            "at": [
+              66,
+              34
+            ]
+          },
+          "friendly": {
+            "file": "BiomeLife_Snow_BullfinchesFriendly_21x16_16f",
+            "width": 21,
+            "height": 16,
+            "pivot": [
+              10,
+              15
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              66,
+              52
+            ]
+          },
+          "alarmed": {
+            "file": "BiomeLife_Snow_BullfinchesAlarmed_48x36_10f",
+            "width": 48,
+            "height": 36,
+            "pivot": [
+              28,
+              24
+            ],
+            "layer": "ground",
+            "frames": 10,
+            "fps": 15,
+            "loop": false,
+            "at": [
+              66,
+              34
+            ]
+          },
+          "hidden": {
+            "file": "BiomeLife_Snow_BullfinchesHidden_48x26_8f",
+            "width": 48,
+            "height": 26,
+            "pivot": [
+              28,
+              12
+            ],
+            "layer": "ground",
+            "frames": 8,
+            "fps": 12,
+            "loop": false,
+            "at": [
+              66,
+              34
+            ]
+          },
+          "perch": {
+            "file": "BiomeLife_Snow_BullfinchesPerch_21x14_1f",
+            "width": 21,
+            "height": 14,
+            "pivot": [
+              10,
+              12
+            ],
+            "layer": "ground",
+            "frames": 1,
+            "fps": 0,
+            "loop": true,
+            "at": [
+              66,
+              52
+            ]
+          }
+        },
+        "hare": {
+          "calm": {
+            "file": "BiomeLife_Snow_HareCalm_18x16_32f",
+            "width": 18,
+            "height": 16,
+            "pivot": [
+              9,
+              14
+            ],
+            "layer": "ground",
+            "frames": 32,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              94,
+              52
+            ]
+          },
+          "friendly": {
+            "file": "BiomeLife_Snow_HareFriendly_18x16_16f",
+            "width": 18,
+            "height": 16,
+            "pivot": [
+              9,
+              14
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              94,
+              52
+            ]
+          },
+          "alarmed": {
+            "file": "BiomeLife_Snow_HareAlarmed_44x18_14f",
+            "width": 44,
+            "height": 18,
+            "pivot": [
+              34,
+              16
+            ],
+            "layer": "ground",
+            "frames": 14,
+            "fps": 15,
+            "loop": false,
+            "at": [
+              94,
+              52
+            ]
+          },
+          "hidden": {
+            "file": "BiomeLife_Snow_HareHidden_18x16_6f",
+            "width": 18,
+            "height": 16,
+            "pivot": [
+              9,
+              14
+            ],
+            "layer": "ground",
+            "frames": 6,
+            "fps": 12,
+            "loop": false,
+            "at": [
+              94,
+              52
+            ]
+          },
+          "hop": {
+            "file": "BiomeLife_Snow_HareHop_18x16_6f",
+            "width": 18,
+            "height": 16,
+            "pivot": [
+              9,
+              14
+            ],
+            "layer": "ground",
+            "frames": 6,
+            "fps": 12,
+            "loop": true,
+            "step": 10,
+            "at": [
+              94,
+              52
+            ]
+          }
+        },
+        "tracks": {
+          "calm": {
+            "file": "BiomeLife_Snow_TracksCalm_40x8_32f",
+            "width": 40,
+            "height": 8,
+            "pivot": [
+              20,
+              6
+            ],
+            "layer": "ground",
+            "frames": 32,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              70,
+              56
+            ]
+          },
+          "friendly": {
+            "file": "BiomeLife_Snow_TracksFriendly_40x8_32f",
+            "width": 40,
+            "height": 8,
+            "pivot": [
+              20,
+              6
+            ],
+            "layer": "ground",
+            "frames": 32,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              70,
+              56
+            ]
+          },
+          "alarmed": {
+            "file": "BiomeLife_Snow_TracksAlarmed_40x12_8f",
+            "width": 40,
+            "height": 12,
+            "pivot": [
+              20,
+              10
+            ],
+            "layer": "ground",
+            "frames": 8,
+            "fps": 12,
+            "loop": false,
+            "at": [
+              70,
+              56
+            ]
+          },
+          "hidden": {
+            "file": "BiomeLife_Snow_TracksHidden_40x8_6f",
+            "width": 40,
+            "height": 8,
+            "pivot": [
+              20,
+              6
+            ],
+            "layer": "ground",
+            "frames": 6,
+            "fps": 12,
+            "loop": false,
+            "at": [
+              70,
+              56
+            ]
+          }
+        },
+        "auroraGlints": {
+          "calm": {
+            "file": "BiomeLife_Snow_AuroraGlintsCalm_48x28_32f",
+            "width": 48,
+            "height": 28,
+            "pivot": [
+              24,
+              14
+            ],
+            "layer": "front",
+            "frames": 32,
+            "fps": 8,
+            "loop": true,
+            "glow": true,
+            "at": [
+              70,
+              30
+            ]
+          },
+          "friendly": {
+            "file": "BiomeLife_Snow_AuroraGlintsFriendly_26x22_24f",
+            "width": 26,
+            "height": 22,
+            "pivot": [
+              13,
+              11
+            ],
+            "layer": "front",
+            "frames": 24,
+            "fps": 8,
+            "loop": true,
+            "glow": true,
+            "at": "hero"
+          },
+          "alarmed": {
+            "file": "BiomeLife_Snow_AuroraGlintsAlarmed_48x28_10f",
+            "width": 48,
+            "height": 28,
+            "pivot": [
+              24,
+              14
+            ],
+            "layer": "front",
+            "frames": 10,
+            "fps": 15,
+            "loop": false,
+            "glow": true,
+            "at": [
+              70,
+              30
+            ]
+          },
+          "hidden": {
+            "file": "BiomeLife_Snow_AuroraGlintsHidden_48x28_8f",
+            "width": 48,
+            "height": 28,
+            "pivot": [
+              24,
+              14
+            ],
+            "layer": "front",
+            "frames": 8,
+            "fps": 12,
+            "loop": false,
+            "glow": true,
+            "at": [
+              70,
+              30
+            ]
+          }
+        },
+        "arcticFox": {
+          "calm": {
+            "file": "BiomeLife_Snow_ArcticFoxCalm_20x14_32f",
+            "width": 20,
+            "height": 14,
+            "pivot": [
+              9,
+              12
+            ],
+            "layer": "ground",
+            "frames": 32,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              96,
+              52
+            ]
+          },
+          "friendly": {
+            "file": "BiomeLife_Snow_ArcticFoxFriendly_20x14_16f",
+            "width": 20,
+            "height": 14,
+            "pivot": [
+              9,
+              12
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              96,
+              52
+            ]
+          },
+          "alarmed": {
+            "file": "BiomeLife_Snow_ArcticFoxAlarmed_56x18_14f",
+            "width": 56,
+            "height": 18,
+            "pivot": [
+              44,
+              16
+            ],
+            "layer": "ground",
+            "frames": 14,
+            "fps": 15,
+            "loop": false,
+            "at": [
+              96,
+              52
+            ]
+          },
+          "hidden": {
+            "file": "BiomeLife_Snow_ArcticFoxHidden_24x24_11f",
+            "width": 24,
+            "height": 24,
+            "pivot": [
+              11,
+              20
+            ],
+            "layer": "ground",
+            "frames": 11,
+            "fps": 12,
+            "loop": false,
+            "at": [
+              96,
+              52
+            ]
+          }
+        }
+      },
+      "reactions": {
+        "enemyFlash": {
+          "file": "BiomeLife_Common_EnemyFlash_22x40_10f",
+          "width": 22,
+          "height": 40,
+          "pivot": [
+            11,
+            38
+          ],
+          "layer": "ground",
+          "frames": 10,
+          "fps": 15,
+          "loop": false,
+          "glow": true,
+          "at": "enemy"
+        },
+        "bossOut": {
+          "file": "BiomeLife_Snow_BossOut_160x60_16f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "front",
+          "frames": 16,
+          "fps": 15,
+          "loop": false
+        },
+        "bossSky": {
+          "file": "BiomeLife_Snow_BossSky_160x28_16f",
+          "width": 160,
+          "height": 28,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "sky",
+          "frames": 16,
+          "fps": 6,
+          "loop": true
+        },
+        "bossGround": {
+          "file": "BiomeLife_Snow_BossGround_160x12_8f",
+          "width": 160,
+          "height": 12,
+          "pivot": [
+            0,
+            10
+          ],
+          "layer": "ground",
+          "frames": 8,
+          "fps": 12,
+          "loop": true,
+          "at": [
+            0,
+            52
+          ]
+        },
+        "bossSlab": {
+          "file": "BiomeLife_Snow_BossSlab_30x48_14f",
+          "width": 30,
+          "height": 48,
+          "pivot": [
+            15,
+            5
+          ],
+          "layer": "far",
+          "frames": 14,
+          "fps": 12,
+          "loop": false,
+          "at": [
+            58,
+            16
+          ]
+        },
+        "bossDown": {
+          "file": "BiomeLife_Snow_BossDown_160x60_20f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "ground",
+          "frames": 20,
+          "fps": 12,
+          "loop": false,
+          "glow": true
+        },
+        "guardianCrack": {
+          "file": "BiomeLife_Common_GuardianCrack_160x30_14f",
+          "width": 160,
+          "height": 30,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "sky",
+          "frames": 14,
+          "fps": 12,
+          "loop": false,
+          "glow": true
+        },
+        "prestigeWave": {
+          "file": "BiomeLife_Common_PrestigeWave_160x60_16f",
+          "width": 160,
+          "height": 60,
+          "pivot": [
+            0,
+            0
+          ],
+          "layer": "front",
+          "frames": 16,
+          "fps": 15,
+          "loop": false,
+          "glow": true
+        },
+        "sway1": {
+          "file": "BiomeLife_Snow_Sway1_40x14_8f",
+          "width": 40,
+          "height": 14,
+          "pivot": [
+            20,
+            11
+          ],
+          "layer": "ground",
+          "frames": 8,
+          "fps": 8,
+          "loop": true,
+          "at": "hero"
+        },
+        "sway2": {
+          "file": "BiomeLife_Snow_Sway2_40x14_8f",
+          "width": 40,
+          "height": 14,
+          "pivot": [
+            20,
+            11
+          ],
+          "layer": "ground",
+          "frames": 8,
+          "fps": 12,
+          "loop": true,
+          "at": "hero"
+        },
+        "sway3": {
+          "file": "BiomeLife_Snow_Sway3_40x22_12f",
+          "width": 40,
+          "height": 22,
+          "pivot": [
+            20,
+            19
+          ],
+          "layer": "ground",
+          "frames": 12,
+          "fps": 15,
+          "loop": true,
+          "at": "hero"
+        }
+      },
+      "scenery": {
+        "day": {
+          "sparkle": {
+            "file": "BiomeLife_Snow_Sparkle_160x60_16f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 8,
+            "loop": true,
+            "glow": true
+          },
+          "slide": {
+            "file": "BiomeLife_Snow_Slide_18x22_32f",
+            "width": 18,
+            "height": 22,
+            "pivot": [
+              4,
+              3
+            ],
+            "layer": "far",
+            "frames": 32,
+            "fps": 8,
+            "loop": true,
+            "at": [
+              112,
+              20
+            ]
+          }
+        },
+        "night": {
+          "iceGlow": {
+            "file": "BiomeLife_Snow_IceGlow_160x12_16f",
+            "width": 160,
+            "height": 12,
+            "pivot": [
+              0,
+              10
+            ],
+            "layer": "ground",
+            "frames": 16,
+            "fps": 6,
+            "loop": true,
+            "glow": true,
+            "at": [
+              0,
+              52
+            ]
+          },
+          "bigFlakes": {
+            "file": "BiomeLife_Snow_BigFlakes_160x60_24f",
+            "width": 160,
+            "height": 60,
+            "pivot": [
+              0,
+              0
+            ],
+            "layer": "ground",
+            "frames": 24,
+            "fps": 6,
+            "loop": true
+          }
+        },
+        "always": {}
+      }
+    }
+  }
+}
