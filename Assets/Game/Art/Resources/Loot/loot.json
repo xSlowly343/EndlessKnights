@@ -1,0 +1,255 @@
+{
+  "version": 1,
+  "beams": [
+    {
+      "file": "Loot_Beam_Simple_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "simple",
+      "seconds": 1.2,
+      "loops": true
+    },
+    {
+      "file": "Loot_Beam_Fine_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "fine",
+      "seconds": 1.2,
+      "loops": true
+    },
+    {
+      "file": "Loot_Beam_Uncommon_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "uncommon",
+      "seconds": 1.4,
+      "loops": true
+    },
+    {
+      "file": "Loot_Beam_Rare_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "rare",
+      "seconds": 1.6,
+      "loops": true
+    },
+    {
+      "file": "Loot_Beam_Epic_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "epic",
+      "seconds": 1.8,
+      "loops": true
+    },
+    {
+      "file": "Loot_Beam_Legendary_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "legendary",
+      "seconds": 2.2,
+      "loops": true
+    },
+    {
+      "file": "Loot_Beam_Mythic_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "mythic",
+      "seconds": 2.4,
+      "loops": true
+    },
+    {
+      "file": "Loot_Beam_Ancient_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "ancient",
+      "seconds": 2.6,
+      "loops": true
+    },
+    {
+      "file": "Loot_Beam_Rift_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "rift",
+      "seconds": 3,
+      "loops": true
+    },
+    {
+      "file": "Loot_Beam_Astral_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "astral",
+      "seconds": 3,
+      "loops": true
+    },
+    {
+      "file": "Loot_Beam_Primordial_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "rarity": "primordial",
+      "seconds": 3.4,
+      "loops": true
+    }
+  ],
+  "sheets": {
+    "setMark": {
+      "file": "Loot_SetMark_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "loops": true
+    },
+    "uniqueMark": {
+      "file": "Loot_UniqueMark_24x50_8f",
+      "width": 24,
+      "height": 50,
+      "frames": 8,
+      "pivot": [
+        12,
+        47
+      ],
+      "fps": 12,
+      "loops": true
+    },
+    "bundle": {
+      "file": "Loot_Bundle_12x12_8f",
+      "width": 12,
+      "height": 12,
+      "frames": 8,
+      "pivot": [
+        6,
+        11
+      ],
+      "fps": 12,
+      "loops": true
+    },
+    "coin": {
+      "file": "Loot_Coin_8x8_6f",
+      "width": 8,
+      "height": 8,
+      "frames": 6,
+      "pivot": [
+        4,
+        4
+      ],
+      "fps": 12,
+      "loops": true
+    },
+    "gem": {
+      "file": "Loot_Gem_8x10_6f",
+      "width": 8,
+      "height": 10,
+      "frames": 6,
+      "pivot": [
+        4,
+        5
+      ],
+      "fps": 12,
+      "loops": true
+    },
+    "spark": {
+      "file": "Loot_Spark_10x10_6f",
+      "width": 10,
+      "height": 10,
+      "frames": 6,
+      "pivot": [
+        5,
+        5
+      ],
+      "fps": 12,
+      "loops": true
+    },
+    "chestOpen": {
+      "file": "Loot_ChestOpen_32x32_12f",
+      "width": 32,
+      "height": 32,
+      "frames": 12,
+      "pivot": [
+        16,
+        29
+      ],
+      "fps": 16
+    },
+    "letterOpen": {
+      "file": "Loot_LetterOpen_32x32_12f",
+      "width": 32,
+      "height": 32,
+      "frames": 12,
+      "pivot": [
+        16,
+        29
+      ],
+      "fps": 16
+    }
+  }
+}

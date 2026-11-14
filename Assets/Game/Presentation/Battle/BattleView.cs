@@ -1,5 +1,6 @@
 using Game.Core.Math;
 using Game.Core.Sim;
+using Game.Core.Content.Items;
 using Game.Core.Ui;
 using Game.Presentation.Strip;
 using Game.Presentation.Ui;
@@ -62,12 +63,15 @@ namespace Game.Presentation.Battle
         private const float PortalTextFromTopPx = 22f;
         private const int FighterSortingOrder = 10;
         private const int StrikeSortingOrder = 11;
+        private const int LootSortingOrder = 13;
         private const float StrikeDepthIntoEnemy = 0.25f;
         private const float SkillStrikeDim = 0.5f;
 
         private static readonly Vector2 HeroFeet = StripSpace.AtPx(85f, 150f);
         private static readonly float EnemyX = StripSpace.Units(416f);
         private static readonly float GroundY = StripSpace.AtPx(0f, 150f).y;
+        private static readonly Vector2 LootGround = StripSpace.AtPx(352f, 150f);
+        private static readonly Vector2 LootOpening = StripSpace.AtPx(150f, 150f);
         private static readonly float EnemySize = 6f;
         private static readonly float BossSize = 7.4f;
         private static readonly Vector2 CoinTarget = StripSpace.AtPx(MarginPx + CoinPx / 2f, RowCentrePx);
@@ -122,6 +126,7 @@ namespace Game.Presentation.Battle
         private AllySilhouettes _allies = null!;
         private PartyEnemyMarks _marks = null!;
         private EnemyStatusView _statuses = null!;
+        private LootBeams _loot = null!;
         private EnemyStatusShow? _statusShow;
         private UiTheme _theme = null!;
         private RectTransform _hpTrack = null!;
@@ -231,6 +236,16 @@ namespace Game.Presentation.Battle
             _shownHp = 1f;
             _targetHp = 1f;
         }
+
+        public void ShowLoot(ItemRarity rarity, bool set, bool unique) => _loot.Show(rarity, set, unique);
+
+        public void OpenChest() => _loot.OpenChest();
+
+        public void OpenLetter() => _loot.OpenLetter();
+
+        public void BurstGems(int count) => _coins.BurstGems(EnemyCentre, count, Color.white);
+
+        public void BurstSparks(int count) => _coins.BurstSparks(EnemyCentre, count);
 
         public void ShowStatuses(EnemyStatusShow show, long tick)
         {
@@ -357,6 +372,7 @@ namespace Game.Presentation.Battle
             BuildHud(hud);
             _marks = PartyEnemyMarks.Create(hud, _theme);
             _statuses = EnemyStatusView.Create(_enemy, _scene, hud, _theme, FighterSortingOrder);
+            _loot = LootBeams.Create(LootGround, LootOpening, LootSortingOrder, _scene);
             var texts = StripCanvas.Create("SceneTexts", TextSortingOrder, _scene);
             _retreatText = Label("Retreat", texts, _theme.BoldFont, 20f, RetreatColor, TextAlignmentOptions.Center);
             StripCanvas.Place(_retreatText.rectTransform, EnemyX * StripSpace.PixelsPerUnit, StripSpace.BaseHeightPx - (GroundY + EnemySize / 2f) * StripSpace.PixelsPerUnit, new Vector2(160f, 28f), new Vector2(0.5f, 0.5f));
@@ -524,6 +540,7 @@ namespace Game.Presentation.Battle
             AnimateTransition(delta);
             _riftSky.Animate(_inRift, Time.unscaledTime, delta);
             _marks.Animate(delta);
+            _loot.Animate(delta);
             AnimateEffects(delta);
         }
 

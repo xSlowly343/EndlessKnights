@@ -22,6 +22,9 @@ namespace Game.Bootstrap
         private SkillEffects _effects = null!;
         private readonly ShowQueue _shows = new ShowQueue(ShowRules.OwnSkills);
         private readonly EnemyStatusShow _statusShow = new EnemyStatusShow();
+        private const int ShardPieces = 3;
+        private const int MaxSparkPieces = 8;
+        private long _sparksSeen = -1;
         private GameData _data = null!;
         private int _bossTotalTicks = 1;
         private bool _riftLoading;
@@ -106,6 +109,18 @@ namespace Game.Bootstrap
                     case GameEventKind.BossFailed:
                         _view.Retreat();
                         break;
+                    case GameEventKind.ItemDropped when gameEvent.Drop != null && !gameEvent.Drop.Salvaged:
+                        ShowLoot(gameEvent.Drop);
+                        break;
+                    case GameEventKind.ShardsGained:
+                        _view.BurstGems(ShardPieces);
+                        break;
+                    case GameEventKind.DungeonCompleted:
+                        _view.OpenChest();
+                        break;
+                    case GameEventKind.ExpeditionLetter:
+                        _view.OpenLetter();
+                        break;
                     case GameEventKind.RiftGiftOffered:
                         _view.ShowNotice(Game.Core.Text.Texts.Get("rift.gift.offered"));
                         break;
@@ -168,6 +183,7 @@ namespace Game.Bootstrap
             ShowRift(state);
             ShowAura(state);
             ShowStatuses(state);
+            ShowSparks(state);
         }
 
         private void ShowRift(GameState state)
@@ -179,6 +195,21 @@ namespace Game.Bootstrap
             _riftLoading = loading;
             if (loading)
                 _view.ShowLoadingLines(RiftLoadingText.Lines(_loop));
+        }
+
+        private void ShowLoot(ItemDrop drop)
+        {
+            var set = drop.Weapon != null ? drop.Weapon.Set != null : drop.Gear!.Set != null;
+            var unique = drop.Weapon != null ? drop.Weapon.Unique != null : drop.Gear!.Unique != null;
+            _view.ShowLoot(drop.Rarity, set, unique);
+        }
+
+        private void ShowSparks(GameState state)
+        {
+            var sparks = state.Rift.Sparks;
+            if (state.Rift.Inside && _sparksSeen >= 0 && sparks > _sparksSeen)
+                _view.BurstSparks((int)System.Math.Min(MaxSparkPieces, sparks - _sparksSeen));
+            _sparksSeen = state.Rift.Inside ? sparks : -1;
         }
 
         private void ShowStatuses(GameState state)
