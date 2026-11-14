@@ -6,7 +6,7 @@ interface PartySetDropStep {
 interface PartySetRules {
     drops: { [source: string]: { chance: number; steps: PartySetDropStep[] } };
     sourceOf: { [lineSource: string]: string };
-    far: { bossesPerMinute: number; firstMs: number; dungeonTiers: number };
+    far: { perMinute: { [source: string]: number }; firstMs: number; dungeonTiers: number };
     craft: { currency: string; cost: { [rarity: string]: number } };
     sets: { id: string; line: string; kind: string; rarity: string; source: string; pieces: string[]; server: { stat: string; kind: string; value: number }[] }[];
 }
@@ -156,11 +156,13 @@ function partySetFar(nk: nkruntime.Nakama, userId: string, request: { [key: stri
     const deepest = source === "dungeons" ? rules.dungeonTiers : Math.max(1, trusted ? trusted.facts.record : 1);
     const counted = partySetDropsChange(nk, group.id, (value) => {
         const far = value.far || {};
-        const last = far[userId] || nowUnixMs - rules.firstMs;
-        const allowed = Math.floor(Math.max(0, nowUnixMs - last) / 60000 * rules.bossesPerMinute);
+        const key = userId + ":" + source;
+        const perMinute = rules.perMinute[source];
+        const last = far[key] || nowUnixMs - rules.firstMs;
+        const allowed = Math.floor(Math.max(0, nowUnixMs - last) / 60000 * perMinute);
         const taken = Math.min(bosses, allowed);
         if (taken > 0)
-            far[userId] = taken < allowed ? last + taken * 60000 / rules.bossesPerMinute : nowUnixMs;
+            far[key] = taken < allowed ? last + taken * 60000 / perMinute : nowUnixMs;
         value.far = far;
         return taken;
     });

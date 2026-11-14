@@ -182,11 +182,14 @@ test("solo dungeon and rift bosses are reported and the server rolls for them, a
   assert.throws(() => server.partySetFar(nk, "ann", { source: "rift", bosses: 0, depth: 10 }, now), /bad request/);
   const firstMinutes = far.firstMs / 60000;
   let view = server.partySetFar(nk, "ann", { source: "dungeons", bosses: 1000, depth: 999 }, now);
-  assert.strictEqual(view.counted, firstMinutes * far.bossesPerMinute, "the first report covers the first minutes");
-  view = server.partySetFar(nk, "ann", { source: "rift", bosses: 5, depth: 10 }, now + 30000);
-  assert.strictEqual(view.counted, far.bossesPerMinute / 2, "half a minute later only half a minute of bosses");
-  view = server.partySetFar(nk, "ann", { source: "rift", bosses: 1, depth: 10 }, now + 30000);
+  assert.strictEqual(view.counted, firstMinutes * far.perMinute.dungeons, "the first report covers the first minutes");
+  view = server.partySetFar(nk, "ann", { source: "dungeons", bosses: 50, depth: 10 }, now + 30000);
+  assert.strictEqual(view.counted, far.perMinute.dungeons / 2, "half a minute later only half a minute of bosses");
+  view = server.partySetFar(nk, "ann", { source: "dungeons", bosses: 1, depth: 10 }, now + 30000);
   assert.strictEqual(view.counted, 0);
+  view = server.partySetFar(nk, "ann", { source: "rift", bosses: 5000, depth: 10 }, now + 30000);
+  assert.strictEqual(view.counted, firstMinutes * far.perMinute.rift, "the rift has its own window and a faster rate");
+  assert.ok(far.perMinute.rift > far.perMinute.dungeons);
   const drops = rules.drops.dungeons;
   const chance = drops.chance;
   drops.chance = 1;

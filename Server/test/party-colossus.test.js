@@ -62,8 +62,9 @@ test("hits take hp, are capped by the time since the last report and fill the we
   view = server.partyColossusReport(nk, "ann", { direct: [5000, 0, 0, 0] }, now + 10000);
   assert.strictEqual(view.accepted.live, 10 * rules.maxPointsPerSecond, "ten seconds can hold only so much");
   view = server.partyColossusReport(nk, "bob", { direct: [1000, 0, 0, 0] }, now + 10000);
-  assert.strictEqual(view.hp, 15000 - 5000 - 400 - 1000);
-  assert.deepStrictEqual(plain(view.shares.map((s) => [s.name, s.points])), [["ann", 5400], ["bob", 1000]]);
+  const tenSeconds = 10 * rules.maxPointsPerSecond;
+  assert.strictEqual(view.hp, 15000 - 5000 - tenSeconds - 1000);
+  assert.deepStrictEqual(plain(view.shares.map((s) => [s.name, s.points])), [["ann", 5000 + tenSeconds], ["bob", 1000]]);
   assert.strictEqual(view.yours, 1000);
   view = server.partyColossusReport(nk, "bob", { direct: [1e9, 0, 0, 0] }, now + 10 * 3600000);
   assert.strictEqual(view.accepted.live, rules.liveWindowSeconds * rules.maxPointsPerSecond, "a long silence does not turn into hours of live hits");
