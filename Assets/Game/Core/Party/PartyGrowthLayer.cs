@@ -22,12 +22,13 @@ namespace Game.Core.Party
         public static readonly StatId ColossusTrophyFlat = new StatId("colossusTrophyFlat");
         public static readonly StatId MascotAuraStat = new StatId("mascotAura");
         public static readonly StatId MascotStageEarly = new StatId("mascotStageEarly");
+        public static readonly StatId BannerDamage = new StatId("bannerDamage");
         public static readonly StatId MascotCallSeconds = new StatId("mascotCallSeconds");
         public static readonly StatId MascotCallPower = new StatId("mascotCallPower");
         public static readonly StatId ColossusDamageTaken = new StatId("colossusDamageTaken");
         private static readonly StatId[] MascotOnly =
         {
-            MascotAuraStat, MascotStageEarly, MascotCallSeconds, MascotCallPower, ColossusDamageTaken, new StatId("mascotExperience"), new StatId("mascotFeedExperience"),
+            BannerDamage, MascotAuraStat, MascotStageEarly, MascotCallSeconds, MascotCallPower, ColossusDamageTaken, new StatId("mascotExperience"), new StatId("mascotFeedExperience"),
             new StatId("mascotFeedsPerDay"), new StatId("mascotFeedCost"), new StatId("mascotCallGain"), new StatId("mascotOfflineHit"), new StatId("mascotBond"),
             new StatId("mascotColossusDamage"), new StatId("mascotRiteCost"), new StatId("mascotRiteLevels"), new StatId("mascotMinorRites"), new StatId("mascotHunger"),
             new StatId("mascotFavourite"), new StatId("mascotStrikes")
@@ -43,6 +44,8 @@ namespace Game.Core.Party
         private readonly List<Modifier> _relics = new List<Modifier>();
         private readonly List<Modifier> _mascot = new List<Modifier>();
         private readonly List<Modifier> _rites = new List<Modifier>();
+        private readonly List<Modifier> _banner = new List<Modifier>();
+        private readonly List<string> _crests = new List<string>();
         private readonly Dictionary<string, int> _riteLevels = new Dictionary<string, int>();
         private string _mascotBeast = string.Empty;
         private int _mascotLevel;
@@ -83,6 +86,7 @@ namespace Game.Core.Party
                 copy._relicLevels[pair.Key] = pair.Value;
             copy._mascotBeast = _mascotBeast;
             copy._mascotLevel = _mascotLevel;
+            copy._crests.AddRange(_crests);
             foreach (var pair in _riteLevels)
                 copy._riteLevels[pair.Key] = pair.Value;
             copy.Rebuild();
@@ -102,6 +106,37 @@ namespace Game.Core.Party
         public int MascotLevel => _mascotLevel;
         public double MascotAura { get; private set; }
         public PartyMascotStage? MascotStage { get; private set; }
+
+        public IReadOnlyList<string> Crests => _crests;
+        public IReadOnlyList<Modifier> Banner => _banner;
+
+        public void SetBanner(IReadOnlyList<string> crests)
+        {
+            if (!ReferenceEquals(crests, _crests))
+            {
+                _crests.Clear();
+                for (var i = 0; i < crests.Count; i++)
+                {
+                    if (crests[i].Length > 0 && !_crests.Contains(crests[i]))
+                        _crests.Add(crests[i]);
+                }
+            }
+            Rebuild();
+        }
+
+        private void BuildBanner()
+        {
+            _banner.Clear();
+            foreach (var id in _crests)
+            {
+                var crest = _rules.Banner.Crest(id);
+                if (crest != null)
+                    _banner.Add(crest.Modifier);
+            }
+            var bonus = Scale(BannerDamage) - 1;
+            if (_banner.Count > 0 && bonus > 0)
+                _banner.Add(new Modifier(CombatStats.Damage, ModifierKind.Increased, bonus));
+        }
 
         public IReadOnlyDictionary<string, int> RiteLevels => _riteLevels;
         public IReadOnlyList<Modifier> Rites => _rites;
@@ -270,6 +305,7 @@ namespace Game.Core.Party
             BuildRelics();
             BuildRites();
             BuildMascot();
+            BuildBanner();
             Seals = _rules.Trials.SealIncrease(_trialBest) * Scale(TrialSeals);
             TrialPower = InParty ? Scale(TrialPowerStat) : 1;
             ColossusPower = InParty ? Scale(ColossusDamage) : 1;
@@ -293,6 +329,11 @@ namespace Game.Core.Party
                         _applied.Add(line.WithValue(line.Value * Share));
                 }
                 foreach (var line in _rites)
+                {
+                    if (!IsPartyOnlyLine(line))
+                        _applied.Add(line.WithValue(line.Value * Share));
+                }
+                foreach (var line in _banner)
                 {
                     if (!IsPartyOnlyLine(line))
                         _applied.Add(line.WithValue(line.Value * Share));

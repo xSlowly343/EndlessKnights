@@ -16,6 +16,7 @@ namespace Game.Core.Ui
             (PartyGrowthSource.Relics, "party.view.source.relics"),
             (PartyGrowthSource.Mascot, "party.view.source.mascot"),
             (PartyGrowthSource.Rites, "party.view.source.rites"),
+            (PartyGrowthSource.Banner, "party.view.source.banner"),
             (PartyGrowthSource.Other, "party.view.source.other")
         };
 

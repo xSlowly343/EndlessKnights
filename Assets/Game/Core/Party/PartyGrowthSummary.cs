@@ -11,12 +11,13 @@ namespace Game.Core.Party
         Relics,
         Mascot,
         Rites,
+        Banner,
         Other
     }
 
     public readonly struct PartyGrowthSummary
     {
-        public const int Sources = 6;
+        public const int Sources = 7;
         private static readonly StatId VsBossStat = new StatId("damageVsBoss");
         private static readonly StatId VsGuardianStat = new StatId("damageVsGuardian");
 
@@ -47,6 +48,7 @@ namespace Game.Core.Party
             _bySource[(int)PartyGrowthSource.Relics] = Scaled(layer.Relics, share);
             _bySource[(int)PartyGrowthSource.Mascot] = Scaled(layer.Mascot, share);
             _bySource[(int)PartyGrowthSource.Rites] = Scaled(layer.Rites, share);
+            _bySource[(int)PartyGrowthSource.Banner] = Scaled(layer.Banner, share);
             _bySource[(int)PartyGrowthSource.Other] = Scaled(layer.Sources, share);
         }
 

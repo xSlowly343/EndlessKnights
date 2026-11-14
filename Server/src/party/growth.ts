@@ -22,6 +22,7 @@ interface PartyGrowthRules {
     trials: PartyTrialRules;
     colossus: PartyColossusRules;
     mascot: PartyMascotRules;
+    banner: { trial: number[]; colossus: number[]; trials: string[] };
     unlocks: PartyGrowthUnlock[];
 }
 

@@ -1006,6 +1006,12 @@ namespace Game.Core.Sim
             _callLayer?.Set(System.Array.Empty<Modifier>());
         }
 
+        public void SetPartyBanner(IReadOnlyList<string> crests)
+        {
+            _partyGrowth.SetBanner(crests);
+            RefreshPeacefulBonus();
+        }
+
         public void SetPartyRelics(IReadOnlyDictionary<string, int> levels)
         {
             _partyGrowth.SetRelics(levels);

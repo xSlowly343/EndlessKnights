@@ -2415,6 +2415,7 @@
     "party.view.source.relics": { "ru": "Реликвии", "en": "Relics" },
     "party.view.source.mascot": { "ru": "Талисман", "en": "Mascot" },
     "party.view.source.rites": { "ru": "Обряды", "en": "Rites" },
+    "party.view.source.banner": { "ru": "Гербы знамени", "en": "Banner crests" },
     "party.view.source.other": { "ru": "Прочее", "en": "Other" },
     "party.view.capped": { "ru": "Упёрлось в потолок", "en": "Capped at" },
     "party.view.newcomer": { "ru": "Новичок: доля силы отряда", "en": "Newcomer: share of party power" },

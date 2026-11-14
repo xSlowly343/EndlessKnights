@@ -733,6 +733,17 @@ namespace Game.Net.Tests
         }
 
         [Test]
+        public void ThePartyBannerIsReadWithItsPlacesAndEarnedCrests()
+        {
+            Assert.That(PartyBannerReply.SetPayload(1, "choir_15"), Is.EqualTo("{\"slot\":1,\"crest\":\"choir_15\"}"));
+            var reply = PartyBannerReply.From(NakamaJson.Parse("{\"partyId\":\"g1\",\"opened\":true,\"leader\":true,\"slots\":[\"choir_15\",\"\"],\"earned\":[\"choir_10\",\"choir_15\"]}"));
+            Assert.That(reply.Opened && reply.Leader, Is.True);
+            Assert.That(reply.Slots, Is.EqualTo(new[] { "choir_15", "" }));
+            Assert.That(reply.Placed, Is.EqualTo(new[] { "choir_15" }));
+            Assert.That(reply.Earned.Count, Is.EqualTo(2));
+        }
+
+        [Test]
         public void TheRiftShopIsReadPerRiftWithItsSparksAndWindowCounts()
         {
             Assert.That(RiftShopReply.ViewPayload(1793102400), Is.EqualTo("{\"riftId\":1793102400}"));

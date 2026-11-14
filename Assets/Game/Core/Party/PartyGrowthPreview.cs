@@ -10,7 +10,8 @@ namespace Game.Core.Party
         Rite,
         MascotLevels,
         TrialTier,
-        Mascot
+        Mascot,
+        Crest
     }
 
     public readonly struct PartyUpgrade
@@ -33,6 +34,7 @@ namespace Game.Core.Party
         public static PartyUpgrade MascotLevels(int levels) => new PartyUpgrade(PartyUpgradeKind.MascotLevels, string.Empty, levels);
         public static PartyUpgrade TrialTier(int trial) => new PartyUpgrade(PartyUpgradeKind.TrialTier, string.Empty, trial);
         public static PartyUpgrade Mascot(string beast) => new PartyUpgrade(PartyUpgradeKind.Mascot, beast, 0);
+        public static PartyUpgrade Crest(string crest) => new PartyUpgrade(PartyUpgradeKind.Crest, crest, 0);
     }
 
     public readonly struct PartyGain
@@ -79,6 +81,10 @@ namespace Game.Core.Party
                     break;
                 case PartyUpgradeKind.Mascot:
                     layer.SetMascot(upgrade.Id, System.Math.Max(1, layer.MascotLevel), layer.RiteLevels);
+                    break;
+                case PartyUpgradeKind.Crest:
+                    var crests = new List<string>(layer.Crests) { upgrade.Id };
+                    layer.SetBanner(crests);
                     break;
                 case PartyUpgradeKind.TrialTier:
                     var best = new List<int>(layer.TrialBest);

@@ -629,6 +629,11 @@ const partyGrowthRules = {
     treeOfflineHit: partyTrialTreeLines(growth, "mascotOfflineHit").concat(partyTrialTreeLines(growth, "mascotColossusDamage")),
     relicExperience: growth.colossus.relics.filter((relic) => relic.stat === "mascotExperience" && !relic.waits).map((relic) => ({ id: relic.id, value: relic.value }))
   },
+  banner: {
+    trial: growth.banner.milestones.trial,
+    colossus: growth.banner.milestones.colossus,
+    trials: growth.trials.list.map((trial) => trial.id)
+  },
   unlocks: growth.unlocks.map((unlock) => ({ level: unlock.level, kind: unlock.kind }))
 };
 

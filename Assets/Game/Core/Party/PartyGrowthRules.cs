@@ -93,6 +93,7 @@ namespace Game.Core.Party
         public PartyTrialRules Trials { get; private set; } = PartyTrialRules.None;
         public PartyColossusRules Colossus { get; private set; } = PartyColossusRules.None;
         public PartyMascotRules Mascot { get; private set; } = PartyMascotRules.None;
+        public PartyBannerRules Banner { get; private set; } = PartyBannerRules.None;
 
         public long ResetFee(long spent, bool free) => free ? 0 : (long)System.Math.Ceiling(spent * ResetFeeShare);
 
@@ -182,6 +183,8 @@ namespace Game.Core.Party
                 rules.Colossus = PartyColossusRules.Read(node.Field("colossus"));
             if (node.HasField("mascot"))
                 rules.Mascot = PartyMascotRules.Read(node.Field("mascot"));
+            if (node.HasField("banner"))
+                rules.Banner = PartyBannerRules.Read(node.Field("banner"), rules.Trials);
             return rules;
         }
 
