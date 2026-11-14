@@ -1,5 +1,5 @@
 {
-  "checksum": "4092098721366b2aebd0ba0d5434aa3d91863884cc0616d31985f4e868065768",
+  "checksum": "fb410d06c61391840563e4efc6bd0cce75c887eb5c0475f2109c9b05bec1dd90",
   "payload": {
     "clock": {
       "bootId": 1,
@@ -1684,8 +1684,24 @@
           "bossHits": 0,
           "breakCooldownTicks": 0,
           "breakTicks": 0,
-          "curse": 0,
-          "curseTicks": 0,
+          "curseSlotGems": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "curseSlotTicks": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "curseSlots": [
+            0,
+            0,
+            0,
+            0
+          ],
           "grow": 0,
           "hushHitsBack": "0",
           "hushesSent": "0",

@@ -207,6 +207,21 @@ namespace Game.Core.Tests.Party
         }
 
         [Test]
+        public void DebuffEffectMakesTheEnemyLinesStronger()
+        {
+            var (buffs, state, hero) = Giver(HeroClass.Whisperer, PartyGiveMode.Support);
+            Assert.That(TestWorld.Data.Ascendancy.TryGet("whisperer_trait_3", out var vow), Is.True);
+            foreach (var modifier in vow.Trait!.Levels[0])
+                hero.Add(modifier);
+            hero.Add(new Modifier(CombatStats.EnemyDebuffEffect, ModifierKind.Increased, 0.2));
+            buffs.Tick();
+            state.Whisperer.HushesSent += 7;
+            buffs.Tick();
+
+            Assert.That(buffs.Giver.EnemyDamageTaken, Is.EqualTo(0.03 * 5 * 1.2 * TestWorld.Data.Party.Buffs.Coop.ModePower(PartyGiveMode.Support)).Within(1e-9));
+        }
+
+        [Test]
         public void AShareLineGivesAPartOfTheOwnBonus()
         {
             var (buffs, _, hero) = Giver();

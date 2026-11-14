@@ -183,8 +183,9 @@ namespace Game.Core.Save
                     ("breakCooldownTicks", JsonValue.Of(state.Whisperer.BreakCooldownTicks)),
                     ("hushesSent", Long(state.Whisperer.HushesSent)),
                     ("hushHitsBack", Long(state.Whisperer.HushHitsBack)),
-                    ("curse", JsonValue.Of(state.Whisperer.Curse)),
-                    ("curseTicks", JsonValue.Of(state.Whisperer.CurseTicks)),
+                    ("curseSlots", Numbers(state.Whisperer.CurseSlots)),
+                    ("curseSlotTicks", Ints(state.Whisperer.CurseSlotTicks)),
+                    ("curseSlotGems", Ints(state.Whisperer.CurseSlotGems)),
                     ("spawnPending", JsonValue.Of(state.Whisperer.SpawnPending)))),
                 ("clockwright", Object(
                     ("holdTicks", JsonValue.Of(state.Clockwright.HoldTicks)),
@@ -629,8 +630,14 @@ namespace Game.Core.Save
             state.Whisperer.BreakCooldownTicks = Int(node, "breakCooldownTicks", state.Whisperer.BreakCooldownTicks);
             state.Whisperer.HushesSent = Long(node, "hushesSent", state.Whisperer.HushesSent);
             state.Whisperer.HushHitsBack = Long(node, "hushHitsBack", state.Whisperer.HushHitsBack);
-            state.Whisperer.Curse = Number(node, "curse", state.Whisperer.Curse);
-            state.Whisperer.CurseTicks = Int(node, "curseTicks", state.Whisperer.CurseTicks);
+            ReadNumbers(node, "curseSlots", state.Whisperer.CurseSlots);
+            ReadInts(node, "curseSlotTicks", state.Whisperer.CurseSlotTicks);
+            ReadInts(node, "curseSlotGems", state.Whisperer.CurseSlotGems);
+            if (node.HasField("curse"))
+            {
+                state.Whisperer.CurseSlots[0] = Number(node, "curse", 0);
+                state.Whisperer.CurseSlotTicks[0] = Int(node, "curseTicks", 0);
+            }
             state.Whisperer.SpawnPending = Bool(node, "spawnPending", state.Whisperer.SpawnPending);
         }
 

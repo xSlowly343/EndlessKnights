@@ -95,7 +95,7 @@ namespace Game.Core.Tests.Ui
             state.VulnerabilityTicks = 40;
             var show = Shown(state);
             Assert.That(show.Outline, Is.EqualTo(StatusOutline.Vulnerable));
-            state.Whisperer.CurseTicks = 40;
+            state.Whisperer.CurseSlotTicks[0] = 40;
             show.Read(state, Caps);
             Assert.That(show.Outline, Is.EqualTo(StatusOutline.Curse));
         }
