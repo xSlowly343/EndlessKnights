@@ -66,6 +66,7 @@ namespace Game.Core.Party
         public int Members { get; private set; }
         public double Share { get; private set; }
         public double DamageMultiplier { get; private set; } = 1;
+        public double UncappedDamage { get; private set; } = 1;
         public double Peaceful { get; private set; }
         public bool Capped { get; private set; }
         public IReadOnlyList<Modifier> Applied => _applied;
@@ -457,6 +458,7 @@ namespace Game.Core.Party
                     more *= 1 + modifier.Value;
             }
             var total = (1 + increased) * more;
+            UncappedDamage = total;
             if (total <= _rules.DamageCap)
                 return total;
             Capped = true;

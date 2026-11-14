@@ -991,6 +991,9 @@
 - `UniquesFound` хранит голые id: id уникальных брони и оружия не пересекаются (проверено на данных 06.11.2026); если появится пересечение — разнести на два набора ключей. Запись — `HashSet.Add` без склейки строк, чтобы не аллоцировать при доставке дропа.
 - Ивентовые наборы исключены из `ItemCatalog.PickSet` по полю `Event`; `CraftSetPiece` отвечает `NotCraftable`. Выдачу шлёт `EventSystem.BossWon` (колбэк из `GameLoop`), как `DropSystem.Salvaged` для руды.
 
+### Сим роста отряда (13.57)
+- `sim --party-growth <дни> [--members 4] [--active-hours 2] [--colossus-rate <очков в час>]`: без `--colossus-rate` бот 3 дня играет в отряде с открытым Колоссом (`PlayerSimulation.Prepare` и `DayEnded` — новые крючки) и замеряет фоновые очки за активный час со 2-го дня. Модель — `Game.Core.Sim.Headless.PartyGrowthModel`, сила — настоящий `PartyGrowthLayer` (новое `UncappedDamage` — урон до потолка). Вывод — CSV по неделям: уровень отряда, очки древа, тиры печатей, тир Колосса, уровни реликвий, уровень зверя, гербы, урон до и после потолка, мирное, урон по Колоссу, клавиши, по боссам. Итоги и допущения — `balance-plan.md` §7.
+
 ### Союз отрядов (13.53)
 - Данные — `party.json` → `growth.alliance`: `helpShare` (0,1 — доля недельного фонового урона по Колоссу), `signs` (50 Знаков в каждую казну за помощь), `proposalHours` (72 — сколько ждёт предложение). Цифры — черновик агента.
 - Сервер (`Server/src/party/alliance.ts`, 0.110.0): запись `party_alliance` на отряд (`ally`, `since`, `incoming` — предложения с временем, `outgoing`, `helpWeek`). RPC: `party_alliance` (вид), `party_alliance_propose {code}` (глава; оба отряда 60-го уровня, у обоих нет союзника; отряд по коду — запись `party_codes`), `party_alliance_answer {partyId, accept}` (глава отряда, которому предложили), `party_alliance_break` (глава любого из двух), `party_alliance_help` (любой участник, раз в неделю на отряд).

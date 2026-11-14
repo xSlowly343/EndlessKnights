@@ -38,6 +38,10 @@ namespace Game.Core.Sim.Headless
 
         public double DamageMultiplier { get; set; } = 1;
 
+        public System.Action<GameLoop>? Prepare { get; set; }
+
+        public System.Action<int, GameLoop>? DayEnded { get; set; }
+
         public IReadOnlyList<DayRecord> Run(int days, double activeHoursPerDay)
         {
             var state = new GameState(_seed) { Class = _heroClass };
@@ -46,6 +50,7 @@ namespace Game.Core.Sim.Headless
                 hero.Add(new Modifier(CombatStats.Damage, ModifierKind.More, DamageMultiplier - 1));
             var loop = new GameLoop(_data, new BotInput(_profile, _seed ^ 0x5EEDUL), state, hero);
             var bot = new PlayerBot(_data, loop, _stuckMinutes, branchTrial: new BranchTrial(_data, _profile), path: _path, gear: Gear);
+            Prepare?.Invoke(loop);
             var offline = new OfflineCalculator(_data, hero);
             var activeTicks = (long)System.Math.Round(activeHoursPerDay * 3600 * GameLoop.TicksPerSecond);
             var offlineSeconds = System.Math.Max(0, SecondsPerDay - activeHoursPerDay * 3600);
@@ -68,6 +73,7 @@ namespace Game.Core.Sim.Headless
                     if (tick % ActEveryTicks == 0)
                         Act(bot, state, ActEveryTicks * GameLoop.TickSeconds);
                 }
+                DayEnded?.Invoke(day, loop);
                 loop.ReturnHomeIfAway(offlineSeconds);
                 loop.ApplyOffline(offline.Simulate(state, offlineSeconds));
                 awaySeconds = offlineSeconds;
