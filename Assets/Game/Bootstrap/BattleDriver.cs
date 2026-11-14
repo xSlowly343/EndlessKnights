@@ -21,6 +21,7 @@ namespace Game.Bootstrap
         private StripHintView _hint = null!;
         private SkillEffects _effects = null!;
         private readonly ShowQueue _shows = new ShowQueue(ShowRules.OwnSkills);
+        private readonly EnemyStatusShow _statusShow = new EnemyStatusShow();
         private GameData _data = null!;
         private int _bossTotalTicks = 1;
         private bool _riftLoading;
@@ -166,6 +167,7 @@ namespace Game.Bootstrap
             _skillBar.Show(state.Skills, state.Resource);
             ShowRift(state);
             ShowAura(state);
+            ShowStatuses(state);
         }
 
         private void ShowRift(GameState state)
@@ -177,6 +179,21 @@ namespace Game.Bootstrap
             _riftLoading = loading;
             if (loading)
                 _view.ShowLoadingLines(RiftLoadingText.Lines(_loop));
+        }
+
+        private void ShowStatuses(GameState state)
+        {
+            var elements = _loop.Combat.Elements;
+            var caps = new StatusCaps
+            {
+                PoisonMax = _loop.Skills.Dots.PoisonMax,
+                BurnMax = _loop.Skills.Dots.BurnMax,
+                FractureMax = _loop.Combat.FractureMax,
+                EarthMax = elements.EarthMax,
+                WaterMax = elements.WaterMax
+            };
+            _statusShow.Read(state, caps);
+            _view.ShowStatuses(_statusShow, state.Tick);
         }
 
         private void ShowAura(GameState state)

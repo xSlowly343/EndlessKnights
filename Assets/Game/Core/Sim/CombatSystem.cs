@@ -799,6 +799,8 @@ namespace Game.Core.Sim
                 return;
             _state.FractureStacks++;
             _state.FracturesLaid++;
+            if (_portion[(int)Element.Corrosion] > 0)
+                _state.CorrosionFractures++;
             _fractureShareTicks = 0;
         }
 
@@ -944,7 +946,10 @@ namespace Game.Core.Sim
             }
             var air = _portion[(int)Element.Air];
             if (air > 0 && rules.AirShare > 0 && _state.EnemyType == EnemyType.Normal)
+            {
                 _state.QueueDamage[0] += damage * (air * rules.AirShare);
+                _state.AirCarries++;
+            }
             var earth = _portion[(int)Element.Earth];
             if (earth > 0)
                 _state.EarthShred = System.Math.Min(rules.EarthMax, _state.EarthShred + rules.EarthShred * earth);

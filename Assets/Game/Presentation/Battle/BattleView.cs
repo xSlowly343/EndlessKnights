@@ -121,6 +121,8 @@ namespace Game.Presentation.Battle
         private SpriteRenderer _enemy = null!;
         private AllySilhouettes _allies = null!;
         private PartyEnemyMarks _marks = null!;
+        private EnemyStatusView _statuses = null!;
+        private EnemyStatusShow? _statusShow;
         private UiTheme _theme = null!;
         private RectTransform _hpTrack = null!;
         private RectTransform _hpFill = null!;
@@ -228,6 +230,12 @@ namespace Game.Presentation.Battle
             _deathAge = DeathSeconds;
             _shownHp = 1f;
             _targetHp = 1f;
+        }
+
+        public void ShowStatuses(EnemyStatusShow show, long tick)
+        {
+            _statusShow = show;
+            _statuses.Show(show, tick);
         }
 
         public void KillEnemy()
@@ -348,6 +356,7 @@ namespace Game.Presentation.Battle
             var hud = StripCanvas.Create("Hud", HudSortingOrder, transform);
             BuildHud(hud);
             _marks = PartyEnemyMarks.Create(hud, _theme);
+            _statuses = EnemyStatusView.Create(_enemy, _scene, hud, _theme, FighterSortingOrder);
             var texts = StripCanvas.Create("SceneTexts", TextSortingOrder, _scene);
             _retreatText = Label("Retreat", texts, _theme.BoldFont, 20f, RetreatColor, TextAlignmentOptions.Center);
             StripCanvas.Place(_retreatText.rectTransform, EnemyX * StripSpace.PixelsPerUnit, StripSpace.BaseHeightPx - (GroundY + EnemySize / 2f) * StripSpace.PixelsPerUnit, new Vector2(160f, 28f), new Vector2(0.5f, 0.5f));
@@ -584,11 +593,12 @@ namespace Game.Presentation.Battle
             }
             _enemy.transform.localScale = new Vector3(scale, scale, 1f);
             var flashing = _flashAge < FlashSeconds;
-            var color = flashing ? Color.white : _enemyColor;
+            var color = flashing ? Color.white : _statuses.Tint(_enemyColor, _statusShow);
             color.a = alpha;
             _enemy.color = color;
             var shake = flashing ? ShakeUnits : 0f;
             _enemy.transform.position = EnemyCentre + new Vector2(shake, 0f);
+            _statuses.Animate(delta, scale, alpha);
         }
 
         private void AnimateHero(float delta)

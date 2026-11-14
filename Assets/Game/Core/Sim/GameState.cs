@@ -155,6 +155,8 @@ namespace Game.Core.Sim
         public double WaterSeconds { get; set; }
         public double WaterCarry { get; set; }
         public long Discharges { get; set; }
+        public long AirCarries { get; set; }
+        public long CorrosionFractures { get; set; }
         public double TempoPerMinute { get; set; }
         public double RestCharge { get; set; }
         public int RestHitsLeft { get; set; }

@@ -1,0 +1,734 @@
+{
+  "version": 1,
+  "sizes": {
+    "small": {
+      "body": 32,
+      "sheets": {
+        "poison1": {
+          "file": "Status_Poison1_S_32x32_8f",
+          "width": 32,
+          "height": 32,
+          "frames": 8,
+          "pivot": [
+            16,
+            31
+          ],
+          "fps": 12,
+          "anchor": "body",
+          "loops": true,
+          "masked": true
+        },
+        "poison2": {
+          "file": "Status_Poison2_S_32x32_8f",
+          "width": 32,
+          "height": 32,
+          "frames": 8,
+          "pivot": [
+            16,
+            31
+          ],
+          "fps": 12,
+          "anchor": "body",
+          "loops": true,
+          "masked": true
+        },
+        "poison3": {
+          "file": "Status_Poison3_S_32x32_8f",
+          "width": 32,
+          "height": 32,
+          "frames": 8,
+          "pivot": [
+            16,
+            31
+          ],
+          "fps": 12,
+          "anchor": "body",
+          "loops": true,
+          "masked": true
+        },
+        "burnBody": {
+          "file": "Status_BurnBody_S_32x32_8f",
+          "width": 32,
+          "height": 32,
+          "frames": 8,
+          "pivot": [
+            16,
+            0
+          ],
+          "fps": 12,
+          "anchor": "top",
+          "loops": true,
+          "masked": true
+        },
+        "ember": {
+          "file": "Status_Ember_S_32x32_8f",
+          "width": 32,
+          "height": 32,
+          "frames": 8,
+          "pivot": [
+            16,
+            16
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true,
+          "masked": true
+        },
+        "fracture1": {
+          "file": "Status_Fracture1_S_32x32_8f",
+          "width": 32,
+          "height": 32,
+          "frames": 8,
+          "pivot": [
+            16,
+            16
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true,
+          "masked": true
+        },
+        "fracture2": {
+          "file": "Status_Fracture2_S_32x32_8f",
+          "width": 32,
+          "height": 32,
+          "frames": 8,
+          "pivot": [
+            16,
+            16
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true,
+          "masked": true
+        },
+        "fracture3": {
+          "file": "Status_Fracture3_S_32x32_8f",
+          "width": 32,
+          "height": 32,
+          "frames": 8,
+          "pivot": [
+            16,
+            16
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true,
+          "masked": true
+        },
+        "fracture4": {
+          "file": "Status_Fracture4_S_32x32_8f",
+          "width": 32,
+          "height": 32,
+          "frames": 8,
+          "pivot": [
+            16,
+            16
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true,
+          "masked": true
+        },
+        "corrosion": {
+          "file": "Status_Corrosion_S_32x32_6f",
+          "width": 32,
+          "height": 32,
+          "frames": 6,
+          "pivot": [
+            16,
+            16
+          ],
+          "fps": 20,
+          "anchor": "chest",
+          "masked": true
+        },
+        "burnTop1": {
+          "file": "Status_BurnTop1_S_32x20_8f",
+          "width": 32,
+          "height": 20,
+          "frames": 8,
+          "pivot": [
+            16,
+            16
+          ],
+          "fps": 12,
+          "anchor": "head",
+          "loops": true
+        },
+        "burnTop2": {
+          "file": "Status_BurnTop2_S_32x20_8f",
+          "width": 32,
+          "height": 20,
+          "frames": 8,
+          "pivot": [
+            16,
+            16
+          ],
+          "fps": 12,
+          "anchor": "head",
+          "loops": true
+        },
+        "burnTop3": {
+          "file": "Status_BurnTop3_S_32x20_8f",
+          "width": 32,
+          "height": 20,
+          "frames": 8,
+          "pivot": [
+            16,
+            16
+          ],
+          "fps": 12,
+          "anchor": "head",
+          "loops": true
+        },
+        "stun": {
+          "file": "Status_Stun_S_28x14_8f",
+          "width": 28,
+          "height": 14,
+          "frames": 8,
+          "pivot": [
+            14,
+            13
+          ],
+          "fps": 12,
+          "anchor": "head",
+          "loops": true
+        },
+        "blind": {
+          "file": "Status_Blind_S_24x10_8f",
+          "width": 24,
+          "height": 10,
+          "frames": 8,
+          "pivot": [
+            12,
+            5
+          ],
+          "fps": 12,
+          "anchor": "eyes",
+          "loops": true
+        },
+        "curse": {
+          "file": "Status_Curse_S_16x18_12f",
+          "width": 16,
+          "height": 18,
+          "frames": 12,
+          "pivot": [
+            8,
+            17
+          ],
+          "fps": 12,
+          "anchor": "head",
+          "loops": true
+        },
+        "markOn": {
+          "file": "Status_MarkOn_S_24x24_6f",
+          "width": 24,
+          "height": 24,
+          "frames": 6,
+          "pivot": [
+            12,
+            12
+          ],
+          "fps": 20,
+          "anchor": "chest"
+        },
+        "mark": {
+          "file": "Status_Mark_S_24x24_8f",
+          "width": 24,
+          "height": 24,
+          "frames": 8,
+          "pivot": [
+            12,
+            12
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true
+        },
+        "earth1": {
+          "file": "Status_Earth1_S_40x14_8f",
+          "width": 40,
+          "height": 14,
+          "frames": 8,
+          "pivot": [
+            20,
+            11
+          ],
+          "fps": 12,
+          "anchor": "feet",
+          "loops": true
+        },
+        "earth2": {
+          "file": "Status_Earth2_S_40x14_8f",
+          "width": 40,
+          "height": 14,
+          "frames": 8,
+          "pivot": [
+            20,
+            11
+          ],
+          "fps": 12,
+          "anchor": "feet",
+          "loops": true
+        },
+        "earth3": {
+          "file": "Status_Earth3_S_40x14_8f",
+          "width": 40,
+          "height": 14,
+          "frames": 8,
+          "pivot": [
+            20,
+            11
+          ],
+          "fps": 12,
+          "anchor": "feet",
+          "loops": true
+        },
+        "water1": {
+          "file": "Status_Water1_S_40x24_8f",
+          "width": 40,
+          "height": 24,
+          "frames": 8,
+          "pivot": [
+            20,
+            21
+          ],
+          "fps": 12,
+          "anchor": "feet",
+          "loops": true
+        },
+        "water2": {
+          "file": "Status_Water2_S_40x24_8f",
+          "width": 40,
+          "height": 24,
+          "frames": 8,
+          "pivot": [
+            20,
+            21
+          ],
+          "fps": 12,
+          "anchor": "feet",
+          "loops": true
+        },
+        "lightning": {
+          "file": "Status_Lightning_S_32x40_6f",
+          "width": 32,
+          "height": 40,
+          "frames": 6,
+          "pivot": [
+            16,
+            38
+          ],
+          "fps": 20,
+          "anchor": "feet"
+        },
+        "air": {
+          "file": "Status_Air_S_48x32_6f",
+          "width": 48,
+          "height": 32,
+          "frames": 6,
+          "pivot": [
+            12,
+            16
+          ],
+          "fps": 20,
+          "anchor": "chest"
+        },
+        "fractureChip": {
+          "file": "Status_FractureChip_S_32x32_6f",
+          "width": 32,
+          "height": 32,
+          "frames": 6,
+          "pivot": [
+            16,
+            16
+          ],
+          "fps": 20,
+          "anchor": "chest"
+        }
+      }
+    },
+    "large": {
+      "body": 64,
+      "sheets": {
+        "poison1": {
+          "file": "Status_Poison1_L_64x64_8f",
+          "width": 64,
+          "height": 64,
+          "frames": 8,
+          "pivot": [
+            32,
+            63
+          ],
+          "fps": 12,
+          "anchor": "body",
+          "loops": true,
+          "masked": true
+        },
+        "poison2": {
+          "file": "Status_Poison2_L_64x64_8f",
+          "width": 64,
+          "height": 64,
+          "frames": 8,
+          "pivot": [
+            32,
+            63
+          ],
+          "fps": 12,
+          "anchor": "body",
+          "loops": true,
+          "masked": true
+        },
+        "poison3": {
+          "file": "Status_Poison3_L_64x64_8f",
+          "width": 64,
+          "height": 64,
+          "frames": 8,
+          "pivot": [
+            32,
+            63
+          ],
+          "fps": 12,
+          "anchor": "body",
+          "loops": true,
+          "masked": true
+        },
+        "burnBody": {
+          "file": "Status_BurnBody_L_64x64_8f",
+          "width": 64,
+          "height": 64,
+          "frames": 8,
+          "pivot": [
+            32,
+            0
+          ],
+          "fps": 12,
+          "anchor": "top",
+          "loops": true,
+          "masked": true
+        },
+        "ember": {
+          "file": "Status_Ember_L_64x64_8f",
+          "width": 64,
+          "height": 64,
+          "frames": 8,
+          "pivot": [
+            32,
+            33
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true,
+          "masked": true
+        },
+        "fracture1": {
+          "file": "Status_Fracture1_L_64x64_8f",
+          "width": 64,
+          "height": 64,
+          "frames": 8,
+          "pivot": [
+            32,
+            33
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true,
+          "masked": true
+        },
+        "fracture2": {
+          "file": "Status_Fracture2_L_64x64_8f",
+          "width": 64,
+          "height": 64,
+          "frames": 8,
+          "pivot": [
+            32,
+            33
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true,
+          "masked": true
+        },
+        "fracture3": {
+          "file": "Status_Fracture3_L_64x64_8f",
+          "width": 64,
+          "height": 64,
+          "frames": 8,
+          "pivot": [
+            32,
+            33
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true,
+          "masked": true
+        },
+        "fracture4": {
+          "file": "Status_Fracture4_L_64x64_8f",
+          "width": 64,
+          "height": 64,
+          "frames": 8,
+          "pivot": [
+            32,
+            33
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true,
+          "masked": true
+        },
+        "corrosion": {
+          "file": "Status_Corrosion_L_64x64_6f",
+          "width": 64,
+          "height": 64,
+          "frames": 6,
+          "pivot": [
+            32,
+            33
+          ],
+          "fps": 20,
+          "anchor": "chest",
+          "masked": true
+        },
+        "burnTop1": {
+          "file": "Status_BurnTop1_L_64x40_8f",
+          "width": 64,
+          "height": 40,
+          "frames": 8,
+          "pivot": [
+            32,
+            33
+          ],
+          "fps": 12,
+          "anchor": "head",
+          "loops": true
+        },
+        "burnTop2": {
+          "file": "Status_BurnTop2_L_64x40_8f",
+          "width": 64,
+          "height": 40,
+          "frames": 8,
+          "pivot": [
+            32,
+            33
+          ],
+          "fps": 12,
+          "anchor": "head",
+          "loops": true
+        },
+        "burnTop3": {
+          "file": "Status_BurnTop3_L_64x40_8f",
+          "width": 64,
+          "height": 40,
+          "frames": 8,
+          "pivot": [
+            32,
+            33
+          ],
+          "fps": 12,
+          "anchor": "head",
+          "loops": true
+        },
+        "stun": {
+          "file": "Status_Stun_L_56x28_8f",
+          "width": 56,
+          "height": 28,
+          "frames": 8,
+          "pivot": [
+            28,
+            27
+          ],
+          "fps": 12,
+          "anchor": "head",
+          "loops": true
+        },
+        "blind": {
+          "file": "Status_Blind_L_48x20_8f",
+          "width": 48,
+          "height": 20,
+          "frames": 8,
+          "pivot": [
+            24,
+            11
+          ],
+          "fps": 12,
+          "anchor": "eyes",
+          "loops": true
+        },
+        "curse": {
+          "file": "Status_Curse_L_32x36_12f",
+          "width": 32,
+          "height": 36,
+          "frames": 12,
+          "pivot": [
+            16,
+            35
+          ],
+          "fps": 12,
+          "anchor": "head",
+          "loops": true
+        },
+        "markOn": {
+          "file": "Status_MarkOn_L_48x48_6f",
+          "width": 48,
+          "height": 48,
+          "frames": 6,
+          "pivot": [
+            24,
+            25
+          ],
+          "fps": 20,
+          "anchor": "chest"
+        },
+        "mark": {
+          "file": "Status_Mark_L_48x48_8f",
+          "width": 48,
+          "height": 48,
+          "frames": 8,
+          "pivot": [
+            24,
+            25
+          ],
+          "fps": 12,
+          "anchor": "chest",
+          "loops": true
+        },
+        "earth1": {
+          "file": "Status_Earth1_L_80x28_8f",
+          "width": 80,
+          "height": 28,
+          "frames": 8,
+          "pivot": [
+            40,
+            23
+          ],
+          "fps": 12,
+          "anchor": "feet",
+          "loops": true
+        },
+        "earth2": {
+          "file": "Status_Earth2_L_80x28_8f",
+          "width": 80,
+          "height": 28,
+          "frames": 8,
+          "pivot": [
+            40,
+            23
+          ],
+          "fps": 12,
+          "anchor": "feet",
+          "loops": true
+        },
+        "earth3": {
+          "file": "Status_Earth3_L_80x28_8f",
+          "width": 80,
+          "height": 28,
+          "frames": 8,
+          "pivot": [
+            40,
+            23
+          ],
+          "fps": 12,
+          "anchor": "feet",
+          "loops": true
+        },
+        "water1": {
+          "file": "Status_Water1_L_80x48_8f",
+          "width": 80,
+          "height": 48,
+          "frames": 8,
+          "pivot": [
+            40,
+            43
+          ],
+          "fps": 12,
+          "anchor": "feet",
+          "loops": true
+        },
+        "water2": {
+          "file": "Status_Water2_L_80x48_8f",
+          "width": 80,
+          "height": 48,
+          "frames": 8,
+          "pivot": [
+            40,
+            43
+          ],
+          "fps": 12,
+          "anchor": "feet",
+          "loops": true
+        },
+        "lightning": {
+          "file": "Status_Lightning_L_64x80_6f",
+          "width": 64,
+          "height": 80,
+          "frames": 6,
+          "pivot": [
+            32,
+            77
+          ],
+          "fps": 20,
+          "anchor": "feet"
+        },
+        "air": {
+          "file": "Status_Air_L_96x64_6f",
+          "width": 96,
+          "height": 64,
+          "frames": 6,
+          "pivot": [
+            24,
+            33
+          ],
+          "fps": 20,
+          "anchor": "chest"
+        },
+        "fractureChip": {
+          "file": "Status_FractureChip_L_64x64_6f",
+          "width": 64,
+          "height": 64,
+          "frames": 6,
+          "pivot": [
+            32,
+            33
+          ],
+          "fps": 20,
+          "anchor": "chest"
+        }
+      }
+    }
+  },
+  "icons": {
+    "file": "Status_Icons_9x9_20f",
+    "width": 9,
+    "height": 9,
+    "frames": 20,
+    "pivot": [
+      4,
+      4
+    ],
+    "fps": 1,
+    "order": [
+      "poison",
+      "burn",
+      "ember",
+      "curse",
+      "mark",
+      "stun",
+      "blind",
+      "fracture",
+      "vulnerable",
+      "earthShred",
+      "waterTime",
+      "weakened",
+      "fire",
+      "air",
+      "earth",
+      "lightning",
+      "water",
+      "corrosion",
+      "resists",
+      "weakTo"
+    ]
+  }
+}
