@@ -144,6 +144,7 @@ namespace Game.Core.Sim
             _cosmetics = new CosmeticSystem(data.Cosmetics, state);
             _seasonPass = new SeasonPassSystem(data.SeasonPass, state);
             _stage.Drops = _drops;
+            _stage.FarBosses = PartyFar;
             _oddities = new OdditySystem(state, hero, Events, _stage, _loot, _drops);
             _reroll = new RerollSystem(data.Drops, state, _gear, _weapons);
             _combat.Dreamcatcher.UseLoot(_drops, _loot);
@@ -298,6 +299,7 @@ namespace Game.Core.Sim
         public PartyActivityMeter PartyActivity { get; } = new PartyActivityMeter();
         public PartyGrowthLayer PartyGrowth => _partyGrowth;
         public PartyColossusMeter PartyColossus { get; }
+        public PartyFarMeter PartyFar { get; } = new PartyFarMeter();
         public MascotStrip MascotStrip { get; }
         public bool AtPartyColossus => _stage.AtColossus;
         private bool ColossusCounts => _partyGrowth.InParty && _partyColossusOpen;

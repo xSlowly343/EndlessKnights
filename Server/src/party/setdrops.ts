@@ -6,6 +6,7 @@ interface PartySetDropStep {
 interface PartySetRules {
     drops: { [source: string]: { chance: number; steps: PartySetDropStep[] } };
     sourceOf: { [lineSource: string]: string };
+    far: { bossesPerMinute: number; firstMs: number; dungeonTiers: number };
     craft: { currency: string; cost: { [rarity: string]: number } };
     sets: { id: string; line: string; kind: string; rarity: string; source: string; pieces: string[]; server: { stat: string; kind: string; value: number }[] }[];
 }
@@ -18,6 +19,7 @@ interface PartySetDrop {
 
 interface PartySetDropsValue {
     pending: { [userId: string]: PartySetDrop[] };
+    far?: { [userId: string]: number };
 }
 
 const PartySetDropsCollection = "party_set_drops";
@@ -33,7 +35,7 @@ function partySetDropsRead(nk: nkruntime.Nakama, partyId: string): { value: Part
     if (objects.length === 0)
         return { value: { pending: {} }, version: "*" };
     const stored = objects[0].value as PartySetDropsValue;
-    return { value: { pending: stored.pending || {} }, version: objects[0].version };
+    return { value: { pending: stored.pending || {}, far: stored.far || {} }, version: objects[0].version };
 }
 
 function partySetDropsChange<T>(nk: nkruntime.Nakama, partyId: string, change: (value: PartySetDropsValue) => T): T {
@@ -135,6 +137,39 @@ function partySetDropsClaim(nk: nkruntime.Nakama, userId: string, room: unknown)
             delete value.pending[userId];
         return { drops: taken, left: left.length };
     });
+}
+
+function partySetFar(nk: nkruntime.Nakama, userId: string, request: { [key: string]: any }, nowUnixMs: number): { [key: string]: any } {
+    const source = request.source;
+    const bosses = request.bosses;
+    const depth = request.depth;
+    const whole = (value: unknown, max: number) => typeof value === "number" && value === Math.floor(value) && value >= 1 && value <= max;
+    if ((source !== "dungeons" && source !== "rift") || !whole(bosses, 100000) || !whole(depth, 1e12))
+        throw new Error("bad request");
+    const group = partyGroupOfUser(nk, userId);
+    if (!group)
+        throw new Error("not in a party");
+    if (!partySetsOpened(nk, group.id))
+        throw new Error("party sets are not open yet");
+    const rules = partySetRules().far;
+    const trusted = cloudTrustedRead(nk, userId);
+    const deepest = source === "dungeons" ? rules.dungeonTiers : Math.max(1, trusted ? trusted.facts.record : 1);
+    const counted = partySetDropsChange(nk, group.id, (value) => {
+        const far = value.far || {};
+        const last = far[userId] || nowUnixMs - rules.firstMs;
+        const allowed = Math.floor(Math.max(0, nowUnixMs - last) / 60000 * rules.bossesPerMinute);
+        const taken = Math.min(bosses, allowed);
+        if (taken > 0)
+            far[userId] = taken < allowed ? last + taken * 60000 / rules.bossesPerMinute : nowUnixMs;
+        value.far = far;
+        return taken;
+    });
+    const dropped = counted > 0 ? partySetDropRoll(nk, group.id, [userId], source, Math.min(depth, deepest), counted, group.id + ":" + userId + ":" + source + ":" + nowUnixMs) : 0;
+    return { counted: counted, dropped: dropped };
+}
+
+function partySetFarRpc(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkruntime.Nakama, payload: string): string {
+    return JSON.stringify(partySetFar(nk, partyCaller(ctx), partyRequest(payload), Date.now()));
 }
 
 function partySetCraft(nk: nkruntime.Nakama, userId: string, request: { [key: string]: any }, nowUnixMs: number): { [key: string]: any } {

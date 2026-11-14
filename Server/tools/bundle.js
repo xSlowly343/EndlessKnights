@@ -719,6 +719,7 @@ const partyGrowthRules = {
   partySets: {
     drops: partyItems.partySets.drops,
     sourceOf: partyItems.partySets.sourceOf || {},
+    far: { bossesPerMinute: partyItems.partySets.far.bossesPerMinute, firstMs: partyItems.partySets.far.firstMinutes * 60000, dungeonTiers: dungeons.tiers.length },
     craft: partyItems.partySets.craft,
     sets: partySetList.map((set) => ({
       id: set.id,

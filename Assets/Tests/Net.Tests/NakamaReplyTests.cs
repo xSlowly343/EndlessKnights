@@ -754,6 +754,10 @@ namespace Game.Net.Tests
             Assert.That(reply.Yours.Count, Is.EqualTo(1));
             Assert.That(reply.Members[0].Name, Is.EqualTo("Ann"));
             Assert.That(PartySetDropsReply.ClaimPayload(3), Is.EqualTo("{\"room\":3}"));
+            Assert.That(PartySetFarReply.ReportPayload("rift", 4, 120), Is.EqualTo("{\"source\":\"rift\",\"bosses\":4,\"depth\":120}"));
+            var far = PartySetFarReply.From(NakamaJson.Parse("{\"counted\":3,\"dropped\":1}"));
+            Assert.That(far.Counted, Is.EqualTo(3));
+            Assert.That(far.Dropped, Is.EqualTo(1));
             var drops = PartySetDropsReply.From(NakamaJson.Parse("{\"drops\":[{\"set\":\"party_common_pot_armor_rare\",\"piece\":\"helmet\",\"source\":\"battle\"}],\"left\":2}"));
             Assert.That(drops.Drops[0].Piece, Is.EqualTo("helmet"));
             Assert.That(drops.Left, Is.EqualTo(2));

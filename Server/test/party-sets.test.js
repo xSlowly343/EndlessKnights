@@ -172,3 +172,32 @@ test("only sets the last trusted cloud save shows in full are counted", () => {
   assert.deepStrictEqual(plain(view.refused), [half], "one piece of four is not a set");
   assert.deepStrictEqual(plain(server.partySetsRead(nk, partyId).value.members.ann), [whole]);
 });
+
+test("solo dungeon and rift bosses are reported and the server rolls for them, as fast as bosses can fall", () => {
+  const { nk, partyId } = party("ann", "bob");
+  const far = rules.far;
+  assert.throws(() => server.partySetFar(nk, "ann", { source: "rift", bosses: 1, depth: 10 }, now), /not open/);
+  reachLevel(nk, partyId, 50);
+  assert.throws(() => server.partySetFar(nk, "ann", { source: "raid", bosses: 1, depth: 10 }, now), /bad request/);
+  assert.throws(() => server.partySetFar(nk, "ann", { source: "rift", bosses: 0, depth: 10 }, now), /bad request/);
+  const firstMinutes = far.firstMs / 60000;
+  let view = server.partySetFar(nk, "ann", { source: "dungeons", bosses: 1000, depth: 999 }, now);
+  assert.strictEqual(view.counted, firstMinutes * far.bossesPerMinute, "the first report covers the first minutes");
+  view = server.partySetFar(nk, "ann", { source: "rift", bosses: 5, depth: 10 }, now + 30000);
+  assert.strictEqual(view.counted, far.bossesPerMinute / 2, "half a minute later only half a minute of bosses");
+  view = server.partySetFar(nk, "ann", { source: "rift", bosses: 1, depth: 10 }, now + 30000);
+  assert.strictEqual(view.counted, 0);
+  const drops = rules.drops.dungeons;
+  const chance = drops.chance;
+  drops.chance = 1;
+  try {
+    view = server.partySetFar(nk, "bob", { source: "dungeons", bosses: 2, depth: 999 }, now);
+  } finally {
+    drops.chance = chance;
+  }
+  assert.strictEqual(view.dropped, 2);
+  const pending = server.partySetDropsRead(nk, partyId).value.pending.bob;
+  assert.strictEqual(pending.length, 2);
+  assert.ok(pending.every((drop) => drop.source === "dungeons"));
+  assert.ok(pending.every((drop) => ["legendary", "mythic", "ancient"].some((rarity) => drop.set.endsWith("_" + rarity))), "the claimed tier is cut to the deepest key tier");
+});

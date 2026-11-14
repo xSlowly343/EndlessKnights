@@ -374,6 +374,8 @@ namespace Game.Core.Sim
             if (BiomeRotation.TryTurn(_stages, _state))
                 _events.Add(GameEvent.ForStage(GameEventKind.BiomeChanged, _state.Tick, _state.Stage));
             Drops?.OnBossDefeated(stageBefore, type, _state.RecordStage, RaisesRecord);
+            if (!Linked)
+                FarBosses?.Note(_state, stageBefore);
             if (Gates?.TryClear(stageBefore) is StageGate gate)
             {
                 if (gate.FirstKillUnique)
@@ -388,6 +390,7 @@ namespace Game.Core.Sim
 
         public double ChestGold { get; set; }
         public GateSystem? Gates { get; set; }
+        public Party.PartyFarMeter? FarBosses { get; set; }
 
         private void OpenChest(long stage)
         {

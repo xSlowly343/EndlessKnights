@@ -150,6 +150,7 @@ function InitModule(ctx: nkruntime.Context, logger: nkruntime.Logger, nk: nkrunt
     initializer.registerRpc("party_sets", partySetsRpc);
     initializer.registerRpc("party_sets_report", partySetsReportRpc);
     initializer.registerRpc("party_set_drops", partySetDropsClaimRpc);
+    initializer.registerRpc("party_set_far", partySetFarRpc);
     initializer.registerRpc("party_set_craft", partySetCraftRpc);
     initializer.registerRpc("party_alliance", partyAllianceRpc);
     initializer.registerRpc("party_alliance_propose", partyAllianceProposeRpc);

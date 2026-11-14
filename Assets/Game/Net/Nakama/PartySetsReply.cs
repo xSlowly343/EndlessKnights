@@ -53,6 +53,27 @@ namespace Game.Net.Nakama
             From(NakamaJson.Parse(await client.RpcAsync(session, "party_set_drops", ClaimPayload(room), cancel).ConfigureAwait(false)));
     }
 
+    public sealed class PartySetFarReply
+    {
+        private PartySetFarReply(JsonValue json)
+        {
+            Counted = (int)NakamaJson.Number(json, "counted");
+            Dropped = (int)NakamaJson.Number(json, "dropped");
+        }
+
+        public int Counted { get; }
+        public int Dropped { get; }
+
+        public static PartySetFarReply From(JsonValue json) => new PartySetFarReply(json);
+
+        public static string ReportPayload(string source, int bosses, int depth) =>
+            NakamaJson.Object(("source", NakamaJson.Quote(source)), ("bosses", bosses.ToString(System.Globalization.CultureInfo.InvariantCulture)),
+                ("depth", depth.ToString(System.Globalization.CultureInfo.InvariantCulture)));
+
+        public static async Task<PartySetFarReply> ReportAsync(NakamaClient client, NakamaSession session, string source, int bosses, int depth, CancellationToken cancel = default) =>
+            From(NakamaJson.Parse(await client.RpcAsync(session, "party_set_far", ReportPayload(source, bosses, depth), cancel).ConfigureAwait(false)));
+    }
+
     public sealed class PartySetCraftReply
     {
         private PartySetCraftReply(JsonValue json)
